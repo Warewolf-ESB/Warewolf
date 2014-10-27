@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 
@@ -46,6 +47,19 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// This must NEVER be persisted - here for JSON transport only!
         /// </summary>
         public string TestToAddress { get; set; }
+
+        public new string DataList
+        {
+            get
+            {
+                var stringBuilder = base.DataList;
+                return stringBuilder != null ? stringBuilder.ToString() : null;
+            }
+            set
+            {
+                base.DataList = value.ToStringBuilder();
+            }
+        }
 
         #endregion
 

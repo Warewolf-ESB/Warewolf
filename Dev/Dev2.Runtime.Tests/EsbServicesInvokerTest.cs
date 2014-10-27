@@ -22,9 +22,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
-using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB;
 using Dev2.Runtime.ESB.Management;
@@ -412,9 +410,10 @@ namespace Dev2.Tests.Runtime
 
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
+            const string payload = "<DataList><Prefix>an</Prefix><Dev2System.Dev2Error>" + PreErrorMessage + "</Dev2System.Dev2Error></DataList>";
             var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                "<DataList><Prefix>an</Prefix><Dev2System.Dev2Error>" + PreErrorMessage + "</Dev2System.Dev2Error></DataList>",
-                "<ADL><Prefix></Prefix><Countries><CountryID></CountryID><CountryName></CountryName></Countries></ADL>", out errors);
+                payload.ToStringBuilder(),
+                "<ADL><Prefix></Prefix><Countries><CountryID></CountryID><CountryName></CountryName></Countries></ADL>".ToStringBuilder(), out errors);
 
             var workspaceID = Guid.NewGuid();
             var workspace = new Mock<IWorkspace>();

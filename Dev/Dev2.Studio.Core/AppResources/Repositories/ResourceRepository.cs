@@ -751,6 +751,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.VersionInfo = data.VersionInfo;
                 resource.IconPath = GetIconPath(data.ResourceType);
                 resource.Category = data.ResourceCategory;
+                resource.UserPermissions = data.Permissions;
                 resource.Tags = string.Empty;
                 resource.Comment = string.Empty;
                 resource.ServerResourceType = data.ResourceType.ToString();
@@ -1015,7 +1016,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
         {
             var comController = new CommunicationController { ServiceName = "GetDatabaseColumnsForTableService" };
-
             comController.AddPayloadArgument("Database", _serializer.Serialize(dbSource));
             comController.AddPayloadArgument("TableName", _serializer.Serialize(dbTable.TableName));
             comController.AddPayloadArgument("Schema", _serializer.Serialize(dbTable.Schema));
@@ -1170,7 +1170,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 if(_environmentModel.AuthorizationService != null)
                 {
-                    _environmentModel.AuthorizationService.PermissionsModified += AuthorizationServiceOnPermissionsModified;
+                    _environmentModel.Connection.PermissionsModified += AuthorizationServiceOnPermissionsModified;
                 }
             };
 
@@ -1179,20 +1179,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _cachedServices = new HashSet<Guid>();
         }
 
-        void AuthorizationServiceOnPermissionsModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
+        void AuthorizationServiceOnPermissionsModified(object sender, List<WindowsGroupPermission> windowsGroupPermissions)
         {
             lock(_updatingPermissions)
             {
-                ReceivePermissionsModified(permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions);
+                ReceivePermissionsModified(windowsGroupPermissions);
             }
         }
 
-        void ReceivePermissionsModified(IEnumerable<WindowsGroupPermission> modifiedPermissions)
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        void ReceivePermissionsModified(List<WindowsGroupPermission> modifiedPermissions)
         {
             var windowsGroupPermissions = modifiedPermissions as IList<WindowsGroupPermission> ?? modifiedPermissions.ToList();
-            var exclusionResourceIds = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer).Select(permission => permission.ResourceID);
+//            var exclusionResourceIds = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer).Select(permission => permission.ResourceID);
             var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
-            UpdateServerBasedOnPermissions(windowsGroupPermissions, exclusionResourceIds, serverPermissions);
+//            UpdateServerBasedOnPermissions(windowsGroupPermissions, exclusionResourceIds, serverPermissions);
             UpdateResourcesBasedOnPermissions(windowsGroupPermissions);
 
             RefreshServer(serverPermissions);
@@ -1232,6 +1233,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         void UpdateResourcesBasedOnPermissions(IList<WindowsGroupPermission> windowsGroupPermissions)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
+            var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
+           
+                ResourceModels.ForEach(model =>
+                {
+                    var resourceId = model.ID;
+                    model.UserPermissions = serverPermissions;
+                    StudioResourceRepository.UpdateItem(resourceId, (a => { a.Permissions = serverPermissions; }), _environmentModel.ID);
+                });
+
             foreach(var perm in windowsGroupPermissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer))
             {
                 WindowsGroupPermission permission = perm;
@@ -1243,7 +1253,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         var resourceId = resourceModel.ID;
                         var resourcePermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resourceId);
                         resourceModel.UserPermissions = resourcePermissions;
-                        StudioResourceRepository.UpdateItem(resourceId, (a => { a.Permissions = resourcePermissions; }), _environmentModel.ID);
+                        StudioResourceRepository.UpdateItem(resourceId, (a => { a.Permissions = permission.Permissions; }), _environmentModel.ID);
                     }
                     catch(SystemException exception)
                     {

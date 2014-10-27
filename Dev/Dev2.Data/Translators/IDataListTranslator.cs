@@ -56,7 +56,7 @@ namespace Dev2.DataList.Contract
         /// <returns>
         /// An array of bytes that represent the datalist in the standard format.
         /// </returns>
-        IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors);
+        IBinaryDataList ConvertTo(byte[] input, StringBuilder shape, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts from a binary representation in the specified <see cref="Format" /> to the standard
@@ -68,7 +68,7 @@ namespace Dev2.DataList.Contract
         /// <returns>
         /// An array of bytes that represent the datalist in the standard format.
         /// </returns>
-        IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors);
+        IBinaryDataList ConvertTo(object input, StringBuilder shape, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts the and only map inputs.
@@ -77,7 +77,7 @@ namespace Dev2.DataList.Contract
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors);
+        IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, StringBuilder shape, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts from a binary representation in the specified <see cref="Format" /> to the standard
@@ -99,7 +99,7 @@ namespace Dev2.DataList.Contract
         /// <param name="filterShape">The filter shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors);
+        StringBuilder ConvertAndFilter(IBinaryDataList input, StringBuilder filterShape, out ErrorResultTO errors);
 
         DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions);
     }

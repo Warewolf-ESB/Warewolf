@@ -14,7 +14,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
@@ -34,9 +36,9 @@ namespace Dev2.Tests.DataList
     public class Dev2DataListBuilderTest
     {
 
-        private IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
-        private string _dlShape = @"<root><recset><f1/><f2/></recset><scalar/></root>";
-        private string _adlData = @"<root><recset><f1>f1_value1</f1><f2>f2_value1</f2></recset><recset><f1>f1_value2</f1><f2>f2_value2</f2></recset><scalar>old_scalar</scalar></root>";
+        private readonly IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
+        const string _dlShape = @"<root><recset><f1/><f2/></recset><scalar/></root>";
+        const string _adlData = @"<root><recset><f1>f1_value1</f1><f2>f2_value1</f2></recset><recset><f1>f1_value2</f1><f2>f2_value2</f2></recset><scalar>old_scalar</scalar></root>";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -134,7 +136,7 @@ namespace Dev2.Tests.DataList
             tmp.Add("[[recset().f2]]", "field2_value2");
 
             ErrorResultTO errors;
-            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _dlShape, out errors);
+            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), new StringBuilder(_dlShape), out errors);
 
             _compiler.Upsert(id, tmp, out errors);
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
@@ -173,7 +175,7 @@ namespace Dev2.Tests.DataList
             tmp.Add("[[recset().f2]]", "field2_value2");
 
             ErrorResultTO errors;
-            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _dlShape, out errors);
+            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), new StringBuilder(_dlShape), out errors);
 
             _compiler.Upsert(id, tmp, out errors);
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
@@ -219,7 +221,7 @@ namespace Dev2.Tests.DataList
             tmp.Add("[[recset(*).f2]]", "field2_value2");
 
             ErrorResultTO errors;
-            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
+            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData.ToStringBuilder(), new StringBuilder(_dlShape), out errors);
 
             _compiler.Upsert(id, tmp, out errors);
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);
@@ -255,7 +257,7 @@ namespace Dev2.Tests.DataList
             tmp.Add("[[recset().f2]]", "field2_value2");
 
             ErrorResultTO errors;
-            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
+            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData.ToStringBuilder(), new StringBuilder(_dlShape), out errors);
 
             _compiler.Upsert(id, tmp, out errors);
 
@@ -291,7 +293,7 @@ namespace Dev2.Tests.DataList
             tmp.Add("[[recset().f1]]", "field1_value3");
 
             ErrorResultTO errors;
-            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
+            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData.ToStringBuilder(), new StringBuilder(_dlShape), out errors);
 
             _compiler.Upsert(id, tmp, out errors);
 
@@ -327,7 +329,7 @@ namespace Dev2.Tests.DataList
             tmp.Add("[[recset(10).f2]]", "field2_value2a");
 
             ErrorResultTO errors;
-            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
+            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData.ToStringBuilder(), new StringBuilder(_dlShape), out errors);
 
 
             _compiler.Upsert(id, tmp, out errors);
@@ -358,7 +360,7 @@ namespace Dev2.Tests.DataList
             tmp.FlushIterationFrame();
 
             ErrorResultTO errors;
-            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData, _dlShape, out errors);
+            Guid id = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _adlData.ToStringBuilder(), new StringBuilder(_dlShape), out errors);
 
             _compiler.Upsert(id, tmp, out errors);
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(id, out errors);

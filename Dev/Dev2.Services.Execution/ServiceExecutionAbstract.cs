@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -73,11 +74,7 @@ namespace Dev2.Services.Execution
 
         void GetSource(ResourceCatalog catalog)
         {
-            Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceID);
-            if(Source == null)
-            {
-                Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceName);
-            }
+            Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceID) ?? catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceName);
             if(Source == null)
             {
                 ErrorResult.AddError(string.Format("Error retrieving DBSource for resource ID:{0} and Name:{1}", Service.Source.ResourceID, Service.Source.ResourceName));
@@ -86,11 +83,7 @@ namespace Dev2.Services.Execution
 
         protected virtual bool GetService(ResourceCatalog catalog)
         {
-            Service = catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ResourceID);
-            if(Service == null)
-            {
-                Service = catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ServiceName);
-            }
+            Service = catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ResourceID) ?? catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ServiceName);
             if(Service == null)
             {
                 ErrorResult.AddError(string.Format("Error loading resource with ID:{0}", DataObj.ResourceID));
@@ -301,7 +294,7 @@ namespace Dev2.Services.Execution
                     errors.MergeErrors(invokeErrors);
 
                     // Push formatted data into a datalist using the shape from the service action outputs
-                    var shapeDataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out invokeErrors);
+                    var shapeDataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload.ToStringBuilder(), dlShape, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
 
                     // This merge op is killing the alias data....

@@ -58,8 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Name = HandlesType(),
                     SourceMethod = HandlesType(),
                     ActionType = enActionType.InvokeManagementDynamicService,
-                    DataListSpecification =
-                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                    DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
                 };
 
             ds.Actions.Add(action);

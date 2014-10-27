@@ -56,7 +56,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             timer.Elapsed += TimerElapsed;
             Assert.AreEqual(false, timer.Enabled);
             pulseLogger.Start();
-            Thread.Sleep(3000);
+            Thread.Sleep(4000);
             //------------Execute Test---------------------------
             Assert.IsTrue(_elapsed);
             //------------Assert Results-------------------------

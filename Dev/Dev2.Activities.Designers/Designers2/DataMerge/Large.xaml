@@ -93,7 +93,8 @@
                                                     WrapInBrackets="False"
                                                     Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipInput}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsFieldNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpInput}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -124,8 +125,7 @@
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" 
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipWithtype}">
+                                      SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SourceUpdated">
                                         <i:InvokeCommandAction Command="{Binding DataContext.MergeTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
@@ -232,8 +232,7 @@
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" 
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.AlignmentTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding Path=Alignment,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipAlignType}">
+                                      SelectedValue="{Binding Path=Alignment,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpAlignType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />

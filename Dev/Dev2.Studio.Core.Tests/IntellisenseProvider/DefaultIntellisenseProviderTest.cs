@@ -11,8 +11,10 @@
 
 
 using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -44,6 +46,13 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         [TestInitialize]
         public void Init()
         {
+            PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
+            var cache = p.GetStaticField("_expressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
+            Assert.IsNotNull(cache);
+            cache.Clear();
+            var cache2 = p.GetStaticField("_payloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
+            Assert.IsNotNull(cache2);
+            cache2.Clear();
             Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
 
             var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
@@ -197,7 +206,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 FilterType = enIntellisensePartType.RecordsetFields,
                 TextBox = new IntellisenseTextBox(true)
             };
-                    
+
             var provider = new DefaultIntellisenseProvider();
             var initialTextbox = provider.TextBox;
             provider.GetIntellisenseResults(context);
@@ -1194,7 +1203,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var isDiposedAferConstruction = provider.IsDisposed;
             provider.Dispose();
             Assert.IsFalse(isDiposedAferConstruction);
-            Assert.IsTrue(provider.IsDisposed); 
+            Assert.IsTrue(provider.IsDisposed);
             Assert.IsFalse(provider.Optional);
             Assert.AreEqual(null, provider.CachedDataList);
         }
@@ -1216,7 +1225,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             provider.Dispose();
             provider.GetIntellisenseResults(context);
         }
-        
+
         static void CreateActiveDataListViewModel()
         {
             var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -1349,8 +1358,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void DefaultIntellisenseProvider_UpdateIntellisenseMessage_IntellisenseTextBoxToolTipIsNull_ToolTipIsUpdated()
         {
             //------------Setup for test--------------------------
-            var intellisenseTextBox = new IntellisenseTextBox(true);    
-            
+            var intellisenseTextBox = new IntellisenseTextBox(true);
+
             var context = new IntellisenseProviderContext
             {
                 CaretPosition = 2,
@@ -1366,7 +1375,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             //------------Execute Test---------------------------
             provider.Handle(new UpdateIntellisenseMessage());
-            
+
             Assert.IsNull(toolTipBefore);
             Assert.IsNotNull(intellisenseTextBox.ToolTip);
         }
@@ -1920,6 +1929,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         }
 
         #endregion
-       
+
     }
 }

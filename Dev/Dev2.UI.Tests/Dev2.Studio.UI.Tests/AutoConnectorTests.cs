@@ -39,7 +39,7 @@ namespace Dev2.Studio.UI.Tests
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
-            Halt();
+            
         }
 
         #endregion
@@ -52,7 +52,7 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragActivityOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             UITestControl theTab = CreateWorkflow();
-            ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, "Email Service", "Communication");
+            ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, "Email Service", "Integration Test Resources");
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
             List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
@@ -86,7 +86,7 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragAToolOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag a tool to the design surface
-            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "TestCategory");
+            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "UI Test Resources");
             UITestControl control = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "MultiAssignDesigner");
 
             //Drag a tool to the design surface
@@ -119,7 +119,7 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragAnActivityOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
             //Drag an activity to the design surface
-            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "TestCategory");
+            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "UI Test Resources");
             var control = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "MultiAssignDesigner");
 
             // slow it down so it works ;)
@@ -165,7 +165,7 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragADecisionOnALineBetweenConnectors_ASecondConnectorIsCreated()
         {
 
-            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "TestCategory");
+            var theTab = ExplorerUIMap.DoubleClickWorkflow("AutoConnectorResource", "UI Test Resources");
             var control = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "MultiAssignDesigner");
 
             //Drag a decision to the design surface

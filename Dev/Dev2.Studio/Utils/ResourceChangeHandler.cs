@@ -9,12 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Views.ResourceManagement;
@@ -31,7 +29,7 @@ namespace Dev2.Utils
         IResourceChangeHandler Create(IEventAggregator eventPublisher);
     }
 
-    public  class ResourceChangeHandlerFactory : IResourceChangeHandlerFactory
+    public class ResourceChangeHandlerFactory : IResourceChangeHandlerFactory
     {
         #region Implementation of IResourceChangeHandlerFactory
 

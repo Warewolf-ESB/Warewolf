@@ -54,7 +54,7 @@
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedDatabaseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpDatabase}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpDatabase}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
@@ -77,11 +77,11 @@
                   ItemsSource="{Binding Tables}"
                   DisplayMemberPath="FullName"
                   SelectedItem="{Binding SelectedTable, Mode=TwoWay}"
-                  ToolTip="{x:Static help:HelpTextResources.SQLBulkInsertToolTipTable}"
+                  ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipTableName}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedTableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpTable}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpTableName}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
@@ -122,7 +122,7 @@
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertToolTipInputData}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpInputColumn}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="InputColumn"
@@ -183,7 +183,7 @@
                                 ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipResult}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"

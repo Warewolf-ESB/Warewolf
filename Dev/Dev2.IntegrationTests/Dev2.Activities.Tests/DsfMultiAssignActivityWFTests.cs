@@ -37,7 +37,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void MutiAssignUsingStarIntegrationTest()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/MutiAssignWithStarTestWorkFlow");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/MutiAssignWithStarTestWorkFlow");
             string expected = "<testScalar>testScalarData</testScalar>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -59,7 +59,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void MultiAssignUsingIndexIntegrationTest()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/MultiAssignUsingIndexIntegrationTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/MultiAssignUsingIndexIntegrationTest");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
             const string expected = @"<recSet index=""1""><Name>1</Name><Surname>2</Surname></recSet><recSet index=""2""><Name>3</Name><Surname>4</Surname></recSet>";
@@ -72,7 +72,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void MultiAssignUsingBlankIntegrationTest()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/MultiAssignUsingBlankIntegrationTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/MultiAssignUsingBlankIntegrationTest");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
             const string expected1 = @"<someRec index=""1""><Name>NAME1</Name><Surname>SURNAME1</Surname></someRec>";
@@ -99,7 +99,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void MutiAssignUsingRecursiveEvalutationIntergrationTest()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/MutiAssignRecursiveEvaluationTestWorkflow");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/MutiAssignRecursiveEvaluationTestWorkflow");
             const string expected = @"<testScalar>hello2</testScalar><recset1 index=""1""><rec>testScalarData</rec><field>world1</field></recset1><recset1 index=""2""><rec>hello1</rec><field>world2</field></recset1><recset1 index=""3""><rec>hello2</rec><field>world3</field></recset1><recset1 index=""4""><rec>hello3</rec><field>world4</field></recset1><recset1 index=""5""><rec>hello4</rec><field></field></recset1><recset2 index=""1""><field2>world1</field2></recset2><recset2 index=""2""><field2>world2</field2></recset2><recset2 index=""3""><field2>world3</field2></recset2><recset2 index=""4""><field2>world4</field2></recset2><recsetName>recset1</recsetName><recsetFieldName>rec</recsetFieldName><recsetIndex>3</recsetIndex><five>se</five><six>ven</six><temp>7</temp><seven>7</seven><eight></eight>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -115,7 +115,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [Owner("Tshepo Ntlhokoa")]
         public void MutiAssign_ARecordUsingFixedIndex_IndexMustHaveBeenDeleted_WillAssingNothingForTheIndex()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/Assign Debug With Empty");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/Assign Debug With Empty");
 
             Guid id = Guid.NewGuid();
             TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
@@ -134,7 +134,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void MultiAssign_Calculate_NoCalculate_Comparison_Expected()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/MultiAssignCalculateNoCalculateComparisonTest", "Input=10");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Integration Test Resources/MultiAssignCalculateNoCalculateComparisonTest", "Input=10");
             string responseData = TestHelper.PostDataToWebserver(postData);
 
 

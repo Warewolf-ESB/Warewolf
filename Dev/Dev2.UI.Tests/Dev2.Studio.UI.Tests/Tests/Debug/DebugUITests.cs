@@ -36,7 +36,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
-            Halt();
+            
         }
 
         #endregion
@@ -182,7 +182,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
             ExplorerUIMap.DoubleClickWorkflow("11330_Integration tests", "SPINT 7");
            
             RibbonUIMap.DebugShortcutKeyPress();
-            OutputUIMap.WaitForExecution(2500);
+            OutputUIMap.WaitForExecution(3000);
 
             var step3 = OutputUIMap.GetStep(2);
             Assert.IsTrue(OutputUIMap.AssertDebugOutputContains(step3, new[] {"[[date]]","=","Date & Time" }));
@@ -214,7 +214,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
                     RibbonUIMap.ClickDebug();
 
                     DebugUIMap.ClickExecute();
-                    OutputUIMap.WaitForExecution(2500);
+                    OutputUIMap.WaitForExecution(3000);
                     UITestControl lastStep = OutputUIMap.GetLastStep();
                     string workflowStepName = OutputUIMap.GetStepName(lastStep);
                     Assert.AreEqual("TravsTestFlow", workflowStepName);
@@ -245,7 +245,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
                     RibbonUIMap.ClickDebug();
 
                     DebugUIMap.ClickExecute();
-                    OutputUIMap.WaitForExecution(2500);
+                    OutputUIMap.WaitForExecution(3000);
                     UITestControl lastStep = OutputUIMap.GetLastStep();
                     string workflowStepName = OutputUIMap.GetStepName(lastStep);
                     Assert.AreEqual("TravsTestFlow", workflowStepName);
@@ -277,7 +277,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
                 RibbonUIMap.ClickDebug();
 
                 DebugUIMap.ClickExecute();
-                OutputUIMap.WaitForExecution(2500);
+                OutputUIMap.WaitForExecution(3000);
                 UITestControl lastStep = OutputUIMap.GetLastStep();
                 Assert.IsTrue(OutputUIMap.AssertDebugOutputContains(lastStep, new[] { "Outputs :", "[[moop]]", "=", "a" }));
 
@@ -308,7 +308,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
                 RibbonUIMap.ClickDebug();
 
                 DebugUIMap.ClickExecute();
-                OutputUIMap.WaitForExecution(2500);
+                OutputUIMap.WaitForExecution(3000);
                 UITestControl lastStep = OutputUIMap.GetStep(1);
                 string workflowStepName = OutputUIMap.GetStepName(lastStep);
                 Assert.AreEqual("TravsTestFlow", workflowStepName);

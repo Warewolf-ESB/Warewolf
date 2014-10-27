@@ -18,6 +18,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using ActivityUnitTests;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -194,7 +195,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<DataList></DataList>";
             User = new Mock<IPrincipal>().Object;
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl.ToStringBuilder(), out errors);
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
 
             // ReSharper disable PossibleNullReferenceException
@@ -233,7 +234,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<DataList></DataList>";
             User = new Mock<IPrincipal>().Object;
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl.ToStringBuilder(), out errors);
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
 
             // ReSharper disable PossibleNullReferenceException

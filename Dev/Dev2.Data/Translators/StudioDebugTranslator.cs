@@ -80,7 +80,7 @@ namespace Dev2.Server.DataList.Translators
         /// <returns>
         /// An array of bytes that represent the datalist in the standard format.
         /// </returns>
-        public IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             return base.ConvertTo(input, shape, out errors);
         }

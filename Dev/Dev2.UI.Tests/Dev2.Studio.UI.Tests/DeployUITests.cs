@@ -34,7 +34,7 @@ namespace Dev2.Studio.UI.Tests
         {
             ExplorerUIMap.ClickServerInServerDDL(LocalServerName);
             TabManagerUIMap.CloseAllTabs();
-            Halt();
+            
         }
         #endregion
 

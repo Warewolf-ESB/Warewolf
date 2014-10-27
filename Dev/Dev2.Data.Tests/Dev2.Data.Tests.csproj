@@ -109,6 +109,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="BinaryDataList\Converters\DataListBinaryTranslatorTest.cs" />
     <Compile Include="BinaryDataList\Converters\DataListDataTableTranslatorTest.cs" />
     <Compile Include="BinaryDataList\Converters\DataListJsonTranslatorTest.cs" />

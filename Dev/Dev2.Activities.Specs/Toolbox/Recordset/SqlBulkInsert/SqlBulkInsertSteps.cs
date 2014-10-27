@@ -18,6 +18,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.DataList.Contract;
 using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Runtime.Hosting;
@@ -80,12 +81,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             ErrorResultTO errors;
 
             var compiler = ScenarioContext.Current.Get<IDataListCompiler>("compiler");
-            var dlID = ScenarioContext.Current.Get<Guid>("dlID");
+            var dlId = ScenarioContext.Current.Get<Guid>("dlID");
             var dataShape = ScenarioContext.Current.Get<string>("dataShape");
-            string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML),
+            var data = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._XML),
                                                enTranslationDepth.Data, out errors);
             CurrentDl = dataShape;
-            TestData = data;
+            TestData = data.ToString();
             ScenarioContext.Current.Add("activity", sqlBulkInsert);
         }
 
@@ -130,10 +131,10 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             // Execute Translator
             ErrorResultTO errors;
             var dataShape = "<root><rs><Col1/><Col2/><Col3/></rs></root>";
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, dataShape,
+            var dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, dataShape.ToStringBuilder(),
                                         out errors);
             dataShape = "<root><rs><Col1/><Col2/><Col3/></rs><result/></root>";
-            ScenarioContext.Current.Add("dlID", dlID);
+            ScenarioContext.Current.Add("dlID", dlId);
             ScenarioContext.Current.Add("dataShape", dataShape);
         }
 
@@ -182,9 +183,9 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var Query = "SELECT * FROM SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
+                var query = "SELECT * FROM SqlBulkInsertSpecFlowTestTable_for_" + ScenarioContext.Current.ScenarioInfo.Title.Replace(' ', '_');
 
-                using(var cmd = new SqlCommand(Query, connection))
+                using(var cmd = new SqlCommand(query, connection))
                 {
                     using(var a = new SqlDataAdapter(cmd))
                     {

@@ -145,6 +145,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
     <Compile Include="Handlers\WebGetRequestHandler.cs" />

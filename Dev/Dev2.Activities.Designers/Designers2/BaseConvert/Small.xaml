@@ -71,7 +71,6 @@
                                                     Padding="3"
                                                     Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                    ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipBaseInput}"
                                                     MaxHeight="52">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpBaseInput}"
@@ -100,8 +99,7 @@
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                                       Margin="0,0,2,0"
                                       ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding FromType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipFromtype}">
+                                      SelectedValue="{Binding FromType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpFromType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -131,8 +129,7 @@
                                       ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       Style="{StaticResource ActivityComboBoxStyle}"
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
-                                      SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                      ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipTotype}">
+                                      SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpToType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />

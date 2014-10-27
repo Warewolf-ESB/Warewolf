@@ -23,6 +23,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.DataSplit
 {
@@ -119,7 +120,7 @@ namespace Dev2.Activities.Designers2.DataSplit
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            // ReSharper disable LoopCanBeConvertedToQuery
+            // ReSharper disable LoopCanBeConvertedToQuery  InitialFocusElement
             foreach(var error in GetRuleSet("SourceString").ValidateRules("'String to Split'", () => IsSourceStringFocused = true))
             // ReSharper restore LoopCanBeConvertedToQuery
             {
@@ -134,6 +135,7 @@ namespace Dev2.Activities.Designers2.DataSplit
             {
                 yield break;
             }
+
 
             foreach(var error in dto.GetRuleSet("OutputVariable", GetDatalistString()).ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
             {
@@ -152,7 +154,13 @@ namespace Dev2.Activities.Designers2.DataSplit
             switch(propertyName)
             {
                 case "SourceString":
-                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => SourceString));
+                    if (!string.IsNullOrEmpty(SourceString) && !string.IsNullOrWhiteSpace(SourceString))
+                    {
+                        var inputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1");
+                        ruleSet.Add(inputExprRule);
+                    }
+                    else
+                        ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => SourceString));
                     break;
             }
             return ruleSet;

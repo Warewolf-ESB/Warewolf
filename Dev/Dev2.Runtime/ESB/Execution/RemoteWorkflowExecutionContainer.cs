@@ -117,7 +117,7 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 // Invoke Remote WF Here ;)
-                result = ExecuteGetRequest(connection, serviceName, dataListFragment);
+                result = ExecuteGetRequest(connection, serviceName, dataListFragment.ToString());
                 IList<IDebugState> msg = FetchRemoteDebugItems(connection);
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
@@ -128,7 +128,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             // Create tmpDL
-            var tmpId = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result, DataObject.RemoteInvokeResultShape, out invokeErrors);
+            var tmpId = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result.ToStringBuilder(), DataObject.RemoteInvokeResultShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             // Merge Result into Local DL ;)

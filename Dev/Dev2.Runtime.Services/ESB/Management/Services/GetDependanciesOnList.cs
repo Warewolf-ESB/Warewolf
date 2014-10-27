@@ -1,4 +1,4 @@
-
+﻿
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -113,7 +113,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<DataList><ResourceNames ColumnIODirection=\"Input\"/><GetDependsOnMe ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = new StringBuilder("<DataList><ResourceNames ColumnIODirection=\"Input\"/><GetDependsOnMe ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var sa = new ServiceAction
@@ -139,14 +139,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(resource != null)
             {
                 var dependencies = resource.Dependencies;
+
                 if(dependencies != null)
                 {
 // ReSharper disable ImplicitlyCapturedClosure
                     dependencies.ForEach(c =>
 // ReSharper restore ImplicitlyCapturedClosure
                     {
+                       
                         if(c.ResourceID != Guid.Empty)
                         {
+                      
                             results.Add(c.ResourceID.ToString());
                         }
                     });

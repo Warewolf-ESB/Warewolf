@@ -19,6 +19,7 @@ using System.Xml.Linq;
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Common.Tests
 {
     [TestClass]
@@ -287,7 +288,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_EncodeForXmlDocument_WhenValidUnicodeXmlDocument_ExpectStream()
         {
             //------------Setup for test--------------------------
-            byte[] bytes = new[] { (byte)'<', (byte)'x', (byte)'/', (byte)'>' };
+            byte[] bytes = { (byte)'<', (byte)'x', (byte)'/', (byte)'>' };
 
             var msg = Encoding.Unicode.GetString(bytes);
             var sb = new StringBuilder(msg);
@@ -785,5 +786,78 @@ namespace Dev2.Common.Tests
             StringAssert.Contains(string.Empty, result);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExtensionMethods_IsNullOrEmpty")]
+        public void ExtensionMethods_IsNullOrEmpty_NullStringBuilder_True()
+        {
+            //------------Setup for test--------------------------
+            StringBuilder sb = null;
+            //------------Execute Test---------------------------
+            // ReSharper disable ExpressionIsAlwaysNull
+            var isNullOrEmpty = sb.IsNullOrEmpty();
+            // ReSharper restore ExpressionIsAlwaysNull
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isNullOrEmpty);
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExtensionMethods_IsNullOrEmpty")]
+        public void ExtensionMethods_IsNullOrEmpty_EmptyStringBuilder_True()
+        {
+            //------------Setup for test--------------------------
+            StringBuilder sb = new StringBuilder();
+            //------------Execute Test---------------------------
+            // ReSharper disable ExpressionIsAlwaysNull
+            var isNullOrEmpty = sb.IsNullOrEmpty();
+            // ReSharper restore ExpressionIsAlwaysNull
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isNullOrEmpty);
+        }   
+    
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExtensionMethods_IsNullOrEmpty")]
+        public void ExtensionMethods_IsNullOrEmpty_NullStringStringBuilder_True()
+        {
+            //------------Setup for test--------------------------
+            StringBuilder sb = new StringBuilder(null);
+            //------------Execute Test---------------------------
+            // ReSharper disable ExpressionIsAlwaysNull
+            var isNullOrEmpty = sb.IsNullOrEmpty();
+            // ReSharper restore ExpressionIsAlwaysNull
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isNullOrEmpty);
+        } 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExtensionMethods_IsNullOrEmpty")]
+        public void ExtensionMethods_IsNullOrEmpty_NonEmptyStringBuilder_False()
+        {
+            //------------Setup for test--------------------------
+            StringBuilder sb = new StringBuilder("Hello");
+            //------------Execute Test---------------------------
+            // ReSharper disable ExpressionIsAlwaysNull
+            var isNullOrEmpty = sb.IsNullOrEmpty();
+            // ReSharper restore ExpressionIsAlwaysNull
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isNullOrEmpty);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExtensionMethods_ToStringBuilder")]
+        public void ExtensionMethods_ToStringBuilder_String_StringBuilder()
+        {
+            //------------Setup for test--------------------------
+            const string myString = "This is my string";
+            
+            //------------Execute Test---------------------------
+            StringBuilder stringBuilder = myString.ToStringBuilder();
+            //------------Assert Results-------------------------
+            StringAssert.Contains(stringBuilder.ToString(),myString);
+        }
     }
 }

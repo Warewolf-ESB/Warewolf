@@ -131,7 +131,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var a = deleteItem.CreateServiceEntry();
             //------------Assert Results-------------------------
-            var b = a.DataListSpecification;
+            var b = a.DataListSpecification.ToString();
             Assert.AreEqual("<DataList><itemToAdd ColumnIODirection=\"itemToDelete\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
     }

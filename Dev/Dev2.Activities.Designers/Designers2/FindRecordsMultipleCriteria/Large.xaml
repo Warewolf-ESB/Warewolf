@@ -78,12 +78,12 @@
                                     VerticalScrollBarVisibility="Auto"
                                     DefaultText="[[Recordset().Field]]"
                                     Text="{Binding Path=ModelItem.FieldsToSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="{x:Static help:HelpTextResources.FindToolTipInFields}"
+                                    ToolTip="{x:Static help:HelpTextResources.FindRecordsInFieldsToolTip}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsFieldsToSearchFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearchtxt_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpInFields}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsFieldsToSearchHelpText}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.FieldsToSearch"
@@ -136,8 +136,7 @@
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                                       Margin="0,0,2,0"
                                       ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.FindToolTipLookForMatchType}">
+                                      SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SourceUpdated">
                                         <i:InvokeCommandAction Command="{Binding DataContext.SearchTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
@@ -145,7 +144,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpLookForMatchType}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsSearchTypeHelpText}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="SearchType"
@@ -192,10 +191,9 @@
                                                         Text="{Binding SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         IsEnabled="{Binding IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static help:HelpTextResources.FindToolTipMatch}">
+                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                     <i:Interaction.Behaviors>
-                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpMatch}"
+                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsMatchHelpText}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="SearchCriteria"
@@ -287,10 +285,10 @@
                   Grid.ColumnSpan="2"
                   Content="Require All Matches To Be True"
                   IsChecked="{Binding ModelItem.RequireAllTrue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.FindToolTipRequireAllMatchesToBeTrue}"
+                  ToolTip="{x:Static help:HelpTextResources.FindRecordsRequireAllMatchesTrueToolTip}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpRequireAllMatchesToBeTrue}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsRequireAllMatchesTrueHelpText}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </CheckBox>
@@ -300,10 +298,10 @@
                   Grid.ColumnSpan="2"
                   Content="Requires All Fields To Match"
                   IsChecked="{Binding ModelItem.RequireAllFieldsToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.FindToolTipRequireAllFieldsToMatch}"
+                  ToolTip="{x:Static help:HelpTextResources.FindRecordsRequireAllFieldsToMatchToolTip}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllFieldsToMatch_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpRequireAllFieldsToMatch}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsRequireAllFieldsToMatchHelpText}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </CheckBox>
@@ -326,10 +324,9 @@
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                    ToolTip="{x:Static help:HelpTextResources.FindToolTipResult}">
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpResult}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsResultHelpText}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="Result"

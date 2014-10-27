@@ -48,12 +48,12 @@
                                 MaxHeight="52"
                                 TextWrapping="Wrap"
                                 DefaultText="Date Time"
-                                ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipDatetime1}"
+                                ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipDateTime1}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Input1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Input1txt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpDatetime1}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpDateTime1}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Input1"
@@ -78,10 +78,10 @@
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.Input2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
-                                ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipDatetime2}"
+                                ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipDateTime2}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Input2txt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpDatetime2}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpDateTime2}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Input2"
@@ -135,8 +135,7 @@
                   ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   SelectedValue="{Binding SelectedOutputType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding OutputTypes}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_OutputIncbx_AutoID}"
-                  ToolTip="{x:Static help:HelpTextResources.DateTimeDifferenceToolTipOutputType}">
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_OutputIncbx_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.DateTimeDifferenceHelpOutputType}"
                                  DataContext="{Binding}" />

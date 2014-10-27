@@ -69,6 +69,7 @@ namespace Dev2.Common
             set
 // ReSharper restore ValueParameterNotUsed
             {
+                if(value)
                 UpdateLoggingConfig("Debug");
             }
         }
@@ -82,6 +83,7 @@ namespace Dev2.Common
             set
 // ReSharper restore ValueParameterNotUsed
             {
+                if (value)
                 UpdateLoggingConfig("Error");
             }
         }
@@ -95,6 +97,7 @@ namespace Dev2.Common
             set
 // ReSharper restore ValueParameterNotUsed
             {
+                if (value)
                 UpdateLoggingConfig("INFO");
             }
         }
@@ -108,6 +111,7 @@ namespace Dev2.Common
             set
 // ReSharper restore ValueParameterNotUsed
             {
+                if (value)
                 UpdateLoggingConfig("DEBUG");
             }
         }

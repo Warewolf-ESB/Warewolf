@@ -53,7 +53,7 @@ namespace Dev2.Runtime.Hosting
             obj.HelpLink = tmp;
 
             tmp = ExtractValue(xe, "DataList", true);
-            obj.DataListSpecification = tmp;
+            obj.DataListSpecification = new StringBuilder(tmp);
 
             obj.Name = xe.AttributeSafe("Name");
 
@@ -89,11 +89,11 @@ namespace Dev2.Runtime.Hosting
         {
             Guid id = new Guid();
 
-            var tmpID = xe.AttributeSafe("ID");
+            var tmpId = xe.AttributeSafe("ID");
 
-            if(!string.IsNullOrEmpty(tmpID))
+            if(!string.IsNullOrEmpty(tmpId))
             {
-                Guid.TryParse(tmpID, out id);
+                Guid.TryParse(tmpId, out id);
             }
             else
             {
@@ -128,14 +128,7 @@ namespace Dev2.Runtime.Hosting
                 var typeOf = xe.AttributeSafe("ResourceType");
 
                 enSourceType sourceType;
-                if(!Enum.TryParse(typeOf, out sourceType))
-                {
-                    src.Type = enSourceType.Unknown;
-                }
-                else
-                {
-                    src.Type = sourceType;
-                }
+                src.Type = !Enum.TryParse(typeOf, out sourceType) ? enSourceType.Unknown : sourceType;
 
                 src.ConnectionString = xe.AttributeSafe("ConnectionString");
                 var tmpUri = xe.AttributeSafe("Uri");
@@ -165,15 +158,7 @@ namespace Dev2.Runtime.Hosting
                 ds.ResourceDefinition = serviceData;
 
                 var actions = xe.Element("Actions");
-                XElement action;
-                if(actions != null)
-                {
-                    action = actions.Element("Action");
-                }
-                else
-                {
-                    action = xe.Element("Action");
-                }
+                XElement action = actions != null ? actions.Element("Action") : xe.Element("Action");
 
                 if(action != null)
                 {
@@ -212,7 +197,7 @@ namespace Dev2.Runtime.Hosting
                         var dataList = xe.Element("DataList");
                         if(dataList != null)
                         {
-                            ds.DataListSpecification = dataList.ToString();
+                            ds.DataListSpecification = dataList.ToStringBuilder();
                         }
                     }
                     else
@@ -263,14 +248,7 @@ namespace Dev2.Runtime.Hosting
                                     Validator v = new Validator();
 
                                     enValidationType validatorType;
-                                    if(!Enum.TryParse(validator.AttributeSafe("Type"), out validatorType))
-                                    {
-                                        v.ValidatorType = enValidationType.Required;
-                                    }
-                                    else
-                                    {
-                                        v.ValidatorType = validatorType;
-                                    }
+                                    v.ValidatorType = !Enum.TryParse(validator.AttributeSafe("Type"), out validatorType) ? enValidationType.Required : validatorType;
 
                                     sai.Validators.Add(v);
                                 }

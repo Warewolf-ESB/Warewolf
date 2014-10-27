@@ -55,10 +55,9 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 IsUndoEnabled="True"
                                 Margin="0,2"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearch_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.FindToolTipInFields}">
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FieldsToSearch_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpInFields}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsFieldsToSearchHelpText}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="FieldsToSearch"
@@ -98,8 +97,7 @@
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                                       Margin="0,0,2,0"
                                       ItemsSource="{Binding DataContext.WhereOptions, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                      ToolTip="{x:Static help:HelpTextResources.FindToolTipLookForMatchType}">
+                                      SelectedValue="{Binding SearchType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SourceUpdated">
                                         <i:InvokeCommandAction Command="{Binding DataContext.SearchTypeUpdatedCommand, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
@@ -107,7 +105,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpLookForMatchType}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsSearchTypeHelpText}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="SearchType"
@@ -151,10 +149,9 @@
                                                         Text="{Binding SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         IsEnabled="{Binding IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static help:HelpTextResources.FindToolTipMatch}">
+                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                     <i:Interaction.Behaviors>
-                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpMatch}"
+                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsMatchHelpText}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="SearchCriteria"
@@ -183,10 +180,9 @@
                                                         Padding="3"
                                                         Text="{Binding From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverterInverse},UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static help:HelpTextResources.FindToolTipFrom}">
+                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                     <i:Interaction.Behaviors>
-                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpFrom}"
+                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsFromHelpText}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="From"
@@ -215,10 +211,9 @@
                                                         Padding="3"
                                                         Text="{Binding To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Visibility="{Binding IsSearchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverterInverse},UpdateSourceTrigger=PropertyChanged}"
-                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                        ToolTip="{x:Static help:HelpTextResources.FindToolTipTo}">
+                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                     <i:Interaction.Behaviors>
-                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpTo}"
+                                        <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsToHelpText}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                         <errors:ErrorsSetter Source="{Binding}"
                                                              SourcePropertyName="To"
@@ -253,10 +248,9 @@
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
-                                ToolTip="{x:Static help:HelpTextResources.FindToolTipResult}">
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.FindRecordsResultHelpText}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"

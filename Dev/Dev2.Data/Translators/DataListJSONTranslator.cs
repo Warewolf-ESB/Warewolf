@@ -34,8 +34,8 @@ namespace Dev2.Server.DataList.Translators
     /// </summary>
     internal sealed class DataListJsonTranslator : IDataListTranslator
     {
-        private DataListFormat _format;
-        private Encoding _encoding;
+        private readonly DataListFormat _format;
+        private readonly Encoding _encoding;
 
         public DataListFormat Format
         {
@@ -130,13 +130,13 @@ namespace Dev2.Server.DataList.Translators
         /// An array of bytes that represent the datalist in the standard format.
         /// </returns>
         /// <exception cref="System.NotImplementedException">JSON ConvertTO does not exist. Please use XML ;)</exception>
-        public IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             throw new NotImplementedException("JSON ConvertTO does not exist. Please use XML ;)");
         }
 
-        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(object input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -148,7 +148,7 @@ namespace Dev2.Server.DataList.Translators
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
            throw new NotImplementedException();
         }
@@ -166,7 +166,7 @@ namespace Dev2.Server.DataList.Translators
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">payload</exception>
-        public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
+        public StringBuilder ConvertAndFilter(IBinaryDataList payload, StringBuilder filterShape, out ErrorResultTO errors)
         {
 
             if(payload == null)
@@ -176,22 +176,22 @@ namespace Dev2.Server.DataList.Translators
 
             int keyCnt = 0;
             errors = new ErrorResultTO();
-            string error;
 
             TranslatorUtils tu = new TranslatorUtils();
             ErrorResultTO invokeErrors;
 
-            IBinaryDataList targetDL = tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
+            IBinaryDataList targetDl = tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            IList<string> itemKeys = targetDL.FetchAllUserKeys();
+            IList<string> itemKeys = targetDl.FetchAllUserKeys();
             StringBuilder result = new StringBuilder("{");
 
             foreach(string key in itemKeys)
             {
                 IBinaryDataListEntry entry;
                 IBinaryDataListEntry tmpEntry;
-                if(payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
+                string error;
+                if(payload.TryGetEntry(key, out entry, out error) && targetDl.TryGetEntry(key, out tmpEntry, out error))
                 {
 
                     if(entry.IsRecordset)
@@ -217,7 +217,7 @@ namespace Dev2.Server.DataList.Translators
 
             result.Append("}");
 
-            return result.ToString();
+            return result;
         }
 
         public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions)

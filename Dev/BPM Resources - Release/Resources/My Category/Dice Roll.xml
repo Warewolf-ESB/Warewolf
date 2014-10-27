@@ -1,5 +1,5 @@
 
-<Service ID="0102103e-3a30-48df-b49f-20b008618c9d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Dice Roll" ResourceType="WorkflowService" Category="My Category">
+<Service ID="0102103e-3a30-48df-b49f-20b008618c9d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Dice Roll" ResourceType="WorkflowService" Category="My Category" ServerVersion="0.4.2.2">
   <DisplayName>Dice Roll</DisplayName>
   <Category>My Category\Dice Roll</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -32,9 +32,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Gk1bNBqKS3HMpr70zkDpRDRifyY=</DigestValue>
+        <DigestValue>10cnsiRWC5jbVICCx4tWLwmXMLU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>qTulb259SJXIQU5eMP1yqsml+onH87NhJVVagXqXWC/gHOqdd0l+t7ndKxqcG8DeiUzsxfLMAY8AJ1SX2o4PGlrJrnrvou7/4qL78vueB8wPlIH857/7rzLjnobqQXfm0OkG1L1z16P1nt1U6NT5hWnOmFnnCmMGIMpnXMqxMtg=</SignatureValue>
+    <SignatureValue>HZ25WQ7daOhw+Hupim4u8+CzzKu0tN4/xgWM200sQVo5BQHnLThBxpE9z6a4mckRGyI6T7AhwxXXY+bOiEMhg63Wt7kqT9vdaOQBqiLhDMb+qZFbOcObRBfMPNk/t6BHFvYZzb2YxsM4UfUU+dj6NGadZE/rHXg+5jdnYkl80V8=</SignatureValue>
   </Signature>
 </Service>

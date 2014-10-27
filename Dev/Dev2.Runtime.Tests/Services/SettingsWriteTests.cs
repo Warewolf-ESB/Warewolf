@@ -134,7 +134,7 @@ namespace Dev2.Tests.Runtime.Services
             var esb = new SettingsWrite();
             var result = esb.CreateServiceEntry();
             Assert.AreEqual(esb.HandlesType(), result.Name);
-            Assert.AreEqual("<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification);
+            Assert.AreEqual("<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification.ToString());
             Assert.AreEqual(1, result.Actions.Count);
 
             var serviceAction = result.Actions[0];

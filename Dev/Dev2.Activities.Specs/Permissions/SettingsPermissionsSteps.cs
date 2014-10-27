@@ -55,7 +55,6 @@ namespace Dev2.Activities.Specs.Permissions
         {
             AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
             var environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
             ScenarioContext.Current.Add("environment", environmentModel);
         }
 
@@ -90,10 +89,16 @@ namespace Dev2.Activities.Specs.Permissions
 
         static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel)
         {
+            var i = 0;
             while(!environmentModel.IsConnected)
             {
                 environmentModel.Connect();
                 Thread.Sleep(100);
+                i++;
+                if (i == 100)
+                {
+                    Assert.Fail("Server {0} did not start within 10 secs", environmentModel.DisplayName);
+                }
             }
         }
 
@@ -122,14 +127,6 @@ namespace Dev2.Activities.Specs.Permissions
                 CreateLocalWindowsAccount("SpecsUser", "T35t3r!@#", userGroup);
             }
             var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#")) { Name = "Other Connection" };
-            try
-            {
-                reconnectModel.Connect();
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e);
-            }
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
         }
 
@@ -224,24 +221,18 @@ namespace Dev2.Activities.Specs.Permissions
             var totalNumberOfResources = resourceModels.Count;
             var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
             Assert.IsTrue(totalNumberOfResources - allMatch <= 1); //This is to cater for the scenerios where we specify a resource permission
-            environmentModel.Disconnect();
         }
 
         static IEnvironmentModel LoadResources()
         {
             var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            EnsureEnvironmentConnected(environmentModel);
             if(environmentModel.IsConnected)
             {
                 if(!environmentModel.HasLoadedResources)
                 {
                     environmentModel.ForceLoadResources();
                 }
-            }
-            else
-            {
-                environmentModel.Connect();
-                environmentModel.ForceLoadResources();
-
             }
             var resourceModels = environmentModel.ResourceRepository.All();
             foreach(var resourceModel in resourceModels)
@@ -269,28 +260,13 @@ namespace Dev2.Activities.Specs.Permissions
             var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
             var totalNumberOfResources = resourceModels.Count;
             Assert.IsTrue(totalNumberOfResources - allMatch <= 1);
-            environmentModel.Disconnect();
         }
 
         [Given(@"Resource '(.*)' has rights '(.*)' for '(.*)'")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
             var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
-            if(!environmentModel.IsConnected)
-            {
-                environmentModel.Connect();
-            }
-            var waitCounter = 0;
-            while(!environmentModel.IsConnected && waitCounter < 10)
-            {
-                environmentModel.Connect();
-                Thread.Sleep(1000);
-                waitCounter++;
-            }
-            if(waitCounter > 10)
-            {
-                throw new Exception("The environment did not connect. " + environmentModel.DisplayName);
-            }
+            EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             var settings = resourceRepository.ReadSettings(environmentModel);
             environmentModel.ForceLoadResources();
@@ -317,11 +293,12 @@ namespace Dev2.Activities.Specs.Permissions
         public void ThenShouldHave(string resourceName, string resourcePerms)
         {
             var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             environmentModel.ForceLoadResources();
 
             var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-
+            Assert.IsNotNull(resourceModel);
             SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
@@ -332,11 +309,8 @@ namespace Dev2.Activities.Specs.Permissions
                     resourcePermissions |= permission;
                 }
             }
-            if(resourceModel != null)
-            {
-                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
-                Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
-            }
+            resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
+            Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
         }
 
         [AfterScenario("Security")]
