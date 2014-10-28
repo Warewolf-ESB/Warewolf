@@ -9,16 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Properties;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -34,8 +33,8 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.TO;
 using Dev2.Threading;
+using Dev2.TO;
 
 namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
@@ -103,9 +102,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public ObservableCollection<DbTable> Tables { get; private set; }
 
-        public ICommand EditDatabaseCommand { get; private set; }
+        public RelayCommand EditDatabaseCommand { get; private set; }
 
-        public ICommand RefreshTablesCommand { get; private set; }
+        public RelayCommand RefreshTablesCommand { get; private set; }
 
         public bool IsDatabaseSelected { get { return SelectedDatabase != SelectDbSource; } }
 
@@ -116,7 +115,18 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public static readonly DependencyProperty IsRefreshingProperty =
             DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
-        public DbSource SelectedDatabase { get { return (DbSource)GetValue(SelectedDatabaseProperty); } set { SetValue(SelectedDatabaseProperty, value); } }
+        public DbSource SelectedDatabase
+        {
+            get
+            {
+                return (DbSource)GetValue(SelectedDatabaseProperty);
+            }
+            set
+            {
+                SetValue(SelectedDatabaseProperty, value);
+                EditDatabaseCommand.RaiseCanExecuteChanged();
+            }
+        }
 
         public static readonly DependencyProperty SelectedDatabaseProperty =
             DependencyProperty.Register("SelectedDatabase", typeof(DbSource), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(null, OnSelectedDatabaseChanged));
@@ -131,7 +141,18 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             viewModel.OnSelectedDatabaseChanged();
         }
 
-        public DbTable SelectedTable { get { return (DbTable)GetValue(SelectedTableProperty); } set { SetValue(SelectedTableProperty, value); } }
+        public DbTable SelectedTable
+        {
+            get
+            {
+                return (DbTable)GetValue(SelectedTableProperty);
+            }
+            set
+            {
+                SetValue(SelectedTableProperty, value);
+                RefreshTablesCommand.RaiseCanExecuteChanged();
+            }
+        }
 
         public static readonly DependencyProperty SelectedTableProperty =
             DependencyProperty.Register("SelectedTable", typeof(DbTable), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(null, OnSelectedTableChanged));
@@ -651,7 +672,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 QuickVariableInputViewModel.Overwrite = true;
                 QuickVariableInputViewModel.IsOverwriteEnabled = false;
                 QuickVariableInputViewModel.RemoveEmptyEntries = false;
-                QuickVariableInputViewModel.SplitType = Core.QuickVariableInput.QuickVariableInputViewModel.SplitTypeNewLine;
+                QuickVariableInputViewModel.SplitType = QuickVariableInputViewModel.SplitTypeNewLine;
                 QuickVariableInputViewModel.VariableListString = string.Join(Environment.NewLine, mappings.Select(GetFieldName));
                 QuickVariableInputViewModel.Prefix = GetRecordsetName(mappings) + "(*).";
             }

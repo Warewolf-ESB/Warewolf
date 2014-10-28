@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -115,13 +114,13 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Commands
 
-        public ICommand SelectAllDependanciesCommand
+        public RelayCommand SelectAllDependanciesCommand
         {
             get;
             private set;
         }
 
-        public ICommand DeployCommand
+        public RelayCommand DeployCommand
         {
             get;
             private set;
@@ -221,7 +220,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             if(SelectedDestinationServer != null && SelectedDestinationServer.IsConnected)
             {
-                return SelectedDestinationServer.IsAuthorizedDeployTo;
+               return SelectedDestinationServer.IsAuthorizedDeployTo;
             }
             return false;
         }
@@ -541,15 +540,15 @@ namespace Dev2.Studio.ViewModels.Deploy
             _sourceStatPredicates.Add("Services",
                                             n => _deployStatsCalculator
                                           .SelectForDeployPredicateWithTypeAndCategories
-                                          (n, Common.Interfaces.Data.ResourceType.DbService | Common.Interfaces.Data.ResourceType.PluginService | Common.Interfaces.Data.ResourceType.WebService, blankCategories, exclusionCategories));
+                                          (n, ResourceType.DbService | ResourceType.PluginService | ResourceType.WebService, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Workflows",
                                       n => _deployStatsCalculator.
                                                SelectForDeployPredicateWithTypeAndCategories
-                                               (n, Common.Interfaces.Data.ResourceType.WorkflowService, blankCategories, exclusionCategories));
+                                               (n, ResourceType.WorkflowService, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Sources",
                                       n => _deployStatsCalculator
                                                .SelectForDeployPredicateWithTypeAndCategories
-                                               (n, Common.Interfaces.Data.ResourceType.DbSource | Common.Interfaces.Data.ResourceType.PluginSource | Common.Interfaces.Data.ResourceType.WebSource | Common.Interfaces.Data.ResourceType.ServerSource | Common.Interfaces.Data.ResourceType.EmailSource, blankCategories, exclusionCategories));
+                                               (n, ResourceType.DbSource | ResourceType.PluginSource | ResourceType.WebSource | ResourceType.ServerSource | ResourceType.EmailSource, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Unknown",
                                       n => _deployStatsCalculator.SelectForDeployPredicate(n));
             _targetStatPredicates.Add("New Resources",

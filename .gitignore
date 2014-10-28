@@ -8271,3 +8271,12 @@
 /Dev/Dev2.Studio.UISpecs/obj/Debug/Dev2.Studio.UISpecs.pdb
 /Dev/Dev2.UI.Tests/Dev2.Studio.UI.Tests/obj/Debug/build.force
 /Dev/Dev2.Studio.UISpecs/obj/Debug/TempPE/Tools.Utility-Comment.feature.cs.dll
+/Dev/Dev2.Activities.Tests/bin/Debug/Resources/SQL Tests
+/Dev/Dev2.Activities.Tests/bin/x86/Debug/Resources/SQL Tests
+/Dev/Dev2.Activities.Tests/bin/Debug/Workspaces
+/Dev/Dev2.Activities.Tests/bin/Debug/Warewolf Server.exe.secureconfig
+/Dev/Dev2.Activities.Tests/bin/x86/Debug/Workspaces
+*.secureconfig
+*.force
+*.usi
+*.uws

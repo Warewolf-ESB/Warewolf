@@ -81,7 +81,18 @@ namespace Dev2.Activities.Designers2.Email
             RefreshSources(true);
         }
 
-        public EmailSource SelectedEmailSource { get { return (EmailSource)GetValue(SelectedEmailSourceProperty); } set { SetValue(SelectedEmailSourceProperty, value); } }
+        public EmailSource SelectedEmailSource
+        {
+            get
+            {
+                return (EmailSource)GetValue(SelectedEmailSourceProperty);
+            }
+            set
+            {
+                SetValue(SelectedEmailSourceProperty, value);
+                EditEmailSourceCommand.RaiseCanExecuteChanged();
+            }
+        }
         public static readonly DependencyProperty SelectedEmailSourceProperty = DependencyProperty.Register("SelectedEmailSource", typeof(EmailSource), typeof(EmailDesignerViewModel), new PropertyMetadata(null, OnSelectedEmailSourceChanged));
 
         static void OnSelectedEmailSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -91,8 +102,8 @@ namespace Dev2.Activities.Designers2.Email
             viewModel.OnSelectedEmailSourceChanged();
         }
 
-        public ICommand EditEmailSourceCommand { get; private set; }
-        public ICommand TestEmailAccountCommand { get; private set; }
+        public RelayCommand EditEmailSourceCommand { get; private set; }
+        public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
         public bool IsEmailSourceSelected { get { return SelectedEmailSource != SelectEmailSource; } }
@@ -105,7 +116,18 @@ namespace Dev2.Activities.Designers2.Email
         public bool IsRefreshing { get { return (bool)GetValue(IsRefreshingProperty); } set { SetValue(IsRefreshingProperty, value); } }
         public static readonly DependencyProperty IsRefreshingProperty = DependencyProperty.Register("IsRefreshing", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool CanTestEmailAccount { get { return (bool)GetValue(CanTestEmailAccountProperty); } set { SetValue(CanTestEmailAccountProperty, value); } }
+        public bool CanTestEmailAccount
+        {
+            get
+            {
+                return (bool)GetValue(CanTestEmailAccountProperty);
+            }
+            set
+            {
+                SetValue(CanTestEmailAccountProperty, value);
+                TestEmailAccountCommand.RaiseCanExecuteChanged();
+            }
+        }
         public static readonly DependencyProperty CanTestEmailAccountProperty = DependencyProperty.Register("CanTestEmailAccount", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(true));
 
         public bool IsEmailSourceFocused { get { return (bool)GetValue(IsEmailSourceFocusedProperty); } set { SetValue(IsEmailSourceFocusedProperty, value); } }

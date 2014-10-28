@@ -76,7 +76,7 @@ namespace Dev2.Settings
             ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(OnServerChanged, "Server:", false);
         }
 
-        public ICommand SaveCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
 
         public ICommand ServerChangedCommand { get; private set; }
 
@@ -162,6 +162,7 @@ namespace Dev2.Settings
                 NotifyOfPropertyChange(() => IsDirty);
                 NotifyOfPropertyChange(() => IsSavedSuccessVisible);
                 NotifyOfPropertyChange(() => IsErrorsVisible);
+                SaveCommand.RaiseCanExecuteChanged();
             }
         }
 

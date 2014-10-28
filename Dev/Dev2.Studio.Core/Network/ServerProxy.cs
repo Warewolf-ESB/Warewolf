@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices.AccountManagement;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
@@ -168,7 +167,6 @@ namespace Dev2.Network
         {
 
             var obj = _serializer.Deserialize<DebugState>(objString);
-            Dev2Logger.Log.Info(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.EnvironmentID, obj.ParentID, obj.Name));
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
 
@@ -308,7 +306,6 @@ namespace Dev2.Network
 
         public virtual void StopReconnectHeartbeat()
         {
-            Dev2Logger.Log.Info("");
             if(_reconnectHeartbeat != null)
             {
                 _reconnectHeartbeat.Stop();
@@ -320,7 +317,6 @@ namespace Dev2.Network
 
         void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
         {
-            Dev2Logger.Log.Info("");
             Connect(ID);
             if(IsConnected)
             {
@@ -337,7 +333,7 @@ namespace Dev2.Network
             {
                 IsShuttingDown = true;
                 IsConnected = false;
-                Task.Run(() => HubConnection.Stop(new TimeSpan(0, 0, 1))).RunSynchronously();
+                Task.Run(() => HubConnection.Stop(new TimeSpan(0, 0, 1))).Wait(new TimeSpan(0,0,2));
             }
             catch(AggregateException aex)
             {
@@ -413,7 +409,6 @@ namespace Dev2.Network
         {
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
-            Dev2Logger.Log.Info("Memo Received [ " + objString + " ]");
 
             var obj = _serializer.Deserialize<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
@@ -423,7 +418,6 @@ namespace Dev2.Network
         {
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
-            Dev2Logger.Log.Info("PERMISSIONS MEMO OBJECT [ " + objString + " ]");
             var obj = _serializer.Deserialize<PermissionsModifiedMemo>(objString);
             try
             {
@@ -459,7 +453,6 @@ namespace Dev2.Network
             {
                 ItemItemDeletedMessageAction(serverExplorerItem);
             }
-            //Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
         }
 
         public Action<IExplorerItem> ItemItemUpdatedMessageAction { get; set; }
@@ -515,7 +508,6 @@ namespace Dev2.Network
 
         void UpdateIsAuthorized(bool isAuthorized)
         {
-            Dev2Logger.Log.Debug("UpdateIsAuthorized [ " + isAuthorized + " ]");
             if(IsAuthorized != isAuthorized)
             {
                 IsAuthorized = isAuthorized;
@@ -686,7 +678,9 @@ namespace Dev2.Network
 
         #endregion
 
+        // ReSharper disable InconsistentNaming
         public Guid ID { get; private set; }
+        // ReSharper restore InconsistentNaming
 
     }
 }

@@ -341,6 +341,7 @@
     <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="ViewModelTests\HelpViewModelTests.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
+    <Compile Include="Views\ExplorerViewTests.cs" />
     <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">
       <AutoGen>True</AutoGen>

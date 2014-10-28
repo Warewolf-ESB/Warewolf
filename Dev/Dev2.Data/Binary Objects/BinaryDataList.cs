@@ -211,9 +211,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
             error = string.Empty;
 
             theNameSpace = DataListUtil.StripBracketsFromValue(theNameSpace);
-
             bool result = _templateDict.TryGetValue(theNameSpace, out entry);
-            if(!result)
+            var isSystemTag = DataListUtil.IsSystemTag(theNameSpace) || theNameSpace=="Datalist";
+            if(!result && !isSystemTag)
             {
                 error = theNameSpace + " could not be found in the DataList";
             }
@@ -666,7 +666,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
                             // merge all the cloned rows into this reference
 
 #pragma warning disable 219
+                            // ReSharper disable NotAccessedVariable
                             int insertIdx = 1; // always default to start of recordset
+                            // ReSharper restore NotAccessedVariable
 #pragma warning restore 219
                             // fetch last row id and build from there
                             IBinaryDataListEntry tmpRec;

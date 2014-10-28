@@ -56,6 +56,7 @@
                             Value="{Binding IsExplorerExpanded, Mode=TwoWay}" />
                     <Setter Property="IsSelected"
                             Value="{Binding IsExplorerSelected, Mode=TwoWay}" />
+                    <EventSetter Event="RequestBringIntoView" Handler="TreeViewItemRequestBringIntoView"/>
                     <EventSetter Event="TreeViewItem.Drop" Handler="TreeViewDrop"/>
                     <!-- This is a hack. Need to rethink how to get this behavior attached properly-->
                     <Setter Property="behavior:AttachBehavior.BehaviorType"

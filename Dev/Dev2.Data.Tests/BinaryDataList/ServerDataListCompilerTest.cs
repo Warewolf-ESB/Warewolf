@@ -1568,7 +1568,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             try
             {
 #pragma warning disable 168
+                // ReSharper disable UnusedVariable
                 var value = tmp.FetchScalar().TheValue;
+                // ReSharper restore UnusedVariable
 #pragma warning restore 168
                 Assert.Fail("Exception not thrown");
             }
@@ -2869,7 +2871,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             try
             {
 #pragma warning disable 168
+                // ReSharper disable UnusedVariable
                 var value = tmp.FetchScalar().TheValue;
+                // ReSharper restore UnusedVariable
 #pragma warning restore 168
                 Assert.Fail("Exception not thrown");
             }
@@ -2910,7 +2914,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             {
 #pragma warning disable 168
                 var row1 = tmp.FetchRecordAt(1, out error);
+                // ReSharper disable UnusedVariable
                 var value = row1[0].TheValue;
+                // ReSharper restore UnusedVariable
 #pragma warning restore 168
                 Assert.Fail("Exception not thrown");
             }
@@ -3184,18 +3190,17 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><Dev2WebServer>Dev2System.Dev2WebServer</Dev2WebServer></DataList>"));
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><ParentServiceName>Dev2System.ParentServiceName</ParentServiceName></DataList>"));
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><Dev2WebServer/></DataList>".ToStringBuilder(), out errors);
             Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>".ToStringBuilder(), out errors);
-            const string inputs = @"<Inputs><Input Name=""Dev2WebServer"" Source=""[[rs2(*).f1a]]"" /></Inputs>";
+            const string inputs = @"<Inputs><Input Name=""ParentServiceName"" Source=""[[rs2(*).f1a]]"" /></Inputs>";
             //------------Execute Test---------------------------
             _sdlc.ShapeForSubExecution(null, dlID, childID, inputs, "", out errors);
             //------------Assert Results-------------------------
             Assert.IsTrue(errors.HasErrors());
             var fetchErrors = errors.FetchErrors();
-            StringAssert.Contains(fetchErrors[0], " [[Dev2WebServer]] does not exist in your variable list");
+            StringAssert.Contains(fetchErrors[0], " [[ParentServiceName]] does not exist in your variable list");
             StringAssert.Contains(fetchErrors[1], "Invalid Data : Either empty expression or empty token list. Please check that your variable list does not contain errors.");
-            StringAssert.Contains(fetchErrors[2], "Dev2System.Dev2WebServer could not be found in the DataList");
         }
 
         [TestMethod]
