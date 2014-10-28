@@ -8263,3 +8263,12 @@
 /Dev/Dev2.Studio.Core/obj/x64/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
 /Dev/Dev2.Studio.Core/obj/x64/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
 /Dev/Dev2.Server/bin/Debug/ServerStarted
+/Dev/Dev2.Activities.Tests/bin/Debug/Resources/SQL Tests
+/Dev/Dev2.Activities.Tests/bin/x86/Debug/Resources/SQL Tests
+/Dev/Dev2.Activities.Tests/bin/Debug/Workspaces
+/Dev/Dev2.Activities.Tests/bin/Debug/Warewolf Server.exe.secureconfig
+/Dev/Dev2.Activities.Tests/bin/x86/Debug/Workspaces
+*.secureconfig
+*.force
+*.usi
+*.uws
