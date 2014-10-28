@@ -422,7 +422,7 @@ Sofware development by: www.dev2.co.za
     <value>pack://application:,,,/Warewolf Studio;component/images/WarewolfLogoMedRes.png</value>
   </data>
   <data name="SplashImage" xml:space="preserve">
-    <value>Images\SplashPage.png</value>
+    <value>Images\SplashImage_New_2014.jpg</value>
   </data>
   <data name="Dev2StudioLDAPEndpoint" xml:space="preserve">
     <value>LDAP://premier.local</value>

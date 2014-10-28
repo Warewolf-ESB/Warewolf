@@ -31,6 +31,7 @@ using Moq;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
+using System.Collections.Concurrent;
 
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
@@ -47,10 +48,10 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void Init()
         {
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("_expressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
+            var cache = p.GetStaticField("_expressionCache") as ConcurrentDictionary<string, IList<IIntellisenseResult>>;
             Assert.IsNotNull(cache);
             cache.Clear();
-            var cache2 = p.GetStaticField("_payloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
+            var cache2 = p.GetStaticField("_payloadCache") as ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
             Assert.IsNotNull(cache2);
             cache2.Clear();
             Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);

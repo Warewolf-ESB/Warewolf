@@ -132,6 +132,10 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SecurityPublicDeployTo = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployToPermissions_Row_1_Cell_AutoID,UI_Public_DeployToPermissionCheckBox_AutoID";
         static readonly string SecurityPublicDeployFrom = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployFromPermissions_Row_1_Cell_AutoID,UI_Public_DeployFromPermissionCheckBox_AutoID";
         static readonly string SecurityPublic = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployFromPermissions_Row_1_Cell_AutoID,UI_Public_DeployFromPermissionCheckBox_AutoID";
+        static readonly string SecurityResourcePickerSearch = "ACTIVETAB,UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
+        static readonly string SecurityResourcePickerFilterClear = "ACTIVETAB,UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
+        
+
 
         //Deploy Tab
         static readonly string DeploySource = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,SourceNavigationView,UI_ExplorerTree_AutoID";
@@ -368,6 +372,18 @@ namespace Dev2.Studio.UI.Specs
             Assert.IsTrue(ExplorerUIMap.ValidateHasResource(resourceName));
             ExplorerUIMap.RightClickDeleteResource(resourceName, "UNASSIGNED", "localhost");
             Bootstrap.DeleteService(resourceName);
+        }
+
+        [Given(@"""(.*)"" is not in the explorer")]
+        [Then(@"""(.*)"" is not in the explorer")]
+        [When(@"""(.*)"" is not in the explorer")]
+        public void ThenIsNotInTheExplorer(string resourceName)
+        {
+            if(ExplorerUIMap.ValidateHasResource(resourceName))
+            {
+                ExplorerUIMap.RightClickDeleteResource(resourceName, "UNASSIGNED", "localhost");
+                Bootstrap.DeleteService(resourceName);
+            }
         }
 
         [Given(@"a new tab is created")]
@@ -727,9 +743,21 @@ namespace Dev2.Studio.UI.Specs
         public void GivenIStartServerAsWithPassword(string userName, string password)
         {
             TabManagerUIMap.CloseAllTabs();
-            Bootstrap.Teardown(true);
+            Bootstrap.Teardown();
             Playback.Cleanup();
             RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.ServerLocation);
+            Playback.Initialize();
+        }
+
+        [Given(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        [Then(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        [When(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        public void GivenIStartStudioAsWithPassword(string userName, string password)
+        {
+            TabManagerUIMap.CloseAllTabs();
+            Bootstrap.Teardown(true);
+            Playback.Cleanup();
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation);
             Playback.Initialize();
         }
 
@@ -771,19 +799,6 @@ namespace Dev2.Studio.UI.Specs
             proc.Start();
             Playback.Wait(Bootstrap.WaitMs);
         }
-
-        [Given(@"I start Studio as ""(.*)"" with password ""(.*)""")]
-        [Then(@"I start Studio as ""(.*)"" with password ""(.*)""")]
-        [When(@"I start Studio as ""(.*)"" with password ""(.*)""")]
-        public void GivenIStartStudioAsWithPassword(string userName, string password)
-        {
-            TabManagerUIMap.CloseAllTabs();
-            Bootstrap.Teardown(true);
-            Playback.Cleanup();
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation);
-            Playback.Initialize();
-        }
-
 
         [When(@"I drag ""(.*)"" onto ""(.*)""")]
         [Given(@"I drag ""(.*)"" onto ""(.*)""")]
@@ -904,23 +919,14 @@ namespace Dev2.Studio.UI.Specs
                     }
 
                     var isInvisible = control.State.HasFlag(ControlStates.Invisible);
-
-
                 }
             }
             catch(Exception)
             {
                 once = false;
-                
             }
-
-               Assert.IsTrue(once);
-      
-            }
-
-
-    
-        
+            Assert.IsTrue(once);
+        }
 
         [Given(@"""(.*)"" is invisible within ""(.*)"" seconds")]
         [Then(@"""(.*)"" is invisible within ""(.*)"" seconds")]

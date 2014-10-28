@@ -4809,19 +4809,19 @@ Scenario: Executing Control Flow - Switch example workflow
 	
 
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
-	  Given I have a workflow "Utility - Assign"
-	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
+	  Given I have a workflow "Utility - Assign WF"
+	  And "Utility - Assign WF" contains "Utility - Assign" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable        |
-	  |                  |               | [[rec(*).set]]      | [[rec().set]]      |
-	  |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
-	  |                  |               | [[hero(*).name]]    | [[hero().name]]    |
-	  When "Utility - Assign Test" is executed
+	  |                  |               | rec(*).set      | [[myrec().set]]      |
+	  |                  |               | hero(*).pushups | [[thehero().pushups]] |
+	  |                  |               | hero(*).name    | [[thehero().name]]    |
+	  When "Utility - Assign WF" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Utility - Assign' in Workflow 'Utility - Assign' debug outputs as    
+	  And the 'Utility - Assign' in Workflow 'Utility - Assign WF' debug outputs as    
 	  |                                                                   |
-	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	  | [[hero(1).pushups]] = All of them.                                |
-	  | [[hero(1).name]] =   Chuck Norris                                 |
+	  | [[myrec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	  | [[thehero(1).pushups]] = All of them.                                |
+	  | [[thehero(1).name]] =   Chuck Norris                                 |
 	
 #Bug - 17484	  
 Scenario: Error from workflow service is expected to buble out

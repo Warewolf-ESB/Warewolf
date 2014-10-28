@@ -99,7 +99,8 @@
                                   ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                                   Margin="0"
                                   ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                  SelectedValue="{Binding Path=ConvertType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
+                                  SelectedValue="{Binding Path=ConvertType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                  ToolTip="{x:Static help:HelpTextResources.CaseConversionToolTipConvertToCasetype}">
                             <i:Interaction.Behaviors>
                                 <help:HelpSetter Text="{x:Static help:HelpTextResources.CaseConversionHelpConvertToCaseType}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />

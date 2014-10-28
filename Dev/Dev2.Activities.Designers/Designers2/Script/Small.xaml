@@ -43,7 +43,8 @@
                    ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                    SelectedValue="{Binding SelectedScriptType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                    ItemsSource="{Binding ScriptTypes}"
-                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ScriptTypecbx_AutoID}">
+                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ScriptTypecbx_AutoID}"
+                   ToolTip="{x:Static help:HelpTextResources.ScriptingToolTipLanguageType}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptingHelpLanguageType}"
                                  DataContext="{Binding}" />

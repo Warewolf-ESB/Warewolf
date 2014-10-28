@@ -1023,7 +1023,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Images\SplashPage.png.
+        ///   Looks up a localized string similar to Images\SplashImage_New_2014.jpg.
         /// </summary>
         public static string SplashImage {
             get {
