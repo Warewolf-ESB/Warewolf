@@ -159,6 +159,7 @@ namespace Dev2.Models
         bool IsOverwrite { get; set; }
         bool IsAuthorizedDeployTo { get; }
         IAsyncWorker AsyncWorker { get; }
+        bool IsVersion { get; }
 
         void SetDisplay(string display);
 

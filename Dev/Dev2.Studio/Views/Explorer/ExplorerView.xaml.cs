@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using Dev2.AppResources.Repositories;
@@ -50,16 +50,28 @@ namespace Dev2.Studio.Views.Explorer
                         try
                         {
                             ExplorerItemModel source = explorerItemModel as ExplorerItemModel;
-                            if (source != null && (source == destination || destination.IsVersion || source.IsVersion))
+                            if (ShouldNotMove(source, destination))
                             {
                                 e.Handled = true;
                             }
-                            MoveItem(source, destination, rep);
+                            else
+                            {
+                                MoveItem(source, destination, rep);
+                            }
                         }
                         finally { e.Handled = true; }
                     }
                 }
             }
+        }
+
+        public static bool ShouldNotMove(IExplorerItemModel source, IExplorerItemModel destination)
+        {
+            if(source != null && (source == destination || destination.IsVersion || source.IsVersion || source.ResourcePath.Equals(destination.ResourcePath, StringComparison.OrdinalIgnoreCase)))
+            {
+                return true;
+            }
+            return false;
         }
 
         public static void MoveItem(ExplorerItemModel source, ExplorerItemModel destination, IStudioResourceRepository rep)

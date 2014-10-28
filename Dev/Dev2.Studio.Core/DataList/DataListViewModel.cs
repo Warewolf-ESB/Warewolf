@@ -120,10 +120,8 @@ namespace Dev2.Studio.ViewModels.DataList
                     
                     _scalarCollection.CollectionChanged += (o, args) =>
                     {
-                        NotifyOfPropertyChange(() => FindUnusedAndMissingCommand);
                         RemoveItemPropertyChangeEvent(args);
                         AddItemPropertyChangeEvent(args);
-                        NotifyOfPropertyChange(() => SortCommand);
                     };
                 }
                 return _scalarCollection;
@@ -163,6 +161,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if(FindUnusedAndMissingCommand != null)
             {
                 FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
+                SortCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -214,7 +213,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public ICommand SortCommand
+        public RelayCommand SortCommand
         {
             get
             {

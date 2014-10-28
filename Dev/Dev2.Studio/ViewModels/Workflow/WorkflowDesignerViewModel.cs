@@ -1515,7 +1515,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 });
             }
-            //AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            AddMissingWithNoPopUpAndFindUnusedDataListItems();
         }
 
         public static bool ValidatResourceModel(string dataList)
