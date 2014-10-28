@@ -1926,7 +1926,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
  
             var second = Clipboard.GetText();
-            if (second.Contains("clr-namespace:Dev2.Activities;assembly=Dev2.Activities") && (second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"")))
+            if (second.Contains("clr-namespace:Dev2.Activities;assembly=Dev2.Activities") && (second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"")|| second.Contains("Type=\"WebService\"")))
             {
                 var id = second.IndexOf("ResourceID=\"", StringComparison.Ordinal);
                 if(id == -1)
