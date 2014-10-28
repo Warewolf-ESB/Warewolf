@@ -55,8 +55,8 @@ namespace Dev2.Models
         ICommand _removeCommand;
         ICommand _showDependenciesCommand;
         ICommand _debugCommand;
-        ICommand _connectCommand;
-        ICommand _disconnectCommand;
+        RelayCommand _connectCommand;
+        RelayCommand _disconnectCommand;
         ICommand _serverVersionCommand; 
         bool _isExplorerExpanded;
         bool _isResourcePickerExpanded;
@@ -74,7 +74,7 @@ namespace Dev2.Models
         private readonly IStudioResourceRepository _studioResourceRepository;
         private static bool _serverRefreshing;
         ObservableCollection<IExplorerItemModel> _children;
-        ICommand _refreshCommand;
+        RelayCommand _refreshCommand;
         private Permissions _permissions;
         bool _isRefreshing;
         ICommand _newFolderCommand;
@@ -126,6 +126,7 @@ namespace Dev2.Models
             if(EnvironmentId == e.EnvironmentId && ResourceType == ResourceType.Server)
             {
                 IsRefreshing = _serverRefreshing = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
+                RefreshCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -409,6 +410,9 @@ namespace Dev2.Models
             {
                 _isConnected = value;
                 OnPropertyChanged();
+                ConnectCommand.RaiseCanExecuteChanged();
+                DisconnectCommand.RaiseCanExecuteChanged();
+                
             }
         }
         public bool IsRenaming
@@ -676,7 +680,7 @@ namespace Dev2.Models
             }
         }
 
-        public ICommand RefreshCommand
+        public RelayCommand RefreshCommand
         {
             get
             {
@@ -869,11 +873,11 @@ namespace Dev2.Models
         /// The connect command.
         /// </value>
         /// <author>Massimo Guerrera</author>
-        public ICommand ConnectCommand
+        public RelayCommand ConnectCommand
         {
             get
             {
-                RelayCommand connectCommand = new RelayCommand(param => Connect(), c => !IsConnected);
+                var connectCommand = new RelayCommand(param => Connect(), c => !IsConnected);
                 return _connectCommand ?? (_connectCommand = connectCommand);
             }
         }
@@ -885,11 +889,11 @@ namespace Dev2.Models
         /// The disconnect command.
         /// </value>
         /// <author>Massimo Guerrera</author>
-        public ICommand DisconnectCommand
+        public RelayCommand DisconnectCommand
         {
             get
             {
-                RelayCommand disconnectCommand = new RelayCommand(param => Disconnect(), c => IsConnected);
+                var disconnectCommand = new RelayCommand(param => Disconnect(), c => IsConnected);
                 return _disconnectCommand ?? (_disconnectCommand = disconnectCommand);
             }
         }

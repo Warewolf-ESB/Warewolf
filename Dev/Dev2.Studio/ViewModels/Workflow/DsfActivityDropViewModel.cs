@@ -98,7 +98,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Commands
 
-        public ICommand OkCommand
+        public RelayCommand OkCommand
         {
             get
             {
@@ -141,8 +141,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
 
-            return explorerItemModel != null
-                && isMatched;
+            return explorerItemModel != null && isMatched;
         }
 
         public ICommand CancelCommand

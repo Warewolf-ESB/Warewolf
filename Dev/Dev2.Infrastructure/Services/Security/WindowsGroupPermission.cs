@@ -9,9 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
-using System.Windows.Input;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Newtonsoft.Json;
@@ -41,24 +39,66 @@ namespace Dev2.Services.Security
         bool _administrator;
         bool _isNew;
         bool _isDeleted;
-        ICommand _removeRow;
+        RelayCommand _removeRow;
         bool _enableCellEditing;
 
-        public bool IsServer { get { return _isServer; } set { OnPropertyChanged(ref _isServer, value); } }
+        public bool IsServer
+        {
+            get
+            {
+                return _isServer;
+            }
+            set
+            {
+                OnPropertyChanged(ref _isServer, value);
+                RemoveRow.RaiseCanExecuteChanged();
+            }
+        }
 
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public Guid ResourceID { get { return _resourceId; } set { OnPropertyChanged(ref _resourceId, value); } }
 // ReSharper restore InconsistentNaming
 
         public string ResourceName { get { return _resourceName; } set { OnPropertyChanged(ref _resourceName, value); } }
 
-        public string WindowsGroup { get { return _windowsGroup; } set { OnPropertyChanged(ref _windowsGroup, value); } }
+        public string WindowsGroup
+        {
+            get
+            {
+                return _windowsGroup;
+            }
+            set
+            {
+                OnPropertyChanged(ref _windowsGroup, value);
+                RemoveRow.RaiseCanExecuteChanged();
+            }
+        }
 
-        public bool IsDeleted { get { return _isDeleted; } set { OnPropertyChanged(ref _isDeleted, value); } }
+        public bool IsDeleted
+        {
+            get
+            {
+                return _isDeleted;
+            }
+            set
+            {
+                OnPropertyChanged(ref _isDeleted, value);
+            }
+        }
 
-        public bool EnableCellEditing { get { return _enableCellEditing; } set { OnPropertyChanged(ref _enableCellEditing, value); } }
+        public bool EnableCellEditing
+        {
+            get
+            {
+                return _enableCellEditing;
+            }
+            set
+            {
+                OnPropertyChanged(ref _enableCellEditing, value);
+            }
+        }
 
-        public ICommand RemoveRow
+        public RelayCommand RemoveRow
         {
             get
             {
