@@ -22,6 +22,7 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
@@ -625,7 +626,7 @@ namespace Dev2.Studio.ViewModels
 
         private void DisplayAboutDialogue()
         {
-            var factory = CustomContainer.Get<DialogViewModelFactory>();
+            var factory = CustomContainer.Get<IDialogViewModelFactory>();
             WindowManager.ShowDialog(factory.CreateAboutDialog());
         }
 

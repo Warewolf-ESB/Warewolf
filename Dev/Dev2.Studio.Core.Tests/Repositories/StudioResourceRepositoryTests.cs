@@ -2701,7 +2701,6 @@ namespace Dev2.Core.Tests.Repositories
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("StudioResourceRepository_GetServerVersion")]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void StudioResourceRepository_GetServerVersion_CallsProxy()
         {
             //------------Setup for test--------------------------
@@ -2720,7 +2719,8 @@ namespace Dev2.Core.Tests.Repositories
             {
                 GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object,
-                GetCurrentEnvironment = () => Guid.Empty
+                GetCurrentEnvironment = () => Guid.Empty,
+                GetEnvironmentRepository = ()=> new Mock<IEnvironmentRepository>().Object
             };
             var env = Guid.NewGuid();
             mockExplorerResourceRepository.Setup(a => a.GetServerVersion()).Returns("bob");
@@ -2732,7 +2732,6 @@ namespace Dev2.Core.Tests.Repositories
                 [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("StudioResourceRepository_GetServerVersion")]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void StudioResourceRepository_GetServerVersion_CallsProxy_ReturnsDefault_IfError()
         {
             //------------Setup for test--------------------------
@@ -2751,7 +2750,8 @@ namespace Dev2.Core.Tests.Repositories
             {
                 GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object,
-                GetCurrentEnvironment = () => Guid.Empty
+                GetCurrentEnvironment = () => Guid.Empty,
+                GetEnvironmentRepository = () => new Mock<IEnvironmentRepository>().Object
             };
             var env = Guid.NewGuid();
             mockExplorerResourceRepository.Setup(a => a.GetServerVersion()).Throws(new Exception());
