@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,8 +9,8 @@
 */
 
 
-
 // ReSharper disable once CheckNamespace
+
 namespace Dev2.Common.Interfaces.Studio.Core.Activities
 {
     public interface IServiceXmlTranslator

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,12 +18,12 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 
 namespace Dev2.DynamicServices.Objects.Base
 {
-
     public abstract class DynamicServiceObjectBase : IDynamicServiceObject
     {
-
         #region Private Fields
+
         private string _errorMsg = string.Empty;
+
         #endregion
 
         #region Constructors
@@ -39,49 +38,41 @@ namespace Dev2.DynamicServices.Objects.Base
         {
             ObjectType = objectType;
         }
+
         #endregion
 
-
         #region Public Properties
-        public string Name { get; set; }
 
+        private int _versionNo = 1;
         public string DisplayName { get; set; }
+        public enApprovalState ApprovalState { get; set; }
+        public string IconPath { get; set; }
+        public string Tags { get; set; }
+        public string OutputSpecification { get; set; }
+        public StringBuilder DataListSpecification { get; set; }
+        public string Name { get; set; }
 
         public ICollection<string> CompilerErrors { get; set; }
 
         public enDynamicServiceObjectType ObjectType { get; set; }
 
-        public enApprovalState ApprovalState { get; set; }
-
         public StringBuilder ResourceDefinition { get; set; }
 
-        private int _versionNo = 1;
         public int VersionNo
         {
-            get
-            {
-                return _versionNo;
-            }
-            set
-            {
-                _versionNo = value;
-            }
+            get { return _versionNo; }
+            set { _versionNo = value; }
         }
 
-        public string IconPath { get; set; }
         public string Comment { get; set; }
         public string Category { get; set; }
-        public string Tags { get; set; }
-        public string OutputSpecification { get; set; }
-        public StringBuilder DataListSpecification { get; set; }
         public string HelpLink { get; set; }
 
         public bool IsCompiled
         {
             get
             {
-
-                if(CompilerErrors == null)
+                if (CompilerErrors == null)
                 {
                     return false;
                 }
@@ -89,46 +80,14 @@ namespace Dev2.DynamicServices.Objects.Base
                 return CompilerErrors.Count <= 0;
             }
         }
+
         #endregion
 
         #region Public Methods
-        public bool IsUserInRole(string userRoles, string resourceRoles)
-        {
-
-            if(string.IsNullOrEmpty(userRoles))
-            {
-                return false;
-            }
-
-            if(string.IsNullOrEmpty(resourceRoles))
-            {
-                return true;
-            }
-
-            string[] user = userRoles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            string[] res = resourceRoles.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-
-            if(user.Contains("Domain Admins"))
-            {
-                return true;
-            }
-
-            if(!user.Any())
-            {
-                return false;
-            }
-
-            if(!res.Any())
-            {
-                return false;
-            }
-
-            return user.Intersect(res).Any();
-        }
 
         public virtual bool Compile()
         {
-            if(string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name))
             {
                 string objectName = GetType().Name;
                 _errorMsg = string.Format(Resources.CompilerError_MissingName, objectName, objectName);
@@ -146,7 +105,6 @@ namespace Dev2.DynamicServices.Objects.Base
             CompilerErrors.Add(traceMsg);
 
             WriteOutput(traceMsg);
-
         }
 
         public virtual void WriteCompileWarning(string traceMsg)
@@ -154,11 +112,44 @@ namespace Dev2.DynamicServices.Objects.Base
             WriteOutput(traceMsg);
         }
 
+        public bool IsUserInRole(string userRoles, string resourceRoles)
+        {
+            if (string.IsNullOrEmpty(userRoles))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(resourceRoles))
+            {
+                return true;
+            }
+
+            string[] user = userRoles.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
+            string[] res = resourceRoles.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
+
+            if (user.Contains("Domain Admins"))
+            {
+                return true;
+            }
+
+            if (!user.Any())
+            {
+                return false;
+            }
+
+            if (!res.Any())
+            {
+                return false;
+            }
+
+            return user.Intersect(res).Any();
+        }
+
         public virtual string GetCompilerErrors()
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            if(CompilerErrors.Count > 0)
+            if (CompilerErrors.Count > 0)
             {
                 CompilerErrors.ToList().ForEach(c =>
                 {
@@ -169,7 +160,7 @@ namespace Dev2.DynamicServices.Objects.Base
             else
             {
                 result.Append(string.Format("<CompilerMessage>Build of {0} '{1}' Succeeded</CompilerMessage>",
-                    Enum.GetName(typeof(enDynamicServiceObjectType), ObjectType), Name));
+                    Enum.GetName(typeof (enDynamicServiceObjectType), ObjectType), Name));
             }
             return result.ToString();
         }
@@ -177,11 +168,13 @@ namespace Dev2.DynamicServices.Objects.Base
         #endregion
 
         #region Private Methods
+
         private void WriteOutput(string traceMsg)
         {
             Dev2Logger.Log.Info(traceMsg);
             Console.WriteLine(traceMsg);
         }
+
         #endregion
     }
 }

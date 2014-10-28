@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,23 +9,34 @@
 */
 
 
+using System.Threading;
+
 namespace Dev2.Common.Interfaces
 {
     public static class ServerStats
     {
+        private static int _totalRequests;
 
-        private static int _totalRequests=0;
-        public static int TotalRequests { get{return _totalRequests;} }
-        private static long _totalTime = 0;
-        public static long TotalTime { get { return _totalTime; } }
-        public static void IncrementTotalRequests()
+        private static long _totalTime;
+
+        public static int TotalRequests
         {
-            System.Threading.Interlocked.Increment(ref _totalRequests);
+            get { return _totalRequests; }
         }
 
-        public static void IncrementTotalTime( long time)
+        public static long TotalTime
         {
-            System.Threading.Interlocked.Add(ref _totalTime,time);
+            get { return _totalTime; }
+        }
+
+        public static void IncrementTotalRequests()
+        {
+            Interlocked.Increment(ref _totalRequests);
+        }
+
+        public static void IncrementTotalTime(long time)
+        {
+            Interlocked.Add(ref _totalTime, time);
         }
     }
 }

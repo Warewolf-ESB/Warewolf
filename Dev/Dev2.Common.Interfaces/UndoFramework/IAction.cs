@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,13 +13,11 @@ namespace Dev2.Common.Interfaces.UndoFramework
 {
     public interface IAction
     {
+        bool AllowToMergeWithPrevious { get; set; }
         bool CanExecute();
         bool CanUnExecute();
         void Execute();
         bool TryToMerge(IAction followingAction);
         void UnExecute();
-
-        bool AllowToMergeWithPrevious { get; set; }
     }
 }
-

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,12 +21,12 @@ namespace Dev2.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var iconValue = Application.Current.Resources["NoIcon"];
-            if(value != null)
+            object iconValue = Application.Current.Resources["NoIcon"];
+            if (value != null)
             {
                 ResourceType resourceType;
                 Enum.TryParse(value.ToString(), true, out resourceType);
-                if(resourceType == ResourceType.WorkflowService)
+                if (resourceType == ResourceType.WorkflowService)
                 {
                     iconValue = Application.Current.Resources["WorkflowIcon"];
                 }
@@ -40,5 +39,4 @@ namespace Dev2.Converters
             throw new Exception("The method or operation is not implemented.");
         }
     }
-
 }

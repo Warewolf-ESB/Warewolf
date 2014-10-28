@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,9 +26,9 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         public INavigator CreateNavigator(object data, Type pathType)
         {
-            if (!pathType.GetInterfaces().Contains(typeof(IPath)))
+            if (!pathType.GetInterfaces().Contains(typeof (IPath)))
             {
-                throw new Exception("'" + pathType + "' doesn't implement '" + typeof(IPath) + "'");
+                throw new Exception("'" + pathType + "' doesn't implement '" + typeof (IPath) + "'");
             }
 
             return new PocoNavigator(data);

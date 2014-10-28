@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,26 +15,30 @@ using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Common.Wrappers
 {
-     [ExcludeFromCodeCoverage]
-    public class DirectoryEntryWrapper :IDirectoryEntry
+    [ExcludeFromCodeCoverage]
+    public class DirectoryEntryWrapper : IDirectoryEntry
     {
-        private readonly DirectoryEntry _wrapped;
         private readonly IDirectoryEntryFactory _nativeFactory;
+        private readonly DirectoryEntry _wrapped;
 
-        internal DirectoryEntryWrapper(DirectoryEntry wrapped,IDirectoryEntryFactory directoryEntryFactory)
+        internal DirectoryEntryWrapper(DirectoryEntry wrapped, IDirectoryEntryFactory directoryEntryFactory)
         {
             _wrapped = wrapped;
             _nativeFactory = directoryEntryFactory;
         }
+
         public IDirectoryEntries Children
         {
-            get { return  _nativeFactory.Create(_wrapped.Children);}
+            get { return _nativeFactory.Create(_wrapped.Children); }
         }
 
-        public string SchemaClassName {
+        public string SchemaClassName
+        {
             get { return _wrapped.SchemaClassName; }
         }
-        public string Name {
+
+        public string Name
+        {
             get { return _wrapped.SchemaClassName; }
         }
 

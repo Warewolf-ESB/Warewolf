@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -33,12 +32,20 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         /// <summary>
         ///     Gets the path to a folder of registered tasks.
         /// </summary>
-        /// <param name="folderName">The path to the folder to retrieve. Do not use a backslash following the last folder name in the path. The root task folder is specified with a backslash (\). An example of a task folder path, under the root task folder, is \MyTaskFolder. The '.' character cannot be used to specify the current task folder and the '..' characters cannot be used to specify the parent task folder in the path.</param>
+        /// <param name="folderName">
+        ///     The path to the folder to retrieve. Do not use a backslash following the last folder name in
+        ///     the path. The root task folder is specified with a backslash (\). An example of a task folder path, under the root
+        ///     task folder, is \MyTaskFolder. The '.' character cannot be used to specify the current task folder and the '..'
+        ///     characters cannot be used to specify the parent task folder in the path.
+        /// </param>
         /// <returns>
         ///     <see cref="TaskFolder" /> instance for the requested folder.
         /// </returns>
         /// <exception cref="Exception">Requested folder was not found.</exception>
-        /// <exception cref="NotV1SupportedException">Folder other than the root (\) was requested on a system not supporting Task Scheduler 2.0.</exception>
+        /// <exception cref="NotV1SupportedException">
+        ///     Folder other than the root (\) was requested on a system not supporting Task
+        ///     Scheduler 2.0.
+        /// </exception>
         ITaskFolder GetFolder(string folderName);
 
 

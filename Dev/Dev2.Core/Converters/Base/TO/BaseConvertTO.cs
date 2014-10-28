@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,10 +22,10 @@ namespace Dev2
     {
         #region Fields
 
-        private string _fromType;
-        private string _toType;
         private string _fromExpression;
+        private string _fromType;
         private string _toExpression;
+        private string _toType;
 
         #endregion
 
@@ -34,10 +33,10 @@ namespace Dev2
 
         public BaseConvertTO()
         {
-
         }
 
-        public BaseConvertTO(string fromExpression, string fromType, string toType, string toExpression, int indexNumber, bool inserted = false)
+        public BaseConvertTO(string fromExpression, string fromType, string toType, string toExpression, int indexNumber,
+            bool inserted = false)
         {
             Inserted = inserted;
             ToType = string.IsNullOrEmpty(toType) ? "Base 64" : toType;
@@ -51,20 +50,15 @@ namespace Dev2
 
         #region Properties
 
-        public bool Inserted { get; set; }
-
         /// <summary>
-        /// Current base type
-        /// </summary>        
+        ///     Current base type
+        /// </summary>
         public string FromType
         {
-            get
-            {
-                return _fromType;
-            }
+            get { return _fromType; }
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     _fromType = value;
                     OnPropertyChanged("FromType");
@@ -73,17 +67,14 @@ namespace Dev2
         }
 
         /// <summary>
-        /// Target base conversion type
-        /// </summary>       
+        ///     Target base conversion type
+        /// </summary>
         public string ToType
         {
-            get
-            {
-                return _toType;
-            }
+            get { return _toType; }
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     _toType = value;
                     OnPropertyChanged("ToType");
@@ -92,15 +83,12 @@ namespace Dev2
         }
 
         /// <summary>
-        /// The Input to use for the from
+        ///     The Input to use for the from
         /// </summary>
         [FindMissing]
         public string FromExpression
         {
-            get
-            {
-                return _fromExpression;
-            }
+            get { return _fromExpression; }
             set
             {
                 _fromExpression = value;
@@ -110,15 +98,12 @@ namespace Dev2
         }
 
         /// <summary>
-        /// Where to place the result, will be the same as From until wizards are created
+        ///     Where to place the result, will be the same as From until wizards are created
         /// </summary>
         [FindMissing]
         public string ToExpression
         {
-            get
-            {
-                return _toExpression;
-            }
+            get { return _toExpression; }
             set
             {
                 _toExpression = value;
@@ -131,6 +116,7 @@ namespace Dev2
         public string WatermarkTextVariable { get; set; }
 
         public string WatermarkText { get; set; }
+        public bool Inserted { get; set; }
 
         public int IndexNumber { get; set; }
 
@@ -164,7 +150,7 @@ namespace Dev2
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -175,40 +161,40 @@ namespace Dev2
         #region Implementation of IDataErrorInfo
 
         /// <summary>
-        /// Gets the error message for the property with the given name.
+        ///     Gets the error message for the property with the given name.
         /// </summary>
         /// <returns>
-        /// The error message for the property. The default is an empty string ("").
+        ///     The error message for the property. The default is an empty string ("").
         /// </returns>
         /// <param name="columnName">The name of the property whose error message to get. </param>
         public string this[string columnName]
         {
-            get
-            {
-                return "";
-            }
+            get { return ""; }
         }
 
         /// <summary>
-        /// Gets an error message indicating what is wrong with this object.
+        ///     Gets an error message indicating what is wrong with this object.
         /// </summary>
         /// <returns>
-        /// An error message indicating what is wrong with this object. The default is an empty string ("").
+        ///     An error message indicating what is wrong with this object. The default is an empty string ("").
         /// </returns>
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string Error { get; private set; }
+
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         #endregion
 
-        void RaiseCanAddRemoveChanged()
+        private void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
         }
+
         #region Implementation of IPerformsValidation
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors { get; set; }
+
         public bool Validate(string propertyName, IRuleSet ruleSet)
         {
             return false;

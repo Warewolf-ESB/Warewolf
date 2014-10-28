@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,18 +18,21 @@ using System.Xml;
 namespace Dev2.Common.ExtMethods
 {
     /// <summary>
-    /// Useful utilities
+    ///     Useful utilities
     /// </summary>
     public static class StringExtension
     {
         private static readonly Regex IsAlphaRegex = new Regex("^[a-zA-Z ]*$", RegexOptions.Compiled);
         private static readonly Regex IsAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
-        private static readonly Regex IsEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly Regex IsEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static readonly Regex IsBinaryField = new Regex("^[01]+$");
         public static Regex IsValidCategoryname = new Regex(@"[\\/?%*:|""<>\.]+$");
         public static Regex IsValidResourcename = new Regex(@"[^a-zA-Z0-9._\s-]+");
-        static readonly Regex IsHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
-        static readonly Regex IsHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
+        private static readonly Regex IsHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
+        private static readonly Regex IsHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
         public static bool ContainsUnicodeCharacter(this string input)
         {
@@ -41,7 +43,7 @@ namespace Dev2.Common.ExtMethods
 
         public static string Escape(this string unescaped)
         {
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             XmlNode node = doc.CreateElement("root");
             node.InnerText = unescaped;
             return node.InnerXml;
@@ -49,19 +51,18 @@ namespace Dev2.Common.ExtMethods
 
         public static string Unescape(this string payload)
         {
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             try
             {
                 doc.LoadXml(payload);
                 return doc.InnerXml;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 string xml = String.Format("<dummycake>{0}</dummycake>", payload);
                 doc.LoadXml(xml);
-
             }
-            if(doc.DocumentElement != null)
+            if (doc.DocumentElement != null)
             {
                 return doc.DocumentElement.InnerText;
             }
@@ -70,15 +71,15 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether the specified payload is alpha.
+        ///     Determines whether the specified payload is alpha.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if the specified payload is alpha; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified payload is alpha; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsAlpha(this string payload)
         {
-            if(String.IsNullOrEmpty(payload))
+            if (String.IsNullOrEmpty(payload))
             {
                 return false;
             }
@@ -89,11 +90,11 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether [is whole number] [the specified payload].
+        ///     Determines whether [is whole number] [the specified payload].
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if [is whole number] [the specified payload]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [is whole number] [the specified payload]; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsWholeNumber(this string payload)
         {
@@ -102,18 +103,18 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether [is whole number] [the specified payload].
+        ///     Determines whether [is whole number] [the specified payload].
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="value">The value.</param>
         /// <returns>
-        ///   <c>true</c> if [is whole number] [the specified payload]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [is whole number] [the specified payload]; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsWholeNumber(this string payload, out int value)
         {
-            if(Int32.TryParse(payload, out value))
+            if (Int32.TryParse(payload, out value))
             {
-                if(value >= 0)
+                if (value >= 0)
                 {
                     return true;
                 }
@@ -122,11 +123,11 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether [is real number] [the specified payload].
+        ///     Determines whether [is real number] [the specified payload].
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if [is real number] [the specified payload]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [is real number] [the specified payload]; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsRealNumber(this string payload)
         {
@@ -135,12 +136,12 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether [is real number] [the specified payload].
+        ///     Determines whether [is real number] [the specified payload].
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="value">The value.</param>
         /// <returns>
-        ///   <c>true</c> if [is real number] [the specified payload]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [is real number] [the specified payload]; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsRealNumber(this string payload, out int value)
         {
@@ -148,11 +149,11 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether the specified payload is numeric.
+        ///     Determines whether the specified payload is numeric.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if the specified payload is numeric; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified payload is numeric; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsNumeric(this string payload)
         {
@@ -165,16 +166,16 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether the specified payload is numeric.
+        ///     Determines whether the specified payload is numeric.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="value">The value.</param>
         /// <returns>
-        ///   <c>true</c> if the specified payload is numeric; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified payload is numeric; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsNumeric(this string payload, out decimal value)
         {
-            if(String.IsNullOrEmpty(payload))
+            if (String.IsNullOrEmpty(payload))
             {
                 value = 0;
                 return false;
@@ -182,14 +183,14 @@ namespace Dev2.Common.ExtMethods
 
             string evalString = payload;
 
-            if(payload[0] == '-')
+            if (payload[0] == '-')
             {
                 evalString = payload.Substring(1, payload.Length - 1);
             }
 
             NumberFormatInfo current = CultureInfo.CurrentCulture.NumberFormat;
-            if(evalString.Any(c => !Char.IsDigit(c)
-                && c != current.NumberDecimalSeparator[0]))
+            if (evalString.Any(c => !Char.IsDigit(c)
+                                    && c != current.NumberDecimalSeparator[0]))
             {
                 value = 0;
                 return false;
@@ -199,27 +200,28 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether [is alpha numeric] [the specified payload].
+        ///     Determines whether [is alpha numeric] [the specified payload].
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if [is alpha numeric] [the specified payload]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [is alpha numeric] [the specified payload]; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsAlphaNumeric(this string payload)
         {
-            return (!String.IsNullOrEmpty(payload) && (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload)));
+            return (!String.IsNullOrEmpty(payload) &&
+                    (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload)));
         }
 
         /// <summary>
-        /// Determines whether the specified payload is email.
+        ///     Determines whether the specified payload is email.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if the specified payload is email; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified payload is email; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsEmail(this string payload)
         {
-            if(String.IsNullOrEmpty(payload))
+            if (String.IsNullOrEmpty(payload))
             {
                 return false;
             }
@@ -231,11 +233,11 @@ namespace Dev2.Common.ExtMethods
 
 
         /// <summary>
-        /// Determines whether the specified payload is binary.
+        ///     Determines whether the specified payload is binary.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if the specified payload is binary; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified payload is binary; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsBinary(this string payload)
         {
@@ -243,11 +245,11 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether the specified payload is base64.
+        ///     Determines whether the specified payload is base64.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if the specified payload is base64; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified payload is base64; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsBase64(this string payload)
         {
@@ -259,9 +261,9 @@ namespace Dev2.Common.ExtMethods
                 // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                 result = true;
             }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception)
-            // ReSharper restore EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
+            catch (Exception)
+                // ReSharper restore EmptyGeneralCatchClause
             {
                 // if error is thrown we know it is not a valid base64 string
             }
@@ -270,18 +272,17 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether the specified payload is hex.
+        ///     Determines whether the specified payload is hex.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if the specified payload is hex; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified payload is hex; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsHex(this string payload)
         {
-
             bool result = (IsHex1.IsMatch(payload) || IsHex2.IsMatch(payload));
 
-            if((payload.Length % 2) != 0)
+            if ((payload.Length%2) != 0)
             {
                 result = false;
             }
@@ -289,7 +290,7 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Reverses the string.
+        ///     Reverses the string.
         /// </summary>
         /// <param name="s">The s.</param>
         /// <returns></returns>
@@ -301,11 +302,11 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Determines whether the specified payload is a valid resource category name.
+        ///     Determines whether the specified payload is a valid resource category name.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
-        ///   <c>true</c> if the specified payload is a valid resource category name; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified payload is a valid resource category name; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsValidCategoryName(this string payload)
         {
@@ -313,21 +314,21 @@ namespace Dev2.Common.ExtMethods
         }
 
         /// <summary>
-        /// Keyboard Accellerators are used in Windows to allow easy shortcuts to controls like Buttons and 
-        /// MenuItems. These allow users to press the Alt key, and a shortcut key will be highlighted on the 
-        /// control. If the user presses that key, that control will be activated.
-        /// This method checks a string if it contains a keyboard accellerator. If it doesn't, it adds one to the
-        /// beginning of the string. If there are two strings with the same accellerator, Windows handles it.
-        /// The keyboard accellerator character for WPF is underscore (_). It will not be visible.
+        ///     Keyboard Accellerators are used in Windows to allow easy shortcuts to controls like Buttons and
+        ///     MenuItems. These allow users to press the Alt key, and a shortcut key will be highlighted on the
+        ///     control. If the user presses that key, that control will be activated.
+        ///     This method checks a string if it contains a keyboard accellerator. If it doesn't, it adds one to the
+        ///     beginning of the string. If there are two strings with the same accellerator, Windows handles it.
+        ///     The keyboard accellerator character for WPF is underscore (_). It will not be visible.
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         public static string TryAddKeyboardAccellerator(this string input)
         {
-            const string Accellerator = "_";            // This is the default WPF accellerator symbol - used to be & in WinForms
+            const string Accellerator = "_"; // This is the default WPF accellerator symbol - used to be & in WinForms
 
             // If it already contains an accellerator, do nothing
-            if(input.Contains(Accellerator)) return input;
+            if (input.Contains(Accellerator)) return input;
 
             return Accellerator + input;
         }

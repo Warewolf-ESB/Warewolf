@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -31,10 +30,10 @@ namespace Dev2.Common.Interfaces.Services.Sql
 
         List<string> FetchDatabases();
 
-        void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string,string, bool> procedureProcessor,
-            Func<IDbCommand, List<IDbDataParameter>, string,string, bool> functionProcessor, bool continueOnProcessorException = false);
+        void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
+            bool continueOnProcessorException = false);
 
         IDbCommand CreateCommand();
-
     }
 }

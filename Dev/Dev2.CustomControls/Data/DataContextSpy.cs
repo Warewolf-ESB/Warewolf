@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,18 +19,26 @@ using System.Windows.Data;
 namespace WPF.JoshSmith.Data
 {
     /// <summary>
-    /// When added to an element's Resources collection it's DataContext property
-    /// references the containing element's DataContext.  This enables DependencyObjects
-    /// not in the element tree to bind to the tree's DataContext.
+    ///     When added to an element's Resources collection it's DataContext property
+    ///     references the containing element's DataContext.  This enables DependencyObjects
+    ///     not in the element tree to bind to the tree's DataContext.
     /// </summary>
     /// <remarks>
-    /// Documentation: http://www.codeproject.com/KB/WPF/ArtificialInheritanceCxt.aspx
+    ///     Documentation: http://www.codeproject.com/KB/WPF/ArtificialInheritanceCxt.aspx
     /// </remarks>
     public class DataContextSpy
         : Freezable // Enable ElementName and DataContext bindings
     {
         /// <summary>
-        /// Initializes a new instance.
+        ///     Represents the DataContext property.
+        /// </summary>
+        public static readonly DependencyProperty DataContextProperty =
+            FrameworkElement.DataContextProperty.AddOwner(
+                typeof (DataContextSpy),
+                new PropertyMetadata(null, null, OnCoerceDataContext));
+
+        /// <summary>
+        ///     Initializes a new instance.
         /// </summary>
         public DataContextSpy()
         {
@@ -42,17 +49,17 @@ namespace WPF.JoshSmith.Data
         }
 
         /// <summary>
-        /// Gets/sets whether the spy will return the CurrentItem of the 
-        /// ICollectionView that wraps the data context, assuming it is
-        /// a collection of some sort.  If the data context is not a 
-        /// collection, this property has no effect. 
-        /// The default value is true.
+        ///     Gets/sets whether the spy will return the CurrentItem of the
+        ///     ICollectionView that wraps the data context, assuming it is
+        ///     a collection of some sort.  If the data context is not a
+        ///     collection, this property has no effect.
+        ///     The default value is true.
         /// </summary>
         public bool IsSynchronizedWithCurrentItem { get; set; }
 
         /// <summary>
-        /// Gets/sets the DataContext of an element in an element tree.
-        /// This is a dependency property.
+        ///     Gets/sets the DataContext of an element in an element tree.
+        ///     This is a dependency property.
         /// </summary>
         public object DataContext
         {
@@ -60,24 +67,16 @@ namespace WPF.JoshSmith.Data
             set { SetValue(DataContextProperty, value); }
         }
 
-        /// <summary>
-        /// Represents the DataContext property.
-        /// </summary>
-        public static readonly DependencyProperty DataContextProperty =
-            FrameworkElement.DataContextProperty.AddOwner(
-            typeof(DataContextSpy),
-            new PropertyMetadata(null, null, OnCoerceDataContext));
-
-        static object OnCoerceDataContext(DependencyObject depObj, object value)
+        private static object OnCoerceDataContext(DependencyObject depObj, object value)
         {
-            DataContextSpy spy = depObj as DataContextSpy;
-            if(spy == null)
+            var spy = depObj as DataContextSpy;
+            if (spy == null)
                 return value;
 
-            if(spy.IsSynchronizedWithCurrentItem)
+            if (spy.IsSynchronizedWithCurrentItem)
             {
                 ICollectionView view = CollectionViewSource.GetDefaultView(value);
-                if(view != null)
+                if (view != null)
                     return view.CurrentItem;
             }
 
@@ -85,7 +84,7 @@ namespace WPF.JoshSmith.Data
         }
 
         /// <summary>
-        /// Do not invoke.
+        ///     Do not invoke.
         /// </summary>
         protected override Freezable CreateInstanceCore()
         {
