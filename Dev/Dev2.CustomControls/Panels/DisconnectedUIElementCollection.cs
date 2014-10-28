@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -54,8 +53,8 @@ namespace WPF.JoshSmith.Panels
         #region constructors
 
         /// <summary>
-        /// This collection can be used by a panel to maintain a collection of child elements 
-        /// that are *not* connected to their owner as visual children or logical children.
+        ///     This collection can be used by a panel to maintain a collection of child elements
+        ///     that are *not* connected to their owner as visual children or logical children.
         /// </summary>
         public DisconnectedUIElementCollection(UIElement owner)
             : this(owner, new SurrogateVisualParent())
@@ -75,15 +74,6 @@ namespace WPF.JoshSmith.Panels
 
         #region UIElementCollection overrides
 
-        /// <summary>
-        /// Adds the element to the DisconnectedUIElementCollection
-        /// </summary>
-        public override int Add(UIElement element)
-        {
-            VerifyWriteAccess();
-            return base.Add(element);
-        }
-
         public override int Capacity
         {
             get { return base.Capacity; }
@@ -95,7 +85,36 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// Removes all elements from the DisconnectedUIElementCollection
+        ///     Gets the number of elements in the collection.
+        /// </summary>
+        public override int Count
+        {
+            get { return _elements.Count; }
+        }
+
+        public override UIElement this[int index]
+        {
+            // ReSharper disable RedundantCast
+            get { return _elements[index] as UIElement; }
+            // ReSharper restore RedundantCast
+            set
+            {
+                VerifyWriteAccess();
+                base[index] = value;
+            }
+        }
+
+        /// <summary>
+        ///     Adds the element to the DisconnectedUIElementCollection
+        /// </summary>
+        public override int Add(UIElement element)
+        {
+            VerifyWriteAccess();
+            return base.Add(element);
+        }
+
+        /// <summary>
+        ///     Removes all elements from the DisconnectedUIElementCollection
         /// </summary>
         public override void Clear()
         {
@@ -104,7 +123,7 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// Determines whether an element is in the DisconnectedUIElementCollection
+        ///     Determines whether an element is in the DisconnectedUIElementCollection
         /// </summary>
         public override bool Contains(UIElement element)
         {
@@ -112,15 +131,15 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// Copies the collection into the Array
+        ///     Copies the collection into the Array
         /// </summary>
         public override void CopyTo(Array array, int index)
         {
-            ((ICollection)_elements).CopyTo(array, index);
+            ((ICollection) _elements).CopyTo(array, index);
         }
 
         /// <summary>
-        /// Strongly typed version of CopyTo
+        ///     Strongly typed version of CopyTo
         /// </summary>
         public override void CopyTo(UIElement[] array, int index)
         {
@@ -128,15 +147,7 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// Gets the number of elements in the collection.
-        /// </summary>
-        public override int Count
-        {
-            get { return _elements.Count; }
-        }
-
-        /// <summary>
-        /// Returns an enumerator that can iterate through the collection.
+        ///     Returns an enumerator that can iterate through the collection.
         /// </summary>
         public override IEnumerator GetEnumerator()
         {
@@ -144,7 +155,7 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// Returns the index of the element in the DisconnectedUIElementCollection
+        ///     Returns the index of the element in the DisconnectedUIElementCollection
         /// </summary>
         public override int IndexOf(UIElement element)
         {
@@ -152,7 +163,7 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// Inserts an element into the DisconnectedUIElementCollection at the specified index
+        ///     Inserts an element into the DisconnectedUIElementCollection at the specified index
         /// </summary>
         public override void Insert(int index, UIElement element)
         {
@@ -161,7 +172,7 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// Removes the specified element from the DisconnectedUIElementCollection
+        ///     Removes the specified element from the DisconnectedUIElementCollection
         /// </summary>
         public override void Remove(UIElement element)
         {
@@ -170,7 +181,7 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// Removes the element at the specified index from the DisconnectedUIElementCollection 
+        ///     Removes the element at the specified index from the DisconnectedUIElementCollection
         /// </summary>
         public override void RemoveAt(int index)
         {
@@ -179,7 +190,7 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// Removes the specified number of elements starting at the specified index from the DisconnectedUIElementCollection
+        ///     Removes the specified number of elements starting at the specified index from the DisconnectedUIElementCollection
         /// </summary>
         public override void RemoveRange(int index, int count)
         {
@@ -187,30 +198,17 @@ namespace WPF.JoshSmith.Panels
             base.RemoveRange(index, count);
         }
 
-        public override UIElement this[int index]
-        {
-            // ReSharper disable RedundantCast
-            get { return _elements[index] as UIElement; }
-            // ReSharper restore RedundantCast
-
-            set
-            {
-                VerifyWriteAccess();
-                base[index] = value;
-            }
-        }
-
         #endregion
 
         #region public methods
 
         /// <summary>
-        /// The Initialize method is simply exposed as an accessible member that can
-        /// be called from the ConceptualPanel's Loaded event.  Accessing this member 
-        /// via the Children property will implicitly cause CreateUIElementCollection
-        /// to be called to create the disconnected collection.  This method exists
-        /// because simple access of a property like Count might be optimized away by 
-        /// an aggressive compiler.
+        ///     The Initialize method is simply exposed as an accessible member that can
+        ///     be called from the ConceptualPanel's Loaded event.  Accessing this member
+        ///     via the Children property will implicitly cause CreateUIElementCollection
+        ///     to be called to create the disconnected collection.  This method exists
+        ///     because simple access of a property like Count might be optimized away by
+        ///     an aggressive compiler.
         /// </summary>
         public void Initialize()
         {
@@ -237,24 +235,25 @@ namespace WPF.JoshSmith.Panels
         }
 
         /// <summary>
-        /// If the owner is an items host, we need to enforce the rule that elements
-        /// cannot be explicitly added to the disconnected collection.  However, it is still
-        /// possible to modify the visual or logical "connected" children of a ConceptualPanel 
-        /// while it is an items host by simply calling the AddVisualChild, RemoveVisualChild, 
-        /// AddLogicalChild, or RemoveLogicalChild methods.  Logic within ConceptualPanel
-        /// ensures that any visual children added in this manner will be returned within 
-        /// a GetVisualChild() enumeration.
+        ///     If the owner is an items host, we need to enforce the rule that elements
+        ///     cannot be explicitly added to the disconnected collection.  However, it is still
+        ///     possible to modify the visual or logical "connected" children of a ConceptualPanel
+        ///     while it is an items host by simply calling the AddVisualChild, RemoveVisualChild,
+        ///     AddLogicalChild, or RemoveLogicalChild methods.  Logic within ConceptualPanel
+        ///     ensures that any visual children added in this manner will be returned within
+        ///     a GetVisualChild() enumeration.
         /// </summary>
         private void VerifyWriteAccess()
         {
             // if the owner is not a panel, just return
-            if(_ownerPanel == null) return;
+            if (_ownerPanel == null) return;
 
             // check whether the owner is an items host for an ItemsControl
-            if(_ownerPanel.IsItemsHost && ItemsControl.GetItemsOwner(_ownerPanel) != null)
+            if (_ownerPanel.IsItemsHost && ItemsControl.GetItemsOwner(_ownerPanel) != null)
                 throw new InvalidOperationException("Disconnected children cannot be explicitly added to this "
-                    + "collection while the panel is serving as an items host. However, visual children can "
-                    + "be added by simply calling the AddVisualChild method.");
+                                                    +
+                                                    "collection while the panel is serving as an items host. However, visual children can "
+                                                    + "be added by simply calling the AddVisualChild method.");
         }
 
         #endregion
@@ -262,14 +261,15 @@ namespace WPF.JoshSmith.Panels
         #region INotifyCollectionChanged Members
 
         /// <summary>
-        /// Since the owner of the collection is not the parent of the elements, it needs
-        /// a mechanism by which to monitor its collection of child visuals.
-        /// This class provides such notifications via INotifyCollectionChanged.
+        ///     Since the owner of the collection is not the parent of the elements, it needs
+        ///     a mechanism by which to monitor its collection of child visuals.
+        ///     This class provides such notifications via INotifyCollectionChanged.
         /// </summary>
         public event NotifyCollectionChangedEventHandler CollectionChanged;
+
         private void RaiseCollectionChanged(NotifyCollectionChangedAction action, object changedItem, int index)
         {
-            if(CollectionChanged != null)
+            if (CollectionChanged != null)
                 CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, changedItem, index));
         }
 
@@ -281,6 +281,8 @@ namespace WPF.JoshSmith.Panels
 
         private class DegenerateSibling : UIElement
         {
+            private UIElement _element;
+
             public DegenerateSibling(UIElement element)
             {
                 _element = element;
@@ -292,7 +294,6 @@ namespace WPF.JoshSmith.Panels
             }
 
             // ReSharper disable FieldCanBeMadeReadOnly.Local
-            private UIElement _element;
             // ReSharper restore FieldCanBeMadeReadOnly.Local
         }
 
@@ -302,6 +303,9 @@ namespace WPF.JoshSmith.Panels
 
         private class SurrogateVisualParent : UIElement
         {
+            private bool _internalUpdate;
+            private DisconnectedUIElementCollection _owner;
+
             internal void InitializeOwner(DisconnectedUIElementCollection owner)
             {
                 _owner = owner;
@@ -310,23 +314,23 @@ namespace WPF.JoshSmith.Panels
             protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
             {
                 // avoid reentrancy during internal updates
-                if(_internalUpdate) return;
+                if (_internalUpdate) return;
 
                 _internalUpdate = true;
                 try
                 {
                     // when a UIElement is added, replace it with its degenerate sibling
-                    if(visualAdded != null)
+                    if (visualAdded != null)
                     {
                         Debug.Assert(!(visualAdded is DegenerateSibling),
                             "Unexpected addition of degenerate... All degenerates should be added during internal updates.");
 
-                        UIElement element = visualAdded as UIElement;
-                        DegenerateSibling sibling = new DegenerateSibling(element);
+                        var element = visualAdded as UIElement;
+                        var sibling = new DegenerateSibling(element);
                         int index = _owner.BaseIndexOf(element);
                         _owner.BaseRemoveAt(index);
                         _owner.BaseInsert(index, sibling);
-                        if(element != null)
+                        if (element != null)
                         {
                             _owner._degenerateSiblings[element] = sibling;
                             _owner._elements.Insert(index, element);
@@ -335,12 +339,12 @@ namespace WPF.JoshSmith.Panels
                     }
 
                     // when a degenerate sibling is removed, remove its corresponding element
-                    if(visualRemoved != null)
+                    if (visualRemoved != null)
                     {
                         Debug.Assert(visualRemoved is DegenerateSibling,
                             "Unexpected removal of UIElement... All non degenerates should be removed during internal updates.");
 
-                        DegenerateSibling sibling = visualRemoved as DegenerateSibling;
+                        var sibling = visualRemoved as DegenerateSibling;
                         int index = _owner._elements.IndexOf(sibling.Element);
                         _owner._elements.RemoveAt(index);
                         _owner.RaiseCollectionChanged(NotifyCollectionChangedAction.Remove, sibling.Element, index);
@@ -352,9 +356,6 @@ namespace WPF.JoshSmith.Panels
                     _internalUpdate = false;
                 }
             }
-
-            private DisconnectedUIElementCollection _owner;
-            private bool _internalUpdate;
         }
 
         #endregion
@@ -363,7 +364,9 @@ namespace WPF.JoshSmith.Panels
 
         #region fields
 
-        private readonly Dictionary<UIElement, DegenerateSibling> _degenerateSiblings = new Dictionary<UIElement, DegenerateSibling>();
+        private readonly Dictionary<UIElement, DegenerateSibling> _degenerateSiblings =
+            new Dictionary<UIElement, DegenerateSibling>();
+
         private readonly Collection<UIElement> _elements = new Collection<UIElement>();
         private readonly Panel _ownerPanel;
         private readonly SurrogateVisualParent _surrogateVisualParent;

@@ -3,58 +3,60 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Dev2.CustomControls"
     xmlns:converters="clr-namespace:Dev2.CustomControls.Converters">
-    
+
     <VisualBrush x:Key="SearchHint" TileMode="None" Stretch="None" AlignmentX="Left">
         <VisualBrush.Transform>
             <TranslateTransform X="5" Y="0" />
         </VisualBrush.Transform>
         <VisualBrush.Visual>
             <Grid>
-                <TextBlock Grid.Column="0" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Black" Opacity="0.3" Text="Filter"/>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Black"
+                           Opacity="0.3" Text="Filter" />
             </Grid>
         </VisualBrush.Visual>
     </VisualBrush>
-    
-    <converters:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter"></converters:FilterStringToBoolConverter>
+
+    <converters:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter" />
 
     <Style TargetType="local:FilterTextBox">
-        <Setter Property="SearchText" Value=""/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="SearchText" Value="" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
                     <Border Margin="2,2,0,2">
-                        <Grid ShowGridLines="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                        <Grid ShowGridLines="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="TheTextBox"                                      
-                                 Grid.Column="0"                                                                  
-                                 Text="{Binding Path=SearchText,Mode=TwoWay, 
-                                 UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"                                 
-                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                 AutomationProperties.AutomationId="UI_DataListSearchtxt_AutoID">
+                            <TextBox x:Name="TheTextBox"
+                                     Grid.Column="0"
+                                     Text="{Binding Path=SearchText,Mode=TwoWay, 
+                                 UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
+                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                     AutomationProperties.AutomationId="UI_DataListSearchtxt_AutoID">
                                 <TextBox.Style>
                                     <Style TargetType="TextBox">
                                         <Style.Triggers>
                                             <Trigger Property="Text" Value="">
-                                                <Setter Property="Background" Value="{StaticResource SearchHint}"/>
+                                                <Setter Property="Background" Value="{StaticResource SearchHint}" />
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
                                 </TextBox.Style>
                             </TextBox>
                             <Button x:Name="FilterButton" Margin="2,2,0,2"
-                                Grid.Column="1"           
-                                Width="24"
-                                HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                IsEnabled="{Binding ElementName=TheTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}">
-                                <Image Source="{StaticResource ClearFilter-32}" Stretch="UniformToFill"></Image>
+                                    Grid.Column="1"
+                                    Width="24"
+                                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                                    IsEnabled="{Binding ElementName=TheTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}">
+                                <Image Source="{StaticResource ClearFilter-32}" Stretch="UniformToFill" />
                             </Button>
                         </Grid>
                     </Border>
@@ -62,26 +64,26 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    
+
+
     <Style TargetType="local:SimpleGridSplitter">
-        <Setter Property="Orientation" Value="Vertical"/>
-        <Setter Property="Height" Value="7"/>
-        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Orientation" Value="Vertical" />
+        <Setter Property="Height" Value="7" />
+        <Setter Property="Width" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
                     <Grid>
                         <Thumb x:Name="Thumb"
-                           Height="{TemplateBinding Height}"
-                           Width="{TemplateBinding Width}"
-                           Background="{TemplateBinding Background}"
-                           HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                           VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                               Height="{TemplateBinding Height}"
+                               Width="{TemplateBinding Width}"
+                               Background="{TemplateBinding Background}"
+                               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                               VerticalAlignment="{TemplateBinding VerticalAlignment}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
+
 </ResourceDictionary>

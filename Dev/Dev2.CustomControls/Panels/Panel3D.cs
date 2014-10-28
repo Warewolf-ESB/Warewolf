@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,69 +26,70 @@ using WPF.JoshSmith.Panels;
 namespace Dev2.CustomControls.Panels
 {
     /// <summary>
-    /// A Panel that displays its children in a Viewport3D.
+    ///     A Panel that displays its children in a Viewport3D.
     /// </summary>
     /// <remarks>
-    /// Documentation: http://www.codeproject.com/KB/WPF/panel3d.aspx
+    ///     Documentation: http://www.codeproject.com/KB/WPF/panel3d.aspx
     /// </remarks>
     public sealed class Panel3D : LogicalPanel
     {
         #region Data
 
         /// <summary>
-        /// (0, 0)
+        ///     (0, 0)
         /// </summary>
-        static readonly Point ORIGIN_POINT = new Point(0, 0);
+        private static readonly Point ORIGIN_POINT = new Point(0, 0);
 
         /// <summary>
-        /// Keeps track of whether the current call to MoveItems() should execute the completion logic
-        /// or not, based on whether an item in the UI was selected during the item animations.
+        ///     A mapping between the 2D children of this panel and the 3D objects displayed in _viewport.
         /// </summary>
-        bool _abortMoveItems;
+        private readonly Dictionary<UIElement, Viewport2DVisual3D> _elementTo3DModelMap =
+            new Dictionary<UIElement, Viewport2DVisual3D>();
 
         /// <summary>
-        /// Keeps track of whether _viewport has been added to the panel's visual children collection yet.
+        ///     Viewport2DVisual3D objects for every item in this panel's Children collection.
         /// </summary>
-        bool _hasAddedViewport;
+        private readonly List<Viewport2DVisual3D> _models = new List<Viewport2DVisual3D>();
 
         /// <summary>
-        /// If this panel is the items host for a Selector-derived control, this references that control.
+        ///     Ticks when the items have finished moving and it is time to clean up.
         /// </summary>
-        Selector _itemsOwner;
+        private readonly DispatcherTimer _moveItemsCompletionTimer;
 
         /// <summary>
-        /// Viewport2DVisual3D objects for every item in this panel's Children collection.
+        ///     Holds requests to move the 3D models that arrived while the items were already being moved.
         /// </summary>
-        readonly List<Viewport2DVisual3D> _models = new List<Viewport2DVisual3D>();
+        private readonly Queue<MoveItemsRequest> _moveItemsRequestQueue = new Queue<MoveItemsRequest>();
 
         /// <summary>
-        /// Holds requests to move the 3D models that arrived while the items were already being moved.
+        ///     The Viewport3D that hosts the Viewport2DVisual3D objects stored in the _models field.
         /// </summary>
-        readonly Queue<MoveItemsRequest> _moveItemsRequestQueue = new Queue<MoveItemsRequest>();
+        private readonly Viewport3DEx _viewport;
 
         /// <summary>
-        /// Ticks when the items have finished moving and it is time to clean up.
+        ///     Keeps track of whether the current call to MoveItems() should execute the completion logic
+        ///     or not, based on whether an item in the UI was selected during the item animations.
         /// </summary>
-        readonly DispatcherTimer _moveItemsCompletionTimer;
+        private bool _abortMoveItems;
 
         /// <summary>
-        /// The Viewport3D that hosts the Viewport2DVisual3D objects stored in the _models field.
+        ///     Keeps track of whether _viewport has been added to the panel's visual children collection yet.
         /// </summary>
-        readonly Viewport3DEx _viewport;
+        private bool _hasAddedViewport;
 
         /// <summary>
-        /// A mapping between the 2D children of this panel and the 3D objects displayed in _viewport.
+        ///     If this panel is the items host for a Selector-derived control, this references that control.
         /// </summary>
-        readonly Dictionary<UIElement, Viewport2DVisual3D> _elementTo3DModelMap = new Dictionary<UIElement, Viewport2DVisual3D>();
+        private Selector _itemsOwner;
 
         /// <summary>
-        /// Stores data pertaining to a call to MoveItems().
+        ///     Stores data pertaining to a call to MoveItems().
         /// </summary>
         private struct MoveItemsRequest
         {
-            public readonly int ItemCount;
-            public readonly bool Forward;
             public readonly TimeSpan AnimationLength;
+            public readonly bool Forward;
+            public readonly int ItemCount;
 
             public MoveItemsRequest(int itemCount, bool forward, TimeSpan animationLength)
             {
@@ -104,7 +104,7 @@ namespace Dev2.CustomControls.Panels
         #region Initialization
 
         /// <summary>
-        /// Initializes a new instance.
+        ///     Initializes a new instance.
         /// </summary>
         public Panel3D()
         {
@@ -118,21 +118,21 @@ namespace Dev2.CustomControls.Panels
             Loaded += OnLoaded;
         }
 
-        void OnLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             // Setting the Camera property must be delayed until Loaded fires,
             // otherwise setting it from XAML has no effect.  Not sure why...
-            if(Camera == null)
+            if (Camera == null)
                 Camera = _viewport.Camera;
 
             // We raise this custom routed event because the Loaded event of an items host
             // is not raised on the control that contains it.  This event will make it
             // to the outside world, so that consumers can get a reference to the panel.
-            if(ItemsControl.GetItemsOwner(this) != null)
+            if (ItemsControl.GetItemsOwner(this) != null)
                 RaiseEvent(new RoutedEventArgs(ItemsHostLoadedEvent));
         }
 
-        static Viewport3DEx CreateViewport()
+        private static Viewport3DEx CreateViewport()
         {
             var viewport = new Viewport3DEx
             {
@@ -157,16 +157,16 @@ namespace Dev2.CustomControls.Panels
         #region Routed Events
 
         /// <summary>
-        /// Identifies the ItemsHostLoaded bubbling event.
+        ///     Identifies the ItemsHostLoaded bubbling event.
         /// </summary>
         public static readonly RoutedEvent ItemsHostLoadedEvent = EventManager.RegisterRoutedEvent(
             "ItemsHostLoaded",
             RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(Panel3D));
+            typeof (RoutedEventHandler),
+            typeof (Panel3D));
 
         /// <summary>
-        /// Raised when the Panel3D is loaded, only when acting as an items host for an ItemsControl.
+        ///     Raised when the Panel3D is loaded, only when acting as an items host for an ItemsControl.
         /// </summary>
         public event RoutedEventHandler ItemsHostLoaded
         {
@@ -181,39 +181,39 @@ namespace Dev2.CustomControls.Panels
         #region AllowTransparency
 
         /// <summary>
-        /// Gets/sets whether the models in the scene support being truly translucent, such 
-        /// that the models behind them are visible through the models in front.
-        /// The default value is false.
-        /// This is a dependency property.
-        /// </summary>
-        public bool AllowTransparency
-        {
-            get { return (bool)GetValue(AllowTransparencyProperty); }
-            set { SetValue(AllowTransparencyProperty, value); }
-        }
-
-        /// <summary>
-        /// Readonly field.
+        ///     Readonly field.
         /// </summary>
         public static readonly DependencyProperty AllowTransparencyProperty =
             DependencyProperty.Register(
-            "AllowTransparency",
-            typeof(bool),
-            typeof(Panel3D),
-            new UIPropertyMetadata(
-                false,
-                OnAllowTransparencyChanged
-                ));
+                "AllowTransparency",
+                typeof (bool),
+                typeof (Panel3D),
+                new UIPropertyMetadata(
+                    false,
+                    OnAllowTransparencyChanged
+                    ));
 
-        static void OnAllowTransparencyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
+        /// <summary>
+        ///     Gets/sets whether the models in the scene support being truly translucent, such
+        ///     that the models behind them are visible through the models in front.
+        ///     The default value is false.
+        ///     This is a dependency property.
+        /// </summary>
+        public bool AllowTransparency
         {
-            Panel3D panel3D = depObj as Panel3D;
-            if(panel3D != null)
-            {
-                var frontModel = panel3D._viewport.FrontModel;
-                panel3D._viewport.AllowTransparency = (bool)e.NewValue;
+            get { return (bool) GetValue(AllowTransparencyProperty); }
+            set { SetValue(AllowTransparencyProperty, value); }
+        }
 
-                if(frontModel != null)
+        private static void OnAllowTransparencyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
+        {
+            var panel3D = depObj as Panel3D;
+            if (panel3D != null)
+            {
+                Viewport2DVisual3D frontModel = panel3D._viewport.FrontModel;
+                panel3D._viewport.AllowTransparency = (bool) e.NewValue;
+
+                if (frontModel != null)
                     panel3D.BuildScene(frontModel);
             }
         }
@@ -223,63 +223,63 @@ namespace Dev2.CustomControls.Panels
         #region AutoAdjustOpacity
 
         /// <summary>
-        /// Gets/sets whether the Panel3D automatically adjusts each model's opacity based on its visual index.
-        /// The default value is true.
-        /// This is a dependency property.
-        /// </summary>
-        public bool AutoAdjustOpacity
-        {
-            get { return (bool)GetValue(AutoAdjustOpacityProperty); }
-            set { SetValue(AutoAdjustOpacityProperty, value); }
-        }
-
-        /// <summary>
-        /// Readonly field.
+        ///     Readonly field.
         /// </summary>
         public static readonly DependencyProperty AutoAdjustOpacityProperty =
             DependencyProperty.Register(
-            "AutoAdjustOpacity",
-            typeof(bool),
-            typeof(Panel3D),
-            new UIPropertyMetadata(
-                true,
-                (depObj, e) => ((Panel3D)depObj).BuildScene()
-                ));
+                "AutoAdjustOpacity",
+                typeof (bool),
+                typeof (Panel3D),
+                new UIPropertyMetadata(
+                    true,
+                    (depObj, e) => ((Panel3D) depObj).BuildScene()
+                    ));
+
+        /// <summary>
+        ///     Gets/sets whether the Panel3D automatically adjusts each model's opacity based on its visual index.
+        ///     The default value is true.
+        ///     This is a dependency property.
+        /// </summary>
+        public bool AutoAdjustOpacity
+        {
+            get { return (bool) GetValue(AutoAdjustOpacityProperty); }
+            set { SetValue(AutoAdjustOpacityProperty, value); }
+        }
 
         #endregion // AutoAdjustOpacity
 
         #region Camera
 
         /// <summary>
-        /// Gets/sets a camera used to view the 3D scene.
-        /// The default camera is declared as:
-        ///     &lt;PerspectiveCamera 
-        ///          LookDirection="2, 0, -10" 
-        ///          Position="-3.18, 2, 3" 
-        ///          UpDirection="0, 1, 0" 
-        ///          /&gt;
-        /// </summary>
-        public Camera Camera
-        {
-            get { return (Camera)GetValue(CameraProperty); }
-            set { SetValue(CameraProperty, value); }
-        }
-
-        /// <summary>
-        /// Readonly field.
+        ///     Readonly field.
         /// </summary>
         public static readonly DependencyProperty CameraProperty =
             DependencyProperty.Register(
-            "Camera",
-            typeof(Camera),
-            typeof(Panel3D),
-            new UIPropertyMetadata(null, OnCameraChanged));
+                "Camera",
+                typeof (Camera),
+                typeof (Panel3D),
+                new UIPropertyMetadata(null, OnCameraChanged));
 
-        static void OnCameraChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
+        /// <summary>
+        ///     Gets/sets a camera used to view the 3D scene.
+        ///     The default camera is declared as:
+        ///     &lt;PerspectiveCamera
+        ///     LookDirection="2, 0, -10"
+        ///     Position="-3.18, 2, 3"
+        ///     UpDirection="0, 1, 0"
+        ///     /&gt;
+        /// </summary>
+        public Camera Camera
         {
-            Panel3D panel3D = depObj as Panel3D;
-            Camera camera = e.NewValue as Camera;
-            if(panel3D._viewport.Camera != camera)
+            get { return (Camera) GetValue(CameraProperty); }
+            set { SetValue(CameraProperty, value); }
+        }
+
+        private static void OnCameraChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
+        {
+            var panel3D = depObj as Panel3D;
+            var camera = e.NewValue as Camera;
+            if (panel3D._viewport.Camera != camera)
                 panel3D._viewport.Camera = camera;
         }
 
@@ -288,111 +288,111 @@ namespace Dev2.CustomControls.Panels
         #region DefaultAnimationLength
 
         /// <summary>
-        /// The default amount of time it takes to move items.
-        /// This value can be overridden when calling MoveItems().
-        /// The default value is 700 milliseconds.
-        /// This is a dependency property.
-        /// </summary>
-        public TimeSpan DefaultAnimationLength
-        {
-            get { return (TimeSpan)GetValue(DefaultAnimationLengthProperty); }
-            set { SetValue(DefaultAnimationLengthProperty, value); }
-        }
-
-        /// <summary>
-        /// Readonly field.
+        ///     Readonly field.
         /// </summary>
         public static readonly DependencyProperty DefaultAnimationLengthProperty =
             DependencyProperty.Register(
-            "DefaultAnimationLength",
-            typeof(TimeSpan),
-            typeof(Panel3D),
-            new UIPropertyMetadata(TimeSpan.FromMilliseconds(700)));
+                "DefaultAnimationLength",
+                typeof (TimeSpan),
+                typeof (Panel3D),
+                new UIPropertyMetadata(TimeSpan.FromMilliseconds(700)));
+
+        /// <summary>
+        ///     The default amount of time it takes to move items.
+        ///     This value can be overridden when calling MoveItems().
+        ///     The default value is 700 milliseconds.
+        ///     This is a dependency property.
+        /// </summary>
+        public TimeSpan DefaultAnimationLength
+        {
+            get { return (TimeSpan) GetValue(DefaultAnimationLengthProperty); }
+            set { SetValue(DefaultAnimationLengthProperty, value); }
+        }
 
         #endregion // DefaultAnimationLength
 
         #region IsMovingItems
 
+        private static readonly DependencyPropertyKey IsMovingItemsKey =
+            DependencyProperty.RegisterReadOnly(
+                "IsMovingItems",
+                typeof (bool),
+                typeof (Panel3D),
+                new UIPropertyMetadata(false));
+
         /// <summary>
-        /// Returns whether or not the models displayed in this Panel3D are currently 
-        /// animating to new locations as a result of calling the MoveItems method.
-        /// This is a read-only dependency property.
+        ///     Readonly field.
+        /// </summary>
+        public static readonly DependencyProperty IsMovingItemsProperty = IsMovingItemsKey.DependencyProperty;
+
+        /// <summary>
+        ///     Returns whether or not the models displayed in this Panel3D are currently
+        ///     animating to new locations as a result of calling the MoveItems method.
+        ///     This is a read-only dependency property.
         /// </summary>
         public bool IsMovingItems
         {
-            get { return (bool)GetValue(IsMovingItemsProperty); }
+            get { return (bool) GetValue(IsMovingItemsProperty); }
             private set { SetValue(IsMovingItemsKey, value); }
         }
-
-        private static readonly DependencyPropertyKey IsMovingItemsKey =
-            DependencyProperty.RegisterReadOnly(
-            "IsMovingItems",
-            typeof(bool),
-            typeof(Panel3D),
-            new UIPropertyMetadata(false));
-
-        /// <summary>
-        /// Readonly field.
-        /// </summary>
-        public static readonly DependencyProperty IsMovingItemsProperty = IsMovingItemsKey.DependencyProperty;
 
         #endregion // IsMovingItems
 
         #region ItemLayoutDirection
 
         /// <summary>
-        /// Gets/sets a Vector3D that describes the direction in which the items are positioned.  
-        /// The default value is (-1, +1.3, -7).
-        /// This is a dependency property.
-        /// </summary>
-        public Vector3D ItemLayoutDirection
-        {
-            get { return (Vector3D)GetValue(ItemLayoutDirectionProperty); }
-            set { SetValue(ItemLayoutDirectionProperty, value); }
-        }
-
-        /// <summary>
-        /// Readonly field.
+        ///     Readonly field.
         /// </summary>
         public static readonly DependencyProperty ItemLayoutDirectionProperty =
             DependencyProperty.Register(
-            "ItemLayoutDirection",
-            typeof(Vector3D),
-            typeof(Panel3D),
-            new UIPropertyMetadata(
-                new Vector3D(-1.0, +1.3, -7.0),
-                (depObj, e) => (depObj as Panel3D).BuildScene()
-                ));
+                "ItemLayoutDirection",
+                typeof (Vector3D),
+                typeof (Panel3D),
+                new UIPropertyMetadata(
+                    new Vector3D(-1.0, +1.3, -7.0),
+                    (depObj, e) => (depObj as Panel3D).BuildScene()
+                    ));
+
+        /// <summary>
+        ///     Gets/sets a Vector3D that describes the direction in which the items are positioned.
+        ///     The default value is (-1, +1.3, -7).
+        ///     This is a dependency property.
+        /// </summary>
+        public Vector3D ItemLayoutDirection
+        {
+            get { return (Vector3D) GetValue(ItemLayoutDirectionProperty); }
+            set { SetValue(ItemLayoutDirectionProperty, value); }
+        }
 
         #endregion // ItemLayoutDirection
 
         #region MaxVisibleModels
 
         /// <summary>
-        /// Gets/sets the maximum number of 3D models that can be
-        /// displayed at once.  The default value is 10.  The minimum
-        /// value for this property is 2.  This is a dependency property.
-        /// </summary>
-        public int MaxVisibleModels
-        {
-            get { return (int)GetValue(MaxVisibleModelsProperty); }
-            set { SetValue(MaxVisibleModelsProperty, value); }
-        }
-
-        /// <summary>
-        /// Readonly field.
+        ///     Readonly field.
         /// </summary>
         public static readonly DependencyProperty MaxVisibleModelsProperty =
             DependencyProperty.Register(
-            "MaxVisibleModels",
-            typeof(int),
-            typeof(Panel3D),
-            new UIPropertyMetadata(
-                10, // default value
-                (depObj, e) => (depObj as Panel3D).BuildScene() // apply new value
-                ),
-                (newValue) => 1 < (int)newValue // validate new value
+                "MaxVisibleModels",
+                typeof (int),
+                typeof (Panel3D),
+                new UIPropertyMetadata(
+                    10, // default value
+                    (depObj, e) => (depObj as Panel3D).BuildScene() // apply new value
+                    ),
+                newValue => 1 < (int) newValue // validate new value
                 );
+
+        /// <summary>
+        ///     Gets/sets the maximum number of 3D models that can be
+        ///     displayed at once.  The default value is 10.  The minimum
+        ///     value for this property is 2.  This is a dependency property.
+        /// </summary>
+        public int MaxVisibleModels
+        {
+            get { return (int) GetValue(MaxVisibleModelsProperty); }
+            set { SetValue(MaxVisibleModelsProperty, value); }
+        }
 
         #endregion // MaxVisibleModels
 
@@ -401,7 +401,7 @@ namespace Dev2.CustomControls.Panels
         #region MoveItems
 
         /// <summary>
-        /// Moves the items forward or backward over the default animation length.
+        ///     Moves the items forward or backward over the default animation length.
         /// </summary>
         public void MoveItems(int itemCount, bool forward)
         {
@@ -409,12 +409,12 @@ namespace Dev2.CustomControls.Panels
         }
 
         /// <summary>
-        /// Moves the items forward or backward over the specified animation length.
+        ///     Moves the items forward or backward over the specified animation length.
         /// </summary>
         public void MoveItems(int itemCount, bool forward, TimeSpan animationLength)
         {
             bool go = MoveItems_CanExecute(itemCount, forward, animationLength);
-            if(!go)
+            if (!go)
                 return;
 
             MoveItems_VerifyItemCount(itemCount);
@@ -440,14 +440,14 @@ namespace Dev2.CustomControls.Panels
 
         #region CanExecute
 
-        bool MoveItems_CanExecute(int itemCount, bool forward, TimeSpan animationLength)
+        private bool MoveItems_CanExecute(int itemCount, bool forward, TimeSpan animationLength)
         {
-            if(IsMovingItems)
+            if (IsMovingItems)
             {
                 var req = new MoveItemsRequest(
-                            itemCount,
-                            forward,
-                            animationLength);
+                    itemCount,
+                    forward,
+                    animationLength);
 
                 _moveItemsRequestQueue.Enqueue(req);
                 return false;
@@ -455,10 +455,10 @@ namespace Dev2.CustomControls.Panels
 
             // We cannot move less than two items.
             // The first item is a light source, so ignore it.
-            if(_viewport.ModelCount < 2)
+            if (_viewport.ModelCount < 2)
                 return false;
 
-            if(itemCount < 1)
+            if (itemCount < 1)
                 return false;
 
             return true;
@@ -468,35 +468,36 @@ namespace Dev2.CustomControls.Panels
 
         #region VerifyItemCount
 
-        void MoveItems_VerifyItemCount(int itemCount)
+        private void MoveItems_VerifyItemCount(int itemCount)
         {
             // TODO: Make this smarter so that it does not throw an exception...
-            if(IsVirtualizing && _models.Count < itemCount)
-                throw new InvalidOperationException("ARTIFICAL LIMITATION: Cannot move more items than the Panel3D contains when it is virtualizing.");
+            if (IsVirtualizing && _models.Count < itemCount)
+                throw new InvalidOperationException(
+                    "ARTIFICAL LIMITATION: Cannot move more items than the Panel3D contains when it is virtualizing.");
         }
 
         #endregion // VerifyItemCount
 
         #region RelocateModels
 
-        void MoveItems_RelocateModels(int itemCount, bool forward)
+        private void MoveItems_RelocateModels(int itemCount, bool forward)
         {
             // Move the first or last models to the opposite end of the list.
-            if(forward)
+            if (forward)
             {
-                if(IsVirtualizing)
+                if (IsVirtualizing)
                 {
                     // There are more models than can be shown at once, so
                     // add some to the scene by appending them to the 
                     // viewport's list of child elements.  By the time
                     // the items stop moving, the MaxVisibleModels setting
                     // will be honored.
-                    for(int i = 0; i < itemCount; ++i)
+                    for (int i = 0; i < itemCount; ++i)
                     {
                         // Find an element to add to the back of the list.
-                        var backModel = GetNextModel(_viewport.BackModel);
+                        Viewport2DVisual3D backModel = GetNextModel(_viewport.BackModel);
 
-                        if(_viewport.Children.Contains(backModel))
+                        if (_viewport.Children.Contains(backModel))
                             break;
 
                         // Make sure the model is in the correct location, so that it 
@@ -509,9 +510,9 @@ namespace Dev2.CustomControls.Panels
                     }
                 }
 
-                for(int i = 0; i < itemCount; ++i)
+                for (int i = 0; i < itemCount; ++i)
                 {
-                    var frontModel = _viewport.RemoveFrontModel();
+                    Viewport2DVisual3D frontModel = _viewport.RemoveFrontModel();
 
                     // This model is removed from the scene once the
                     // animation completes, if we are virtualizing.
@@ -520,19 +521,19 @@ namespace Dev2.CustomControls.Panels
             }
             else
             {
-                for(int i = 0; i < itemCount; ++i)
+                for (int i = 0; i < itemCount; ++i)
                 {
-                    var frontModel = _viewport.FrontModel;
+                    Viewport2DVisual3D frontModel = _viewport.FrontModel;
                     frontModel = GetPreviousModel(frontModel);
 
-                    if(_viewport.Children.Contains(frontModel))
+                    if (_viewport.Children.Contains(frontModel))
                         _viewport.Children.Remove(frontModel);
 
                     _viewport.AddToFront(frontModel);
 
                     // Make it look like the new front item(s) 
                     // is coming from the back of the list.
-                    if(IsVirtualizing)
+                    if (IsVirtualizing)
                         ConfigureModel(frontModel, MaxVisibleModels - i);
                 }
             }
@@ -542,18 +543,18 @@ namespace Dev2.CustomControls.Panels
 
         #region SelectFrontItem
 
-        void MoveItems_SelectFrontItem()
+        private void MoveItems_SelectFrontItem()
         {
-            if(_itemsOwner == null || _viewport.ModelCount == 0)
+            if (_itemsOwner == null || _viewport.ModelCount == 0)
                 return;
 
             var container = _viewport.FrontModel.Visual as FrameworkElement;
-            if(container != null)
+            if (container != null)
             {
                 // If the owner has an ItemsSource it will
                 // contain the item's DataContext, otherwise
                 // the item is the container itself.
-                if(_itemsOwner.Items.Contains(container))
+                if (_itemsOwner.Items.Contains(container))
                     _itemsOwner.SelectedItem = container;
                 else
                     _itemsOwner.SelectedItem = container.DataContext;
@@ -564,13 +565,13 @@ namespace Dev2.CustomControls.Panels
 
         #region BeginAnimations
 
-        void MoveItems_BeginAnimations(bool forward, TimeSpan animationLength)
+        private void MoveItems_BeginAnimations(bool forward, TimeSpan animationLength)
         {
-            Duration duration = new Duration(animationLength);
+            var duration = new Duration(animationLength);
             int index = 0;
-            foreach(Viewport2DVisual3D model in _viewport.GetModels())
+            foreach (Viewport2DVisual3D model in _viewport.GetModels())
             {
-                var offsets = GetModelOffsets(index);
+                Vector3D offsets = GetModelOffsets(index);
 
                 var xAnimation = new DoubleAnimation
                 {
@@ -597,16 +598,16 @@ namespace Dev2.CustomControls.Panels
                 };
 
                 var transform = model.Transform as TranslateTransform3D;
-                if(transform != null)
+                if (transform != null)
                 {
                     transform.BeginAnimation(TranslateTransform3D.OffsetXProperty, xAnimation);
                     transform.BeginAnimation(TranslateTransform3D.OffsetYProperty, yAnimation);
                     transform.BeginAnimation(TranslateTransform3D.OffsetZProperty, zAnimation);
                 }
 
-                if(AutoAdjustOpacity)
+                if (AutoAdjustOpacity)
                 {
-                    DoubleAnimation opacityAnimation = new DoubleAnimation
+                    var opacityAnimation = new DoubleAnimation
                     {
                         To = GetElementOpacity(index),
                         AccelerationRatio = 0.2,
@@ -615,7 +616,7 @@ namespace Dev2.CustomControls.Panels
                     };
 
                     var element = model.Visual as UIElement;
-                    if(element != null)
+                    if (element != null)
                     {
                         element.BeginAnimation(OpacityProperty, opacityAnimation);
                     }
@@ -629,7 +630,7 @@ namespace Dev2.CustomControls.Panels
 
         #region StartCleanupTimer
 
-        void MoveItems_StartCleanupTimer(TimeSpan animationLength)
+        private void MoveItems_StartCleanupTimer(TimeSpan animationLength)
         {
             _moveItemsCompletionTimer.Interval = animationLength;
             _moveItemsCompletionTimer.Start();
@@ -640,22 +641,22 @@ namespace Dev2.CustomControls.Panels
         #region OnMoveItemsCompleted
 
         /// <summary>
-        /// Invoked when the items stop moving, due to a call to MoveItems().
+        ///     Invoked when the items stop moving, due to a call to MoveItems().
         /// </summary>
-        void OnMoveItemsCompleted(object sender, EventArgs e)
+        private void OnMoveItemsCompleted(object sender, EventArgs e)
         {
             _moveItemsCompletionTimer.Stop();
 
-            if(_abortMoveItems)
+            if (_abortMoveItems)
                 return;
 
             // Remove any extra models from the scene.
-            while(MaxVisibleModels < _viewport.ModelCount)
+            while (MaxVisibleModels < _viewport.ModelCount)
                 _viewport.RemoveBackModel();
 
             IsMovingItems = false;
 
-            if(0 < _moveItemsRequestQueue.Count)
+            if (0 < _moveItemsRequestQueue.Count)
             {
                 MoveItemsRequest req = _moveItemsRequestQueue.Dequeue();
                 MoveItems(req.ItemCount, req.Forward, req.AnimationLength);
@@ -669,25 +670,25 @@ namespace Dev2.CustomControls.Panels
         #region GetVisibleIndexFromChildIndex
 
         /// <summary>
-        /// Returns the visible index of the 3D model that represents
-        /// the 2D element at the specified index in the panel's Children
-        /// collection.  Both index values are zero-based.  The visible
-        /// index of the front model is 0, and each successive model in the
-        /// 3D scene has a visible index one higher than the previous model.
-        /// If the element at the specified index is not currently in the
-        /// viewport, the visible index is -1.
+        ///     Returns the visible index of the 3D model that represents
+        ///     the 2D element at the specified index in the panel's Children
+        ///     collection.  Both index values are zero-based.  The visible
+        ///     index of the front model is 0, and each successive model in the
+        ///     3D scene has a visible index one higher than the previous model.
+        ///     If the element at the specified index is not currently in the
+        ///     viewport, the visible index is -1.
         /// </summary>
         /// <param name="childIndex">A zero-based index of an element in the Children collection.</param>
         public int GetVisibleIndexFromChildIndex(int childIndex)
         {
-            if(childIndex < 0 || Children.Count <= childIndex)
+            if (childIndex < 0 || Children.Count <= childIndex)
                 throw new IndexOutOfRangeException("childIndex is invalid");
 
-            var elem = Children[childIndex];
-            if(elem == null)
+            UIElement elem = Children[childIndex];
+            if (elem == null)
                 throw new InvalidOperationException("Cannot get visible index of null/missing element.");
 
-            var model = _elementTo3DModelMap[elem];
+            Viewport2DVisual3D model = _elementTo3DModelMap[elem];
 
             return _viewport.GetVisualIndex(model);
         }
@@ -697,7 +698,7 @@ namespace Dev2.CustomControls.Panels
         #region Layout Overrides
 
         /// <summary>
-        /// Arranges the Viewport3D in the panel.
+        ///     Arranges the Viewport3D in the panel.
         /// </summary>
         protected override Size ArrangeOverride(Size finalSize)
         {
@@ -706,14 +707,14 @@ namespace Dev2.CustomControls.Panels
         }
 
         /// <summary>
-        /// Measures the size needed to display the Viewport3D.
+        ///     Measures the size needed to display the Viewport3D.
         /// </summary>
         /// <param name="availableSize"></param>
         /// <returns></returns>
         protected override Size MeasureOverride(Size availableSize)
         {
             // Make sure the viewport is parented on first measure.
-            if(!_hasAddedViewport)
+            if (!_hasAddedViewport)
             {
                 _hasAddedViewport = true;
                 AddVisualChild(_viewport);
@@ -728,34 +729,34 @@ namespace Dev2.CustomControls.Panels
         #region Build 3D Model
 
         /// <summary>
-        /// Adds or removes a model in the scene.
+        ///     Adds or removes a model in the scene.
         /// </summary>
         /// <param name="elementAdded"></param>
         /// <param name="elementRemoved"></param>
         protected override void OnLogicalChildrenChanged(UIElement elementAdded, UIElement elementRemoved)
         {
             // Do not create a model for the Viewport3D.
-            if(elementAdded == _viewport)
+            if (elementAdded == _viewport)
                 return;
 
             bool add =
                 elementAdded != null &&
                 !_elementTo3DModelMap.ContainsKey(elementAdded);
 
-            if(add)
+            if (add)
                 AddModelForElement(elementAdded);
 
             bool remove =
                 elementRemoved != null &&
                 _elementTo3DModelMap.ContainsKey(elementRemoved);
 
-            if(remove)
+            if (remove)
                 RemoveModelForElement(elementRemoved);
         }
 
-        void AddModelForElement(UIElement element)
+        private void AddModelForElement(UIElement element)
         {
-            var model = BuildModel(element);
+            Viewport2DVisual3D model = BuildModel(element);
 
             // Add the new model at the correct location in our list of models.
             int idx = Children.IndexOf(element);
@@ -766,23 +767,23 @@ namespace Dev2.CustomControls.Panels
             // If the scene has more than just a light source, grab the first
             // element and use it as the front model.  Otherwise, the scene
             // does not have any of our models in it yet, so pass the new one.
-            var frontModel =
-                _viewport.ModelCount > 0 ?
-                _viewport.FrontModel :
-                model;
+            Viewport2DVisual3D frontModel =
+                _viewport.ModelCount > 0
+                    ? _viewport.FrontModel
+                    : model;
 
             BuildScene(frontModel);
         }
 
-        void RemoveModelForElement(UIElement element)
+        private void RemoveModelForElement(UIElement element)
         {
             IsMovingItems = false;
 
-            var model = _elementTo3DModelMap[element];
+            Viewport2DVisual3D model = _elementTo3DModelMap[element];
             _models.Remove(model);
             _elementTo3DModelMap.Remove(element);
 
-            if(_viewport.Children.Contains(model))
+            if (_viewport.Children.Contains(model))
             {
                 _viewport.Children.Remove(model);
                 BuildScene();
@@ -790,33 +791,33 @@ namespace Dev2.CustomControls.Panels
         }
 
         /// <summary>
-        /// Returns an interactive 3D model that hosts
-        /// the specified UIElement.
+        ///     Returns an interactive 3D model that hosts
+        ///     the specified UIElement.
         /// </summary>
-        Viewport2DVisual3D BuildModel(UIElement element)
+        private Viewport2DVisual3D BuildModel(UIElement element)
         {
             var model = new Viewport2DVisual3D
             {
                 Geometry = new MeshGeometry3D
                 {
                     TriangleIndices = new Int32Collection(
-                        new[] { 0, 1, 2, 2, 3, 0 }),
+                        new[] {0, 1, 2, 2, 3, 0}),
                     TextureCoordinates = new PointCollection(
-                        new[] 
-                            { 
-                                new Point(0, 1), 
-                                new Point(1, 1), 
-                                new Point(1, 0), 
-                                new Point(0, 0) 
-                            }),
+                        new[]
+                        {
+                            new Point(0, 1),
+                            new Point(1, 1),
+                            new Point(1, 0),
+                            new Point(0, 0)
+                        }),
                     Positions = new Point3DCollection(
-                        new[] 
-                            { 
-                                new Point3D(-1, -1, 0), 
-                                new Point3D(+1, -1, 0), 
-                                new Point3D(+1, +1, 0), 
-                                new Point3D(-1, +1, 0) 
-                            })
+                        new[]
+                        {
+                            new Point3D(-1, -1, 0),
+                            new Point3D(+1, -1, 0),
+                            new Point3D(+1, +1, 0),
+                            new Point3D(-1, +1, 0)
+                        })
                 },
                 Material = new DiffuseMaterial(),
                 Transform = new TranslateTransform3D(),
@@ -834,33 +835,33 @@ namespace Dev2.CustomControls.Panels
         #region Build 3D Scene
 
         /// <summary>
-        /// Tears down the 3D scene and rebuilds it, so that newly added
-        /// or removed models are taken into account.
+        ///     Tears down the 3D scene and rebuilds it, so that newly added
+        ///     or removed models are taken into account.
         /// </summary>
-        void BuildScene()
+        private void BuildScene()
         {
-            if(0 < _viewport.ModelCount)
+            if (0 < _viewport.ModelCount)
                 BuildScene(_viewport.FrontModel);
         }
 
         /// <summary>
-        /// Tears down the current 3D scene and constructs a new one 
-        /// where the specified model is the front object in view.
+        ///     Tears down the current 3D scene and constructs a new one
+        ///     where the specified model is the front object in view.
         /// </summary>
-        void BuildScene(Viewport2DVisual3D frontModel)
+        private void BuildScene(Viewport2DVisual3D frontModel)
         {
             _viewport.RemoveAllModels();
 
             // Add in some 3D models, starting with the one in front.
-            var current = frontModel;
-            for(int i = 0; _viewport.ModelCount < MaxVisibleModels; ++i)
+            Viewport2DVisual3D current = frontModel;
+            for (int i = 0; _viewport.ModelCount < MaxVisibleModels; ++i)
             {
                 ConfigureModel(current, i);
 
                 _viewport.AddToBack(current);
 
                 current = GetNextModel(current);
-                if(_viewport.Children.Contains(current))
+                if (_viewport.Children.Contains(current))
                     break;
             }
         }
@@ -870,47 +871,47 @@ namespace Dev2.CustomControls.Panels
         #region Selected Item Synchronization
 
         /// <summary>
-        /// Invoked when the panel is added to or removed from a list control.
+        ///     Invoked when the panel is added to or removed from a list control.
         /// </summary>
         protected override void OnIsItemsHostChanged(bool oldIsItemsHost, bool newIsItemsHost)
         {
             base.OnIsItemsHostChanged(oldIsItemsHost, newIsItemsHost);
 
-            if(oldIsItemsHost && _itemsOwner != null)
+            if (oldIsItemsHost && _itemsOwner != null)
             {
                 _itemsOwner.SelectionChanged -= OnItemsOwnerSelectionChanged;
                 _itemsOwner = null;
             }
 
-            if(newIsItemsHost)
+            if (newIsItemsHost)
             {
                 _itemsOwner = ItemsControl.GetItemsOwner(this) as Selector;
-                if(_itemsOwner != null)
+                if (_itemsOwner != null)
                     _itemsOwner.SelectionChanged += OnItemsOwnerSelectionChanged;
             }
         }
 
-        void OnItemsOwnerSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnItemsOwnerSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(_itemsOwner == null ||
+            if (_itemsOwner == null ||
                 _itemsOwner.SelectedIndex < 0 ||
                 (_itemsOwner.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated &&
-                _itemsOwner.ItemContainerGenerator.Status != GeneratorStatus.GeneratingContainers))
+                 _itemsOwner.ItemContainerGenerator.Status != GeneratorStatus.GeneratingContainers))
                 return;
 
             var elem = _itemsOwner.ItemContainerGenerator.ContainerFromIndex(_itemsOwner.SelectedIndex) as UIElement;
-            if(elem == null)
+            if (elem == null)
                 return;
 
             Debug.Assert(_elementTo3DModelMap.ContainsKey(elem), "Why does the map not contain this element?");
 
-            var model = _elementTo3DModelMap[elem];
+            Viewport2DVisual3D model = _elementTo3DModelMap[elem];
 
             bool isSelectedItemInFront = _viewport.FrontModel == model;
 
-            if(!isSelectedItemInFront)
+            if (!isSelectedItemInFront)
             {
-                if(IsMovingItems)
+                if (IsMovingItems)
                 {
                     IsMovingItems = false;
                     _abortMoveItems = true;
@@ -930,10 +931,15 @@ namespace Dev2.CustomControls.Panels
 
         #region Private Helpers
 
+        private bool IsVirtualizing
+        {
+            get { return MaxVisibleModels < _models.Count; }
+        }
+
         /// <summary>
-        /// Adjusts a 3D model's location and opacity.
+        ///     Adjusts a 3D model's location and opacity.
         /// </summary>
-        void ConfigureModel(Viewport2DVisual3D model, int index)
+        private void ConfigureModel(Viewport2DVisual3D model, int index)
         {
             // We begin "null animations" to unapply any active animations.
 
@@ -942,7 +948,7 @@ namespace Dev2.CustomControls.Panels
             trans.BeginAnimation(TranslateTransform3D.OffsetYProperty, null);
             trans.BeginAnimation(TranslateTransform3D.OffsetZProperty, null);
 
-            var offsets = GetModelOffsets(index);
+            Vector3D offsets = GetModelOffsets(index);
             trans.OffsetX = offsets.X;
             trans.OffsetY = offsets.Y;
             trans.OffsetZ = offsets.Z;
@@ -952,52 +958,47 @@ namespace Dev2.CustomControls.Panels
             elem.Opacity = AutoAdjustOpacity ? GetElementOpacity(index) : 1.0;
         }
 
-        double GetElementOpacity(int index)
+        private double GetElementOpacity(int index)
         {
             int ordinalIndex = index + 1;
 
             bool isinView = 0 < ordinalIndex && ordinalIndex <= MaxVisibleModels;
-            if(!isinView)
+            if (!isinView)
                 return 0.0;
 
-            return 1.0 / Math.Max(ordinalIndex, 1) + 0.1;
+            return 1.0/Math.Max(ordinalIndex, 1) + 0.1;
         }
 
-        Viewport2DVisual3D GetNextModel(Viewport2DVisual3D current)
+        private Viewport2DVisual3D GetNextModel(Viewport2DVisual3D current)
         {
-            if(!_models.Contains(current))
+            if (!_models.Contains(current))
                 throw new ArgumentException("current");
 
             // Wrap to the start of the list if necessary.
             int idx = _models.IndexOf(current) + 1;
-            if(idx == _models.Count)
+            if (idx == _models.Count)
                 idx = 0;
 
             return _models[idx];
         }
 
-        Viewport2DVisual3D GetPreviousModel(Viewport2DVisual3D current)
+        private Viewport2DVisual3D GetPreviousModel(Viewport2DVisual3D current)
         {
-            if(!_models.Contains(current))
+            if (!_models.Contains(current))
                 throw new ArgumentException("current");
 
             // Wrap to the end of the list if necessary.
             int idx = _models.IndexOf(current) - 1;
-            if(idx == -1)
+            if (idx == -1)
                 idx = _models.Count - 1;
 
             return _models[idx];
         }
 
-        Vector3D GetModelOffsets(int index)
+        private Vector3D GetModelOffsets(int index)
         {
             int ordinalIndex = index + 1;
             return Vector3D.Multiply(ordinalIndex, ItemLayoutDirection);
-        }
-
-        bool IsVirtualizing
-        {
-            get { return MaxVisibleModels < _models.Count; }
         }
 
         #endregion // Private Helpers

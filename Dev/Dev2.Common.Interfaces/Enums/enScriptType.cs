@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,11 +15,8 @@ namespace Dev2.Common.Interfaces.Enums
 {
     public enum enScriptType
     {
-        [Description("JavaScript")]
-        JavaScript,
-        [Description("Ruby")]
-        Ruby,
-        [Description("Python")]
-        Python
+        [Description("JavaScript")] JavaScript,
+        [Description("Ruby")] Ruby,
+        [Description("Python")] Python
     }
 }

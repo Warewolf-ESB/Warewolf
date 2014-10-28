@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,38 +18,40 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace WPF.JoshSmith.Data.ValueConverters
 {
     /// <summary>
-    /// A value converter which contains a list of IValueConverters and invokes their Convert or ConvertBack methods
-    /// in the order that they exist in the list.  Every converter in the group must be decorated exactly once with 
-    /// the ValueConversion attribute, otherwise an InvalidOperationException will be thrown.
+    ///     A value converter which contains a list of IValueConverters and invokes their Convert or ConvertBack methods
+    ///     in the order that they exist in the list.  Every converter in the group must be decorated exactly once with
+    ///     the ValueConversion attribute, otherwise an InvalidOperationException will be thrown.
     /// </summary>
     /// <remarks>
-    /// The output of one converter is piped into the next converter allowing for modular value
-    /// converters to be chained together.  If the ConvertBack method is invoked, the value converters
-    /// are executed in reverse order (highest to lowest index).  Do not leave an element in the
-    /// Converters property collection null, every element must reference a valid IValueConverter 
-    /// instance. If a value converter's type is not decorated with the ValueConversionAttribute, 
-    /// an InvalidOperationException will be thrown when the converter is added to the Converters collection.
-    /// 
-    /// Documentation: http://www.codeproject.com/KB/WPF/PipingValueConverters_WPF.aspx
+    ///     The output of one converter is piped into the next converter allowing for modular value
+    ///     converters to be chained together.  If the ConvertBack method is invoked, the value converters
+    ///     are executed in reverse order (highest to lowest index).  Do not leave an element in the
+    ///     Converters property collection null, every element must reference a valid IValueConverter
+    ///     instance. If a value converter's type is not decorated with the ValueConversionAttribute,
+    ///     an InvalidOperationException will be thrown when the converter is added to the Converters collection.
+    ///     Documentation: http://www.codeproject.com/KB/WPF/PipingValueConverters_WPF.aspx
     /// </remarks>
-    [System.Windows.Markup.ContentProperty("Converters")]
+    [ContentProperty("Converters")]
     public class ValueConverterGroup : IValueConverter
     {
         #region Data
 
+        private readonly Dictionary<IValueConverter, ValueConversionAttribute> cachedAttributes =
+            new Dictionary<IValueConverter, ValueConversionAttribute>();
+
         private readonly ObservableCollection<IValueConverter> converters = new ObservableCollection<IValueConverter>();
-        private readonly Dictionary<IValueConverter, ValueConversionAttribute> cachedAttributes = new Dictionary<IValueConverter, ValueConversionAttribute>();
 
         #endregion // Data
 
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of ValueConverterGroup.
+        ///     Initializes a new instance of ValueConverterGroup.
         /// </summary>
         public ValueConverterGroup()
         {
@@ -62,7 +63,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
         #region Converters
 
         /// <summary>
-        /// Returns the list of IValueConverters contained in this converter.
+        ///     Returns the list of IValueConverters contained in this converter.
         /// </summary>
         public ObservableCollection<IValueConverter> Converters
         {
@@ -77,14 +78,14 @@ namespace WPF.JoshSmith.Data.ValueConverters
         {
             object output = value;
 
-            for(int i = 0; i < Converters.Count; ++i)
+            for (int i = 0; i < Converters.Count; ++i)
             {
                 IValueConverter converter = Converters[i];
                 Type currentTargetType = GetTargetType(i, targetType, true);
                 output = converter.Convert(output, currentTargetType, parameter, culture);
 
                 // If the converter returns 'DoNothing' then the binding operation should terminate.
-                if(output == Binding.DoNothing)
+                if (output == Binding.DoNothing)
                     break;
             }
 
@@ -95,14 +96,14 @@ namespace WPF.JoshSmith.Data.ValueConverters
         {
             object output = value;
 
-            for(int i = Converters.Count - 1; i > -1; --i)
+            for (int i = Converters.Count - 1; i > -1; --i)
             {
                 IValueConverter converter = Converters[i];
                 Type currentTargetType = GetTargetType(i, targetType, false);
                 output = converter.ConvertBack(output, currentTargetType, parameter, culture);
 
                 // When a converter returns 'DoNothing' the binding operation should terminate.
-                if(output == Binding.DoNothing)
+                if (output == Binding.DoNothing)
                     break;
             }
 
@@ -116,7 +117,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
         #region GetTargetType
 
         /// <summary>
-        /// Returns the target type for a conversion operation.
+        ///     Returns the target type for a conversion operation.
         /// </summary>
         /// <param name="converterIndex">The index of the current converter about to be executed.</param>
         /// <param name="finalTargetType">The 'targetType' argument passed into the conversion method.</param>
@@ -126,12 +127,12 @@ namespace WPF.JoshSmith.Data.ValueConverters
             // If the current converter is not the last/first in the list, 
             // get a reference to the next/previous converter.
             IValueConverter nextConverter = null;
-            if(convert)
+            if (convert)
             {
-                if(converterIndex < Converters.Count - 1)
+                if (converterIndex < Converters.Count - 1)
                 {
                     nextConverter = Converters[converterIndex + 1];
-                    if(nextConverter == null)
+                    if (nextConverter == null)
                         throw new InvalidOperationException(
                             "The Converters collection of the ValueConverterGroup contains a null reference at index: "
                             + (converterIndex + 1));
@@ -139,17 +140,17 @@ namespace WPF.JoshSmith.Data.ValueConverters
             }
             else
             {
-                if(converterIndex > 0)
+                if (converterIndex > 0)
                 {
                     nextConverter = Converters[converterIndex - 1];
-                    if(nextConverter == null)
+                    if (nextConverter == null)
                         throw new InvalidOperationException(
                             "The Converters collection of the ValueConverterGroup contains a null reference at index: "
                             + (converterIndex - 1));
                 }
             }
 
-            if(nextConverter != null)
+            if (nextConverter != null)
             {
                 ValueConversionAttribute conversionAttribute = cachedAttributes[nextConverter];
 
@@ -167,36 +168,38 @@ namespace WPF.JoshSmith.Data.ValueConverters
 
         #region OnConvertersCollectionChanged
 
-        void OnConvertersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnConvertersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // The 'Converters' collection has been modified, so validate that each value converter it now
             // contains is decorated with ValueConversionAttribute and then cache the attribute value.
 
             IList convertersToProcess = null;
-            if(e.Action == NotifyCollectionChangedAction.Add ||
+            if (e.Action == NotifyCollectionChangedAction.Add ||
                 e.Action == NotifyCollectionChangedAction.Replace)
             {
                 convertersToProcess = e.NewItems;
             }
-            else if(e.Action == NotifyCollectionChangedAction.Remove)
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
-                foreach(IValueConverter converter in e.OldItems)
+                foreach (IValueConverter converter in e.OldItems)
                     cachedAttributes.Remove(converter);
             }
-            else if(e.Action == NotifyCollectionChangedAction.Reset)
+            else if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 cachedAttributes.Clear();
                 convertersToProcess = converters;
             }
 
-            if(convertersToProcess != null && convertersToProcess.Count > 0)
+            if (convertersToProcess != null && convertersToProcess.Count > 0)
             {
-                foreach(IValueConverter converter in convertersToProcess)
+                foreach (IValueConverter converter in convertersToProcess)
                 {
-                    object[] attributes = converter.GetType().GetCustomAttributes(typeof(ValueConversionAttribute), false);
+                    object[] attributes = converter.GetType()
+                        .GetCustomAttributes(typeof (ValueConversionAttribute), false);
 
-                    if(attributes.Length != 1)
-                        throw new InvalidOperationException("All value converters added to a ValueConverterGroup must be decorated with the ValueConversionAttribute attribute exactly once.");
+                    if (attributes.Length != 1)
+                        throw new InvalidOperationException(
+                            "All value converters added to a ValueConverterGroup must be decorated with the ValueConversionAttribute attribute exactly once.");
 
                     cachedAttributes.Add(converter, attributes[0] as ValueConversionAttribute);
                 }

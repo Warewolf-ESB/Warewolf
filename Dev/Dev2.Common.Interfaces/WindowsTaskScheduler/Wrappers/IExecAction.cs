@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -31,7 +30,8 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         string Arguments { get; set; }
 
         /// <summary>
-        ///     Gets or sets the directory that contains either the executable file or the files that are used by the executable file.
+        ///     Gets or sets the directory that contains either the executable file or the files that are used by the executable
+        ///     file.
         /// </summary>
         [DefaultValue("")]
         string WorkingDirectory { get; set; }

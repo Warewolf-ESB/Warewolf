@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,16 +13,19 @@ using System;
 using System.Text;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 
-namespace Dev2.Common {
-    internal class Dev2IndexOp : IDev2SplitOp{
-
-        public int ToIndex { get; private set; }
-
-        internal Dev2IndexOp(int index) {
+namespace Dev2.Common
+{
+    internal class Dev2IndexOp : IDev2SplitOp
+    {
+        internal Dev2IndexOp(int index)
+        {
             ToIndex = index;
         }
 
-        public bool IsFinalOp() {
+        public int ToIndex { get; private set; }
+
+        public bool IsFinalOp()
+        {
             return false;
         }
 
@@ -32,8 +34,9 @@ namespace Dev2.Common {
             return false;
         }
 
-        public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed) {
-            StringBuilder result = new StringBuilder();
+        public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
+        {
+            var result = new StringBuilder();
 
             int start = startIdx;
             int end = (startIdx + ToIndex);
@@ -44,12 +47,14 @@ namespace Dev2.Common {
                 end = candidate.Length;
             }
 
-            if (isReversed) {
-                start = (startIdx - ToIndex)+1;
-                end = startIdx+1;
+            if (isReversed)
+            {
+                start = (startIdx - ToIndex) + 1;
+                end = startIdx + 1;
             }
 
-            for (int i = start; i < end; i++) {
+            for (int i = start; i < end; i++)
+            {
                 result.Append(candidate[i]);
             }
 
@@ -62,7 +67,8 @@ namespace Dev2.Common {
         }
 
 
-        public int OpLength() {
+        public int OpLength()
+        {
             return 0;
         }
     }

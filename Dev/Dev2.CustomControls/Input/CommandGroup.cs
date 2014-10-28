@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,13 +20,13 @@ using System.Windows.Markup;
 namespace WPF.JoshSmith.Input
 {
     /// <summary>
-    /// This is a command that simply aggregates other commands into a group.
-    /// This command's CanExecute logic delegates to the CanExecute logic of 
-    /// all the child commands.  When executed, it calls the Execute method
-    /// on each child command sequentially.
+    ///     This is a command that simply aggregates other commands into a group.
+    ///     This command's CanExecute logic delegates to the CanExecute logic of
+    ///     all the child commands.  When executed, it calls the Execute method
+    ///     on each child command sequentially.
     /// </summary>
     /// <remarks>
-    /// Documentation: http://www.codeproject.com/KB/WPF/commandgroup.aspx
+    ///     Documentation: http://www.codeproject.com/KB/WPF/commandgroup.aspx
     /// </remarks>
     [ContentProperty("Commands")]
     public class CommandGroup : ICommand
@@ -35,11 +34,11 @@ namespace WPF.JoshSmith.Input
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance.
+        ///     Initializes a new instance.
         /// </summary>
         // ReSharper disable EmptyConstructor
         public CommandGroup()
-        // ReSharper restore EmptyConstructor
+            // ReSharper restore EmptyConstructor
         {
             // Parameterless public ctor required for XAML instantiation.
         }
@@ -51,14 +50,14 @@ namespace WPF.JoshSmith.Input
         private ObservableCollection<ICommand> _commands;
 
         /// <summary>
-        /// Returns the collection of child commands.  They are executed
-        /// in the order that they exist in this collection.
+        ///     Returns the collection of child commands.  They are executed
+        ///     in the order that they exist in this collection.
         /// </summary>
         public ObservableCollection<ICommand> Commands
         {
             get
             {
-                if(_commands == null)
+                if (_commands == null)
                 {
                     _commands = new ObservableCollection<ICommand>();
                     _commands.CollectionChanged += OnCommandsCollectionChanged;
@@ -68,25 +67,25 @@ namespace WPF.JoshSmith.Input
             }
         }
 
-        void OnCommandsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnCommandsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // We have a new child command so our ability to execute may have changed.
             OnCanExecuteChanged();
 
-            if(e.NewItems != null && 0 < e.NewItems.Count)
+            if (e.NewItems != null && 0 < e.NewItems.Count)
             {
-                foreach(ICommand cmd in e.NewItems)
+                foreach (ICommand cmd in e.NewItems)
                     cmd.CanExecuteChanged += OnChildCommandCanExecuteChanged;
             }
 
-            if(e.OldItems != null && 0 < e.OldItems.Count)
+            if (e.OldItems != null && 0 < e.OldItems.Count)
             {
-                foreach(ICommand cmd in e.OldItems)
+                foreach (ICommand cmd in e.OldItems)
                     cmd.CanExecuteChanged -= OnChildCommandCanExecuteChanged;
             }
         }
 
-        void OnChildCommandCanExecuteChanged(object sender, EventArgs e)
+        private void OnChildCommandCanExecuteChanged(object sender, EventArgs e)
         {
             // Bubble up the child commands CanExecuteChanged event so that
             // it will be observed by WPF.
@@ -98,40 +97,40 @@ namespace WPF.JoshSmith.Input
         #region ICommand Members
 
         /// <summary>
-        /// Returns true if all of the commands in the group can execute.
+        ///     Returns true if all of the commands in the group can execute.
         /// </summary>
         public bool CanExecute(object parameter)
         {
             // ReSharper disable LoopCanBeConvertedToQuery
-            foreach(ICommand cmd in Commands)
+            foreach (ICommand cmd in Commands)
                 // ReSharper restore LoopCanBeConvertedToQuery
-                if(!cmd.CanExecute(parameter))
+                if (!cmd.CanExecute(parameter))
                     return false;
 
             return true;
         }
 
         /// <summary>
-        /// Raised when something changes whether the command can or cannot execute.
+        ///     Raised when something changes whether the command can or cannot execute.
         /// </summary>
         public event EventHandler CanExecuteChanged;
 
         /// <summary>
-        /// Subclasses can invoke this method to raise the CanExecuteChanged event.
-        /// </summary>
-        protected virtual void OnCanExecuteChanged()
-        {
-            if(CanExecuteChanged != null)
-                CanExecuteChanged(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        /// Executes each command in the group sequentially.
+        ///     Executes each command in the group sequentially.
         /// </summary>
         public void Execute(object parameter)
         {
-            foreach(ICommand cmd in Commands)
+            foreach (ICommand cmd in Commands)
                 cmd.Execute(parameter);
+        }
+
+        /// <summary>
+        ///     Subclasses can invoke this method to raise the CanExecuteChanged event.
+        /// </summary>
+        protected virtual void OnCanExecuteChanged()
+        {
+            if (CanExecuteChanged != null)
+                CanExecuteChanged(this, EventArgs.Empty);
         }
 
         #endregion // ICommand Members

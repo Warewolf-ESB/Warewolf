@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,20 +19,18 @@ namespace Dev2.Common
 {
     internal class Dev2Tokenizer : IDev2Tokenizer, IDisposable
     {
-
-        private readonly char[] _tokenParts;
-        readonly CharEnumerator _charEnumerator;
-        private readonly IList<IDev2SplitOp> _ops;
+        private readonly CharEnumerator _charEnumerator;
         private readonly bool _isReversed;
         private readonly int _masterLen;
-
-        private int _opPointer;
-        private int _startIdx;
-        private bool _hasMoreOps;
+        private readonly IList<IDev2SplitOp> _ops;
+        private readonly char[] _tokenParts;
 
         private readonly bool _useEnumerator;
 
         private bool _disposing;
+        private bool _hasMoreOps;
+        private int _opPointer;
+        private int _startIdx;
 
         internal Dev2Tokenizer(string candiateString, IList<IDev2SplitOp> ops, bool reversed)
         {
@@ -45,7 +42,7 @@ namespace Dev2.Common
             _masterLen = candiateString.Length;
 
             // we need the char array :( - non optimized
-            if(!_useEnumerator)
+            if (!_useEnumerator)
             {
                 _tokenParts = candiateString.ToCharArray();
             }
@@ -59,7 +56,7 @@ namespace Dev2.Common
             _hasMoreOps = true;
 
 
-            if(!_isReversed)
+            if (!_isReversed)
             {
                 _startIdx = 0;
             }
@@ -72,19 +69,19 @@ namespace Dev2.Common
         #region Private Method
 
         /// <summary>
-        /// Determines whether this instance [can use enumerator].
+        ///     Determines whether this instance [can use enumerator].
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if this instance [can use enumerator]; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance [can use enumerator]; otherwise, <c>false</c>.
         /// </returns>
         private bool CanUseEnumerator()
         {
             bool result = false;
 
-            if(_ops != null)
+            if (_ops != null)
             {
                 // are all the ops token based?!
-                if(_ops.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count)
+                if (_ops.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count)
                 {
                     result = true;
                 }
@@ -94,25 +91,25 @@ namespace Dev2.Common
         }
 
         /// <summary>
-        /// Moves the op pointer.
+        ///     Moves the op pointer.
         /// </summary>
         private void MoveOpPointer()
         {
             _opPointer++;
 
-            if(_opPointer >= _ops.Count)
+            if (_opPointer >= _ops.Count)
             {
                 _opPointer = 0;
             }
         }
 
         /// <summary>
-        /// Moves the start index.
+        ///     Moves the start index.
         /// </summary>
         /// <param name="newOffSet">The new off set.</param>
         private void MoveStartIndex(int newOffSet)
         {
-            if(!_isReversed)
+            if (!_isReversed)
             {
                 _startIdx += newOffSet;
             }
@@ -123,16 +120,16 @@ namespace Dev2.Common
         }
 
         /// <summary>
-        /// Determines whether [has more data].
+        ///     Determines whether [has more data].
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if [has more data]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [has more data]; otherwise, <c>false</c>.
         /// </returns>
         private bool HasMoreData()
         {
             bool result;
 
-            if(!_isReversed)
+            if (!_isReversed)
             {
                 result = (_startIdx < _masterLen);
             }
@@ -145,25 +142,25 @@ namespace Dev2.Common
         }
 
         /// <summary>
-        /// Remainders to string.
+        ///     Remainders to string.
         /// </summary>
         /// <returns></returns>
         private string RemainderToString()
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            if(!_useEnumerator)
+            if (!_useEnumerator)
             {
-                if(_isReversed)
+                if (_isReversed)
                 {
-                    for(var i = 0; i <= _startIdx; i++)
+                    for (int i = 0; i <= _startIdx; i++)
                     {
                         result.Append(_tokenParts[i]);
                     }
                 }
                 else
                 {
-                    for(int i = _startIdx; i < _tokenParts.Length; i++)
+                    for (int i = _startIdx; i < _tokenParts.Length; i++)
                     {
                         result.Append(_tokenParts[i]);
                     }
@@ -173,14 +170,14 @@ namespace Dev2.Common
             {
                 try
                 {
-                    while(_charEnumerator.MoveNext())
+                    while (_charEnumerator.MoveNext())
                     {
                         result.Append(_charEnumerator.Current);
                     }
                 }
-                // ReSharper disable EmptyGeneralCatchClause
-                catch(Exception)
-                // ReSharper restore EmptyGeneralCatchClause
+                    // ReSharper disable EmptyGeneralCatchClause
+                catch (Exception)
+                    // ReSharper restore EmptyGeneralCatchClause
                 {
                     // _charEnumerator will return null reference exception when done ;)
                 }
@@ -195,10 +192,10 @@ namespace Dev2.Common
         #endregion
 
         /// <summary>
-        /// Determines whether [has more ops].
+        ///     Determines whether [has more ops].
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if [has more ops]; otherwise, <c>false</c>.
+        ///     <c>true</c> if [has more ops]; otherwise, <c>false</c>.
         /// </returns>
         public bool HasMoreOps()
         {
@@ -206,7 +203,7 @@ namespace Dev2.Common
         }
 
         /// <summary>
-        /// Next the token.
+        ///     Next the token.
         /// </summary>
         /// <returns></returns>
         public string NextToken()
@@ -216,7 +213,7 @@ namespace Dev2.Common
             try
             {
                 // we can be smart about the operations ;)
-                if(_useEnumerator)
+                if (_useEnumerator)
                 {
                     result = _ops[_opPointer].ExecuteOperation(_charEnumerator, _startIdx, _masterLen, _isReversed);
                 }
@@ -249,9 +246,9 @@ namespace Dev2.Common
 
         protected virtual void Dispose(bool disposing)
         {
-            if(!_disposing)
+            if (!_disposing)
             {
-                if(disposing)
+                if (disposing)
                 {
                     _charEnumerator.Dispose();
                 }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,7 +25,7 @@ namespace Dev2.Simulation
         #region Key
 
         /// <summary>
-        /// Gets or sets the unique key.
+        ///     Gets or sets the unique key.
         /// </summary>
         public ISimulationKey Key { get; set; }
 
@@ -35,7 +34,7 @@ namespace Dev2.Simulation
         #region Value
 
         /// <summary>
-        /// Gets or sets the value.
+        ///     Gets or sets the value.
         /// </summary>
         public IBinaryDataList Value { get; set; }
 
@@ -45,17 +44,17 @@ namespace Dev2.Simulation
 
         protected SimulationResult(SerializationInfo info, StreamingContext context)
         {
-            if(info == null)
+            if (info == null)
             {
                 throw new ArgumentNullException("info");
             }
-            Key = (ISimulationKey)info.GetValue("Key", typeof(ISimulationKey));
-            Value = (IBinaryDataList)info.GetValue("Value", typeof(IBinaryDataList));
+            Key = (ISimulationKey) info.GetValue("Key", typeof (ISimulationKey));
+            Value = (IBinaryDataList) info.GetValue("Value", typeof (IBinaryDataList));
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if(info == null)
+            if (info == null)
             {
                 throw new ArgumentNullException("info");
             }
@@ -69,7 +68,7 @@ namespace Dev2.Simulation
 
         public bool Equals(ISimulationResult other)
         {
-            if(other == null)
+            if (other == null)
             {
                 return false;
             }
@@ -78,7 +77,7 @@ namespace Dev2.Simulation
 
         public override bool Equals(object obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return false;
             }

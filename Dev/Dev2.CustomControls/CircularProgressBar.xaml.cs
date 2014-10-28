@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,18 +17,18 @@ using System.Windows.Threading;
 namespace Dev2.CustomControls
 {
     /// <summary>
-    /// Interaction logic for CircularProgressBar.xaml
+    ///     Interaction logic for CircularProgressBar.xaml
     /// </summary>
     public partial class CircularProgressBar
     {
         public static readonly DependencyProperty MinimumProperty =
-            DependencyProperty.Register("Minimum", typeof(int), typeof(CircularProgressBar), new UIPropertyMetadata(1));
+            DependencyProperty.Register("Minimum", typeof (int), typeof (CircularProgressBar), new UIPropertyMetadata(1));
 
         public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(int), typeof(CircularProgressBar), new UIPropertyMetadata(1));
+            DependencyProperty.Register("Maximum", typeof (int), typeof (CircularProgressBar), new UIPropertyMetadata(1));
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(int), typeof(CircularProgressBar), new UIPropertyMetadata(100));
+            DependencyProperty.Register("Value", typeof (int), typeof (CircularProgressBar), new UIPropertyMetadata(100));
 
         #region Fields
 
@@ -40,7 +39,7 @@ namespace Dev2.CustomControls
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CircularProgressBar"/> class.
+        ///     Initializes a new instance of the <see cref="CircularProgressBar" /> class.
         /// </summary>
         public CircularProgressBar()
         {
@@ -59,39 +58,39 @@ namespace Dev2.CustomControls
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the minimum.
+        ///     Gets or sets the minimum.
         /// </summary>
         /// <value>The minimum.</value>
         public int Minimum
         {
-            get { return (int)GetValue(MinimumProperty); }
+            get { return (int) GetValue(MinimumProperty); }
             set { SetValue(MinimumProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets the maximum.
+        ///     Gets or sets the maximum.
         /// </summary>
         /// <value>The maximum.</value>
         public int Maximum
         {
-            get { return (int)GetValue(MaximumProperty); }
+            get { return (int) GetValue(MaximumProperty); }
             set { SetValue(MaximumProperty, value); }
         }
 
         /// <summary>
-        /// Gets or sets the value.
+        ///     Gets or sets the value.
         /// </summary>
         /// <value>The value.</value>
         public int Value
         {
-            get { return (int)GetValue(ValueProperty); }
+            get { return (int) GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
         }
 
         #endregion
 
         /// <summary>
-        /// Sets the position.
+        ///     Sets the position.
         /// </summary>
         /// <param name="ellipse">The ellipse.</param>
         /// <param name="offset">The offset.</param>
@@ -99,12 +98,12 @@ namespace Dev2.CustomControls
         /// <param name="step">The step to change.</param>
         private static void SetPosition(DependencyObject ellipse, double offset, double posOffSet, double step)
         {
-            ellipse.SetValue(Canvas.LeftProperty, 50 + (Math.Sin(offset + (posOffSet * step)) * 50));
-            ellipse.SetValue(Canvas.TopProperty, 50 + (Math.Cos(offset + (posOffSet * step)) * 50));
+            ellipse.SetValue(Canvas.LeftProperty, 50 + (Math.Sin(offset + (posOffSet*step))*50));
+            ellipse.SetValue(Canvas.TopProperty, 50 + (Math.Cos(offset + (posOffSet*step))*50));
         }
 
         /// <summary>
-        /// Starts this instance.
+        ///     Starts this instance.
         /// </summary>
         private void Start()
         {
@@ -113,7 +112,7 @@ namespace Dev2.CustomControls
         }
 
         /// <summary>
-        /// Stops this instance.
+        ///     Stops this instance.
         /// </summary>
         private void Stop()
         {
@@ -122,24 +121,24 @@ namespace Dev2.CustomControls
         }
 
         /// <summary>
-        /// Handles the animation tick.
+        ///     Handles the animation tick.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnAnimationTick(object sender, EventArgs e)
         {
-            _spinnerRotate.Angle = (_spinnerRotate.Angle + 36) % 360;
+            _spinnerRotate.Angle = (_spinnerRotate.Angle + 36)%360;
         }
 
         /// <summary>
-        /// Handles the loaded.
+        ///     Handles the loaded.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void OnCanvasLoaded(object sender, RoutedEventArgs e)
         {
             const double offset = Math.PI;
-            const double step = Math.PI * 2 / 10.0;
+            const double step = Math.PI*2/10.0;
 
             SetPosition(_circle0, offset, 0.0, step);
             SetPosition(_circle1, offset, 1.0, step);
@@ -153,23 +152,26 @@ namespace Dev2.CustomControls
         }
 
         /// <summary>
-        /// Handles the unloaded.
+        ///     Handles the unloaded.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
         private void OnCanvasUnloaded(object sender, RoutedEventArgs e)
         {
             Stop();
         }
 
         /// <summary>
-        /// Handles the visible changed.
+        ///     Handles the visible changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.Windows.DependencyPropertyChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">
+        ///     The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event
+        ///     data.
+        /// </param>
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var isVisible = (bool)e.NewValue;
+            var isVisible = (bool) e.NewValue;
 
             if (isVisible)
             {

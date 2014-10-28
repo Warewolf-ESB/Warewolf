@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -33,4 +32,3 @@ namespace Dev2.Common.Interfaces.UndoFramework
         public SimpleHistoryNode PreviousNode { get; set; }
     }
 }
-

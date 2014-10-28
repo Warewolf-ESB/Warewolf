@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,7 +23,7 @@ namespace Dev2
         public static bool IsEnumerableOfPrimitives(this JProperty property)
         {
             bool returnValue = false;
-            JArray array = property.Value as JArray;
+            var array = property.Value as JArray;
 
             if (array != null && array.Count > 0)
             {

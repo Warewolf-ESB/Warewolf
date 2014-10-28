@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,28 +18,29 @@ using System.Windows.Controls;
 
 namespace WPF.JoshSmith.Controls
 {
+
     #region RoutedDataTemplateSelector
 
     /// <summary>
-    /// A DataTemplateSelector which raises the bubbling TemplateRequested routed event
-    /// on the templated element when a DataTemplate must be chosen.
+    ///     A DataTemplateSelector which raises the bubbling TemplateRequested routed event
+    ///     on the templated element when a DataTemplate must be chosen.
     /// </summary>
     /// <remarks>
-    /// Documentation: http://www.codeproject.com/KB/WPF/RoutedTemplateSelection.aspx
+    ///     Documentation: http://www.codeproject.com/KB/WPF/RoutedTemplateSelection.aspx
     /// </remarks>
     public class RoutedDataTemplateSelector : DataTemplateSelector
     {
         #region TemplateRequested [routed event]
 
         /// <summary>
-        /// Represents the TemplateRequested bubbling routed event.
+        ///     Represents the TemplateRequested bubbling routed event.
         /// </summary>
         public static readonly RoutedEvent TemplateRequestedEvent =
             EventManager.RegisterRoutedEvent(
-            "TemplateRequested",
-            RoutingStrategy.Bubble,
-            typeof(TemplateRequestedEventHandler),
-            typeof(RoutedDataTemplateSelector));
+                "TemplateRequested",
+                RoutingStrategy.Bubble,
+                typeof (TemplateRequestedEventHandler),
+                typeof (RoutedDataTemplateSelector));
 
         // This event declaration is only here so that the compiler allows
         // the TemplateRequested event to be assigned a handler in XAML.
@@ -48,19 +48,13 @@ namespace WPF.JoshSmith.Controls
         // does not have the AddHandler/RemoveHandler methods typically
         // used within an explicit event declaration.
         /// <summary>
-        /// Raised when a DataTemplate is requested on an element.
+        ///     Raised when a DataTemplate is requested on an element.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public event TemplateRequestedEventHandler TemplateRequested
         {
-            add
-            {
-                throw new InvalidOperationException("Do not directly hook the TemplateRequested event.");
-            }
-            remove
-            {
-                throw new InvalidOperationException("Do not directly unhook the TemplateRequested event.");
-            }
+            add { throw new InvalidOperationException("Do not directly hook the TemplateRequested event."); }
+            remove { throw new InvalidOperationException("Do not directly unhook the TemplateRequested event."); }
         }
 
         #endregion // TemplateRequested [routed event]
@@ -68,8 +62,8 @@ namespace WPF.JoshSmith.Controls
         #region SelectTemplate [override]
 
         /// <summary>
-        /// Raises the TemplateRequested event up the 'container' element's logical tree
-        /// so that the DataTemplate to return can be determined.
+        ///     Raises the TemplateRequested event up the 'container' element's logical tree
+        ///     so that the DataTemplate to return can be determined.
         /// </summary>
         /// <param name="item">The data object being templated.</param>
         /// <param name="container">The element which contains the data object.</param>
@@ -78,13 +72,13 @@ namespace WPF.JoshSmith.Controls
         {
             // We need 'container' to be a UIElement because that class
             // exposes the RaiseEvent method.
-            UIElement templatedElement = container as UIElement;
-            if(templatedElement == null)
+            var templatedElement = container as UIElement;
+            if (templatedElement == null)
                 throw new ArgumentException("RoutedDataTemplateSelector only works with UIElements.");
 
             // Bubble the TemplateRequested event up the logical tree, starting at the templated element.
             // This allows the outside world to determine what template to use.
-            TemplateRequestedEventArgs args = new TemplateRequestedEventArgs(TemplateRequestedEvent, templatedElement, item);
+            var args = new TemplateRequestedEventArgs(TemplateRequestedEvent, templatedElement, item);
             templatedElement.RaiseEvent(args);
 
             // Return the DataTemplate selected by the outside world.
@@ -99,14 +93,14 @@ namespace WPF.JoshSmith.Controls
     #region TemplateRequestedEventArgs
 
     /// <summary>
-    /// Event argument used by the RoutedDataTemplateSelector's TemplateRequested event.
+    ///     Event argument used by the RoutedDataTemplateSelector's TemplateRequested event.
     /// </summary>
     public class TemplateRequestedEventArgs : RoutedEventArgs
     {
         private readonly object dataObject;
 
         /// <summary>
-        /// Initializes a new instance.
+        ///     Initializes a new instance.
         /// </summary>
         internal TemplateRequestedEventArgs(RoutedEvent routedEvent, UIElement templatedElement, object dataObject)
             : base(routedEvent, templatedElement)
@@ -115,7 +109,7 @@ namespace WPF.JoshSmith.Controls
         }
 
         /// <summary>
-        /// Returns the data item being templated.
+        ///     Returns the data item being templated.
         /// </summary>
         public object DataObject
         {
@@ -123,12 +117,12 @@ namespace WPF.JoshSmith.Controls
         }
 
         /// <summary>
-        /// Gets/sets the DataTemplate to apply to the templated element.
+        ///     Gets/sets the DataTemplate to apply to the templated element.
         /// </summary>
         public DataTemplate TemplateToUse { get; set; }
 
         /// <summary>
-        /// The UIElement which contains the data object for which a template must be specified.
+        ///     The UIElement which contains the data object for which a template must be specified.
         /// </summary>
         public UIElement TemplatedElement
         {
@@ -141,7 +135,7 @@ namespace WPF.JoshSmith.Controls
     #region TemplateRequestedEventHandler
 
     /// <summary>
-    /// Delegate used to handle the RoutedDataTemplateSelector's TemplateRequested event.
+    ///     Delegate used to handle the RoutedDataTemplateSelector's TemplateRequested event.
     /// </summary>
     /// <param name="sender">The element on which the event was raised.</param>
     /// <param name="e">Set the SelectedTemplate property to the DataTemplate to apply to the Source element.</param>

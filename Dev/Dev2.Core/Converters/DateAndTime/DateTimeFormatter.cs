@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,9 +21,13 @@ namespace Dev2.Converters.DateAndTime
     {
         #region Class Members
 
-        private static readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> _dateTimeFormatParts = new Dictionary<string, Func<IDateTimeResultTO, DateTime, string>>();
+        private static readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> _dateTimeFormatParts =
+            new Dictionary<string, Func<IDateTimeResultTO, DateTime, string>>();
+
         //27.09.2012: massimo.guerrera - Added for the new way of doing time modification
-        private static readonly Dictionary<string, Func<DateTime, int, DateTime>> _timeModifiers = new Dictionary<string, Func<DateTime, int, DateTime>>();
+        private static readonly Dictionary<string, Func<DateTime, int, DateTime>> _timeModifiers =
+            new Dictionary<string, Func<DateTime, int, DateTime>>();
+
         private static IList<string> _listOfModifierTypes = new List<string>();
 
         #endregion Class Members
@@ -43,14 +46,8 @@ namespace Dev2.Converters.DateAndTime
 
         public static IList<string> TimeModifierTypes
         {
-            get
-            {
-                return _listOfModifierTypes;
-            }
-            private set
-            {
-                _listOfModifierTypes = value;
-            }
+            get { return _listOfModifierTypes; }
+            private set { _listOfModifierTypes = value; }
         }
 
         #endregion Properties
@@ -58,7 +55,8 @@ namespace Dev2.Converters.DateAndTime
         #region Methods
 
         /// <summary>
-        /// Converts a date from one format to another. If a valid time modifier is specified then the date is adjusted accordingly before being returned.
+        ///     Converts a date from one format to another. If a valid time modifier is specified then the date is adjusted
+        ///     accordingly before being returned.
         /// </summary>
         public bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
         {
@@ -72,17 +70,19 @@ namespace Dev2.Converters.DateAndTime
             dateTimeTO.InputFormat = dateTimeTO.InputFormat != null ? dateTimeTO.InputFormat.Trim() : null;
 
             //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - Added trim to data
-            if(dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO, out error))
+            if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO,
+                out error))
             {
                 //
                 // Parse time, if present
                 //
                 DateTime tmpDateTime = dateTimeResultTO.ToDateTime();
-                if(!string.IsNullOrWhiteSpace(dateTimeTO.TimeModifierType))
+                if (!string.IsNullOrWhiteSpace(dateTimeTO.TimeModifierType))
                 {
                     //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
                     Func<DateTime, int, DateTime> funcToExecute;
-                    if(_timeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out funcToExecute) && funcToExecute != null)
+                    if (_timeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out funcToExecute) &&
+                        funcToExecute != null)
                     {
                         tmpDateTime = funcToExecute(tmpDateTime, dateTimeTO.TimeModifierAmount);
                     }
@@ -92,17 +92,21 @@ namespace Dev2.Converters.DateAndTime
                 // If nothing has gone wrong yet
                 //
                 // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if(nothingDied)
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                if (nothingDied)
+                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
                     //
                     // If there is no output format use the input format
                     //
-                    string outputFormat = (string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat)) ? dateTimeTO.InputFormat : dateTimeTO.OutputFormat;
-                    if(string.IsNullOrWhiteSpace(outputFormat))
+                    string outputFormat = (string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat))
+                        ? dateTimeTO.InputFormat
+                        : dateTimeTO.OutputFormat;
+                    if (string.IsNullOrWhiteSpace(outputFormat))
                     {
                         //07.03.2013: Ashley Lewis - Bug 9167 null to default
-                        outputFormat = dateTimeParser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out error);
+                        outputFormat =
+                            dateTimeParser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat,
+                                out error);
                     }
 
                     //
@@ -115,21 +119,21 @@ namespace Dev2.Converters.DateAndTime
                     //
                     nothingDied = DateTimeParser.TryGetDateTimeFormatParts(outputFormat, out formatParts, out error);
 
-                    if(nothingDied)
+                    if (nothingDied)
                     {
                         int count = 0;
-                        while(count < formatParts.Count && nothingDied)
+                        while (count < formatParts.Count && nothingDied)
                         {
                             IDateTimeFormatPartTO formatPart = formatParts[count];
 
-                            if(formatPart.Isliteral)
+                            if (formatPart.Isliteral)
                             {
                                 result += formatPart.Value;
                             }
                             else
                             {
                                 Func<IDateTimeResultTO, DateTime, string> func;
-                                if(_dateTimeFormatParts.TryGetValue(formatPart.Value, out func))
+                                if (_dateTimeFormatParts.TryGetValue(formatPart.Value, out func))
                                 {
                                     result += func(dateTimeResultTO, tmpDateTime);
                                 }
@@ -158,7 +162,7 @@ namespace Dev2.Converters.DateAndTime
         #region Private Methods
 
         /// <summary>
-        /// Creates a list of all valid date time format parts
+        ///     Creates a list of all valid date time format parts
         /// </summary>
         private static void CreateDateTimeFormatParts()
         {
@@ -190,7 +194,7 @@ namespace Dev2.Converters.DateAndTime
 
         //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
         /// <summary>
-        /// Creates a list of all valid time modifier parts
+        ///     Creates a list of all valid time modifier parts
         /// </summary>
         private static void CreateTimeModifierTypes()
         {
@@ -271,13 +275,18 @@ namespace Dev2.Converters.DateAndTime
         private static string Format_w(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             //27.09.2012: massimo.guerrera - Gets the week of the year according to the rule specified
-            return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString(CultureInfo.InvariantCulture);
+            return
+                CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday)
+                    .ToString(CultureInfo.InvariantCulture);
         }
 
         private static string Format_ww(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             //27.09.2012: massimo.guerrera - Gets the week of the year according to the rule specified with a padding of 0 if needed.
-            return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0');
+            return
+                CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday)
+                    .ToString(CultureInfo.InvariantCulture)
+                    .PadLeft(2, '0');
         }
 
         private static string Format_24h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,22 +11,24 @@
 
 using System.ServiceModel;
 
-namespace Dev2 {
-    [ServiceContract(CallbackContract=typeof(IFrameworkDuplexCallbackChannel))]
-    public interface IFrameworkDuplexDataChannel {
-        [OperationContract(IsOneWay=true)]
+namespace Dev2
+{
+    [ServiceContract(CallbackContract = typeof (IFrameworkDuplexCallbackChannel))]
+    public interface IFrameworkDuplexDataChannel
+    {
+        [OperationContract(IsOneWay = true)]
         void Register(string userName);
 
-        [OperationContract(IsOneWay=true)]
+        [OperationContract(IsOneWay = true)]
         void Unregister(string userName);
 
         [OperationContract]
         void ShowUsers(string userName);
 
-        [OperationContract(IsOneWay=true)]
+        [OperationContract(IsOneWay = true)]
         void SendMessage(string userName, string message);
 
-        [OperationContract(IsOneWay=true)]
+        [OperationContract(IsOneWay = true)]
         void SendPrivateMessage(string userName, string targetUserName, string message);
 
         [OperationContract(IsOneWay = true)]
@@ -44,6 +45,5 @@ namespace Dev2 {
 
         [OperationContract]
         void ReloadSpecific(string userName, string resourceName);
-
     }
 }

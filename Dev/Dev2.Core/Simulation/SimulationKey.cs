@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,10 +17,6 @@ namespace Dev2.Simulation
     [Serializable]
     public class SimulationKey : ISimulationKey
     {
-        public string WorkflowID { get; set; }
-        public string ActivityID { get; set; }
-        public string ScenarioID { get; set; }
-
         public SimulationKey()
         {
         }
@@ -30,7 +25,7 @@ namespace Dev2.Simulation
 
         protected SimulationKey(SerializationInfo info, StreamingContext context)
         {
-            if(info == null)
+            if (info == null)
             {
                 throw new ArgumentNullException("info");
             }
@@ -41,7 +36,7 @@ namespace Dev2.Simulation
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if(info == null)
+            if (info == null)
             {
                 throw new ArgumentNullException("info");
             }
@@ -56,18 +51,18 @@ namespace Dev2.Simulation
 
         public bool Equals(ISimulationKey other)
         {
-            if(other == null)
+            if (other == null)
             {
                 return false;
             }
             return WorkflowID.Equals(other.WorkflowID)
-                && ActivityID.Equals(other.ActivityID)
-                && ScenarioID.Equals(other.ScenarioID);
+                   && ActivityID.Equals(other.ActivityID)
+                   && ScenarioID.Equals(other.ScenarioID);
         }
 
         public override bool Equals(object obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return false;
             }
@@ -78,18 +73,22 @@ namespace Dev2.Simulation
 
         public override int GetHashCode()
         {
-            var workflowID = string.IsNullOrEmpty(WorkflowID) ? string.Empty : WorkflowID;
-            var activityID = string.IsNullOrEmpty(ActivityID) ? string.Empty : ActivityID;
-            var scenarioID = string.IsNullOrEmpty(ScenarioID) ? string.Empty : ScenarioID;
+            string workflowID = string.IsNullOrEmpty(WorkflowID) ? string.Empty : WorkflowID;
+            string activityID = string.IsNullOrEmpty(ActivityID) ? string.Empty : ActivityID;
+            string scenarioID = string.IsNullOrEmpty(ScenarioID) ? string.Empty : ScenarioID;
             return workflowID.GetHashCode() ^
-                activityID.GetHashCode() ^
-                scenarioID.GetHashCode();
+                   activityID.GetHashCode() ^
+                   scenarioID.GetHashCode();
         }
 
         #endregion
 
+        public string WorkflowID { get; set; }
+        public string ActivityID { get; set; }
+        public string ScenarioID { get; set; }
+
         /// <summary>
-        /// Overridden to return file name friendly string for the key
+        ///     Overridden to return file name friendly string for the key
         /// </summary>
         /// <returns>The string representation of the key.</returns>
         public override string ToString()

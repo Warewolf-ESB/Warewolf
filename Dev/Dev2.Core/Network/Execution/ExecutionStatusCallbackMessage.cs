@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -54,13 +53,13 @@ namespace Dev2.Network.Execution
         public void Read(IByteReaderBase reader)
         {
             CallbackID = reader.ReadGuid();
-            MessageType = (ExecutionStatusCallbackMessageType)reader.ReadInt32();
+            MessageType = (ExecutionStatusCallbackMessageType) reader.ReadInt32();
         }
 
         public void Write(IByteWriterBase writer)
         {
             writer.Write(CallbackID);
-            writer.Write((int)MessageType);
+            writer.Write((int) MessageType);
         }
 
         #endregion INetworkMessage

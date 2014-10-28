@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,12 +17,11 @@ namespace Dev2.Common.Interfaces.Infrastructure.Providers.Validation
 {
     public interface IRuleSet
     {
+        List<IRuleBase> Rules { get; set; }
         void Add(IRuleBase rule);
 
         List<IActionableErrorInfo> ValidateRules();
 
         List<IActionableErrorInfo> ValidateRules(string labelText, Action doError);
-
-        List<IRuleBase> Rules { get; set; }
     }
 }

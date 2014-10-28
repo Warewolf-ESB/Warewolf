@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -30,7 +29,11 @@ namespace Unlimited.Framework.Converters.Graph
 
         static InterrogatorFactory()
         {
-            Interrogators = new Dictionary<Type, IInterrogator> { { typeof(string), new StringInterrogator() }, { typeof(DataTable), new DataTableInterrogator() } };
+            Interrogators = new Dictionary<Type, IInterrogator>
+            {
+                {typeof (string), new StringInterrogator()},
+                {typeof (DataTable), new DataTableInterrogator()}
+            };
 
             DefaultInterrogator = new PocoInterrogator();
         }
@@ -39,9 +42,9 @@ namespace Unlimited.Framework.Converters.Graph
 
         #region Properties
 
-        static Dictionary<Type, IInterrogator> Interrogators { get; set; }
+        private static Dictionary<Type, IInterrogator> Interrogators { get; set; }
 
-        static IInterrogator DefaultInterrogator { get; set; }
+        private static IInterrogator DefaultInterrogator { get; set; }
 
         #endregion Properties
 

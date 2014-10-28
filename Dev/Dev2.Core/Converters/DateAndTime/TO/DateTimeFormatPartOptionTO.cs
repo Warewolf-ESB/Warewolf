@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,26 +18,26 @@ namespace Dev2.Converters.DateAndTime.TO
     {
         #region Constructor
 
-        public DateTimeFormatPartOptionTO(int length, Func<string, bool, bool> predicate, bool isNumeric, IConvertible actualValue, Action<IDateTimeResultTO, bool, IConvertible> assignAction,int resultLength = -1)
+        public DateTimeFormatPartOptionTO(int length, Func<string, bool, bool> predicate, bool isNumeric,
+            IConvertible actualValue, Action<IDateTimeResultTO, bool, IConvertible> assignAction, int resultLength = -1)
         {
             Length = length;
             Predicate = predicate;
             IsNumeric = isNumeric;
             ActualValue = actualValue;
             AssignAction = assignAction;
-            if(resultLength == -1)
+            if (resultLength == -1)
             {
-                ResultLength = Length;    
+                ResultLength = Length;
             }
             else
             {
                 ResultLength = resultLength;
-        }
-
+            }
         }
 
         #endregion Constructor
-        
+
         #region Properties
 
         public int Length { get; set; }
