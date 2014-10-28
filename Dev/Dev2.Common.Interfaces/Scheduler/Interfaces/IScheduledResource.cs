@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,10 +16,8 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
 {
     public interface IScheduledResource
     {
-
-  
         /// <summary>
-        /// Property to check if the scheduled resouce is saved
+        ///     Property to check if the scheduled resouce is saved
         /// </summary>
         bool IsDirty { get; set; }
 
@@ -30,7 +27,7 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
         string Name { get; set; }
 
         /// <summary>
-        /// Represents the old name of the task
+        ///     Represents the old name of the task
         /// </summary>
         string OldName { get; set; }
 
@@ -50,23 +47,23 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
         IScheduleTrigger Trigger { get; set; }
 
         /// <summary>
-        /// NumberOfHistoryToKeep
+        ///     NumberOfHistoryToKeep
         /// </summary>
         int NumberOfHistoryToKeep { get; set; }
 
         /// <summary>
-        /// The workflow that we will run
+        ///     The workflow that we will run
         /// </summary>
         string WorkflowName { get; set; }
 
 
         /// <summary>
-        /// The workflow that we will run
+        ///     The workflow that we will run
         /// </summary>
         Guid ResourceId { get; set; }
 
         /// <summary>
-        /// If a schedule is missed execute as soon as possible
+        ///     If a schedule is missed execute as soon as possible
         /// </summary>
         bool RunAsapIfScheduleMissed { get; set; }
 
@@ -74,18 +71,18 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
         bool AllowMultipleIstances { get; set; }
 
         /// <summary>
-        /// The task UserName
+        ///     The task UserName
         /// </summary>
         string UserName { get; set; }
 
         //The task password
-        string Password{ get; set; }
+        string Password { get; set; }
 
         /// <summary>
-        /// validation errors
+        ///     validation errors
         /// </summary>
-
         IErrorResultTO Errors { get; set; }
+
         bool IsNew { get; set; }
     }
 }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,7 +15,6 @@ using System.Globalization;
 
 namespace Dev2.Common
 {
-
     /*
      * Moved the CustomIcons to Dev2.Studio / AppResources / Converters
      * Since that is where they where being used ;)
@@ -26,7 +24,6 @@ namespace Dev2.Common
     {
         // ReSharper disable InconsistentNaming
         //Default TimeoutValue
-        public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
 
         // Max String Size
         // ReSharper disable InconsistentNaming
@@ -108,7 +105,6 @@ namespace Dev2.Common
         public const string StarExpression = "*";
         public const string EqualsExpression = "=";
         public const int AllIndexes = -1;
-        public static readonly Guid NullDataListID = Guid.Empty;
         public const string OkExeResult = "<Dev2Status>Ok</Dev2Status>";
         public const string PostDataStart = "<Dev2PostData>";
         public const string PostDataEnd = "</Dev2PostData>";
@@ -132,14 +128,16 @@ namespace Dev2.Common
         // Storage Cache Constants
         public const int DefaultColumnSizeLvl1 = 10;
         public const int DefaultStorageSegments = 1;
-        public const int DefaultStorageSegmentSize = 8 * 1024 * 1024; // 8 MB default buffer size ;)
-        public const int DefaultAliasCacheSize = 32 * 1024; // 32KB of alias cache ;)
+        public const int DefaultStorageSegmentSize = 8*1024*1024; // 8 MB default buffer size ;)
+        public const int DefaultAliasCacheSize = 32*1024; // 32KB of alias cache ;)
         public const string DefaultStorageZipEntry = "Dev2Storage";
 
         public const string DataListIoColDirection = "ColumnIODirection";
 
         // Decision Wizard Constants
-        public const string InjectedDecisionHandler = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack";
+        public const string InjectedDecisionHandler =
+            "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack";
+
         public const string InjectedDecisionHandlerOld = "Dev2DecisionHandler.Instance.ExecuteDecisionStack";
         public const string InjectedDecisionDataListVariable = "AmbientDataList";
         public const string ExpressionPropertyText = "ExpressionText";
@@ -162,7 +160,9 @@ namespace Dev2.Common
         public const string SwitchExpressionPropertyText = "Expression";
         public const string SwitchExpressionTextPropertyText = "ExpressionText";
         public const string InjectedSwitchDataFetchOld = "Dev2DecisionHandler.Instance.FetchSwitchData";
-        public const string InjectedSwitchDataFetch = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData";
+
+        public const string InjectedSwitchDataFetch =
+            "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData";
 
         public const string SwitchWizardErrorString = "Couldn't find the resource needed to configure the Switch.";
         public const string SwitchWizardErrorHeading = "Missing System Model Dev2Switch";
@@ -200,7 +200,8 @@ namespace Dev2.Common
         public const string SourcesDirectory = "Sources";
 
         // No start node error message
-        public const string NoStartNodeError = "The workflow must have at least one service or activity connected to the Start Node.";
+        public const string NoStartNodeError =
+            "The workflow must have at least one service or activity connected to the Start Node.";
 
         // Output TO for Activity Upsert
         public const string OutputTONonRSField = "Field";
@@ -208,6 +209,21 @@ namespace Dev2.Common
         public const string NoLongerSupportedMsg = "This activity is no longer supported";
         // Namespace cleanup - Set to false to avoid namespace clean-up ;)
         public const bool runtimeNamespaceClean = true;
+        public const string WarewolfGroup = "Warewolf Administrators";
+        public const string SchedulerFolderId = "Warewolf";
+        public const string SchedulerAgentPath = @"WarewolfAgent.exe";
+        public const string SchedulerDebugPath = @"Warewolf\DebugOutPut\";
+        public const string SchemaQuery = @"SELECT name AS ROUTINE_NAME
+,SCHEMA_NAME(schema_id) AS SPECIFIC_SCHEMA
+,type_desc as ROUTINE_TYPE
+FROM sys.objects
+WHERE type_desc LIKE '%FUNCTION%'
+or type_desc LIKE '%Procedure%'";
+        public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
+        public const string VersionDownloadPath = "Installers\\";
+        public const string VersionFolder = "VersionControl";
+        public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
+        public static readonly Guid NullDataListID = Guid.Empty;
 
         // Server WorkspaceID
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
@@ -220,7 +236,6 @@ namespace Dev2.Common
 
         // Security
         //public const string BuiltInAdministrator = "BuiltIn\\Administrators";
-        public const string WarewolfGroup = "Warewolf Administrators";
         public static String PublicUsername = @"\";
 
         // GAC
@@ -264,67 +279,54 @@ namespace Dev2.Common
 
         public static List<string> FindRecordsOperations = new List<string>
         {
-                "=",
-                ">",
-                "<",
-                "<> (Not Equal)",
-                ">=",
-                "<=",
-                "Starts With",
-                "Ends With",
-                "Contains",
-                "Doesn't Start With",                  
-                "Doesn't End With",                
-                "Doesn't Contain",
-                "Is Alphanumeric",
-                "Is Base64",
-                "Is Between",
-                "Is Binary",                 
-                "Is Date",
-                "Is Email",                
-                "Is Hex",
-                "Is Numeric",
-                "Is Regex",                
-                "Is Text",
-                "Is XML",
-                "Not Alphanumeric",
-                "Not Base64",
-                "Not Between",
-                "Not Binary",
-                "Not Date",
-                "Not Email",
-                "Not Hex",
-                "Not Numeric",
-                "Not Regex",
-                "Not Text",
-                "Not XML"                
+            "=",
+            ">",
+            "<",
+            "<> (Not Equal)",
+            ">=",
+            "<=",
+            "Starts With",
+            "Ends With",
+            "Contains",
+            "Doesn't Start With",
+            "Doesn't End With",
+            "Doesn't Contain",
+            "Is Alphanumeric",
+            "Is Base64",
+            "Is Between",
+            "Is Binary",
+            "Is Date",
+            "Is Email",
+            "Is Hex",
+            "Is Numeric",
+            "Is Regex",
+            "Is Text",
+            "Is XML",
+            "Not Alphanumeric",
+            "Not Base64",
+            "Not Between",
+            "Not Binary",
+            "Not Date",
+            "Not Email",
+            "Not Hex",
+            "Not Numeric",
+            "Not Regex",
+            "Not Text",
+            "Not XML"
         };
 
-        public const string SchedulerFolderId = "Warewolf";
-        public const string SchedulerAgentPath = @"WarewolfAgent.exe";
-        public const string SchedulerDebugPath = @"Warewolf\DebugOutPut\";
-
-        public static string WebServerPort { get; set; }
-        public static string WebServerSslPort { get; set; }
         public static int VersionCount = 20;
 
-        public const string SchemaQuery = @"SELECT name AS ROUTINE_NAME
-,SCHEMA_NAME(schema_id) AS SPECIFIC_SCHEMA
-,type_desc as ROUTINE_TYPE
-FROM sys.objects
-WHERE type_desc LIKE '%FUNCTION%'
-or type_desc LIKE '%Procedure%'";
-
-        public static string WebServiceTimeoutMessage = "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
+        public static string WebServiceTimeoutMessage =
+            "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
 
 
         // Limit WF execution
         public static int MaxWorkflowsToExecute = 50;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
-        public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
-        public const string VersionDownloadPath = "Installers\\";
-        public const string VersionFolder = "VersionControl";
+        public static string WebServerPort { get; set; }
+        public static string WebServerSslPort { get; set; }
 
         // ReSharper restore InconsistentNaming
     }

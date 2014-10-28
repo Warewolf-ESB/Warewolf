@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,7 +25,7 @@ namespace Dev2.Common.Wrappers
 
         public string CreateIfNotExists(string debugOutputPath)
         {
-            if(!Directory.Exists(debugOutputPath))
+            if (!Directory.Exists(debugOutputPath))
             {
                 return Directory.CreateDirectory(debugOutputPath).Name;
             }
@@ -61,7 +60,7 @@ namespace Dev2.Common.Wrappers
 
         public void Move(string directoryStructureFromPath, string directoryStructureToPath)
         {
-             Directory.Move(directoryStructureFromPath, directoryStructureToPath);
+            Directory.Move(directoryStructureFromPath, directoryStructureToPath);
         }
 
         public void Delete(string directoryStructureFromPath, bool recursive)

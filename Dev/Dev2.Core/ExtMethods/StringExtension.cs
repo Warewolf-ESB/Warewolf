@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,17 +23,17 @@ namespace Dev2
         {
             bool result = false;
 
-            if(string.IsNullOrEmpty(payload))
+            if (string.IsNullOrEmpty(payload))
             {
                 return false;
             }
 
-            List<string> acceptedDateFormats = new List<string>
-                { 
+            var acceptedDateFormats = new List<string>
+            {
                 "yyyymmdd",
                 "mmddyyyy",
                 "yyyyddmm",
-                "ddmmyyyy", 
+                "ddmmyyyy",
                 "yyyy/mm/dd",
                 "dd/mm/yyyy",
                 "yyyy/dd/mm",
@@ -42,7 +41,7 @@ namespace Dev2
                 "yyyy-mm-dd",
                 "dd-mm-yyyy",
                 "mm-dd-yyyy",
-                "yyyy-dd-mm",                
+                "yyyy-dd-mm",
                 @"dd\mm\yyyy",
                 @"yyyy\mm\dd",
                 @"yyyy\dd\mm",
@@ -56,11 +55,10 @@ namespace Dev2
                 "mm.dd.yyyy",
                 "yyyy.mm.dd",
                 "yyyy.dd.mm"
-                
             };
-            DateTimeParser d = new DateTimeParser();
+            var d = new DateTimeParser();
             int count = 0;
-            while(result == false && count < acceptedDateFormats.Count)
+            while (result == false && count < acceptedDateFormats.Count)
             {
                 string errorMsg;
                 IDateTimeResultTO to;
@@ -76,11 +74,11 @@ namespace Dev2
             bool isFragment;
 
 
-            if(DataListUtil.IsXml(payload, out isFragment))
+            if (DataListUtil.IsXml(payload, out isFragment))
             {
                 result = true;
             }
-            else if(isFragment)
+            else if (isFragment)
             {
                 result = true;
             }
@@ -90,7 +88,6 @@ namespace Dev2
 
         public static bool IsJSON(this string payload)
         {
-
             try
             {
                 JsonConvert.DeserializeObject(payload);

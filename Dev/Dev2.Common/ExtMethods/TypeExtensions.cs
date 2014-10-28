@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,24 +14,24 @@ using System;
 namespace Dev2.Common.ExtMethods
 {
     /// <summary>
-    /// Used to extract primitive types out for plugins ;)
+    ///     Used to extract primitive types out for plugins ;)
     /// </summary>
     public static class TypeExtensions
     {
         public static Type GetTypeFromSimpleName(string typeName)
         {
-            if(typeName == null)
+            if (typeName == null)
                 throw new ArgumentNullException("typeName");
 
             bool isArray = false, isNullable = false;
 
-            if(typeName.IndexOf("[]", StringComparison.Ordinal) != -1)
+            if (typeName.IndexOf("[]", StringComparison.Ordinal) != -1)
             {
                 isArray = true;
                 typeName = typeName.Remove(typeName.IndexOf("[]", StringComparison.Ordinal), 2);
             }
 
-            if(typeName.IndexOf("?", StringComparison.Ordinal) != -1)
+            if (typeName.IndexOf("?", StringComparison.Ordinal) != -1)
             {
                 isNullable = true;
                 typeName = typeName.Remove(typeName.IndexOf("?", StringComparison.Ordinal), 1);
@@ -44,7 +43,7 @@ namespace Dev2.Common.ExtMethods
             typeName = typeName.Replace("system.", "");
 
             string parsedTypeName = null;
-            switch(typeName)
+            switch (typeName)
             {
                 case "bool":
                 case "boolean":
@@ -112,12 +111,12 @@ namespace Dev2.Common.ExtMethods
                     break;
             }
 
-            if(parsedTypeName != null)
+            if (parsedTypeName != null)
             {
-                if(isArray)
+                if (isArray)
                     parsedTypeName = parsedTypeName + "[]";
 
-                if(isNullable)
+                if (isNullable)
                     parsedTypeName = String.Concat("System.Nullable`1[", parsedTypeName, "]");
             }
             else

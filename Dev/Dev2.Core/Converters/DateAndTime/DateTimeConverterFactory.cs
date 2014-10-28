@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +16,7 @@ namespace Dev2.Converters.DateAndTime
     public class DateTimeConverterFactory
     {
         /// <summary>
-        /// Instantiates a concreate implementation of the IDateTimeFormatter
+        ///     Instantiates a concreate implementation of the IDateTimeFormatter
         /// </summary>
         public static IDateTimeFormatter CreateFormatter()
         {
@@ -25,7 +24,7 @@ namespace Dev2.Converters.DateAndTime
         }
 
         /// <summary>
-        /// Instantiates a concreate implementation of the IDateTimeParser
+        ///     Instantiates a concreate implementation of the IDateTimeParser
         /// </summary>
         public static IDateTimeParser CreateParser()
         {
@@ -33,7 +32,7 @@ namespace Dev2.Converters.DateAndTime
         }
 
         /// <summary>
-        /// Instantiates a concreate implementation of the IDateTimeComparer
+        ///     Instantiates a concreate implementation of the IDateTimeComparer
         /// </summary>
         public static IDateTimeComparer CreateComparer()
         {
@@ -41,19 +40,22 @@ namespace Dev2.Converters.DateAndTime
         }
 
         /// <summary>
-        /// Instantiates a concreate implementation of the DateTimeDiffTO
+        ///     Instantiates a concreate implementation of the DateTimeDiffTO
         /// </summary>
-        public static IDateTimeDiffTO CreateDateTimeDiffTO(string input1, string input2, string inputFormat, string outputType)
+        public static IDateTimeDiffTO CreateDateTimeDiffTO(string input1, string input2, string inputFormat,
+            string outputType)
         {
             return new DateTimeDiffTO(input1, input2, inputFormat, outputType);
         }
 
         /// <summary>
-        /// Instantiates a concreate implementation of the DateTimeTO
+        ///     Instantiates a concreate implementation of the DateTimeTO
         /// </summary>
-        public static IDateTimeOperationTO CreateDateTimeTO(string dateTime, string inputFormat, string outputFormat, string timeModifierType,int timeModifierAmount, string result)
+        public static IDateTimeOperationTO CreateDateTimeTO(string dateTime, string inputFormat, string outputFormat,
+            string timeModifierType, int timeModifierAmount, string result)
         {
-            return new DateTimeOperationTO(dateTime, inputFormat, outputFormat, timeModifierType,timeModifierAmount, result);
+            return new DateTimeOperationTO(dateTime, inputFormat, outputFormat, timeModifierType, timeModifierAmount,
+                result);
         }
     }
 }

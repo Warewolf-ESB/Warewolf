@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,7 +22,11 @@ namespace Dev2
         void Delete(Uri path, string userName = "", string password = "");
         IList<Uri> List(Uri path, string userName = "", string password = "");
         void CreateDirectory(Uri path, string userName = "", string password = "");
-        void Copy(Uri sourcePath, Uri destinationPath, bool overWrite = false, string userName = "", string password = "");
-        void Move(Uri sourcePath, Uri destinationPath, bool overWrite = false, string userName = "", string password = "");
+
+        void Copy(Uri sourcePath, Uri destinationPath, bool overWrite = false, string userName = "",
+            string password = "");
+
+        void Move(Uri sourcePath, Uri destinationPath, bool overWrite = false, string userName = "",
+            string password = "");
     }
 }

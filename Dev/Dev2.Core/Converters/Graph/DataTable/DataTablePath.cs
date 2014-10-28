@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,14 +18,14 @@ namespace Dev2.Converters.Graph.DataTable
 {
     public class DataTablePath : BasePath
     {
-        public DataTablePath() : this("","")
+        public DataTablePath() : this("", "")
         {
         }
 
         public DataTablePath(string tblName, string colName)
         {
-            var tmp = colName;
-            
+            string tmp = colName;
+
             if (!string.IsNullOrEmpty(tblName))
             {
                 tmp = string.Concat(tblName, "().", colName);

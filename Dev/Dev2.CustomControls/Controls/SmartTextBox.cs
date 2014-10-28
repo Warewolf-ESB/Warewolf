@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,20 +24,20 @@ using WPF.JoshSmith.Adorners;
 namespace Dev2.CustomControls.Controls
 {
     /// <summary>
-    /// A TextBox with support for displaying a list of suggestions when the user
-    /// misspells a word.  The user presses the F1 key to display the list of suggestions.
+    ///     A TextBox with support for displaying a list of suggestions when the user
+    ///     misspells a word.  The user presses the F1 key to display the list of suggestions.
     /// </summary>
     /// <remarks>
-    /// Documentation: http://www.codeproject.com/KB/WPF/SmartTextBox.aspx
+    ///     Documentation: http://www.codeproject.com/KB/WPF/SmartTextBox.aspx
     /// </remarks>
     public class SmartTextBox : TextBox
     {
         #region Data
 
-        bool areSuggestionsVisible;
-        readonly UIElementAdorner adorner;
-        readonly ListBox suggestionList;
-        readonly static string[] noSuggestions = { "(no spelling suggestions)" };
+        private static readonly string[] noSuggestions = {"(no spelling suggestions)"};
+        private readonly UIElementAdorner adorner;
+        private readonly ListBox suggestionList;
+        private bool areSuggestionsVisible;
 
         #endregion // Data
 
@@ -49,8 +48,8 @@ namespace Dev2.CustomControls.Controls
             // Register the SuggestionListBoxStyle property.
             SuggestionListBoxStyleProperty = DependencyProperty.Register(
                 "SuggestionListBoxStyle",
-                typeof(Style),
-                typeof(SmartTextBox),
+                typeof (Style),
+                typeof (SmartTextBox),
                 new UIPropertyMetadata(null, OnSuggestionListBoxStyleChanged));
         }
 
@@ -59,7 +58,7 @@ namespace Dev2.CustomControls.Controls
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of SmartTextBox.
+        ///     Initializes a new instance of SmartTextBox.
         /// </summary>
         public SmartTextBox()
         {
@@ -85,7 +84,7 @@ namespace Dev2.CustomControls.Controls
         #region AreSuggestionsVisible
 
         /// <summary>
-        /// Returns true if the list of suggestions is currently displayed.
+        ///     Returns true if the list of suggestions is currently displayed.
         /// </summary>
         public bool AreSuggestionsVisible
         {
@@ -97,8 +96,8 @@ namespace Dev2.CustomControls.Controls
         #region GetSpellingError
 
         /// <summary>
-        /// Returns the SpellingError for the word at the current caret index, or null
-        /// if the current word is not misspelled.
+        ///     Returns the SpellingError for the word at the current caret index, or null
+        ///     if the current word is not misspelled.
         /// </summary>
         public SpellingError GetSpellingError()
         {
@@ -111,8 +110,8 @@ namespace Dev2.CustomControls.Controls
         #region HideSuggestions
 
         /// <summary>
-        /// Hides the list of suggestions and returns input focus to the input area.  
-        /// If the list of suggestions is not already displayed, nothing happens.
+        ///     Hides the list of suggestions and returns input focus to the input area.
+        ///     If the list of suggestions is not already displayed, nothing happens.
         /// </summary>
         public void HideSuggestions()
         {
@@ -135,7 +134,7 @@ namespace Dev2.CustomControls.Controls
         #region IsCurrentWordMisspelled
 
         /// <summary>
-        /// Returns true if the word at the caret index is misspelled.
+        ///     Returns true if the word at the caret index is misspelled.
         /// </summary>
         public bool IsCurrentWordMisspelled
         {
@@ -147,8 +146,8 @@ namespace Dev2.CustomControls.Controls
         #region ShowSuggestions
 
         /// <summary>
-        /// Shows the list of suggestions.  If the current word is not misspelled
-        /// this method does nothing.
+        ///     Shows the list of suggestions.  If the current word is not misspelled
+        ///     this method does nothing.
         /// </summary>
         public void ShowSuggestions()
         {
@@ -182,7 +181,13 @@ namespace Dev2.CustomControls.Controls
             suggestionList.Arrange(new Rect(new Point(), suggestionList.DesiredSize));
 
             // Animate the ListBox's height to the natural value.
-            DoubleAnimation anim = new DoubleAnimation { From = 0.0, To = suggestionList.ActualHeight, Duration = new Duration(TimeSpan.FromMilliseconds(200)), FillBehavior = FillBehavior.Stop };
+            var anim = new DoubleAnimation
+            {
+                From = 0.0,
+                To = suggestionList.ActualHeight,
+                Duration = new Duration(TimeSpan.FromMilliseconds(200)),
+                FillBehavior = FillBehavior.Stop
+            };
             suggestionList.BeginAnimation(HeightProperty, anim);
 
             areSuggestionsVisible = true;
@@ -193,24 +198,25 @@ namespace Dev2.CustomControls.Controls
         #region SuggestionListBoxStyle
 
         /// <summary>
-        /// Represents the SuggestionListBoxStyle property.  This field is read-only. 
+        ///     Represents the SuggestionListBoxStyle property.  This field is read-only.
         /// </summary>
         public static readonly DependencyProperty SuggestionListBoxStyleProperty;
 
         /// <summary>
-        /// Gets/sets the Style applied to the ListBox which displays spelling suggestions.
-        /// This is a dependency property.
+        ///     Gets/sets the Style applied to the ListBox which displays spelling suggestions.
+        ///     This is a dependency property.
         /// </summary>
         public Style SuggestionListBoxStyle
         {
-            get { return (Style)GetValue(SuggestionListBoxStyleProperty); }
+            get { return (Style) GetValue(SuggestionListBoxStyleProperty); }
             set { SetValue(SuggestionListBoxStyleProperty, value); }
         }
 
-        static void OnSuggestionListBoxStyleChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
+        private static void OnSuggestionListBoxStyleChanged(DependencyObject depObj,
+            DependencyPropertyChangedEventArgs e)
         {
-            SmartTextBox smartTextBox = depObj as SmartTextBox;
-            if(smartTextBox != null)
+            var smartTextBox = depObj as SmartTextBox;
+            if (smartTextBox != null)
             {
                 smartTextBox.suggestionList.Style = e.NewValue as Style;
             }
@@ -225,8 +231,8 @@ namespace Dev2.CustomControls.Controls
         #region OnMouseDown
 
         /// <summary>
-        /// Hides the list of suggestions.
-        /// </summary>		
+        ///     Hides the list of suggestions.
+        /// </summary>
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
@@ -240,7 +246,7 @@ namespace Dev2.CustomControls.Controls
         #region OnPreviewKeyDown
 
         /// <summary>
-        /// Shows/hides the list of suggestions.
+        ///     Shows/hides the list of suggestions.
         /// </summary>
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
@@ -282,7 +288,7 @@ namespace Dev2.CustomControls.Controls
         #region OnRenderSizeChanged
 
         /// <summary>
-        /// Ensures that the list of suggestions is hidden when the TextBox is resized.
+        ///     Ensures that the list of suggestions is hidden when the TextBox is resized.
         /// </summary>
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
@@ -297,8 +303,8 @@ namespace Dev2.CustomControls.Controls
         #region OnTextChanged
 
         /// <summary>
-        /// Hides the list of suggestions if a spelling error no longer exists at the
-        /// current caret location in the TextBox.
+        ///     Hides the list of suggestions if a spelling error no longer exists at the
+        ///     current caret location in the TextBox.
         /// </summary>
         protected override void OnTextChanged(TextChangedEventArgs e)
         {
@@ -316,11 +322,11 @@ namespace Dev2.CustomControls.Controls
 
         #region IsKeyboardFocusWithinChanged
 
-        void suggestionList_IsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void suggestionList_IsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             // If the list of suggestions no longer contains the input focus
             // hide the list.
-            bool focused = (bool)e.NewValue;
+            var focused = (bool) e.NewValue;
             if (!focused)
                 HideSuggestions();
         }
@@ -329,14 +335,14 @@ namespace Dev2.CustomControls.Controls
 
         #region ItemContainerGenerator.StatusChanged
 
-        void suggestionList_ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
+        private void suggestionList_ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
         {
             if (AreSuggestionsVisible &&
                 suggestionList.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
             {
                 // The list of suggestions is visible and its ListBoxItems exist,
                 // so give input focus to the first item in the list.
-                ListBoxItem firstSuggestion = suggestionList.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
+                var firstSuggestion = suggestionList.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
                 if (firstSuggestion != null)
                     firstSuggestion.Focus();
             }
@@ -346,7 +352,7 @@ namespace Dev2.CustomControls.Controls
 
         #region MouseDoubleClick
 
-        void suggestionList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void suggestionList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // The user clicked on a suggestion, so apply it.
             ApplySelectedSuggestion();
@@ -356,7 +362,7 @@ namespace Dev2.CustomControls.Controls
 
         #region PreviewKeyDown
 
-        void suggestionList_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void suggestionList_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (suggestionList.SelectedIndex < 0)
                 return;
@@ -383,7 +389,7 @@ namespace Dev2.CustomControls.Controls
 
         #region ApplySelectedSuggestion
 
-        void ApplySelectedSuggestion()
+        private void ApplySelectedSuggestion()
         {
             if (!AreSuggestionsVisible || suggestionList.SelectedIndex < 0)
                 return;
@@ -391,7 +397,7 @@ namespace Dev2.CustomControls.Controls
             SpellingError error = GetSpellingError();
             if (error != null)
             {
-                string correctWord = suggestionList.SelectedItem as string;
+                var correctWord = suggestionList.SelectedItem as string;
                 error.Correct(correctWord);
                 CaretIndex = FindEndOfCurrentWord();
                 Focus();
@@ -404,7 +410,7 @@ namespace Dev2.CustomControls.Controls
 
         #region AttemptToShowSuggestions
 
-        void AttemptToShowSuggestions()
+        private void AttemptToShowSuggestions()
         {
             if (AreSuggestionsVisible)
                 return;
@@ -439,7 +445,7 @@ namespace Dev2.CustomControls.Controls
 
         #region AttemptToHideSuggestions
 
-        void AttemptToHideSuggestions()
+        private void AttemptToHideSuggestions()
         {
             // If there is not still a spelling error at the
             // caret location, hide the suggestions.
@@ -453,7 +459,7 @@ namespace Dev2.CustomControls.Controls
 
         #region FindBeginningOfCurrentWord
 
-        int FindBeginningOfCurrentWord()
+        private int FindBeginningOfCurrentWord()
         {
             if (Text == null)
                 return -1;
@@ -474,7 +480,7 @@ namespace Dev2.CustomControls.Controls
 
         #region FindClosestCharacterInCurrentWord
 
-        int FindClosestCharacterInCurrentWord()
+        private int FindClosestCharacterInCurrentWord()
         {
             if (Text == null)
                 return -1;
@@ -496,7 +502,7 @@ namespace Dev2.CustomControls.Controls
 
         #region FindEndOfCurrentWord
 
-        int FindEndOfCurrentWord()
+        private int FindEndOfCurrentWord()
         {
             if (Text == null)
                 return -1;

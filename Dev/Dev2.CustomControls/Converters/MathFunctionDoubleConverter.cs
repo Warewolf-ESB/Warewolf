@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,37 +11,38 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
 namespace Dev2.CustomControls.Converters
 {
-    [ValueConversion(typeof(double[]), typeof(Thickness))]
+    [ValueConversion(typeof (double[]), typeof (Thickness))]
     public class MathFunctionDoubleToThicknessConverter : DependencyObject, IMultiValueConverter
     {
+        public static readonly DependencyProperty OffsetProperty =
+            DependencyProperty.Register("Offset", typeof (double),
+                typeof (MathFunctionDoubleToThicknessConverter), new PropertyMetadata(0D));
+
+        public static readonly DependencyProperty FunctionProperty =
+            DependencyProperty.Register("Function", typeof (MathFunction),
+                typeof (MathFunctionDoubleToThicknessConverter), new PropertyMetadata(MathFunction.Max));
+
         public double Offset
         {
-            get { return (double)GetValue(OffsetProperty); }
+            get { return (double) GetValue(OffsetProperty); }
             set { SetValue(OffsetProperty, value); }
         }
 
-        public static readonly DependencyProperty OffsetProperty =
-            DependencyProperty.Register("Offset", typeof(double),
-            typeof(MathFunctionDoubleToThicknessConverter), new PropertyMetadata(0D));
-
         public MathFunction Function
         {
-            get { return (MathFunction)GetValue(FunctionProperty); }
+            get { return (MathFunction) GetValue(FunctionProperty); }
             set { SetValue(FunctionProperty, value); }
         }
 
-        public static readonly DependencyProperty FunctionProperty =
-            DependencyProperty.Register("Function", typeof(MathFunction), 
-            typeof(MathFunctionDoubleToThicknessConverter), new PropertyMetadata(MathFunction.Max));
 
- 
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (!values.Any())
             {
@@ -50,14 +50,14 @@ namespace Dev2.CustomControls.Converters
             }
 
             var doubles = new List<double>();
-            foreach (var value in values)
+            foreach (object value in values)
             {
                 try
                 {
-                    var d = System.Convert.ToDouble(value);
+                    double d = System.Convert.ToDouble(value);
                     doubles.Add(d);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     throw new Exception("Converter only accepts doubles", e);
                 }
@@ -74,7 +74,7 @@ namespace Dev2.CustomControls.Converters
             }
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

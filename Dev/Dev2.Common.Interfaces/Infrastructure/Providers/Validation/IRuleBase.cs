@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,6 +10,7 @@
 
 
 using System;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 namespace Dev2.Common.Interfaces.Infrastructure.Providers.Validation
 {
@@ -20,6 +20,6 @@ namespace Dev2.Common.Interfaces.Infrastructure.Providers.Validation
         string ErrorText { get; set; }
         Action DoError { get; set; }
 
-        Dev2.Common.Interfaces.Infrastructure.Providers.Errors.IActionableErrorInfo Check();
+        IActionableErrorInfo Check();
     }
 }

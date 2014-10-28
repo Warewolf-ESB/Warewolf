@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,9 +11,11 @@
 
 using System;
 
-namespace Dev2.Session {
+namespace Dev2.Session
+{
     [Serializable]
-    public class SaveDebugTO {
+    public class SaveDebugTO
+    {
         #region Properties
 
         public string WorkflowXaml { get; set; }

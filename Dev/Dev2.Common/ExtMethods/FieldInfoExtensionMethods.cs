@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,7 +19,7 @@ namespace Dev2.Common.ExtMethods
     {
         public static T GetCustomAttribute<T>(this FieldInfo fieldinfo) where T : Attribute
         {
-            return fieldinfo.GetCustomAttributes(typeof(T), true).OfType<T>().FirstOrDefault();
+            return fieldinfo.GetCustomAttributes(typeof (T), true).OfType<T>().FirstOrDefault();
         }
     }
 }

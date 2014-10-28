@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,7 +25,8 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         ///     Gets or sets a Boolean value that indicates if the registered task is enabled.
         /// </summary>
         /// <remarks>
-        ///     As of version 1.8.1, under V1 systems (prior to Vista), this method will immediately set the enabled property and re-save the current task. If changes have been made to the
+        ///     As of version 1.8.1, under V1 systems (prior to Vista), this method will immediately set the enabled property and
+        ///     re-save the current task. If changes have been made to the
         ///     <see
         ///         cref="TaskDefinition" />
         ///     , then those changes will be saved.
@@ -66,10 +66,14 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         ///     Returns <see cref="DateTime.MinValue" /> if there are no future run times.
         /// </value>
         /// <remarks>
-        ///     Potentially breaking change in release 1.8.2. For Task Scheduler 2.0, the return value prior to 1.8.2 would be Dec 30, 1899
-        ///     if there were no future run times. For 1.0, that value would have been <c>DateTime.MinValue</c>. In release 1.8.2 and later, all
-        ///     versions will return <c>DateTime.MinValue</c> if there are no future run times. While this is different from the native 2.0
-        ///     library, it was deemed more appropriate to have consistency between the two libraries and with other .NET libraries.
+        ///     Potentially breaking change in release 1.8.2. For Task Scheduler 2.0, the return value prior to 1.8.2 would be Dec
+        ///     30, 1899
+        ///     if there were no future run times. For 1.0, that value would have been <c>DateTime.MinValue</c>. In release 1.8.2
+        ///     and later, all
+        ///     versions will return <c>DateTime.MinValue</c> if there are no future run times. While this is different from the
+        ///     native 2.0
+        ///     library, it was deemed more appropriate to have consistency between the two libraries and with other .NET
+        ///     libraries.
         /// </remarks>
         DateTime NextRunTime { get; }
 

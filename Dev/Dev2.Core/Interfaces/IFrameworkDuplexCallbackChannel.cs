@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,11 +11,11 @@
 
 using System.ServiceModel;
 
-namespace Dev2 {
-    
-    public interface IFrameworkDuplexCallbackChannel {
-        [OperationContract(IsOneWay=true)]
+namespace Dev2
+{
+    public interface IFrameworkDuplexCallbackChannel
+    {
+        [OperationContract(IsOneWay = true)]
         void CallbackNotification(string message);
-
     }
 }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,6 +11,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace Dev2.Common.ExtMethods
 {
@@ -19,11 +19,11 @@ namespace Dev2.Common.ExtMethods
     {
         public static string GetDescription(this Enum value)
         {
-            var field = value.GetType().GetField(value.ToString());
+            FieldInfo field = value.GetType().GetField(value.ToString());
 
             var attribute
-                    = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute))
-                        as DescriptionAttribute;
+                = Attribute.GetCustomAttribute(field, typeof (DescriptionAttribute))
+                    as DescriptionAttribute;
 
             return attribute == null ? value.ToString() : attribute.Description;
         }

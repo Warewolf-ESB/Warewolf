@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,6 +13,7 @@ using System;
 using System.Collections.Generic;
 
 // ReSharper disable CheckNamespace
+
 namespace Dev2.Common.Interfaces.Core.Graph
 // ReSharper restore CheckNamespace
 {

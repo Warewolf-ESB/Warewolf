@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,10 +23,13 @@ namespace Dev2.Common.Interfaces.Infrastructure.SharedModels
         Guid MessageID { get; set; }
         Guid WorkspaceID { get; set; }
         string ServiceName { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
+
+        [JsonConverter(typeof (StringEnumConverter))]
         CompileMessageType MessageType { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
+
+        [JsonConverter(typeof (StringEnumConverter))]
         ErrorType ErrorType { get; set; }
+
         string MessagePayload { get; set; }
 
         ICompileMessageTO Clone();

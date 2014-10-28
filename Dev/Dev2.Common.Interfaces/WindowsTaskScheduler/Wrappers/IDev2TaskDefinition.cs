@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,7 +25,8 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         IActionCollection Actions { get; }
 
         /// <summary>
-        ///     Gets or sets the data that is associated with the task. This data is ignored by the Task Scheduler service, but is used by third-parties who wish to extend the task format.
+        ///     Gets or sets the data that is associated with the task. This data is ignored by the Task Scheduler service, but is
+        ///     used by third-parties who wish to extend the task format.
         /// </summary>
         string Data { get; set; }
 

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,6 +19,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 
 // ReSharper disable CheckNamespace
+
 namespace Unlimited.Framework.Converters.Graph.Poco
 // ReSharper restore CheckNamespace
 {
@@ -34,7 +34,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         public IEnumerable<IPath> Map(object data)
         {
-            Stack<Tuple<PropertyInfo, bool, object>> propertyStack = new Stack<Tuple<PropertyInfo, bool, object>>();
+            var propertyStack = new Stack<Tuple<PropertyInfo, bool, object>>();
             return BuildPaths(data, propertyStack, data);
         }
 
@@ -42,30 +42,34 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         #region Private Methods
 
-        private IEnumerable<IPath> BuildPaths(object data, Stack<Tuple<PropertyInfo, bool, object>> propertyStack, object root)
+        private IEnumerable<IPath> BuildPaths(object data, Stack<Tuple<PropertyInfo, bool, object>> propertyStack,
+            object root)
         {
-            List<IPath> paths = new List<IPath>();
+            var paths = new List<IPath>();
 
-            if(propertyStack.Count == 0 && data.GetType().IsEnumerable())
+            if (propertyStack.Count == 0 && data.GetType().IsEnumerable())
             {
                 //
                 // Handle if the poco mapper is used to map to an raw enumerable
                 //
-                paths.Add(new PocoPath(PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol, PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol));
+                paths.Add(new PocoPath(PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol,
+                    PocoPath.EnumerableSymbol + PocoPath.SeperatorSymbol));
             }
 
-            if(propertyStack.Count == 0 && data.GetType().IsPrimitive())
+            if (propertyStack.Count == 0 && data.GetType().IsPrimitive())
             {
                 //
                 // Handle if the poco mapper is used to map to a raw primitive
                 //
-                paths.Add(new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol, data.ToString()));
+                paths.Add(new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol,
+                    data.ToString()));
             }
             else
             {
-                PropertyInfo[] dataProperties = data.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+                PropertyInfo[] dataProperties = data.GetType()
+                    .GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
-                foreach(PropertyInfo propertyInfo in dataProperties.Where(p => p.PropertyType.IsPrimitive()))
+                foreach (PropertyInfo propertyInfo in dataProperties.Where(p => p.PropertyType.IsPrimitive()))
                 {
                     object propertyData;
 
@@ -73,20 +77,20 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     {
                         propertyData = propertyInfo.GetValue(data, null);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Dev2Logger.Log.Error(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }
 
-                    if(propertyData != null)
+                    if (propertyData != null)
                     {
                         paths.Add(BuildPath(propertyStack, propertyInfo, root));
                     }
                 }
 
-                foreach(PropertyInfo propertyInfo in dataProperties.Where(p => !p.PropertyType.IsPrimitive()))
+                foreach (PropertyInfo propertyInfo in dataProperties.Where(p => !p.PropertyType.IsPrimitive()))
                 {
                     object propertyData;
 
@@ -94,20 +98,20 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     {
                         propertyData = propertyInfo.GetValue(data, null);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Dev2Logger.Log.Error(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }
 
-                    if(propertyData != null)
+                    if (propertyData != null)
                     {
-                        if(propertyInfo.PropertyType.IsEnumerable())
+                        if (propertyInfo.PropertyType.IsEnumerable())
                         {
-                            IEnumerable enumerableData = propertyData as IEnumerable;
+                            var enumerableData = propertyData as IEnumerable;
 
-                            if(enumerableData != null)
+                            if (enumerableData != null)
                             {
                                 propertyStack.Push(new Tuple<PropertyInfo, bool, object>(propertyInfo, false, data));
                                 paths.AddRange(BuildPaths(propertyData, propertyStack, root));
@@ -115,7 +119,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
                                 IEnumerator enumerator = enumerableData.GetEnumerator();
                                 enumerator.Reset();
-                                if(enumerator.MoveNext())
+                                if (enumerator.MoveNext())
                                 {
                                     propertyData = enumerator.Current;
 
@@ -138,34 +142,40 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             return paths;
         }
 
-        private IPath BuildPath(Stack<Tuple<PropertyInfo, bool, object>> propertyStack, PropertyInfo property, object root)
+        private IPath BuildPath(Stack<Tuple<PropertyInfo, bool, object>> propertyStack, PropertyInfo property,
+            object root)
         {
-            PocoPath path = new PocoPath();
+            var path = new PocoPath();
 
-            path.ActualPath = string.Join(PocoPath.SeperatorSymbol, propertyStack.Reverse().Select(p => path.CreatePathSegment(p.Item1).ToString(p.Item2)));
+            path.ActualPath = string.Join(PocoPath.SeperatorSymbol,
+                propertyStack.Reverse().Select(p => path.CreatePathSegment(p.Item1).ToString(p.Item2)));
 
-            List<Tuple<IPathSegment, bool>> displayPathSegments = propertyStack.Reverse().Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1), p.Item2)).ToList();
+            List<Tuple<IPathSegment, bool>> displayPathSegments =
+                propertyStack.Reverse()
+                    .Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1), p.Item2))
+                    .ToList();
             bool recordsetEncountered = false;
 
-            for(int i = displayPathSegments.Count - 1; i >= 0; i--)
+            for (int i = displayPathSegments.Count - 1; i >= 0; i--)
             {
                 Tuple<IPathSegment, bool> pathSegment = displayPathSegments[i];
-                if(recordsetEncountered)
+                if (recordsetEncountered)
                 {
                     pathSegment.Item1.IsEnumarable = false;
                 }
 
-                if(pathSegment.Item1.IsEnumarable && pathSegment.Item2) recordsetEncountered = true;
+                if (pathSegment.Item1.IsEnumarable && pathSegment.Item2) recordsetEncountered = true;
             }
 
-            path.DisplayPath = string.Join(PocoPath.SeperatorSymbol, displayPathSegments.Select(p => p.Item1.ToString(p.Item2)));
+            path.DisplayPath = string.Join(PocoPath.SeperatorSymbol,
+                displayPathSegments.Select(p => p.Item1.ToString(p.Item2)));
 
-            if(path.ActualPath != string.Empty)
+            if (path.ActualPath != string.Empty)
             {
                 path.ActualPath += PocoPath.SeperatorSymbol;
             }
 
-            if(path.DisplayPath != string.Empty)
+            if (path.DisplayPath != string.Empty)
             {
                 path.DisplayPath += PocoPath.SeperatorSymbol;
             }
@@ -179,8 +189,15 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         private string GetSampleData(object root, IPath path)
         {
-            PocoNavigator navigator = new PocoNavigator(root);
-            return string.Join(GlobalConstants.AnythingToXmlPathSeperator, navigator.SelectEnumerable(path).Select(o => o.ToString().Replace(GlobalConstants.AnythingToXmlPathSeperator, GlobalConstants.AnytingToXmlCommaToken)).Take(10));
+            var navigator = new PocoNavigator(root);
+            return string.Join(GlobalConstants.AnythingToXmlPathSeperator,
+                navigator.SelectEnumerable(path)
+                    .Select(
+                        o =>
+                            o.ToString()
+                                .Replace(GlobalConstants.AnythingToXmlPathSeperator,
+                                    GlobalConstants.AnytingToXmlCommaToken))
+                    .Take(10));
         }
 
         #endregion Private Methods

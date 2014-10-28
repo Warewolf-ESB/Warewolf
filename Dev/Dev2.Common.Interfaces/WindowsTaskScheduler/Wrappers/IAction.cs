@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,10 +13,11 @@ using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Microsoft.Win32.TaskScheduler;
+using Action = Microsoft.Win32.TaskScheduler.Action;
 
 namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 {
-    public interface IAction : IDisposable, IWrappedObject<Microsoft.Win32.TaskScheduler.Action>
+    public interface IAction : IDisposable, IWrappedObject<Action>
     {
         /// <summary>
         ///     Gets the type of the action.

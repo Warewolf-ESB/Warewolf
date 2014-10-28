@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,8 +22,8 @@ namespace Dev2.CustomControls.Behavior
     public class EmptyListBoxWaterMarkBehavior : Behavior<ListBox>
     {
         private INotifyCollectionChanged _itemsCollection;
-        private UIElement _oldContent;
         private UIElement _newContent;
+        private UIElement _oldContent;
 
         #region Override Methods
 
@@ -48,21 +47,23 @@ namespace Dev2.CustomControls.Behavior
         #region WatermarkText
 
         #region WatermarkText Property
+
+        public static readonly DependencyProperty WatermarkTextProperty =
+            DependencyProperty.Register("WatermarkText", typeof (string),
+                typeof (EmptyListBoxWaterMarkBehavior), new UIPropertyMetadata(string.Empty));
+
         public string WatermarkText
         {
-            get { return (string)GetValue(WatermarkTextProperty); }
+            get { return (string) GetValue(WatermarkTextProperty); }
             set { SetValue(WatermarkTextProperty, value); }
         }
 
-        public static readonly DependencyProperty WatermarkTextProperty =
-            DependencyProperty.Register("WatermarkText", typeof(string), 
-            typeof(EmptyListBoxWaterMarkBehavior), new UIPropertyMetadata(string.Empty));
         #endregion WatermarkText Property
 
         #endregion WatermarkText
 
         #endregion
-        
+
         #region Private Methods
 
         private void SubscribeToEvents()
@@ -102,15 +103,15 @@ namespace Dev2.CustomControls.Behavior
             {
                 if (_oldContent == null)
                 {
-                    var border = AssociatedObject.Descendents(1).OfType<Border>().First();
+                    Border border = AssociatedObject.Descendents(1).OfType<Border>().First();
                     _oldContent = border.Child;
                     _newContent = new TextBlock
-                        {
-                            Text = WatermarkText, 
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            TextAlignment = TextAlignment.Center,
-                            Foreground = new SolidColorBrush(Colors.Gray)
-                        };
+                    {
+                        Text = WatermarkText,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        TextAlignment = TextAlignment.Center,
+                        Foreground = new SolidColorBrush(Colors.Gray)
+                    };
                     border.Child = _newContent;
                 }
             }
@@ -118,7 +119,7 @@ namespace Dev2.CustomControls.Behavior
             {
                 if (_oldContent != null)
                 {
-                    var border = AssociatedObject.Descendents(1).OfType<Border>().First();
+                    Border border = AssociatedObject.Descendents(1).OfType<Border>().First();
                     border.Child = _oldContent;
                     _oldContent = null;
                 }
@@ -126,6 +127,5 @@ namespace Dev2.CustomControls.Behavior
         }
 
         #endregion Private Methods
-
     }
 }

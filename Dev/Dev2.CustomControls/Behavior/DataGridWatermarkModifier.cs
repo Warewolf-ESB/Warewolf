@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -38,8 +37,8 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Class Memebers
 
-        private INotifyCollectionChanged observable;
         private ItemCollection dataGridItems;
+        private INotifyCollectionChanged observable;
 
         #endregion Class Memebers
 
@@ -68,42 +67,49 @@ namespace Dev2.Studio.AppResources.Behaviors
         #region WatermarkText
 
         #region WatermarkText Property
-        public List<string> WatermarkText
-        {
-            get { return (List<string>)GetValue(WatermarkTextProperty); }
-            set { SetValue(WatermarkTextProperty, value); }
-        }
 
         // Using a DependencyProperty as the backing store for WatermarkText.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty WatermarkTextProperty =
-            DependencyProperty.Register("WatermarkText", typeof(List<string>), typeof(DataGridWatermarkModifier), new UIPropertyMetadata(null));
+            DependencyProperty.Register("WatermarkText", typeof (List<string>), typeof (DataGridWatermarkModifier),
+                new UIPropertyMetadata(null));
+
+        public List<string> WatermarkText
+        {
+            get { return (List<string>) GetValue(WatermarkTextProperty); }
+            set { SetValue(WatermarkTextProperty, value); }
+        }
+
         #endregion WatermarkText Property
 
         #region WatermarkIndexes Property
-        public List<int> WatermarkIndexes
-        {
-            get { return (List<int>)GetValue(WatermarkIndexesProperty); }
-            set { SetValue(WatermarkIndexesProperty, value); }
-        }
 
         // Using a DependencyProperty as the backing store for WatermarkIndexes.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty WatermarkIndexesProperty =
-            DependencyProperty.Register("WatermarkIndexes", typeof(List<int>), typeof(DataGridWatermarkModifier), new UIPropertyMetadata(null));
+            DependencyProperty.Register("WatermarkIndexes", typeof (List<int>), typeof (DataGridWatermarkModifier),
+                new UIPropertyMetadata(null));
+
+        public List<int> WatermarkIndexes
+        {
+            get { return (List<int>) GetValue(WatermarkIndexesProperty); }
+            set { SetValue(WatermarkIndexesProperty, value); }
+        }
+
         #endregion WatermarkIndexes Property
 
         #endregion WatermarkText
 
         #region WatermarkPropertyNames
 
-        public string WatermarkPropertyName
-        {
-            get { return (string)GetValue(WatermarkPropertyNameProperty); }
-            set { SetValue(WatermarkPropertyNameProperty, value); }
-        }
-
         // Using a DependencyProperty as the backing store for WatermarkPropertyNames.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty WatermarkPropertyNameProperty =
-            DependencyProperty.Register("WatermarkPropertyName", typeof(string), typeof(DataGridWatermarkModifier), new PropertyMetadata(""));
+            DependencyProperty.Register("WatermarkPropertyName", typeof (string), typeof (DataGridWatermarkModifier),
+                new PropertyMetadata(""));
+
+        public string WatermarkPropertyName
+        {
+            get { return (string) GetValue(WatermarkPropertyNameProperty); }
+            set { SetValue(WatermarkPropertyNameProperty, value); }
+        }
 
         #endregion WatermarkPropertyNames
 
@@ -113,33 +119,33 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void UpdateWatermarks()
         {
-            if(dataGridItems != null && !string.IsNullOrWhiteSpace(WatermarkPropertyName) && WatermarkText != null)
+            if (dataGridItems != null && !string.IsNullOrWhiteSpace(WatermarkPropertyName) && WatermarkText != null)
             {
-                if(WatermarkIndexes == null)
+                if (WatermarkIndexes == null)
                 {
                     WatermarkIndexes = new List<int>();
                 }
 
-                for(int i = 0; i < WatermarkText.Count; i++)
+                for (int i = 0; i < WatermarkText.Count; i++)
                 {
-                    if(i == WatermarkIndexes.Count)
+                    if (i == WatermarkIndexes.Count)
                     {
                         WatermarkIndexes.Add(i);
                     }
                 }
-                for(int i = 0; i < dataGridItems.Count; i++)
+                for (int i = 0; i < dataGridItems.Count; i++)
                 {
-                    var list = dataGridItems.SourceCollection.Cast<object>().ToList();
+                    List<object> list = dataGridItems.SourceCollection.Cast<object>().ToList();
                     var mi = list[i] as ModelItem;
 
-                    if(mi != null)
+                    if (mi != null)
                     {
                         int watermarkIndex = WatermarkIndexes.IndexOf(i);
-                        if(watermarkIndex != -1)
+                        if (watermarkIndex != -1)
                         {
                             WatermarkSential.IsWatermarkBeingApplied = true;
-                            var modelProperty = mi.Properties[WatermarkPropertyName];
-                            if(modelProperty != null)
+                            ModelProperty modelProperty = mi.Properties[WatermarkPropertyName];
+                            if (modelProperty != null)
                             {
                                 modelProperty.SetValue(WatermarkText[watermarkIndex]);
                             }
@@ -147,8 +153,8 @@ namespace Dev2.Studio.AppResources.Behaviors
                         else
                         {
                             WatermarkSential.IsWatermarkBeingApplied = true;
-                            var modelProperty = mi.Properties[WatermarkPropertyName];
-                            if(modelProperty != null)
+                            ModelProperty modelProperty = mi.Properties[WatermarkPropertyName];
+                            if (modelProperty != null)
                             {
                                 modelProperty.SetValue("");
                             }
@@ -158,13 +164,13 @@ namespace Dev2.Studio.AppResources.Behaviors
                     {
                         PropertyInfo pi = dataGridItems[i].GetType().GetProperty(WatermarkPropertyName);
 
-                        if(pi != null)
+                        if (pi != null)
                         {
-                            if(WatermarkText.Count > i && dataGridItems.Count > i)
+                            if (WatermarkText.Count > i && dataGridItems.Count > i)
                             {
                                 pi.SetValue(dataGridItems[i], WatermarkText[i], null);
                             }
-                            else if(i == dataGridItems.Count - 1)
+                            else if (i == dataGridItems.Count - 1)
                             {
                                 pi.SetValue(dataGridItems[i], "", null);
                             }
@@ -177,14 +183,14 @@ namespace Dev2.Studio.AppResources.Behaviors
         private void SubscribeToEvents()
         {
             observable = AssociatedObject.Items;
-            if(observable != null)
+            if (observable != null)
             {
                 observable.CollectionChanged -= observable_CollectionChanged;
                 observable.CollectionChanged += observable_CollectionChanged;
             }
 
             var notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
-            if(notifyPropertyChangedImplimentor != null)
+            if (notifyPropertyChangedImplimentor != null)
             {
                 notifyPropertyChangedImplimentor.PropertyChanged -= notifyPropertyChangedImplimentor_PropertyChanged;
             }
@@ -195,13 +201,13 @@ namespace Dev2.Studio.AppResources.Behaviors
         private void UnsubscribeFromEvents()
         {
             observable = AssociatedObject.Items;
-            if(observable != null)
+            if (observable != null)
             {
                 observable.CollectionChanged -= observable_CollectionChanged;
             }
 
-            INotifyPropertyChanged notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
-            if(notifyPropertyChangedImplimentor != null)
+            var notifyPropertyChangedImplimentor = AssociatedObject as INotifyPropertyChanged;
+            if (notifyPropertyChangedImplimentor != null)
             {
                 notifyPropertyChangedImplimentor.PropertyChanged -= notifyPropertyChangedImplimentor_PropertyChanged;
             }
@@ -226,7 +232,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void notifyPropertyChangedImplimentor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == "Items" || e.PropertyName == "ItemsSource")
+            if (e.PropertyName == "Items" || e.PropertyName == "ItemsSource")
             {
                 UpdateWatermarks();
             }
