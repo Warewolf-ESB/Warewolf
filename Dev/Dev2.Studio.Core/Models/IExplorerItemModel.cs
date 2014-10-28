@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Threading;
 
 namespace Dev2.Models
@@ -70,7 +71,7 @@ namespace Dev2.Models
         bool IsAuthorized { get; set; }
         ICommand NewFolderCommand { get; set; }
         ICommand RollbackCommand { get;}
-        ICommand RefreshCommand { get; set; }
+        RelayCommand RefreshCommand { get; set; }
         ICommand NewResourceCommand { get; }
         ICommand DeleteVersionCommand { get; }
         /// <summary>
@@ -145,7 +146,7 @@ namespace Dev2.Models
         /// The connect command.
         /// </value>
         /// <author>Massimo Guerrera</author>
-        ICommand ConnectCommand { get; }
+        RelayCommand ConnectCommand { get; }
         /// <summary>
         /// Gets the disconnect command.
         /// </summary>
@@ -153,7 +154,7 @@ namespace Dev2.Models
         /// The disconnect command.
         /// </value>
         /// <author>Massimo Guerrera</author>
-        ICommand DisconnectCommand { get; }
+        RelayCommand DisconnectCommand { get; }
         bool? IsChecked { get; set; }
         bool IsOverwrite { get; set; }
         bool IsAuthorizedDeployTo { get; }

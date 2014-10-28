@@ -460,6 +460,42 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissions_CanRemoveRow")]
+        public void WindowsGroupPermissions_CanRemoveRow_IsServerChanges_CanExecuteChangedFires()
+        {
+            //------------Setup for test--------------------------
+            var p = new WindowsGroupPermission { IsDeleted = false };
+            var hitCount=0;
+            p.RemoveRow.CanExecuteChanged += (sender, args) =>
+            {
+                hitCount++;
+            };
+            //------------Execute Test---------------------------
+            p.IsServer = true;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,hitCount);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissions_CanRemoveRow")]
+        public void WindowsGroupPermissions_CanRemoveRow_WindowsGroupChanges_CanExecuteChangedFires()
+        {
+            //------------Setup for test--------------------------
+            var p = new WindowsGroupPermission { IsDeleted = false };
+            var hitCount=0;
+            p.RemoveRow.CanExecuteChanged += (sender, args) =>
+            {
+                hitCount++;
+            };
+            //------------Execute Test---------------------------
+            p.WindowsGroup = "TestGroup";
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,hitCount);
+        }
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("WindowsGroup_MethodName")]
         public void WindowsGroup_RemoveRow_DeleteTrue_DeletefalseEnableCellEditingTrue()

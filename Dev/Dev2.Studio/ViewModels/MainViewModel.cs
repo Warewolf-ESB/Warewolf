@@ -98,7 +98,7 @@ namespace Dev2.Studio.ViewModels
 
         private AuthorizeCommand<string> _newResourceCommand;
         private ICommand _addLanguageHelpPageCommand;
-        private ICommand _deployAllCommand;
+        private RelayCommand _deployAllCommand;
         private ICommand _deployCommand;
         private ICommand _displayAboutDialogueCommand;
         private ICommand _exitCommand;
@@ -158,6 +158,8 @@ namespace Dev2.Studio.ViewModels
                     _activeEnvironment = value;
                     OnActiveEnvironmentChanged();
                     NotifyOfPropertyChange(() => ActiveEnvironment);
+                    DeployAllCommand.RaiseCanExecuteChanged();
+
                 }
             }
         }
@@ -289,7 +291,7 @@ namespace Dev2.Studio.ViewModels
             get { return _showCommunityPageCommand ?? (_showCommunityPageCommand = new DelegateCommand(param => ShowCommunityPage())); }
         }
 
-        public ICommand DeployAllCommand
+        public RelayCommand DeployAllCommand
         {
             get
             {

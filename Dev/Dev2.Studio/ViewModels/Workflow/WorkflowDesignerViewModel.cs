@@ -1454,7 +1454,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     var checkServiceDefinition = CheckServiceDefinition();
                     var checkDataList = CheckDataList();
-
+                    
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     _workspaceSave = false;
                     NotifyOfPropertyChange(() => DisplayName);
@@ -1473,6 +1473,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // THIS MUST NEVER BE DELETED ;)
                 WatermarkSential.IsWatermarkBeingApplied = false;
             }
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         bool CheckDataList()
@@ -1514,7 +1515,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 });
             }
-            AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            //AddMissingWithNoPopUpAndFindUnusedDataListItems();
         }
 
         public static bool ValidatResourceModel(string dataList)
