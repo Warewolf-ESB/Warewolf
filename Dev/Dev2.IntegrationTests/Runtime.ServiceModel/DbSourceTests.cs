@@ -44,7 +44,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             new DbSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
 
             //Assert resource saved
-            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID,  testResource.ResourceID.ToString());
+            var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, ResourceType.DbService,  testResource.ResourceID.ToString());
             const string PathStartText = "<Category>";
             int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
             if(start > 0)
