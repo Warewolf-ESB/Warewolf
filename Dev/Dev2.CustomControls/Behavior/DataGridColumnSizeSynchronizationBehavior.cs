@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,6 +9,7 @@
 */
 
 
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 
@@ -29,11 +29,11 @@ namespace Dev2.CustomControls.Behavior
             AssociatedObject.SizeChanged -= AssociatedObjectSizeChanged;
         }
 
-        void AssociatedObjectSizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+        private void AssociatedObjectSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            foreach (var dataGridColumn in AssociatedObject.Columns)
+            foreach (DataGridColumn dataGridColumn in AssociatedObject.Columns)
             {
-                var dataGridLength = dataGridColumn.Width;
+                DataGridLength dataGridLength = dataGridColumn.Width;
                 dataGridColumn.ClearValue(DataGridColumn.WidthProperty);
                 dataGridColumn.Width = dataGridLength;
             }

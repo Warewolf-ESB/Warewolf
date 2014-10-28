@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -34,7 +33,7 @@ namespace Dev2
         public static bool IsEnumerableOfPrimitives(this JToken property)
         {
             bool returnValue = false;
-            JArray array = property as JArray;
+            var array = property as JArray;
 
             if (array != null && array.Count > 0)
             {

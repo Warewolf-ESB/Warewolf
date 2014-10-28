@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,6 +9,7 @@
 */
 
 
+using System.Security;
 using System.Text;
 
 namespace Dev2
@@ -28,7 +28,6 @@ namespace Dev2
 
     public class Field
     {
-
         #region Protected Fields
 
         protected string delimiter;
@@ -37,47 +36,24 @@ namespace Dev2
 
         #region Public Properties
 
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
 
-        public int Length
-        {
-            get;
-            set;
-        }
+        public int Length { get; set; }
 
         public string RegularExpressionValidator { get; set; }
 
-        public PaddingDirection Padding
-        {
-            get;
-            set;
-        }
+        public PaddingDirection Padding { get; set; }
 
-        public int PaddingLength
-        {
-            get;
-            set;
-        }
+        public int PaddingLength { get; set; }
 
-        public char PaddingCharacter
-        {
-            get;
-            set;
-        }
+        public char PaddingCharacter { get; set; }
 
         public string Delimiter
         {
-            get
-            {
-                return delimiter;
-            }
+            get { return delimiter; }
             set
             {
-                StringBuilder b = new StringBuilder(value);
+                var b = new StringBuilder(value);
                 b.Replace(@"\0", "\0");
                 b.Replace(@"\a", "\a");
                 b.Replace(@"\b", "\b");
@@ -96,32 +72,29 @@ namespace Dev2
 
         public string ParseValue(string value)
         {
-
-            if(Padding == PaddingDirection.Left && PaddingCharacter != '\0')
+            if (Padding == PaddingDirection.Left && PaddingCharacter != '\0')
             {
-                value = value.TrimStart(new[] { PaddingCharacter });
+                value = value.TrimStart(new[] {PaddingCharacter});
             }
 
-            if(Padding == PaddingDirection.Right && PaddingCharacter != '\0')
+            if (Padding == PaddingDirection.Right && PaddingCharacter != '\0')
             {
-                value = value.TrimEnd(new[] { PaddingCharacter });
+                value = value.TrimEnd(new[] {PaddingCharacter});
             }
 
-            if(Length > 0 && Length < value.Length)
+            if (Length > 0 && Length < value.Length)
             {
-
-
-                return System.Security.SecurityElement.Escape(value.Substring(0, Length));
+                return SecurityElement.Escape(value.Substring(0, Length));
             }
 
-            return System.Security.SecurityElement.Escape(value);
+            return SecurityElement.Escape(value);
         }
 
         public string FormatValue(string value)
         {
-            if(PaddingCharacter != '\0' && Length > 0)
+            if (PaddingCharacter != '\0' && Length > 0)
             {
-                switch(Padding)
+                switch (Padding)
                 {
                     case PaddingDirection.Left:
                         value = value.PadLeft(Length, PaddingCharacter);

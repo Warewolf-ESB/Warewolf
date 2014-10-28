@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,10 +11,12 @@
 
 using System;
 
-namespace Dev2.Common {
-
-    public class TokenizeError : Exception {
-
-        public TokenizeError(string msg) : base(msg) {}
+namespace Dev2.Common
+{
+    public class TokenizeError : Exception
+    {
+        public TokenizeError(string msg) : base(msg)
+        {
+        }
     }
 }

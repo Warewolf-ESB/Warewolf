@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,15 +13,18 @@ using System;
 using System.Text;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 
-namespace Dev2.Common {
-    internal class Dev2EoFOp : IDev2SplitOp{
-
-        public bool IsFinalOp() {
+namespace Dev2.Common
+{
+    internal class Dev2EoFOp : IDev2SplitOp
+    {
+        public bool IsFinalOp()
+        {
             //18.09.2012: Massimo.Guerrera - Changed to false because of bug, no executing the last op.
             return false;
         }
 
-        public int OpLength() {
+        public int OpLength()
+        {
             return 0;
         }
 
@@ -31,18 +33,21 @@ namespace Dev2.Common {
             return false;
         }
 
-        public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed) {
-            StringBuilder result = new StringBuilder();
+        public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
+        {
+            var result = new StringBuilder();
 
             int start = startIdx;
             int end = candidate.Length;
 
-            if (isReversed) {
+            if (isReversed)
+            {
                 start = 0;
-                end = startIdx+1;
+                end = startIdx + 1;
             }
 
-            for (int i = start; i < end; i++) {
+            for (int i = start; i < end; i++)
+            {
                 result.Append(candidate[i]);
             }
 
@@ -53,6 +58,5 @@ namespace Dev2.Common {
         {
             throw new NotImplementedException();
         }
-    
     }
 }

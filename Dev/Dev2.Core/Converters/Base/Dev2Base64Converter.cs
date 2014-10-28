@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -28,15 +27,14 @@ namespace Dev2.Converters
                 // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                 result = true;
             }
-            // ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+                // ReSharper restore EmptyGeneralCatchClause
             {
                 // if error is thrown we know it is not a valid base64 string
             }
 
             return result;
-
         }
 
         public string ConvertToBase(byte[] payload)
@@ -46,19 +44,16 @@ namespace Dev2.Converters
 
         public byte[] NeutralizeToCommon(string payload)
         {
-
             byte[] decoded = Convert.FromBase64String(payload);
             string tmp = Encoding.UTF8.GetString(decoded);
 
-            UTF8Encoding encoder = new UTF8Encoding();
+            var encoder = new UTF8Encoding();
             return (encoder.GetBytes(tmp));
-
         }
 
         public Enum HandlesType()
         {
             return enDev2BaseConvertType.Base64;
         }
-
     }
 }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,44 +15,55 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace Dev2.CustomControls.Behavior {
-    public class ControlEnterToTabBehavior : Behavior<Control>, IDisposable 
+namespace Dev2.CustomControls.Behavior
+{
+    public class ControlEnterToTabBehavior : Behavior<Control>, IDisposable
     {
+        // Using a DependencyProperty as the backing store for NumberOfMoves.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NumberOfMovesProperty =
+            DependencyProperty.Register("NumberOfMoves", typeof (int), typeof (ControlEnterToTabBehavior),
+                new PropertyMetadata(1));
+
         public int NumberOfMoves
         {
-            get { return (int)GetValue(NumberOfMovesProperty); }
+            get { return (int) GetValue(NumberOfMovesProperty); }
             set { SetValue(NumberOfMovesProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for NumberOfMoves.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty NumberOfMovesProperty =
-            DependencyProperty.Register("NumberOfMoves", typeof(int), typeof(ControlEnterToTabBehavior), new PropertyMetadata(1));
+        public void Dispose()
+        {
+            AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
+            AssociatedObject.Unloaded -= AssociatedObject_Unloaded;
+            AssociatedObject.Loaded -= AssociatedObject_Loaded;
+        }
 
-        
-        protected override void OnAttached() {
+
+        protected override void OnAttached()
+        {
             base.OnAttached();
             AssociatedObject.Loaded += AssociatedObject_Loaded;
             AssociatedObject.Unloaded += AssociatedObject_Unloaded;
         }
 
-        void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
+        private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
         }
 
-        void AssociatedObject_Unloaded(object sender, RoutedEventArgs e)
+        private void AssociatedObject_Unloaded(object sender, RoutedEventArgs e)
         {
             AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
         }
 
-        void AssociatedObject_PreviewKeyDown(object sender, KeyEventArgs e) {
-           
-            if (e.Key == Key.Enter && (e.KeyboardDevice.Modifiers != ModifierKeys.Shift && e.KeyboardDevice.Modifiers != ModifierKeys.Control))
+        private void AssociatedObject_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter &&
+                (e.KeyboardDevice.Modifiers != ModifierKeys.Shift && e.KeyboardDevice.Modifiers != ModifierKeys.Control))
             {
-                var count = 0;
+                int count = 0;
                 while (count < NumberOfMoves)
                 {
-                    var scope = FocusManager.GetFocusScope(AssociatedObject);
+                    DependencyObject scope = FocusManager.GetFocusScope(AssociatedObject);
                     var focusedObject = FocusManager.GetFocusedElement(scope) as FrameworkElement;
                     if (focusedObject != null)
                     {
@@ -65,15 +75,10 @@ namespace Dev2.CustomControls.Behavior {
             }
         }
 
-        protected override void OnDetaching() {
+        protected override void OnDetaching()
+        {
             base.OnDetaching();
             Dispose();
-        }
-
-        public void Dispose() {
-            AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
-            AssociatedObject.Unloaded -= AssociatedObject_Unloaded;
-            AssociatedObject.Loaded -= AssociatedObject_Loaded;
         }
     }
 }

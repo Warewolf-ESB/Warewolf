@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,14 +20,14 @@ namespace Dev2.CustomControls.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var val = (double)value;
+            var val = (double) value;
             var gridLength = new GridLength(val);
             return gridLength;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var val = (GridLength)value;
+            var val = (GridLength) value;
             return val.Value;
         }
     }

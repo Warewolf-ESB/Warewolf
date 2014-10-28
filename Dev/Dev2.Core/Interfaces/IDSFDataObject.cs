@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -71,13 +70,9 @@ namespace Dev2
         // Massimo.Guerrera :15-04-2013 - Added for the detection of webpages in the webserver so that the system tags dont get striped
         bool IsWebpage { get; set; }
 
-        IDSFDataObject Clone();
-
         ExecutionOrigin ExecutionOrigin { get; set; }
         string ExecutionOriginDescription { get; set; }
         bool IsFromWebServer { get; set; }
-
-        bool IsDebugMode();
 
         Guid EnvironmentID { get; set; }
 
@@ -91,8 +86,10 @@ namespace Dev2
 
         bool IsRemoteInvoke { get; }
         bool IsRemoteInvokeOverridden { get; set; }
-        bool IsRemoteWorkflow();
 
         int ForEachNestingLevel { get; set; }
+        IDSFDataObject Clone();
+        bool IsDebugMode();
+        bool IsRemoteWorkflow();
     }
 }

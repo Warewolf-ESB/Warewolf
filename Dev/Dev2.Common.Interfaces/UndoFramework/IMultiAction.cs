@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,4 +18,3 @@ namespace Dev2.Common.Interfaces.UndoFramework
         bool IsDelayed { get; set; }
     }
 }
-

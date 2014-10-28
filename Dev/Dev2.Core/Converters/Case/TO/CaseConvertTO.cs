@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,11 +24,10 @@ namespace Dev2
     {
         #region Fields
 
+        private string _convertType;
+        private Dictionary<string, List<IActionableErrorInfo>> _errors;
         private string _result;
         private string _stringToConvert;
-        private string _convertType;
-        private IList<string> _expressions;
-        Dictionary<string, List<IActionableErrorInfo>> _errors;
 
         #endregion Fields
 
@@ -40,7 +38,8 @@ namespace Dev2
             Errors = new Dictionary<string, List<IActionableErrorInfo>>();
         }
 
-        public CaseConvertTO(string stringToConvert, string convertType, string result, int indexNumber, bool inserted = false)
+        public CaseConvertTO(string stringToConvert, string convertType, string result, int indexNumber,
+            bool inserted = false)
         {
             Inserted = inserted;
             StringToConvert = stringToConvert;
@@ -58,14 +57,12 @@ namespace Dev2
         [FindMissing]
         public string StringToConvert
         {
-            get
-            {
-                return _stringToConvert;
-            }
+            get { return _stringToConvert; }
             set
             {
                 _stringToConvert = value;
-                _result = value; // This is set as the result for now as it is the same value till we do the advanced view.
+                _result = value;
+                    // This is set as the result for now as it is the same value till we do the advanced view.
                 OnPropertyChanged("StringToConvert");
                 OnPropertyChanged("Result");
                 RaiseCanAddRemoveChanged();
@@ -74,13 +71,10 @@ namespace Dev2
 
         public string ConvertType
         {
-            get
-            {
-                return _convertType;
-            }
+            get { return _convertType; }
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     _convertType = value;
                     OnPropertyChanged("ConvertType");
@@ -88,17 +82,7 @@ namespace Dev2
             }
         }
 
-        public IList<string> Expressions
-        {
-            get
-            {
-                return _expressions;
-            }
-            set
-            {
-                _expressions = value;
-            }
-        }
+        public IList<string> Expressions { get; set; }
 
         [FindMissing]
         public string Result
@@ -106,7 +90,7 @@ namespace Dev2
             get
             {
                 //Add the below code when the wizard comes in
-                if(string.IsNullOrWhiteSpace(_result))
+                if (string.IsNullOrWhiteSpace(_result))
                 {
                     _result = StringToConvert;
                 }
@@ -126,7 +110,7 @@ namespace Dev2
 
         public string WatermarkTextVariable { get; set; }
 
-        void RaiseCanAddRemoveChanged()
+        private void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
@@ -157,7 +141,7 @@ namespace Dev2
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -168,22 +152,26 @@ namespace Dev2
         #region Implementation of IDataErrorInfo
 
         /// <summary>
-        /// Gets the error message for the property with the given name.
+        ///     Gets the error message for the property with the given name.
         /// </summary>
         /// <returns>
-        /// The error message for the property. The default is an empty string ("").
+        ///     The error message for the property. The default is an empty string ("").
         /// </returns>
         /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName] { get { return null; } }
+        public string this[string columnName]
+        {
+            get { return null; }
+        }
 
         /// <summary>
-        /// Gets an error message indicating what is wrong with this object.
+        ///     Gets an error message indicating what is wrong with this object.
         /// </summary>
         /// <returns>
-        /// An error message indicating what is wrong with this object. The default is an empty string ("").
+        ///     An error message indicating what is wrong with this object. The default is an empty string ("").
         /// </returns>
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string Error { get; private set; }
+
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         #endregion
@@ -192,10 +180,7 @@ namespace Dev2
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors
         {
-            get
-            {
-                return _errors;
-            }
+            get { return _errors; }
             set
             {
                 _errors = value;
@@ -205,22 +190,23 @@ namespace Dev2
 
         public bool Validate(string propertyName, IRuleSet ruleSet)
         {
-            if(ruleSet == null)
+            if (ruleSet == null)
             {
                 Errors[propertyName] = new List<IActionableErrorInfo>();
             }
             else
             {
-                var errorsTos = ruleSet.ValidateRules();
-                var actionableErrorInfos = errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
-                {
-                    //
-                }));
+                List<IActionableErrorInfo> errorsTos = ruleSet.ValidateRules();
+                List<IActionableErrorInfo> actionableErrorInfos =
+                    errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
+                    {
+                        //
+                    }));
                 Errors[propertyName] = actionableErrorInfos;
             }
             OnPropertyChanged("Errors");
             List<IActionableErrorInfo> errorList;
-            if(Errors.TryGetValue(propertyName, out errorList))
+            if (Errors.TryGetValue(propertyName, out errorList))
             {
                 return errorList.Count == 0;
             }
@@ -230,7 +216,7 @@ namespace Dev2
         public bool Validate(string propertyName, string datalist)
         {
             RuleSet ruleSet = null;
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "FieldName":
                     ruleSet = GetFieldNameRuleSet();
@@ -241,11 +227,12 @@ namespace Dev2
             return Validate(propertyName, ruleSet);
         }
 
-        RuleSet GetFieldNameRuleSet()
+        private RuleSet GetFieldNameRuleSet()
         {
             var ruleSet = new RuleSet();
             return ruleSet;
         }
+
         #endregion
     }
 }

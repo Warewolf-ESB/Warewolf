@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,10 +19,11 @@ namespace Dev2.Network.Execution
     {
         #region Class Members
 
+        private readonly ConcurrentDictionary<Guid, Action<ExecutionStatusCallbackMessage>> _callbacks =
+            new ConcurrentDictionary<Guid, Action<ExecutionStatusCallbackMessage>>();
+
         private readonly object _disposeGuard = new object();
         private bool _isDisposed;
-
-        private readonly ConcurrentDictionary<Guid, Action<ExecutionStatusCallbackMessage>> _callbacks = new ConcurrentDictionary<Guid, Action<ExecutionStatusCallbackMessage>>();
 
         #endregion Class Members
 
@@ -32,7 +32,7 @@ namespace Dev2.Network.Execution
         // For testing only!!!
         // ReSharper disable EmptyConstructor
         public ExecutionStatusCallbackDispatcher()
-        // ReSharper restore EmptyConstructor
+            // ReSharper restore EmptyConstructor
         {
         }
 
@@ -48,21 +48,21 @@ namespace Dev2.Network.Execution
         // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
-        static volatile ExecutionStatusCallbackDispatcher _instance;
-        static readonly object SyncRoot = new Object();
+        private static volatile ExecutionStatusCallbackDispatcher _instance;
+        private static readonly object SyncRoot = new Object();
 
         /// <summary>
-        /// Gets the repository instance.
+        ///     Gets the repository instance.
         /// </summary>
         public static ExecutionStatusCallbackDispatcher Instance
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
-                    lock(SyncRoot)
+                    lock (SyncRoot)
                     {
-                        if(_instance == null)
+                        if (_instance == null)
                         {
                             _instance = new ExecutionStatusCallbackDispatcher();
                         }
@@ -77,7 +77,7 @@ namespace Dev2.Network.Execution
         #region Methods
 
         /// <summary>
-        /// Adds the specified callback.
+        ///     Adds the specified callback.
         /// </summary>
         /// <param name="callbackID">The callback ID.</param>
         /// <param name="callback">The callback.</param>
@@ -85,14 +85,14 @@ namespace Dev2.Network.Execution
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public bool Add(Guid callbackID, Action<ExecutionStatusCallbackMessage> callback)
         {
-            if(callback == null)
+            if (callback == null)
             {
                 throw new ArgumentNullException("callback");
             }
 
-            lock(_disposeGuard)
+            lock (_disposeGuard)
             {
-                if(_isDisposed)
+                if (_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
@@ -102,15 +102,15 @@ namespace Dev2.Network.Execution
         }
 
         /// <summary>
-        /// Removes the specified callback.
+        ///     Removes the specified callback.
         /// </summary>
         /// <param name="callbackID">The callback ID.</param>
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public bool Remove(Guid callbackID)
         {
-            lock(_disposeGuard)
+            lock (_disposeGuard)
             {
-                if(_isDisposed)
+                if (_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
@@ -122,21 +122,21 @@ namespace Dev2.Network.Execution
 
 
         /// <summary>
-        /// Removes a range of callback IDs range.
+        ///     Removes a range of callback IDs range.
         /// </summary>
         /// <param name="callbackID">The callback ID.</param>
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public void RemoveRange(IList<Guid> callbackID)
         {
-            lock(_disposeGuard)
+            lock (_disposeGuard)
             {
-                if(_isDisposed)
+                if (_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
             }
 
-            foreach(KeyValuePair<Guid, Action<ExecutionStatusCallbackMessage>> item in _callbacks)
+            foreach (var item in _callbacks)
             {
                 Action<ExecutionStatusCallbackMessage> tmpCallback;
                 _callbacks.TryRemove(item.Key, out tmpCallback);
@@ -144,69 +144,69 @@ namespace Dev2.Network.Execution
         }
 
         /// <summary>
-        /// Posts the specified message (Asynchronously).
+        ///     Posts the specified message (Asynchronously).
         /// </summary>
         /// <param name="message">The message.</param>
         /// <exception cref="System.ArgumentNullException">message</exception>
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public void Post(ExecutionStatusCallbackMessage message)
         {
-            if(message == null)
+            if (message == null)
             {
                 throw new ArgumentNullException("message");
             }
 
-            lock(_disposeGuard)
+            lock (_disposeGuard)
             {
-                if(_isDisposed)
+                if (_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
             }
 
             Action<ExecutionStatusCallbackMessage> callback;
-            if(_callbacks.TryGetValue(message.CallbackID, out callback))
+            if (_callbacks.TryGetValue(message.CallbackID, out callback))
             {
                 callback.BeginInvoke(message, null, null);
             }
         }
 
         /// <summary>
-        /// Sends the specified message (Synchronously).
+        ///     Sends the specified message (Synchronously).
         /// </summary>
         /// <param name="message">The message.</param>
         /// <exception cref="System.ArgumentNullException">message</exception>
         /// <exception cref="System.InvalidOperationException">Channel is disposing.</exception>
         public void Send(ExecutionStatusCallbackMessage message)
         {
-            if(message == null)
+            if (message == null)
             {
                 throw new ArgumentNullException("message");
             }
 
-            lock(_disposeGuard)
+            lock (_disposeGuard)
             {
-                if(_isDisposed)
+                if (_isDisposed)
                 {
                     throw new InvalidOperationException("Channel is disposing.");
                 }
             }
 
             Action<ExecutionStatusCallbackMessage> callback;
-            if(_callbacks.TryGetValue(message.CallbackID, out callback))
+            if (_callbacks.TryGetValue(message.CallbackID, out callback))
             {
                 callback(message);
             }
         }
 
         /// <summary>
-        /// A wrapper for the Post method which will only post a message if the callbackID isn't empty.
+        ///     A wrapper for the Post method which will only post a message if the callbackID isn't empty.
         /// </summary>
         /// <param name="callbackID">The callback ID.</param>
         /// <param name="messageType">Type of the message.</param>
         public void Post(Guid callbackID, ExecutionStatusCallbackMessageType messageType)
         {
-            if(callbackID != Guid.Empty)
+            if (callbackID != Guid.Empty)
             {
                 Post(new ExecutionStatusCallbackMessage(callbackID, messageType));
             }
@@ -217,13 +217,13 @@ namespace Dev2.Network.Execution
         #region Tear Down
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            lock(_disposeGuard)
+            lock (_disposeGuard)
             {
-                if(_isDisposed)
+                if (_isDisposed)
                 {
                     return;
                 }

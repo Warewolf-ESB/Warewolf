@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +16,7 @@ namespace Dev2.Common.Interfaces
 {
     public interface IVersionStrategy
     {
-        IVersionInfo GetNextVersion(IResource newResource, IResource oldresource, string userName , string reason );
+        IVersionInfo GetNextVersion(IResource newResource, IResource oldresource, string userName, string reason);
         IVersionInfo GetCurrentVersion(IResource newResource, IResource oldresource, string userName, string reason);
         IVersionInfo GetCurrentVersion(IResource newResource, IVersionInfo oldresource, string userName, string reason);
     }

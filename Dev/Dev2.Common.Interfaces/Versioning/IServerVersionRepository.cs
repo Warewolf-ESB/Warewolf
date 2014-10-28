@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +16,7 @@ namespace Dev2.Common.Interfaces.Versioning
 {
     public interface IServerVersionRepository : IVersionRepository
     {
-        void StoreVersion(IResource resource, string userName, string reason,Guid workSpaceId);
+        void StoreVersion(IResource resource, string userName, string reason, Guid workSpaceId);
         void MoveVersions(Guid resourceId, string newPath);
     }
 }

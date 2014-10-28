@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,11 +9,11 @@
 */
 
 
-
 namespace Dev2.Common.Interfaces.Scheduler.Interfaces
 {
     public interface IWorkflowExecutor
     {
-        IResourceHistory RunWorkFlow(string serverUri, string workflowName); // permissions  need to find out about permissions
+        IResourceHistory RunWorkFlow(string serverUri, string workflowName);
+        // permissions  need to find out about permissions
     }
 }

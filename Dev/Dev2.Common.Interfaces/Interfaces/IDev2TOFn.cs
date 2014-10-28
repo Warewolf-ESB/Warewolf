@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,12 +13,12 @@ using System.ComponentModel;
 
 namespace Dev2.Interfaces
 {
-    public interface IDev2TOFn:INotifyPropertyChanged
+    public interface IDev2TOFn : INotifyPropertyChanged
     {
+        int IndexNumber { get; set; }
+        bool Inserted { get; set; }
         bool CanRemove();
         bool CanAdd();
-        int IndexNumber { get; set; }
         void ClearRow();
-        bool Inserted { get; set; }
     }
 }

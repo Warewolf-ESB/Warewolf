@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,23 +18,21 @@ namespace Dev2.Common.Interfaces.Scheduler.Interfaces
 {
     public interface IScheduleTrigger
     {
-
         /// <summary>
-        /// task scheduler library trigger. 
+        ///     task scheduler library trigger.
         /// </summary>
         [JsonIgnore]
         ITrigger Trigger { get; set; }
 
         /// <summary>
-        /// State according to windows. 
+        ///     State according to windows.
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof (StringEnumConverter))]
         TaskState State { get; }
 
         /// <summary>
-        /// used for going across the wire
+        ///     used for going across the wire
         /// </summary>
         string NativeXML { get; set; }
-
     }
 }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -28,7 +27,7 @@ namespace Dev2.ExtMethods
         /// <remarks>This method is intended for usage with Windows Presentation Foundation.</remarks>
         public static bool WaitWithPumping(this Task task, int millisecondsTimeout = Timeout.Infinite)
         {
-            if(task == null)
+            if (task == null)
             {
                 throw new ArgumentNullException("task");
             }

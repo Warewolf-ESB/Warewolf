@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,18 +19,17 @@ namespace Dev2.Converters
 {
     internal class Dev2BinaryConverter : IBaseConverter
     {
-
         public string ConvertToBase(byte[] payload)
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             // ReSharper disable ForCanBeConvertedToForeach
-            for(int i = 0; i < payload.Length; i++)
-            // ReSharper restore ForCanBeConvertedToForeach
+            for (int i = 0; i < payload.Length; i++)
+                // ReSharper restore ForCanBeConvertedToForeach
             {
                 string tmp = Convert.ToString(payload[i], 2);
                 // zero pad the value
-                for(int q = tmp.Length; q < 8; q++)
+                for (int q = tmp.Length; q < 8; q++)
                 {
                     result.Append("0");
                 }
@@ -43,12 +41,12 @@ namespace Dev2.Converters
 
         public byte[] NeutralizeToCommon(string payload)
         {
-            if(payload.Length >= 8)
+            if (payload.Length >= 8)
             {
-                var result = new byte[(payload.Length / 8)];
+                var result = new byte[(payload.Length/8)];
 
                 int pos = 0;
-                for(int i = 0; i < payload.Length; i += 8)
+                for (int i = 0; i < payload.Length; i += 8)
                 {
                     result[pos] = Convert.ToByte((payload.Substring(i, 8)), 2);
                     pos++;
@@ -69,6 +67,5 @@ namespace Dev2.Converters
         {
             return enDev2BaseConvertType.Binary;
         }
-
     }
 }

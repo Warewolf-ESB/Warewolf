@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,7 +21,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         internal XmlPathSegment()
         {
-
         }
 
         internal XmlPathSegment(string name, bool isEnumarable)
@@ -42,18 +40,18 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         #region Properties
 
+        public bool IsAttribute { get; set; }
         public string ActualSegment { get; set; }
         public string DisplaySegment { get; set; }
         public bool IsEnumarable { get; set; }
-        public bool IsAttribute { get; set; }
 
         #endregion Properties
 
         #region Methods
 
-        public override string ToString()
+        public string ToString(bool considerEnumerable)
         {
-            if(IsEnumarable)
+            if (considerEnumerable && IsEnumarable)
             {
                 return ActualSegment + XmlPath.EnumerableSymbol;
             }
@@ -61,9 +59,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             return ActualSegment;
         }
 
-        public string ToString(bool considerEnumerable)
+        public override string ToString()
         {
-            if(considerEnumerable && IsEnumarable)
+            if (IsEnumarable)
             {
                 return ActualSegment + XmlPath.EnumerableSymbol;
             }

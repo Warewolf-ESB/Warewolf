@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,6 +9,7 @@
 */
 
 
+using System;
 using System.IO;
 
 namespace Dev2.Common.Common
@@ -18,29 +18,29 @@ namespace Dev2.Common.Common
     {
         public static bool Delete(string path)
         {
-            if(path == null)
+            if (path == null)
             {
                 return false;
             }
 
-            var dirRoot = Path.GetDirectoryName(path);
-            var pattern = Path.GetFileName(path);
+            string dirRoot = Path.GetDirectoryName(path);
+            string pattern = Path.GetFileName(path);
             // directory
-            if(IsDirectory(path))
+            if (IsDirectory(path))
             {
                 DirectoryHelper.CleanUp(path);
                 return true;
             }
 
             // wild-card char
-            if(path.IndexOf("*", System.StringComparison.Ordinal) >= 0)
+            if (path.IndexOf("*", StringComparison.Ordinal) >= 0)
             {
-                if(pattern != null && dirRoot != null)
+                if (pattern != null && dirRoot != null)
                 {
-                    var fileList = Directory.GetFileSystemEntries(dirRoot, pattern, SearchOption.TopDirectoryOnly);
-                    foreach(var file in fileList)
+                    string[] fileList = Directory.GetFileSystemEntries(dirRoot, pattern, SearchOption.TopDirectoryOnly);
+                    foreach (string file in fileList)
                     {
-                        if(IsDirectory(file))
+                        if (IsDirectory(file))
                         {
                             //it's a directory
                             Directory.Delete(file, true);
@@ -65,13 +65,13 @@ namespace Dev2.Common.Common
 
         private static bool IsDirectory(string path)
         {
-            if(path.IndexOf("*", System.StringComparison.Ordinal) >= 0)
+            if (path.IndexOf("*", StringComparison.Ordinal) >= 0)
             {
                 return false;
             }
 
             FileAttributes attr = File.GetAttributes(path);
-            if((attr & FileAttributes.Directory) == FileAttributes.Directory)
+            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
             {
                 return true;
             }
@@ -79,5 +79,4 @@ namespace Dev2.Common.Common
             return false;
         }
     }
-
 }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,7 +15,6 @@ namespace Dev2.Converters
 {
     internal class Dev2BaseConversionBroker : IBaseConversionBroker
     {
-
         private readonly IBaseConverter _from;
         private readonly IBaseConverter _to;
 
@@ -31,20 +29,18 @@ namespace Dev2.Converters
             string result;
 
             // convert from to base type
-            if(_from.IsType(payload))
+            if (_from.IsType(payload))
             {
-
                 byte[] rawBytes = _from.NeutralizeToCommon(payload);
 
                 // convert to expected type
                 result = _to.ConvertToBase(rawBytes);
-
-
             }
             else
             {
                 //throw new ConversionException - wrong base format
-                throw new BaseTypeException("Base Conversion Broker was expecting [ " + _from.HandlesType() + " ] but the data was not in this format");
+                throw new BaseTypeException("Base Conversion Broker was expecting [ " + _from.HandlesType() +
+                                            " ] but the data was not in this format");
             }
 
             return result;

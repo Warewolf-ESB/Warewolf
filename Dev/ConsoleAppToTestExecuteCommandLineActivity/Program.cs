@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,16 +13,16 @@ using System;
 
 namespace ConsoleAppToTestExecuteCommandLineActivity
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
                 return;
             }
-            var switchArg = args[0];
-            switch(switchArg)
+            string switchArg = args[0];
+            switch (switchArg)
             {
                 case "user":
                     Console.Read();
