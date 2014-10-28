@@ -101,7 +101,36 @@ namespace Dev2.Studio.Views.Explorer
                 }
             }
         }
-       
+
+
+
+        private double _treeViewHorizScrollPos;
+        private bool _treeViewResetHorizScroll;
+        private ScrollViewer _treeViewScrollViewer;
+
+        private void TreeViewItemRequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        {
+            if (_treeViewScrollViewer == null)
+            {
+                _treeViewScrollViewer = TheNavigationView.Navigation.Template.FindName("_tv_scrollviewer_", TheNavigationView.Navigation) as ScrollViewer;
+                if (_treeViewScrollViewer != null)
+                    _treeViewScrollViewer.ScrollChanged += TreeViewScrollViewerScrollChanged;
+            }
+            _treeViewResetHorizScroll = true;
+            var treeViewScrollViewer = _treeViewScrollViewer;
+            if (treeViewScrollViewer != null)
+            {
+                _treeViewHorizScrollPos = treeViewScrollViewer.HorizontalOffset;
+            }
+        }
+
+        private void TreeViewScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_treeViewResetHorizScroll)
+                _treeViewScrollViewer.ScrollToHorizontalOffset(_treeViewHorizScrollPos);
+
+            _treeViewResetHorizScroll = false;
+        }
     }
 
 }
