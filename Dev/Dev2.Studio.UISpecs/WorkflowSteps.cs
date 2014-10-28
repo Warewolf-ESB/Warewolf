@@ -257,6 +257,17 @@ namespace Dev2.Studio.UI.Specs
             Bootstrap.Init();
         }
 
+        [After]
+        public static void CleanupAfterTest()
+        {
+            if(ScenarioContext.Current.TestError != null)
+            {
+                Bootstrap.Teardown(true);
+                Playback.Cleanup();
+                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation);
+                Playback.Initialize();
+            }
+        }
 
         [When(@"I debug ""(.*)"" in ""(.*)""")]
         public void WhenIDebugIn(string workflowName, string folderName)
