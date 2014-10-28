@@ -1558,17 +1558,17 @@ namespace Dev2.Data.Util
         public static IList<string> GetRegionsFromExpression(string expression)
         {
             // Retrieve all the regions from an expression
-            const string OpenRegion = OpeningSquareBrackets;
-            const string CloseRegion = ClosingSquareBrackets;
+            const string openRegion = OpeningSquareBrackets;
+            const string closeRegion = ClosingSquareBrackets;
             StringBuilder expressionBuilder = new StringBuilder();
-            expressionBuilder.Append(expression.Substring(expression.IndexOf(OpenRegion, StringComparison.Ordinal), expression.LastIndexOf(CloseRegion, StringComparison.Ordinal) - expression.IndexOf(OpenRegion, StringComparison.Ordinal)));
+            expressionBuilder.Append(expression.Substring(expression.IndexOf(openRegion, StringComparison.Ordinal), expression.LastIndexOf(closeRegion, StringComparison.Ordinal) - expression.IndexOf(openRegion, StringComparison.Ordinal)));
             string expressionString = (expressionBuilder.ToString().Remove(0, 2));
             expressionString = expressionString.Remove(expressionString.Length - 2, 2);
             expressionBuilder.Clear().Append(expressionString);
             // find the text before the next open region
-            List<string> regions = new List<string> { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(OpenRegion, StringComparison.Ordinal)) };
+            var regions = new List<string> { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(openRegion, StringComparison.Ordinal)) };
             // if there are still regions
-            if(expressionBuilder.ToString().Contains(OpenRegion) && expressionBuilder.ToString().Contains(CloseRegion))
+            if(expressionBuilder.ToString().Contains(openRegion) && expressionBuilder.ToString().Contains(closeRegion))
             {
                 regions.AddRange(GetRegionsFromExpression(expressionBuilder.ToString()));
             }
