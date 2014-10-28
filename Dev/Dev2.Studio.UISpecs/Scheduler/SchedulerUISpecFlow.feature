@@ -16,6 +16,7 @@ Scenario: Creating Scheduler Task Without password and expected error
 	 Then "SCHEDULERNEWBUTTON" is disabled
 	 #Testing Risource picker Is Allowing Only Workflows to Schedule
 	 And I click "SCHEDULERWORKFLOWSELECTORBUTTON" 
+	 And I send "File and Folder - Write File" to "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID"
 	 And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Write File_AutoID"
 	 And I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
      And I type "IntegrationTester" in "SCHEDULERUSERNAMEINPUT"

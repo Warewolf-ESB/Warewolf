@@ -1,4 +1,4 @@
-
+﻿
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -221,7 +221,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         {
             var requests = new List<Tuple<string, string>>
             {
-                new Tuple<string, string>("images/folder-closed.png", @"?PNG"),
+                new Tuple<string, string>("images/folder-closed.png", @"�PNG"),
                 new Tuple<string, string>("images/ajax-loader32.gif", @"GIF")
             };
 

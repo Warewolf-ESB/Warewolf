@@ -73,9 +73,10 @@
                    ItemsSource="{Binding RoundingTypes}"
                    Width="Auto"
                    attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
-                   SelectedValue="{Binding SelectedRoundingType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                   SelectedValue="{Binding SelectedRoundingType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                   ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipRoundType}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.FormatNumberHelpRoundValue}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.FormatNumberHelpRoundType}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="SelectedRoundingType"
@@ -95,9 +96,10 @@
                                 HorizontalAlignment="Stretch"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
                                 IsEnabled="{Binding ModelItem.RoundingType, Mode=OneWay, Converter={StaticResource EnumToBoolConverterenRoundingType}}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Rounding_Inputtxt_AutoID}">
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Rounding_Inputtxt_AutoID}"
+                                ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipRoundvalue}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.FormatNumberHelpNumber}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.FormatNumberHelpRoundValue}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.RoundingDecimalPlaces"
@@ -114,14 +116,14 @@
         <ui:IntellisenseTextBox Grid.Column="2"
                                 Grid.Row="2"
                                 FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipDecimalToShow}"
+                                ToolTip="{x:Static help:HelpTextResources.FormatNumberToolTipDecimalsToShow}"
                                 WrapInBrackets="False"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.DecimalPlacesToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AllowUserInsertLine="False"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DecimalsToShow_Inputtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.FormatNumberHelpDecimalToShow}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.FormatNumberHelpDecimalsToShow}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DecimalPlacesToShow"

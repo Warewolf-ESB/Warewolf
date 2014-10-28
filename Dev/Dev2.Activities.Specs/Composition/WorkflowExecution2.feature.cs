@@ -11660,7 +11660,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 4812
-   testRunner.Given("I have a workflow \"Utility - Assign\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I have a workflow \"Utility - Assign WF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table652 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -11670,36 +11670,36 @@ this.FeatureBackground();
             table652.AddRow(new string[] {
                         "",
                         "",
-                        "[[rec(*).set]]",
-                        "[[rec().set]]"});
+                        "rec(*).set",
+                        "[[myrec().set]]"});
             table652.AddRow(new string[] {
                         "",
                         "",
-                        "[[hero(*).pushups]]",
-                        "[[hero().pushups]]"});
+                        "hero(*).pushups",
+                        "[[thehero().pushups]]"});
             table652.AddRow(new string[] {
                         "",
                         "",
-                        "[[hero(*).name]]",
-                        "[[hero().name]]"});
+                        "hero(*).name",
+                        "[[thehero().name]]"});
 #line 4813
-   testRunner.And("\"Utility - Assign Test\" contains \"Utility - Assign\" from server \"localhost\" with " +
-                    "mapping as", ((string)(null)), table652, "And ");
+   testRunner.And("\"Utility - Assign WF\" contains \"Utility - Assign\" from server \"localhost\" with ma" +
+                    "pping as", ((string)(null)), table652, "And ");
 #line 4818
-   testRunner.When("\"Utility - Assign Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"Utility - Assign WF\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 4819
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table653 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table653.AddRow(new string[] {
-                        "[[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION"});
+                        "[[myrec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION"});
             table653.AddRow(new string[] {
-                        "[[hero(1).pushups]] = All of them."});
+                        "[[thehero(1).pushups]] = All of them."});
             table653.AddRow(new string[] {
-                        "[[hero(1).name]] =   Chuck Norris"});
+                        "[[thehero(1).name]] =   Chuck Norris"});
 #line 4820
-   testRunner.And("the \'Utility - Assign\' in Workflow \'Utility - Assign\' debug outputs as", ((string)(null)), table653, "And ");
+   testRunner.And("the \'Utility - Assign\' in Workflow \'Utility - Assign WF\' debug outputs as", ((string)(null)), table653, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

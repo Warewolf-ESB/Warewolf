@@ -175,6 +175,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="Activities\WorkerServicePropertyInterigatorTest.cs" />
     <Compile Include="Activities\WorkflowPropertyInterigatorTest.cs" />

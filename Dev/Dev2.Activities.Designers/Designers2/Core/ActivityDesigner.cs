@@ -277,7 +277,10 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _zIndexProperty.RemoveValueChanged(_dataContext, OnZIndexPositionChanged);
             }
-            ViewModel.Dispose();
+            if(ViewModel != null)
+            {
+                ViewModel.Dispose();
+            }
 
             Loaded -= OnRoutedEventHandler;
 
@@ -328,7 +331,10 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     // Dispose managed resources.
                     OnDispose();
-                    _dataContext.Dispose();
+                    if(_dataContext != null)
+                    {
+                        _dataContext.Dispose();
+                    }
                 }
 
                 // Call the appropriate methods to clean up

@@ -2766,7 +2766,7 @@ namespace BusinessDesignStudio.Unit.Tests
             p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
 
             // expect that the resource repository gets an update
-            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
+            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));
             stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Exactly(1));
 
         }
@@ -2812,7 +2812,7 @@ namespace BusinessDesignStudio.Unit.Tests
             p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
 
             // expect that the resource repository gets an update
-            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
+            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));
             stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Exactly(1));
 
         }
@@ -2871,7 +2871,7 @@ namespace BusinessDesignStudio.Unit.Tests
             p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm, perm2 } });
 
             // expect that the resource repository gets an update
-            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
+            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));
             stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Exactly(1));
 
         }

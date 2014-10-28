@@ -1,10 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{655E2790-0EB1-4CB3-AB86-67CA0AFF9803}"
 	ProjectSection(SolutionItems) = preProject
+		AssemblyCommonInfo.cs = AssemblyCommonInfo.cs
 		Server.vsmdi = Server.vsmdi
 		UnitTestWithCoverage.testsettings = UnitTestWithCoverage.testsettings
 	EndProjectSection
@@ -86,123 +89,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 37
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Dev2.Common\\Dev2.Common.csproj
-		SccProjectName1 = Dev2.Common
-		SccLocalPath1 = Dev2.Common
-		SccProjectUniqueName2 = Dev2.Network\\Dev2.Network.csproj
-		SccProjectName2 = Dev2.Network
-		SccLocalPath2 = Dev2.Network
-		SccProjectUniqueName3 = Dev2.Activities\\Dev2.Activities.csproj
-		SccProjectName3 = Dev2.Activities
-		SccLocalPath3 = Dev2.Activities
-		SccProjectUniqueName4 = Dev2.Data\\Dev2.Data.csproj
-		SccProjectName4 = Dev2.Data
-		SccLocalPath4 = Dev2.Data
-		SccProjectUniqueName5 = Dev2.Server\\Dev2.Server.csproj
-		SccProjectName5 = Dev2.Server
-		SccLocalPath5 = Dev2.Server
-		SccProjectUniqueName6 = Dev2.Runtime.WebServer\\Dev2.Runtime.WebServer.csproj
-		SccProjectName6 = Dev2.Runtime.WebServer
-		SccLocalPath6 = Dev2.Runtime.WebServer
-		SccProjectUniqueName7 = Dev2.Core\\Dev2.Core.csproj
-		SccProjectName7 = Dev2.Core
-		SccLocalPath7 = Dev2.Core
-		SccProjectUniqueName8 = Dev2.Runtime\\Dev2.Runtime.csproj
-		SccProjectName8 = Dev2.Runtime
-		SccLocalPath8 = Dev2.Runtime
-		SccProjectUniqueName9 = Dev2.Core.Tests\\Dev2.Core.Tests.csproj
-		SccProjectName9 = Dev2.Core.Tests
-		SccLocalPath9 = Dev2.Core.Tests
-		SccProjectUniqueName10 = Dev2.Runtime.Services\\Dev2.Runtime.Services.csproj
-		SccProjectName10 = Dev2.Runtime.Services
-		SccLocalPath10 = Dev2.Runtime.Services
-		SccProjectUniqueName11 = Dev2.Sql\\Dev2.Sql.csproj
-		SccProjectName11 = Dev2.Sql
-		SccLocalPath11 = Dev2.Sql
-		SccProjectUniqueName12 = ConsoleAppToTestExecuteCommandLineActivity\\ConsoleAppToTestExecuteCommandLineActivity.csproj
-		SccProjectName12 = ConsoleAppToTestExecuteCommandLineActivity
-		SccLocalPath12 = ConsoleAppToTestExecuteCommandLineActivity
-		SccProjectUniqueName13 = Dev2.Runtime.Configuration\\Dev2.Runtime.Configuration.csproj
-		SccProjectName13 = Dev2.Runtime.Configuration
-		SccLocalPath13 = Dev2.Runtime.Configuration
-		SccProjectUniqueName14 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
-		SccProjectName14 = Dev2.Data.Tests
-		SccLocalPath14 = Dev2.Data.Tests
-		SccProjectUniqueName15 = Dev2.Runtime.Configuration.Tests\\Dev2.Runtime.Configuration.Tests.csproj
-		SccProjectName15 = Dev2.Runtime.Configuration.Tests
-		SccLocalPath15 = Dev2.Runtime.Configuration.Tests
-		SccProjectUniqueName16 = Dev2.Sql.Tests\\Dev2.Sql.Tests.csproj
-		SccProjectName16 = Dev2.Sql.Tests
-		SccLocalPath16 = Dev2.Sql.Tests
-		SccProjectUniqueName17 = Dev2.Activities.Tests\\Dev2.Activities.Tests.csproj
-		SccProjectName17 = Dev2.Activities.Tests
-		SccLocalPath17 = Dev2.Activities.Tests
-		SccProjectUniqueName18 = Dev2.Runtime.Tests\\Dev2.Runtime.Tests.csproj
-		SccProjectName18 = Dev2.Runtime.Tests
-		SccLocalPath18 = Dev2.Runtime.Tests
-		SccProjectUniqueName19 = Dev2.Diagnostics\\Dev2.Diagnostics.csproj
-		SccProjectName19 = Dev2.Diagnostics
-		SccLocalPath19 = Dev2.Diagnostics
-		SccProjectUniqueName20 = Dev2.CustomControls\\Dev2.CustomControls.csproj
-		SccProjectName20 = Dev2.CustomControls
-		SccLocalPath20 = Dev2.CustomControls
-		SccProjectUniqueName21 = Dev2.Util\\Dev2.Util.csproj
-		SccProjectName21 = Dev2.Util
-		SccLocalPath21 = Dev2.Util
-		SccProjectUniqueName22 = Dev2.Development.Languages\\Dev2.Development.Languages.csproj
-		SccProjectName22 = Dev2.Development.Languages
-		SccLocalPath22 = Dev2.Development.Languages
-		SccProjectUniqueName23 = Dev2.Infrastructure\\Dev2.Infrastructure.csproj
-		SccProjectName23 = Dev2.Infrastructure
-		SccLocalPath23 = Dev2.Infrastructure
-		SccProjectUniqueName24 = Dev2.Infrastructure.Tests\\Dev2.Infrastructure.Tests.csproj
-		SccProjectName24 = Dev2.Infrastructure.Tests
-		SccLocalPath24 = Dev2.Infrastructure.Tests
-		SccProjectUniqueName25 = Dev2.Services.Sql\\Dev2.Services.Sql.csproj
-		SccProjectName25 = Dev2.Services.Sql
-		SccLocalPath25 = Dev2.Services.Sql
-		SccProjectUniqueName26 = Dev2.Services.Execution\\Dev2.Services.Execution.csproj
-		SccProjectName26 = Dev2.Services.Execution
-		SccLocalPath26 = Dev2.Services.Execution
-		SccProjectUniqueName27 = Dev2.Common.Test\\Dev2.Common.Tests.csproj
-		SccProjectName27 = Dev2.Common.Test
-		SccLocalPath27 = Dev2.Common.Test
-		SccProjectUniqueName28 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
-		SccProjectName28 = Dev2.Instrumentation
-		SccLocalPath28 = Dev2.Instrumentation
-		SccProjectUniqueName29 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
-		SccProjectName29 = Dev2.ScheduleExecutor
-		SccLocalPath29 = Dev2.ScheduleExecutor
-		SccProjectUniqueName30 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
-		SccProjectName30 = Dev2.TaskScheduler.Wrappers
-		SccLocalPath30 = Dev2.TaskScheduler.Wrappers
-		SccProjectUniqueName31 = Dev2.Scheduler\\Dev2.Scheduler.csproj
-		SccProjectName31 = Dev2.Scheduler
-		SccLocalPath31 = Dev2.Scheduler
-		SccProjectUniqueName32 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
-		SccProjectName32 = Dev2.TaskScheduler.Wrappers.Test
-		SccLocalPath32 = Dev2.TaskScheduler.Wrappers.Test
-		SccProjectUniqueName33 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
-		SccProjectName33 = Dev2.Scheduler.Test
-		SccLocalPath33 = Dev2.Scheduler.Test
-		SccProjectUniqueName34 = Dev2.UnitTestUtils\\Dev2.UnitTestUtils.csproj
-		SccProjectName34 = Dev2.UnitTestUtils
-		SccLocalPath34 = Dev2.UnitTestUtils
-		SccProjectUniqueName35 = Dev2.Server.Tests\\Dev2.Server.Tests.csproj
-		SccProjectName35 = Dev2.Server.Tests
-		SccLocalPath35 = Dev2.Server.Tests
-		SccProjectUniqueName36 = Dev2.Common.Interfaces\\Dev2.Common.Interfaces.csproj
-		SccProjectName36 = Dev2.Common.Interfaces
-		SccLocalPath36 = Dev2.Common.Interfaces
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Server.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -657,6 +543,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Server.vsmdi
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 39a909d9-7c2a-40c7-bb0e-125012743114

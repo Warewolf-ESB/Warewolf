@@ -1081,6 +1081,21 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
+    <DrawingImage x:Key="NewWorkFlow">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF05C47C" Geometry="F1 M 10.5549,19.4753L 18.784,19.4753L 18.784,11.2044L 25.7215,11.2044L 25.7215,19.4753L 33.9924,19.4753L 33.9924,26.4336L 25.7215,26.4336L 25.7215,34.6628L 18.784,34.6628L 18.784,26.4336L 10.5549,26.4336L 10.5549,19.4753 Z "/>
+                    <GeometryDrawing Geometry="F1 M 4.74809,1.33331C 4.74809,1.33331 1.33333,1.33331 1.33333,4.74951L 1.33333,40.581C 1.33333,40.581 1.33333,44 4.74809,44L 40.5796,44C 40.5796,44 43.9986,44 43.9986,40.581L 43.9986,4.74951C 43.9986,4.74951 43.9986,1.33331 40.5796,1.33331L 4.74809,1.33331 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="2.66667" MiterLimit="2.75" Brush="#FF05C47C"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <!--Tooling Images-->
     
     <DrawingImage x:Key="ToolTransactionScope-32">

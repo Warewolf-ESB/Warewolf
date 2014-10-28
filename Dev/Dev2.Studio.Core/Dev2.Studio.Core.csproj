@@ -170,6 +170,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Activities\Interegators\WorkerServicePropertyInterigator.cs" />
     <Compile Include="Activities\Interegators\WorkflowPropertyInterigator.cs" />
     <Compile Include="Activities\Services\DesignerManagementService.cs" />

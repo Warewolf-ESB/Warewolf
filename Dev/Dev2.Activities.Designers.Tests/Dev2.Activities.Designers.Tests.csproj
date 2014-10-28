@@ -103,6 +103,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </Compile>

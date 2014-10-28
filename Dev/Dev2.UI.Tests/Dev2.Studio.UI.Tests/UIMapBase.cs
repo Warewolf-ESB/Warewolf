@@ -793,15 +793,6 @@ namespace Dev2.Studio.UI.Tests
 
         #endregion
 
-        #region Halt
-
-        public void Halt()
-        {
-            Bootstrap.Teardown();
-        }
-
-        #endregion
-
         #region On Error
 
         static void PlaybackPlaybackError(object sender, PlaybackErrorEventArgs e)

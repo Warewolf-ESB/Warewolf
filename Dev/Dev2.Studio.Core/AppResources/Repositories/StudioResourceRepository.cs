@@ -777,7 +777,6 @@ namespace Dev2.AppResources.Repositories
                 ResourceType = item.ResourceType,
                 ResourceId = item.ResourceId,
                 Permissions = item.Permissions,
-                //Permissions = environmentModel == null || environmentModel.IsLocalHost || environmentModel.AuthorizationService == null ? item.Permissions : environmentModel.AuthorizationService.GetResourcePermissions(item.ResourceId),
                 ResourcePath = item.ResourcePath,
                 VersionInfo = item.VersionInfo
             };
