@@ -36,7 +36,6 @@ using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
 
-// ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
@@ -116,7 +115,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if(_scalarCollection == null)
                 {
-                    _scalarCollection = new ObservableCollection<IDataListItemModel>();
+                   _scalarCollection = new ObservableCollection<IDataListItemModel>();
                     
                     _scalarCollection.CollectionChanged += (o, args) =>
                     {
@@ -174,10 +173,8 @@ namespace Dev2.Studio.ViewModels.DataList
                     _recsetCollection = new ObservableCollection<IDataListItemModel>();
                     _recsetCollection.CollectionChanged += (o, args) =>
                         {
-                            NotifyOfPropertyChange(() => FindUnusedAndMissingCommand);
                             RemoveItemPropertyChangeEvent(args);
                             AddItemPropertyChangeEvent(args);
-                            NotifyOfPropertyChange(() => SortCommand);
                         };                    
                 }
                 return _recsetCollection;
