@@ -54,5 +54,6 @@ namespace Dev2.AppResources.Repositories
         void RollbackTo(IVersionInfo versionInfo, Guid environmentId);
         void DeleteVersion(IVersionInfo versionInfo, Guid environmentId);
         void RefreshVersionHistory(Guid environmentId, Guid resourceId);
+        string GetServerVersion(Guid environmentId);
     }
 }

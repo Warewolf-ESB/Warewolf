@@ -745,7 +745,7 @@ namespace Dev2.Core.Tests
             ExplorerItemModel anotherEnvironment = new ExplorerItemModel { DisplayName = "Other Server", EnvironmentId = toBeRemoved.Object.ID };
             var studioResourceRepository = new StudioResourceRepository(localhostExplorerItemModel, _Invoke);
             studioResourceRepository.ExplorerItemModels.Add(anotherEnvironment);
-            studioResourceRepository.GetExplorerProxy = guid => new Mock<IExplorerResourceRepository>().Object;
+            studioResourceRepository.GetExplorerProxy = guid => new Mock<IClientExplorerResourceRepository>().Object;
             var viewModel = new NavigationViewModel(publisher.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, envRepo.Object, studioResourceRepository, new Mock<IConnectControlSingleton>().Object, () => { });
 
 
@@ -914,7 +914,7 @@ namespace Dev2.Core.Tests
             studioResourceRepository.ExplorerItemModelClone = a => a;
             else
             studioResourceRepository.ExplorerItemModelClone = a => a.Clone( new Mock<IConnectControlSingleton>().Object,studioResourceRepository);
-            var explorerResourceRepository = new Mock<IExplorerResourceRepository>().Object;
+            var explorerResourceRepository = new Mock<IClientExplorerResourceRepository>().Object;
             studioResourceRepository.GetExplorerProxy = guid => explorerResourceRepository;
             return studioResourceRepository;
         }

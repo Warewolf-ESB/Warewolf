@@ -271,12 +271,15 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 else
                 {
-                    foreach(var thread in dataObject.ThreadsToDispose)
+                    if (!dataObject.RunWorkflowAsync)
                     {
-                        DataListRegistar.DisposeScope(thread.Key, resultID);
-                    }
+                        foreach (var thread in dataObject.ThreadsToDispose)
+                        {
+                            DataListRegistar.DisposeScope(thread.Key, resultID);
+                        }
 
-                    DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
+                        DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
+                    }
                 }
 
             }
@@ -438,7 +441,7 @@ namespace Dev2.Runtime.ESB.Control
                     task.ContinueWith(o =>
                         // ReSharper restore ImplicitlyCapturedClosure
                         {
-                            DataListRegistar.DisposeScope(o.Id, clonedDataObject.DataListID);
+                            //DataListRegistar.DisposeScope(o.Id, clonedDataObject.DataListID);
                             o.Dispose();
                         });
                 }

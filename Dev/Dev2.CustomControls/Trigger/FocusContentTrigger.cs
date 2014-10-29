@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,7 +24,7 @@ namespace Dev2.CustomControls.Trigger
 
             if (treeviewItem.Items.Count > 0)
             {
-                var firstItem = treeviewItem.Items.GetItemAt(0);
+                object firstItem = treeviewItem.Items.GetItemAt(0);
                 var firstContainer = treeviewItem.ItemContainerGenerator.ContainerFromItem(firstItem) as UIElement;
 
                 if (firstContainer != null)
@@ -33,7 +32,6 @@ namespace Dev2.CustomControls.Trigger
                     firstContainer.Focus();
                 }
             }
-
         }
     }
 }

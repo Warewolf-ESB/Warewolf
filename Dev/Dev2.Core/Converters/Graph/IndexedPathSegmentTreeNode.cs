@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,7 +25,7 @@ namespace Unlimited.Framework.Converters.Graph
                 IndexedPathSegmentTreeNode<T> returnNode = this;
 
                 int count = 0;
-                while(count < complexKey.Count && returnNode != null)
+                while (count < complexKey.Count && returnNode != null)
                 {
                     returnNode.TryGetValue(complexKey[count], out returnNode);
                     count++;

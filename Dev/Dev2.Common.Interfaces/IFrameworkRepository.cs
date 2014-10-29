@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,9 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Dev2.Common.Interfaces {
-
-    public interface IFrameworkRepository<T> : IDisposable {
+namespace Dev2.Common.Interfaces
+{
+    public interface IFrameworkRepository<T> : IDisposable
+    {
         ICollection<T> All();
         ICollection<T> Find(Expression<Func<T, bool>> expression);
         T FindSingle(Expression<Func<T, bool>> expression);

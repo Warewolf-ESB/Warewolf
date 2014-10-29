@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,11 +19,11 @@ using System.Windows.Data;
 namespace WPF.JoshSmith.Controls.Validation
 {
     /// <summary>
-    /// This static class provides attached properties which supply 
-    /// validation of the text in a TextBox, using regular expressions.
+    ///     This static class provides attached properties which supply
+    ///     validation of the text in a TextBox, using regular expressions.
     /// </summary>
     /// <remarks>
-    /// Documentation: http://www.codeproject.com/KB/WPF/RegexValidationInWPF.aspx
+    ///     Documentation: http://www.codeproject.com/KB/WPF/RegexValidationInWPF.aspx
     /// </remarks>
     public static class RegexValidator
     {
@@ -34,14 +33,14 @@ namespace WPF.JoshSmith.Controls.Validation
         {
             RegexTextProperty = DependencyProperty.RegisterAttached(
                 "RegexText",
-                typeof(string),
-                typeof(RegexValidator),
+                typeof (string),
+                typeof (RegexValidator),
                 new UIPropertyMetadata(null, OnAttachedPropertyChanged));
 
             ErrorMessageProperty = DependencyProperty.RegisterAttached(
                 "ErrorMessage",
-                typeof(string),
-                typeof(RegexValidator),
+                typeof (string),
+                typeof (RegexValidator),
                 new UIPropertyMetadata(null, OnAttachedPropertyChanged));
         }
 
@@ -52,14 +51,14 @@ namespace WPF.JoshSmith.Controls.Validation
         #region ErrorMessage
 
         /// <summary>
-        /// Identifies the RegexValidator's ErrorMessage attached property.  
-        /// This field is read-only.
+        ///     Identifies the RegexValidator's ErrorMessage attached property.
+        ///     This field is read-only.
         /// </summary>
         public static readonly DependencyProperty ErrorMessageProperty;
 
         /// <summary>
-        /// Returns the error message used when validation fails for the
-        /// specified TextBox.
+        ///     Returns the error message used when validation fails for the
+        ///     specified TextBox.
         /// </summary>
         /// <param name="textBox">The TextBox whose error message is returned.</param>
         public static string GetErrorMessage(TextBox textBox)
@@ -68,8 +67,8 @@ namespace WPF.JoshSmith.Controls.Validation
         }
 
         /// <summary>
-        /// Sets the error message used when validation fails for the 
-        /// specified TextBox.
+        ///     Sets the error message used when validation fails for the
+        ///     specified TextBox.
         /// </summary>
         /// <param name="textBox">The TextBox being validated.</param>
         /// <param name="value">The error message.</param>
@@ -83,13 +82,13 @@ namespace WPF.JoshSmith.Controls.Validation
         #region RegexText
 
         /// <summary>
-        /// Identifies the RegexValidator's RegexText attached property.  
-        /// This field is read-only.
+        ///     Identifies the RegexValidator's RegexText attached property.
+        ///     This field is read-only.
         /// </summary>
         public static readonly DependencyProperty RegexTextProperty;
 
         /// <summary>
-        /// Returns the regular expression used to validate the specified TextBox.
+        ///     Returns the regular expression used to validate the specified TextBox.
         /// </summary>
         /// <param name="textBox">The TextBox whose regular expression is returned.</param>
         public static string GetRegexText(TextBox textBox)
@@ -98,8 +97,8 @@ namespace WPF.JoshSmith.Controls.Validation
         }
 
         /// <summary>
-        /// Sets the regular expression used to validate the 
-        /// specified TextBox.
+        ///     Sets the regular expression used to validate the
+        ///     specified TextBox.
         /// </summary>
         /// <param name="textBox">The TextBox being validated.</param>
         /// <param name="value">The regular expression.</param>
@@ -117,14 +116,14 @@ namespace WPF.JoshSmith.Controls.Validation
         #region OnAttachedPropertyChanged
 
         /// <summary>
-        /// Invoked whenever an attached property of the 
-        /// RegexValidator is modified for a TextBox.
+        ///     Invoked whenever an attached property of the
+        ///     RegexValidator is modified for a TextBox.
         /// </summary>
         /// <param name="depObj">A TextBox.</param>
         /// <param name="e"></param>
-        static void OnAttachedPropertyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
+        private static void OnAttachedPropertyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
-            TextBox textBox = depObj as TextBox;
+            var textBox = depObj as TextBox;
             if (textBox == null)
                 throw new InvalidOperationException(
                     "The RegexValidator can only be used with a TextBox.");
@@ -141,10 +140,10 @@ namespace WPF.JoshSmith.Controls.Validation
         #region GetRegexValidationRuleForTextBox
 
         /// <summary>
-        /// Returns a RegexValidationRule to be used for validating the specified TextBox.
-        /// If the TextBox is not yet initialized, this method returns null.
+        ///     Returns a RegexValidationRule to be used for validating the specified TextBox.
+        ///     If the TextBox is not yet initialized, this method returns null.
         /// </summary>
-        static RegexValidationRule GetRegexValidationRuleForTextBox(TextBox textBox)
+        private static RegexValidationRule GetRegexValidationRuleForTextBox(TextBox textBox)
         {
             if (!textBox.IsInitialized)
             {
@@ -208,17 +207,17 @@ namespace WPF.JoshSmith.Controls.Validation
         #region VerifyRegexValidationRule
 
         /// <summary>
-        /// Creates or modifies the RegexValidationRule in the TextBox's Text property binding
-        /// to use the current values of the attached properties exposed by this class.
+        ///     Creates or modifies the RegexValidationRule in the TextBox's Text property binding
+        ///     to use the current values of the attached properties exposed by this class.
         /// </summary>
         /// <param name="textBox">The TextBox being validated.</param>
-        static void VerifyRegexValidationRule(TextBox textBox)
+        private static void VerifyRegexValidationRule(TextBox textBox)
         {
             RegexValidationRule regexRule = GetRegexValidationRuleForTextBox(textBox);
             if (regexRule != null)
             {
-                regexRule.RegexText = textBox.GetValue(RegexValidator.RegexTextProperty) as string;
-                regexRule.ErrorMessage = textBox.GetValue(RegexValidator.ErrorMessageProperty) as string;
+                regexRule.RegexText = textBox.GetValue(RegexTextProperty) as string;
+                regexRule.ErrorMessage = textBox.GetValue(ErrorMessageProperty) as string;
             }
         }
 

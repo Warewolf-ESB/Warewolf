@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,7 +21,6 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         internal PocoPathSegment()
         {
-
         }
 
         internal PocoPathSegment(string name, bool isEnumarable)
@@ -43,9 +41,9 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         #region Methods
 
-        public override string ToString()
+        public string ToString(bool considerEnumerable)
         {
-            if(IsEnumarable)
+            if (considerEnumerable && IsEnumarable)
             {
                 return ActualSegment + PocoPath.EnumerableSymbol;
             }
@@ -53,9 +51,9 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             return ActualSegment;
         }
 
-        public string ToString(bool considerEnumerable)
+        public override string ToString()
         {
-            if(considerEnumerable && IsEnumarable)
+            if (IsEnumarable)
             {
                 return ActualSegment + PocoPath.EnumerableSymbol;
             }

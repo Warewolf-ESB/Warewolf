@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +16,10 @@ namespace Dev2.Common.Interfaces.Core.Convertors.DateAndTime
     public interface IDateTimeParser
     {
         List<IDateTimeFormatPartTO> DateTimeFormatParts { get; }
-        bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO parsedDateTime, out string error);
+
+        bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO parsedDateTime,
+            out string error);
+
         bool TryParseTime(string time, string inputFormat, out IDateTimeResultTO parsedTime, out string error);
         string TranslateDotNetToDev2Format(string originalFormat, out string error);
     }

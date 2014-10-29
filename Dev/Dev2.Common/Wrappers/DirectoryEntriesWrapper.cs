@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,6 +9,7 @@
 */
 
 
+using System.Collections;
 using System.DirectoryServices;
 using Dev2.Common.Interfaces.Wrappers;
 
@@ -23,12 +23,14 @@ namespace Dev2.Common.Wrappers
         {
             _directoryEntries = directory;
         }
-        public System.Collections.IEnumerator GetEnumerator()
+
+        public IEnumerator GetEnumerator()
         {
             return _directoryEntries.GetEnumerator();
         }
 
-        public DirectoryEntries Instance {
+        public DirectoryEntries Instance
+        {
             get { return _directoryEntries; }
         }
     }

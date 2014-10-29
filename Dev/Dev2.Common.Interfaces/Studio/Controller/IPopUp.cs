@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +16,6 @@ using System.Windows;
 namespace Dev2.Common.Interfaces.Studio.Controller
 // ReSharper restore CheckNamespace
 {
-
     public interface IPopupController
     {
         string Header { get; set; }
@@ -27,7 +25,10 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxButton Buttons { get; set; }
         string DontShowAgainKey { get; set; }
         MessageBoxResult Show();
-        MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey);
+
+        MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image,
+            string dontShowAgainKey);
+
         MessageBoxResult ShowNotConnected();
         MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted);
         MessageBoxResult ShowNameChangedConflict(string oldName, string newName);

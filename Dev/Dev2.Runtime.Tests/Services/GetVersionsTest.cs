@@ -19,9 +19,7 @@
     using Dev2.Common.Interfaces.Versioning;
     using Dev2.Communication;
     using Dev2.Explorer;
-    using Dev2.Interfaces;
     using Dev2.Runtime.ESB.Management.Services;
-    using Dev2.Runtime.Hosting;
     using Dev2.Workspaces;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;

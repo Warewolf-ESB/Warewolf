@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,6 +20,7 @@ using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
 // ReSharper disable CheckNamespace
+
 namespace Unlimited.Framework.Converters.Graph.String
 // ReSharper restore CheckNamespace
 {
@@ -33,11 +33,11 @@ namespace Unlimited.Framework.Converters.Graph.String
         {
             IMapper mapper;
 
-            if(IsXml(data.ToString()))
+            if (IsXml(data.ToString()))
             {
                 mapper = new XmlMapper();
             }
-            else if(IsJson(data.ToString()))
+            else if (IsJson(data.ToString()))
             {
                 mapper = new JsonMapper();
             }
@@ -50,22 +50,22 @@ namespace Unlimited.Framework.Converters.Graph.String
 
         public INavigator CreateNavigator(object data, Type pathType)
         {
-            if(!pathType.GetInterfaces().Contains(typeof(IPath)))
+            if (!pathType.GetInterfaces().Contains(typeof (IPath)))
             {
-                throw new Exception("'" + pathType + "' doesn't implement '" + typeof(IPath) + "'");
+                throw new Exception("'" + pathType + "' doesn't implement '" + typeof (IPath) + "'");
             }
 
             INavigator navigator;
 
-            if(pathType == typeof(XmlPath))
+            if (pathType == typeof (XmlPath))
             {
                 navigator = new XmlNavigator(data);
             }
-            else if(pathType == typeof(JsonPath))
+            else if (pathType == typeof (JsonPath))
             {
                 navigator = new JsonNavigator(data);
             }
-            else if(pathType == typeof(PocoPath))
+            else if (pathType == typeof (PocoPath))
             {
                 navigator = new PocoNavigator(data);
             }
@@ -91,7 +91,7 @@ namespace Unlimited.Framework.Converters.Graph.String
                 XDocument.Parse(data);
 // ReSharper restore ReturnValueOfPureMethodIsNotUsed
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
                 result = false;
@@ -108,7 +108,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             {
                 JToken.Parse(data);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
                 result = false;

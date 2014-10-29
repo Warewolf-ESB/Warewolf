@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,7 +17,7 @@ using Dev2.Common.Interfaces.DB;
 namespace Dev2.Common.DB
 {
     /// <summary>
-    /// Used to create helper generation instances
+    ///     Used to create helper generation instances
     /// </summary>
     public class DBHelperFactory
     {
@@ -28,16 +27,16 @@ namespace Dev2.Common.DB
 
         static DBHelperFactory()
         {
-            var type = typeof(IDBHelper);
+            Type type = typeof (IDBHelper);
 
-            List<Type> types = typeof(IDBHelper).Assembly.GetTypes()
-                   .Where(t => (type.IsAssignableFrom(t))).ToList();
+            List<Type> types = typeof (IDBHelper).Assembly.GetTypes()
+                .Where(t => (type.IsAssignableFrom(t))).ToList();
 
             foreach (Type t in types)
             {
                 if (!t.IsAbstract && !t.IsInterface)
                 {
-                    IDBHelper item = Activator.CreateInstance(t, true) as IDBHelper;
+                    var item = Activator.CreateInstance(t, true) as IDBHelper;
                     if (item != null)
                     {
                         _options.Add(item.HandlesType(), t);
@@ -47,7 +46,7 @@ namespace Dev2.Common.DB
         }
 
         /// <summary>
-        /// Fetch the type to be handled, then generate a concerte instance
+        ///     Fetch the type to be handled, then generate a concerte instance
         /// </summary>
         /// <param name="typeOf"></param>
         /// <returns></returns>

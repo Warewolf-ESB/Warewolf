@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,8 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 #region Change Log
+
 //  Author:         Sameer Chunilall
 //  Date:           2010-01-24
 //  Log No:         9299
@@ -19,6 +18,7 @@
 //                  
 //                  
 //                  
+
 #endregion
 
 using System;
@@ -30,33 +30,36 @@ using Dev2.DynamicServices.Objects.Base;
 
 namespace Dev2.DynamicServices
 {
-    #region Using Directives
 
-    
+    #region Using Directives
 
     #endregion
 
     #region Dynamic Service Class - Represents a service with all its actions
+
     /// <summary>
-    /// Provides an representation of a service
-    /// A service can contain actions that define what the service can do
-    /// This class is hydrated from the service definition file.
+    ///     Provides an representation of a service
+    ///     A service can contain actions that define what the service can do
+    ///     This class is hydrated from the service definition file.
     /// </summary>
     public class DynamicService : DynamicServiceObjectBase
     {
-        readonly List<string> _currentDebuggers = new List<string>();
+        private readonly List<string> _currentDebuggers = new List<string>();
 
         #region Public Properties
+
         /// <summary>
-        /// The actions that this service runs
+        ///     The actions that this service runs
         /// </summary>
         public List<ServiceAction> Actions { get; set; }
+
         /// <summary>
-        /// Defines the mode that the service is currently executing in
-        /// These could be 
-        /// 1. Normal - No Debug messages
-        /// 2. ValidationOnly - Service logic will not execute - only input parameters will be validated then service execution will halt and return to caller
-        /// 3. Debug - Will embed debug messages into results
+        ///     Defines the mode that the service is currently executing in
+        ///     These could be
+        ///     1. Normal - No Debug messages
+        ///     2. ValidationOnly - Service logic will not execute - only input parameters will be validated then service execution
+        ///     will halt and return to caller
+        ///     3. Debug - Will embed debug messages into results
         /// </summary>
         public enDynamicServiceMode Mode { get; set; }
 
@@ -66,10 +69,7 @@ namespace Dev2.DynamicServices
 
         public List<string> Debuggers
         {
-            get
-            {
-                return _currentDebuggers;
-            }
+            get { return _currentDebuggers; }
         }
 
         #endregion
@@ -78,20 +78,17 @@ namespace Dev2.DynamicServices
 
         public Guid ServiceId
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { throw new NotImplementedException(); }
             // ReSharper disable ValueParameterNotUsed
             set
-            // ReSharper restore ValueParameterNotUsed
-            {
-            }
+                // ReSharper restore ValueParameterNotUsed
+            { }
         }
 
         #region Constructors
+
         /// <summary>
-        /// Initializes the Dynamic Service
+        ///     Initializes the Dynamic Service
         /// </summary>
         public DynamicService()
             : base(enDynamicServiceObjectType.DynamicService)
@@ -101,17 +98,18 @@ namespace Dev2.DynamicServices
             Mode = enDynamicServiceMode.Normal;
             UnitTests = new List<DynamicService>();
         }
+
         #endregion
 
         /// <summary>
-        /// Compiles this object
+        ///     Compiles this object
         /// </summary>
         /// <returns></returns>
         public override bool Compile()
         {
             base.Compile();
 
-            if(Actions.Count == 0)
+            if (Actions.Count == 0)
             {
                 WriteCompileError(Resources.CompilerError_ServiceHasNoActions);
             }
@@ -126,6 +124,6 @@ namespace Dev2.DynamicServices
             return IsCompiled;
         }
     }
-    #endregion
 
+    #endregion
 }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,33 +9,31 @@
 */
 
 
-
 namespace Dev2.Common.Utils
 {
     public static class TextUtils
     {
         public static string ReplaceWorkflowNewLinesWithEnvironmentNewLines(string stringToReplaceIn)
         {
-
             int startIndex = 0;
-            while(startIndex != -1 && startIndex < stringToReplaceIn.Length)
+            while (startIndex != -1 && startIndex < stringToReplaceIn.Length)
             {
                 int indexOfReplacement = stringToReplaceIn.IndexOf('\n', startIndex);
-                if(indexOfReplacement != -1)
+                if (indexOfReplacement != -1)
                 {
                     bool dontReplace = true;
-                    var index = indexOfReplacement - 1;
-                    if(index >= 0)
+                    int index = indexOfReplacement - 1;
+                    if (index >= 0)
                     {
                         char backwardsLookup = stringToReplaceIn[index];
-                        if(backwardsLookup == '\r')
+                        if (backwardsLookup == '\r')
                         {
                             dontReplace = false;
                             startIndex = indexOfReplacement + 2;
                         }
                     }
 
-                    if(dontReplace)
+                    if (dontReplace)
                     {
                         stringToReplaceIn = stringToReplaceIn.Insert(indexOfReplacement, "\r");
                         startIndex = indexOfReplacement + 2;

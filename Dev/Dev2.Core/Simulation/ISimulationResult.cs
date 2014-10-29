@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,12 +16,12 @@ using Dev2.PathOperations.Interfaces;
 namespace Dev2.Simulation
 {
     /// <summary>
-    /// Defines the requirements for a simulation result
+    ///     Defines the requirements for a simulation result
     /// </summary>
     public interface ISimulationResult : IRepositoryItem<ISimulationKey>, IEquatable<ISimulationResult>
     {
         /// <summary>
-        /// Gets or sets the value.
+        ///     Gets or sets the value.
         /// </summary>
         IBinaryDataList Value { get; set; }
     }

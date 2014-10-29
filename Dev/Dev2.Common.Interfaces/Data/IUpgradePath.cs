@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,9 +16,9 @@ namespace Dev2.Common.Interfaces.Data
 {
     public interface IUpgradePath
     {
-        Version UpgradesFrom{get;}
+        Version UpgradesFrom { get; }
         Version UpgradesTo { get; }
-        bool CanUpgrade (XElement sourceVersion);
         IResourceUpgrade Upgrade { get; }
+        bool CanUpgrade(XElement sourceVersion);
     }
 }

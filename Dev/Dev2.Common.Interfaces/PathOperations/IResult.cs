@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,13 +9,12 @@
 */
 
 
-
-namespace Dev2.Common.Interfaces.PathOperations {
-
-    public interface IResult {
-
+namespace Dev2.Common.Interfaces.PathOperations
+{
+    public interface IResult
+    {
         /// <summary>
-        /// The tmp to insert into
+        ///     The tmp to insert into
         /// </summary>
         string Result { get; set; }
     }

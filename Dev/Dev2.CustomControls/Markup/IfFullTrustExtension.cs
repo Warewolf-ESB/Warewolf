@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,16 +21,17 @@ using System.Xml;
 namespace WPF.JoshSmith.Markup
 {
     /// <summary>
-    /// This markup extension conditionally instantiates the XAML you pass it
-    /// if and only if the application is running in full-trust.
+    ///     This markup extension conditionally instantiates the XAML you pass it
+    ///     if and only if the application is running in full-trust.
     /// </summary>
     /// <remarks>
-    /// Documentation: http://joshsmithonwpf.wordpress.com/2008/06/12/writing-xaml-that-gracefully-degrades-in-partial-trust-scenarios/
+    ///     Documentation:
+    ///     http://joshsmithonwpf.wordpress.com/2008/06/12/writing-xaml-that-gracefully-degrades-in-partial-trust-scenarios/
     /// </remarks>
     [ContentProperty("Xaml")]
     public class IfFullTrustExtension : MarkupExtension
     {
-        readonly static bool FullTrust;
+        private static readonly bool FullTrust;
 
         static IfFullTrustExtension()
         {
@@ -41,33 +41,35 @@ namespace WPF.JoshSmith.Markup
                 new UIPermission(state).Assert();
                 FullTrust = true;
             }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch { }
+                // ReSharper disable EmptyGeneralCatchClause
+            catch
+            {
+            }
             // ReSharper restore EmptyGeneralCatchClause
         }
 
         /// <summary>
-        /// The XAML that should be turned into live objects
-        /// if running with full-trust from the CLR.
+        ///     The XAML that should be turned into live objects
+        ///     if running with full-trust from the CLR.
         /// </summary>
         public string Xaml { get; set; }
 
         /// <summary>
-        /// Returns the objects declared by the Xaml property
-        /// or null, if running in partial-trust.
+        ///     Returns the objects declared by the Xaml property
+        ///     or null, if running in partial-trust.
         /// </summary>
         public override object ProvideValue(IServiceProvider sp)
         {
             object value = null;
-            if(FullTrust)
+            if (FullTrust)
             {
                 try
                 {
-                    using(var str = new StringReader(Xaml))
-                    using(var xml = XmlReader.Create(str))
+                    using (var str = new StringReader(Xaml))
+                    using (XmlReader xml = XmlReader.Create(str))
                         value = XamlReader.Load(xml);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Debug.Fail("Invalid XAML.\r\n" + ex);
                 }

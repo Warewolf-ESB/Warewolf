@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,23 +11,29 @@
 
 using System;
 
-namespace Dev2 {
-    public static class Exceptions {
-        public static void ThrowArgumentNullExceptionIfObjectIsNull(string objectName, object objectValue) {
-            if (objectValue == null) {
+namespace Dev2
+{
+    public static class Exceptions
+    {
+        public static void ThrowArgumentNullExceptionIfObjectIsNull(string objectName, object objectValue)
+        {
+            if (objectValue == null)
+            {
                 throw new ArgumentNullException(objectName, FrameworkResources.Exception_ArgumentCannotBeNull);
             }
         }
 
-        public static void ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString(string objectName, object objectValue) {
+        public static void ThrowArgumentExceptionIfObjectIsNullOrIsEmptyString(string objectName, object objectValue)
+        {
             ThrowArgumentNullExceptionIfObjectIsNull(objectName, objectValue);
 
-            if (objectValue is string) {
-                if (string.IsNullOrEmpty(objectValue.ToString())) {
+            if (objectValue is string)
+            {
+                if (string.IsNullOrEmpty(objectValue.ToString()))
+                {
                     throw new ArgumentException(FrameworkResources.Exception_ArgumentCannotBeNullOrEmpty, objectName);
                 }
             }
         }
-
     }
 }

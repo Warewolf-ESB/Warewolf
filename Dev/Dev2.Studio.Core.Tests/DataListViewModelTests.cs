@@ -244,7 +244,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
             int beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
-            _dataListViewModel.SetUnusedDataListItems(parts);
+            _dataListViewModel.SetIsUsedDataListItems(parts, false);
             _dataListViewModel.RemoveUnusedDataListItems();
             int afterCount = _dataListViewModel.DataList.Count;
             Assert.IsTrue(beforeCount > afterCount);
@@ -273,7 +273,7 @@ namespace Dev2.Core.Tests
             }
 
             //-------------------------Execute Test ------------------------------------------
-            _dataListViewModel.SetUnusedDataListItems(parts);
+            _dataListViewModel.SetIsUsedDataListItems(parts, false);
             //-------------------------Assert Resule------------------------------------------
             int actual = _dataListViewModel.DataList.Count(model => !model.IsUsed && !model.IsRecordset && !string.IsNullOrEmpty(model.Name));
             Assert.AreEqual(2, actual);
@@ -307,7 +307,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Add(mod2);
 
             //-------------------------Execute Test ------------------------------------------
-            _dataListViewModel.SetUnusedDataListItems(parts);
+            _dataListViewModel.SetIsUsedDataListItems(parts, false);
             //-------------------------Assert Resule------------------------------------------
             int actual = _dataListViewModel.DataList.Count(model => !model.IsUsed && model.IsRecordset);
             Assert.AreEqual(2, actual);
@@ -333,7 +333,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.AddMissingDataListItems(parts, false);
             int beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
-            _dataListViewModel.SetUnusedDataListItems(parts);
+            _dataListViewModel.SetIsUsedDataListItems(parts, false);
             _dataListViewModel.RemoveUnusedDataListItems();
             int afterCount = _dataListViewModel.DataList.Count;
             Assert.IsTrue(beforeCount > afterCount);
@@ -1484,7 +1484,7 @@ namespace Dev2.Core.Tests
             var part = CreateRecsetPart(recsetName, firstFieldName);
             dataListParts.Add(part.Object);
             //------------Execute Test---------------------------
-            dataListViewModel.SetUnusedDataListItems(dataListParts);
+            dataListViewModel.SetIsUsedDataListItems(dataListParts, false);
             //------------Assert Results-------------------------
             Assert.IsFalse(dataListViewModel.RecsetCollection[0].Children[0].IsUsed);
             Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[1].IsUsed);

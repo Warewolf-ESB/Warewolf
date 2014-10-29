@@ -193,7 +193,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _resourceModel = resource;
             _resourceModel.OnDataListChanged += FireWdChanged;
             _resourceModel.OnResourceSaved += UpdateOriginalDataList;
-            
+
             PopUp = popupController;
 
             if (_resourceModel.DataList != null)
@@ -214,8 +214,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
-                // ReSharper disable once MaximumChainedReferences
+                // ReSharper disable MaximumChainedReferences
                 _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
+                // ReSharper restore MaximumChainedReferences
             }
         }
 
@@ -251,11 +252,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (_workflowInputDataViewModel != null)
             {
-                if (!String.IsNullOrEmpty(_resourceModel.DataList))
-                {
-                    _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
-                }
-                _workflowLink = "";
+            if (!String.IsNullOrEmpty(_resourceModel.DataList))
+            {
+                _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
+            }
+            _workflowLink = "";
                 _workflowInputDataViewModel.LoadWorkflowInputs();
                 _workflowInputDataViewModel.SetXmlData();
                 var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
@@ -437,7 +438,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         /// <param name="addedItems"></param>
         /// <returns></returns>
+
+        // ReSharper disable MethodTooLong
+        // ReSharper disable ExcessiveIndentation
         protected List<ModelItem> PerformAddItems(List<ModelItem> addedItems)
+            // ReSharper restore ExcessiveIndentation
+            // ReSharper restore MethodTooLong
         {
             for (int i = 0; i < addedItems.Count(); i++)
             {
@@ -476,70 +482,70 @@ namespace Dev2.Studio.ViewModels.Workflow
             // ReSharper restore ExcessiveIndentation
         {
             if(mi.Parent != null &&
-               mi.Parent.Parent != null &&
-               mi.Parent.Parent.Parent != null &&
-               mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
-            {
-                #region Extract the Switch Expression ;)
+                   mi.Parent.Parent != null &&
+                   mi.Parent.Parent.Parent != null &&
+                   mi.Parent.Parent.Parent.ItemType == typeof(FlowSwitch<string>))
+                {
+                    #region Extract the Switch Expression ;)
 
-                ModelProperty activityExpression = mi.Parent.Parent.Parent.Properties["Expression"];
+                    ModelProperty activityExpression = mi.Parent.Parent.Parent.Properties["Expression"];
 
                 if(activityExpression != null)
-                {
-                    var tmpModelItem = activityExpression.Value;
+                    {
+                        var tmpModelItem = activityExpression.Value;
 
-                    var switchExpressionValue = string.Empty;
+                        var switchExpressionValue = string.Empty;
 
                     if(tmpModelItem != null)
-                    {
-                        var tmpProperty = tmpModelItem.Properties["ExpressionText"];
+                        {
+                            var tmpProperty = tmpModelItem.Properties["ExpressionText"];
 
                         if(tmpProperty != null)
-                        {
-                            if(tmpProperty.Value != null)
                             {
-                                var tmp = tmpProperty.Value.ToString();
+                            if(tmpProperty.Value != null)
+                                {
+                                    var tmp = tmpProperty.Value.ToString();
 
                                 if(!string.IsNullOrEmpty(tmp))
-                                {
-                                    int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                                    int end = tmp.IndexOf(",", StringComparison.Ordinal);
+                                    {
+                                        int start = tmp.IndexOf("(", StringComparison.Ordinal);
+                                        int end = tmp.IndexOf(",", StringComparison.Ordinal);
 
                                     if(start < end && start >= 0)
-                                    {
-                                        start += 2;
-                                        end -= 1;
-                                        switchExpressionValue = tmp.Substring(start, (end - start));
+                                        {
+                                            start += 2;
+                                            end -= 1;
+                                            switchExpressionValue = tmp.Substring(start, (end - start));
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
                     #endregion
 
-                    ModelProperty modelProperty = mi.Properties["Key"];
+                        ModelProperty modelProperty = mi.Properties["Key"];
                     if(modelProperty != null && ((modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case")))
-                    {
-                        Dev2Logger.Log.Info("Publish message of type - " + typeof(ConfigureCaseExpressionMessage));
-                        EventPublisher.Publish(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
+                        {
+                            Dev2Logger.Log.Info("Publish message of type - " + typeof(ConfigureCaseExpressionMessage));
+                            EventPublisher.Publish(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
+                        }
                     }
                 }
-            }
         }
 
         protected void InitializeFlowStep(ModelItem mi)
-        {
+                {
             ModelProperty modelProperty = mi.Properties["Action"];
             InitialiseIsDSFWebPage(modelProperty);
 
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
             ModelProperty modelProperty1 = mi.Properties["Action"];
             InitialiseWithAction(modelProperty1);
-        }
+                }
 
         void InitialiseWithAction(ModelProperty modelProperty1)
-        {
+                {
             if(modelProperty1 != null)
             {
                 var droppedActivity = modelProperty1.ComputedValue as DsfActivity;
@@ -549,13 +555,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                         InitialiseWithoutServiceName(modelProperty1, droppedActivity);
-                    }
+                }
                     else
-                    {
+                {
                         InitialiseWithServiceName(modelProperty1, droppedActivity);
-                    }
                 }
             }
+        }
         }
 
         void InitialiseWithServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
@@ -563,7 +569,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(DataObject != null)
             {
                 InitialiseWithDataObject(droppedActivity);
-            }
+                }
             else
             {
                 //Massimo.Guerrera:17-04-2012 - PBI 9000                               
@@ -582,47 +588,47 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         void InitialiseWithDataObject(DsfActivity droppedActivity)
-        {
-            var navigationItemViewModel = DataObject as ExplorerItemModel;
+                    {
+                            var navigationItemViewModel = DataObject as ExplorerItemModel;
 
             if(navigationItemViewModel != null)
-            {
-                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == navigationItemViewModel.EnvironmentId);
+                            {
+                                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == navigationItemViewModel.EnvironmentId);
                 if(environmentModel != null)
-                {
-                    var theResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
-                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
-                    d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = navigationItemViewModel.ResourcePath;
+                                {
+                                    var theResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
+                                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
+                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                                    d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = navigationItemViewModel.ResourcePath;
                     if(theResource != null)
-                    {
-                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = theResource.Category;
-                    }
-                    ExplorerItemModelToIconConverter converter = new ExplorerItemModelToIconConverter();
-                    var bitmapImage = converter.Convert(new object[] { navigationItemViewModel.ResourceType, false }, null, null, null) as BitmapImage;
+                                    {
+                                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = theResource.Category;
+                                    }
+                                    ExplorerItemModelToIconConverter converter = new ExplorerItemModelToIconConverter();
+                                    var bitmapImage = converter.Convert(new object[] { navigationItemViewModel.ResourceType, false }, null, null, null) as BitmapImage;
                     if(bitmapImage != null)
-                    {
-                        d.IconPath = bitmapImage.UriSource.ToString();
-                    }
-                    UpdateForRemote(d, theResource);
-                    //08-07-2013 Removed for bug 9789 - droppedACtivity Is already the action
-                    //Setting it twice causes double connection to startnode
-                }
-            }
+                                    {
+                                        d.IconPath = bitmapImage.UriSource.ToString();
+                                    }
+                                    UpdateForRemote(d, theResource);
+                                    //08-07-2013 Removed for bug 9789 - droppedACtivity Is already the action
+                                    //Setting it twice causes double connection to startnode
+                                }
+                            }
 
-            DataObject = null;
-        }
+                            DataObject = null;
+                        }
 
         void InitialiseWithoutServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
-        {
+                        {
             DsfActivity activity = droppedActivity;
             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                 c => c.Category == activity.ServiceName) as IContextualResourceModel;
-            droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                                    droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == droppedActivity.ServiceServer);
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, environmentModel);
-            modelProperty1.SetValue(droppedActivity);
-        }
+                                    modelProperty1.SetValue(droppedActivity);
+                                }
 
         void InitialiseIsDSFWebPage(ModelProperty modelProperty)
         {
@@ -1135,6 +1141,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.Context.Services.Subscribe<ViewStateService>(ViewStateServiceSubscribe);
 
                 _wd.View.PreviewDrop += ViewPreviewDrop;
+              
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
 
                 _wd.View.Measure(new Size(2000, 2000));
@@ -1454,7 +1461,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     var checkServiceDefinition = CheckServiceDefinition();
                     var checkDataList = CheckDataList();
-
+                    
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     _workspaceSave = false;
                     NotifyOfPropertyChange(() => DisplayName);
@@ -1473,6 +1480,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // THIS MUST NEVER BE DELETED ;)
                 WatermarkSential.IsWatermarkBeingApplied = false;
             }
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         bool CheckDataList()
@@ -1672,25 +1680,25 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool HandleWebActivity(DesignerView designerView)
         {
             if(designerView != null && designerView.FocusedViewElement != null &&
-               designerView.FocusedViewElement.ModelItem != null)
-            {
-                ModelItem modelItem = designerView.FocusedViewElement.ModelItem;
+                   designerView.FocusedViewElement.ModelItem != null)
+                {
+                    ModelItem modelItem = designerView.FocusedViewElement.ModelItem;
 
                 if(modelItem.ItemType == typeof(DsfWebPageActivity) ||
-                   modelItem.ItemType == typeof(DsfWebSiteActivity))
-                {
-                    ModelProperty modelProperty = modelItem.Properties["DisplayName"];
-                    if(modelProperty != null)
+                       modelItem.ItemType == typeof(DsfWebSiteActivity))
                     {
-                        IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel,
-                            modelProperty
-                                .ComputedValue.ToString());
-                        Dev2Logger.Log.Info("Publish message of type - " + typeof(AddWorkSurfaceMessage));
-                        EventPublisher.Publish(new AddWorkSurfaceMessage(webpageActivity));
+                        ModelProperty modelProperty = modelItem.Properties["DisplayName"];
+                    if(modelProperty != null)
+                        {
+                            IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel,
+                                modelProperty
+                                    .ComputedValue.ToString());
+                            Dev2Logger.Log.Info("Publish message of type - " + typeof(AddWorkSurfaceMessage));
+                            EventPublisher.Publish(new AddWorkSurfaceMessage(webpageActivity));
+                        }
+                        return true;
                     }
-                    return true;
                 }
-            }
             return false;
         }
 
@@ -1701,6 +1709,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         void ViewPreviewDrop(object sender, DragEventArgs e)
         {
+  
             bool dropOccured = true;
             SetLastDroppedPoint(e);
             DataObject = e.Data.GetData(typeof(ExplorerItemModel));
@@ -1808,36 +1817,36 @@ namespace Dev2.Studio.ViewModels.Workflow
                         ModelItemPropertyChanged(e);
                     }
                     else
-                    {
+                                {
                         ModelItemAdded(e);
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        }
 
         void ModelItemAdded(ModelChangedEventArgs e)
-        {
-            ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
+                    {
+                        ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
 #pragma warning restore 618
 
             if(modelProperty != null)
-            {
+                        {
                 if(_vm != null)
-                {
-                    IContextualResourceModel resource = _vm.SelectedResourceModel;
+                            {
+                                IContextualResourceModel resource = _vm.SelectedResourceModel;
                     if(resource != null)
-                    {
-                        DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                                {
+                                    DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
 
-                        droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
-                        droppedActivity.IconPath = resource.IconPath;
+                                    droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
+                                    droppedActivity.IconPath = resource.IconPath;
 
-                        modelProperty.SetValue(droppedActivity);
-                    }
-                    _vm.Dispose();
-                    _vm = null;
-                }
-            }
+                                    modelProperty.SetValue(droppedActivity);
+                                }
+                                _vm.Dispose();
+                                _vm = null;
+                            }
+                        }
         }
 
         void ModelItemPropertyChanged(ModelChangedEventArgs e)
@@ -1917,7 +1926,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
  
             var second = Clipboard.GetText();
-            if (second.Contains("clr-namespace:Dev2.Activities;assembly=Dev2.Activities") && (second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"")))
+            if (second.Contains("clr-namespace:Dev2.Activities;assembly=Dev2.Activities") && (second.Contains("Type=\"DbService\"") || second.Contains("Type=\"PluginService\"")|| second.Contains("Type=\"WebService\"")))
             {
                 var id = second.IndexOf("ResourceID=\"", StringComparison.Ordinal);
                 if(id == -1)
@@ -1933,7 +1942,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     e.Handled = true;
                     e.CanExecute = false;
                 }
-            }
+        }
 
 
         }

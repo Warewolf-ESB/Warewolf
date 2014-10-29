@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,7 +18,7 @@ namespace Dev2.Util
     {
         // ReSharper disable EmptyConstructor
         public FindMissingAttribute()
-        // ReSharper restore EmptyConstructor
+            // ReSharper restore EmptyConstructor
         {
         }
     }

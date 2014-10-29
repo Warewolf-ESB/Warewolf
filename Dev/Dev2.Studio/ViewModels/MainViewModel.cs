@@ -22,6 +22,7 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
@@ -98,7 +99,7 @@ namespace Dev2.Studio.ViewModels
 
         private AuthorizeCommand<string> _newResourceCommand;
         private ICommand _addLanguageHelpPageCommand;
-        private ICommand _deployAllCommand;
+        private RelayCommand _deployAllCommand;
         private ICommand _deployCommand;
         private ICommand _displayAboutDialogueCommand;
         private ICommand _exitCommand;
@@ -158,6 +159,8 @@ namespace Dev2.Studio.ViewModels
                     _activeEnvironment = value;
                     OnActiveEnvironmentChanged();
                     NotifyOfPropertyChange(() => ActiveEnvironment);
+                    DeployAllCommand.RaiseCanExecuteChanged();
+
                 }
             }
         }
@@ -289,7 +292,7 @@ namespace Dev2.Studio.ViewModels
             get { return _showCommunityPageCommand ?? (_showCommunityPageCommand = new DelegateCommand(param => ShowCommunityPage())); }
         }
 
-        public ICommand DeployAllCommand
+        public RelayCommand DeployAllCommand
         {
             get
             {
@@ -625,7 +628,8 @@ namespace Dev2.Studio.ViewModels
 
         private void DisplayAboutDialogue()
         {
-            WindowManager.ShowDialog(DialogViewModelFactory.CreateAboutDialog());
+            var factory = CustomContainer.Get<IDialogViewModelFactory>();
+            WindowManager.ShowDialog(factory.CreateAboutDialog());
         }
 
         // Write CodedUI Test Because of Silly Chicken affect ;)

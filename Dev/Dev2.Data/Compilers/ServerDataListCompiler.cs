@@ -1942,7 +1942,10 @@ namespace Dev2.Server.Datalist
             }
             else
             {
-
+                if (rules.Errors.HasErrors())
+                {
+                    return null;
+                }
                 string error;
                 var fieldName = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
                 IBinaryDataListEntry result = new BinaryDataListEntry(fieldName, string.Empty, rules.BinaryDataList.UID);

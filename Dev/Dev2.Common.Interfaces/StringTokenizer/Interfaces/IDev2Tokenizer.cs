@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,12 +9,12 @@
 */
 
 
-namespace Dev2.Common.Interfaces.StringTokenizer.Interfaces {
-    public interface IDev2Tokenizer {
-
+namespace Dev2.Common.Interfaces.StringTokenizer.Interfaces
+{
+    public interface IDev2Tokenizer
+    {
         bool HasMoreOps();
 
         string NextToken();
-
     }
 }

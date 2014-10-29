@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,34 +24,32 @@ namespace Dev2.Converters.Graph.DataTable
 
             var tmp = data as System.Data.DataTable;
 
-            if(tmp != null)
+            if (tmp != null)
             {
-                var tblName = tmp.TableName;
+                string tblName = tmp.TableName;
 
                 DataColumnCollection cols = tmp.Columns;
 
-                List<IPath> result = new List<IPath>();
+                var result = new List<IPath>();
 
                 // ReSharper disable LoopCanBeConvertedToQuery
-                foreach(DataColumn col in cols)
-                // ReSharper restore LoopCanBeConvertedToQuery
+                foreach (DataColumn col in cols)
+                    // ReSharper restore LoopCanBeConvertedToQuery
                 {
-                    var colName = col.ColumnName;
+                    string colName = col.ColumnName;
                     result.Add(new DataTablePath(tblName, colName));
                 }
 
                 BuildSampleData(tmp, cols.Count, ref result);
 
                 return result;
-
             }
 
             return null;
-
         }
 
         /// <summary>
-        /// Builds the sample data.
+        ///     Builds the sample data.
         /// </summary>
         /// <param name="tmp">The temporary.</param>
         /// <param name="totalCols">The total cols.</param>
@@ -63,13 +60,13 @@ namespace Dev2.Converters.Graph.DataTable
             int rowCnt = 0;
             // now set sample data ;)
 
-            foreach(DataRow row in tmp.Rows)
+            foreach (DataRow row in tmp.Rows)
             {
-                for(int i = 0; i < totalCols; i++)
+                for (int i = 0; i < totalCols; i++)
                 {
-                    var itemData = row.ItemArray[i].ToString();
+                    string itemData = row.ItemArray[i].ToString();
                     result[i].SampleData += itemData;
-                    if(rowCnt < totalRows)
+                    if (rowCnt < totalRows)
                     {
                         result[i].SampleData += GlobalConstants.AnytingToXmlCommaToken;
                     }
@@ -78,12 +75,11 @@ namespace Dev2.Converters.Graph.DataTable
                 rowCnt++;
 
                 // exit after 10 rows ;)
-                if(rowCnt == 10)
+                if (rowCnt == 10)
                 {
                     break;
                 }
             }
-
         }
     }
 }

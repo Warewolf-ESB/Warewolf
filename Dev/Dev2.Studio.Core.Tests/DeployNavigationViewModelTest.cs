@@ -329,7 +329,7 @@ namespace Dev2.Core.Tests
                 }
             }
             var studioResourceRepository = new StudioResourceRepository(localhostItemModel, _Invoke);
-            var explorerResourceRepository = new Mock<IExplorerResourceRepository>().Object;
+            var explorerResourceRepository = new Mock<IClientExplorerResourceRepository>().Object;
             studioResourceRepository.GetExplorerProxy = guid => explorerResourceRepository;
             return studioResourceRepository;
 

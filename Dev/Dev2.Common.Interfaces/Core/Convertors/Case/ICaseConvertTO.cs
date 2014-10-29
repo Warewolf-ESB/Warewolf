@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,8 +20,7 @@ namespace Dev2.Common.Interfaces.Core.Convertors.Case
         string ConvertType { get; set; }
         IList<string> Expressions { get; set; }
         string ExpressionToConvert { get; set; }
-        string Result { get; set; }        
+        string Result { get; set; }
         string WatermarkTextVariable { get; set; }
-        
     }
 }

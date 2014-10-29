@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,9 +25,9 @@ namespace Dev2
     {
         #region Fields
 
-        enTypeOfSystemInformationToGather _enTypeOfSystemInformation;
-        string _result;
-        Dictionary<string, List<IActionableErrorInfo>> _errors;
+        private enTypeOfSystemInformationToGather _enTypeOfSystemInformation;
+        private Dictionary<string, List<IActionableErrorInfo>> _errors;
+        private string _result;
 
         #endregion
 
@@ -36,10 +35,10 @@ namespace Dev2
 
         public GatherSystemInformationTO()
         {
-
         }
 
-        public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result, int indexNumber, bool inserted = false)
+        public GatherSystemInformationTO(enTypeOfSystemInformationToGather enTypeOfSystemInformation, string result,
+            int indexNumber, bool inserted = false)
         {
             Inserted = inserted;
             EnTypeOfSystemInformation = enTypeOfSystemInformation;
@@ -51,17 +50,12 @@ namespace Dev2
 
         #region Properties
 
-        public bool Inserted { get; set; }
-
         /// <summary>
-        /// Type of system information to gather
-        /// </summary>       
+        ///     Type of system information to gather
+        /// </summary>
         public enTypeOfSystemInformationToGather EnTypeOfSystemInformation
         {
-            get
-            {
-                return _enTypeOfSystemInformation;
-            }
+            get { return _enTypeOfSystemInformation; }
             set
             {
                 _enTypeOfSystemInformation = value;
@@ -71,15 +65,12 @@ namespace Dev2
 
 
         /// <summary>
-        /// Where to place the result, will be the same as From until wizards are created
+        ///     Where to place the result, will be the same as From until wizards are created
         /// </summary>
         [FindMissing]
         public string Result
         {
-            get
-            {
-                return _result;
-            }
+            get { return _result; }
             set
             {
                 _result = value;
@@ -93,6 +84,7 @@ namespace Dev2
         public string WatermarkTextVariable { get; set; }
 
         public string WatermarkText { get; set; }
+        public bool Inserted { get; set; }
 
         public int IndexNumber { get; set; }
 
@@ -118,11 +110,13 @@ namespace Dev2
         #endregion
 
         #region Private Methods
-        void RaiseCanAddRemoveChanged()
+
+        private void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
         }
+
         #endregion
 
         #region PropertyChanged
@@ -131,7 +125,7 @@ namespace Dev2
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -143,10 +137,7 @@ namespace Dev2
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors
         {
-            get
-            {
-                return _errors;
-            }
+            get { return _errors; }
             set
             {
                 _errors = value;
@@ -156,22 +147,23 @@ namespace Dev2
 
         public bool Validate(string propertyName, IRuleSet ruleSet)
         {
-            if(ruleSet == null)
+            if (ruleSet == null)
             {
                 Errors[propertyName] = new List<IActionableErrorInfo>();
             }
             else
             {
-                var errorsTos = ruleSet.ValidateRules();
-                var actionableErrorInfos = errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
-                {
-                    //
-                }));
+                List<IActionableErrorInfo> errorsTos = ruleSet.ValidateRules();
+                List<IActionableErrorInfo> actionableErrorInfos =
+                    errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
+                    {
+                        //
+                    }));
                 Errors[propertyName] = actionableErrorInfos;
             }
             OnPropertyChanged("Errors");
             List<IActionableErrorInfo> errorList;
-            if(Errors.TryGetValue(propertyName, out errorList))
+            if (Errors.TryGetValue(propertyName, out errorList))
             {
                 return errorList.Count == 0;
             }
@@ -181,7 +173,7 @@ namespace Dev2
         public bool Validate(string propertyName, string datalist)
         {
             RuleSet ruleSet = null;
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "FieldName":
                     ruleSet = GetFieldNameRuleSet();
@@ -192,32 +184,37 @@ namespace Dev2
             return Validate(propertyName, ruleSet);
         }
 
-        RuleSet GetFieldNameRuleSet()
+        private RuleSet GetFieldNameRuleSet()
         {
             var ruleSet = new RuleSet();
             return ruleSet;
         }
+
         #endregion
 
         #region Implementation of IDataErrorInfo
 
         /// <summary>
-        /// Gets the error message for the property with the given name.
+        ///     Gets the error message for the property with the given name.
         /// </summary>
         /// <returns>
-        /// The error message for the property. The default is an empty string ("").
+        ///     The error message for the property. The default is an empty string ("").
         /// </returns>
         /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName] { get { return null; } }
+        public string this[string columnName]
+        {
+            get { return null; }
+        }
 
         /// <summary>
-        /// Gets an error message indicating what is wrong with this object.
+        ///     Gets an error message indicating what is wrong with this object.
         /// </summary>
         /// <returns>
-        /// An error message indicating what is wrong with this object. The default is an empty string ("").
+        ///     An error message indicating what is wrong with this object. The default is an empty string ("").
         /// </returns>
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string Error { get; private set; }
+
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         #endregion

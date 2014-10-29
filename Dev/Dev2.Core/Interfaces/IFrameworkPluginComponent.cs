@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,9 +9,12 @@
 */
 
 
+using Dev2.DynamicServices;
 
-namespace Dev2 {
-    interface IFrameworkPluginComponent {
-        string Invoke(DynamicServices.DynamicService test);
+namespace Dev2
+{
+    internal interface IFrameworkPluginComponent
+    {
+        string Invoke(DynamicService test);
     }
 }

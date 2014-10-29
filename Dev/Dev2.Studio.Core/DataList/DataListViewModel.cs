@@ -13,6 +13,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -34,7 +36,6 @@ using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
 
-// ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
@@ -114,14 +115,52 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if(_scalarCollection == null)
                 {
-                    _scalarCollection = new ObservableCollection<IDataListItemModel>();
+                   _scalarCollection = new ObservableCollection<IDataListItemModel>();
+                    
                     _scalarCollection.CollectionChanged += (o, args) =>
                     {
-                        NotifyOfPropertyChange(() => FindUnusedAndMissingCommand);
-                        NotifyOfPropertyChange(() => SortCommand);
+                        RemoveItemPropertyChangeEvent(args);
+                        AddItemPropertyChangeEvent(args);
                     };
                 }
                 return _scalarCollection;
+            }
+        }
+
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if(args.NewItems != null)
+            {
+                foreach(INotifyPropertyChanged item in args.NewItems)
+                {
+                    if(item != null)
+                    {
+                        item.PropertyChanged += ItemPropertyChanged;
+                    }
+                }
+            }
+        }
+
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        {
+            if(args.OldItems != null)
+            {
+                foreach(INotifyPropertyChanged item in args.OldItems)
+                {
+                    if(item != null)
+                    {
+                        item.PropertyChanged -= ItemPropertyChanged;
+                    }
+                }
+            }
+        }
+
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(FindUnusedAndMissingCommand != null)
+            {
+                FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
+                SortCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -134,9 +173,9 @@ namespace Dev2.Studio.ViewModels.DataList
                     _recsetCollection = new ObservableCollection<IDataListItemModel>();
                     _recsetCollection.CollectionChanged += (o, args) =>
                         {
-                            NotifyOfPropertyChange(() => FindUnusedAndMissingCommand);
-                            NotifyOfPropertyChange(() => SortCommand);
-                        };
+                            RemoveItemPropertyChangeEvent(args);
+                            AddItemPropertyChangeEvent(args);
+                        };                    
                 }
                 return _recsetCollection;
             }
@@ -171,7 +210,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public ICommand SortCommand
+        public RelayCommand SortCommand
         {
             get
             {
@@ -180,7 +219,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public ICommand FindUnusedAndMissingCommand
+        public RelayCommand FindUnusedAndMissingCommand
         {
             get
             {
@@ -199,17 +238,17 @@ namespace Dev2.Studio.ViewModels.DataList
             AddMissingDataListItems(parts, false);
         }
 
-        public void SetUnusedDataListItems(IList<IDataListVerifyPart> parts)
+        public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
         {
             foreach(var part in parts)
             {
                 if(part.IsScalar)
                 {
-                    ProcessScalarPart(part);
+                    SetScalarPartIsUsed(part, isUsed);
                 }
                 else
                 {
-                    ProcessRecordSetPart(part);
+                    SetRecordSetPartIsUsed(part, isUsed);
                 }
             }
 
@@ -217,19 +256,19 @@ namespace Dev2.Studio.ViewModels.DataList
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
-        void ProcessRecordSetPart(IDataListVerifyPart part)
+        void SetRecordSetPartIsUsed(IDataListVerifyPart part, bool isUsed)
         {
             var recsetsToRemove = RecsetCollection.Where(c => c.Name == part.Recordset && c.IsRecordset);
-            recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove));
+            recsetsToRemove.ToList().ForEach(recsetToRemove => ProcessFoundRecordSets(part, recsetToRemove, isUsed));
         }
 
-        static void ProcessFoundRecordSets(IDataListVerifyPart part, IDataListItemModel recsetToRemove)
+        static void ProcessFoundRecordSets(IDataListVerifyPart part, IDataListItemModel recsetToRemove, bool isUsed)
         {
             if(string.IsNullOrEmpty(part.Field))
             {
                 if(recsetToRemove != null)
                 {
-                    recsetToRemove.IsUsed = false;
+                    recsetToRemove.IsUsed = isUsed;
                 }
             }
             else
@@ -240,20 +279,20 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if(childToRemove != null)
                     {
-                        childToRemove.IsUsed = false;
+                        childToRemove.IsUsed = isUsed;
                     }
                 });
             }
         }
 
-        void ProcessScalarPart(IDataListVerifyPart part)
+        void SetScalarPartIsUsed(IDataListVerifyPart part, bool isUsed)
         {
             var scalarsToRemove = ScalarCollection.Where(c => c.Name == part.Field);
             scalarsToRemove.ToList().ForEach(scalarToRemove =>
             {
                 if(scalarToRemove != null)
                 {
-                    scalarToRemove.IsUsed = false;
+                    scalarToRemove.IsUsed = isUsed;
                 }
             });
         }
@@ -304,10 +343,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     if(ScalarCollection.FirstOrDefault(c => c.Name == part.Field) == null)
                     {
-                        IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(part.Field,
-                                                                                                 part.Description,
-                                                                                                 enDev2ColumnArgumentDirection
-                                                                                                     .None);
+                        IDataListItemModel scalar = DataListItemModelFactory.CreateDataListModel(part.Field,part.Description,enDev2ColumnArgumentDirection.None);
                         if(ScalarCollection.Count > ScalarCollection.Count - 1)
                         {
                             ScalarCollection.Insert(ScalarCollection.Count - 1, scalar);
@@ -749,7 +785,10 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private bool HasAnyUnusedItems()
         {
-            if(!HasItems()) return false;
+            if(!HasItems())
+            {
+                return false;
+            }
 
             bool hasUnused = false;
 
@@ -1070,18 +1109,22 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #region Implementation of ShowUnusedDataListVariables
 
-        void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused)
+        void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused, IList<IDataListVerifyPart> listOfUsed)
         {
             if(resourceModel == Resource)
             {
                 if(listOfUnused != null && listOfUnused.Count != 0)
                 {
-                    SetUnusedDataListItems(listOfUnused);
+                    SetIsUsedDataListItems(listOfUnused, false);
                 }
                 else
                 {
                     // do we need to process ;)
                     UpdateDataListItemsAsUsed();
+                }
+                if (listOfUsed != null && listOfUsed.Count > 0)
+                {
+                    SetIsUsedDataListItems(listOfUsed,true);
                 }
             }
         }
@@ -1192,9 +1235,8 @@ namespace Dev2.Studio.ViewModels.DataList
                                 }
                         }
                     }
-                    else if(partsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
+                    else if(partsToVerify.Count(part => part.Field == dataListItem.Name && part.IsScalar) == 0)
                     {
-
                         if(dataListItem.IsEditable)
                         {
                             // skip it if unused and exclude is on ;)
@@ -1203,10 +1245,13 @@ namespace Dev2.Studio.ViewModels.DataList
                                 continue;
                             }
 
-                            //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                            missingWorkflowParts.Add(
-                                IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name,
-                                                                                       dataListItem.Description));
+                            if (!dataListItem.IsField)
+                            {
+                                //19.09.2012: massimo.guerrera - Added in the description to creating the part
+                                missingWorkflowParts.Add(
+                                    IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.Name,
+                                                                                           dataListItem.Description));
+                            }
                         }
 
                     }
@@ -1264,7 +1309,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             IList<IDataListVerifyPart> removeParts = MissingWorkflowItems(workflowFields);
             var filteredDataListParts = MissingDataListParts(workflowFields);
-            ShowUnusedDataListVariables(resourceModel, removeParts);
+            ShowUnusedDataListVariables(resourceModel, removeParts,workflowFields);
 
             if(resourceModel == Resource)
             {
