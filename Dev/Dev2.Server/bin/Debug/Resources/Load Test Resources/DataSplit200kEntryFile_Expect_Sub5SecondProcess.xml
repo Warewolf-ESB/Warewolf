@@ -1,7 +1,7 @@
 
-<Service ID="95d269e9-42f0-4564-9895-24f2ada0ef4c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataSplit200kEntryFile_Expect_Sub5SecondProcess" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="95d269e9-42f0-4564-9895-24f2ada0ef4c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataSplit200kEntryFile_Expect_Sub5SecondProcess" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <DisplayName>DataSplit200kEntryFile_Expect_Sub5SecondProcess</DisplayName>
-  <Category>Load Test Resources\DataSplit200kEntryFile_Expect_Sub5SecondProcess</Category>
+  <Category>Sample Project\Load Test Resources\DataSplit200kEntryFile_Expect_Sub5SecondProcess</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -180,6 +180,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.1510708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="95d269e9-42f0-4564-9895-24f2ada0ef4c" VersionId="8893718c-bc12-4d54-8543-3fb993e2bc32" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -189,9 +190,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>vbmV1JyvcdSnK0flhTo9e+zDQlI=</DigestValue>
+        <DigestValue>jFAgzDUQc4R17hRlaxr1mVw6dkk=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>gfOGE9id/z9vsjbnNicVv9ajhP+pfQiDA40wPJTs+rkBdmJEE6N38Rklawv1XzmvC058YKQusOySHrXb12AwyGVym7+lQJZv9VyRXd6FEb3s89WML+4fyfgKooyrOmL3SicoytxU/m2ygQwfzaxx5oI9TMfXkYoJ8gV3TrgPu08=</SignatureValue>
+    <SignatureValue>mqiCMqkftyrtqrTi52Lo/d4lvdwc/+mInaDYUs5mvFbD7kT1bWuIoXBEa4u3BywMW5HDZ4FapL6/g0NW8trVv4zsQJqe08/K69BUdQR4pvx64X+uqq4mZLjmOGf48Th++OPN84Jxgt4Uh2Tif/BomVLR3BEeQppkWutkyGUkcvE=</SignatureValue>
   </Signature>
 </Service>

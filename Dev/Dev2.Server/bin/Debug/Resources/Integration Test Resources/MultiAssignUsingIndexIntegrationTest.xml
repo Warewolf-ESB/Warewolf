@@ -1,7 +1,7 @@
 
-<Service ID="6a4f08ec-25b1-47bf-ac75-e3b00cfc2f9b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MultiAssignUsingIndexIntegrationTest" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="6a4f08ec-25b1-47bf-ac75-e3b00cfc2f9b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MultiAssignUsingIndexIntegrationTest" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <DisplayName>MultiAssignUsingIndexIntegrationTest</DisplayName>
-  <Category>Integration Test Resources\MultiAssignUsingIndexIntegrationTest</Category>
+  <Category>Sample Project\Integration Test Resources\MultiAssignUsingIndexIntegrationTest</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -168,6 +168,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.9800708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="6a4f08ec-25b1-47bf-ac75-e3b00cfc2f9b" VersionId="fcb8afdd-ccca-4cc7-8df9-82323d330a32" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -177,9 +178,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>P/bjyepwiKgwEAkozwPh4OoMxjc=</DigestValue>
+        <DigestValue>hS2D9Xt/PMs2Uz3T/MnVnI6xoZY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>hb+6pipp1cpAvvCsBcPQgg04tTmOJkpSTe2oLoSDwUNaix9VmHEof9gwdgCNAT7HhF59cPz4s2ay+JuqZsPxN+m1FSwpkesdTnwo7QYpRH+V2/yFNbf5MJs+2ZCad8E5ChC4d/wYoIa1tmhaQnQuKZ1l1ksd05XoYlT8rodEehI=</SignatureValue>
+    <SignatureValue>o31nkGi2oBHeh4T0zZ4UBrw8VLjOiRcLm9Nm0111GZ94OZKi1LkBwyRSUu1rgVUJaBvOm0u+Yjyl0XoENkv1O6/zVzEjQpPQTHyHhckWz773cSledoNzUtrza2c9hfxa3r6WwF/XWsJfpnMA4dqzQjQem1A0Q4MzJC+P6XD93ao=</SignatureValue>
   </Signature>
 </Service>

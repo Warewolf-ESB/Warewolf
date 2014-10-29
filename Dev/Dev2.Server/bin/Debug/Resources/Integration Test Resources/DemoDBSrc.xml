@@ -1,7 +1,7 @@
 
-<Source ID="6f46efe3-f4a9-464e-b173-9b931418f68b" Version="1.0" Name="DemoDBSrc" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=DemoDB;User ID=testUser;Password=test123;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Source ID="6f46efe3-f4a9-464e-b173-9b931418f68b" Version="1.0" Name="DemoDBSrc" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=DemoDB;User ID=testUser;Password=test123;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <DisplayName>DemoDBSrc</DisplayName>
-  <Category>Integration Test Resources\DemoDBSrc</Category>
+  <Category>Sample Project\Integration Test Resources\DemoDBSrc</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
@@ -19,6 +19,7 @@
   </BizRule>
   <WorkflowActivityDef>
   </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.0850708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="6f46efe3-f4a9-464e-b173-9b931418f68b" VersionId="292d2c36-dbd8-41a4-bbc5-6f9218f6c3f6" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -28,9 +29,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>SyS04Cs/08iH6E38xrKJEw9RwpI=</DigestValue>
+        <DigestValue>gY+Mq7wEdLcWqmmGtqOaZ16YxVs=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>OYPyl+CN3AcBSWa1PwaQeSuhz5hjTKh/Y48Ht8/9lTZVVzh5BFnH2hZwLI+vMv99WLpiXfBEyMrJjYT/0zsn3TRKerJo0eRa9NskZ4k+/IhWL6jbLZr4hK5RLMa3Oq8Y+tjT8xS4xofKgXnpW3qXYhJ3c3AgQ+QmHRHb2hBdqsY=</SignatureValue>
+    <SignatureValue>uutv7UmWxCiNKaooRhzEQZTM2kqJgX3EJBtM8zEg+ffUCGFlXOiyhVbuKByLefwlaWKL4YabZefYbKnNub6yEZtGmu6n4umwOO9WIXg+heNicTeeRdMG4qBBzHHefnVRyPN1x39Ckj77/ekd09OulT7YzuLkteJYvALaQlY+cvw=</SignatureValue>
   </Signature>
 </Source>

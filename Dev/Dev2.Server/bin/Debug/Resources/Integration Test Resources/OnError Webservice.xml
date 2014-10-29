@@ -1,5 +1,5 @@
 
-<Service ID="df24117f-8831-40bc-85de-2040d3140f43" Version="1.0" Name="OnError Webservice" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="df24117f-8831-40bc-85de-2040d3140f43" Version="1.0" Name="OnError Webservice" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="OnError Webservice" Type="InvokeWebService" SourceID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" SourceName="Dev2 Testing Web Src Faulty" SourceMethod="" RequestUrl="/GetCitiesByCountry?CountryName=[[CountryName]]" RequestMethod="Get">
       <RequestHeaders><![CDATA[]]></RequestHeaders>
@@ -25,10 +25,11 @@
   <DataList />
   <TypeOf>InvokeWebService</TypeOf>
   <DisplayName>OnError Webservice</DisplayName>
-  <Category>Integration Test Resources\OnError Webservice</Category>
+  <Category>Sample Project\Integration Test Resources\OnError Webservice</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.2990708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="df24117f-8831-40bc-85de-2040d3140f43" VersionId="e7444580-4bfc-4b8e-bfd8-bd3a2851cffc" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -38,9 +39,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>am8rwguOsBVNsXWenqCR2HTfS20=</DigestValue>
+        <DigestValue>tcXbFYW/rRo/GTP7GtwD2D6VXVM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>mSQGzitqRlCPfjMeqKXedsY+a7hgemmEi0CKs1Av5AOjIyb77IQ8UawJiTEUrWn0BcbVQaiNpXpR8sDojKNfURFhX3Xmcdhxp7xKwvgnHYm0xgM2Q/KxfzhUQQdzGtT6SyaHvfjOLt0xeX59emgO8hMmBl3uYmTxUORi4D94SlI=</SignatureValue>
+    <SignatureValue>nGpAhTrz8HqCqdiBlodk46a70/6+fzFq0uM26n61FSL4lhl75FQRviy95XxWzXO8if7O2En0LhFAVoL6OS3Cd/JxrRMkkVj8l3nxQ9zlqHKXjkSDPaVE9QjEYKeLtX5G/rSMF63hanncaqiqvbVP1/zo2rHhZ9i+SQtjpVPjfd4=</SignatureValue>
   </Signature>
 </Service>

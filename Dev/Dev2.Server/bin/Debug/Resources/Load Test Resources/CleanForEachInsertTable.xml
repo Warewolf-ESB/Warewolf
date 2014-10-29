@@ -1,5 +1,5 @@
 
-<Service ID="710faba6-6f7f-431c-b65c-786983e46b2f" Version="1.0" Name="CleanForEachInsertTable" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="710faba6-6f7f-431c-b65c-786983e46b2f" Version="1.0" Name="CleanForEachInsertTable" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="dbo_CleanInsertForEachDataTable" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.CleanInsertForEachDataTable">
       <Inputs />
@@ -18,10 +18,11 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>CleanForEachInsertTable</DisplayName>
-  <Category>Load Test Resources\CleanForEachInsertTable</Category>
+  <Category>Sample Project\Load Test Resources\CleanForEachInsertTable</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.1470708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="710faba6-6f7f-431c-b65c-786983e46b2f" VersionId="ee1fba76-5366-44dd-8aac-98b31b60c2a2" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -31,9 +32,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>H5RsHRQ5nuHcOPQgtsrRH3uMjeQ=</DigestValue>
+        <DigestValue>sy4QQ7iHRkbGZUWTqaZiBS2drLM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>irBZAUhbD09xc6QAMITPWV0i0iK+cvAKHURnxZn+197wnoqr9EpX330t1GpPcv21/NOqTbU01Gld+jgCEd8hGTRzuRVZvhA8a1ZW/Kgiz6QkPr+rwG9TcmUFpCCJbHr2BWrvHWRKnspHn/IL1KIQGXBLYOyN9EFMLprCvGrMmwo=</SignatureValue>
+    <SignatureValue>tiZol70BS65ZjDpEy4p+qNifD/W6rmT1284ZzrrKoFuGePQpQVxlpNa4KTOQbp5Zs6FMau21VkcWMjGJaoTnvay3ECCaHz1d2xDrgVUZia8xV2pUK2kz8ipfwuUi5zTQaFYXWlVTTxd2n9evmQ0jtv2i8yRYIgBZJWL/niJVT9w=</SignatureValue>
   </Signature>
 </Service>

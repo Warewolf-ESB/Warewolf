@@ -1,7 +1,7 @@
 
-<Service ID="0441ec13-480c-4c72-82da-2a71e63dad00" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner CSV WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
+<Service ID="0441ec13-480c-4c72-82da-2a71e63dad00" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner CSV WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.20.1">
   <DisplayName>Inner CSV WF</DisplayName>
-  <Category>Integration Test Resources\Inner CSV WF</Category>
+  <Category>Sample Project\Integration Test Resources\Inner CSV WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -127,6 +127,7 @@
     <ErrorMessage InstanceID="1e5f48f8-bd31-4caa-9de2-5406ea07766d" Message="IsRequired mapping has changed" ErrorType="None" MessageType="MappingIsRequiredChanged" FixType="IsRequiredChanged" StackTrace=""><![CDATA[<Args><Input>[{"Name":"Rows","MapsTo":"Rows","Value":"Rows","IsRecordSet":false,"RecordSetName":"","IsEvaluated":false,"DefaultValue":"","IsRequired":false,"RawValue":"Rows","EmptyToNull":false}]</Input></Args>]]></ErrorMessage>
   </ErrorMessages>
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.7790708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="0441ec13-480c-4c72-82da-2a71e63dad00" VersionId="3a328a2e-d280-470b-98e6-334d2116fa09" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -136,9 +137,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>hN4VNdjpybWxdg5MyNzVqC5Gtnc=</DigestValue>
+        <DigestValue>QYty4cClRHFSQEvRd3ctFSFaelA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Tsh6MQYbcRCeKReDhJRJ9cCthZoodEElknTOMMJMa0GrVIo9lFIw1LBJK9khTmkoSm4BUU9RsgPFFJmHJ9wDQBY05qAUJ0+0aPCZ4yNTOr7PaUN0hMTIXkeF2Bt0m52/oqzfcuizc7LVOg6rDFXcQth1BIqKJnLvjqBmKtZulyw=</SignatureValue>
+    <SignatureValue>RUK2h4QjUMdn/x8zZZ8y+k0WD64pwcz53HrUhsLHdIK6YUz3OQv5x16/6Pmy58fjaE6i3absw7rnJxebTqQlpEj41wwRbhWdQUJe92TapN+cEEHSlamKL9CG8leS21VdbXK/GDfvkB74nZBISwVDQjxdzvjbjCeMFm6tWuSriFo=</SignatureValue>
   </Signature>
 </Service>

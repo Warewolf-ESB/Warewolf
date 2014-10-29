@@ -1,5 +1,5 @@
 
-<Service ID="dea42b69-dbe7-44b1-bbcc-78ab41c9c2e9" Version="1.0" Name="PrimitiveTestWithPlainString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="dea42b69-dbe7-44b1-bbcc-78ab41c9c2e9" Version="1.0" Name="PrimitiveTestWithPlainString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="PrimitiveTestWithPlainString" Type="Plugin" SourceID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" SourceName="PrimitivePluginTestSrc" SourceMethod="FetchStringValue" Namespace="Dev2.PrimitiveTestDLL.TestClass">
       <Inputs>
@@ -24,10 +24,11 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithPlainString</DisplayName>
-  <Category>Integration Test Resources\PrimitiveTestWithPlainString</Category>
+  <Category>Sample Project\Integration Test Resources\PrimitiveTestWithPlainString</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.7000708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="dea42b69-dbe7-44b1-bbcc-78ab41c9c2e9" VersionId="5c67307f-8591-4d29-97f3-6c46d47fb016" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -37,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>M6b6t7/qOekkPVW5E/NUUoVFU78=</DigestValue>
+        <DigestValue>ReXPJixWcl3qRbFAKX8Ly3uAnmc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Tar0Sf5gRRL1reQIHoIpGlFrBBZ0cIVS6nj8iC01x2B3qS67IGF8DlTXA/jLdywJdamwB60pAJm1IlgkyZPa7EFgY69+bhM/Z0fc20spahJ2f3R4Hxz3gvLtKU7rU1rNDIOcVsHMLsvhnwqWJuvPv5ii38XxipMic9kzIjTM5Zg=</SignatureValue>
+    <SignatureValue>QigrmoxN7tjP6TnPTMlNRbdN/6O9ApQrLAMbVAjKzQPCdOg74PjMh2FoS/7C2ttjnR+/IR0BFii1X9mP39VwCqon+4C4iaZw8SvHGqpjARrXOk8NXWPyY8WWfSCBKnPXaSgI94Y2ZWvjzPzdSPKPnJKl35U2q5TsO9p46Rv4PYY=</SignatureValue>
   </Signature>
 </Service>

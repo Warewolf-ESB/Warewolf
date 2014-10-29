@@ -1,7 +1,7 @@
 
-<Service ID="55919c1b-662b-49bc-80f8-978ac1d63778" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="SortActivity_DateSort" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="55919c1b-662b-49bc-80f8-978ac1d63778" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="SortActivity_DateSort" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <DisplayName>SortActivity_DateSort</DisplayName>
-  <Category>Integration Test Resources\SortActivity_DateSort</Category>
+  <Category>Sample Project\Integration Test Resources\SortActivity_DateSort</Category>
   <AuthorRoles>Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Testing the Sort Activity on date sorting</Comment>
   <Tags>
@@ -150,6 +150,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.1040708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="55919c1b-662b-49bc-80f8-978ac1d63778" VersionId="c8fe1719-7d97-4151-a77b-99f773c322de" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -159,9 +160,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>vZFT+YZlbOR1grkuhR4bkWzHSB0=</DigestValue>
+        <DigestValue>owsrX7WwLWPyKZMfx5OwTR17uyI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>GvT3PVytxoFJSnMYd78dSSQHVM8wNssouMp3P5R7tnTSS+t2Vu4be8QlvSKZqGC3AfEEKbEe9cp+84HmBQImeElNyGfOvZlZq1JU3kRzO5ZhnlQqtB8vxrCiWi7gNrf5AQdwVBl74Wd9X/LASVEaVEdksE81+TZ4nxd0iVF0/50=</SignatureValue>
+    <SignatureValue>ugGs7ZM1/RIV08IaXa/ReeM+qIcrclybS9bzEBYOACHSw5hsbqxjM/CVj1TqIXOzCRO2SPVVp5kqpExo3t4olBGLCPfKbDU0Ug1rt0cuHnYubN/mds4arTNFU+6LZfBC7PnSkqbvbJGxI09oMpMuC+ETvaJ3sGVEWgjuqjhZPVo=</SignatureValue>
   </Signature>
 </Service>

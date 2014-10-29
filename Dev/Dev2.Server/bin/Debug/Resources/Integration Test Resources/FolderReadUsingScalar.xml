@@ -1,7 +1,7 @@
 
-<Service ID="6263dcd5-68cf-4a4c-a966-3b2d2399f74b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FolderReadUsingScalar" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="6263dcd5-68cf-4a4c-a966-3b2d2399f74b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FolderReadUsingScalar" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <DisplayName>FolderReadUsingScalar</DisplayName>
-  <Category>Integration Test Resources\FolderReadUsingScalar</Category>
+  <Category>Sample Project\Integration Test Resources\FolderReadUsingScalar</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -98,6 +98,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.6630708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="6263dcd5-68cf-4a4c-a966-3b2d2399f74b" VersionId="9e1b056d-9f7e-4d29-9ea7-25b0036048de" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -107,9 +108,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>dJ3ynhi2yKDDdEJZFDuk/j7mSWA=</DigestValue>
+        <DigestValue>7ohSZxJ3MFmyIDP+Qu1hvQv5TCs=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>DsfMYLuxeUtye5NJM+19F/43jXugBMXW38TimuP4c4MP9jlMJFV3ecJ83FmsSMUryvpaMTUMhRU7m026GIQw1EggxUQ9S+Bf6PQlZwodjdXLIujGh5aobfGRsabJRlRe5HcMI4qHBDk6tQRXp5ZFuO4IIvUDHybEzDgodjjVays=</SignatureValue>
+    <SignatureValue>PSL8uv/wwZQLY3ibY0sYDS/X1/qX89mA1blVt3F6sj8uCklmUnIb4uMlEmp5SaOeDGgb8nV7w8MIYJt0lE1U4sxKxeVlEzeAtxV/CN4rhbQsaOnr6fYveZNEF+aSKy6iA9bxSay3rLr0gPh0duH8+bkKJSHZieQoY0ta+goF3NQ=</SignatureValue>
   </Signature>
 </Service>

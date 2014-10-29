@@ -1,5 +1,5 @@
 
-<Service ID="ff969344-329e-47bb-b770-5bb3b032f5b9" Version="1.0" Name="Insert" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="ff969344-329e-47bb-b770-5bb3b032f5b9" Version="1.0" Name="Insert" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="dbo_proc_SmallInsert" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.proc_SmallInsert">
       <Inputs>
@@ -20,10 +20,11 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>Insert</DisplayName>
-  <Category>Integration Test Resources\Insert</Category>
+  <Category>Sample Project\Integration Test Resources\Insert</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:38.0210708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="ff969344-329e-47bb-b770-5bb3b032f5b9" VersionId="20e74810-49de-4055-bdda-b195e5ff8934" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -33,9 +34,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>j5+eFhmBW7RJG64SamEEZk7b4Y4=</DigestValue>
+        <DigestValue>LfWGw+hb+jLxrOZq5dfFkbSldO8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>jq6NYInhm1mn85QJ4QiHxVuW6P8n2H+r3f/stt6NB8p8U9du3NDYKg4G7hqD2woKr+1wl1N+15oVv/t1/9VRkDeIDYo9Ubs/rILML2ZDQrJ73iytp2ImMbun1hLPigrqgbCXEDRQkUiTLL+7+l3RE0QSh8QONvGoJ39wjK2n5QI=</SignatureValue>
+    <SignatureValue>OmDCLiQcM5/nAdzhFX7z+t6cSZv7GtYmm2WfE8XEluhDMgmLWN3TPhaUJ7qU/U1sQNUdSDMQNkhZNd1WpCBIJ9soKbiPPLDIBABCGyab5sKifoXyrLH6+EgKuILOvOajIzL1Uacc2xAjm+XEOJFlWQ+nw7fCQLri7dQdaw5FUxk=</SignatureValue>
   </Signature>
 </Service>

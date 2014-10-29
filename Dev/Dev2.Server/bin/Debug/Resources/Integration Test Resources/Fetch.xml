@@ -1,5 +1,5 @@
 
-<Service ID="d5be8b73-4ab2-4dff-a4b8-dbe6598c3c23" Version="1.0" Name="Fetch" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="d5be8b73-4ab2-4dff-a4b8-dbe6598c3c23" Version="1.0" Name="Fetch" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="dbo_proc_SmallFetch" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.proc_SmallFetch">
       <Inputs />
@@ -20,10 +20,11 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>Fetch</DisplayName>
-  <Category>Integration Test Resources\Fetch</Category>
+  <Category>Sample Project\Integration Test Resources\Fetch</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.6690708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="d5be8b73-4ab2-4dff-a4b8-dbe6598c3c23" VersionId="894ab442-255e-42d8-b8fc-7c3cff5244d8" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -33,9 +34,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>RkHh2KiQijXPoJ+RIvrHyvLlabc=</DigestValue>
+        <DigestValue>Kr4SwKhit/Xi8QBOSF0cQM3DNKM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>A7VHJudgzEGD/vhlDjnepYhtDWDtxIoNM4IsPbxi1pT5AYTZLXk+YystnWcsOIFcq+70QHwkOJuPlVFLrPpt0/d6u0Z1CBPOc0EDSbUPp5779EHfl+ceMIuGmCG+/33r7aNQwRMaCb5E9uCMYboWsZBFY40Qe34nQ1V8M8s7a9g=</SignatureValue>
+    <SignatureValue>c0/odda4BpH/q8YlK159LwiULBSQZUaMGG8RAediRB0Y5BzR7wgaZtznPb1G7oQPVqxYw79Czr9SRTX2jb80961gboe5pa1CIXKryzU2J5UCrXMwgL2aDBVXKKh8ctLsoGK661IpMU0zdf5BAP0f9YW6OoCF9S5nEMjSMDqPeoA=</SignatureValue>
   </Signature>
 </Service>

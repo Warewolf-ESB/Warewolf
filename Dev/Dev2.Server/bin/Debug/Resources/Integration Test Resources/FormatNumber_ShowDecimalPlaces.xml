@@ -1,7 +1,7 @@
 
-<Service ID="fc3e2705-2e28-4737-9d2b-fc7db68b9f24" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber_ShowDecimalPlaces" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="fc3e2705-2e28-4737-9d2b-fc7db68b9f24" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber_ShowDecimalPlaces" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <DisplayName>FormatNumber_ShowDecimalPlaces</DisplayName>
-  <Category>Integration Test Resources\FormatNumber_ShowDecimalPlaces</Category>
+  <Category>Sample Project\Integration Test Resources\FormatNumber_ShowDecimalPlaces</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -229,6 +229,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:38.2140708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="fc3e2705-2e28-4737-9d2b-fc7db68b9f24" VersionId="f8df1298-28d8-455d-80a0-295fd6f1fd7c" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -238,9 +239,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ReQ5USirXnCwribYuo4j69b+Hqk=</DigestValue>
+        <DigestValue>9ZcKm7GeAkfuUWTTJ1d7NUJRsZ8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>kGwkow+2D6e8AzZq/QLMRIuNvyTV7Cc7z8O5bmnKWv5Lecge3kO6Yb9vt3lcgtgzb5n9N+0UOFkySKL6guKV3yKhKXVfd7LM609N6R3RGfOqjlp4cPzuK7zNRV+FmiFXgpURsvexY3DBQLYosJazWerAeZY2+F4vfqPOIuwaxGQ=</SignatureValue>
+    <SignatureValue>iI4CJWVECk/UJ9MvVL3O0SVfcvX9xRyvvInJshmbjvMwm780Cra9kT3d2b4bhjEtXmYpVLOHGSeu63r7SUOHfsVWIp7BB75wySSKnBRaoMkiGEnVjSqdiVB/REZwA0aahVl+iMAEsIiyxDCLidYV7uZkY94hh2Uoxrqcntcrprk=</SignatureValue>
   </Signature>
 </Service>

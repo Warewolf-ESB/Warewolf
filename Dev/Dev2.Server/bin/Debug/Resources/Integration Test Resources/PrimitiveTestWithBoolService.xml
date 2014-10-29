@@ -1,5 +1,5 @@
 
-<Service ID="a313633e-dc76-489d-8309-e4d3cecae751" Version="1.0" Name="PrimitiveTestWithBoolService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="a313633e-dc76-489d-8309-e4d3cecae751" Version="1.0" Name="PrimitiveTestWithBoolService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="PrimitiveTestWithBoolService" Type="Plugin" SourceID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" SourceName="PrimitivePluginTestSrc" SourceMethod="FetchBoolean" Namespace="Dev2.PrimitiveTestDLL.TestClass">
       <Inputs>
@@ -24,10 +24,11 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithBoolService</DisplayName>
-  <Category>Integration Test Resources\PrimitiveTestWithBoolService</Category>
+  <Category>Sample Project\Integration Test Resources\PrimitiveTestWithBoolService</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.5290708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="a313633e-dc76-489d-8309-e4d3cecae751" VersionId="a299a783-1971-4517-8353-e6711f78e472" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -37,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>BWtAvz/YexHBk/FLa4ZJNeJ5RBA=</DigestValue>
+        <DigestValue>KL+ZHVCbO95wilnB2Lx5SOesq5A=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>jdOpGKrkt1IP4NFRHb2FRye8lF+PAcVhdhDveKflbG3g2wsKuFlg5DwXIG3umQBpA0+8vUqwMikysbbGZghllOwOk75m5urkWyLLMHA8MNxHZ3FMLAfVzFnxaS24wKi7UbRygnCpeNx2BOz+p4FE2rQX0lfiHtMEjUp/6hhuL34=</SignatureValue>
+    <SignatureValue>bVIW2OftBJmXU0rcOkfmNP0Bpc0wvHWRZcItxQMNEw90JNJV5dxEt1ttmb8zziW2lghbSy6FA1gd/C5rjqtP/UZ43pcBwTJjODl4r0Hxx/yztL39Ha3brI/mEPVikGAtGRtyQC6fLSBYK+Nt80eyN/Ck/fHQtZHDqqo4tNDoRCI=</SignatureValue>
   </Signature>
 </Service>

@@ -1,7 +1,7 @@
 
-<Service ID="102d4bad-61e5-4586-b544-e449df81ca51" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="LastRecordSetNotationUpdatesEntry" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="102d4bad-61e5-4586-b544-e449df81ca51" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="LastRecordSetNotationUpdatesEntry" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <DisplayName>LastRecordSetNotationUpdatesEntry</DisplayName>
-  <Category>Integration Test Resources\LastRecordSetNotationUpdatesEntry</Category>
+  <Category>Sample Project\Integration Test Resources\LastRecordSetNotationUpdatesEntry</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -206,6 +206,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.7640708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="102d4bad-61e5-4586-b544-e449df81ca51" VersionId="867ea2c2-c0e2-45b8-8d2e-2ecdca9d731d" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -215,9 +216,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>y1fTBwRJrIy1WO2CptJ985QseXQ=</DigestValue>
+        <DigestValue>W8XWwKZ7brct9GLA9zfmezQ1YtU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>I+86WmOxQY5hUzyFaKCwSPXCZ8SfnqVSVbWCHJUDjR/F2nJOJrTAhfxLgX/lst1ojVlAr528Q1C/txgBzVVLEg2sj9obSnVuEZhHNxVd5WKLALwdIBpqS/qWH7bHa01CWcxQV43oolmoXa/5C/VjiPlscTSNaBe3hJSpGPVUySs=</SignatureValue>
+    <SignatureValue>IRSVlxQ35Rk1IMTqvWHIfGwImbzK2q+I39jnXPxbCTjDncmD/C1Xzr6HfeMKPsKIgVxrH83PFGMw+tylJbue4MlGGi8+dcrHH+sY18iwXVWsiVG0Vl76gPGesrOcHubTPtAGk5c3x6SIg8MsW/a3Vz5uo+fRNx6t1grGF1HjPaY=</SignatureValue>
   </Signature>
 </Service>

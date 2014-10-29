@@ -1,10 +1,11 @@
 
-<Source ID="93f90cdc-3468-4570-8c12-20121eb3735a" Version="1.0" Name="WeatherFranceCities" ResourceType="WebSource" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=France;AuthenticationType=Anonymous" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Source ID="93f90cdc-3468-4570-8c12-20121eb3735a" Version="1.0" Name="WeatherFranceCities" ResourceType="WebSource" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=France;AuthenticationType=Anonymous" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <DisplayName>WeatherFranceCities</DisplayName>
-  <Category>Integration Test Resources\WeatherFranceCities</Category>
+  <Category>Sample Project\Integration Test Resources\WeatherFranceCities</Category>
   <AuthorRoles>
   </AuthorRoles>
   <TypeOf>EmailSource</TypeOf>
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.6380708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="93f90cdc-3468-4570-8c12-20121eb3735a" VersionId="c26d8475-aeac-4499-87fc-01d46fb0f0d2" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -14,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>zPOkxUGbxaFFzPs3AuE88ESHy0s=</DigestValue>
+        <DigestValue>7WjRcCznl/qwP9NI/OGT1aJtTAY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>EKE4hnqG0ZvX+wKIUjbUENd24HcZq+l0HUX6k7xPgDATV7fh9UDdOA9zelXq+G80IvnHikBMI+7EOSozFxFa8Pi/KAUGNJq2TGEBB0JZQJ1y9Grxkln/MbLFNrbA/rTqLXf3+fv07P5Nv1esuJvqSjO0XMRN2mNfcNr/Sw9esR0=</SignatureValue>
+    <SignatureValue>B9uiKKnFAo/FM9KBTjkgh4NoegyeCcGcEJCPADVnUyBn8vUxOxkXhJ6ck5dzK39crkqIVoBY6uWGD5+DeGTp0xO4hJZr0ybYoMZTTd3jeRo4nrKZAA0blxaipja/935LSLcIySeENkZG6NF1jbsegok/1nbzneKpKREKisnIhZ0=</SignatureValue>
   </Signature>
 </Source>

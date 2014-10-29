@@ -1,5 +1,5 @@
 
-<Service Name="IndexToolWithTwoRecordsetsWithStars" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="4db3f406-ffab-49d5-8ca6-edb827cab32a" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service Name="IndexToolWithTwoRecordsetsWithStars" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="4db3f406-ffab-49d5-8ca6-edb827cab32a" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="IndexToolWithTwoRecordsetsWithStars"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -194,7 +194,7 @@
   </AuthorRoles>
   <Comment>
   </Comment>
-  <Category>Integration Test Resources\IndexToolWithTwoRecordsetsWithStars</Category>
+  <Category>Sample Project\Integration Test Resources\IndexToolWithTwoRecordsetsWithStars</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
@@ -216,6 +216,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.6420708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="4db3f406-ffab-49d5-8ca6-edb827cab32a" VersionId="8ee6d5a4-57a7-47e9-a0f2-5d2e5d996cbe" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -225,9 +226,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>olCUL1qRChZM1IAHtkOQ6Uo/zok=</DigestValue>
+        <DigestValue>uxoYo0NkEShjAZwWNAvrSoahiDA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Rn9l5ZhrN/IilZSYI+FC3c1SaeOTd/8gqv20j3xdtN7td7iKTZEh3VJ08oBI0bx+2El0pr2g2d9PXrMf/dwmmmFTi+RYCnwPcNloxx1MdPhH4+tK17oALOYWzUCyQb9ybhZ3O+glXj5VSLU5z9GVo+mE46LDBNVA3zhgMbdvGp8=</SignatureValue>
+    <SignatureValue>M6mPNNxZCM5E5f31PYe/s0HW3peWcPgI/mT/kXesLLnpC++3TKKrdp29ngjR9oQilFkpBlbSqio+Dm8whdfTMOjWhFEr02PnXtMDfR2gnA3Q0RAx9B/dvgdzucN739Ng49VCQ8KpTDAoamQMZd0llBTjaKj4ZeSvFo6vDcQoT+A=</SignatureValue>
   </Signature>
 </Service>

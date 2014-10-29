@@ -1,5 +1,5 @@
 
-<Service ID="81afc133-0510-48c4-b035-7e2e8659a0ed" Version="1.0" Name="OnError DB Service" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="81afc133-0510-48c4-b035-7e2e8659a0ed" Version="1.0" Name="OnError DB Service" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="dbo_Pr_CitiesGetCountries" Type="InvokeStoredProc" SourceID="52ab7a23-69c1-4810-a366-9f49fd44fe0e" SourceName="Dev2 Testing DB Src Faulty" SourceMethod="dbo.Pr_CitiesGetCountries">
       <Inputs>
@@ -23,10 +23,11 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>OnError DB Service</DisplayName>
-  <Category>Integration Test Resources\OnError DB Service</Category>
+  <Category>Sample Project\Integration Test Resources\OnError DB Service</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.2690708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="81afc133-0510-48c4-b035-7e2e8659a0ed" VersionId="fff40d3e-69eb-4307-9580-524c0e01ea59" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -36,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>4gxzdH8Jnxy7mj9HN7xK9ESss6o=</DigestValue>
+        <DigestValue>B2M9zUkFT45yNTP074S58FFfuag=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>K0wdRj8ev8pjIS/KNyPxjYal1gee/zAUzV/VQlrNbZFdWY+tL+B8F1SE2Dymjx6j4OIW54lN9RLd09Zgv3IryS6bMLt2AQ3vw/HVrDAch61StIKH+o2rAU6nEQaNEe4BFf7OipRfr9m/vXbAZa6AGtdoxzLDr6lmxbY+mu38SWE=</SignatureValue>
+    <SignatureValue>Ty3OeyclHLgfqBavS+NKNiG7VIoYUhVLnKD29A8JQ3zVmNSnS7vdcciQqcl0UVR6W8rXqJbwSDDE6ROwZw9p/oUuPi6YxFxm7KZkr6+doWoLmUpN6IzCL1FUJxrRoCPn867LHWbIc73SkdYMhSBb6oQ1rvzfPPaZ4VG4Ff/18DE=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service Name="Data Split" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="1453b3c9-14cc-4c0b-aa42-a6188c3e00cf" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service Name="Data Split" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="1453b3c9-14cc-4c0b-aa42-a6188c3e00cf" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Data Split"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -312,7 +312,7 @@
   </AuthorRoles>
   <Comment>
   </Comment>
-  <Category>Integration Test Resources\Data Split</Category>
+  <Category>Sample Project\Integration Test Resources\Data Split</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
@@ -330,6 +330,7 @@
       <set Description="" IsEditable="True" ColumnIODirection="None" />
     </rec2>
   </DataList>
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.0420708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="1453b3c9-14cc-4c0b-aa42-a6188c3e00cf" VersionId="70f04d5f-3061-4e64-857d-b7c7cf8c40d6" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -339,9 +340,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>R58P3nkbvENvb0ujHLlN1VBMxdw=</DigestValue>
+        <DigestValue>+l0S47VwMK5VRfsE0nYNfjXA2MU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ObyavvLX0qgbMYdwpbgnTM1y1hATrQR3/nFnnpBu0X6Rx3RHploiX5pK7IY6PBYSwagSX1530dvnS+EfvfURnJMZeYB9TFeEaI/wSvKVhS2ozuizBkycZPhhCe0WwZofSG2QgTZDunR3xkfBWaJvvzDixqay5PCdD8rQ47qGLvE=</SignatureValue>
+    <SignatureValue>tgkFVpBV3+0lr1pe+BBU6cClD2hGMAOIDEWcWjVS/iRTm508rfkglckmjHE9KlwS1sseSI0wdoZpi/xH81h4N1R8+BEsN/4wHfSdLFqO2l0gIkzEeAB/rA4QgppgBdX8lnjr+7yyB+rSCSV9Y0YSt6yN2ER+QiafybriUKhpToQ=</SignatureValue>
   </Signature>
 </Service>

@@ -1,7 +1,7 @@
 
-<Service ID="ac09e872-90d3-4e8b-ae34-e1b0f3543e95" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Replace" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="ac09e872-90d3-4e8b-ae34-e1b0f3543e95" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Replace" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <DisplayName>Replace</DisplayName>
-  <Category>Integration Test Resources\Replace</Category>
+  <Category>Sample Project\Integration Test Resources\Replace</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -105,6 +105,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.8100708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="ac09e872-90d3-4e8b-ae34-e1b0f3543e95" VersionId="3ae5226b-e601-4795-ae2a-cbd9ccad997e" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -114,9 +115,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ExFhMvofbjXSxrcsUQnxDJEHxzs=</DigestValue>
+        <DigestValue>0Xa5IH6dqP2A3JiwlLAvF/nqBxE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>FFDHiXPUlQuzDGyyLpbsGMa7Xn4AIy7nv4pP7se0nqTJ4EbSwas/smChemhgFvtzQl4yPccGS8rh8hNwAQ/1Br9DgaHuU6G2vvvLElOMDcRA2NTNYBH6RYX5oIvq5upld8MLTWt3ujfmeIdhbpBRzMLiTjrkQ092IAaA+baASO4=</SignatureValue>
+    <SignatureValue>ownNCKVGSwpiuc6qDjHzKoXWl8GIQX0wDOPWgGNZ5p9ATRjK4SDJr5neJM55HqW7Ce8vtUsRBvqy/xYnpNsO2awfOrEU5HI5prJ3+JGY+4KJ2zLUAFh6+9nk6HqhsLzXiatJOMeMZYF4X07ect/bU4H0+5TmznCmuyomdB8JxQI=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service Name="Base Conversion" ID="3c55d640-6ce8-4ce2-b827-7f47bec1ca10" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service Name="Base Conversion" ID="3c55d640-6ce8-4ce2-b827-7f47bec1ca10" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Base Conversion"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -720,7 +720,7 @@
   </AuthorRoles>
   <Comment>
   </Comment>
-  <Category>Integration Test Resources\Base Conversion</Category>
+  <Category>Sample Project\Integration Test Resources\Base Conversion</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
@@ -736,6 +736,7 @@
       <set Description="" IsEditable="True" ColumnIODirection="None" />
     </rec>
   </DataList>
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.7150708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="3c55d640-6ce8-4ce2-b827-7f47bec1ca10" VersionId="e651a986-2c91-43ae-ba0c-1fc7f8115b11" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -745,9 +746,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>/aoHBGZ1NbjI3t1vyCUVH5tVdys=</DigestValue>
+        <DigestValue>FKWPrU4GuQlTvmShpnwc6F88bQg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>nqspXUKhtDwpFf15/w+s9ToK3CnwdcDr53cetqjDmZ/UgJAHL2/WWKSBPKvpWFWfQwXyuqv8l9DMXWFdTTsmR9/11EMAcXHjS/SXpdzXG3deSC1TFz1LiaE8JKs2CSNnPRVq3CDxNJV9PL9MSNXavNOJA65n0ppAmhWZ+AeuGrM=</SignatureValue>
+    <SignatureValue>gmHxq9XLb5/Ut9TotCPomrRMQt+OcX4hb6M388W2Jzyyaro6kgrUOZEW2DYhv6idrtLk+FWBlwmElYOvufqqzPyjMEzeD6CVyBiqxQD3WA6hKUhm7aJ4GT+FCvP+h4ARU+ywGppGoSX+63bKgfiPTCabV8mPzX2OGk35YJ4Bx3Q=</SignatureValue>
   </Signature>
 </Service>

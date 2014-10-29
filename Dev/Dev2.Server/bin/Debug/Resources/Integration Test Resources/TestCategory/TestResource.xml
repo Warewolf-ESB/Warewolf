@@ -1,7 +1,7 @@
 
-<Service ID="b54c607b-987d-4248-97c8-64c297603ff2" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="TestResource" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
+<Service ID="b54c607b-987d-4248-97c8-64c297603ff2" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="TestResource" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.20.1">
   <DisplayName>TestResource</DisplayName>
-  <Category>Integration Test Resources\TestCategory\TestResource</Category>
+  <Category>Sample Project\Integration Test Resources\TestCategory\TestResource</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -31,9 +31,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>jD6gwiK2zTuyL9iFhLhryoHPiMQ=</DigestValue>
+        <DigestValue>JV5FnpGO+mU6KW0p3WqMPJNLXLQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>u0S12oeYe6bdiai2aDBuB77hAPLPC+xAe+XMozHK3qky/0s7QXfETpdcWJxPfDiYgAE7Vo7h0G8OwBUHihqUoHcP4IkBPgl+MUEQIeS5Ms7nilFZGaemVjn+lU47sG2CudaghGFpgSomLWrZBCP7QRuL1gh8H3txPY4wKOcALE4=</SignatureValue>
+    <SignatureValue>N//WcwUfWn7b6O0RCjAXUv27rIEINU08soH1NOTkXfkQPLdHuyCIVixhWuAEQS4Li3iC/DgMLQ/jJakK55EUMcrLkNaNeTbTmgdF2bZbH3u8qWBWQQOMCRlD/cOGwX+ygCZb6CFj4Xw6ABk2rlKQqGRIWP5Yd0NN2y8ySeSl/DI=</SignatureValue>
   </Signature>
 </Service>

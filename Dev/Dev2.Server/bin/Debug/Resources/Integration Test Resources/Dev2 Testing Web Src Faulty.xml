@@ -1,11 +1,12 @@
 
-<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://www.webservicex.net.co.za/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=US;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://www.webservicex.net.co.za/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=US;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <DisplayName>Dev2 Testing Web Src Faulty</DisplayName>
-  <Category>Integration Test Resources\Dev2 Testing Web Src Faulty</Category>
+  <Category>Sample Project\Integration Test Resources\Dev2 Testing Web Src Faulty</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
   <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.1600708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" VersionId="e568c839-ed5b-4753-b9d5-49452f70b24b" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -15,9 +16,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>YZeLoKcIEDh+knl3d7/1tI6oUPw=</DigestValue>
+        <DigestValue>lwW9xUV4ZVHVZ0p7EBb2mIhK/Z8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>fdMvvnxL23HxqhQSKG9F7enUbpaIVwOVRWq+XBAme9CqQVtXc/sVRzL4XVJAexawt6JeET9wkOVXSY8cCSm0LhGtdbeMVVta9P/VnWDA1dhgif85psQ5dUlWkKgqi4nA2STSQs5wHpb97V2nLEmqWztFjTWr+USgtOC3S07ewps=</SignatureValue>
+    <SignatureValue>al/szvZhl3HiRY1IAvy+e1aZx52ZszdZOkGu1er6Xij4FyUF3mxDfMWP9Hd54vH+wJjvQ1YzvTFCH8dtNEzfbFQUu0WKBLhhEJKf6E+gv5lFUmegJSdF3WVMUFpwLTzrXKYnwIuf21uyaYE+F6+Tz+gq0tNhl9YjkBjyiu/ItCk=</SignatureValue>
   </Signature>
 </Source>

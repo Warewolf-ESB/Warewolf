@@ -1,5 +1,5 @@
 
-<Service ID="07705a1d-24c2-43b0-85f3-0f4231c68a9d" Version="1.0" Name="PrimitiveTestWithIntegerService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="07705a1d-24c2-43b0-85f3-0f4231c68a9d" Version="1.0" Name="PrimitiveTestWithIntegerService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="PrimitiveTestWithIntegerService" Type="Plugin" SourceID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" SourceName="PrimitivePluginTestSrc" SourceMethod="FetchIntValue" Namespace="Dev2.PrimitiveTestDLL.TestClass">
       <Inputs>
@@ -24,10 +24,11 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithIntegerService</DisplayName>
-  <Category>Integration Test Resources\PrimitiveTestWithIntegerService</Category>
+  <Category>Sample Project\Integration Test Resources\PrimitiveTestWithIntegerService</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.6560708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="07705a1d-24c2-43b0-85f3-0f4231c68a9d" VersionId="4dec50a1-8ace-4454-bfd0-60a38ae57e12" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -37,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>L/KCmXU+mdihJJdLzWSlXY2D08o=</DigestValue>
+        <DigestValue>7Mta8up4pm/CUJDdSS5RA1n1z/g=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>th93lVkoJm8Bjjbcwkp+S2tMXwTGqDM5S/csX7EdoaSMilGvMcBmAz6SKtOo07tDFLvr9rRK1FlKyg6BSdvAfUL/cI1MZgGI/A2LHbjCpr3LK5PgskhmHQHgSRrik019AMC94w+L6Vn8DCq+e9gGh7LuP+9B5Xbv+OjL/gtml54=</SignatureValue>
+    <SignatureValue>CVEpBD7PHMmdmwJJItRN3zSPARoIRycAn/IogNuOcaD2LHwUCBhfmoHs2fkphEnAR6SmLVnKmGWbSBqJ5Zzg2EWhvBLwywFyvWLmeh0fCdfsZqEJrZaoTXLw4bkohAxG8+72vsx85Mg6xZ7q9SNXc3wm9JleXh40xjIRAZJmia4=</SignatureValue>
   </Signature>
 </Service>

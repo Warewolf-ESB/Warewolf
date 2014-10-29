@@ -1,5 +1,5 @@
 
-<Service Name="CaseConversion_Recset_With_NoIndex" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="e5f52ea5-900c-473b-a8d3-1e6c6da27186" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service Name="CaseConversion_Recset_With_NoIndex" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="e5f52ea5-900c-473b-a8d3-1e6c6da27186" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="CaseConversion_Recset_With_NoIndex"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -158,7 +158,7 @@
   </AuthorRoles>
   <Comment>
   </Comment>
-  <Category>Integration Test Resources\CaseConversion_Recset_With_NoIndex</Category>
+  <Category>Sample Project\Integration Test Resources\CaseConversion_Recset_With_NoIndex</Category>
   <Tags>
   </Tags>
   <IconPath>
@@ -175,6 +175,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.2720708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="e5f52ea5-900c-473b-a8d3-1e6c6da27186" VersionId="cd2c1c17-091a-4c2b-8062-17f92484b025" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -184,9 +185,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>9BtpXWx5zeT+P0r+c/cJQW1Uchw=</DigestValue>
+        <DigestValue>4kcXvW0s+wTBx793HE55bWLLZGk=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>tRjMk9xT0zLOWYczUDu0KSr6hd9ls4d+qldEGtbHnOCeJDyresFhQ0q60MUiOQPUT6/1ZKdXIrCboXfzas1bP5K68LhpJW22SGH/jxXvEDYt/NOXQW5T+cvNGpPEOiY9rfZrKgDRK8rKJsQgbmw3hN+sMamEImMAply0Y+QKKK0=</SignatureValue>
+    <SignatureValue>StV9dUkHkp9T/caaOR26tszUxinN4XOIn7WA+QjHRPwEqXgwbgaXIqIp6Q0PsKEnQoL9IWA4Q7jjEthLttF3X0yiDM/YXWzqihEvV9ZsDCvqGjrm2umgjFbNrsLKrNhRyDp7nwAfnXfRzvRBL8ZFur2h816qszIoBqCp9UdyIrY=</SignatureValue>
   </Signature>
 </Service>

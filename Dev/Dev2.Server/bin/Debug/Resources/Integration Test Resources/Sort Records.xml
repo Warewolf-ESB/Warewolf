@@ -1,5 +1,5 @@
 
-<Service Name="Sort Records" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="0382e651-836a-49fc-a922-f3d76156c69a" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service Name="Sort Records" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="0382e651-836a-49fc-a922-f3d76156c69a" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Sort Records"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -273,7 +273,7 @@
   </AuthorRoles>
   <Comment>
   </Comment>
-  <Category>Integration Test Resources\Sort Records</Category>
+  <Category>Sample Project\Integration Test Resources\Sort Records</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
@@ -287,6 +287,7 @@
       <sorting Description="" IsEditable="True" ColumnIODirection="None" />
     </rec>
   </DataList>
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.0830708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="0382e651-836a-49fc-a922-f3d76156c69a" VersionId="c9e2ed0c-b42f-46c2-a4f4-5c8cca107e2a" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -296,9 +297,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Uxcl2VHFuLCMbgDcF3Phe1TrXz8=</DigestValue>
+        <DigestValue>SW1IA6cOw8K2vyXeEIZ7T2LQaHw=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>f/Dnsgaf4nJZdUbfx1rr+Stffs10qlveL9Kps+LauqjiioHxziWBsGH2oAFdNEheKr33Dds5FNciFN3h7UdCiACQi9gpXagvcCtcpFg0kL9coIj6pTB7mgFwpHoHXb9gvL8ZF5uS3HbCZTRxkQRoJWXpvHEox0MhMBmCDENfqOg=</SignatureValue>
+    <SignatureValue>LryxKI+UB06ANaEs4Ycg0tLbqPNw02yJyNKGfqikZRJ9oSmZLMWxqvY7yQxXJGckrHjFgHfkFMojjBAYb8NOXbUKbbzEK5Eq6JSik1Lu4qrqcrJeEV5x9c6jA7dJ1nXPF4Yl0PdQ93o5Cq6VZflgbpoE7QmeYvEE/rZhxpce/mY=</SignatureValue>
   </Signature>
 </Service>

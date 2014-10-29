@@ -1,5 +1,5 @@
 
-<Service ID="9d3f11f2-9a00-47e9-84a7-8951c2dcdd52" Version="1.0" Name="MapLocations" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="9d3f11f2-9a00-47e9-84a7-8951c2dcdd52" Version="1.0" Name="MapLocations" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="dbo_Pr_MapLocationsGetTop10" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.Pr_MapLocationsGetTop10">
       <Inputs />
@@ -23,10 +23,11 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>MapLocations</DisplayName>
-  <Category>Integration Test Resources\MapLocations</Category>
+  <Category>Sample Project\Integration Test Resources\MapLocations</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.8700708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="9d3f11f2-9a00-47e9-84a7-8951c2dcdd52" VersionId="74c3916b-0340-4c74-8830-f3de0bc00683" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -36,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>V+zgPpKm+RFGbEMd4EuG77ZRPr0=</DigestValue>
+        <DigestValue>QdRIUMHTgiIj42owZifQNgqpJj8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>pEfqgsArIxtB7ujK9RCVc9WGQQN7v7MGqDeDjIvL0akNMeZNri1b/ViflrzfyR33QW3th+7Dl+z+zdNY+6CLv3O4FI7I64Dua1AFZO8XVyUFghSv0kEw45nJeoBl5pU+ccKuO9u6ZMK9LXNgjvVCET/A98Rb1dpB6E93iQd5BQs=</SignatureValue>
+    <SignatureValue>P1M47GlD6httvC9RYvNiG2n07snsXxXD4fHVuHgvZg9IBGSrTcLa4NfDtrcw/OnxpASAGjoas2u7lxbMm7ho7t1PIE636Z7jY59oe3zF9xx3rrvK7Dq9IiYBvKyIqzKVAuhSAY99BI1YdSQXGkbD9d6Q038OLm0um7Rx0nVp6GA=</SignatureValue>
   </Signature>
 </Service>

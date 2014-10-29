@@ -1,7 +1,7 @@
 
-<Service ID="8596e4e5-c938-4dbc-9c85-a4c2df7bb894" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachWithStarAndStaticIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service ID="8596e4e5-c938-4dbc-9c85-a4c2df7bb894" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachWithStarAndStaticIndex" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <DisplayName>ForEachWithStarAndStaticIndex</DisplayName>
-  <Category>Integration Test Resources\ForEachWithStarAndStaticIndex</Category>
+  <Category>Sample Project\Integration Test Resources\ForEachWithStarAndStaticIndex</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -176,6 +176,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:38.1820708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="8596e4e5-c938-4dbc-9c85-a4c2df7bb894" VersionId="5ecca9ca-85e1-4bfc-9a09-3803daae3bb8" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -185,9 +186,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>J4ZiKJ0ctu6YGZbYPsZZAMLcAUI=</DigestValue>
+        <DigestValue>TVpB/W2C2u/WmtAJ1ivgGJfq3/E=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>RRyDFlpJP0yBrTiA/O9nn4+apqO+QqLqhIoMEki4DG7rXE6o8bUxCA874cGtmi8OpVI7poq36pz3oya3wyMrIO78MdjufoScpp3A64Pes22pgqjyjadYlwUYOx5PySeh+n0AXlpdjPXS5Y/1LB/xlnX+8u5ZXwhxSTtT6OXo1ak=</SignatureValue>
+    <SignatureValue>bocVpDIziWFkv9BGA0KI7i8RM9r3NnfygoG48sodxIl+JDYbpYTVJH4m1Ky1/SzJnpMaiWeNoSirv6/AprElStQnhUNSZQGlI9D3kf5mAssppn/EZzSGCul8aAUNhoyeppxfycYsTEzvWLISTb6NQCHV45EwMLeULfDO8pOfv6s=</SignatureValue>
   </Signature>
 </Service>

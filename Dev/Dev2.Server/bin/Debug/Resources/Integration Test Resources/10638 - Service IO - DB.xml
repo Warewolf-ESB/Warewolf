@@ -1,5 +1,5 @@
 
-<Service ID="57ee2766-0b97-4460-942a-cbcf8b8a56c8" Version="1.0" Name="10638 - Service IO - DB" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Service ID="57ee2766-0b97-4460-942a-cbcf8b8a56c8" Version="1.0" Name="10638 - Service IO - DB" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
   <Actions>
     <Action Name="dbo_Pr_MapLocationsGetTop10" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.Pr_MapLocationsGetTop10">
       <Inputs />
@@ -23,10 +23,11 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>10638 - Service IO - DB</DisplayName>
-  <Category>Integration Test Resources\10638 - Service IO - DB</Category>
+  <Category>Sample Project\Integration Test Resources\10638 - Service IO - DB</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.1090708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="57ee2766-0b97-4460-942a-cbcf8b8a56c8" VersionId="882787e4-8ca3-482d-a492-9407ae696956" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -36,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>MkmxouksSx1hkBcOsZ8q1lN0/1E=</DigestValue>
+        <DigestValue>ZzYibnYjFfEeIrB5If0bMJwiUbI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>GZDk7XoDNMhaDy1aoavtixOwMEkZ2NG5+u3/4BgNuW6Nw0eaixvYlgdGR2pQpTHVsRnaEkrhWOKrRK02zFD3n9SnRQQVBINnSKUSWpghA3ehqEn6TzjPU8q0QyWQg5cj0GyS5k4G/NyZiO+3Ks0SZF9X5IWee2JKUJlEcfNNlnE=</SignatureValue>
+    <SignatureValue>HHF5wrN9m+6YHvtWiO/TvD6kGnLP9s34LLzRH1IEGxB/3W1kagOT/znIDmPUUTtUey+7PKrptbSPU0LF9UEr79L4/vfg+JuIM+hj9k44QMvVBtwh8BLMzO9TyF6iYtKbIsD6jdRSHr8C6U0J/w64fIe+rFLqM7OuRz6tSvtsNxY=</SignatureValue>
   </Signature>
 </Service>
