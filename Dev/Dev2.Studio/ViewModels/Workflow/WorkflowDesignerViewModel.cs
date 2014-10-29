@@ -254,6 +254,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
             if (!String.IsNullOrEmpty(_resourceModel.DataList))
             {
+
                 _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
             }
             _workflowLink = "";

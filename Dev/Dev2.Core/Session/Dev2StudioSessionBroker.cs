@@ -13,6 +13,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml.Serialization;
@@ -102,7 +103,7 @@ namespace Dev2.Session
                 to.XmlData = tmp.RememberInputs
                     ? (tmp.XmlData)
                     : (to.XmlData ?? "<DataList></DataList>");
-
+                tmp.CleanUp();
                 to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, mergeGuid, out errors);
             }
             else
@@ -119,7 +120,7 @@ namespace Dev2.Session
                 to.BinaryDataList = to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, createGuid, out errors);
             }
 
-
+            if (tmp != null) tmp.CleanUp();
             return to;
         }
 
@@ -149,6 +150,7 @@ namespace Dev2.Session
 
                     if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
                     {
+                         _debugPersistSettings[to.WorkflowID].CleanUp();
                         _debugPersistSettings.Remove(to.WorkflowID);
                     }
                 }
@@ -238,6 +240,7 @@ namespace Dev2.Session
                 }
                 else
                 {
+                    if (result != null) compiler.ForceDeleteDataListByID(result.UID);
                     result = compiler.FetchBinaryDataList(resultID, out errors);
                     if (errors.HasErrors())
                     {
@@ -312,7 +315,8 @@ namespace Dev2.Session
                             try
                             {
                                 var settings = (List<SaveDebugTO>) bf.Deserialize(s);
-
+                                _debugPersistSettings.Values.ToList().ForEach(a=>a.CleanUp());
+                                _debugPersistSettings.Clear();
                                 // now push back into the Dictionary
                                 foreach (SaveDebugTO dto in settings)
                                 {
@@ -324,6 +328,11 @@ namespace Dev2.Session
 
                                         tmp.BinaryDataList = DeSerialize(tmp.XmlData, tmp.DataList,
                                             enTranslationTypes.XML, out error);
+                                        DebugTO val;
+                                        if (_debugPersistSettings.TryGetValue(dto.WorkflowID,out val))
+                                        {
+                                            val.CleanUp();
+                                        }
                                         _debugPersistSettings[dto.WorkflowID] = tmp;
                                     }
                                 }
@@ -347,5 +356,10 @@ namespace Dev2.Session
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            _debugPersistSettings.Values.ToList().ForEach(a=>a.CleanUp());
+        }
     }
 }

@@ -10,6 +10,7 @@
 
 
 using System;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
 // ReSharper disable CheckNamespace
@@ -92,6 +93,20 @@ namespace Dev2.Session
             RememberInputs = that.RememberInputs;
             DataListHash = that.DataListHash;
         }
+
+
+        public void CleanUp()
+        {
+            CleanUpCalled = true;
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            if (BinaryDataList != null)
+            {
+                compiler.ForceDeleteDataListByID(BinaryDataList.UID);
+                BinaryDataList.Dispose();
+            }
+        }
+
+        public bool CleanUpCalled    { get; set; }
 
         #endregion Methods
     }

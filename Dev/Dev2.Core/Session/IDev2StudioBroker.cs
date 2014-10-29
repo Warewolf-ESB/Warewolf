@@ -9,15 +9,18 @@
 */
 
 
+using System;
 using Dev2.Data.Translators;
 using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Session
 {
-    public interface IDev2StudioSessionBroker : IDebugSession, ITranslate
+    public interface IDev2StudioSessionBroker : IDebugSession, ITranslate,IDisposable
     {
         // ReSharper disable InconsistentNaming
         string GetXMLForInputs(IBinaryDataList binaryDataList);
         // ReSharper restore InconsistentNaming
+
+   
     }
 }
