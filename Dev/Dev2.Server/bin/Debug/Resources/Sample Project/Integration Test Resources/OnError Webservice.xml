@@ -1,0 +1,47 @@
+
+<Service ID="df24117f-8831-40bc-85de-2040d3140f43" Version="1.0" Name="OnError Webservice" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+  <Actions>
+    <Action Name="OnError Webservice" Type="InvokeWebService" SourceID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" SourceName="Dev2 Testing Web Src Faulty" SourceMethod="" RequestUrl="/GetCitiesByCountry?CountryName=[[CountryName]]" RequestMethod="Get">
+      <RequestHeaders><![CDATA[]]></RequestHeaders>
+      <RequestBody><![CDATA[]]></RequestBody>
+      <Inputs>
+        <Input Name="CountryName" Source="CountryName" EmptyToNull="false" DefaultValue="US" NativeType="System.Object" />
+      </Inputs>
+      <Outputs>
+        <Output OriginalName="TableCountry" Name="TableCountry" MapsTo="TableCountry" Value="[[string_NewDataSet().TableCountry]]" RecordsetName="string_NewDataSet" RecordsetAlias="string_NewDataSet" Recordset="string_NewDataSet" />
+        <Output OriginalName="TableCity" Name="TableCity" MapsTo="TableCity" Value="[[string_NewDataSet().TableCity]]" RecordsetName="string_NewDataSet" RecordsetAlias="string_NewDataSet" Recordset="string_NewDataSet" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">string.NewDataSet().Table.Country</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">string.NewDataSet().Table.Country</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[string_NewDataSet().TableCountry]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Belarus,Mauritius,Mauritius,Cyprus,Cyprus,Cyprus,Cyprus,Cyprus,Austria,Austria</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">string.NewDataSet().Table.City</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">string.NewDataSet().Table.City</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[string_NewDataSet().TableCity]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Riga Airport,Plaisance Mauritius,Rodrigues,Ercan,Larnaca Airport,Athalassa,Paphos Airport,Akrotiri,Niederosterreich / Lugplatz  Vos,Graz-Thalerhof-Flughafen</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeWebService</TypeOf>
+  <DisplayName>OnError Webservice</DisplayName>
+  <Category>Sample Project\Integration Test Resources\OnError Webservice</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.2990708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="df24117f-8831-40bc-85de-2040d3140f43" VersionId="e7444580-4bfc-4b8e-bfd8-bd3a2851cffc" />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>tcXbFYW/rRo/GTP7GtwD2D6VXVM=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>nGpAhTrz8HqCqdiBlodk46a70/6+fzFq0uM26n61FSL4lhl75FQRviy95XxWzXO8if7O2En0LhFAVoL6OS3Cd/JxrRMkkVj8l3nxQ9zlqHKXjkSDPaVE9QjEYKeLtX5G/rSMF63hanncaqiqvbVP1/zo2rHhZ9i+SQtjpVPjfd4=</SignatureValue>
+  </Signature>
+</Service>
