@@ -1,8 +1,8 @@
 
-<Source Name="testingPluginSrc" Type="Plugin" AssemblyName="Unlimited.Framework.Plugins.EmailPlugin" AssemblyLocation="Plugins/Unlimited.Email.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="bf69bfdf-6978-4f24-bd39-be6f38690c85" Version="1.0" ResourceType="PluginSource" ServerVersion="0.4.20.1">
+<Source Name="testingPluginSrc" Type="Plugin" AssemblyName="Unlimited.Framework.Plugins.EmailPlugin" AssemblyLocation="Plugins/Unlimited.Email.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="bf69bfdf-6978-4f24-bd39-be6f38690c85" Version="1.0" ResourceType="PluginSource" ServerVersion="0.4.2.2">
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Plugin</Comment>
-  <Category>Sample Project\Integration Test Resources\testingPluginSrc</Category>
+  <Category>Integration Test Resources\testingPluginSrc</Category>
   <HelpLink>http://dummyhelp.link</HelpLink>
   <Tags>
   </Tags>
@@ -14,7 +14,6 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>Source</DisplayName>
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.5000708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="bf69bfdf-6978-4f24-bd39-be6f38690c85" VersionId="a07466ba-7b31-4932-9b0f-59927e36024d" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -24,9 +23,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>VSfTEochl2M6N+ed7ve57KrsSmQ=</DigestValue>
+        <DigestValue>FRTRF5dBhlOcuqBS/zXz2Qma6Qc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>DgZ1TkZ4U55SxmrNC0LYDj/EzAF0OJcgshCt7wAE4piFUNSxmwzYCkcVTRzUKj9qm3wubbUZsFnokPT5EnV4VsBidAeP681Itvv/jsDROdqex2PXIB7imfl52ic3lY2UDR+5jV8l+u/1TtsTnuZttvdONjFUZ8ZzrD7RqfpNr20=</SignatureValue>
+    <SignatureValue>jjVHSYIubRFHKsg2eGozBOIfVbYcxf5X7LgyesN46epIENlPwep0lnsf67aUD3T05iuWwlKmlXqPAdmX58Yy4IB45Z1YTX4Vv3Hzf6mJbxiF2OVgwEDVa3Beibj4FvMugkUBkCdlcuaQ3Rl2wG+IPAdUeDxqvVp9IIDm32t9WIs=</SignatureValue>
   </Signature>
 </Source>

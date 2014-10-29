@@ -1,5 +1,5 @@
 
-<Service ID="73b8859d-15d3-485e-94fe-85545a7a1466" Version="1.0" Name="testingExecuteRemotePlugin" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="73b8859d-15d3-485e-94fe-85545a7a1466" Version="1.0" Name="testingExecuteRemotePlugin" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="testingExecuteRemotePlugin" Type="Plugin" SourceID="7d4736e1-e4aa-45f6-ae16-fa1fc71d786c" SourceName="testingRemotePluginSrc" SourceMethod="GetBaseException" Namespace="HgCo.WindowsLive.SkyDrive.LogOnFailedException">
       <Inputs />
@@ -25,11 +25,10 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>testingExecuteRemotePlugin</DisplayName>
-  <Category>Sample Project\Integration Test Resources\testingExecuteRemotePlugin</Category>
+  <Category>Integration Test Resources\testingExecuteRemotePlugin</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.4800708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="73b8859d-15d3-485e-94fe-85545a7a1466" VersionId="ad3dc527-f20b-4957-bcd8-e06c454e0295" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -39,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>2QtM20mpdgMnDOLX1VW2M46qi2Y=</DigestValue>
+        <DigestValue>wvMXiQHyOcjFCW6yCX9iifqEaOc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Ks1JOmpT9dH6bD0kfwaXdq4IdFWaERWaiXCRD9mwj6+1SxsQjXrtenRMPs1iq3qL1XwvmtFVccyRxdozuAXvv0sCQigkwpYnDDKbz5hBDdMS+AbfWm9Y2e0DVK9fPIrCOO9NOU55ycH864zto6ZjfIVRsNBkPNTT8ogOoDcLDRE=</SignatureValue>
+    <SignatureValue>g2u93i8MzUk1A8r1ZEgPjc1vGZYKwFht3ph1EmTcw16GbTaq+tUW9SioU19MUqU51k4DbWnu8hBECKn+cHNbt1zAErTG/TJ3KwcLfKprhheBv12MO3Zi5HnP2DqA2stdiAXkSEiWHqyyjVK8qcU41btVp75DALSmWbMcW6p9e/g=</SignatureValue>
   </Signature>
 </Service>

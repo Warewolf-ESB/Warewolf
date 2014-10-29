@@ -1,5 +1,5 @@
 
-<Service Name="DataSplitTestAppendingToDifferentRecordsets" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="2f5ecdb0-397b-445a-b541-b02c8cf5ae5b" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="DataSplitTestAppendingToDifferentRecordsets" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="2f5ecdb0-397b-445a-b541-b02c8cf5ae5b" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DataSplitTestAppendingToDifferentRecordsets" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -99,7 +99,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>a</Comment>
-  <Category>Sample Project\Integration Test Resources\DataSplitTestAppendingToDifferentRecordsets</Category>
+  <Category>Integration Test Resources\DataSplitTestAppendingToDifferentRecordsets</Category>
   <HelpLink>a:/</HelpLink>
   <DisplayName>Workflow</DisplayName>
   <DataList>
@@ -116,7 +116,6 @@
       <Tel Description="" />
     </Tels>
   </DataList>
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.8910708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="2f5ecdb0-397b-445a-b541-b02c8cf5ae5b" VersionId="b0a8e4b9-f7aa-43f1-ac4f-0f2bac6b7fab" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -126,9 +125,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>afnnUSTPVeDnULYubWAs8/PQ6Fo=</DigestValue>
+        <DigestValue>+UipgKZsBlIiO2CmBvLYGbqAr+M=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>KlrfMyIsndVSOZe30MFtEqd92biVWWk02cujUQbD4Rs6rF3/FHHFdauXfnp3BYs7CD5nBTvGQc95Lt1r0SRpkMRPvS/U93scCZ/ZesBvzddK29JL8h5xIsjPAW8CT6P57rl8lafbnQ4x2JxKgLICHMdEzkDTCRRlx0Qg5NzMkk0=</SignatureValue>
+    <SignatureValue>CV+CsY80e1C5kukMTxbpN9tazZ0SiqlPcGkHIRjWOpKkDHpzji7SQ0LhxAFHZx98PR8dRqlfLN8WsvU1CoStgbeIuxjoKWhXHqersoZAvrLEfQVer50setzTQ8fBKTTpfidxUVO3MsFHfWu1XSdMoP+5Yt/zxZXl/UeGHATHPsA=</SignatureValue>
   </Signature>
 </Service>

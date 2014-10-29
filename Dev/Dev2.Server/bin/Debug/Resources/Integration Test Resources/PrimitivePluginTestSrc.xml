@@ -1,12 +1,11 @@
 
-<Source ID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" Version="1.0" Name="PrimitivePluginTestSrc" ResourceType="PluginSource" IsValid="false" AssemblyLocation="Plugins\PrimativesTestDLL.dll" AssemblyName="PrimativesTestDLL" Type="Plugin" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Source ID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" Version="1.0" Name="PrimitivePluginTestSrc" ResourceType="PluginSource" IsValid="false" AssemblyLocation="Plugins\PrimativesTestDLL.dll" AssemblyName="PrimativesTestDLL" Type="Plugin" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <DisplayName>PrimitivePluginTestSrc</DisplayName>
-  <Category>Sample Project\Integration Test Resources\PrimitivePluginTestSrc</Category>
+  <Category>Integration Test Resources\PrimitivePluginTestSrc</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
   <TypeOf>Plugin</TypeOf>
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.5020708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="d04b0566-5614-4b8b-bbf2-abb4b41aa522" VersionId="60573a82-9f85-4716-8d75-212f3318101e" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -16,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>iGRWqo8gH2Bavl20lC8Cj4ZF0hY=</DigestValue>
+        <DigestValue>1a52FCXgC6DzMTZg44l94vysxUA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>GdRRTfOCdKX4g93Nsbr885x8/4jhvv5omN46d0uosBLWyTP2kwIUq9zhjuKAlhmzMjz78qxC61jyXhbheLnLA0hIFMtkHM25E5ktYPw0/dWlAy5YYzqjqEIJHvxXRUspdi3d7ZiwyuGX1GoPkZ01KD1Z3Mx86NH2W+rYJU1yme0=</SignatureValue>
+    <SignatureValue>FEwQDuqngFmexQD5cOSs4FYZQ6p4f4HQczyG02szL1qKrHv9aEpHDfVI72ZJFkkMU1RwnCQS5+uSDqTq9ipMb4pxcWWjADGTqkev7Fwt2m2VaDx0WoXYaXGi4zdQBvqi4x+tXILMaX3dzYcCW+BJfSAJLSktGQVIseiou/2UsMk=</SignatureValue>
   </Signature>
 </Source>

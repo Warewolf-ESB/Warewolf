@@ -1,5 +1,5 @@
 
-<Service ID="61e20de3-7316-466c-a361-bc039ad94cda" Version="1.0" Name="IntegrationTestPluginNullNotSet" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="61e20de3-7316-466c-a361-bc039ad94cda" Version="1.0" Name="IntegrationTestPluginNullNotSet" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="IntegrationTestPluginNullNotSet" Type="Plugin" SourceID="bf69bfdf-6978-4f24-bd39-be6f38690c85" SourceName="testingPluginSrc" SourceMethod="SampleSend" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
       <Inputs>
@@ -39,11 +39,10 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>IntegrationTestPluginNullNotSet</DisplayName>
-  <Category>Sample Project\Integration Test Resources\IntegrationTestPluginNullNotSet</Category>
+  <Category>Integration Test Resources\IntegrationTestPluginNullNotSet</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:38.0500708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="61e20de3-7316-466c-a361-bc039ad94cda" VersionId="1f09f9ca-c2f2-4ad1-8451-2305d617b850" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -53,9 +52,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Oub5vjs5Juiv54ds2I3OJAjtZwg=</DigestValue>
+        <DigestValue>XaQCp2zyaGumDlmeQpHEXbNM6EU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ZGB7ZuHRIF9MGuPtieNtz/BRVG4///qYQ4baPvtQM9lYoAl0uXyf3/6wqOpzlTI0Jpf+lKBWun9pdfdAXuXcIockf7+vyUSGdZjkniUezIZz7FAdkg/TKw7ubKyhzK2Ptmi+IupN0LN1plKD1mRRrYyab6x9RMH7xXFXM0AmmYI=</SignatureValue>
+    <SignatureValue>hBICq98VK4EtvtEDgXeMLQe4v0bh2Bi87BFF6wAA+HD1MK3ofDnmDhV8tMAdurHMbJUOvS1u6/1PfP0or1fNKNThTxWSGCMKcSGEObaiB6RZSNfaQmOT4qCT4UI18QGXK4OcPFhgnd3sNtBTsYfBDDWLbrl/P5VCGa5SbPadHM4=</SignatureValue>
   </Signature>
 </Service>

@@ -1,7 +1,7 @@
 
-<Service ID="82d937c4-4ea0-496c-a033-d881fc2ef577" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MyLocalWF" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="82d937c4-4ea0-496c-a033-d881fc2ef577" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MyLocalWF" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>MyLocalWF</DisplayName>
-  <Category>Sample Project\Integration Test Resources\MyLocalWF</Category>
+  <Category>Integration Test Resources\MyLocalWF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -24,7 +24,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.0670708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="82d937c4-4ea0-496c-a033-d881fc2ef577" VersionId="de4d43cf-9640-41af-8508-012614c689e8" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -34,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>i6mBxsLlPV/Z9Zu7OejcmZ+cRSU=</DigestValue>
+        <DigestValue>Wj3EQVStVQc9MrnYIi1z0zTPbj0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>vHP0/KcabrWb6BjWqPjuaEr51LRr3cShuoc97PaIBcHKZ2chExH88Bi4idgMMuA5sVgQnG5Mrj7nRpVrL7QjTplcHnMTNNw4hIBBKH0pbBOzBApuJonDg7NPUecfl92uWSAeBRsMaylGhVZ+iCCcTCeXdRnI6pR1ylB1Sj73N/A=</SignatureValue>
+    <SignatureValue>c1enWi1+tyUCV099Hw4zR4oKyj2XB9hM14EwpXy9NrSac3H7ck6WgOKigGwX5nldxrDLX7ujn8tcDphQL+0EltkQn0hRitozBv7b0B7eG0elY7BIjh/RcETZqaUtThKWVU/yP0b/BW9u3XvNnHX8SW2fqfLXA6UVyfU0xBQe1j0=</SignatureValue>
   </Signature>
 </Service>

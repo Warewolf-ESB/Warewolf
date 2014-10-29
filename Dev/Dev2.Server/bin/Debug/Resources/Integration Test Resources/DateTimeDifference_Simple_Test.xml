@@ -1,5 +1,5 @@
 
-<Service Name="DateTimeDifference_Simple_Test" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="a3bedd6e-c1d3-4051-a165-e8febd75b073" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="DateTimeDifference_Simple_Test" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="a3bedd6e-c1d3-4051-a165-e8febd75b073" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DateTimeDifference_Simple_Test" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -193,7 +193,7 @@
   </Action>
   <Comment>
   </Comment>
-  <Category>Sample Project\Integration Test Resources\DateTimeDifference_Simple_Test</Category>
+  <Category>Integration Test Resources\DateTimeDifference_Simple_Test</Category>
   <Tags>
   </Tags>
   <IconPath>
@@ -214,7 +214,6 @@
     <MyAgeInSeconds Description="" />
     <MyAgeInSplitSeconds Description="" />
   </DataList>
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.4220708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="a3bedd6e-c1d3-4051-a165-e8febd75b073" VersionId="66081584-4302-4593-b786-e8b3ff07e696" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -224,9 +223,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>8Vrf7+A9DJvk0DFSfu1TU9SbqvI=</DigestValue>
+        <DigestValue>ojV6hcLLfk49XP2oCoTCElON8AQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>RldpmfpTUG8unBH5ingh20agP/3erZSM1UBfWypF+ye9IkE2WMYVYX1EiuYQgHWYdH1GxMVqv77CR5eaDJk2xOxCgsq7iI0eTCIlvWaGXAps6Cnu9seekKpJg4rm868LxjS74uysfgT7A0S+sXB4KgEv7epAtpA8x6UWa4saBDI=</SignatureValue>
+    <SignatureValue>UD1riYgNS4qnBGOCP8VDd8z1sOnyxJPiZ9tVcJLP16cTDAoRoacg8ZpIC8MNEPGiy+mUMqrHQgC62F9UvXIR6UCaea9fUomFnQ7OUSPOENdRXmi3iBVEcQ9/sogg87ZB6nq7it/556qw2dh1jaAAHYXWPYIoMoObzjDr7KxTLCw=</SignatureValue>
   </Signature>
 </Service>

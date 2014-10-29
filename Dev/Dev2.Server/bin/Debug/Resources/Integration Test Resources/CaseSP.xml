@@ -1,5 +1,5 @@
 
-<Service ID="6258e89c-76cc-4d8a-82f7-bf42617d1c68" Version="1.0" Name="CaseSP" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="6258e89c-76cc-4d8a-82f7-bf42617d1c68" Version="1.0" Name="CaseSP" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_ReturnCasedData" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.ReturnCasedData">
       <Inputs>
@@ -22,11 +22,10 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>CaseSP</DisplayName>
-  <Category>Sample Project\Integration Test Resources\CaseSP</Category>
+  <Category>Integration Test Resources\CaseSP</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.2960708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="6258e89c-76cc-4d8a-82f7-bf42617d1c68" VersionId="857fdf6c-531a-4e9c-880a-b5a2b35db9fc" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -36,9 +35,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>qCyx9Jw+TynGMKzx/GuxIDuC6+o=</DigestValue>
+        <DigestValue>9icRjJqYPJ3jLYlJQneNIgqY3QU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Eh528XSlpD8a3ATaZ17j5YfkTRge5XAwoXTlGg0bej/FnvTiR2p/jy5ypfgJnHqDa72ePsX8z687Udc6zaqqcuEBIB+m4q3GStE/0rrnBr0OP2MbUj3+MYKLtVX4NFfLU/7e96SRBXiVUVNkhO1F7wYW25voPmKcusQHPs5lKV8=</SignatureValue>
+    <SignatureValue>DubG4KhJb2/V09fnNZ1irjL46mVbixSu01HyFaZlGAeFk28FlePxYEAO2XwjAZ3W+N1UCYqH1+OeCynOxrhb7BGLKsV+D63+uLnlyggohXupCtWbY8wrwLZfTgD+4Y/SOb714I+uDCHNlduLQyG8GPEoolIJGTGnnwy2GaRbgGs=</SignatureValue>
   </Signature>
 </Service>

@@ -1,7 +1,7 @@
 
-<Service ID="e1c3864b-9687-411c-923c-9064254a2b3d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Find Index" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="e1c3864b-9687-411c-923c-9064254a2b3d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Find Index" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>Find Index</DisplayName>
-  <Category>Sample Project\Integration Test Resources\Find Index</Category>
+  <Category>Integration Test Resources\Find Index</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -500,7 +500,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.5980708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="e1c3864b-9687-411c-923c-9064254a2b3d" VersionId="ccee70be-899a-4620-836b-79c30101e7c8" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -510,9 +509,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>EcpMckLxwa2shub84YK9Zpxr4OA=</DigestValue>
+        <DigestValue>rlYVlNv9HEX/YtXpJw9CR7Kr/1s=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>kI8hyfeV88VoZO+2mKvjKj7vcc38iq2Uu2Tn0lg0I0UtL1zwMVU7nkpZ6CAhxScA2DrV7+y6qkA7hcLu7eydZZN7hIJ1qaVTVPb+ashxeB6Fz0OoqmWVX+qUX5eZnrylZhRa4Kx/PBkbp/1nrGyABW5vttG1Q6PqLm3k8FwxJkM=</SignatureValue>
+    <SignatureValue>nfhvVXe0mCCo40ZhUPXaWbTl4wXETf7cWNa5NVsaq6NX+wx2jXv0c4ZamVLnP6r+OL4pqoie0U5x/3gyNYIg+w9P7NVyqz/cjE4JseYqn6t4EjR7zao4qP3FZHQBZVOjp7ZZd05bmGc3FSjBnVSayF3ITr3luWbLnYSENI0XNxg=</SignatureValue>
   </Signature>
 </Service>

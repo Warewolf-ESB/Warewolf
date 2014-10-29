@@ -1,5 +1,5 @@
 
-<Service Name="CaseConversion_With_Scalar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="80697f5d-c666-4af4-9110-8e9d67493b90" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="CaseConversion_With_Scalar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="80697f5d-c666-4af4-9110-8e9d67493b90" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="CaseConversion_With_Scalar"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -163,7 +163,7 @@
   </AuthorRoles>
   <Comment>
   </Comment>
-  <Category>Sample Project\Integration Test Resources\CaseConversion_With_Scalar</Category>
+  <Category>Integration Test Resources\CaseConversion_With_Scalar</Category>
   <Tags>
   </Tags>
   <IconPath>
@@ -181,7 +181,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.2910708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="80697f5d-c666-4af4-9110-8e9d67493b90" VersionId="88518e72-87ee-4ba9-a215-ea3b6eebd7b9" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -191,9 +190,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>zypp+GujYsItenm5EWpgSJ60680=</DigestValue>
+        <DigestValue>rhNhcXXtUXJm4FOwiISuvb3ceqM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>fBmqP/9qOwKHOybey69ITZ3T+cU/U940c3MNs++0OhKXIZfPhTuIMs06MBeiHzMXi5yaNOiY0suyKnBKEP6YvZSX8YAJ9zqFgDsaHLYM2+tUFlQzRpz0pOz6WnVbyzHt2ss6mgaBSq/L+zfMmsn8toOft/G4N9xYI3jj9ETS25c=</SignatureValue>
+    <SignatureValue>f+1vy+nRO6VUUjhUy8uqj66nj/AnTyZ775CBXtBviBbpePlD10s5UT4HfGuxTDAGAEMlVX+czKHR2s6cIgMxgFCzX3lBDcAESG87pHcMthwHt68XKEGidpbJrXnR8LKQmrx+pM8fIRoLng6mrSE/AG40Qxr1TR/L+FlGcR7UCUY=</SignatureValue>
   </Signature>
 </Service>
