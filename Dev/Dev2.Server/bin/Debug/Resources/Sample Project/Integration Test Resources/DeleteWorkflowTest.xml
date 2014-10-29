@@ -1,0 +1,60 @@
+
+<Service Name="DeleteWorkflowTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="c25610b9-b28a-49f0-9074-d743ea729c6a" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sads" x:Class="DeleteWorkflowTest"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
+ xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces for internal implementation&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart DisplayName="DeleteWorkflowTest"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+      &lt;Variable x:TypeArguments="ddd:Dev2DataListDecisionHandler" Name="Dev2DecisionHandler" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;x:Null /&gt;
+    &lt;/Flowchart.StartNode&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <Comment>
+  </Comment>
+  <Category>Sample Project\Integration Test Resources\DeleteWorkflowTest</Category>
+  <Tags>
+  </Tags>
+  <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
+  <DisplayName>Workflow</DisplayName>
+  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.0660708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="c25610b9-b28a-49f0-9074-d743ea729c6a" VersionId="a985900e-19bb-4c4a-97fc-2516d296518d" />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>L/SBC8+C22YGEK8A+bd0acJk0+g=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>Eh+Ig2WEPd6oKvnUmsGn3jEnXGvnB5k7PeWJ/ngcWRLADDmgUHILYW6Fg2cYG+9iwqz9r4cQQmDUOP5cY/1jrr438dCf1DfNMtOyjru5YDPntWo9hvrVt0xVQ9pmdPZ9z2RznSMgrq+oQdVS62qCBNwsEo5DxSNNW+IwEx7QJdg=</SignatureValue>
+  </Signature>
+</Service>
