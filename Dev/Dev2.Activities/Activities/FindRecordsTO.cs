@@ -93,22 +93,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool IsToFocused { get { return _isToFocused; } set { OnPropertyChanged(ref _isToFocused, value); } }
 
 
-        //[FindMissing]
-        //public string Match
-        //{
-        //    get
-        //    {
-        //        return _match;
-        //    }
-        //    set
-        //    {
-        //        _match = value;
-        //        OnPropertyChanged();
-        //        RaiseCanAddRemoveChanged();
-        //    }
-        //}
-
-
 
         [FindMissing]
         public string SearchCriteria

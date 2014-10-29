@@ -70,11 +70,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             TableName = "Select a Table..."
         };
 
-        ModelItem Modelitem;
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
-            Modelitem = modelItem;
+
         }
 
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
@@ -629,7 +628,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
                 if (!identityChecked)
                 {
-                    List<IActionableErrorInfo> rs = GetRuleSet("InputColumn", inputColumn).ValidateRules("'Input Data or [[Variable]]'", () => Modelitem.SetProperty("IsMappingFieldFocused", true));
+                    List<IActionableErrorInfo> rs = GetRuleSet("InputColumn", inputColumn).ValidateRules("'Input Data or [[Variable]]'", () => ModelItem.SetProperty("IsMappingFieldFocused", true));
 
                     foreach(var looperror in rs)
                         yield return looperror;
