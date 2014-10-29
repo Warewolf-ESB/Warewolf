@@ -1,5 +1,5 @@
 
-<Service Name="DateAndTimeWithComplexLiteral" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="10ca3301-ba80-4816-b7be-f0f9dd712832" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="DateAndTimeWithComplexLiteral" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="10ca3301-ba80-4816-b7be-f0f9dd712832" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DateAndTimeWithComplexLiteral" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -103,7 +103,7 @@
   </Action>
   <AuthorRoles>Domain Users,All Users,Company Users,Business Design Studio Developers,Build Configuration Engineers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>cake</Comment>
-  <Category>Sample Project\Integration Test Resources\DateAndTimeWithComplexLiteral</Category>
+  <Category>Integration Test Resources\DateAndTimeWithComplexLiteral</Category>
   <Tags>
   </Tags>
   <HelpLink>http://awesome</HelpLink>
@@ -116,7 +116,6 @@
     <OutputFormat Description="" />
     <MyBirthday Description="" />
   </DataList>
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.3230708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="10ca3301-ba80-4816-b7be-f0f9dd712832" VersionId="be10b62c-e4ac-45df-a0a4-919e5a13adfa" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -126,9 +125,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>4/Il/qoGac07zAED2auvyvpiLuk=</DigestValue>
+        <DigestValue>3jYdxQMtzwnLuI7v7M3kckTloq4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>D0e5wfluU6u2vwFxt0kP2FPM/Z5La5CNg2TpzHVrek1Y4NdmjuQJK0o8Ww8g5qwBheeibTES//wQhzQKHWqa9LvltNeskkWYaElrvXYNmuLCF1AHdFtHG9tPAtCbICInptsrjSA723Gjo/+x1yD38c4j0bZxEmSDlLPtqXSbdwg=</SignatureValue>
+    <SignatureValue>cXbL7zoscZPrNLYsIlmiiugO6CVGHxjnUz6p7xS7mOHzSOrxhD+rfox+OelhnLhYZlqmAo2BMZFxGkyXNhllZyz1RY6IgLgicu8y5lNdhrkqOmcnxTbUN/31ntn3w1W8/u3MUL5uTsNXETY7nyfu7VS58S8FuoWPip14VJH9WX8=</SignatureValue>
   </Signature>
 </Service>

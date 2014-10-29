@@ -1,7 +1,7 @@
 
-<Service ID="4ba7c3f6-6856-4a59-96fb-243c1095b41c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertRecsetWithNoIndex" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="4ba7c3f6-6856-4a59-96fb-243c1095b41c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertRecsetWithNoIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>BaseConvertRecsetWithNoIndex</DisplayName>
-  <Category>Sample Project\Integration Test Resources\BaseConvertRecsetWithNoIndex</Category>
+  <Category>Integration Test Resources\BaseConvertRecsetWithNoIndex</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -171,7 +171,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.8770708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="4ba7c3f6-6856-4a59-96fb-243c1095b41c" VersionId="fc0d1178-9d13-4b7f-bd0b-d6f6d534bafe" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -181,9 +180,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>5JBq3YHPEwIx5yHszssDJWX+WAk=</DigestValue>
+        <DigestValue>v7Jr1X2xYVZZ4E51+ZyLVzQ3WxE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>LPoR/RjNNRpQMl/BqTQeJNl4pGJ/t914NuwxdVOv4SsTmoUn7r2B8NCsMAZY/KxfMTQU27L9on0s+tYOyxxj+u/0Q/KPycs0GTGe3IBzMqi0/DIbIAGCLABMoaB/jPNcqnguJYYzHjUsFHKXSJ8GDBfMzudKkwpYKjZ1k7U4yKo=</SignatureValue>
+    <SignatureValue>ZYqm46D7/luHdaZiSnkRf6q5EQlezsjseXxvvumbBVrQVPDh3S51nyIGq4yFrbUy0ADCGrzbD1QWzMssblHIjdRoZ76bClGIL50Ym2hvMM+Ca4/zo2gmgA3TMYxcZR/2q0zLdHGNoDd9xDbG4XdIurD6uZrK7cWsNbWtkgJV6QQ=</SignatureValue>
   </Signature>
 </Service>

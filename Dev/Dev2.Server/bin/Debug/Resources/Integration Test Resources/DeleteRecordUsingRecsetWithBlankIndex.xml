@@ -1,7 +1,7 @@
 
-<Service ID="4e98fabf-1978-4075-83da-adc61e13e6dd" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecsetWithBlankIndex" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="4e98fabf-1978-4075-83da-adc61e13e6dd" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecsetWithBlankIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>DeleteRecordUsingRecsetWithBlankIndex</DisplayName>
-  <Category>Sample Project\Integration Test Resources\DeleteRecordUsingRecsetWithBlankIndex</Category>
+  <Category>Integration Test Resources\DeleteRecordUsingRecsetWithBlankIndex</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -247,7 +247,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.0600708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="4e98fabf-1978-4075-83da-adc61e13e6dd" VersionId="33682873-5ebf-47e3-8ca0-9b6aad121175" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -257,9 +256,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>eeBPw97ZEmq4BpNZIIIzrJU8zwY=</DigestValue>
+        <DigestValue>7ENMrdtG2rANGcVSPrDS53I4XXg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>sO7lZrExV8jyVLTL8HV4lYC5AcYOMx7ZXmE1nDBs0ioRPlUy4ZuxAbhEfwyBOyxAPUHysBF9mflcjOo2L/wfG1Pe6ACYeufyGU0rNQiDr9fhAxiqSWmaeAexRJd8o5nkPrWDcQhHmvyqzu0MaXbubu4UNq/l0A6tTiucxvBLAc0=</SignatureValue>
+    <SignatureValue>FTPOUhjEO0ans2UGFyX5/IR394Ejj7r4Bl+QbY0JDgBITsqfOSCjVmZ9sQzYDfogXaJk1/6V2HAN4c9/+2iTqPjBXWjCEgC+QF4AEI2HHAYnvdSEFNfLik9FYGPvSRs3EBsHx0kIl9Kly0sJeQKSPjFHXej03wbMFQSxnhUxEuw=</SignatureValue>
   </Signature>
 </Service>

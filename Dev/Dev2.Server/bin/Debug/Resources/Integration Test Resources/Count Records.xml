@@ -1,7 +1,7 @@
 
-<Service ID="a55f49e0-d262-4011-8ba5-e0810ca126b0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Count Records" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="a55f49e0-d262-4011-8ba5-e0810ca126b0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Count Records" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>Count Records</DisplayName>
-  <Category>Sample Project\Integration Test Resources\Count Records</Category>
+  <Category>Integration Test Resources\Count Records</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -344,7 +344,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.4460708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="a55f49e0-d262-4011-8ba5-e0810ca126b0" VersionId="3bb31f19-7dd0-4d6e-ba9f-b7c7fb67e0d7" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -354,9 +353,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>JhJSLC0uNWfbajLBAONgLpYOKKI=</DigestValue>
+        <DigestValue>LvmQSjKXE2Jgff1PbCWUxLyxu/s=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>T9y0h8qZbinbK+ESvZY0cAhhidf4qpRUJ0lyIQK2szdf9W4oV/oEGRx70yUpNs5QcoPOYX0Ax7Plz6VkAazq6i1ITg1TEJqWyoJeSlKT5GBoVQacFPoeOJzBdaF0h5rcwCM2ugCMpPt7NF7pVbJj313kq0WIxA3rZ3HEFtzzyjw=</SignatureValue>
+    <SignatureValue>cdyaVh+umIxEonKZPeeIGgzhNUEv7awbo/8O+uKK07y5kiAX73yc1fWXiWmfA7TzfyhZMztz1Bg6W8FeARFReabWzbE+rOdig6+2ow3hDt+hYMyEq4qDmvhgk7pDiikFqo30kt209XvrrzLw6ZqOshrii3Ro6M2XIOuET1i+CWg=</SignatureValue>
   </Signature>
 </Service>

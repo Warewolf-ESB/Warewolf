@@ -1,5 +1,5 @@
 
-<Service ID="289dc75b-e40b-431d-9baf-67535a15763a" Version="1.0" Name="ForEachMinMaxTimings" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="289dc75b-e40b-431d-9baf-67535a15763a" Version="1.0" Name="ForEachMinMaxTimings" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_FetchForEachMinMaxRuntimes" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.FetchForEachMinMaxRuntimes">
       <Inputs />
@@ -21,11 +21,10 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>ForEachMinMaxTimings</DisplayName>
-  <Category>Sample Project\Load Test Resources\ForEachMinMaxTimings</Category>
+  <Category>Load Test Resources\ForEachMinMaxTimings</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.1320708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="289dc75b-e40b-431d-9baf-67535a15763a" VersionId="f1972212-3720-46c4-bcfc-4c47049020fd" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -35,9 +34,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>vbEsfyN/zgWNu9jNyc12mmOvJRs=</DigestValue>
+        <DigestValue>ClHVUlJgGc3AUpBfCz4B+a4x6kw=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>frKjMX7zX7dJC3dJ5FTu5N9fzDOj+5ktfpSzmbhVozIebN82uYDd9UUiifHEaKPXxOoyWtjumLnx5DkPnlNJfQNTJJgDj2Bd68VqBDCGdhcjbhcbUWOewNSqVfOSS6ufhuW8f6xn+C/e5YwViZ/R3bnK2SD2fkisVuOd/0SsTCs=</SignatureValue>
+    <SignatureValue>PpJK4S0D6CpB7NblJvJD8HG76izvxFIatNARK83oGo4EAzQPjlczbPNGi+uxcYMZ09lwOU/gMJEzB39oBSQl7dEwvSYKX6pG1R4JiaOtRKGMIwZTWfzz7qFsaHh9EWEPIxyM/P3g/zVSdizWoqqBptoMp1IgrVzVgflg+0CesQA=</SignatureValue>
   </Signature>
 </Service>

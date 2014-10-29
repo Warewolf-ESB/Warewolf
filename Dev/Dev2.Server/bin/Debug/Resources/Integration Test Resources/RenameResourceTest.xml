@@ -1,7 +1,7 @@
 
-<Service ID="b88337db-36f5-4089-98b6-9cfd1925fc13" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RenameResourceTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.20.1">
+<Service ID="b88337db-36f5-4089-98b6-9cfd1925fc13" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RenameResourceTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>RenameResourceTest</DisplayName>
-  <Category>Sample Project\Integration Test Resources\RenameResourceTest</Category>
+  <Category>Integration Test Resources\RenameResourceTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -21,7 +21,6 @@
   </Action>
   <ErrorMessages />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.7960708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="b88337db-36f5-4089-98b6-9cfd1925fc13" VersionId="de60e0bb-64f5-4cfd-9c97-8d90e41abb59" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -31,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>jvbXNzWe7Zm0Xo/Vw5Xl0MVR/VI=</DigestValue>
+        <DigestValue>YTId6hks/kjcLJZT02qfBD468YQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ZX3w8yDVUXo2BkjVpipYSHIVuP+Cd5i0lQu6YRi+FS37RwIKILX2F7OM9CvcD4dSqMypeStgSdhY0BkYVWc5VUxS35g/aW8J5EKriEhAIs0iJljEojyoID+PhD64HAgrsTRZ3WlHBfK5TcqW9ibJr7LggB5DKGhFkXifYDYrIHk=</SignatureValue>
+    <SignatureValue>q+2FXupMYZJExLG48Chh6lMCtyO9LhnyIcIOAvkST8eg4kdRHWc60FfEUfA6FWKo7AJ9vEYBcY1P0X1z9GU/d2dW8CU2av+gy57nzeFIdp6ja2OgbREzV3tHXCcJHLgEBZlnUsnNtUeapkXMEU+8kA2/qNEkMFpdnrYBLJ/imAo=</SignatureValue>
   </Signature>
 </Service>

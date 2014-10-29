@@ -1,7 +1,7 @@
 
-<Service ID="99f1b6ab-65c9-4625-816b-04c35a1444ce" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug9484" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="99f1b6ab-65c9-4625-816b-04c35a1444ce" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug9484" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>Bug9484</DisplayName>
-  <Category>Sample Project\Integration Test Resources\Bug9484</Category>
+  <Category>Integration Test Resources\Bug9484</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
@@ -21,7 +21,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.8360708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="99f1b6ab-65c9-4625-816b-04c35a1444ce" VersionId="9501ff9c-556a-4761-a53f-83ff13d9d9f2" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -31,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>LI1umqsTcnzhzHG4ANIgWdPuvws=</DigestValue>
+        <DigestValue>ncKUTZalasdGKpsKxWGpDXARKE0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>C+iHQhkqgUOIQP0x6w7k/Mcobn2r43PSEO2D1qWa8KVUvmIJoDEDlUmotbP3kalDs0Ejr7X2U36Us91PkZQlHeIkVmkmXrJmkOhPGucak1BOmukwhThfZ5aUOicaK1pUv3vPuL4EdphrInRNcSSw8NKO4uqx/w8kGi1GKwuPwB4=</SignatureValue>
+    <SignatureValue>GM6IL1n/Fnw1FJzaldnTtF/qanzebq2vYeGB8ikpIdqgCSkq02d4kgTWjkPzD8an59KzDU8FsBpeGhApNPWbuwN4odW3E67YIuWu91kKEplVol/bQX6nB9YcaJv8BsWPyV4aw2cfK/A4TATlUhLjGyz7jPkzNwFh10lLDb69U64=</SignatureValue>
   </Signature>
 </Service>

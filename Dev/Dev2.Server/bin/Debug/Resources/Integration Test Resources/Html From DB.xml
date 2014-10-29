@@ -1,5 +1,5 @@
 
-<Service ID="c7bf731b-b84a-4a37-9195-ac21a9f6a5c7" Version="1.0" Name="Html From DB" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="c7bf731b-b84a-4a37-9195-ac21a9f6a5c7" Version="1.0" Name="Html From DB" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_FetchHtmlFragment" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.FetchHtmlFragment">
       <Inputs />
@@ -13,8 +13,11 @@
 &lt;meta name="gwt:property" content="locale=en_US"&gt;
 &lt;meta http-equiv="X-UA-Compatible" content="IE=9"&gt;
 &lt;link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?1377077150"/&gt;
+
 &lt;link rel="alternate" title="SonarQube Alerts" href="/feeds/projects/Alert" type="application/atom+xml"&gt;
+
 &lt;title&gt;SonarQube&lt;/title&gt;
+
 &lt;link href="/stylesheets/sonar.css?1377077154" media="all" rel="stylesheet" type="text/css" /&gt;&lt;script src="/javascripts/sonar.js?1377077154" type="text/javascript"&gt;&lt;/script&gt;
 &lt;!--[if lte IE 8]&gt;&lt;script src="/javascripts/protovis-msie.js?1377077154" type="text/javascript"&gt;&lt;/script&gt;&lt;![endif]--&gt;
 &lt;script&gt;var baseUrl = ';
@@ -33,11 +36,10 @@ var $j = jQuery.noConflict();
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>Html From DB</DisplayName>
-  <Category>Sample Project\Integration Test Resources\Html From DB</Category>
+  <Category>Integration Test Resources\Html From DB</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:38.2860708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="c7bf731b-b84a-4a37-9195-ac21a9f6a5c7" VersionId="7bbc2389-2a93-4a23-9929-0440e5fcb41d" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -47,9 +49,9 @@ var $j = jQuery.noConflict();
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>opIUCW5Ncdcmb5ASeUjo5D2TjA0=</DigestValue>
+        <DigestValue>14SPcQCAlHMSYiemE1qZH3opdHI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>eTspriVHh2ctIAAkeE1F1g2oqoWafuGBf/B06CUIutE2nDvsSzOog1FrBSCkalW0hZ3cSuCYIDiZ56OM81DjxEea7cD33EQL8FX5yCiDw2njSzzxmXG6TeL5gsCfNW9e+6KC8f9WDsgNEqxayoChUtiQWXYxCcmkqCtjYowvKrk=</SignatureValue>
+    <SignatureValue>bAPvtkIvxaqhcOHv4FKdp+c/lEDAsFeg0n0fDkmu1BdU8TGeGF/riYBsfqFm6mmE5NOW8vtP1tPPyK2syryT2zLmKRvevjUe5GSARzIoDqoKIiIJi13UN88MbS94F9BlpLzdwA5HzsLBRRWtXT+6+i9mqhNZqIphU6qm4wtK3UA=</SignatureValue>
   </Signature>
 </Service>

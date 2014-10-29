@@ -1,5 +1,5 @@
 
-<Service Name="ReplaceToolWithScalar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="6d9cbd85-13fb-404e-9434-e0f1bdb0e44e" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="ReplaceToolWithScalar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="6d9cbd85-13fb-404e-9434-e0f1bdb0e44e" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="ReplaceToolWithScalar"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -131,7 +131,7 @@
   </Action>
   <Comment>
   </Comment>
-  <Category>Sample Project\Integration Test Resources\ReplaceToolWithScalar</Category>
+  <Category>Integration Test Resources\ReplaceToolWithScalar</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
@@ -147,7 +147,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.8320708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="6d9cbd85-13fb-404e-9434-e0f1bdb0e44e" VersionId="e32f09dc-b8be-4e35-8137-0cfdc629399f" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -157,9 +156,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>LGcPDkX2OzzHqxba22unI1SFrXc=</DigestValue>
+        <DigestValue>Up31Zi84iQQmPELhk6OLVs+XOP8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>AvXVrvyQcawszjYCWDTouNvy8eLNMiejFagK6tBaDRkcFIRYmK63ivdYtzXQW2w5LNZbPzUUVJzsMC2PkCCKVrhwkYMAyHOMgHB1JKWZzdzaQR3cz1WpDHaUvOj8KUtbkTC1x6Uud+lrEf9GKUyTnclZbrACCcyNMAvpWWfhvrU=</SignatureValue>
+    <SignatureValue>ikAI1oItB98AB29YCbiBKWKf2NsD9EH72vdnC4Six8i9ppz2viBN+mYk8kCa3xFnLMEj33miJBRB3/a4Fm3Vn+xCG34I+RDCQJSOaD9iFb+6Orxme5fO5m1enMpdBzVlauhjYVWr3MGZ+CkNPJ1I63KGPeYX3WddTel0MnUveiM=</SignatureValue>
   </Signature>
 </Service>

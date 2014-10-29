@@ -1,7 +1,7 @@
 
-<Service ID="f4caadd6-0044-4f64-a4b8-3f231c3cdf3a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RelativeUriResourceTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.20.1">
+<Service ID="f4caadd6-0044-4f64-a4b8-3f231c3cdf3a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RelativeUriResourceTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>RelativeUriResourceTest</DisplayName>
-  <Category>Sample Project\Integration Test Resources\RelativeUriResourceTest</Category>
+  <Category>Integration Test Resources\RelativeUriResourceTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Business Design Studio Developers,Build Configuration Engineers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>asd</Comment>
@@ -17,7 +17,6 @@
   </Action>
   <ErrorMessages />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.8510708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="f4caadd6-0044-4f64-a4b8-3f231c3cdf3a" VersionId="75c0890b-bca7-421b-b03d-fb12057a8cd1" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -27,9 +26,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>G5+JMdlSjvFHCCAOgZrzt7vYn5I=</DigestValue>
+        <DigestValue>C03cvzfXKRWTew+A5TTqqyZPzsg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>pOXQP+pYT8LT1Owcr3tXhSwiOnPCilCihHQ4X53rTahgtfO6/KSm7Bhfx4Gytugd3CSszt/OVguVVbEPgSka2GxRpce32Jw7UJcWYUiBH9RYDGmIpAQTc5XhCQkw63U6x9zJRJ0PYNPILmGFibX4pIvqF/YLhhNVUf5hRMJr1Sw=</SignatureValue>
+    <SignatureValue>DWQBB1YLEnEGiDE1EQ7yBvpCQSkClXP7wdsA6PtpQnJX+6QEFTULOTVbPmex0nsAVmdxCbR6EA76/H0S9dlUixIkN6MDALvHR+dYCa52bLFbbn9Tkh4+hC9/jwzihfJQTvF+Bm7uE/dR8PHnlVLIRDKzB0u0wdYYpGsTgKf8EyQ=</SignatureValue>
   </Signature>
 </Service>

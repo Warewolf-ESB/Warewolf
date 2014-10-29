@@ -1,5 +1,5 @@
 
-<Service ID="b455dd51-65ac-4a93-9772-219efc2d0dad" Version="1.0" Name="FetchCountriesForEachSpeedTest" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="b455dd51-65ac-4a93-9772-219efc2d0dad" Version="1.0" Name="FetchCountriesForEachSpeedTest" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_Pr_CitiesGetCountries" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.Pr_CitiesGetCountries">
       <Inputs>
@@ -25,11 +25,10 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>FetchCountriesForEachSpeedTest</DisplayName>
-  <Category>Sample Project\Load Test Resources\FetchCountriesForEachSpeedTest</Category>
+  <Category>Load Test Resources\FetchCountriesForEachSpeedTest</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.1560708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="b455dd51-65ac-4a93-9772-219efc2d0dad" VersionId="a9e6e89d-d3db-4c25-8dc8-a708d41eafd9" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -39,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>O8OwioaqjF3jGIZ/mEB/RRdyy8I=</DigestValue>
+        <DigestValue>8KBvYCnu/bpzeHSpWaDFlBetgPo=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>uoA9xCTe/FGtAI9UKpAfSqsR/kJQ8XHi51+35FAvxgvXsvu11ECLQKc6QhHRRnr2pawi2UQb3+gIA2D2s5MwiFzmwGbOU8dV+TNAUCcwdo4KYP0eIaQ112fKbsl2iAabZ/vDBjCxhGJdhFe+dB/k0kDD0ceLqe3C+U7Pf8WqCks=</SignatureValue>
+    <SignatureValue>Z9p+E4Q1OZ9uBTIC6QpyNhDWLGOONoUSj7E77b++M4chNrG/3VBNSdw/+Ez6Imz20OeGg4NUUCiNjhSxM4rdyTNqH7U2kvJX5Nng0kc2f/Zog9V796cjTt2QMY0anlg5hI0hAdcAvIMB+UkM1T3jVCoSMgie4wygiQcu88tZrtg=</SignatureValue>
   </Signature>
 </Service>

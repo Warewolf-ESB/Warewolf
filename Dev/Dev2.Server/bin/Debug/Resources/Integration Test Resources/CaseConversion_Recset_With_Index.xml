@@ -1,5 +1,5 @@
 
-<Service Name="CaseConversion_Recset_With_Index" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="f96bea1d-b049-48d5-88ff-fc7215392459" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="CaseConversion_Recset_With_Index" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="f96bea1d-b049-48d5-88ff-fc7215392459" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="CaseConversion_Recset_With_Index"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -158,7 +158,7 @@
   </AuthorRoles>
   <Comment>
   </Comment>
-  <Category>Sample Project\Integration Test Resources\CaseConversion_Recset_With_Index</Category>
+  <Category>Integration Test Resources\CaseConversion_Recset_With_Index</Category>
   <Tags>
   </Tags>
   <IconPath>
@@ -175,7 +175,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.2630708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="f96bea1d-b049-48d5-88ff-fc7215392459" VersionId="d0236cb0-72ad-47a8-bc28-af292d6489e0" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -185,9 +184,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>7BgT9dLrPxcjS+a4BtamauFpPVA=</DigestValue>
+        <DigestValue>xUNpareYhQkqHr1soHL10O7paNo=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>UxrsZAj35SizTHuPfqb2nOOG3K0S/6gV1tHOfw1G1cy2uK62JNQoaQQf78ImaiUrlNMOgjjzR6dWOsY9wNt3BCBQgPtS6getJPkQg70pBaXYoNwUTg354jBtUC76qKgm+dVdVDP2WiihUu+fuuDiOooDmwDRDjS0s57SG/Pqt7Q=</SignatureValue>
+    <SignatureValue>NUCCy3HrB//iaxbzxXwMo4vzO/G9aDw/OulU0BtcOiUp0+GycsGcYP8/Yaqd6IgNf+revovBc+f7JkcrTR0kdOlOBHwajNDGZEkSV8nXIEaDKYK08p/kf1LixHgT3887roTxpRvInFNGE6lVEKX+M+2rVsVrF1xFKw5zpywbLj4=</SignatureValue>
   </Signature>
 </Service>

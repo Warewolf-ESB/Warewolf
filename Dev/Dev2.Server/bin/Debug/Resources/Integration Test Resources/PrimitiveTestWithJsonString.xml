@@ -1,5 +1,5 @@
 
-<Service ID="5a88a8bf-db63-437e-aa6a-537314133261" Version="1.0" Name="PrimitiveTestWithJsonString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="5a88a8bf-db63-437e-aa6a-537314133261" Version="1.0" Name="PrimitiveTestWithJsonString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="PrimitiveTestWithJsonString" Type="Plugin" SourceID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" SourceName="PrimitivePluginTestSrc" SourceMethod="FetchJsonString" Namespace="Dev2.PrimitiveTestDLL.TestClass">
       <Inputs>
@@ -24,11 +24,10 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithJsonString</DisplayName>
-  <Category>Sample Project\Integration Test Resources\PrimitiveTestWithJsonString</Category>
+  <Category>Integration Test Resources\PrimitiveTestWithJsonString</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.6640708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="5a88a8bf-db63-437e-aa6a-537314133261" VersionId="4d9d7715-5125-44f3-84a0-78279e72b30c" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -38,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ceAbjVskC3Dchuuu/3BAgeDNV58=</DigestValue>
+        <DigestValue>P5YFXKjNia3I1HIArv+HUp+w/Lc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>cB1PbiUVDnI6sju2S4b/kARUH3BagtvVt96TjNybU11E0mi9k83sZhIyI1wrb8WPh95ob5CGSnvw+/zjVCDJy+JSIFbk5C3ICeXhMcSdjr7SwmwpXEyENZHWn3Xl0u7shQKmibdtCDbvadvFOJsiANnz+M+H12MOO6K/vwhuA5c=</SignatureValue>
+    <SignatureValue>HGgjclzxCug2A6GDYJHzhH+p0LNNe1mzfDbYVDAJgf9hGDcXQSDcUEZb87ZYscdBOQnqjrHOe3XG2RiEnhl2YtCujvLP5pXaL2+j5M/eOY/W9XUAAbECRFXIDGEiCJLPEix2iufn0lxHwyP4TinfH76Z7uGvjd38eR7QhaG1CSg=</SignatureValue>
   </Signature>
 </Service>
