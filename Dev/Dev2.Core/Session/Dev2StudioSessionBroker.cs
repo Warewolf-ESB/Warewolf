@@ -14,7 +14,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml.Serialization;
 using Dev2.Common;
@@ -32,7 +31,6 @@ namespace Dev2.Session
         #region Static Conts
 
         private const string SavePath = @"Warewolf\DebugData\PersistSettings.dat";
-        private static readonly DataListFormat BinaryFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
         // the settings lock object
         private static readonly object SettingsLock = new object();
         private static readonly object InitLock = new object();
@@ -180,44 +178,7 @@ namespace Dev2.Session
             return to;
         }
 
-        public string Serialize(IBinaryDataList datalist, enTranslationTypes typeOf, out string error)
-        {
-            string result = string.Empty;
-            error = string.Empty;
-
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
-            if (typeOf == enTranslationTypes.XML)
-            {
-                var bf = new BinaryFormatter();
-                using (var ms = new MemoryStream())
-                {
-                    bf.Serialize(ms, datalist);
-
-                    ErrorResultTO errors;
-                    Guid pushID = compiler.ConvertTo(BinaryFormat, ms.ToArray(), new StringBuilder(), out errors);
-
-                    if (errors.HasErrors())
-                    {
-                        error = errors.FetchErrors()[0];
-                    }
-                    else
-                    {
-                        // now extract into XML
-                        result =
-                            compiler.ConvertFrom(pushID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML),
-                                enTranslationDepth.Data, out errors).ToString();
-                        if (errors.HasErrors())
-                        {
-                            error = errors.FetchErrors()[0];
-                        }
-                    }
-                    ms.Close();
-                }
-            }
-
-            return result;
-        }
+     
 
         public IBinaryDataList DeSerialize(string data, string targetShape, enTranslationTypes typeOf, out string error)
         {
@@ -231,7 +192,7 @@ namespace Dev2.Session
                 ErrorResultTO errors;
 
 
-                Guid resultID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML),
+                Guid resultId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML),
                     data.ToStringBuilder(),
                     new StringBuilder(targetShape), out errors);
                 if (errors.HasErrors())
@@ -241,7 +202,7 @@ namespace Dev2.Session
                 else
                 {
                     if (result != null) compiler.ForceDeleteDataListByID(result.UID);
-                    result = compiler.FetchBinaryDataList(resultID, out errors);
+                    result = compiler.FetchBinaryDataList(resultId, out errors);
                     if (errors.HasErrors())
                     {
                         error = errors.FetchErrors()[0]; // take the first error ;)
@@ -328,11 +289,8 @@ namespace Dev2.Session
 
                                         tmp.BinaryDataList = DeSerialize(tmp.XmlData, tmp.DataList,
                                             enTranslationTypes.XML, out error);
-                                        DebugTO val;
-                                        if (_debugPersistSettings.TryGetValue(dto.WorkflowID,out val))
-                                        {
-                                            val.CleanUp();
-                                        }
+
+                          
                                         _debugPersistSettings[dto.WorkflowID] = tmp;
                                     }
                                 }

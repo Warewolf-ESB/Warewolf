@@ -95,7 +95,7 @@ namespace Dev2.Session
         }
 
 
-        public void CleanUp()
+        public virtual void CleanUp()
         {
             CleanUpCalled = true;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
