@@ -22,11 +22,13 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Properties;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
@@ -36,11 +38,15 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.TO;
 using Dev2.Threading;
+using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
     public class SqlBulkInsertDesignerViewModel : ActivityCollectionDesignerViewModel<DataColumnMapping>
     {
+
+        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+
         readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
         readonly IAsyncWorker _asyncWorker;
@@ -67,6 +73,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
+
         }
 
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
@@ -124,12 +131,13 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         static void OnSelectedDatabaseChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (SqlBulkInsertDesignerViewModel)d;
-            if(viewModel.IsRefreshing)
+            if (viewModel.IsRefreshing)
             {
                 return;
             }
             viewModel.OnSelectedDatabaseChanged();
         }
+
 
         public DbTable SelectedTable { get { return (DbTable)GetValue(SelectedTableProperty); } set { SetValue(SelectedTableProperty, value); } }
 
@@ -139,12 +147,18 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         static void OnSelectedTableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (SqlBulkInsertDesignerViewModel)d;
-            if(viewModel.IsRefreshing)
+            if (viewModel.IsRefreshing)
             {
                 return;
             }
             viewModel.OnSelectedTableChanged();
         }
+
+
+        bool _isFieldFocused;
+        public bool IsFieldFocused { get { return _isFieldFocused; } set { _isFieldFocused = value; } }
+
+
 
         public bool IsSelectedDatabaseFocused { get { return (bool)GetValue(IsSelectedDatabaseFocusedProperty); } set { SetValue(IsSelectedDatabaseFocusedProperty, value); } }
 
@@ -155,6 +169,17 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public static readonly DependencyProperty IsSelectedTableFocusedProperty =
             DependencyProperty.Register("IsSelectedTableFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
+       
+        
+
+        public bool IsMappingFieldFocused { get { return (bool)GetValue(IsSelectedTableFocusedProperty); } set { SetValue(IsMappingFieldFocusedProperty, value); } }
+
+        public static readonly DependencyProperty IsMappingFieldFocusedProperty =
+            DependencyProperty.Register("IsMappingFieldFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
+
+
+
 
         public bool IsBatchSizeFocused { get { return (bool)GetValue(IsBatchSizeFocusedProperty); } set { SetValue(IsBatchSizeFocusedProperty, value); } }
 
@@ -184,6 +209,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public static readonly DependencyProperty IsResultFocusedProperty =
             DependencyProperty.Register("IsResultFocused", typeof(bool), typeof(SqlBulkInsertDesignerViewModel), new PropertyMetadata(false));
 
+
+
+
+
         #endregion
 
         #region DO NOT bind to these properties - these are here for internal view model use only!!!
@@ -193,7 +222,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             get { return GetProperty<DbSource>(); }
             set
             {
-                if(!_isInitializing)
+                if (!_isInitializing)
                 {
                     SetProperty(value);
                 }
@@ -205,7 +234,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             get { return GetProperty<string>(); }
             set
             {
-                if(!_isInitializing)
+                if (!_isInitializing)
                 {
                     SetProperty(value);
                 }
@@ -224,7 +253,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         protected virtual void OnSelectedDatabaseChanged()
         {
-            if(SelectedDatabase == NewDbSource)
+            if (SelectedDatabase == NewDbSource)
             {
                 CreateDbSource();
                 return;
@@ -249,7 +278,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         protected virtual void OnSelectedTableChanged()
         {
-            if(SelectedTable != null)
+            if (SelectedTable != null)
             {
                 IsRefreshing = true;
                 Tables.Remove(SelectDbTable);
@@ -261,7 +290,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         void RefreshDatabases(bool isInitializing = false)
         {
             IsRefreshing = true;
-            if(isInitializing)
+            if (isInitializing)
             {
                 _isInitializing = true;
             }
@@ -275,7 +304,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                     LoadTableColumns(() =>
                     {
                         IsRefreshing = false;
-                        if(isInitializing)
+                        if (isInitializing)
                         {
                             _isInitializing = false;
                         }
@@ -305,11 +334,11 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             _asyncWorker.Start(() => GetDatabases().OrderBy(r => r.ResourceName), databases =>
             {
-                foreach(var database in databases)
+                foreach (var database in databases)
                 {
                     Databases.Add(database);
                 }
-                if(continueWith != null)
+                if (continueWith != null)
                 {
                     continueWith();
                 }
@@ -320,9 +349,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
             Tables.Clear();
 
-            if(!IsDatabaseSelected)
+            if (!IsDatabaseSelected)
             {
-                if(continueWith != null)
+                if (continueWith != null)
                 {
                     continueWith();
                 }
@@ -333,7 +362,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var selectedDatabase = SelectedDatabase;
             _asyncWorker.Start(() => GetDatabaseTables(selectedDatabase), tableList =>
             {
-                if(tableList.HasErrors)
+                if (tableList.HasErrors)
                 {
                     Errors = new List<IActionableErrorInfo>
                     {
@@ -344,11 +373,11 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 {
                     Errors = null;
                 }
-                foreach(var table in tableList.Items.OrderBy(t => t.TableName))
+                foreach (var table in tableList.Items.OrderBy(t => t.TableName))
                 {
                     Tables.Add(table);
                 }
-                if(continueWith != null)
+                if (continueWith != null)
                 {
                     continueWith();
                 }
@@ -357,13 +386,13 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void LoadTableColumns(System.Action continueWith = null)
         {
-            if(!IsTableSelected || _isInitializing)
+            if (!IsTableSelected || _isInitializing)
             {
-                if(!_isInitializing)
+                if (!_isInitializing)
                 {
                     ModelItemCollection.Clear();
                 }
-                if(continueWith != null)
+                if (continueWith != null)
                 {
                     continueWith();
                 }
@@ -372,15 +401,13 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
             var oldColumns = GetInputMappings().ToList();
             ModelItemCollection.Clear();
-
-            // Get Selected values on UI thread BEFORE starting asyncWorker
             var selectedDatabase = SelectedDatabase;
             var selectedTable = SelectedTable;
             // ReSharper disable ImplicitlyCapturedClosure
             _asyncWorker.Start(() => GetDatabaseTableColumns(selectedDatabase, selectedTable), columnList =>
             // ReSharper restore ImplicitlyCapturedClosure
             {
-                if(columnList.HasErrors)
+                if (columnList.HasErrors)
                 {
                     Errors = new List<IActionableErrorInfo>
                     {
@@ -391,24 +418,28 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 {
                     Errors = null;
                 }
-                foreach(var mapping in columnList.Items.Select(column => new DataColumnMapping { OutputColumn = column }))
+                foreach (var mapping in columnList.Items.Select(column => new DataColumnMapping { OutputColumn = column }))
                 {
                     var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping.OutputColumn.ColumnName);
-                    if(oldColumn != null)
+                    if (oldColumn != null)
                     {
-                        if(oldColumn.InputColumn != null)
+                        if (oldColumn.InputColumn != null)
                         {
-                            mapping.InputColumn = oldColumn.InputColumn.Replace("[", "").Replace("]", "").Replace(" ", "");
+                            var inputcolumn = oldColumn.InputColumn;
+                            inputcolumn = inputcolumn.Replace("[", "");
+                            inputcolumn = inputcolumn.Replace("]", "");
+                            inputcolumn = inputcolumn.Replace(" ", "");
+                            mapping.InputColumn = inputcolumn;
                         }
                     }
-                    if(string.IsNullOrEmpty(mapping.InputColumn))
+                    if (string.IsNullOrEmpty(mapping.InputColumn))
                     {
                         mapping.InputColumn = string.Format("[[{0}(*).{1}]]", selectedTable.TableName.Replace("[", "").Replace("]", "").Replace(" ", ""), mapping.OutputColumn.ColumnName.Replace("[", "").Replace("]", "").Replace(" ", ""));
                     }
 
                     ModelItemCollection.Add(mapping);
                 }
-                if(continueWith != null)
+                if (continueWith != null)
                 {
                     continueWith();
                 }
@@ -418,7 +449,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         void EditDbSource()
         {
             var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedDatabase.ResourceName);
-            if(resourceModel != null)
+            if (resourceModel != null)
             {
                 _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                 RefreshDatabases();
@@ -451,9 +482,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         void SetSelectedDatabase(DbSource dbSource)
         {
             var selectedDatabase = dbSource == null ? null : Databases.FirstOrDefault(d => d.ResourceID == dbSource.ResourceID);
-            if(selectedDatabase == null)
+            if (selectedDatabase == null)
             {
-                if(Databases.FirstOrDefault(d => d.Equals(SelectDbSource)) == null)
+                if (Databases.FirstOrDefault(d => d.Equals(SelectDbSource)) == null)
                 {
                     Databases.Insert(0, SelectDbSource);
                 }
@@ -465,9 +496,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         void SetSelectedTable(string tableName)
         {
             var selectedTable = Tables.FirstOrDefault(t => t.FullName == tableName);
-            if(selectedTable == null)
+            if (selectedTable == null)
             {
-                if(Tables.FirstOrDefault(t => t.Equals(SelectDbTable)) == null)
+                if (Tables.FirstOrDefault(t => t.Equals(SelectDbTable)) == null)
                 {
                     Tables.Insert(0, SelectDbTable);
                 }
@@ -496,37 +527,37 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         IEnumerable<IActionableErrorInfo> ValidateValues()
         {
-            if(!IsDatabaseSelected)
+            if (!IsDatabaseSelected)
             {
                 yield return new ActionableErrorInfo(() => IsSelectedDatabaseFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.DatabaseMustBeSelectedMsg };
             }
-            if(!IsTableSelected)
+            if (!IsTableSelected)
             {
                 yield return new ActionableErrorInfo(() => IsSelectedTableFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.TableMustBeSelectedMsg };
             }
 
             var batchSize = BatchSize;
-            if(!IsVariable(batchSize))
+            if (!IsVariable(batchSize))
             {
                 int value;
-                if(!int.TryParse(batchSize, out value) || value < 0)
+                if (!int.TryParse(batchSize, out value) || value < 0)
                 {
                     yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.BatchsizeMustBeNumberMsg };
                 }
             }
 
             var timeout = Timeout;
-            if(!IsVariable(timeout))
+            if (!IsVariable(timeout))
             {
                 int value;
-                if(!int.TryParse(timeout, out value) || value < 0)
+                if (!int.TryParse(timeout, out value) || value < 0)
                 {
                     yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.TimeoutMustBeNumberMsg };
                 }
             }
 
             var nonEmptyCount = ModelItemCollection.Count(mi => !string.IsNullOrEmpty(((DataColumnMapping)mi.GetCurrentValue()).InputColumn));
-            if(nonEmptyCount == 0)
+            if (nonEmptyCount == 0)
             {
                 yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.AtLeastOneMappingMsg };
             }
@@ -537,42 +568,42 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var parser = new Dev2DataLanguageParser();
 
             var error = ValidateVariable(parser, BatchSize, () => IsBatchSizeFocused = true);
-            if(error != null)
+            if (error != null)
             {
                 error.Message = "Batch Size " + error.Message;
                 yield return error;
             }
 
             error = ValidateVariable(parser, Timeout, () => IsTimeoutFocused = true);
-            if(error != null)
+            if (error != null)
             {
                 error.Message = "Timeout " + error.Message;
                 yield return error;
             }
 
             error = ValidateVariable(parser, Result, () => IsResultFocused = true);
-            if(error != null)
+            if (error != null)
             {
                 error.Message = "Result " + error.Message;
                 yield return error;
             }
 
-            foreach(DataColumnMapping dc in GetInputMappings())
+            foreach (var dc in GetInputMappings())
             {
                 var output = dc.OutputColumn;
                 var inputColumn = dc.InputColumn;
                 bool identityChecked = false;
 
-                // Now do the identity checks ;)
-                if(output.IsAutoIncrement)
+
+                if (output.IsAutoIncrement)
                 {
-                    if(KeepIdentity && string.IsNullOrEmpty(inputColumn))
+                    if (KeepIdentity && string.IsNullOrEmpty(inputColumn))
                     {
                         var msg = string.Format(ActivityResources.IdentityWithKeepOptionEnabledMsg, output.ColumnName);
                         yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg };
                     }
 
-                    if(!KeepIdentity && !string.IsNullOrEmpty(inputColumn))
+                    if (!KeepIdentity && !string.IsNullOrEmpty(inputColumn))
                     {
                         var msg = string.Format(ActivityResources.IdentityWithKeepOptionDisabledMsg, output.ColumnName);
                         yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg };
@@ -581,8 +612,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                     identityChecked = true;
                 }
 
-                // Check null-able property of the object ;)
-                if(!output.IsNullable && string.IsNullOrEmpty(inputColumn) && !identityChecked)
+                if (!output.IsNullable && string.IsNullOrEmpty(inputColumn) && !identityChecked)
                 {
                     var msg = string.Format(ActivityResources.NotNullableMsg, output.ColumnName);
                     yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg };
@@ -590,28 +620,51 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
 
                 error = ValidateVariable(parser, inputColumn, () => IsInputMappingsFocused = true);
-                if(error != null)
+                if (error != null)
                 {
                     error.Message = "Input Mapping To Field '" + output.ColumnName + "' " + error.Message;
                     yield return error;
                 }
+
+                if (!identityChecked)
+                {
+                    List<IActionableErrorInfo> rs = GetRuleSet("InputColumn", inputColumn).ValidateRules("'Input Data or [[Variable]]'", () => ModelItem.SetProperty("IsMappingFieldFocused", true));
+
+                    foreach(var looperror in rs)
+                        yield return looperror;
+                }
+
+
             }
         }
 
         static IActionableErrorInfo ValidateVariable(Dev2DataLanguageParser parser, string variable, System.Action focusAction)
         {
-            if(!string.IsNullOrEmpty(variable))
+            if (!string.IsNullOrEmpty(variable))
             {
                 try
                 {
                     parser.MakeParts(variable);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return new ActionableErrorInfo(focusAction) { ErrorType = ErrorType.Critical, Message = ex.Message };
                 }
             }
             return null;
+        }
+
+        public IRuleSet GetRuleSet(string propertyName, string datalist)
+        {
+            var ruleSet = new RuleSet();
+
+            switch (propertyName)
+            {
+                case "InputColumn":
+                    ruleSet.Add(new IsValidExpressionRule(() => datalist, GetDatalistString(), "1"));
+                    break;
+            }
+            return ruleSet;
         }
 
         static bool IsVariable(string variable)
@@ -629,7 +682,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
             var newMappings = source.ToList();
             var max = Math.Min(newMappings.Count, ItemCount);
-            for(var i = 0; i < max; i++)
+            for (var i = 0; i < max; i++)
             {
                 var mi = ModelItemCollection[i];
                 mi.SetProperty("InputColumn", newMappings[i]);
@@ -640,9 +693,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
             base.OnToggleCheckedChanged(propertyName, isChecked);
 
-            if(propertyName == ShowQuickVariableInputProperty.Name)
+            if (propertyName == ShowQuickVariableInputProperty.Name)
             {
-                if(!ShowQuickVariableInput)
+                if (!ShowQuickVariableInput)
                 {
                     return;
                 }
