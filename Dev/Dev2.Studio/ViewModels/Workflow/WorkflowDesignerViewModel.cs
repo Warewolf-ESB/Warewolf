@@ -874,9 +874,19 @@ namespace Dev2.Studio.ViewModels.Workflow
                         for (var i = 0; i < 3; i++)
                         {
                             var getCol = getCols[i];
+                            var parsed = GetParsedRegions(getCol, datalistModel);
+                            if(!DataListUtil.IsValueRecordset((getCol))&& parsed.Any(a=>DataListUtil.IsValueRecordset((a))))
+                            {
+                                IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
+
+
+                                decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                            }
+                            else
                             decisionFields = decisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
                         }
                     }
+
                 }
                 catch (Exception)
                 {
