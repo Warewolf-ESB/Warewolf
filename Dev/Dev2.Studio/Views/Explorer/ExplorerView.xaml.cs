@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Dev2.AppResources.Repositories;
@@ -67,11 +68,26 @@ namespace Dev2.Studio.Views.Explorer
 
         public static bool ShouldNotMove(IExplorerItemModel source, IExplorerItemModel destination)
         {
-            if(source != null && (source == destination || destination.IsVersion || source.IsVersion || source.ResourcePath.Equals(destination.ResourcePath, StringComparison.OrdinalIgnoreCase)))
+            if(source != null && (source == destination || destination.IsVersion || source.IsVersion || source.ResourcePath.Equals(destination.ResourcePath, StringComparison.OrdinalIgnoreCase) 
+                ||HasNoChildren(source, destination)))
             {
                 return true;
             }
             return false;
+        }
+
+        private static bool HasNoChildren(IExplorerItemModel source, IExplorerItemModel destination)
+        {
+            if (destination.ResourceType == ResourceType.Folder || destination.ResourceType == ResourceType.Server)
+                return (
+                    destination.Children == null || 
+                    destination.Children.Any(
+                        a => a.DisplayName == source.DisplayName && a.ResourceType != ResourceType.Folder)
+                    );
+            return ( 
+               
+                destination.Parent.Children.Any(a=>a.DisplayName == source.DisplayName && a.ResourceType!= ResourceType.Folder)
+                );
         }
 
         public static void MoveItem(ExplorerItemModel source, ExplorerItemModel destination, IStudioResourceRepository rep)
