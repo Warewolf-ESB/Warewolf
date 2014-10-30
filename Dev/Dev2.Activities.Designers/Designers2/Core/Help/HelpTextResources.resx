@@ -2255,7 +2255,7 @@ You can use a sequence tool with other activities inside it to execute a number 
     <value>Select the message priority.</value>
   </data>
   <data name="FindHelpInFields" xml:space="preserve">
-    <value>No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.
+    <value>To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here.
 
 Allowed:
 [[Recordset(n).Field]]   
@@ -2310,7 +2310,7 @@ Allowed:
     <value>Select which index(es) you would like found.</value>
   </data>
   <data name="FindToolTipInFields" xml:space="preserve">
-    <value>No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.</value>
+    <value>To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here.</value>
   </data>
   <data name="FindToolTipLookForMatchType" xml:space="preserve">
     <value>Select the type of information you want to match on.</value>

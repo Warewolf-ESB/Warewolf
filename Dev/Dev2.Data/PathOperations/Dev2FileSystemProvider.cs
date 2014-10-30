@@ -18,6 +18,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 using System.Security.Principal;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.PathOperations.Enums;
@@ -60,6 +61,7 @@ namespace Dev2.PathOperations
     [Serializable]
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
+        private static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim();
         const int LOGON32_PROVIDER_DEFAULT = 0;
         //This parameter causes LogonUser to create a primary token. 
         // ReSharper disable once InconsistentNaming
@@ -136,67 +138,70 @@ namespace Dev2.PathOperations
         public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
         {
             int result = -1;
-            using(src)
+            using (src)
             {
                 //2013.05.29: Ashley Lewis for bug 9507 - default destination to source directory when destination is left blank or if it is not a rooted path
-                if(!Path.IsPathRooted(dst.Path))
+                if (!Path.IsPathRooted(dst.Path))
                 {
                     //get just the directory path to put into
-                    if(whereToPut != null)
+                    if (whereToPut != null)
                     {
                         //Make the destination directory equal to that directory
                         dst = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + dst.Path, dst.Username, dst.Password);
                     }
                 }
-
-                if((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
+                _fileLock.EnterWriteLock();
                 {
-                    if(!RequiresAuth(dst))
-                    {
-                        using(src)
+                    if ((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
+                    try{
+                        if (!RequiresAuth(dst))
                         {
-                            File.WriteAllBytes(dst.Path, src.ToByteArray());
-                            result = (int)src.Length;
-                        }
-                    }
-                    else
-                    {
-                        // handle UNC path
-                        SafeTokenHandle safeTokenHandle;
-                        bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
-
-
-                        if(loginOk)
-                        {
-                            using(safeTokenHandle)
+                            using (src)
                             {
-
-                                WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                                {
-                                    // Do the operation here
-
-                                    using(src)
-                                    {
-                                        File.WriteAllBytes(dst.Path, src.ToByteArray());
-                                        result = (int)src.Length;
-                                    }
-
-
-                                    // remove impersonation now
-                                    impersonatedUser.Undo();
-                                }
+                                File.WriteAllBytes(dst.Path, src.ToByteArray());
+                                result = (int)src.Length;
                             }
                         }
                         else
                         {
-                            // login failed
-                            throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
+                            // handle UNC path
+                            SafeTokenHandle safeTokenHandle;
+                            bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+
+                            if (loginOk)
+                            {
+                                using (safeTokenHandle)
+                                {
+
+                                    WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                                    using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                                    {
+                                        // Do the operation here
+                                        using (src)
+                                        {
+                                            File.WriteAllBytes(dst.Path, src.ToByteArray());
+                                            result = (int)src.Length;
+                                        }
+
+                                        // remove impersonation now
+                                        impersonatedUser.Undo();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // login failed
+                                throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
+                            }
                         }
+                    }
+                    finally
+                    {
+                        _fileLock.ExitWriteLock();
                     }
                 }
             }
-
             return result;
         }
 

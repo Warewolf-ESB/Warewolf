@@ -2353,7 +2353,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.
+        ///   Looks up a localized string similar to To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here.
         ///
         ///Allowed:
         ///[[Recordset(n).Field]]   
@@ -2605,7 +2605,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full..
+        ///   Looks up a localized string similar to To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here..
         /// </summary>
         public static string FindToolTipInFields {
             get {

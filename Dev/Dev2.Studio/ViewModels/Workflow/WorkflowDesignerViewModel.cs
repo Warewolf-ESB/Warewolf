@@ -1480,7 +1480,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // THIS MUST NEVER BE DELETED ;)
                 WatermarkSential.IsWatermarkBeingApplied = false;
             }
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         bool CheckDataList()
@@ -1522,7 +1521,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 });
             }
-            AddMissingWithNoPopUpAndFindUnusedDataListItems();
         }
 
         public static bool ValidatResourceModel(string dataList)
