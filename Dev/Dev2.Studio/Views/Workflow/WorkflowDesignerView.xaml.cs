@@ -11,6 +11,8 @@
 
 
 using System.Windows;
+using System.Windows.Input;
+using Dev2.Studio.ViewModels.Workflow;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -38,6 +40,15 @@ namespace Dev2.Studio.Views.Workflow
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
+            }
+        }
+
+        void UIElement_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            var workflowDesignerViewModel = DataContext as WorkflowDesignerViewModel;
+            if (workflowDesignerViewModel != null)
+            {
+                workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             }
         }
     }
