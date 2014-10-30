@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Models;
 using Dev2.Studio.Views.Explorer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,6 +12,17 @@ namespace Dev2.Core.Tests.Views
     [TestClass]
     public class ExplorerViewTests
     {
+        private Mock<IPopupController> _controller;
+
+        [TestInitialize]
+        public void Init()
+        {
+             _controller = new Mock<IPopupController>();
+// ReSharper disable once RedundantCast
+            CustomContainer.Register((_controller.Object as IPopupController));
+        }
+
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerView_ShouldNotMoveItem")]
@@ -22,6 +35,9 @@ namespace Dev2.Core.Tests.Views
             var destination = new Mock<IExplorerItemModel>();
             destination.Setup(model => model.IsVersion).Returns(false);
             destination.Setup(model => model.ResourcePath).Returns("mypath");
+            destination.Setup(a => a.Parent).Returns(destination.Object);
+            destination.Setup(a => a.Children).Returns(new ObservableCollection<IExplorerItemModel>());
+
             //------------Execute Test---------------------------
             
             var shouldNotMove = ExplorerView.ShouldNotMove(sourceItem.Object, destination.Object);
@@ -60,6 +76,7 @@ namespace Dev2.Core.Tests.Views
             sourceItem.Setup(model => model.IsVersion).Returns(false);
             sourceItem.Setup(model => model.ResourcePath).Returns("mypath1");
             sourceItem.Setup(a => a.Children).Returns(new ObservableCollection<IExplorerItemModel>());
+            sourceItem.Setup(a => a.Parent).Returns(sourceItem.Object);
             //------------Execute Test---------------------------
 
             var shouldNotMove = ExplorerView.ShouldNotMove(sourceItem.Object, sourceItem.Object);
@@ -81,6 +98,7 @@ namespace Dev2.Core.Tests.Views
             destination.Setup(model => model.IsVersion).Returns(false);
             destination.Setup(model => model.ResourcePath).Returns("mypath");
             destination.Setup(a => a.Children).Returns(new ObservableCollection<IExplorerItemModel>());
+            destination.Setup(a => a.Parent).Returns(destination.Object);
             //------------Execute Test---------------------------
 
             var shouldNotMove = ExplorerView.ShouldNotMove(sourceItem.Object, destination.Object);
@@ -101,6 +119,7 @@ namespace Dev2.Core.Tests.Views
             destination.Setup(model => model.IsVersion).Returns(true);
             destination.Setup(model => model.ResourcePath).Returns("mypath");
             destination.Setup(a => a.Children).Returns(new ObservableCollection<IExplorerItemModel>( ));
+            destination.Setup(a => a.Parent).Returns(destination.Object);
             //------------Execute Test---------------------------
 
             var shouldNotMove = ExplorerView.ShouldNotMove(sourceItem.Object, destination.Object);
@@ -133,6 +152,7 @@ namespace Dev2.Core.Tests.Views
             var shouldNotMove = ExplorerView.ShouldNotMove(sourceItem.Object, destination.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(shouldNotMove);
+            _controller.Verify(a => a.Show("Conflicting resources found in the destination", "Conflicting Resources", MessageBoxButton.OK, MessageBoxImage.Error, ""));
         }
 
         [TestMethod]

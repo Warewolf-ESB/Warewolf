@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Activities.Statements;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -68,9 +69,16 @@ namespace Dev2.Studio.Views.Explorer
 
         public static bool ShouldNotMove(IExplorerItemModel source, IExplorerItemModel destination)
         {
-            if(source != null && (source == destination || destination.IsVersion || source.IsVersion || source.ResourcePath.Equals(destination.ResourcePath, StringComparison.OrdinalIgnoreCase) 
-                ||HasNoChildren(source, destination)))
+            bool hasNoChildren = HasNoChildren(source, destination);
+            if(source != null && (source == destination || destination.IsVersion || source.IsVersion || source.ResourcePath.Equals(destination.ResourcePath, StringComparison.OrdinalIgnoreCase)
+                || hasNoChildren))
             {
+                if (hasNoChildren)
+                {
+                    CustomContainer.Get<IPopupController>()
+                        .Show("Conflicting resources found in the destination", "Conflicting Resources",
+                            MessageBoxButton.OK, MessageBoxImage.Error,"");
+                }
                 return true;
             }
             return false;
