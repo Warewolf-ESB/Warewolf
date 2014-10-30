@@ -62,3 +62,38 @@ Scenario Outline: Move file at location
 	#   | 38 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[rec([[[[b]]]]).a]]   | Failure | AN           |
 	#																																																												 
 	#
+
+
+
+
+
+
+
+
+
+Scenario Outline: Move file at location1
+	Given I have a source path '<File or FOlder>' with value '<sourceLocation>' 
+	And source credentials as '<username>' and '<password>'
+	And I have a destination path '<destination>' with value '<destinationLocation>'
+    And destination credentials as '<destUsername>' and '<destPassword>'
+	And overwrite is '<selected>'
+	And result as '<resultVar>'
+	When validating the tool
+	Then validation is '<ValidationResult>'
+	And validation message is '<DesignValidation>'
+    When the Move file tool is executed
+	Then the result variable '<resultVar>' will be '<result>'
+	And the execution has "<errorOccured>" error
+	And the error message will be '<OutputError>'
+	And the debug inputs as
+         | Source Path                         | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
+         | <File or FOlder> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples: 
+	 | No | File or FOlder | sourceLocation   | username | password | destination  | destinationLocation                              | destUsername | destPassword | selected | resultVar  | result  | errorOccured | ValidationResult | DesignValidation | OutputError |
+	 | 1  | [[sourcePath]] | c:\movefile0.txt | ""       | ""       | [[destPath]] | C:\copied00.txt                                  | ""           | ""           | True     | [[result]] | Success | NO           | False            | ""               | ""          |
+	 | 2  | [[sourcePath]] | c:\movefile0.txt | ""       | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/moved0.txt | ""           | ""           | True     | [[result]] | Success | NO           | False            | ""               | ""          |
+
+
