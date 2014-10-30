@@ -125,7 +125,31 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Is Numeric", isSearchCriteriaEnabled: false, isSearchCriteriaBlank: true);
         }
 
-        void Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(string searchType, bool isSearchCriteriaEnabled, bool isSearchCriteriaBlank)
+        [TestMethod]
+        [Owner("Robin van den Heever")]
+        [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
+        public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_IndexObjectIsnotZero()
+        {
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Is Numeric", isSearchCriteriaEnabled: false, isSearchCriteriaBlank: true, indexObject: -1);
+        }
+
+        [TestMethod]
+        [Owner("Robin van den Heever")]
+        [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
+        public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_InRequiresCriteriaInputList_IsCriteriaEnabledFalseSearchCriteriaInBetween()
+        {
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Is Between", isSearchCriteriaEnabled: false, isSearchCriteriaBlank: true);
+        }
+
+        [TestMethod]
+        [Owner("Robin van den Heever")]
+        [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
+        public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_InRequiresCriteriaInputList_IsCriteriaEnabledFalseSearchCriteriaNotBetween()
+        {
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Not Between", isSearchCriteriaEnabled: false, isSearchCriteriaBlank: true);
+        }
+
+        void Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(string searchType, bool isSearchCriteriaEnabled, bool isSearchCriteriaBlank, int indexObject = 0)
         {
             //------------Setup for test--------------------------
             var findRecordsTO = new FindRecordsTO("xxxx", searchType, 1);
@@ -141,7 +165,8 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             Assert.IsFalse(findRecordsTO.IsSearchCriteriaEnabled);
 
             //------------Execute Test---------------------------
-            viewModel.SearchTypeUpdatedCommand.Execute(0);
+            viewModel.SearchTypeUpdatedCommand.Execute(indexObject);
+            //viewModel.SearchTypeUpdatedCommand.Execute(0);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(isSearchCriteriaEnabled, findRecordsTO.IsSearchCriteriaEnabled);
@@ -290,8 +315,9 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             Assert.IsInstanceOfType(rulesSet.Rules[1], typeof(IsValidExpressionRule));
         }
 
+
         [TestMethod]
-        [Owner("Massimo Guerrera")]
+        [Owner("Robin van den Heever")]
         [TestCategory("FindRecordsMultipleCriteriaDesignerViewModel_ValidateCollectionItem")]
         public void FindRecordsMultipleCriteriaDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfTO()
         {
@@ -324,7 +350,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             viewModel.Validate();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(8, viewModel.Errors.Count);
+            Assert.AreEqual(10, viewModel.Errors.Count);
 
             StringAssert.Contains(viewModel.Errors[0].Message, "'Match' cannot be empty");
             Verify_IsFocused(dtoModelItem1, viewModel.Errors[0].Do, "IsSearchCriteriaFocused");
@@ -338,17 +364,23 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             StringAssert.Contains(viewModel.Errors[3].Message, "'Match' cannot be empty");
             Verify_IsFocused(dtoModelItem4, viewModel.Errors[3].Do, "IsSearchCriteriaFocused");
 
-            StringAssert.Contains(viewModel.Errors[4].Message, "'From' cannot be empty");
-            Verify_IsFocused(dtoModelItem5, viewModel.Errors[4].Do, "IsFromFocused");
+            StringAssert.Contains(viewModel.Errors[4].Message, "'Match' cannot be empty");
+            Verify_IsFocused(dtoModelItem5, viewModel.Errors[4].Do, "IsSearchCriteriaFocused");
 
-            StringAssert.Contains(viewModel.Errors[5].Message, "'To' cannot be empty");
-            Verify_IsFocused(dtoModelItem5, viewModel.Errors[5].Do, "IsToFocused");
+            StringAssert.Contains(viewModel.Errors[5].Message, "'From' cannot be empty");
+            Verify_IsFocused(dtoModelItem5, viewModel.Errors[5].Do, "IsFromFocused");
 
-            StringAssert.Contains(viewModel.Errors[6].Message, "'From' cannot be empty");
-            Verify_IsFocused(dtoModelItem6, viewModel.Errors[6].Do, "IsFromFocused");
+            StringAssert.Contains(viewModel.Errors[6].Message, "'To' cannot be empty");
+            Verify_IsFocused(dtoModelItem5, viewModel.Errors[6].Do, "IsToFocused");
 
-            StringAssert.Contains(viewModel.Errors[7].Message, "'To' cannot be empty");
-            Verify_IsFocused(dtoModelItem6, viewModel.Errors[7].Do, "IsToFocused");
+            StringAssert.Contains(viewModel.Errors[7].Message, "'Match' cannot be empty");
+            Verify_IsFocused(dtoModelItem6, viewModel.Errors[7].Do, "IsSearchCriteriaFocused");
+
+            StringAssert.Contains(viewModel.Errors[9].Message, "'To' cannot be empty");
+            Verify_IsFocused(dtoModelItem6, viewModel.Errors[9].Do, "IsToFocused");
+
+
+
 
         }
         

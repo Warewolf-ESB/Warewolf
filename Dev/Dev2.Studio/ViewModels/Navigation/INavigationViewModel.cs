@@ -13,13 +13,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Dev2.Models;
 using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
 {
-    public interface INavigationViewModel
+    public interface INavigationViewModel:INotifyPropertyChanged
     {
         List<IEnvironmentModel> Environments { get; }
         IEnvironmentRepository EnvironmentRepository { get; }

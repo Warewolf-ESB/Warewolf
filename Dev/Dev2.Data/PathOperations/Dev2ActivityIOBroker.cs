@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -32,8 +33,10 @@ namespace Dev2.PathOperations
     /// Status : New
     /// Purpose : To provide a concrete impl of the IActivityOperationBroker to facilitate IO operations
     /// </summary>
+    // ReSharper disable InconsistentNaming
     internal class Dev2ActivityIOBroker : IActivityOperationsBroker
     {
+        private static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim();
         const string ResultOk = "Success";
         const string ResultBad = "Failure";
         private static List<string> _filesToDelete;
@@ -86,6 +89,7 @@ namespace Dev2.PathOperations
             // wild char put?
             try
             {
+                _fileLock.EnterWriteLock();
                 if(dst.RequiresLocalTmpStorage())
                 {
                     var tmp = CreateTmpFile();
@@ -177,6 +181,7 @@ namespace Dev2.PathOperations
             }
             finally
             {
+                _fileLock.ExitWriteLock();
                 _filesToDelete.ForEach(RemoveTmpFile);
             }
             return result;
@@ -629,32 +634,39 @@ namespace Dev2.PathOperations
             }
 
             // get each file, then put it to the correct location
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach(var p in srcContents)
             {
-                try
+                result = PerformTransfer(src, dst, args, origDstPath, p, result);
+            }
+            return result;
+        }
+
+        static bool PerformTransfer(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, string origDstPath, IActivityIOPath p, bool result)
+        {
+            try
+            {
+                if(dst.PathIs(dst.IOPath) == enPathType.Directory)
                 {
-                    if(dst.PathIs(dst.IOPath) == enPathType.Directory)
-                    {
-                        var cpPath =
-                            ActivityIOFactory.CreatePathFromString(
-                                string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(),
-                                              (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))),
-                                dst.IOPath.Username,
-                                dst.IOPath.Password, true);
-                        var path = cpPath.Path;
-                        DoFileTransfer(src, dst, args, cpPath, p, path, ref result);
-                    }
-                    else if(args.Overwrite || !dst.PathExist(dst.IOPath))
-                    {
-                        var tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
-                        var path = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
-                        DoFileTransfer(src, dst, args, path, p, path.Path, ref result);
-                    }
+                    var cpPath =
+                        ActivityIOFactory.CreatePathFromString(
+                            string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(),
+                                (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))),
+                            dst.IOPath.Username,
+                            dst.IOPath.Password, true);
+                    var path = cpPath.Path;
+                    DoFileTransfer(src, dst, args, cpPath, p, path, ref result);
                 }
-                catch(Exception ex)
+                else if(args.Overwrite || !dst.PathExist(dst.IOPath))
                 {
-                    Dev2Logger.Log.Error(ex);
+                    var tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
+                    var path = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
+                    DoFileTransfer(src, dst, args, path, p, path.Path, ref result);
                 }
+            }
+            catch(Exception ex)
+            {
+                Dev2Logger.Log.Error(ex);
             }
             return result;
         }

@@ -114,7 +114,7 @@
                                x:Name="LargeDataGrid"
                                ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
-                               Margin="0,3">
+                               Margin="0,0,0,6">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
@@ -123,7 +123,7 @@
                                         MinWidth="125"
                                         Header="Input Data or [[Variable]]"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
+                                        d:DataContext="{d:DesignInstance Type=local:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
@@ -133,7 +133,8 @@
                                                     MaxHeight="80"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsMappingFieldFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"                                                    
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>

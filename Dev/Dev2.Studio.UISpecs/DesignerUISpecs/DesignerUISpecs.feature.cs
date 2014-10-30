@@ -110,13 +110,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 23
  testRunner.Given("I double click point \"649,200\" on \"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_Ta" +
                     "bManager_AutoID,myScrollViewer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 24
- testRunner.Then("\"WORKFLOWDESIGNER,ServiceExecutionTest(FlowchartDesigner)\" is visible within \"4\" " +
-                    "seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 29
- testRunner.And("\"WORKFLOWDESIGNER,ServiceExecutionTest(FlowchartDesigner),InnerWF(ServiceDesigner" +
-                    ")[3],SmallViewContent,UI_FixErrors_AutoID,UI_ErrorsAdorner_AutoID\" is visible wi" +
-                    "thin \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

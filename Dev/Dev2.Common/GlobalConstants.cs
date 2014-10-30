@@ -345,7 +345,7 @@ or type_desc LIKE '%Procedure%'";
 
 
         // Limit WF execution
-        public static int MaxWorkflowsToExecute = 50;
+        public static int MaxWorkflowsToExecute = 1010;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
         public static string WebServerPort { get; set; }

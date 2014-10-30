@@ -29,6 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string _searchType;
         bool _isSearchCriteriaEnabled;
         bool _isSearchCriteriaFocused;
+        bool _isSearchTypeFocused;
         string _searchCriteria;
         string _from;
         string _to;
@@ -87,7 +88,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+
+
         public bool IsToFocused { get { return _isToFocused; } set { OnPropertyChanged(ref _isToFocused, value); } }
+
+
 
         [FindMissing]
         public string SearchCriteria
@@ -114,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     _searchType = FindRecordsDisplayUtil.ConvertForDisplay(value);
                     OnPropertyChanged();
@@ -122,6 +127,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
+        public bool IsSearchTypeFocused { get { return _isSearchTypeFocused; } set { OnPropertyChanged(ref _isSearchTypeFocused, value); } }
 
         void RaiseCanAddRemoveChanged()
         {
@@ -172,7 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            if(string.IsNullOrEmpty(SearchCriteria) && string.IsNullOrEmpty(SearchType))
+            if (string.IsNullOrEmpty(SearchCriteria) && string.IsNullOrEmpty(SearchType))
             {
                 return true;
             }
@@ -200,32 +207,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             RuleSet ruleSet = new RuleSet();
-            if(IsEmpty())
+            if (IsEmpty())
             {
                 return ruleSet;
             }
-            switch(propertyName)
+            switch (propertyName)
             {
-                case "SearchCriteria":
-                    if(SearchType == "Starts With" || SearchType == "Ends With" || SearchType == "Doesn't Start With" || SearchType == "Doesn't End With")
+                case "SearchType":
+                    if (SearchType == "Starts With" || SearchType == "Ends With" || SearchType == "Doesn't Start With" || SearchType == "Doesn't End With")
                     {
-                        ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
-                        ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria,datalist, "1"));
+                        ruleSet.Add(new IsStringEmptyRule(() => SearchType));
+                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1"));
                     }
                     break;
                 case "From":
-                    if(SearchType == "Is Between" || SearchType == "Is Not Between")
+                    if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => From));
-                        ruleSet.Add(new IsValidExpressionRule(() => From,datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1"));
                     }
                     break;
                 case "To":
-                    if(SearchType == "Is Between" || SearchType == "Is Not Between")
+                    if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => To));
-                        ruleSet.Add(new IsValidExpressionRule(() => To,datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1"));
                     }
+                    break;
+                case "SearchCriteria":
+                    if (SearchCriteria.Length == 0)
+                        ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
+                    ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
                     break;
             }
 
