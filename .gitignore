@@ -80,7 +80,10 @@
 /Dev/Dev2.Runtime.WebServer/obj
 /Dev/Dev2.Scheduler/bin
 /Dev/Dev2.Scheduler/obj
-/Dev/Dev2.Server/bin
+/Dev/Dev2.Server/bin/Debug/Warewolf Server.exe.config
+/Dev/Dev2.Server/bin/Debug/Warewolf Server.vshost.exe
+/Dev/Dev2.Server/bin/Debug/Warewolf Server.vshost.exe.config
+/Dev/Dev2.Server/bin/Debug/Warewolf Server.vshost.exe.manifest
 /Dev/Dev2.Server/obj
 /Dev/Dev2.Services.Execution/bin
 /Dev/Dev2.Services.Execution/obj
