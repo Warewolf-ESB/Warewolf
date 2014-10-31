@@ -194,6 +194,24 @@ namespace Dev2.Activities.Specs.BaseTypes
             ScenarioContext.Current.Add(DestinationPasswordHolder, password.Replace('"', ' ').Trim());
         }
 
+        [When(@"validating the tool")]
+        public void WhenValidatingTheTool()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"validation is '(.*)'")]
+        public void ThenValidationIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"validation message is '(.*)'")]
+        public void ThenValidationMessageIs(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
         [Given(@"result as '(.*)'")]
         public void GivenResultAs(string resultVar)
         {
