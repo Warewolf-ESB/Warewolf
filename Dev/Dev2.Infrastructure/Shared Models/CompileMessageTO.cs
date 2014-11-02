@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,7 +21,7 @@ using Newtonsoft.Json.Converters;
 namespace Dev2.Data.ServiceModel.Messages
 {
     /// <summary>
-    ///     Send compile time messages to the studio ;)
+    /// Send compile time messages to the studio ;)
     /// </summary>
     [Serializable]
     // ReSharper disable InconsistentNaming
@@ -31,11 +32,10 @@ namespace Dev2.Data.ServiceModel.Messages
         public Guid MessageID { get; set; }
         public Guid WorkspaceID { get; set; }
         public string ServiceName { get; set; }
-
-        [JsonConverter(typeof (StringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public CompileMessageType MessageType { get; set; }
 
-        [JsonConverter(typeof (StringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public ErrorType ErrorType { get; set; }
 
         // should be json or other sensable string data ;)
@@ -70,7 +70,7 @@ namespace Dev2.Data.ServiceModel.Messages
 
         public FixType ToFixType()
         {
-            switch (MessageType)
+            switch(MessageType)
             {
                 case CompileMessageType.MappingChange:
                     return FixType.ReloadMapping;

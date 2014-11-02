@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,15 +22,15 @@ using System.Diagnostics;
 namespace Dev2
 {
     /// <summary>
-    ///     Provides useful mechanisms for performance testing.
+    /// Provides useful mechanisms for performance testing.
     /// </summary>
     public static class ProfilingUtil
     {
-        private static readonly Stopwatch _watch = new Stopwatch();
+        private static Stopwatch _watch = new Stopwatch();
         private static ProfileRegion _currentRegion;
 
         /// <summary>
-        ///     Begins a profiled region.
+        /// Begins a profiled region.
         /// </summary>
         public static void BeginRegion()
         {
@@ -44,7 +45,7 @@ namespace Dev2
         }
 
         /// <summary>
-        ///     Ends a profiled region.
+        /// Ends a profiled region.
         /// </summary>
         /// <returns>The total number of milliseconds that elapsed between begin and end region calls.</returns>
         public static long EndRegion()
@@ -55,9 +56,9 @@ namespace Dev2
 
         private sealed class ProfileRegion
         {
-            private readonly ProfileRegion _parent;
-            private readonly long _start;
+            private ProfileRegion _parent;
             private List<ProfileRegion> _children;
+            private long _start;
             private long _end;
 
             public ProfileRegion()

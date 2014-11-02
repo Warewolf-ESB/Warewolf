@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,14 +28,14 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            if (values == null)
+            if(values == null)
             {
                 throw new InvalidDataException("Empty values passed.");
             }
 
             StringBuilder settingsJson;
             values.TryGetValue("Settings", out settingsJson);
-            if (settingsJson == null || settingsJson.Length == 0)
+            if(settingsJson == null || settingsJson.Length == 0)
             {
                 throw new InvalidDataException("Error: Unable to parse values.");
             }
@@ -47,14 +48,22 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 result = ExecuteService(theWorkspace, new SecurityWrite(), "SecuritySettings", settings.Security);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
-                result = new ExecuteMessage {HasError = true};
+                result = new ExecuteMessage { HasError = true };
                 result.SetMessage("Error writing settings configuration.");
             }
 
             return serializer.SerializeToBuilder(result);
+        }
+
+        static ExecuteMessage ExecuteService(IWorkspace theWorkspace, IEsbManagementEndpoint service, string valuesKey, object valuesValue)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var values = new Dictionary<string, StringBuilder> { { valuesKey, serializer.SerializeToBuilder(valuesValue) } };
+            var result = service.Execute(values, theWorkspace).ToString();
+            return serializer.Deserialize<ExecuteMessage>(result);
         }
 
         public DynamicService CreateServiceEntry()
@@ -62,9 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dynamicService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification = new StringBuilder("<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var serviceAction = new ServiceAction
@@ -82,15 +89,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType()
         {
             return "SettingsWriteService";
-        }
-
-        private static ExecuteMessage ExecuteService(IWorkspace theWorkspace, IEsbManagementEndpoint service,
-            string valuesKey, object valuesValue)
-        {
-            var serializer = new Dev2JsonSerializer();
-            var values = new Dictionary<string, StringBuilder> {{valuesKey, serializer.SerializeToBuilder(valuesValue)}};
-            string result = service.Execute(values, theWorkspace).ToString();
-            return serializer.Deserialize<ExecuteMessage>(result);
         }
     }
 }

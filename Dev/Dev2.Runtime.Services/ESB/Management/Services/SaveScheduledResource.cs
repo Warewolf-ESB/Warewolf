@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,19 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SaveScheduledResource : IEsbManagementEndpoint
     {
         private IServerSchedulerFactory _schedulerFactory;
-        private ISecurityWrapper _securityWrapper;
-
-        public IServerSchedulerFactory SchedulerFactory
-        {
-            get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
-            set { _schedulerFactory = value; }
-        }
-
-        public ISecurityWrapper SecurityWrapper
-        {
-            get { return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance); }
-            set { _securityWrapper = value; }
-        }
+        ISecurityWrapper _securityWrapper;
 
         public string HandlesType()
         {
@@ -48,26 +37,25 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var result = new ExecuteMessage {HasError = false};
+            var result = new ExecuteMessage { HasError = false };
             StringBuilder tmp;
             values.TryGetValue("Resource", out tmp);
             var serializer = new Dev2JsonSerializer();
             try
             {
-                if (tmp != null)
+                if(tmp != null)
                 {
+
                     var res = serializer.Deserialize<IScheduledResource>(tmp);
-                    Dev2Logger.Log.Info("Save Scheduled Resource. Scheduled Resource:" + res);
-                    using (
-                        IScheduledResourceModel model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId,
-                            SecurityWrapper))
+                    Dev2Logger.Log.Info("Save Scheduled Resource. Scheduled Resource:" +res);
+                    using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                     {
                         StringBuilder userName;
                         StringBuilder password;
 
                         values.TryGetValue("UserName", out userName);
                         values.TryGetValue("Password", out password);
-                        if (userName == null || password == null)
+                        if(userName == null || password == null)
                         {
                             result.Message.Append("No UserName or password provided");
                             result.HasError = true;
@@ -78,11 +66,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                             values.TryGetValue("PreviousResource", out previousTask);
 
                             model.Save(res, userName.ToString(), password.ToString());
-                            if (previousTask != null && !String.IsNullOrEmpty(previousTask.ToString()) &&
-                                (previousTask.ToString() != res.Name))
+                            if(previousTask != null && !String.IsNullOrEmpty(previousTask.ToString()) && (previousTask.ToString() != res.Name))
                             {
-                                model.DeleteSchedule(new ScheduledResource(previousTask.ToString(),
-                                    SchedulerStatus.Disabled, DateTime.MaxValue, null, null));
+                                model.DeleteSchedule(new ScheduledResource(previousTask.ToString(), SchedulerStatus.Disabled, DateTime.MaxValue, null, null));
                             }
                         }
                     }
@@ -93,7 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     result.HasError = true;
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Log.Error(e);
                 result.Message.Append(string.Format("Error while saving: {0}", e.Message.Remove(e.Message.IndexOf('.'))));
@@ -105,24 +91,39 @@ namespace Dev2.Runtime.ESB.Management.Services
         public DynamicService CreateServiceEntry()
         {
             var addScheduledResourceService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+                {
+                    Name = HandlesType(),
+                    DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                };
 
             var addScheduledResourceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+                {
+                    Name = HandlesType(),
+                    ActionType = enActionType.InvokeManagementDynamicService,
+                    SourceMethod = HandlesType()
+                };
 
 
             addScheduledResourceService.Actions.Add(addScheduledResourceAction);
 
             return addScheduledResourceService;
+        }
+        public IServerSchedulerFactory SchedulerFactory
+        {
+            get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
+            set { _schedulerFactory = value; }
+        }
+
+        public ISecurityWrapper SecurityWrapper
+        {
+            get
+            {
+                return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
+            }
+            set
+            {
+                _securityWrapper = value;
+            }
         }
     }
 }

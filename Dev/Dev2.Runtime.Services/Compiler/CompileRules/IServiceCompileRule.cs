@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +18,7 @@ using Dev2.Data.ServiceModel.Messages;
 namespace Dev2.Runtime.Compiler.CompileRules
 {
     /// <summary>
-    ///     Used to pick compile rules
+    /// Used to pick compile rules
     /// </summary>
     public interface IServiceCompileRule : ISpookyLoadable<ServerCompileMessageType>
     {

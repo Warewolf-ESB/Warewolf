@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,19 +11,19 @@
 
 
 using System;
-using System.Security.Principal;
 
 namespace Dev2.Services.Security.MoqInstallerActions
 {
     public class InstallerActionsForDevelopment : IMoqInstallerActions
     {
+
         #region Implementation of MoqInstallerActions
 
         public void ExecuteMoqInstallerActions()
         {
             IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
 
-            if (!wso.DoesWarewolfGroupExist())
+            if(!wso.DoesWarewolfGroupExist())
             {
                 wso.AddWarewolfGroup();
             }
@@ -47,16 +48,16 @@ namespace Dev2.Services.Security.MoqInstallerActions
         }
 
         /// <summary>
-        ///     Creates the warewolf group and adds the current user.
+        /// Creates the warewolf group and adds the current user.
         /// </summary>
         private void CreateWarewolfGroupAndAddCurrentUser()
         {
             IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
 
             // Get the current executing user ;)
-            WindowsIdentity currentUser = WindowsIdentity.GetCurrent(false);
-            string machineName = Environment.MachineName;
-            string userAddString = wso.FormatUserForInsert(currentUser.Name, machineName);
+            var currentUser = System.Security.Principal.WindowsIdentity.GetCurrent(false);
+            var machineName = Environment.MachineName;
+            var userAddString = wso.FormatUserForInsert(currentUser.Name, machineName);
 
             wso.AddUserToWarewolf(userAddString);
         }

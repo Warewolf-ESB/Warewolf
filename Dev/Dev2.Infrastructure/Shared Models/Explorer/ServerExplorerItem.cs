@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,9 +25,8 @@ namespace Dev2.Explorer
         {
             Children = new List<IExplorerItem>();
         }
-
         public ServerExplorerItem(string displayName, Guid resourceId, ResourceType resourceType,
-            IList<IExplorerItem> children, Permissions permissions, string resourcePath)
+                                  IList<IExplorerItem> children, Permissions permissions, string resourcePath)
         {
             DisplayName = displayName;
             ResourceId = resourceId;
@@ -35,7 +35,6 @@ namespace Dev2.Explorer
             Permissions = permissions;
             ResourcePath = resourcePath;
         }
-
         public string DisplayName { get; set; }
         public Guid ResourceId { get; set; }
         public Guid ServerId { get; set; }
@@ -50,10 +49,10 @@ namespace Dev2.Explorer
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((ServerExplorerItem) obj);
+            if(ReferenceEquals(null, obj)) return false;
+            if(ReferenceEquals(this, obj)) return true;
+            if(obj.GetType() != GetType()) return false;
+            return Equals((ServerExplorerItem)obj);
         }
 
 

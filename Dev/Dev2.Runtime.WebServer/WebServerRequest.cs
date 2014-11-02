@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,13 +16,12 @@ using System.IO;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Dev2.Runtime.WebServer
 {
     public class WebServerRequest : ICommunicationRequest
     {
-        private readonly HttpRequestMessage _request;
+        readonly HttpRequestMessage _request;
 
         public WebServerRequest(HttpRequestMessage request, NameValueCollection boundVariables)
         {
@@ -45,45 +45,36 @@ namespace Dev2.Runtime.WebServer
         public int ContentLength { get; private set; }
         public string ContentType { get; private set; }
         public Encoding ContentEncoding { get; private set; }
-
-        public Stream InputStream
-        {
-            get { return ReadInputStream(); }
-        }
-
+        public Stream InputStream { get { return ReadInputStream(); } }
         public NameValueCollection QueryString { get; private set; }
         public NameValueCollection BoundVariables { get; private set; }
 
-        private void InitializeContentLength()
+        void InitializeContentLength()
         {
-            ContentLength =
-                (int)
-                    (_request.Content.Headers.ContentLength.HasValue ? _request.Content.Headers.ContentLength.Value : 0L);
+            ContentLength = (int)(_request.Content.Headers.ContentLength.HasValue ? _request.Content.Headers.ContentLength.Value : 0L);
         }
 
-        private void InitializeContentType()
+        void InitializeContentType()
         {
-            ContentType = _request.Content.Headers.ContentType == null
-                ? null
-                : _request.Content.Headers.ContentType.MediaType;
+            ContentType = _request.Content.Headers.ContentType == null ? null : _request.Content.Headers.ContentType.MediaType;
         }
 
-        private void InitializeQueryString()
+        void InitializeQueryString()
         {
             QueryString = new NameValueCollection();
-            foreach (var kvp in _request.GetQueryNameValuePairs())
+            foreach(var kvp in _request.GetQueryNameValuePairs())
             {
                 QueryString.Add(kvp.Key, kvp.Value);
             }
         }
 
-        private Stream ReadInputStream()
+        Stream ReadInputStream()
         {
-            if (_request.Content == null)
+            if(_request.Content == null)
             {
                 return null;
             }
-            Task<Stream> task = _request.Content.ReadAsStreamAsync();
+            var task = _request.Content.ReadAsStreamAsync();
             task.Wait();
             return task.Result;
         }

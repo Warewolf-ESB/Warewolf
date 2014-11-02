@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -28,7 +29,7 @@ namespace Dev2.Diagnostics
         public string GroupName { get; set; }
         public int GroupIndex { get; set; }
         public string MoreLink { get; set; }
-
+  
         #region IXmlSerializable
 
         public XmlSchema GetSchema()
@@ -50,57 +51,58 @@ namespace Dev2.Diagnostics
             int.TryParse(reader.GetAttribute("GroupIndex"), out idx);
             GroupIndex = idx;
 
-            while (reader.Read())
+            while(reader.Read())
             {
-                if (reader.IsStartElement("Type"))
+                if(reader.IsStartElement("Type"))
                 {
-                    string result = reader.ReadElementString("Type");
+                    var result = reader.ReadElementString("Type");
                     DebugItemResultType type;
                     Enum.TryParse(result, out type);
                     Type = type;
                 }
 
-                if (reader.IsStartElement("Label"))
+                if(reader.IsStartElement("Label"))
                 {
                     Label = reader.ReadElementString("Label");
                 }
 
-                if (reader.IsStartElement("Variable"))
+                if(reader.IsStartElement("Variable"))
                 {
                     Variable = reader.ReadElementString("Variable");
                 }
 
-                if (reader.IsStartElement("Operator"))
+                if(reader.IsStartElement("Operator"))
                 {
                     Value = reader.ReadElementString("Operator");
                 }
 
-                if (reader.IsStartElement("Value"))
+                if(reader.IsStartElement("Value"))
                 {
                     Value = reader.ReadElementString("Value");
                 }
 
-                if (reader.IsStartElement("MoreLink"))
+                if(reader.IsStartElement("MoreLink"))
                 {
                     MoreLink = reader.ReadElementString("MoreLink");
                 }
 
-                if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugItemResult")
+                if(reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugItemResult")
                 {
                     reader.ReadEndElement();
                     break;
                 }
             }
+
         }
 
         public void WriteXml(XmlWriter writer)
         {
-            if (!string.IsNullOrWhiteSpace(GroupName))
+            if(!string.IsNullOrWhiteSpace(GroupName))
             {
                 writer.WriteAttributeString("GroupName", GroupName);
             }
 
-            if (GroupIndex != 0)
+            if(GroupIndex != 0)
             {
                 writer.WriteAttributeString("GroupIndex", GroupIndex.ToString(CultureInfo.InvariantCulture));
             }
@@ -111,7 +113,7 @@ namespace Dev2.Diagnostics
             writer.WriteElementString("Operator", Operator);
             writer.WriteElementString("Value", Value);
 
-            if (!string.IsNullOrWhiteSpace(MoreLink))
+            if(!string.IsNullOrWhiteSpace(MoreLink))
             {
                 writer.WriteElementString("MoreLink", MoreLink);
             }

@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -29,17 +30,17 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/PluginSources/Get
         public PluginSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
-            var result = new PluginSource {ResourceID = Guid.Empty, ResourceType = ResourceType.PluginSource};
+            var result = new PluginSource { ResourceID = Guid.Empty, ResourceType = ResourceType.PluginSource };
             try
             {
-                string xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, resourceId);
-                if (!string.IsNullOrEmpty(xmlStr))
+                var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, resourceId);
+                if(!string.IsNullOrEmpty(xmlStr))
                 {
-                    XElement xml = XElement.Parse(xmlStr);
+                    var xml = XElement.Parse(xmlStr);
                     result = new PluginSource(xml);
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 RaiseError(ex);
             }
@@ -55,31 +56,24 @@ namespace Dev2.Runtime.ServiceModel
         {
             var pluginSourceDetails = JsonConvert.DeserializeObject<PluginSource>(args);
 
-            if (string.IsNullOrEmpty(pluginSourceDetails.AssemblyName))
+            if(string.IsNullOrEmpty(pluginSourceDetails.AssemblyName))
             {
                 //resolve AssemblyName from AssemblyLocation
-                if (!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation) &&
-                    !pluginSourceDetails.AssemblyLocation.StartsWith(GlobalConstants.GACPrefix))
+                if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation) && !pluginSourceDetails.AssemblyLocation.StartsWith(GlobalConstants.GACPrefix))
                 {
                     //assembly location refers to a file, read the assembly name out of the dll file
-                    pluginSourceDetails.AssemblyLocation = pluginSourceDetails.AssemblyLocation.EndsWith("\\")
-                        ? pluginSourceDetails.AssemblyLocation.Remove(pluginSourceDetails.AssemblyLocation.Length - 1)
-                        : //remove trailing slashes if they exist
+                    pluginSourceDetails.AssemblyLocation = pluginSourceDetails.AssemblyLocation.EndsWith("\\") ?
+                        pluginSourceDetails.AssemblyLocation.Remove(pluginSourceDetails.AssemblyLocation.Length - 1) : //remove trailing slashes if they exist
                         pluginSourceDetails.AssemblyLocation; //else do nothing
                     try
                     {
-                        pluginSourceDetails.AssemblyName =
-                            AssemblyName.GetAssemblyName(pluginSourceDetails.AssemblyLocation).Name;
+                        pluginSourceDetails.AssemblyName = AssemblyName.GetAssemblyName(pluginSourceDetails.AssemblyLocation).Name;
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
-                        if (!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
+                        if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
                         {
-                            pluginSourceDetails.AssemblyName =
-                                pluginSourceDetails.AssemblyLocation.Substring(
-                                    pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) + 1,
-                                    pluginSourceDetails.AssemblyLocation.IndexOf(".dll", StringComparison.Ordinal) -
-                                    pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) - 1);
+                            pluginSourceDetails.AssemblyName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) + 1, pluginSourceDetails.AssemblyLocation.IndexOf(".dll", StringComparison.Ordinal) - pluginSourceDetails.AssemblyLocation.LastIndexOf("\\", StringComparison.Ordinal) - 1);
                         }
                         Dev2Logger.Log.Error(ex);
                     }
@@ -88,18 +82,16 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     //assembly location refers to the GAC
                     string getName = null;
-                    if (!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
+                    if(!string.IsNullOrEmpty(pluginSourceDetails.AssemblyLocation))
                     {
-                        getName =
-                            pluginSourceDetails.AssemblyLocation.Substring(
-                                pluginSourceDetails.AssemblyLocation.IndexOf(':') + 1);
+                        getName = pluginSourceDetails.AssemblyLocation.Substring(pluginSourceDetails.AssemblyLocation.IndexOf(':') + 1);
                     }
                     pluginSourceDetails.AssemblyName = getName;
                 }
             }
 
             ResourceCatalog.Instance.SaveResource(workspaceId, pluginSourceDetails);
-            if (workspaceId != GlobalConstants.ServerWorkspaceID)
+            if(workspaceId != GlobalConstants.ServerWorkspaceID)
             {
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, pluginSourceDetails);
             }
@@ -115,14 +107,14 @@ namespace Dev2.Runtime.ServiceModel
         public string ValidateAssemblyImageFormat(string args, Guid workspaceId, Guid dataListId)
         {
             // ReSharper disable RedundantAssignment
-            string toJson = @"{""validationresult"":""failure""}";
+            var toJson = @"{""validationresult"":""failure""}";
             // ReSharper restore RedundantAssignment
 
             var broker = new PluginBroker();
 
             string errorMsg;
 
-            if (broker.ValidatePlugin(args, out errorMsg))
+            if(broker.ValidatePlugin(args, out errorMsg))
             {
                 toJson = @"{""validationresult"":""success""}";
             }

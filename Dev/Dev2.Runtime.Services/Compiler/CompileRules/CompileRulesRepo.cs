@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,12 +17,13 @@ using Dev2.Common;
 namespace Dev2.Runtime.Compiler.CompileRules
 {
     /// <summary>
-    ///     Repo to load compile rules ;)
+    /// Repo to load compile rules ;)
     /// </summary>
     public class CompileRulesRepo : SpookyAction<IServiceCompileRule, ServerCompileMessageType>
     {
+
         /// <summary>
-        ///     Fetches the rules for a type of service
+        /// Fetches the rules for a type of service
         /// </summary>
         /// <param name="typeOf">The type of.</param>
         /// <returns></returns>
@@ -29,12 +31,13 @@ namespace Dev2.Runtime.Compiler.CompileRules
         {
             IList<IServiceCompileRule> rules = FindAll();
 
-            if (rules != null)
+            if(rules != null)
             {
                 return (rules.Where(c => c.HandlesType() == typeOf));
             }
 
             return null;
         }
+
     }
 }

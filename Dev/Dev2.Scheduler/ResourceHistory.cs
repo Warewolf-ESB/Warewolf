@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,8 +18,7 @@ namespace Dev2.Scheduler
 {
     public class ResourceHistory : IResourceHistory
     {
-        public ResourceHistory(string workflowOutput, IList<IDebugState> debugOutput, IEventInfo taskHistoryOutput,
-            string userName)
+        public ResourceHistory(string workflowOutput, IList<IDebugState> debugOutput, IEventInfo taskHistoryOutput, string userName)
         {
             TaskHistoryOutput = taskHistoryOutput;
             DebugOutput = debugOutput;

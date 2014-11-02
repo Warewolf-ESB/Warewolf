@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,15 +18,16 @@ namespace Dev2.Diagnostics
     {
         public static bool ContainsSafe(this string s, string filter)
         {
-            if (string.IsNullOrEmpty(filter))
+            if(string.IsNullOrEmpty(filter))
             {
                 return true;
             }
-            if (!string.IsNullOrEmpty(s))
+            if(!string.IsNullOrEmpty(s))
             {
                 return s.IndexOf(filter, StringComparison.OrdinalIgnoreCase) != -1;
             }
             return false;
         }
+
     }
 }

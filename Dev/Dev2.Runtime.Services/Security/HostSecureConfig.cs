@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,11 +21,11 @@ using Dev2.Common;
 namespace Dev2.Runtime.Security
 {
     /// <summary>
-    ///     The Secure Config
+    /// The Secure Config
     /// </summary>
     public class HostSecureConfig : ISecureConfig
     {
-        private const string SectionName = "secureSettings";
+        const string SectionName = "secureSettings";
 
         public const string FileName = "Warewolf Server.exe.secureconfig";
 
@@ -35,10 +36,10 @@ namespace Dev2.Runtime.Security
             try
             {
                 EnsureSecureConfigFileExists();
-                var settings = (NameValueCollection) ConfigurationManager.GetSection(SectionName);
+                var settings = (NameValueCollection)ConfigurationManager.GetSection(SectionName);
                 Initialize(settings, true);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Log.Error(e);
             }
@@ -64,27 +65,24 @@ namespace Dev2.Runtime.Security
         #region Initialize
 
         /// <summary>
-        ///     Initializes config with the given values and optionally protects it.
-        ///     <remarks>
-        ///         If <paramref name="shouldProtectConfig" /> is <code>true</code>, then the config file must exist on disk.
-        ///     </remarks>
+        /// Initializes config with the given values and optionally protects it.
+        /// <remarks>
+        /// If <paramref name="shouldProtectConfig"/> is <code>true</code>, then the config file must exist on disk.
+        /// </remarks>
         /// </summary>
         /// <param name="settings">The settings to be loaded.</param>
-        /// <param name="shouldProtectConfig">
-        ///     <code>true</code> if the configuration should be protected; <code>false</code>
-        ///     otherwise.
-        /// </param>
+        /// <param name="shouldProtectConfig"><code>true</code> if the configuration should be protected; <code>false</code> otherwise.</param>
         /// <exception cref="System.ArgumentNullException">settings</exception>
         protected void Initialize(NameValueCollection settings, bool shouldProtectConfig)
         {
-            if (settings == null)
+            if(settings == null)
             {
                 throw new ArgumentNullException("settings");
             }
 
             SystemKey = CreateKey(settings["SystemKey"]);
             Guid serverID;
-            if (Guid.TryParse(settings["ServerID"], out serverID) && serverID != Guid.Empty)
+            if(Guid.TryParse(settings["ServerID"], out serverID) && serverID != Guid.Empty)
             {
                 ServerID = serverID;
                 ServerKey = CreateKey(settings["ServerKey"]);
@@ -107,7 +105,7 @@ namespace Dev2.Runtime.Security
 
                 SaveConfig(newSettings);
 
-                if (shouldProtectConfig)
+                if(shouldProtectConfig)
                 {
                     ProtectConfig();
                 }
@@ -122,7 +120,7 @@ namespace Dev2.Runtime.Security
         {
             ConfigurationManager.RefreshSection(SectionName);
             // We need to check both the live and development paths ;)
-            if (!File.Exists(FileName))
+            if(!File.Exists(FileName))
             {
                 Dev2Logger.Log.Info("File not found: " + FileName);
                 var newSettings = new NameValueCollection();
@@ -138,18 +136,18 @@ namespace Dev2.Runtime.Security
         #region SaveConfig
 
         /// <summary>
-        ///     Saves the given secure settings into XML configuration file called <see cref="FileName" />.
+        /// Saves the given secure settings into XML configuration file called <see cref="FileName"/>.
         /// </summary>
         /// <param name="secureSettings">The settings to be saved.</param>
         protected virtual void SaveConfig(NameValueCollection secureSettings)
         {
             var config = new XElement(SectionName);
-            foreach (string key in secureSettings.Keys)
+            foreach(string key in secureSettings.Keys)
             {
                 config.Add(new XElement("add",
-                    new XAttribute("key", key),
-                    new XAttribute("value", secureSettings[key])
-                    ));
+                                        new XAttribute("key", key),
+                                        new XAttribute("value", secureSettings[key])
+                               ));
             }
 
             var configDoc = new XDocument(new XDeclaration("1.0", "utf-8", ""), config);
@@ -161,20 +159,19 @@ namespace Dev2.Runtime.Security
         #region ProtectConfig
 
         /// <summary>
-        ///     Protects the configuration using the <see cref="RsaProtectedConfigurationProvider" />.
+        /// Protects the configuration using the <see cref="RsaProtectedConfigurationProvider"/>.
         /// </summary>
         protected virtual void ProtectConfig()
         {
             try
             {
-                System.Configuration.Configuration config =
-                    ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                ConfigurationSection section = config.GetSection(SectionName);
-                if (section != null)
+                var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var section = config.GetSection(SectionName);
+                if(section != null)
                 {
-                    if (!section.SectionInformation.IsProtected)
+                    if(!section.SectionInformation.IsProtected)
                     {
-                        if (!section.ElementInformation.IsLocked)
+                        if(!section.ElementInformation.IsLocked)
                         {
                             section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
                             section.SectionInformation.ForceSave = true;
@@ -183,7 +180,7 @@ namespace Dev2.Runtime.Security
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Log.Error(e);
                 throw;
@@ -195,29 +192,30 @@ namespace Dev2.Runtime.Security
         #region CreateKey
 
         /// <summary>
-        ///     Creates the <see cref="RSACryptoServiceProvider" /> from the given base64 encoded key.
+        /// Creates the <see cref="RSACryptoServiceProvider"/> from the given base64 encoded key.
         /// </summary>
         /// <param name="base64String">The base64 encoded key.</param>
-        /// <returns>A  <see cref="RSACryptoServiceProvider" />.</returns>
+        /// <returns>A  <see cref="RSACryptoServiceProvider"/>.</returns>
         public static RSACryptoServiceProvider CreateKey(string base64String)
         {
-            byte[] keyBlob = Convert.FromBase64String(base64String);
+            var keyBlob = Convert.FromBase64String(base64String);
             var key = new RSACryptoServiceProvider();
             key.ImportCspBlob(keyBlob);
             return key;
         }
+
 
         #endregion
 
         #region CreateSettings
 
         /// <summary>
-        ///     Creates the a <see cref="NameValueCollection" /> configuration settings.
+        /// Creates the a <see cref="NameValueCollection"/> configuration settings.
         /// </summary>
         /// <param name="serverID">The server ID.</param>
         /// <param name="serverKey">The server key.</param>
         /// <param name="systemKey">The system key.</param>
-        /// <returns>a <see cref="NameValueCollection" /> configuration.</returns>
+        /// <returns>a <see cref="NameValueCollection"/> configuration.</returns>
         public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey)
         {
             return new NameValueCollection
@@ -235,5 +233,6 @@ namespace Dev2.Runtime.Security
         }
 
         #endregion
+
     }
 }

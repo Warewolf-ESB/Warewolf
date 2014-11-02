@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -42,15 +43,7 @@ namespace Dev2.Services.Execution
         {
             errors = new ErrorResultTO();
 
-            var args = new PluginInvokeArgs
-            {
-                AssemblyLocation = Source.AssemblyLocation,
-                AssemblyName = Source.AssemblyName,
-                Fullname = Service.Namespace,
-                Method = Service.Method.Name,
-                Parameters = Service.Method.Parameters,
-                OutputFormatter = formater
-            };
+            var args = new PluginInvokeArgs { AssemblyLocation = Source.AssemblyLocation, AssemblyName = Source.AssemblyName, Fullname = Service.Namespace, Method = Service.Method.Name, Parameters = Service.Method.Parameters, OutputFormatter = formater};
 
             object result = null;
 
@@ -58,14 +51,14 @@ namespace Dev2.Services.Execution
             {
                 result = PluginServiceExecutionFactory.InvokePlugin(args);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 errors.AddError(e.Message);
             }
 
             return result;
         }
-
         #endregion
+
     }
 }

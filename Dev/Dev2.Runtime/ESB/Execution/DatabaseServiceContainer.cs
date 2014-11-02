@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,21 +19,19 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Execution
 {
     /// <summary>
-    ///     Database Execution Container
+    /// Database Execution Container
     /// </summary>
     public class DatabaseServiceContainer : EsbExecutionContainer
     {
-        private readonly IServiceExecution _databaseServiceExecution;
+        readonly IServiceExecution _databaseServiceExecution;
 
         #region Constuctors
 
-        public DatabaseServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace,
-            IEsbChannel esbChannel)
+        public DatabaseServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel)
             : base(sa, dataObj, workspace, esbChannel)
         {
             _databaseServiceExecution = new DatabaseServiceExecution(dataObj);
         }
-
         public DatabaseServiceContainer(IServiceExecution databaseServiceExecution)
         {
             _databaseServiceExecution = databaseServiceExecution;
@@ -48,12 +47,12 @@ namespace Dev2.Runtime.ESB.Execution
             _databaseServiceExecution.BeforeExecution(errors);
 
             var databaseServiceExecution = _databaseServiceExecution as DatabaseServiceExecution;
-            if (databaseServiceExecution != null)
+            if(databaseServiceExecution != null)
             {
                 databaseServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
             }
 
-            Guid result = _databaseServiceExecution.Execute(out errors);
+            var result = _databaseServiceExecution.Execute(out errors);
             _databaseServiceExecution.AfterExecution(errors);
             return result;
         }

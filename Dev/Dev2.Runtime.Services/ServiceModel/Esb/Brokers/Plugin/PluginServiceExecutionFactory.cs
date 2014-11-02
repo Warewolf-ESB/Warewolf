@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,8 +17,8 @@ using Dev2.Runtime.ServiceModel.Data;
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
     /// <summary>
-    ///     Used to execute plugins properly ;)
-    ///     INFO : http://stackoverflow.com/questions/2008691/pass-and-execute-delegate-in-separate-appdomain
+    /// Used to execute plugins properly ;)
+    /// INFO : http://stackoverflow.com/questions/2008691/pass-and-execute-delegate-in-separate-appdomain
     /// </summary>
     public static class PluginServiceExecutionFactory
     {
@@ -26,7 +27,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         private static IRuntime CreateInvokeAppDomain(out AppDomain childDomain)
         {
             // Construct and initialize settings for a second AppDomain.
-            var domainSetup = new AppDomainSetup
+            AppDomainSetup domainSetup = new AppDomainSetup
             {
                 ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
                 ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile,
@@ -39,10 +40,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             // Create an instance of the runtime in the second AppDomain. 
             // A proxy to the object is returned.
-            IRuntime runtime =
-                (PluginRuntimeHandler)
-                    childDomain.CreateInstanceAndUnwrap(typeof (PluginRuntimeHandler).Assembly.FullName,
-                        typeof (PluginRuntimeHandler).FullName);
+            IRuntime runtime = (PluginRuntimeHandler)childDomain.CreateInstanceAndUnwrap(typeof(PluginRuntimeHandler).Assembly.FullName, typeof(PluginRuntimeHandler).FullName);
 
             return runtime;
         }
@@ -57,14 +55,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             try
             {
-                IRuntime runtime = CreateInvokeAppDomain(out childDomain);
+                var runtime = CreateInvokeAppDomain(out childDomain);
 
                 // start the runtime.  call will marshal into the child runtime app domain
                 return runtime.Test(args);
             }
             finally
             {
-                if (childDomain != null)
+                if(childDomain != null)
                 {
                     AppDomain.Unload(childDomain);
                 }
@@ -77,14 +75,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             try
             {
-                IRuntime runtime = CreateInvokeAppDomain(out childDomain);
+                var runtime = CreateInvokeAppDomain(out childDomain);
 
                 // start the runtime.  call will marshal into the child runtime app domain
                 return runtime.Run(args);
             }
             finally
             {
-                if (childDomain != null)
+                if(childDomain != null)
                 {
                     AppDomain.Unload(childDomain);
                 }
@@ -92,7 +90,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         /// <summary>
-        ///     Gets the methods.
+        /// Gets the methods.
         /// </summary>
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
@@ -103,14 +101,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             AppDomain childDomain = null;
             try
             {
-                IRuntime runtime = CreateInvokeAppDomain(out childDomain);
+                var runtime = CreateInvokeAppDomain(out childDomain);
 
                 // start the runtime.  call will marshal into the child runtime app domain
                 return runtime.ListMethods(assemblyLocation, assemblyName, fullName);
             }
             finally
             {
-                if (childDomain != null)
+                if(childDomain != null)
                 {
                     AppDomain.Unload(childDomain);
                 }
@@ -118,7 +116,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         /// <summary>
-        ///     Validates the plugin.
+        /// Validates the plugin.
         /// </summary>
         /// <param name="toLoad">The automatic load.</param>
         /// <returns></returns>
@@ -127,14 +125,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             AppDomain childDomain = null;
             try
             {
-                IRuntime runtime = CreateInvokeAppDomain(out childDomain);
+                var runtime = CreateInvokeAppDomain(out childDomain);
 
                 // start the runtime.  call will marshal into the child runtime app domain
                 return runtime.ValidatePlugin(toLoad);
             }
             finally
             {
-                if (childDomain != null)
+                if(childDomain != null)
                 {
                     AppDomain.Unload(childDomain);
                 }
@@ -146,14 +144,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             AppDomain childDomain = null;
             try
             {
-                IRuntime runtime = CreateInvokeAppDomain(out childDomain);
+                var runtime = CreateInvokeAppDomain(out childDomain);
 
                 // start the runtime.  call will marshal into the child runtime app domain
                 return runtime.FetchNamespaceListObject(pluginSource);
             }
             finally
             {
-                if (childDomain != null)
+                if(childDomain != null)
                 {
                     AppDomain.Unload(childDomain);
                 }
@@ -161,5 +159,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         #endregion
+
     }
 }

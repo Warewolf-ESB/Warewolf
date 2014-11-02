@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,13 +18,13 @@ using Dev2.DynamicServices;
 namespace Dev2.Runtime.ESB.Management
 {
     /// <summary>
-    ///     Responsible for loading all the managment services ;)
-    ///     Replaces GetDefaultServices() in DynamicservicesHost
+    /// Responsible for loading all the managment services ;)
+    /// Replaces GetDefaultServices() in DynamicservicesHost
     /// </summary>
     public class EsbManagementServiceLocator : SpookyAction<IEsbManagementEndpoint, string>
     {
         /// <summary>
-        ///     Loads the managment services.
+        /// Loads the managment services.
         /// </summary>
         /// <returns></returns>
         public IList<IEsbManagementEndpoint> FetchManagmentServices()
@@ -32,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management
         }
 
         /// <summary>
-        ///     Locates the management service.
+        /// Locates the management service.
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>
         /// <returns></returns>
@@ -47,17 +48,16 @@ namespace Dev2.Runtime.ESB.Management
 
             var locator = new EsbManagementServiceLocator();
 
-            foreach (IEsbManagementEndpoint endpoint in locator.FetchManagmentServices())
+            foreach(var endpoint in locator.FetchManagmentServices())
             {
-                DynamicService service = endpoint.CreateServiceEntry();
-                if (service.Compile())
+                var service = endpoint.CreateServiceEntry();
+                if(service.Compile())
                 {
                     result.Add(service);
                 }
                 else
                 {
-                    Dev2Logger.Log.Error("EsbManagementServiceLocator",
-                        new Exception("Failed to load management service [ " + endpoint.HandlesType() + " ]"));
+                    Dev2Logger.Log.Error("EsbManagementServiceLocator", new Exception("Failed to load management service [ " + endpoint.HandlesType() + " ]"));
                 }
             }
 

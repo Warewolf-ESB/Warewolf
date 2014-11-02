@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,8 +20,7 @@ namespace Dev2.Services.Security
 {
     public abstract class SecurityServiceBase : DisposableObject, ISecurityService
     {
-        private readonly ReaderWriterLockSlim _permissionsLock =
-            new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+        readonly ReaderWriterLockSlim _permissionsLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
         protected List<WindowsGroupPermission> _permissions = new List<WindowsGroupPermission>();
 
@@ -67,9 +67,9 @@ namespace Dev2.Services.Security
                 var oldPermissions = new WindowsGroupPermission[_permissions.Count];
                 _permissions.CopyTo(oldPermissions);
 
-                int removedCount = _permissions.RemoveAll(p => !p.IsServer && p.ResourceID == resourceId);
+                var removedCount = _permissions.RemoveAll(p => !p.IsServer && p.ResourceID == resourceId);
 
-                if (removedCount > 0)
+                if(removedCount > 0)
                 {
                     RaisePermissionsModified(oldPermissions, _permissions);
 
@@ -89,13 +89,13 @@ namespace Dev2.Services.Security
         {
             LogStart();
             _permissionsLock.EnterWriteLock();
-            List<WindowsGroupPermission> previousPermissions = _permissions.ToList();
+            var previousPermissions = _permissions.ToList();
             List<WindowsGroupPermission> newPermissions;
             try
             {
                 newPermissions = ReadPermissions();
                 _permissions.Clear();
-                if (newPermissions != null)
+                if(newPermissions != null)
                 {
                     _permissions.AddRange(newPermissions);
                 }
@@ -104,7 +104,7 @@ namespace Dev2.Services.Security
             {
                 _permissionsLock.ExitWriteLock();
             }
-            if (newPermissions != null)
+            if(newPermissions != null)
             {
                 RaisePermissionsModified(previousPermissions, newPermissions);
             }
@@ -112,12 +112,11 @@ namespace Dev2.Services.Security
             LogEnd();
         }
 
-        private void RaisePermissionsModified(IEnumerable<WindowsGroupPermission> oldPermissions,
-            IEnumerable<WindowsGroupPermission> newPermissions)
+        void RaisePermissionsModified(IEnumerable<WindowsGroupPermission> oldPermissions, IEnumerable<WindowsGroupPermission> newPermissions)
         {
-            if (oldPermissions != null && newPermissions != null)
+            if(oldPermissions != null && newPermissions != null)
             {
-                // var permissionsDiff = newPermissions.Except(oldPermissions, new WindowsGroupPermissionEqualityComparer());
+               // var permissionsDiff = newPermissions.Except(oldPermissions, new WindowsGroupPermissionEqualityComparer());
                 RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions.ToList()));
             }
         }
@@ -125,8 +124,8 @@ namespace Dev2.Services.Security
         protected virtual void RaisePermissionsChanged()
         {
             LogStart();
-            EventHandler handler = PermissionsChanged;
-            if (handler != null)
+            var handler = PermissionsChanged;
+            if(handler != null)
             {
                 handler(this, EventArgs.Empty);
             }
@@ -136,8 +135,8 @@ namespace Dev2.Services.Security
         protected virtual void RaisePermissionsModified(PermissionsModifiedEventArgs e)
         {
             LogStart();
-            EventHandler<PermissionsModifiedEventArgs> handler = PermissionsModified;
-            if (handler != null)
+            var handler = PermissionsModified;
+            if(handler != null)
             {
                 handler(this, e);
             }
@@ -148,18 +147,19 @@ namespace Dev2.Services.Security
         protected abstract void WritePermissions(List<WindowsGroupPermission> permissions);
         protected abstract void LogStart([CallerMemberName] string methodName = null);
         protected abstract void LogEnd([CallerMemberName] string methodName = null);
+
     }
 
     public class PermissionsModifiedEventArgs
     {
+        public List<WindowsGroupPermission> ModifiedWindowsGroupPermissions { get; private set; }
+
         /// <summary>
-        ///     Initializes a new instance of the <see cref="T:System.Object" /> class.
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
         public PermissionsModifiedEventArgs(List<WindowsGroupPermission> modifiedWindowsGroupPermissions)
         {
             ModifiedWindowsGroupPermissions = modifiedWindowsGroupPermissions;
         }
-
-        public List<WindowsGroupPermission> ModifiedWindowsGroupPermissions { get; private set; }
     }
 }

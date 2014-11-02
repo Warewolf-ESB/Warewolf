@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -30,7 +31,7 @@ namespace Warewolf.Sql
         [SqlFunction]
         public static SqlXml RunWorkflowForXml(SqlString serverUri, SqlString rootName)
         {
-            XElement xml = new Workflows().RunWorkflowForXmlImpl(
+            var xml = new Workflows().RunWorkflowForXmlImpl(
                 serverUri.IsNull ? null : serverUri.Value,
                 rootName.IsNull ? null : rootName.Value
                 );
@@ -56,8 +57,8 @@ namespace Warewolf.Sql
 
         public XElement RunWorkflowForXmlImpl(string serverUri, string rootName = null)
         {
-            XElement xml = RunWorkflow(serverUri);
-            if (!string.IsNullOrEmpty(rootName))
+            var xml = RunWorkflow(serverUri);
+            if(!string.IsNullOrEmpty(rootName))
             {
                 xml.Name = rootName;
             }
@@ -76,35 +77,35 @@ namespace Warewolf.Sql
             // - else create DataTable for element and convert children to DataTable rows
             //   - when finished iterating, add DataTable's to first DataTable
 
-            if (sqlCtx == null)
+            if(sqlCtx == null)
             {
                 throw new ArgumentNullException("sqlCtx");
             }
 
-            if (string.IsNullOrEmpty(serverUri))
+            if(string.IsNullOrEmpty(serverUri))
             {
                 return new DataTable();
             }
 
-            XElement xml = RunWorkflowForXmlImpl(serverUri);
+            var xml = RunWorkflowForXmlImpl(serverUri);
             var dt = new DataTable(recordsetName);
 
-            if (!string.IsNullOrEmpty(recordsetName))
+            if(!string.IsNullOrEmpty(recordsetName))
             {
                 SqlDataRecord dataRecord = null;
 
-                bool hasRecords = false;
-                foreach (XElement node in xml.Elements(recordsetName))
+                var hasRecords = false;
+                foreach(var node in xml.Elements(recordsetName))
                 {
                     hasRecords = true;
-                    DataRow record = AddRecord(dt, node);
-                    if (dataRecord == null)
+                    var record = AddRecord(dt, node);
+                    if(dataRecord == null)
                     {
                         dataRecord = sqlCtx.SendStart(dt);
                     }
                     sqlCtx.SendRow(dataRecord, record.ItemArray);
                 }
-                if (hasRecords)
+                if(hasRecords)
                 {
                     sqlCtx.SendEnd();
                 }
@@ -116,13 +117,13 @@ namespace Warewolf.Sql
 
                 #region Parse values and recordsets
 
-                foreach (XElement node in xml.Elements())
+                foreach(var node in xml.Elements())
                 {
-                    string nodeName = node.Name.LocalName;
-                    if (node.HasElements)
+                    var nodeName = node.Name.LocalName;
+                    if(node.HasElements)
                     {
                         DataTable rs;
-                        if (!recordsets.TryGetValue(nodeName, out rs))
+                        if(!recordsets.TryGetValue(nodeName, out rs))
                         {
                             rs = new DataTable(nodeName);
                             recordsets.Add(nodeName, rs);
@@ -131,7 +132,7 @@ namespace Warewolf.Sql
                     }
                     else
                     {
-                        string fieldName = nodeName;
+                        var fieldName = nodeName;
                         AddColumn(dt, fieldName);
                         values.Add(node.Value);
                     }
@@ -143,20 +144,20 @@ namespace Warewolf.Sql
 
                 #region Now add rows and columns for each recordset
 
-                foreach (string rsName in recordsets.Keys)
+                foreach(var rsName in recordsets.Keys)
                 {
-                    int startCol = dt.Columns.Count;
-                    DataTable rs = recordsets[rsName];
-                    foreach (DataColumn column in rs.Columns)
+                    var startCol = dt.Columns.Count;
+                    var rs = recordsets[rsName];
+                    foreach(DataColumn column in rs.Columns)
                     {
                         AddColumn(dt, rsName + column.ColumnName);
                     }
-                    int endCol = dt.Columns.Count;
+                    var endCol = dt.Columns.Count;
 
-                    foreach (DataRow rsRow in rs.Rows)
+                    foreach(DataRow rsRow in rs.Rows)
                     {
-                        DataRow row = dt.NewRow();
-                        for (int i = startCol, j = 0; i < endCol; i++, j++)
+                        var row = dt.NewRow();
+                        for(int i = startCol, j = 0; i < endCol; i++, j++)
                         {
                             row[i] = rsRow.ItemArray[j];
                         }
@@ -166,10 +167,10 @@ namespace Warewolf.Sql
 
                 #endregion
 
-                if (dt.Rows.Count > 0)
+                if(dt.Rows.Count > 0)
                 {
-                    SqlDataRecord dataRecord = sqlCtx.SendStart(dt);
-                    foreach (DataRow record in dt.Rows)
+                    var dataRecord = sqlCtx.SendStart(dt);
+                    foreach(DataRow record in dt.Rows)
                     {
                         sqlCtx.SendRow(dataRecord, record.ItemArray);
                     }
@@ -184,12 +185,12 @@ namespace Warewolf.Sql
 
         #region AddColumn
 
-        private static void AddColumn(DataTable dataTable, string columnName)
+        static void AddColumn(DataTable dataTable, string columnName)
         {
-            DataColumn column = dataTable.Columns[columnName];
-            if (column == null)
+            var column = dataTable.Columns[columnName];
+            if(column == null)
             {
-                dataTable.Columns.Add(columnName, typeof (string));
+                dataTable.Columns.Add(columnName, typeof(string));
             }
         }
 
@@ -197,10 +198,10 @@ namespace Warewolf.Sql
 
         #region AddRecord
 
-        private static DataRow AddRecord(DataTable rs, XContainer rsXml)
+        static DataRow AddRecord(DataTable rs, XContainer rsXml)
         {
             var values = new List<object>();
-            foreach (XElement fieldNode in rsXml.Elements())
+            foreach(var fieldNode in rsXml.Elements())
             {
                 AddColumn(rs, fieldNode.Name.LocalName);
                 values.Add(fieldNode.Value);
@@ -213,19 +214,19 @@ namespace Warewolf.Sql
         #region RunWorkflow
 
         /// <summary>
-        ///     Runs the workflow at the given request URI.
+        /// Runs the workflow at the given request URI.
         /// </summary>
         /// <param name="requestUri">The request URI.</param>
         /// <returns>The XML payload of the workflow.</returns>
         public virtual XElement RunWorkflow(string requestUri)
         {
-            if (string.IsNullOrEmpty(requestUri))
+            if(string.IsNullOrEmpty(requestUri))
             {
                 return new XElement("DataList");
             }
 
-            var webClient = new WebClient {Credentials = CredentialCache.DefaultCredentials};
-            string result = webClient.DownloadString(requestUri);
+            var webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
+            var result = webClient.DownloadString(requestUri);
             return XElement.Parse(result);
         }
 

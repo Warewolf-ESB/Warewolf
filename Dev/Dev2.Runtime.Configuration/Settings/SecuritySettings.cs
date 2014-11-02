@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,16 +17,16 @@ namespace Dev2.Runtime.Configuration.Settings
     public class SecuritySettings : SettingsBase
     {
         public new const string SettingName = "Security";
-
+        
         #region CTOR
 
         public SecuritySettings(string webServerUri)
-            : base(SettingName, "Security", webServerUri)
+            : base(SettingName, "Security",webServerUri)
         {
         }
 
         public SecuritySettings(XElement xml, string webServerUri)
-            : base(xml, webServerUri)
+            : base(xml,webServerUri)
         {
         }
 
@@ -35,7 +36,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public override XElement ToXml()
         {
-            XElement result = base.ToXml();
+            var result = base.ToXml();
 
             return result;
         }

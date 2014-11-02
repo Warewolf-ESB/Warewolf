@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,7 +17,7 @@ namespace Dev2.Providers.Validation.Rules
 {
     public class IsRequiredWhenOtherIsNotEmptyRule : Rule<string>
     {
-        private readonly Func<string> _otherValue;
+        readonly Func<string> _otherValue;
 
         public IsRequiredWhenOtherIsNotEmptyRule(Func<string> getValue, Func<string> otherValue)
             : base(getValue)
@@ -28,10 +29,10 @@ namespace Dev2.Providers.Validation.Rules
 
         public override IActionableErrorInfo Check()
         {
-            string otherValue = _otherValue();
-            if (!string.IsNullOrEmpty(otherValue))
+            var otherValue = _otherValue();
+            if(!string.IsNullOrEmpty(otherValue))
             {
-                string value = GetValue();
+                var value = GetValue();
                 return string.IsNullOrEmpty(value) ? CreatError() : null;
             }
             return null;

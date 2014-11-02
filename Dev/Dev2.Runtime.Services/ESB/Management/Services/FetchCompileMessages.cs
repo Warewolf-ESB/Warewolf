@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,7 +15,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
@@ -26,7 +26,7 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     Internal service to fetch compile time messages
+    /// Internal service to fetch compile time messages
     /// </summary>
     public class FetchCompileMessages : IEsbManagementEndpoint
     {
@@ -35,26 +35,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             string serviceId = null;
             string workspaceId = null;
 
-            var serializer = new Dev2JsonSerializer();
-            var result = new ExecuteMessage {HasError = false};
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var result = new ExecuteMessage { HasError = false };
 
             StringBuilder tmp;
             values.TryGetValue("ServiceID", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 serviceId = tmp.ToString();
             }
             values.TryGetValue("WorkspaceID", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 workspaceId = tmp.ToString();
             }
             values.TryGetValue("FilterList", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
             }
 
-            if (string.IsNullOrEmpty(serviceId) || string.IsNullOrEmpty(workspaceId))
+            if(string.IsNullOrEmpty(serviceId) || string.IsNullOrEmpty(workspaceId))
             {
                 throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
             }
@@ -66,11 +66,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             Guid.TryParse(serviceId, out sGuid);
 
 
-            IResource thisService = ResourceCatalog.Instance.GetResource(wGuid, sGuid);
+            var thisService = ResourceCatalog.Instance.GetResource(wGuid, sGuid);
 
-            if (thisService != null)
+            if(thisService != null)
             {
-                IList<IResourceForTree> deps = thisService.Dependencies;
+                var deps = thisService.Dependencies;
 
                 CompileMessageType[] filters = null; // TODO : Convert string list to enum array ;)
 
@@ -91,19 +91,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var newDs = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;

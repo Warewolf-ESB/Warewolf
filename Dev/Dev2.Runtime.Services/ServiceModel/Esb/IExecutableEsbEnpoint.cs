@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,7 +17,7 @@ using Dev2.Runtime.ServiceModel.Data;
 namespace Dev2.Runtime.ServiceModel.Esb
 {
     /// <summary>
-    ///     Represents a contract for an ESB endpoint whose methods are executable.
+    /// Represents a contract for an ESB endpoint whose methods are executable.
     /// </summary>
     public interface IExecutableEsbEnpoint
     {

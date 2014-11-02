@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,7 +21,7 @@ namespace Dev2.Workspaces
         #region Update
 
         /// <summary>
-        ///     Performs the <see cref="IWorkspaceItem.Action" /> on the specified workspace item.
+        /// Performs the <see cref="IWorkspaceItem.Action" /> on the specified workspace item.
         /// </summary>
         /// <param name="workspaceItem">The workspace item to be actioned.</param>
         /// <param name="isLocalSave">if set to <c>true</c> [is local save].</param>
@@ -28,25 +29,25 @@ namespace Dev2.Workspaces
         /// <exception cref="System.ArgumentNullException">workspaceItem</exception>
         public void Update(IWorkspaceItem workspaceItem, bool isLocalSave, string roles = null)
         {
-            if (workspaceItem == null)
+            if(workspaceItem == null)
             {
                 throw new ArgumentNullException("workspaceItem");
             }
 
-            if (roles == null)
+            if(roles == null)
             {
                 roles = string.Empty;
             }
 
-            switch (workspaceItem.Action)
+            switch(workspaceItem.Action)
             {
                 case WorkspaceItemAction.None:
                     break;
 
-                case WorkspaceItemAction.Discard: // overwrite workspace item with copy of server item
-                case WorkspaceItemAction.Edit: // create copy of the server item in this workspace
+                case WorkspaceItemAction.Discard:   // overwrite workspace item with copy of server item
+                case WorkspaceItemAction.Edit:      // create copy of the server item in this workspace
                     //06.03.2013: Ashley Lewis - PBI 8720
-                    if (workspaceItem.ServiceType != enDynamicServiceObjectType.Source.ToString())
+                    if(workspaceItem.ServiceType != enDynamicServiceObjectType.Source.ToString())
                     {
                         Copy(WorkspaceRepository.Instance.ServerWorkspace, this, workspaceItem, roles);
                     }
@@ -56,7 +57,7 @@ namespace Dev2.Workspaces
                     }
                     break;
 
-                case WorkspaceItemAction.Commit: // overwrite server item with workspace item
+                case WorkspaceItemAction.Commit:    // overwrite server item with workspace item
 
                     break;
             }
@@ -66,15 +67,15 @@ namespace Dev2.Workspaces
 
         #region Copy
 
-        private static void Copy(IWorkspace source, IWorkspace destination, IWorkspaceItem workspaceItem, string roles)
+        static void Copy(IWorkspace source, IWorkspace destination, IWorkspaceItem workspaceItem, string roles)
         {
-            if (source.Equals(destination))
+            if(source.Equals(destination))
             {
                 return;
             }
 
             enDynamicServiceObjectType serviceType;
-            if (!Enum.TryParse(workspaceItem.ServiceType, out serviceType))
+            if(!Enum.TryParse(workspaceItem.ServiceType, out serviceType))
             {
                 serviceType = enDynamicServiceObjectType.DynamicService;
             }
@@ -82,7 +83,7 @@ namespace Dev2.Workspaces
             #region TODO: Fix Map ResourceType from workspaceItem.ServiceType
 
             // TODO: FIX mapping ResourceType from workspaceItem.ServiceType
-            switch (serviceType)
+            switch(serviceType)
             {
                 case enDynamicServiceObjectType.BizRule:
                     break;

@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,7 +11,6 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dev2.Common;
@@ -18,7 +18,7 @@ using Dev2.Common;
 namespace Dev2.Runtime.Hosting
 {
     /// <summary>
-    ///     What does this class do?
+    /// What does this class do?
     /// </summary>
     internal class ResourceIterator : IResourceIterator
     {
@@ -32,21 +32,21 @@ namespace Dev2.Runtime.Hosting
         // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
-        private static volatile ResourceIterator _instance;
-        private static readonly object SyncRoot = new Object();
+        static volatile ResourceIterator _instance;
+        static readonly object SyncRoot = new Object();
 
         /// <summary>
-        ///     Gets the instance.
+        /// Gets the instance.
         /// </summary>
         public static ResourceIterator Instance
         {
             get
             {
-                if (_instance == null)
+                if(_instance == null)
                 {
-                    lock (SyncRoot)
+                    lock(SyncRoot)
                     {
-                        if (_instance == null)
+                        if(_instance == null)
                         {
                             _instance = new ResourceIterator();
                         }
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.Hosting
         #region Initialization
 
         // Prevent instantiation
-        private ResourceIterator()
+        ResourceIterator()
         {
         }
 
@@ -69,8 +69,7 @@ namespace Dev2.Runtime.Hosting
 
         #region IterateAll
 
-        public void IterateAll(Guid workspaceID, Func<ResourceIteratorResult, bool> action,
-            params ResourceDelimiter[] delimiters)
+        public void IterateAll(Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters)
         {
             Iterate("Resources", workspaceID, action, delimiters);
         }
@@ -79,46 +78,45 @@ namespace Dev2.Runtime.Hosting
 
         #region Iterate
 
-        public void Iterate(string resourcePath, Guid workspaceID, Func<ResourceIteratorResult, bool> action,
-            params ResourceDelimiter[] delimiters)
+        public void Iterate(string resourcePath, Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters)
         {
-            if (delimiters == null || delimiters.Length == 0 || action == null || string.IsNullOrEmpty(resourcePath))
+            if(delimiters == null || delimiters.Length == 0 || action == null || string.IsNullOrEmpty(resourcePath))
             {
                 return;
             }
 
-            string workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            IEnumerable<string> folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
-            foreach (string path in folders.Select(folder => Path.Combine(workspacePath, folder)))
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
+            foreach(var path in folders.Select(folder => Path.Combine(workspacePath, folder)))
             {
-                if (Directory.Exists(path))
+                if(Directory.Exists(path))
                 {
-                    string[] files = Directory.GetFiles(path, "*.xml");
-                    foreach (string file in files)
+                    var files = Directory.GetFiles(path, "*.xml");
+                    foreach(var file in files)
                     {
-                        if (!string.IsNullOrEmpty(resourcePath))
+                        if(!string.IsNullOrEmpty(resourcePath))
                         {
-                            if (!file.Contains(resourcePath))
+                            if(!file.Contains(resourcePath))
                             {
                                 continue;
                             }
                         }
                         // XML parsing will add overhead - so just read file and use string ops instead
-                        string content = File.ReadAllText(file);
-                        var iteratorResult = new ResourceIteratorResult {Content = content};
-                        bool delimiterFound = false;
-                        foreach (ResourceDelimiter delimiter in delimiters)
+                        var content = File.ReadAllText(file);
+                        var iteratorResult = new ResourceIteratorResult { Content = content };
+                        var delimiterFound = false;
+                        foreach(var delimiter in delimiters)
                         {
                             string value;
-                            if (delimiter.TryGetValue(content, out value))
+                            if(delimiter.TryGetValue(content, out value))
                             {
                                 delimiterFound = true;
                                 iteratorResult.Values.Add(delimiter.ID, value);
                             }
                         }
-                        if (delimiterFound)
+                        if(delimiterFound)
                         {
-                            if (!action(iteratorResult))
+                            if(!action(iteratorResult))
                             {
                                 return;
                             }
@@ -129,5 +127,6 @@ namespace Dev2.Runtime.Hosting
         }
 
         #endregion
+
     }
 }

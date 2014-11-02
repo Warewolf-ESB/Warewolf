@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,10 +22,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string RecordsetAlias { get; set; }
 
         /// <summary>
-        ///     This property exists so that when an instance comes back from the website the IPaths can be reconstructed.
+        /// This property exists so that when an instance comes back from the website the IPaths can be reconstructed.
         /// </summary>
         /// <value>
-        ///     The IPath which this field represents.
+        /// The IPath which this field represents.
         /// </value>
         [JsonProperty(TypeNameHandling = TypeNameHandling.All)]
         public IPath Path { get; set; }

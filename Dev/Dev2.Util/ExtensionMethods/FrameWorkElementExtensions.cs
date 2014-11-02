@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,7 +11,6 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,27 +21,27 @@ namespace Dev2.Util.ExtensionMethods
     {
         public static void BringToFront(this FrameworkElement element)
         {
-            if (element == null) return;
+            if(element == null) return;
 
             var parent = element.Parent as Panel;
-            if (parent == null) return;
+            if(parent == null) return;
 
-            List<int> maxZ = parent.Children.OfType<UIElement>()
-                .Where(x => !Equals(x, element))
-                .Select(Panel.GetZIndex)
-                .ToList();
+            var maxZ = parent.Children.OfType<UIElement>()
+              .Where(x => !Equals(x, element))
+              .Select(Panel.GetZIndex)
+              .ToList();
 
-            if (!maxZ.Any())
+            if(!maxZ.Any())
             {
                 return;
             }
-            int max = maxZ.Max();
+            var max = maxZ.Max();
             Panel.SetZIndex(element, max + 1);
         }
 
         public static void BringToMaxFront(this FrameworkElement element)
         {
-            if (element == null)
+            if(element == null)
             {
                 return;
             }
@@ -51,7 +51,7 @@ namespace Dev2.Util.ExtensionMethods
 
         public static void SendToBack(this FrameworkElement element)
         {
-            if (element == null)
+            if(element == null)
             {
                 return;
             }

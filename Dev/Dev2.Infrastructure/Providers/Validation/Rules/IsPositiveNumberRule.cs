@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,12 +25,12 @@ namespace Dev2.Providers.Validation.Rules
 
         public override IActionableErrorInfo Check()
         {
-            bool isValid = false;
+            var isValid = false;
             int x;
-            string value = GetValue();
-            if (int.TryParse(value, out x))
+            var value = GetValue();
+            if(int.TryParse(value, out x))
             {
-                if (x >= 0)
+                if(x >= 0)
                 {
                     isValid = true;
                 }
@@ -38,3 +39,5 @@ namespace Dev2.Providers.Validation.Rules
         }
     }
 }
+
+

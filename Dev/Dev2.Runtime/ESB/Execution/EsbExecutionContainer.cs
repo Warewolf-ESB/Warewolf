@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,18 +19,24 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Execution
 {
     /// <summary>
-    ///     Wrapper class for all executable types in our ESB
+    /// Wrapper class for all executable types in our ESB
     /// </summary>
     public abstract class EsbExecutionContainer
     {
-        protected EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace,
-            IEsbChannel esbChannel)
+        protected ServiceAction ServiceAction { get; private set; }
+        protected IDSFDataObject DataObject { get; private set; }
+        protected IWorkspace TheWorkspace { get; private set; }
+        protected IEsbChannel EsbChannel { get; private set; }
+        protected EsbExecuteRequest Request { get; private set; }
+
+        public String InstanceOutputDefinition { get; set; }
+
+        protected EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObject, theWorkspace, esbChannel, null)
         {
         }
 
-        protected EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace,
-            IEsbChannel esbChannel, EsbExecuteRequest request)
+        protected EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
         {
             ServiceAction = sa;
             DataObject = dataObject;
@@ -41,14 +48,6 @@ namespace Dev2.Runtime.ESB.Execution
         protected EsbExecutionContainer()
         {
         }
-
-        protected ServiceAction ServiceAction { get; private set; }
-        protected IDSFDataObject DataObject { get; private set; }
-        protected IWorkspace TheWorkspace { get; private set; }
-        protected IEsbChannel EsbChannel { get; private set; }
-        protected EsbExecuteRequest Request { get; private set; }
-
-        public String InstanceOutputDefinition { get; set; }
 
         public abstract Guid Execute(out ErrorResultTO errors);
     }

@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +18,7 @@ namespace Dev2.Runtime.Security
     {
         public static bool Invoke(string workingDir, string fileName, string args)
         {
-            bool invoked = true;
+            var invoked = true;
 
             var p = new Process
             {
@@ -29,19 +30,20 @@ namespace Dev2.Runtime.Security
                 }
             };
 
-            if (!string.IsNullOrEmpty(workingDir))
+            if(!string.IsNullOrEmpty(workingDir))
             {
                 p.StartInfo.WorkingDirectory = workingDir;
             }
-            if (!string.IsNullOrEmpty(args))
+            if(!string.IsNullOrEmpty(args))
             {
                 p.StartInfo.Arguments = args;
             }
 
-            if (p.Start())
+            if(p.Start())
             {
                 // wait up to 10 seconds for exit ;)
                 p.WaitForExit(10000);
+
             }
             else
             {

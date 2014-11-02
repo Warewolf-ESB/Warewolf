@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -32,9 +33,9 @@ namespace Dev2.DynamicServices
 {
     public class FileSystemInstanceStore : InstanceStore
     {
-        private readonly FileSystemInstanceStoreIO _dataStore;
-        private readonly Guid _lockToken = Guid.NewGuid();
         private readonly Guid _ownerId = Guid.NewGuid();
+        private readonly Guid _lockToken = Guid.NewGuid();
+        private readonly FileSystemInstanceStoreIO _dataStore;
 
         public FileSystemInstanceStore()
         {
@@ -48,62 +49,65 @@ namespace Dev2.DynamicServices
             InstancePersistenceCommand command,
             TimeSpan timeout, AsyncCallback callback, object state)
         {
-            switch (command.GetType().Name)
+
+            switch(command.GetType().Name)
             {
                 case "CreateWorkflowOwnerCommand":
 
                     Func<Exception> createFunc = () => ProcessCreateWorkflowOwner(context,
-                        command as CreateWorkflowOwnerCommand);
+                                                                                  command as CreateWorkflowOwnerCommand);
 
                     return createFunc.BeginInvoke(ar =>
-                    {
-                        Exception ex = createFunc.EndInvoke(ar);
-                        callback(new InstanceStoreAsyncResult(ar, ex));
-                    }, state);
+                        {
+                            Exception ex = createFunc.EndInvoke(ar);
+                            callback(new InstanceStoreAsyncResult(ar, ex));
+                        }, state);
 
                 case "LoadWorkflowCommand":
                     Func<Exception> loadFunc = () => ProcessLoadWorkflow(context,
-                        command as LoadWorkflowCommand);
+                                                                         command as LoadWorkflowCommand);
 
                     return loadFunc.BeginInvoke(ar =>
-                    {
-                        Exception ex = loadFunc.EndInvoke(ar);
-                        callback(new InstanceStoreAsyncResult(ar, ex));
-                    }, state);
+                        {
+                            Exception ex = loadFunc.EndInvoke(ar);
+                            callback(new InstanceStoreAsyncResult(ar, ex));
+                        }, state);
 
                 case "LoadWorkflowByInstanceKeyCommand":
                     Func<Exception> loadByKeyFunc = () => ProcessLoadWorkflowByInstanceKey(context,
-                        command as LoadWorkflowByInstanceKeyCommand);
+                                                                                           command as LoadWorkflowByInstanceKeyCommand);
 
                     return loadByKeyFunc.BeginInvoke(ar =>
-                    {
-                        Exception ex = loadByKeyFunc.EndInvoke(ar);
-                        callback(new InstanceStoreAsyncResult(ar, ex));
-                    }, state);
+                        {
+                            Exception ex = loadByKeyFunc.EndInvoke(ar);
+                            callback(new InstanceStoreAsyncResult(ar, ex));
+                        }, state);
 
                 case "SaveWorkflowCommand":
                     Func<Exception> saveFunc = () => ProcessSaveWorkflow(context,
-                        command as SaveWorkflowCommand);
+                                                                         command as SaveWorkflowCommand);
 
                     return saveFunc.BeginInvoke(ar =>
-                    {
-                        Exception ex = saveFunc.EndInvoke(ar);
-                        callback(new InstanceStoreAsyncResult(ar, ex));
-                    }, state);
+                        {
+                            Exception ex = saveFunc.EndInvoke(ar);
+                            callback(new InstanceStoreAsyncResult(ar, ex));
+                        }, state);
 
                 default:
                     return base.BeginTryCommand(
                         context, command, timeout, callback, state);
             }
+
+
         }
 
         protected override bool EndTryCommand(IAsyncResult ar)
         {
-            var result = ar as InstanceStoreAsyncResult;
-            if (result != null)
+            InstanceStoreAsyncResult result = ar as InstanceStoreAsyncResult;
+            if(result != null)
             {
                 Exception exception = result.Exception;
-                if (exception != null)
+                if(exception != null)
                 {
                     throw exception;
                 }
@@ -116,7 +120,7 @@ namespace Dev2.DynamicServices
             InstancePersistenceContext context,
             InstancePersistenceCommand command, TimeSpan timeout)
         {
-            var waitEvent = new ManualResetEvent(false);
+            ManualResetEvent waitEvent = new ManualResetEvent(false);
             IAsyncResult asyncResult = BeginTryCommand(
                 context, command, timeout, ar => waitEvent.Set(), null);
 
@@ -132,14 +136,15 @@ namespace Dev2.DynamicServices
             InstancePersistenceContext context,
             // ReSharper disable UnusedParameter.Local
             CreateWorkflowOwnerCommand command)
-            // ReSharper restore UnusedParameter.Local
+        // ReSharper restore UnusedParameter.Local
         {
+
             try
             {
                 context.BindInstanceOwner(_ownerId, _lockToken);
                 return null;
             }
-            catch (InstancePersistenceException exception)
+            catch(InstancePersistenceException exception)
             {
                 Console.WriteLine(
                     // ReSharper disable LocalizableElement
@@ -148,15 +153,18 @@ namespace Dev2.DynamicServices
                     exception.Message);
                 return exception;
             }
+
         }
 
         private Exception ProcessLoadWorkflow(
             InstancePersistenceContext context,
             LoadWorkflowCommand command)
         {
+
+
             try
             {
-                if (command.AcceptUninitializedInstance)
+                if(command.AcceptUninitializedInstance)
                 {
                     context.LoadedInstance(InstanceState.Uninitialized,
                         null, null, null, null);
@@ -167,7 +175,7 @@ namespace Dev2.DynamicServices
                 }
                 return null;
             }
-            catch (InstancePersistenceException exception)
+            catch(InstancePersistenceException exception)
             {
                 Console.WriteLine(
                     // ReSharper disable LocalizableElement
@@ -176,17 +184,20 @@ namespace Dev2.DynamicServices
                     exception.Message);
                 return exception;
             }
+
+
         }
 
         private Exception ProcessLoadWorkflowByInstanceKey(
             InstancePersistenceContext context,
             LoadWorkflowByInstanceKeyCommand command)
         {
+
             try
             {
                 Guid instanceId = _dataStore.GetInstanceAssociation(
                     command.LookupInstanceKey);
-                if (instanceId == Guid.Empty)
+                if(instanceId == Guid.Empty)
                 {
                     throw new InstanceKeyNotReadyException(
                         String.Format("Unable to load instance for key: {0}",
@@ -196,7 +207,7 @@ namespace Dev2.DynamicServices
                 SharedLoadWorkflow(context, instanceId);
                 return null;
             }
-            catch (InstancePersistenceException exception)
+            catch(InstancePersistenceException exception)
             {
                 Console.WriteLine(
                     // ReSharper disable LocalizableElement
@@ -205,18 +216,19 @@ namespace Dev2.DynamicServices
                     exception.Message);
                 return exception;
             }
+
         }
 
         private void SharedLoadWorkflow(InstancePersistenceContext context,
             Guid instanceId)
         {
-            if (instanceId != Guid.Empty)
+            if(instanceId != Guid.Empty)
             {
                 IDictionary<XName, InstanceValue> instanceData;
                 IDictionary<XName, InstanceValue> instanceMetadata;
                 _dataStore.LoadInstance(instanceId,
                     out instanceData, out instanceMetadata);
-                if (context.InstanceView.InstanceId == Guid.Empty)
+                if(context.InstanceView.InstanceId == Guid.Empty)
                 {
                     context.BindInstance(instanceId);
                 }
@@ -236,7 +248,7 @@ namespace Dev2.DynamicServices
         {
             try
             {
-                if (command.CompleteInstance)
+                if(command.CompleteInstance)
                 {
                     _dataStore.DeleteInstance(
                         context.InstanceView.InstanceId);
@@ -245,10 +257,10 @@ namespace Dev2.DynamicServices
                     return null;
                 }
 
-                if (command.InstanceData.Count > 0 ||
+                if(command.InstanceData.Count > 0 ||
                     command.InstanceMetadataChanges.Count > 0)
                 {
-                    if (!_dataStore.SaveAllInstanceData(
+                    if(!_dataStore.SaveAllInstanceData(
                         context.InstanceView.InstanceId, command))
                     {
                         _dataStore.SaveAllInstanceMetaData(
@@ -256,9 +268,9 @@ namespace Dev2.DynamicServices
                     }
                 }
 
-                if (command.InstanceKeysToAssociate.Count > 0)
+                if(command.InstanceKeysToAssociate.Count > 0)
                 {
-                    foreach (var entry in command.InstanceKeysToAssociate)
+                    foreach(var entry in command.InstanceKeysToAssociate)
                     {
                         _dataStore.SaveInstanceAssociation(
                             context.InstanceView.InstanceId, entry.Key, false);
@@ -266,7 +278,7 @@ namespace Dev2.DynamicServices
                 }
                 return null;
             }
-            catch (InstancePersistenceException exception)
+            catch(InstancePersistenceException exception)
             {
                 Console.WriteLine(
                     // ReSharper disable LocalizableElement
@@ -291,16 +303,16 @@ namespace Dev2.DynamicServices
                 Exception = exception;
             }
 
-            public Exception Exception { get; private set; }
-
             public bool IsCompleted { get; private set; }
             public Object AsyncState { get; private set; }
             public WaitHandle AsyncWaitHandle { get; private set; }
             // ReSharper disable UnusedAutoPropertyAccessor.Local
             public bool CompletedSynchronously { get; private set; }
             // ReSharper restore UnusedAutoPropertyAccessor.Local
+            public Exception Exception { get; private set; }
         }
 
         #endregion
     }
 }
+

@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,4 +18,5 @@ namespace Dev2.Runtime.WebServer
     {
         HttpResponseMessage Response { get; }
     }
+
 }

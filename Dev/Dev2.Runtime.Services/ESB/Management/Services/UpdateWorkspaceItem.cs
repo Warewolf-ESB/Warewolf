@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,12 +24,13 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     Update a workspace Item
+    /// Update a workspace Item
     /// </summary>
     public class UpdateWorkspaceItem : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+
             StringBuilder itemXml;
             string isLocal = string.Empty;
 
@@ -44,9 +46,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             bool.TryParse(isLocal, out isLocalSave);
 
-            var res = new ExecuteMessage {HasError = false};
+            var res = new ExecuteMessage { HasError = false};
 
-            if (itemXml == null || itemXml.Length == 0)
+            if(itemXml == null || itemXml.Length == 0)
             {
                 res.SetMessage("Invalid workspace item definition " + DateTime.Now);
                 res.HasError = true;
@@ -69,7 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         res.SetMessage("Workspace item updated " + DateTime.Now);
                     }
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     res.SetMessage("Error updating workspace item " + DateTime.Now);
                     res.SetMessage(ex.Message);
@@ -78,26 +80,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            var serializer = new Dev2JsonSerializer();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(res);
         }
 
         public DynamicService CreateServiceEntry()
         {
-            var workspaceItemService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><IsLocalSave ColumnIODirection=\"Input\"/><ItemXml ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+            var workspaceItemService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><IsLocalSave ColumnIODirection=\"Input\"/><ItemXml ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
-            var workspaceItemAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+            var workspaceItemAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             workspaceItemService.Actions.Add(workspaceItemAction);
 
             return workspaceItemService;

@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,7 +13,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace Dev2.Diagnostics.Debug
@@ -21,7 +21,7 @@ namespace Dev2.Diagnostics.Debug
     {
         public IList<DebugState> DebugStates { get; set; }
 
-        public XmlSchema GetSchema()
+        public System.Xml.Schema.XmlSchema GetSchema()
         {
             return null;
         }
@@ -32,7 +32,7 @@ namespace Dev2.Diagnostics.Debug
             reader.MoveToContent();
             reader.ReadStartElement();
 
-            while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugState")
+            while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugState")
             {
                 var item = new DebugState();
                 item.ReadXml(reader);

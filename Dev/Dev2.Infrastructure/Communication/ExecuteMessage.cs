@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,14 +17,14 @@ namespace Dev2.Communication
 {
     public class ExecuteMessage : IExecuteMessage
     {
+        public bool HasError { get; set; }
+
+        public StringBuilder Message { get; set; }
+
         public ExecuteMessage()
         {
             Message = new StringBuilder();
         }
-
-        public bool HasError { get; set; }
-
-        public StringBuilder Message { get; set; }
 
         public void SetMessage(string message)
         {

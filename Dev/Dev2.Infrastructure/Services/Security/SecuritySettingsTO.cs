@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,7 +25,7 @@ namespace Dev2.Services.Security
         public SecuritySettingsTO(IEnumerable<WindowsGroupPermission> permissions)
             : this()
         {
-            if (permissions != null)
+            if(permissions != null)
             {
                 WindowsGroupPermissions.AddRange(permissions);
             }

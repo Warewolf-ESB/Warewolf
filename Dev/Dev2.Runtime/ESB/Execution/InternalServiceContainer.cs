@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,14 +25,15 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Execution
 {
     /// <summary>
-    ///     Execute an internal or management service
+    /// Execute an internal or management service
     /// </summary>
     public class InternalServiceContainer : EsbExecutionContainer
     {
-        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace,
-            IEsbChannel esbChannel, EsbExecuteRequest request)
+
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
+
         }
 
         public override Guid Execute(out ErrorResultTO errors)
@@ -42,19 +44,19 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
-                var emsl = new EsbManagementServiceLocator();
+                EsbManagementServiceLocator emsl = new EsbManagementServiceLocator();
                 IEsbManagementEndpoint eme = emsl.LocateManagementService(ServiceAction.Name);
 
-                if (eme != null)
+                if(eme != null)
                 {
                     // Web request for internal service ;)
-                    if (Request.Args == null)
+                    if(Request.Args == null)
                     {
                         GenerateRequestDictionaryFromDataObject(out invokeErrors);
                         errors.MergeErrors(invokeErrors);
                     }
 
-                    StringBuilder res = eme.Execute(Request.Args, TheWorkspace);
+                    var res = eme.Execute(Request.Args, TheWorkspace);
                     Request.ExecuteResult = res;
                     errors.MergeErrors(invokeErrors);
                     result = DataObject.DataListID;
@@ -65,7 +67,7 @@ namespace Dev2.Runtime.ESB.Execution
                     errors.AddError("Could not locate management service [ " + ServiceAction.ServiceName + " ]");
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 errors.AddError(ex.Message);
             }
@@ -75,29 +77,29 @@ namespace Dev2.Runtime.ESB.Execution
 
         private void GenerateRequestDictionaryFromDataObject(out ErrorResultTO errors)
         {
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var compiler = DataListFactory.CreateDataListCompiler();
             errors = new ErrorResultTO();
 
             ErrorResultTO invokeErrors;
             IBinaryDataList bdl = compiler.FetchBinaryDataList(DataObject.DataListID, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            if (!invokeErrors.HasErrors())
+            if(!invokeErrors.HasErrors())
             {
-                foreach (IBinaryDataListEntry entry in bdl.FetchScalarEntries())
+                foreach(IBinaryDataListEntry entry in bdl.FetchScalarEntries())
                 {
                     IBinaryDataListItem itm = entry.FetchScalar();
 
-                    if (!DataListUtil.IsSystemTag(itm.FieldName))
+                    if(!DataListUtil.IsSystemTag(itm.FieldName))
                     {
                         var stringBuilder = new StringBuilder("");
                         try
                         {
                             stringBuilder = new StringBuilder(itm.TheValue);
                         }
-                            // ReSharper disable EmptyGeneralCatchClause
-                        catch (Exception)
-                            // ReSharper restore EmptyGeneralCatchClause
+                        // ReSharper disable EmptyGeneralCatchClause
+                        catch(Exception)
+                        // ReSharper restore EmptyGeneralCatchClause
                         {
                         }
                         Request.AddArgument(itm.FieldName, stringBuilder);

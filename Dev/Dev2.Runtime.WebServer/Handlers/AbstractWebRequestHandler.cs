@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,12 +18,10 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Principal;
-using System.Text;
 using System.Threading;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
@@ -38,38 +37,29 @@ using Dev2.Server.DataList.Translators;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
-using enTranslationDepth = Dev2.DataList.Contract.enTranslationDepth;
 
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public abstract class AbstractWebRequestHandler : IRequestHandler
     {
-        private static readonly object ExecutionObject = new object();
-
-        protected readonly List<DataListFormat> PublicFormats =
-            new DataListTranslatorFactory().FetchAllFormats().Where(c => c.ContentType != "").ToList();
-
-        private string _location;
-
-        public string Location
-        {
-            get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); }
-        }
+        protected readonly List<DataListFormat> PublicFormats = new DataListTranslatorFactory().FetchAllFormats().Where(c => c.ContentType != "").ToList();
+        string _location;
+        static readonly object ExecutionObject = new object();
+        public string Location { get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); } }
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
-        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId,
-            NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
+        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
         {
-            lock (ExecutionObject)
+            lock(ExecutionObject)
             {
                 string executePayload;
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 Guid workspaceGuid;
 
-                if (workspaceId != null)
+                if(workspaceId != null)
                 {
-                    if (!Guid.TryParse(workspaceId, out workspaceGuid))
+                    if(!Guid.TryParse(workspaceId, out workspaceGuid))
                     {
                         workspaceGuid = WorkspaceRepository.Instance.ServerWorkspace.ID;
                     }
@@ -81,29 +71,22 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 ErrorResultTO errors;
                 var allErrors = new ErrorResultTO();
-                var dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID,
-                    webRequest.RawRequestPayload)
-                {
-                    IsFromWebServer = true,
-                    ExecutingUser = user,
-                    ServiceName = serviceName,
-                    WorkspaceID = workspaceGuid
-                };
+                var dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName, WorkspaceID = workspaceGuid };
 
                 // now bind any variables that are part of the path arguments ;)
                 BindRequestVariablesToDataObject(webRequest, ref dataObject);
 
                 // now process headers ;)
-                if (headers != null)
+                if(headers != null)
                 {
                     Dev2Logger.Log.Debug("Remote Invoke");
 
-                    string isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
-                    string remoteId = headers.Get(HttpRequestHeader.From.ToString());
+                    var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
+                    var remoteId = headers.Get(HttpRequestHeader.From.ToString());
 
-                    if (isRemote != null && remoteId != null)
+                    if(isRemote != null && remoteId != null)
                     {
-                        if (isRemote.Equals(GlobalConstants.RemoteServerInvoke))
+                        if(isRemote.Equals(GlobalConstants.RemoteServerInvoke))
                         {
                             // we have a remote invoke ;)
                             dataObject.RemoteInvoke = true;
@@ -115,17 +98,16 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 // now set the emition type ;)
                 int loc;
-                if (!String.IsNullOrEmpty(serviceName) &&
-                    (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
+                if(!String.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
                 {
                     // default it to xml
                     dataObject.ReturnType = EmitionTypes.XML;
 
-                    if (loc > 0)
+                    if(loc > 0)
                     {
-                        string typeOf = serviceName.Substring((loc + 1)).ToUpper();
+                        var typeOf = serviceName.Substring((loc + 1)).ToUpper();
                         EmitionTypes myType;
-                        if (Enum.TryParse(typeOf, out myType))
+                        if(Enum.TryParse(typeOf, out myType))
                         {
                             dataObject.ReturnType = myType;
                         }
@@ -133,11 +115,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                         // adjust the service name to drop the type ;)
 
                         // avoid .wiz amendments ;)
-                        if (!typeOf.ToLower().Equals(GlobalConstants.WizardExt))
+                        if(!typeOf.ToLower().Equals(GlobalConstants.WizardExt))
                         {
                             serviceName = serviceName.Substring(0, loc);
                             dataObject.ServiceName = serviceName;
                         }
+
                     }
                 }
                 else
@@ -147,39 +130,37 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 // ensure service gets set ;)
-                if (dataObject.ServiceName == null)
+                if(dataObject.ServiceName == null)
                 {
                     dataObject.ServiceName = serviceName;
                 }
                 IResource resource = null;
-                if (!String.IsNullOrEmpty(dataObject.ServiceName))
+                if(!String.IsNullOrEmpty(dataObject.ServiceName))
                 {
                     resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
-                    if (resource != null)
+                    if(resource != null)
                     {
                         dataObject.ResourceID = resource.ResourceID;
+
                     }
                 }
                 var esbEndpoint = new EsbServicesEndpoint();
-                bool canExecute = true;
-                if (ServerAuthorizationService.Instance != null)
+                var canExecute = true;
+                if(ServerAuthorizationService.Instance != null)
                 {
-                    IAuthorizationService authorizationService = ServerAuthorizationService.Instance;
-                    bool hasView = authorizationService.IsAuthorized(AuthorizationContext.View,
-                        dataObject.ResourceID.ToString());
-                    bool hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute,
-                        dataObject.ResourceID.ToString());
-                    canExecute = (hasExecute && hasView) || (dataObject.RemoteInvoke && hasExecute) ||
-                                 (resource != null && resource.ResourceType == ResourceType.ReservedService);
+                    var authorizationService = ServerAuthorizationService.Instance;
+                    var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
+                    var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
+                    canExecute = (hasExecute && hasView) || (dataObject.RemoteInvoke && hasExecute) || (resource != null && resource.ResourceType == ResourceType.ReservedService);
                 }
                 // Build EsbExecutionRequest - Internal Services Require This ;)
-                var esbExecuteRequest = new EsbExecuteRequest {ServiceName = serviceName};
+                EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
 
-                Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " +
-                                     dataObject.RawPayload + " ]");
-                Guid executionDlid = GlobalConstants.NullDataListID;
-                if (canExecute)
+                Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
+                var executionDlid = GlobalConstants.NullDataListID;
+                if(canExecute)
                 {
+
                     executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
                     allErrors.MergeErrors(errors);
                 }
@@ -188,16 +169,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                     allErrors.AddError("Executing a service externally requires View and Execute permissions");
                 }
                 // Fetch return type ;)
-                DataListFormat formatter = publicFormats.FirstOrDefault(c => c.PublicFormatName == dataObject.ReturnType)
-                                           ?? publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);
+                var formatter = publicFormats.FirstOrDefault(c => c.PublicFormatName == dataObject.ReturnType)
+                                ?? publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);
 
                 // force it to XML if need be ;)
 
                 // Fetch and convert DL ;)
-                if (executionDlid != GlobalConstants.NullDataListID)
+                if(executionDlid != GlobalConstants.NullDataListID)
                 {
                     // a normal service request
-                    if (!esbExecuteRequest.WasInternalService)
+                    if(!esbExecuteRequest.WasInternalService)
                     {
                         dataObject.DataListID = executionDlid;
                         dataObject.WorkspaceID = workspaceGuid;
@@ -205,17 +186,18 @@ namespace Dev2.Runtime.WebServer.Handlers
 
 
                         // some silly chicken thinks web request where a good idea for debug ;(
-                        if (!dataObject.IsDebug || dataObject.RemoteInvoke)
+                        if(!dataObject.IsDebug || dataObject.RemoteInvoke)
                         {
                             executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
                             allErrors.MergeErrors(errors);
                             compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(),
-                                out errors);
+                                                     out errors);
                         }
                         else
                         {
                             executePayload = string.Empty;
                         }
+
                     }
                     else
                     {
@@ -224,13 +206,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                         executePayload = string.Empty;
                         var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
 
-                        if (msg != null)
+                        if(msg != null)
                         {
                             executePayload = msg.Message.ToString();
                         }
 
                         // out fail safe to return different types of data from services ;)
-                        if (string.IsNullOrEmpty(executePayload))
+                        if(string.IsNullOrEmpty(executePayload))
                         {
                             executePayload = esbExecuteRequest.ExecuteResult.ToString();
                         }
@@ -238,8 +220,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 else
                 {
-                    if (dataObject.ReturnType == EmitionTypes.XML)
+                    if(dataObject.ReturnType == EmitionTypes.XML)
                     {
+
                         executePayload =
                             "<FatalError> <Message> An internal error occurred while executing the service request </Message>";
                         executePayload += allErrors.MakeDataListReady();
@@ -259,16 +242,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                 Dev2Logger.Log.Debug("Execution Result [ " + executePayload + " ]");
 
                 // Clean up the datalist from the server
-                if (!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
+                if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
                 {
                     compiler.ForceDeleteDataListByID(executionDlid);
-                    if (dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
+                    if(dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
                     {
                         DataListRegistar.ClearDataList();
                     }
                     else
                     {
-                        foreach (var thread in dataObject.ThreadsToDispose)
+                        foreach(var thread in dataObject.ThreadsToDispose)
                         {
                             DataListRegistar.DisposeScope(thread.Key, executionDlid);
                         }
@@ -278,36 +261,34 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 // old HTML throw back ;)
-                if (dataObject.ReturnType == EmitionTypes.WIZ)
+                if(dataObject.ReturnType == EmitionTypes.WIZ)
                 {
                     int start = (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) + 21);
                     int end = (executePayload.IndexOf("</Dev2System.FormView>", StringComparison.Ordinal));
                     int len = (end - start);
-                    if (len > 0)
+                    if(len > 0)
                     {
-                        if (dataObject.ReturnType == EmitionTypes.WIZ)
+                        if(dataObject.ReturnType == EmitionTypes.WIZ)
                         {
                             string tmp = executePayload.Substring(start, (end - start));
                             string result = CleanupHtml(tmp);
-                            const string DocType =
-                                @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
-                            return new StringResponseWriter(String.Format("{0}\r\n{1}", DocType, result),
-                                ContentTypes.Html);
+                            const string DocType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
+                            return new StringResponseWriter(String.Format("{0}\r\n{1}", DocType, result), ContentTypes.Html);
                         }
                     }
                 }
 
                 // JSON Data ;)
-                if (executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
+                if(executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
                 {
                     int start = executePayload.IndexOf(GlobalConstants.OpenJSON, StringComparison.Ordinal);
-                    if (start >= 0)
+                    if(start >= 0)
                     {
                         int end = executePayload.IndexOf(GlobalConstants.CloseJSON, StringComparison.Ordinal);
                         start += GlobalConstants.OpenJSON.Length;
 
                         executePayload = CleanupHtml(executePayload.Substring(start, (end - start)));
-                        if (!String.IsNullOrEmpty(executePayload))
+                        if(!String.IsNullOrEmpty(executePayload))
                         {
                             return new StringResponseWriter(executePayload, ContentTypes.Json);
                         }
@@ -321,23 +302,23 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static void BindRequestVariablesToDataObject(WebRequestTO request, ref DsfDataObject dataObject)
         {
-            if (dataObject != null && request != null)
+            if(dataObject != null && request != null)
             {
-                if (!string.IsNullOrEmpty(request.Bookmark))
+                if(!string.IsNullOrEmpty(request.Bookmark))
                 {
                     dataObject.CurrentBookmarkName = request.Bookmark;
                 }
 
-                if (!string.IsNullOrEmpty(request.InstanceID))
+                if(!string.IsNullOrEmpty(request.InstanceID))
                 {
                     Guid tmpId;
-                    if (Guid.TryParse(request.InstanceID, out tmpId))
+                    if(Guid.TryParse(request.InstanceID, out tmpId))
                     {
                         dataObject.WorkflowInstanceId = tmpId;
                     }
                 }
 
-                if (!string.IsNullOrEmpty(request.ServiceName) && string.IsNullOrEmpty(dataObject.ServiceName))
+                if(!string.IsNullOrEmpty(request.ServiceName) && string.IsNullOrEmpty(dataObject.ServiceName))
                 {
                     dataObject.ServiceName = request.ServiceName;
                 }
@@ -346,14 +327,14 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static string GetPostData(ICommunicationContext ctx, string postDataListId)
         {
-            string baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
-            if (baseStr != null)
+            var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
+            if(baseStr != null)
             {
-                int startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
-                if (startIdx > 0)
+                var startIdx = baseStr.IndexOf("?", StringComparison.Ordinal);
+                if(startIdx > 0)
                 {
-                    string payload = baseStr.Substring((startIdx + 1));
-                    if (payload.IsXml())
+                    var payload = baseStr.Substring((startIdx + 1));
+                    if(payload.IsXml())
                     {
                         return payload;
                     }
@@ -361,45 +342,44 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             // Not an XML payload - Handle it as a GET or POST request ;)
-            if (ctx.Request.Method == "GET")
+            if(ctx.Request.Method == "GET")
             {
-                NameValueCollection pairs = ctx.Request.QueryString;
+                var pairs = ctx.Request.QueryString;
                 return ExtractKeyValuePairs(pairs);
             }
 
-            if (ctx.Request.Method == "POST")
+            if(ctx.Request.Method == "POST")
             {
-                using (var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
+                using(var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
                 {
                     try
                     {
                         string data = reader.ReadToEnd();
-                        if (DataListUtil.IsXml(data))
+                        if(DataListUtil.IsXml(data))
                         {
                             return data;
                         }
 
                         // very simple JSON check!!!
-                        if (DataListUtil.IsJson(data))
+                        if(DataListUtil.IsJson(data))
                         {
                             throw new Exception("Unsupported Request : POST Request with JSON stream");
                         }
 
                         // Process POST key value pairs ;)
-                        var pairs = new NameValueCollection(5);
-                        List<string> keyValuePairs =
-                            data.Split(new[] {"&"}, StringSplitOptions.RemoveEmptyEntries).ToList();
-                        foreach (string keyValuePair in keyValuePairs)
+                        NameValueCollection pairs = new NameValueCollection(5);
+                        var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        foreach(var keyValuePair in keyValuePairs)
                         {
-                            string[] keyValue = keyValuePair.Split(new[] {"="}, StringSplitOptions.RemoveEmptyEntries);
-                            if (keyValue.Length > 1)
+                            var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                            if(keyValue.Length > 1)
                             {
                                 pairs.Add(keyValue[0], keyValue[1]);
                             }
-                            else if (keyValue.Length == 1)
+                            else if(keyValue.Length == 1)
                             {
                                 //We have DataWithout an Equals
-                                if (keyValue[0].IsXml())
+                                if(keyValue[0].IsXml())
                                 {
                                     pairs.Add(keyValue[0], keyValue[0]);
                                 }
@@ -408,7 +388,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                         // so some silly chicken sent an empty body on POST with GET style query string parameters
                         // this silly chicken really needs to understand how the flipping request structure should work.
-                        if (pairs.Count == 0)
+                        if(pairs.Count == 0)
                         {
                             pairs = ctx.Request.QueryString;
                         }
@@ -416,7 +396,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         // we need to process it as key value pairs ;)
                         return ExtractKeyValuePairs(pairs);
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         Dev2Logger.Log.Error("AbstractWebRequestHandler", ex);
                     }
@@ -426,33 +406,33 @@ namespace Dev2.Runtime.WebServer.Handlers
             return string.Empty;
         }
 
-        private static string ExtractKeyValuePairs(NameValueCollection pairs)
+        static string ExtractKeyValuePairs(NameValueCollection pairs)
         {
             IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
             // Extract request keys ;)
-            foreach (string key in pairs.AllKeys)
+            foreach(var key in pairs.AllKeys)
             {
-                if (key == "wid") //Don't add the Workspace ID to DataList
+                if(key == "wid") //Don't add the Workspace ID to DataList
                 {
                     continue;
                 }
-                if (key.IsXml())
+                if(key.IsXml())
                 {
                     return key; //We have a workspace id and XML DataList
                 }
                 string error;
                 bdl.TryCreateScalarTemplate(string.Empty, key, string.Empty, true, out error);
-                if (!string.IsNullOrEmpty(error))
+                if(!string.IsNullOrEmpty(error))
                 {
                     Dev2Logger.Log.Error(error);
                 }
 
                 IBinaryDataListEntry entry;
-                if (bdl.TryGetEntry(key, out entry, out error))
+                if(bdl.TryGetEntry(key, out entry, out error))
                 {
-                    IBinaryDataListItem item = Dev2BinaryDataListFactory.CreateBinaryItem(pairs[key], key);
+                    var item = Dev2BinaryDataListFactory.CreateBinaryItem(pairs[key], key);
                     entry.TryPutScalar(item, out error);
-                    if (!string.IsNullOrEmpty(error))
+                    if(!string.IsNullOrEmpty(error))
                     {
                         Dev2Logger.Log.Error(error);
                     }
@@ -467,11 +447,10 @@ namespace Dev2.Runtime.WebServer.Handlers
             ErrorResultTO errors;
             Guid pushedId = compiler.PushBinaryDataList(bdl.UID, bdl, out errors);
 
-            if (pushedId != Guid.Empty)
+            if(pushedId != Guid.Empty)
             {
-                StringBuilder result = compiler.ConvertFrom(pushedId, DataListFormat.CreateFormat(GlobalConstants._XML),
-                    enTranslationDepth.Data, out errors);
-                if (errors.HasErrors())
+                var result = compiler.ConvertFrom(pushedId, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+                if(errors.HasErrors())
                 {
                     Dev2Logger.Log.Error(errors.MakeDisplayReady());
                 }
@@ -484,9 +463,9 @@ namespace Dev2.Runtime.WebServer.Handlers
             return string.Empty;
         }
 
-        private static string CleanupHtml(string result)
+        static string CleanupHtml(string result)
         {
-            string html = result;
+            var html = result;
 
             html = html.Replace("&amp;amp;", "&");
             html = html.Replace("&lt;", "<").Replace("&gt;", ">");
@@ -502,7 +481,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static string GetServiceName(ICommunicationContext ctx)
         {
-            string serviceName = ctx.Request.BoundVariables["servicename"];
+            var serviceName = ctx.Request.BoundVariables["servicename"];
             return serviceName;
         }
 

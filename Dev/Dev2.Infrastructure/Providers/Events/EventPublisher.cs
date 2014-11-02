@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,35 +21,33 @@ namespace Dev2.Providers.Events
 {
     public class EventPublisher : IEventPublisher
     {
-        private readonly MethodInfo _publishMethod;
-        private readonly ConcurrentDictionary<Type, object> _subjects = new ConcurrentDictionary<Type, object>();
+        readonly ConcurrentDictionary<Type, object> _subjects = new ConcurrentDictionary<Type, object>();
+        readonly MethodInfo _publishMethod;
 
         public EventPublisher()
         {
-            _publishMethod = typeof (EventPublisher).GetMethod("Publish");
+            _publishMethod = typeof(EventPublisher).GetMethod("Publish");
+
         }
 
-        public int Count
-        {
-            get { return _subjects.Count; }
-        }
+        public int Count { get { return _subjects.Count; } }
 
         public bool RemoveEvent<TEvent>()
             where TEvent : class, new()
         {
             object value;
-            return _subjects.TryRemove(typeof (TEvent), out value);
+            return _subjects.TryRemove(typeof(TEvent), out value);
         }
 
         public IObservable<TEvent> GetEvent<TEvent>()
             where TEvent : class, new()
         {
-            var subject = (ISubject<TEvent>) _subjects.GetOrAdd(typeof (TEvent), t => new Subject<TEvent>());
+            var subject = (ISubject<TEvent>)_subjects.GetOrAdd(typeof(TEvent), t => new Subject<TEvent>());
             return subject.AsObservable();
         }
 
         /// <summary>
-        ///     Publishes the specified event.
+        /// Publishes the specified event.
         /// </summary>
         /// <typeparam name="TEvent">The type of the event.</typeparam>
         /// <param name="sampleEvent">The event to be published</param>
@@ -58,23 +57,23 @@ namespace Dev2.Providers.Events
             VerifyArgument.IsNotNull("sampleEvent", sampleEvent);
 
             object subject;
-            if (_subjects.TryGetValue(typeof (TEvent), out subject))
+            if(_subjects.TryGetValue(typeof(TEvent), out subject))
             {
-                ((ISubject<TEvent>) subject).OnNext(sampleEvent);
+                ((ISubject<TEvent>)subject).OnNext(sampleEvent);
             }
         }
 
         /// <summary>
-        ///     Uses reflection to invoke <see cref="Publish{TEvent}" />
+        /// Uses reflection to invoke <see cref="Publish{TEvent}"/>
         /// </summary>
         /// <param name="sampleEvent">The event to be published</param>
         public void PublishObject(object sampleEvent)
         {
             VerifyArgument.IsNotNull("sampleEvent", sampleEvent);
 
-            MethodInfo pubMethod = _publishMethod.MakeGenericMethod(sampleEvent.GetType());
+            var pubMethod = _publishMethod.MakeGenericMethod(sampleEvent.GetType());
 
-            pubMethod.Invoke(this, new[] {sampleEvent});
+            pubMethod.Invoke(this, new[] { sampleEvent });
         }
     }
 }

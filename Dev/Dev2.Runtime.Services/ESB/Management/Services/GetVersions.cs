@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,7 +15,6 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Versioning;
@@ -29,19 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersions : IEsbManagementEndpoint
     {
-        private IServerVersionRepository _serverExplorerRepository;
-
-        public IServerVersionRepository ServerVersionRepo
-        {
-            get
-            {
-                return _serverExplorerRepository ??
-                       new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance,
-                           new DirectoryWrapper(),
-                           EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
-            }
-            set { _serverExplorerRepository = value; }
-        }
+        private IServerVersionRepository  _serverExplorerRepository;
 
         public string HandlesType()
         {
@@ -50,6 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+
             var serializer = new Dev2JsonSerializer();
             try
             {
@@ -57,15 +46,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentNullException("values");
                 }
-                if (!values.ContainsKey("resourceId"))
+                if( !values.ContainsKey("resourceId"))
                 {
 // ReSharper disable NotResolvedInText
                     throw new ArgumentNullException("No resourceId was found in the incoming data");
 // ReSharper restore NotResolvedInText
                 }
-                Guid id = Guid.Parse(values["resourceId"].ToString());
+                var id = Guid.Parse( values["resourceId"].ToString());
                 Dev2Logger.Log.Info("Get Versions. " + id);
-                IList<IExplorerItem> item = ServerVersionRepo.GetVersions(id);
+                var item = ServerVersionRepo.GetVersions(id);
                 return serializer.SerializeToBuilder(item);
             }
             catch (Exception e)
@@ -78,24 +67,19 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceId ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceId ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
-            var fetchItemsAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             findServices.Actions.Add(fetchItemsAction);
 
             return findServices;
+        }
+
+        public IServerVersionRepository ServerVersionRepo
+        {
+            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID),new FileWrapper()); }
+            set { _serverExplorerRepository = value; }
         }
     }
 }

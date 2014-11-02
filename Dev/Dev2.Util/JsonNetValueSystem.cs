@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,9 +21,9 @@ namespace Dev2.Util
     {
         public bool HasMember(object value, string member)
         {
-            if (value is JObject)
+            if(value is JObject)
                 return (value as JObject).Properties().Any(property => property.Name == member);
-            if (value is JArray)
+            if(value is JArray)
             {
                 int index = ParseInt(member, -1);
                 return index >= 0 && index < (value as JArray).Count;
@@ -32,12 +33,12 @@ namespace Dev2.Util
 
         public object GetMemberValue(object value, string member)
         {
-            if (value is JObject)
+            if(value is JObject)
             {
-                JToken memberValue = (value as JObject)[member];
+                var memberValue = (value as JObject)[member];
                 return memberValue;
             }
-            if (value is JArray)
+            if(value is JArray)
             {
                 int index = ParseInt(member, -1);
                 return (value as JArray)[index];
@@ -48,7 +49,7 @@ namespace Dev2.Util
         public IEnumerable GetMembers(object value)
         {
             var jobject = value as JObject;
-            if (jobject == null)
+            if(jobject == null)
             {
                 return null;
             }
@@ -67,7 +68,7 @@ namespace Dev2.Util
 
         public bool IsPrimitive(object value)
         {
-            if (value == null)
+            if(value == null)
                 throw new ArgumentNullException("value");
 
             return !(value is JObject) && !(value is JArray);

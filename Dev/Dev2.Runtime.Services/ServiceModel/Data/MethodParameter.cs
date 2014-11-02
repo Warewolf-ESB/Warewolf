@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,12 +10,13 @@
 */
 
 
+
 using System;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
     /// <summary>
-    ///     A Method Parameter
+    /// A Method Parameter
     /// </summary>
     [Serializable]
     public class MethodParameter
@@ -25,10 +27,12 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string Value { get; set; }
         public string DefaultValue { get; set; }
         public Type Type { get; set; }
-
         public string TypeName
         {
-            get { return Type != null ? Type.FullName : ""; }
+            get
+            {
+                return Type != null ? Type.FullName : "";
+            }
         }
     }
 }

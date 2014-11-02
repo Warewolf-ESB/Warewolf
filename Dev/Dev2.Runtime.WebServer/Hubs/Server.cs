@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,27 +21,26 @@ namespace Dev2.Runtime.WebServer.Hubs
     // ReSharper disable InconsistentNaming
     public class Server
     {
+        public static Server Instance
+        {
+            get
+            {
+                return TheInstance.Value;
+            }
+        }
+
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
-        private static readonly Lazy<Server> TheInstance =
-            new Lazy<Server>(
-                () =>
-                    new Server(GlobalHost.ConnectionManager.GetHubContext<EsbHub>().Clients,
-                        WorkspaceRepository.Instance));
+        readonly static Lazy<Server> TheInstance = new Lazy<Server>(() => new Server(GlobalHost.ConnectionManager.GetHubContext<EsbHub>().Clients, WorkspaceRepository.Instance));
 
-        private readonly IHubConnectionContext _clients;
-        private readonly IWorkspaceRepository _workspaceRepository;
+        readonly IHubConnectionContext _clients;
+        readonly IWorkspaceRepository _workspaceRepository;
 
-        private Server(IHubConnectionContext clients, IWorkspaceRepository workspaceRepository)
+        Server(IHubConnectionContext clients, IWorkspaceRepository workspaceRepository)
         {
             VerifyArgument.IsNotNull("clients", clients);
             VerifyArgument.IsNotNull("workspaceRepository", workspaceRepository);
             _clients = clients;
             _workspaceRepository = workspaceRepository;
-        }
-
-        public static Server Instance
-        {
-            get { return TheInstance.Value; }
         }
 
         public Guid GetWorkspaceID(IIdentity identity)
@@ -50,7 +50,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendMemo(string memo, string connectionID = null)
         {
-            if (string.IsNullOrEmpty(connectionID))
+            if(string.IsNullOrEmpty(connectionID))
             {
                 _clients.All.SendMemo(memo);
             }
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendDebugState(string debugState, string connectionID = null)
         {
-            if (string.IsNullOrEmpty(connectionID))
+            if(string.IsNullOrEmpty(connectionID))
             {
                 _clients.All.SendDebugState(debugState);
             }
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendWorkspaceID(Guid workspaceID, string connectionID = null)
         {
-            if (string.IsNullOrEmpty(connectionID))
+            if(string.IsNullOrEmpty(connectionID))
             {
                 _clients.All.SendWorkspaceID(workspaceID);
             }
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendServerID(Guid serverID, string connectionID = null)
         {
-            if (string.IsNullOrEmpty(connectionID))
+            if(string.IsNullOrEmpty(connectionID))
             {
                 _clients.All.SendServerID(serverID);
             }

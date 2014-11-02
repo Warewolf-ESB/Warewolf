@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -37,16 +38,19 @@ namespace Dev2.TaskScheduler.Wrappers
         public DaysOfTheWeek DaysOfWeek
         {
             get { return Instance.DaysOfWeek; }
+   
         }
 
         public TimeSpan RandomDelay
         {
             get { return Instance.RandomDelay; }
+           
         }
 
         public short WeeksInterval
         {
             get { return Instance.WeeksInterval; }
+        
         }
     }
 }

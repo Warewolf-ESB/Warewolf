@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,20 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class DeleteScheduledResource : IEsbManagementEndpoint
     {
         private IServerSchedulerFactory _schedulerFactory;
-        private ISecurityWrapper _securityWrapper;
-
-        public IServerSchedulerFactory SchedulerFactory
-        {
-            get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
-            set { _schedulerFactory = value; }
-        }
-
-        public ISecurityWrapper SecurityWrapper
-        {
-            get { return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance); }
-            set { _securityWrapper = value; }
-        }
-
+        ISecurityWrapper _securityWrapper;
         public string HandlesType()
         {
             return "DeleteScheduledResourceService";
@@ -47,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var result = new ExecuteMessage {HasError = false};
+            var result = new ExecuteMessage { HasError = false };
             Dev2Logger.Log.Info("Delete Scheduled Resource Service");
             StringBuilder tmp;
             values.TryGetValue("Resource", out tmp);
@@ -56,10 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (tmp != null)
             {
                 var res = serializer.Deserialize<IScheduledResource>(tmp);
-                Dev2Logger.Log.Info("Delete Scheduled Resource Service." + res);
-                using (
-                    IScheduledResourceModel model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId,
-                        SecurityWrapper))
+                Dev2Logger.Log.Info("Delete Scheduled Resource Service." +res);
+                using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                 {
                     model.DeleteSchedule(res);
                 }
@@ -74,14 +60,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
+
         public DynamicService CreateServiceEntry()
         {
             var deleteScheduledResource = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var deleteScheduledResourceAction = new ServiceAction
@@ -95,6 +80,23 @@ namespace Dev2.Runtime.ESB.Management.Services
             deleteScheduledResource.Actions.Add(deleteScheduledResourceAction);
 
             return deleteScheduledResource;
+        }
+
+        public IServerSchedulerFactory SchedulerFactory
+        {
+            get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
+            set { _schedulerFactory = value; }
+        }
+        public ISecurityWrapper SecurityWrapper
+        {
+            get
+            {
+                return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
+            }
+            set
+            {
+                _securityWrapper = value;
+            }
         }
     }
 }

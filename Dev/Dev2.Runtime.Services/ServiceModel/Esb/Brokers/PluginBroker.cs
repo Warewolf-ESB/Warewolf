@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,12 +25,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
     }
 
     /// <summary>
-    ///     Handle interaction with plugins ;)
+    /// Handle interaction with plugins ;)
     /// </summary>
     public class PluginBroker : IPluginBroker
     {
         /// <summary>
-        ///     Gets the namespaces.
+        /// Gets the namespaces.
         /// </summary>
         /// <param name="pluginSource">The plugin source.</param>
         /// <returns></returns>
@@ -39,7 +40,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         }
 
         /// <summary>
-        ///     Gets the methods.
+        /// Gets the methods.
         /// </summary>
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
@@ -58,22 +59,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         }
 
         /// <summary>
-        ///     Tests the plugin.
+        /// Tests the plugin.
         /// </summary>
         /// <param name="pluginService">The plugin service.</param>
         /// <returns></returns>
         public IOutputDescription TestPlugin(PluginService pluginService)
         {
-            var args = new PluginInvokeArgs
-            {
-                AssemblyLocation = ((PluginSource) pluginService.Source).AssemblyLocation,
-                AssemblyName = ((PluginSource) pluginService.Source).AssemblyName,
-                Method = pluginService.Method.Name,
-                Fullname = pluginService.Namespace,
-                Parameters = pluginService.Method.Parameters
-            };
+            PluginInvokeArgs args = new PluginInvokeArgs
+                                    {
+                                        AssemblyLocation = ((PluginSource)pluginService.Source).AssemblyLocation,
+                                        AssemblyName = ((PluginSource)pluginService.Source).AssemblyName,
+                                        Method = pluginService.Method.Name,
+                                        Fullname = pluginService.Namespace,
+                                        Parameters = pluginService.Method.Parameters
+                                    };
 
-            IOutputDescription pluginResult = PluginServiceExecutionFactory.TestPlugin(args);
+            var pluginResult = PluginServiceExecutionFactory.TestPlugin(args);
 
             return pluginResult;
         }

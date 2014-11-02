@@ -62,7 +62,7 @@ namespace Dev2
             {
                 _stringToConvert = value;
                 _result = value;
-                // This is set as the result for now as it is the same value till we do the advanced view.
+                    // This is set as the result for now as it is the same value till we do the advanced view.
                 OnPropertyChanged("StringToConvert");
                 OnPropertyChanged("Result");
                 RaiseCanAddRemoveChanged();

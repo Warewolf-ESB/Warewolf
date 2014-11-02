@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,7 +22,7 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     Basic sanity test ;)
+    /// Basic sanity test ;)
     /// </summary>
     public class Ping : IEsbManagementEndpoint
     {
@@ -30,18 +31,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             Now = () => DateTime.Now;
         }
 
-        public Func<DateTime> Now { get; set; }
-
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var msg = new ExecuteMessage {HasError = false};
+            ExecuteMessage msg = new ExecuteMessage {HasError = false};
 
             msg.SetMessage("Pong @ " + Now.Invoke().ToString("yyyy-MM-dd hh:mm:ss.fff"));
 
-            var serializer = new Dev2JsonSerializer();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
             return serializer.SerializeToBuilder(msg);
         }
+
+        public Func<DateTime> Now { get; set; }
 
         public string HandlesType()
         {
@@ -50,17 +51,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var ds = new DynamicService {Name = HandlesType()};
+            DynamicService ds = new DynamicService {Name = HandlesType()};
 
-            var action = new ServiceAction
-            {
-                Name = HandlesType(),
-                SourceMethod = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+            ServiceAction action = new ServiceAction
+                {
+                    Name = HandlesType(),
+                    SourceMethod = HandlesType(),
+                    ActionType = enActionType.InvokeManagementDynamicService,
+                    DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                };
 
             ds.Actions.Add(action);
 

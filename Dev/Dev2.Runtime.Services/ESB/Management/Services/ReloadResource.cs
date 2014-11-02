@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,34 +25,35 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     Reload a resource from disk ;)
+    /// Reload a resource from disk ;)
     /// </summary>
     public class ReloadResource : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var result = new ExecuteMessage {HasError = false};
+
+            ExecuteMessage result = new ExecuteMessage { HasError = false };
 
             string resourceID = null;
             string resourceType = null;
 
             StringBuilder tmp;
             values.TryGetValue("ResourceID", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 resourceID = tmp.ToString();
             }
 
             values.TryGetValue("ResourceType", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 resourceType = tmp.ToString();
             }
-            Dev2Logger.Log.Info(String.Format("Reload Resource. Id:{0} Type:{1}", resourceID, resourceType));
+            Dev2Logger.Log.Info(String.Format("Reload Resource. Id:{0} Type:{1}",resourceID,resourceType));
             try
             {
                 // 2012.10.01: TWR - 5392 - Server does not dynamically reload resources 
-                if (resourceID == "*")
+                if(resourceID == "*")
                 {
                     ResourceCatalog.Instance.LoadWorkspace(theWorkspace.ID);
                 }
@@ -61,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     // Ugly conversion between studio resource type and server resource type
                     //
                     enDynamicServiceObjectType serviceType;
-                    switch (resourceType)
+                    switch(resourceType)
                     {
                         case "HumanInterfaceProcess":
                         case "Website":
@@ -81,7 +83,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             throw new Exception("Unexpected resource type '" + resourceType + "'.");
                     }
                     Guid getID;
-                    if (resourceID != null && Guid.TryParse(resourceID, out getID))
+                    if(resourceID != null && Guid.TryParse(resourceID, out getID))
                     {
                         //
                         // Copy the file from the server workspace into the current workspace
@@ -93,12 +95,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 IsWorkflowSaved = true,
                                 ServiceType = serviceType.ToString()
                             }, false);
+
                     }
                     else
                     {
                         theWorkspace.Update(
-                            new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty,
-                                Guid.Empty)
+                            new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, Guid.Empty)
                             {
                                 Action = WorkspaceItemAction.Edit,
                                 ServiceName = resourceID,
@@ -113,13 +115,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                     result.SetMessage(string.Concat("'", resourceID, "' Reloaded..."));
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 result.SetMessage(string.Concat("Error reloading '", resourceID, "'..."));
                 Dev2Logger.Log.Error(ex);
             }
 
-            var serializer = new Dev2JsonSerializer();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
         }
 
@@ -130,20 +132,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var reloadResourceServicesBinder = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><ResourceID ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+            DynamicService reloadResourceServicesBinder = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
-            var reloadResourceServiceActionBinder = new ServiceAction
-            {
-                Name = HandlesType(),
-                SourceMethod = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService
-            };
+            ServiceAction reloadResourceServiceActionBinder = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
 
             reloadResourceServicesBinder.Actions.Add(reloadResourceServiceActionBinder);
 

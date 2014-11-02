@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,11 +18,11 @@ namespace Dev2.DynamicServices
 {
     public interface IStudioNetworkSession : INetworkOperator, IHostContext
     {
+        void Kill();
         Version Version { get; }
         PlatformID Platform { get; }
         string ServicePack { get; }
         uint Fingerprint { get; }
         bool Attached { get; }
-        void Kill();
     }
 }

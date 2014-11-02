@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,7 +12,6 @@
 
 using System;
 using System.Threading;
-using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -20,25 +20,20 @@ namespace Dev2.Runtime.WebServer.Handlers
     {
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            string postDataListID = GetDataListID(ctx);
-            if (postDataListID != null)
+            var postDataListID = GetDataListID(ctx);
+            if(postDataListID != null)
             {
                 new WebPostRequestHandler().ProcessRequest(ctx);
                 return;
             }
 
-            string serviceName = GetServiceName(ctx);
-            string workspaceID = GetWorkspaceID(ctx);
+            var serviceName = GetServiceName(ctx);
+            var workspaceID = GetWorkspaceID(ctx);
 
-            var requestTO = new WebRequestTO
-            {
-                ServiceName = serviceName,
-                WebServerUrl = ctx.Request.Uri.ToString(),
-                Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority)
-            };
-            string data = GetPostData(ctx, Guid.Empty.ToString());
+            var requestTO = new WebRequestTO { ServiceName = serviceName, WebServerUrl = ctx.Request.Uri.ToString(), Dev2WebServer = String.Format("{0}://{1}", ctx.Request.Uri.Scheme, ctx.Request.Uri.Authority) };
+            var data = GetPostData(ctx, Guid.Empty.ToString());
 
-            if (!String.IsNullOrEmpty(data))
+            if(!String.IsNullOrEmpty(data))
             {
                 requestTO.RawRequestPayload = data;
             }
@@ -46,8 +41,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Execute in its own thread to give proper context ;)
             Thread.CurrentPrincipal = ctx.Request.User;
 
-            IResponseWriter responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(),
-                PublicFormats);
+            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
             ctx.Send(responseWriter);
         }
     }

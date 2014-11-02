@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +18,7 @@ using Dev2.Runtime.ServiceModel.Data;
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
     /// <summary>
-    ///     Args to pass into the plugin ;)
+    /// Args to pass into the plugin ;)
     /// </summary>
     [Serializable]
     public class PluginInvokeArgs
@@ -33,5 +34,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public List<MethodParameter> Parameters { get; set; }
 
         public IOutputFormatter OutputFormatter { get; set; }
+
     }
 }

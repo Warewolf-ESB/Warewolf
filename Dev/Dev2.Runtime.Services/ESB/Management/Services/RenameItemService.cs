@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -29,12 +30,6 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
 
-        public IExplorerServerResourceRepository ServerExplorerRepo
-        {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
-        }
-
         public string HandlesType()
         {
             return "RenameItemService";
@@ -46,26 +41,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                if (values == null)
+                if(values == null)
                 {
                     throw new ArgumentNullException("values");
                 }
                 StringBuilder itemToBeRenamed;
                 StringBuilder newName;
-                if (!values.TryGetValue("itemToRename", out itemToBeRenamed))
+                if(!values.TryGetValue("itemToRename", out itemToBeRenamed))
                 {
                     throw new ArgumentException("itemToRename value not supplied.");
                 }
-                if (!values.TryGetValue("newName", out newName))
+                if(!values.TryGetValue("newName", out newName))
                 {
                     throw new ArgumentException("newName value not supplied.");
                 }
-
+                
                 var itemToRename = serializer.Deserialize<ServerExplorerItem>(itemToBeRenamed);
                 Dev2Logger.Log.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", itemToBeRenamed, newName));
                 item = ServerExplorerRepo.RenameItem(itemToRename, newName.ToString(), GlobalConstants.ServerWorkspaceID);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Log.Error(e);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
@@ -75,24 +70,19 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><itemToRename ColumnIODirection=\"Input\"/><newName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToRename ColumnIODirection=\"Input\"/><newName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
-            var fetchItemsAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             findServices.Actions.Add(fetchItemsAction);
 
             return findServices;
+        }
+
+        public IExplorerServerResourceRepository ServerExplorerRepo
+        {
+            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
+            set { _serverExplorerRepository = value; }
         }
     }
 }

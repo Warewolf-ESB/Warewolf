@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -39,138 +40,136 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
-using Configuration = Dev2.Runtime.Configuration.Settings.Configuration;
-using SettingsProvider = Dev2.Runtime.Configuration.SettingsProvider;
 
 // ReSharper disable InconsistentNaming
-
 namespace Dev2
 {
     /// <summary>
-    ///     PBI 5278
-    ///     Application Server Life-cycle Manager
-    ///     Facilitates start-up, execution and tear-down of the application server.
+    /// PBI 5278
+    /// Application Server Life-cycle Manager
+    /// Facilitates start-up, execution and tear-down of the application server.
     /// </summary>
-    internal sealed class ServerLifecycleManager : IDisposable
+    sealed class ServerLifecycleManager : IDisposable
     {
         #region Constants
 
-        private const string DefaultConfigFileName = "LifecycleConfig.xml";
+        const string DefaultConfigFileName = "LifecycleConfig.xml";
 
         // set to true when in trace mode ;)
-        private const bool LogTraceInfo = false;
+        const bool LogTraceInfo = false;
 
         #endregion
 
         #region Static Members
 
-        private static ServerLifecycleManager _singleton;
+        static ServerLifecycleManager _singleton;
 
         #endregion
 
         #region Entry Point
 
         /// <summary>
-        ///     Entry Point for application server.
+        /// Entry Point for application server.
         /// </summary>
         /// <param name="arguments">Command line arguments passed to executable.</param>
-        private static int Main(string[] arguments)
+        static int Main(string[] arguments)
         {
-            int result = 0;
+            var result = 0;
 
             try
             {
-                var options = new CommandLineParameters();
-                var parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
-                if (!parser.ParseArguments(arguments, options))
+
+                CommandLineParameters options = new CommandLineParameters();
+                CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
+                if(!parser.ParseArguments(arguments, options))
                 {
                     return 80;
                 }
 
                 bool commandLineParameterProcessed = false;
                 Dev2Logger.EnableInfoOutput = true;
-                if (options.Install)
+                if(options.Install)
                 {
                     Dev2Logger.Log.Info("Starting Install");
                     commandLineParameterProcessed = true;
 
-                    if (!EnsureRunningAsAdministrator(arguments))
+                    if(!EnsureRunningAsAdministrator(arguments))
                     {
                         Dev2Logger.Log.Info("Cannot install because the server is not running as an admin user");
                         return result;
                     }
 
-                    if (!WindowsServiceManager.Install())
+                    if(!WindowsServiceManager.Install())
                     {
                         result = 81;
                         Dev2Logger.Log.Info("Install Success Result is 81");
                     }
                 }
 
-                if (options.StartService)
+                if(options.StartService)
                 {
                     Dev2Logger.Log.Info("Starting Service");
                     commandLineParameterProcessed = true;
 
-                    if (!EnsureRunningAsAdministrator(arguments))
+                    if(!EnsureRunningAsAdministrator(arguments))
                     {
                         Dev2Logger.Log.Info("Cannot start because the server is not running as an admin user");
                         return result;
                     }
 
-                    if (!WindowsServiceManager.StartService(null))
+                    if(!WindowsServiceManager.StartService(null))
                     {
                         Dev2Logger.Log.Info("Starting Service success. result 83");
                         result = 83;
                     }
                 }
 
-                if (options.StopService)
+                if(options.StopService)
                 {
                     Dev2Logger.Log.Info("Stopping Service");
                     commandLineParameterProcessed = true;
 
-                    if (!EnsureRunningAsAdministrator(arguments))
+                    if(!EnsureRunningAsAdministrator(arguments))
                     {
                         Dev2Logger.Log.Info("Cannot stop because the server is not running as an admin user");
                         return result;
                     }
 
-                    if (!WindowsServiceManager.StopService(null))
+                    if(!WindowsServiceManager.StopService(null))
                     {
                         Dev2Logger.Log.Info("Stopping Service success. result 84");
                         result = 84;
                     }
                 }
 
-                if (options.Uninstall)
+                if(options.Uninstall)
                 {
                     Dev2Logger.Log.Info("Uninstall Service");
                     commandLineParameterProcessed = true;
 
-                    if (!EnsureRunningAsAdministrator(arguments))
+                    if(!EnsureRunningAsAdministrator(arguments))
                     {
                         Dev2Logger.Log.Info("Cannot uninstall because the server is not running as an admin user");
                         return result;
                     }
 
-                    if (!WindowsServiceManager.Uninstall())
+                    if(!WindowsServiceManager.Uninstall())
                     {
                         Dev2Logger.Log.Info("Uninstall Service success. result 92");
                         result = 82;
                     }
                 }
 
-                if (commandLineParameterProcessed)
+                if(commandLineParameterProcessed)
                 {
                     Dev2Logger.Log.Info("Command line processed. Returning");
                     return result;
                 }
 
-                if (Environment.UserInteractive || options.IntegrationTestMode)
+                if(Environment.UserInteractive || options.IntegrationTestMode)
                 {
                     Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
-                    using (_singleton = new ServerLifecycleManager(arguments))
+                    using(_singleton = new ServerLifecycleManager(arguments))
                     {
                         result = _singleton.Run(true);
                     }
@@ -181,13 +180,13 @@ namespace Dev2
                 {
                     Dev2Logger.Log.Info("** Starting In Service Mode **");
                     // running as service
-                    using (var service = new ServerLifecycleManagerService())
+                    using(var service = new ServerLifecycleManagerService())
                     {
                         ServiceBase.Run(service);
                     }
                 }
             }
-            catch (Exception err)
+            catch(Exception err)
             {
                 Dev2Logger.Log.Error("Error Starting Server", err);
 // ReSharper disable InvokeAsExtensionMethod
@@ -229,28 +228,28 @@ namespace Dev2
 
         #region Instance Fields
 
-        private readonly string[] _arguments;
-        private readonly IPulseLogger _pulseLogger;
-        private readonly Dictionary<string, WorkflowEntry[]> _workflowGroups;
+        bool _isDisposed;
+        bool _isWebServerEnabled;
+        bool _isWebServerSslEnabled;
+        bool _preloadAssemblies;
+        readonly string[] _arguments;
+        AssemblyReference[] _externalDependencies;
+        readonly Dictionary<string, WorkflowEntry[]> _workflowGroups;
+        Dev2Endpoint[] _endpoints;
 
-        private string _configFile;
+        string _configFile;
 
         // START OF GC MANAGEMENT
-        private bool _enableGcManager;
-        private Dev2Endpoint[] _endpoints;
-        private AssemblyReference[] _externalDependencies;
-        private volatile bool _gcmRunning;
-        private Thread _gcmThread;
-        private ThreadStart _gcmThreadStart;
-        private bool _isDisposed;
-        private bool _isWebServerEnabled;
-        private bool _isWebServerSslEnabled;
-        private long _lastKnownWorkingSet;
-        private long _minimumWorkingSet;
-        private DateTime _nextForcedCollection;
-        private IDisposable _owinServer;
-        private bool _preloadAssemblies;
-        private Timer _timer;
+        bool _enableGcManager;
+        long _minimumWorkingSet;
+        long _lastKnownWorkingSet;
+        volatile bool _gcmRunning;
+        DateTime _nextForcedCollection;
+        Thread _gcmThread;
+        ThreadStart _gcmThreadStart;
+        Timer _timer;
+        IDisposable _owinServer;
+        readonly IPulseLogger _pulseLogger;
 
         // END OF GC MANAGEMENT
 
@@ -259,39 +258,27 @@ namespace Dev2
         #region Public Properties
 
         /// <summary>
-        ///     Get a value indicating if the lifecycle manager has been disposed.
+        /// Get a value indicating if the lifecycle manager has been disposed.
         /// </summary>
-        public bool IsDisposed
-        {
-            get { return _isDisposed; }
-        }
-
+        public bool IsDisposed { get { return _isDisposed; } }
         /// <summary>
-        ///     Gets a value indicating if the webserver is enabled.
+        /// Gets a value indicating if the webserver is enabled.
         /// </summary>
-        public bool IsWebServerEnabled
-        {
-            get { return _isWebServerEnabled; }
-        }
-
+        public bool IsWebServerEnabled { get { return _isWebServerEnabled; } }
         /// <summary>
-        ///     Gets a Guid that represents the ID of the current server.
+        /// Gets a Guid that represents the ID of the current server.
         /// </summary>
-        public Guid ServerID
-        {
-            get { return HostSecurityProvider.Instance.ServerID; }
-        }
+        public Guid ServerID { get { return HostSecurityProvider.Instance.ServerID; } }
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        ///     Constructors an instance of the ServerLifecycleManager class, ServerLifecycleManager is essentially a singleton but
-        ///     implemented as an instance type
-        ///     to ensure proper finalization occurs.
+        /// Constructors an instance of the ServerLifecycleManager class, ServerLifecycleManager is essentially a singleton but implemented as an instance type
+        /// to ensure proper finalization occurs.
         /// </summary>
-        private ServerLifecycleManager(string[] arguments)
+        ServerLifecycleManager(string[] arguments)
         {
             _pulseLogger = new PulseLogger(60000);
             _pulseLogger.Start();
@@ -308,10 +295,10 @@ namespace Dev2
         #region Run Handling
 
         /// <summary>
-        ///     Runs the application server, and handles all initialization, execution and cleanup logic required.
+        /// Runs the application server, and handles all initialization, execution and cleanup logic required.
         /// </summary>
         /// <returns></returns>
-        private int Run(bool interactiveMode)
+        int Run(bool interactiveMode)
         {
             int result = 0;
             bool didBreak = false;
@@ -323,65 +310,63 @@ namespace Dev2
 
             try
             {
-                IMoqInstallerActions miq = MoqInstallerActionFactory.CreateInstallerActions();
+                var miq = MoqInstallerActionFactory.CreateInstallerActions();
                 miq.ExecuteMoqInstallerActions();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 // Throw new exception to make it easy for developer to understand issue
-                throw new Exception(
-                    "Ensure no Warewolf service is running on this machine. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " +
-                    e.Message + " ]");
+                throw new Exception("Ensure no Warewolf service is running on this machine. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
             }
 #endif
 
 
-            if (!SetWorkingDirectory())
+            if(!SetWorkingDirectory())
             {
                 result = 95;
                 didBreak = true;
             }
 
             // PBI 5389 - Resources Assigned and Allocated to Server
-            if (!didBreak && !LoadHostSecurityProvider())
+            if(!didBreak && !LoadHostSecurityProvider())
             {
                 result = 1;
                 didBreak = true;
             }
 
-            if (!didBreak && !LoadConfiguration(_configFile))
+            if(!didBreak && !LoadConfiguration(_configFile))
             {
                 result = 1;
                 didBreak = true;
             }
 
             // remove due to hanging installer ;) 02.04.2014
-            if (!didBreak && !PreloadReferences())
+            if(!didBreak && !PreloadReferences())
             {
                 result = 2;
                 didBreak = true;
             }
 
-            if (!didBreak && !StartGcManager())
+            if(!didBreak && !StartGcManager())
             {
                 result = 7;
                 didBreak = true;
             }
 
-            if (!didBreak && !InitializeServer())
+            if(!didBreak && !InitializeServer())
             {
                 result = 3;
                 didBreak = true;
             }
 
             // Start DataList Server
-            if (!didBreak && !StartDataListServer())
+            if(!didBreak && !StartDataListServer())
             {
                 result = 99;
                 didBreak = true;
             }
 
-            if (!didBreak && !LoadResourceCatalog())
+            if(!didBreak && !LoadResourceCatalog())
             {
                 result = 94;
                 didBreak = true;
@@ -389,33 +374,33 @@ namespace Dev2
 
 
             // PBI 5389 - Resources Assigned and Allocated to Server
-            if (!didBreak && !LoadServerWorkspace())
+            if(!didBreak && !LoadServerWorkspace())
             {
                 result = 98; // ????
                 didBreak = true;
             }
 
-            if (!didBreak && !StartWebServer())
+            if(!didBreak && !StartWebServer())
             {
                 result = 4;
                 didBreak = true;
             }
 
             // PBI 1018 - Settings Framework (TWR: 2013.03.07)
-            if (!didBreak && !LoadSettingsProvider())
+            if(!didBreak && !LoadSettingsProvider())
             {
                 result = 93;
                 didBreak = true;
             }
 
-            if (!didBreak && !ConfigureLoggging())
+            if(!didBreak && !ConfigureLoggging())
             {
                 result = 92;
                 didBreak = true;
             }
 
 
-            if (!didBreak)
+            if(!didBreak)
             {
                 // set background timer to query network computer name list every 15 minutes ;)
                 _timer = new Timer(RefreshComputerList, null, 10000, GlobalConstants.NetworkComputerNameQueryFreq);
@@ -430,24 +415,25 @@ namespace Dev2
             return result;
         }
 
-        private void StartPulseLogger()
+        void StartPulseLogger()
         {
             _pulseLogger.Start();
         }
 
-        private void RefreshComputerList(object state)
+        void RefreshComputerList(object state)
         {
             GetComputerNames.GetComputerNamesList();
         }
 
-        private int Stop(bool didBreak, int result)
+        int Stop(bool didBreak, int result)
         {
+
             // PBI 1018 - Settings Framework (TWR: 2013.03.07)
             UnloadSettingsProvider();
 
             Tracker.Stop();
 
-            if (!didBreak)
+            if(!didBreak)
             {
                 Dispose();
             }
@@ -461,12 +447,12 @@ namespace Dev2
             return result;
         }
 
-        private int ServerLoop(bool interactiveMode)
+        int ServerLoop(bool interactiveMode)
         {
-            if (interactiveMode)
+            if(interactiveMode)
             {
                 Write("Press <ENTER> to terminate service and/or web server if started");
-                if (EnvironmentVariables.IsServerOnline)
+                if(EnvironmentVariables.IsServerOnline)
                 {
                     Console.ReadLine();
                 }
@@ -481,7 +467,7 @@ namespace Dev2
             return 0;
         }
 
-        private bool SetWorkingDirectory()
+        bool SetWorkingDirectory()
         {
             bool result = true;
 
@@ -494,7 +480,7 @@ namespace Dev2
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 // ReSharper restore AssignNullToNotNullAttribute
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Fail("Unable to set working directory.", e);
                 result = false;
@@ -503,25 +489,22 @@ namespace Dev2
             return result;
         }
 
-        private static bool EnsureRunningAsAdministrator(string[] arguments)
+        static bool EnsureRunningAsAdministrator(string[] arguments)
         {
+
             try
             {
-                if (!IsElevated())
+                if(!IsElevated())
                 {
-                    var startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location)
-                    {
-                        Verb = "runas",
-                        Arguments = string.Join(" ", arguments)
-                    };
+                    ProcessStartInfo startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location) { Verb = "runas", Arguments = string.Join(" ", arguments) };
 
-                    var process = new Process {StartInfo = startInfo};
+                    Process process = new Process { StartInfo = startInfo };
 
                     try
                     {
                         process.Start();
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         LogException(e);
                     }
@@ -529,7 +512,7 @@ namespace Dev2
                     return false;
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 LogException(e);
             }
@@ -537,12 +520,12 @@ namespace Dev2
             return true;
         }
 
-        private static bool IsElevated()
+        static bool IsElevated()
         {
             WindowsIdentity currentIdentity = WindowsIdentity.GetCurrent();
-            if (currentIdentity != null)
+            if(currentIdentity != null)
             {
-                var principal = new WindowsPrincipal(currentIdentity);
+                WindowsPrincipal principal = new WindowsPrincipal(currentIdentity);
                 return principal.IsInRole(WindowsBuiltInRole.Administrator);
             }
 
@@ -554,22 +537,22 @@ namespace Dev2
         #region Configuration Handling
 
         /// <summary>
-        ///     Reads the configuration file and records the entries in class level fields.
+        /// Reads the configuration file and records the entries in class level fields.
         /// </summary>
         /// <param name="filePath">The relative or fully qualified file path to the configuration file</param>
         /// <returns>true if the configuration file was loaded correctly, false otherwise</returns>
-        private bool LoadConfiguration(string filePath)
+        bool LoadConfiguration(string filePath)
         {
             bool recreate = false;
             bool result = true;
-            var document = new XmlDocument();
-            if (File.Exists(filePath))
+            XmlDocument document = new XmlDocument();
+            if(File.Exists(filePath))
             {
                 try
                 {
                     document.Load(filePath);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     Fail("Configuration load error", e);
                     result = false;
@@ -578,11 +561,11 @@ namespace Dev2
             else
                 recreate = true;
 
-            if (recreate)
+            if(recreate)
             {
                 WriteLine("Configuration file \"" + filePath + "\" does not exist, creating empty configuration file...");
 
-                var builder = new StringBuilder();
+                StringBuilder builder = new StringBuilder();
                 builder.AppendLine("<configuration>");
 
                 // logging info
@@ -592,20 +575,20 @@ namespace Dev2
                 builder.AppendLine("\t\t<Info Enabled=\"true\" />");
                 // ReSharper disable ConditionIsAlwaysTrueOrFalse
                 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-                if (!LogTraceInfo)
-                    // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
-                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                    // ReSharper disable HeuristicUnreachableCode
+                if(!LogTraceInfo)
+                // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
                 {
                     builder.AppendLine("\t\t<Trace Enabled=\"false\" />");
                 }
 #pragma warning restore 162
-                    // ReSharper restore HeuristicUnreachableCode
-                    // ReSharper disable RedundantIfElseBlock
+                // ReSharper restore HeuristicUnreachableCode
+                // ReSharper disable RedundantIfElseBlock
                 else
-                    // ReSharper restore RedundantIfElseBlock
-                    // ReSharper disable HeuristicUnreachableCode
+                // ReSharper restore RedundantIfElseBlock
+                // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
                 {
                     builder.AppendLine("\t\t<Trace Enabled=\"true\" />");
@@ -634,66 +617,65 @@ namespace Dev2
                     File.WriteAllText(filePath, builder.ToString());
                     document.Load(filePath);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     LogException(ex);
                     result = false;
                 }
             }
-            if (result)
+            if(result)
             {
                 result = LoadConfiguration(document);
             }
             return result;
         }
 
-        private bool LoadConfiguration(XmlDocument document)
+        bool LoadConfiguration(XmlDocument document)
         {
             bool result = true;
 
-            XmlNodeList allSections = document.HasChildNodes
-                ? (document.FirstChild.HasChildNodes ? document.FirstChild.ChildNodes : null)
-                : null;
+            XmlNodeList allSections = document.HasChildNodes ? (document.FirstChild.HasChildNodes ? document.FirstChild.ChildNodes : null) : null;
 
-            if (allSections != null)
+            if(allSections != null)
             {
-                foreach (XmlNode section in allSections)
+                foreach(XmlNode section in allSections)
                 {
-                    if (result)
+                    if(result)
                     {
                         ReadBooleanSection(section, "PreloadAssemblies", ref result, ref _preloadAssemblies);
 
-                        if (String.Equals(section.Name, "Logging", StringComparison.OrdinalIgnoreCase))
+                        if(String.Equals(section.Name, "Logging", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (!ProcessLoggingConfiguration(section))
+                            if(!ProcessLoggingConfiguration(section))
                             {
                                 result = false;
                             }
                         }
 
-                        if (String.Equals(section.Name, "GCManager", StringComparison.OrdinalIgnoreCase))
+                        if(String.Equals(section.Name, "GCManager", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (!ProcessGcManager(section))
+                            if(!ProcessGcManager(section))
                             {
                                 result = false;
                             }
                         }
 
-                        if (String.Equals(section.Name, "AssemblyReferenceGroup", StringComparison.OrdinalIgnoreCase))
+                        if(String.Equals(section.Name, "AssemblyReferenceGroup", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (!ProcessAssemblyReferenceGroup(section))
+                            if(!ProcessAssemblyReferenceGroup(section))
                             {
                                 result = false;
                             }
                         }
-                        else if (String.Equals(section.Name, "WorkflowGroup", StringComparison.OrdinalIgnoreCase))
+                        else if(String.Equals(section.Name, "WorkflowGroup", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (!ProcessWorkflowGroup(section))
+                            if(!ProcessWorkflowGroup(section))
                             {
                                 result = false;
                             }
                         }
                     }
+
                 }
             }
 
@@ -704,17 +686,17 @@ namespace Dev2
         {
             bool output = false;
 
-            if (String.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
+            if(String.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
             {
                 output = true;
 
-                if (!String.IsNullOrEmpty(section.InnerText))
+                if(!String.IsNullOrEmpty(section.InnerText))
                 {
-                    if (String.Equals(section.InnerText, "true", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(section.InnerText, "true", StringComparison.OrdinalIgnoreCase))
                     {
                         setter = true;
                     }
-                    else if (String.Equals(section.InnerText, "false", StringComparison.OrdinalIgnoreCase))
+                    else if(String.Equals(section.InnerText, "false", StringComparison.OrdinalIgnoreCase))
                     {
                         setter = false;
                     }
@@ -735,15 +717,15 @@ namespace Dev2
         }
 
 
-        private bool ProcessGcManager(XmlNode section)
+        bool ProcessGcManager(XmlNode section)
         {
             XmlAttributeCollection sectionAttribs = section.Attributes;
 
-            if (sectionAttribs != null)
+            if(sectionAttribs != null)
             {
-                foreach (XmlAttribute sAttrib in sectionAttribs)
+                foreach(XmlAttribute sAttrib in sectionAttribs)
                 {
-                    if (String.Equals(sAttrib.Name, "Enabled", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(sAttrib.Name, "Enabled", StringComparison.OrdinalIgnoreCase))
                     {
                         _enableGcManager = String.Equals(sAttrib.Value, "True", StringComparison.OrdinalIgnoreCase);
                     }
@@ -752,17 +734,17 @@ namespace Dev2
 
             XmlNodeList allReferences = section.HasChildNodes ? section.ChildNodes : null;
 
-            if (allReferences != null)
+            if(allReferences != null)
             {
-                foreach (XmlNode current in allReferences)
+                foreach(XmlNode current in allReferences)
                 {
-                    if (String.Equals(current.Name, "MinWorkingSet", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(current.Name, "MinWorkingSet", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!String.IsNullOrEmpty(current.InnerText))
+                        if(!String.IsNullOrEmpty(current.InnerText))
                         {
                             long tempWorkingSet;
 
-                            if (Int64.TryParse(current.InnerText, out tempWorkingSet))
+                            if(Int64.TryParse(current.InnerText, out tempWorkingSet))
                             {
                                 _minimumWorkingSet = tempWorkingSet;
                             }
@@ -776,13 +758,13 @@ namespace Dev2
                             Fail("Configuration error, MinWorkingSet must be given a value.");
                         }
                     }
-                    else if (String.Equals(current.Name, "MaxWorkingSet", StringComparison.OrdinalIgnoreCase))
+                    else if(String.Equals(current.Name, "MaxWorkingSet", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!String.IsNullOrEmpty(current.InnerText))
+                        if(!String.IsNullOrEmpty(current.InnerText))
                         {
                             long tempWorkingSet;
 
-                            if (Int64.TryParse(current.InnerText, out tempWorkingSet))
+                            if(Int64.TryParse(current.InnerText, out tempWorkingSet))
                             {
                             }
                             else
@@ -801,23 +783,25 @@ namespace Dev2
             return true;
         }
 
-        private bool ProcessLoggingConfiguration(XmlNode section)
+        bool ProcessLoggingConfiguration(XmlNode section)
         {
+
             XmlNodeList allReferences = section.HasChildNodes ? section.ChildNodes : null;
 
-            if (allReferences != null)
+            if(allReferences != null)
             {
-                foreach (XmlNode current in allReferences)
+                foreach(XmlNode current in allReferences)
                 {
-                    XmlAttributeCollection attr = current.Attributes;
+                    var attr = current.Attributes;
 
-                    if (String.Equals(current.Name, "Debug", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(current.Name, "Debug", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
+
+                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
+                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 Dev2Logger.EnableDebugOutput = result;
                             }
@@ -831,13 +815,13 @@ namespace Dev2
                             Fail("Configuration error, Debug must be given a value.");
                         }
                     }
-                    else if (String.Equals(current.Name, "Trace", StringComparison.OrdinalIgnoreCase))
+                    else if(String.Equals(current.Name, "Trace", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
+                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
+                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 Dev2Logger.EnableTraceOutput = result;
                             }
@@ -851,13 +835,13 @@ namespace Dev2
                             Fail("Configuration error, Trace must be given a value.");
                         }
                     }
-                    else if (String.Equals(current.Name, "Error", StringComparison.OrdinalIgnoreCase))
+                    else if(String.Equals(current.Name, "Error", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
+                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
+                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 Dev2Logger.EnableErrorOutput = result;
                             }
@@ -871,13 +855,13 @@ namespace Dev2
                             Fail("Configuration error, Error must be given a value.");
                         }
                     }
-                    else if (String.Equals(current.Name, "Info", StringComparison.OrdinalIgnoreCase))
+                    else if(String.Equals(current.Name, "Info", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
+                        if(attr != null && !String.IsNullOrEmpty(attr["Enabled"].Value))
                         {
                             bool result;
 
-                            if (Boolean.TryParse(attr["Enabled"].Value, out result))
+                            if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
                                 Dev2Logger.EnableInfoOutput = result;
                             }
@@ -898,41 +882,39 @@ namespace Dev2
         }
 
         /// <summary>
-        ///     Transforms AssemblyReferenceGroup nodes into AssemblyReference objects.
+        /// Transforms AssemblyReferenceGroup nodes into AssemblyReference objects.
         /// </summary>
-        private bool ProcessAssemblyReferenceGroup(XmlNode section)
+        bool ProcessAssemblyReferenceGroup(XmlNode section)
         {
             XmlNodeList allReferences = section.HasChildNodes ? section.ChildNodes : null;
 
-            if (allReferences != null)
+            if(allReferences != null)
             {
-                var group = new List<AssemblyReference>();
+                List<AssemblyReference> group = new List<AssemblyReference>();
 
-                foreach (XmlNode current in allReferences)
-                    if (String.Equals(current.Name, "AssemblyReference", StringComparison.OrdinalIgnoreCase))
+                foreach(XmlNode current in allReferences)
+                    if(String.Equals(current.Name, "AssemblyReference", StringComparison.OrdinalIgnoreCase))
                     {
                         XmlAttributeCollection allAttribs = current.Attributes;
                         string path = null, culture = null, version = null, publicKeyToken = null;
 
-                        if (allAttribs != null)
+                        if(allAttribs != null)
                         {
-                            foreach (XmlAttribute currentAttrib in allAttribs)
+                            foreach(XmlAttribute currentAttrib in allAttribs)
                             {
-                                if (String.Equals(currentAttrib.Name, "Path", StringComparison.OrdinalIgnoreCase))
+                                if(String.Equals(currentAttrib.Name, "Path", StringComparison.OrdinalIgnoreCase))
                                 {
                                     path = currentAttrib.Value;
                                 }
-                                else if (String.Equals(currentAttrib.Name, "Culture", StringComparison.OrdinalIgnoreCase))
+                                else if(String.Equals(currentAttrib.Name, "Culture", StringComparison.OrdinalIgnoreCase))
                                 {
                                     culture = currentAttrib.Value;
                                 }
-                                else if (String.Equals(currentAttrib.Name, "Version",
-                                    StringComparison.OrdinalIgnoreCase))
+                                else if(String.Equals(currentAttrib.Name, "Version", StringComparison.OrdinalIgnoreCase))
                                 {
                                     version = currentAttrib.Value;
                                 }
-                                else if (String.Equals(currentAttrib.Name, "PublicKeyToken",
-                                    StringComparison.OrdinalIgnoreCase))
+                                else if(String.Equals(currentAttrib.Name, "PublicKeyToken", StringComparison.OrdinalIgnoreCase))
                                 {
                                     publicKeyToken = currentAttrib.Value;
                                 }
@@ -940,8 +922,8 @@ namespace Dev2
                         }
 
                         // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-                        if (path == null)
-                            // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
+                        if(path == null)
+                        // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
                         {
                             group.Add(new AssemblyReference(current.InnerText, version, culture, publicKeyToken));
                         }
@@ -951,9 +933,9 @@ namespace Dev2
                         }
                     }
 
-                if (group.Count > 0)
+                if(group.Count > 0)
                 {
-                    if (_externalDependencies.Length != 0)
+                    if(_externalDependencies.Length != 0)
                     {
                         group.AddRange(_externalDependencies);
                     }
@@ -966,85 +948,85 @@ namespace Dev2
         }
 
         /// <summary>
-        ///     Transforms WorkflowGroup nodes into WorkflowEntry objects.
+        /// Transforms WorkflowGroup nodes into WorkflowEntry objects.
         /// </summary>
-        private bool ProcessWorkflowGroup(XmlNode section)
+        bool ProcessWorkflowGroup(XmlNode section)
         {
             XmlNodeList allWorkflows = section.HasChildNodes ? section.ChildNodes : null;
 
-            if (allWorkflows != null)
+            if(allWorkflows != null)
             {
                 XmlAttributeCollection allAttribs = section.Attributes;
                 string groupName = null;
 
-                if (allAttribs != null)
+                if(allAttribs != null)
                 {
-                    foreach (XmlAttribute currentAttrib in allAttribs)
+                    foreach(XmlAttribute currentAttrib in allAttribs)
                     {
-                        if (String.Equals(currentAttrib.Name, "Name", StringComparison.OrdinalIgnoreCase))
+                        if(String.Equals(currentAttrib.Name, "Name", StringComparison.OrdinalIgnoreCase))
                         {
                             groupName = currentAttrib.Value;
                         }
                     }
                 }
 
-                if (groupName == null)
+                if(groupName == null)
                 {
                     Fail("Configuration error, WorkflowGroup has no Name attribute.");
                     return false;
                 }
 
-                var group = new List<WorkflowEntry>();
+                List<WorkflowEntry> group = new List<WorkflowEntry>();
 
-                foreach (XmlNode current in allWorkflows)
+                foreach(XmlNode current in allWorkflows)
                 {
-                    if (String.Equals(current.Name, "Workflow", StringComparison.OrdinalIgnoreCase))
+                    if(String.Equals(current.Name, "Workflow", StringComparison.OrdinalIgnoreCase))
                     {
                         allAttribs = current.Attributes;
                         string name = null;
 
-                        if (allAttribs != null)
+                        if(allAttribs != null)
                         {
-                            foreach (XmlAttribute currentAttrib in allAttribs)
+                            foreach(XmlAttribute currentAttrib in allAttribs)
                             {
-                                if (String.Equals(currentAttrib.Name, "Name", StringComparison.OrdinalIgnoreCase))
+                                if(String.Equals(currentAttrib.Name, "Name", StringComparison.OrdinalIgnoreCase))
                                 {
                                     name = currentAttrib.Value;
                                 }
                             }
                         }
 
-                        if (name == null)
+                        if(name == null)
                         {
                             Fail("Configuration error, Workflow has no Name attribute.");
                             return false;
                         }
 
-                        var arguments = new Dictionary<string, string>(StringComparer.Ordinal);
+                        Dictionary<string, string> arguments = new Dictionary<string, string>(StringComparer.Ordinal);
 
-                        if (current.HasChildNodes)
+                        if(current.HasChildNodes)
                         {
                             XmlNodeList allArguments = current.ChildNodes;
 
-                            foreach (XmlNode currentArg in allArguments)
+                            foreach(XmlNode currentArg in allArguments)
                             {
-                                if (String.Equals(currentArg.Name, "Argument", StringComparison.OrdinalIgnoreCase))
+                                if(String.Equals(currentArg.Name, "Argument", StringComparison.OrdinalIgnoreCase))
                                 {
                                     allAttribs = currentArg.Attributes;
 
-                                    if (allAttribs != null)
+                                    if(allAttribs != null)
                                     {
                                         string key = null;
 
-                                        foreach (XmlAttribute argAttrib in allAttribs)
+                                        foreach(XmlAttribute argAttrib in allAttribs)
                                         {
-                                            if (String.Equals(argAttrib.Name, "Key", StringComparison.OrdinalIgnoreCase))
+                                            if(String.Equals(argAttrib.Name, "Key", StringComparison.OrdinalIgnoreCase))
                                             {
                                                 key = argAttrib.Value;
                                             }
                                         }
 
-                                        if (key == null)
+                                        if(key == null)
                                         {
                                             Fail("Configuration error, Argument has no Key attribute.");
                                             return false;
@@ -1052,7 +1034,7 @@ namespace Dev2
 
                                         string value = currentArg.InnerText;
 
-                                        if (arguments.ContainsKey(key))
+                                        if(arguments.ContainsKey(key))
                                         {
                                             arguments[key] = value;
                                         }
@@ -1069,9 +1051,9 @@ namespace Dev2
                     }
                 }
 
-                if (group.Count > 0)
+                if(group.Count > 0)
                 {
-                    if (_workflowGroups.ContainsKey(groupName))
+                    if(_workflowGroups.ContainsKey(groupName))
                     {
                         group.InsertRange(0, _workflowGroups[groupName]);
                         _workflowGroups[groupName] = group.ToArray();
@@ -1091,26 +1073,26 @@ namespace Dev2
         #region Assembly Handling
 
         /// <summary>
-        ///     Ensures all external dependencies have been loaded, then loads all referenced assemblies by the
-        ///     currently executing assembly, and recursively loads each of the referenced assemblies of the
-        ///     initial dependency set until all dependencies have been loaded.
+        /// Ensures all external dependencies have been loaded, then loads all referenced assemblies by the 
+        /// currently executing assembly, and recursively loads each of the referenced assemblies of the 
+        /// initial dependency set until all dependencies have been loaded.
         /// </summary>
-        private bool PreloadReferences()
+        bool PreloadReferences()
         {
             try
             {
-                if (!LoadExternalDependencies())
+                if(!LoadExternalDependencies())
                 {
                     return false;
                 }
 
                 const bool Result = true;
 
-                if (_preloadAssemblies)
+                if(_preloadAssemblies)
                 {
                     Write("Preloading assemblies...  ");
-                    Assembly currentAsm = typeof (ServerLifecycleManager).Assembly;
-                    var inspected = new HashSet<string> {currentAsm.GetName().ToString(), "GroupControls"};
+                    Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
+                    HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString(), "GroupControls" };
                     LoadReferences(currentAsm, inspected);
 
                     WriteLine("done.");
@@ -1118,7 +1100,7 @@ namespace Dev2
 
                 return Result;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 LogException(e);
                 return false;
@@ -1126,23 +1108,23 @@ namespace Dev2
         }
 
         /// <summary>
-        ///     Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
-        ///     already been inspected.
+        /// Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
+        /// already been inspected.
         /// </summary>
-        private void LoadReferences(Assembly asm, HashSet<string> inspected)
+        void LoadReferences(Assembly asm, HashSet<string> inspected)
         {
             AssemblyName[] allReferences = asm.GetReferencedAssemblies();
 
-            foreach (AssemblyName toLoad in allReferences)
+            foreach(AssemblyName toLoad in allReferences)
             {
-                if (!inspected.Contains(toLoad.Name))
+                if(!inspected.Contains(toLoad.Name))
                 {
                     inspected.Add(toLoad.Name);
 
                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                    if (LogTraceInfo)
-                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                        // ReSharper disable HeuristicUnreachableCode
+                    if(LogTraceInfo)
+                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                    // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
                     {
                         WriteLine("Loading Reference [ " + toLoad.FullName + " ]");
@@ -1156,39 +1138,37 @@ namespace Dev2
         }
 
         /// <summary>
-        ///     Loads any external dependencies specified in the configuration file into the current AppDomain.
+        /// Loads any external dependencies specified in the configuration file into the current AppDomain.
         /// </summary>
-        private bool LoadExternalDependencies()
+        bool LoadExternalDependencies()
         {
             bool result = true;
 
-            if (_externalDependencies != null && _externalDependencies.Length > 0)
+            if(_externalDependencies != null && _externalDependencies.Length > 0)
             {
-                foreach (AssemblyReference currentReference in _externalDependencies)
+                foreach(AssemblyReference currentReference in _externalDependencies)
                 {
-                    if (result)
+                    if(result)
                     {
                         Assembly asm = null;
 
-                        if (currentReference.IsGlobalAssemblyCache)
+                        if(currentReference.IsGlobalAssemblyCache)
                         {
                             GAC.RebuildGACAssemblyCache(false);
-                            string gacName = GAC.TryResolveGACAssembly(currentReference.Name, currentReference.Culture,
-                                currentReference.Version, currentReference.PublicKeyToken);
+                            string gacName = GAC.TryResolveGACAssembly(currentReference.Name, currentReference.Culture, currentReference.Version, currentReference.PublicKeyToken);
 
-                            if (gacName == null)
-                                if (GAC.RebuildGACAssemblyCache(true))
-                                    gacName = GAC.TryResolveGACAssembly(currentReference.Name, currentReference.Culture,
-                                        currentReference.Version, currentReference.PublicKeyToken);
+                            if(gacName == null)
+                                if(GAC.RebuildGACAssemblyCache(true))
+                                    gacName = GAC.TryResolveGACAssembly(currentReference.Name, currentReference.Culture, currentReference.Version, currentReference.PublicKeyToken);
 
-                            if (gacName != null)
+                            if(gacName != null)
                             {
                                 try
                                 {
                                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                                    if (LogTraceInfo)
-                                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                                        // ReSharper disable HeuristicUnreachableCode
+                                    if(LogTraceInfo)
+                                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                                    // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
                                     {
                                         WriteLine("Loading External Dependencies [ " + gacName + " ]");
@@ -1197,17 +1177,15 @@ namespace Dev2
                                     // ReSharper restore HeuristicUnreachableCode
                                     asm = Assembly.Load(gacName);
                                 }
-                                catch (Exception e)
+                                catch(Exception e)
                                 {
                                     asm = null;
-                                    Fail(
-                                        "External assembly \"" + gacName +
-                                        "\" failed to load from global assembly cache", e);
+                                    Fail("External assembly \"" + gacName + "\" failed to load from global assembly cache", e);
                                     result = false;
                                 }
                             }
 
-                            if (asm == null && result)
+                            if(asm == null && result)
                             {
                                 Fail("External assembly \"" + gacName + "\" failed to load from global assembly cache");
                                 result = false;
@@ -1215,19 +1193,16 @@ namespace Dev2
                         }
                         else
                         {
-                            string fullPath = Path.Combine(currentReference.Path,
-                                currentReference.Name.EndsWith(".dll")
-                                    ? currentReference.Name
-                                    : (currentReference.Name + ".dll"));
+                            string fullPath = Path.Combine(currentReference.Path, currentReference.Name.EndsWith(".dll") ? currentReference.Name : (currentReference.Name + ".dll"));
 
-                            if (File.Exists(fullPath))
+                            if(File.Exists(fullPath))
                             {
                                 try
                                 {
                                     // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                                    if (LogTraceInfo)
-                                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                                        // ReSharper disable HeuristicUnreachableCode
+                                    if(LogTraceInfo)
+                                    // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                                    // ReSharper disable HeuristicUnreachableCode
 #pragma warning disable 162
                                     {
                                         WriteLine("Loading [ " + currentReference.Name + " ]");
@@ -1236,7 +1211,7 @@ namespace Dev2
                                     // ReSharper restore HeuristicUnreachableCode
                                     asm = Assembly.LoadFrom(fullPath);
                                 }
-                                catch (Exception e)
+                                catch(Exception e)
                                 {
                                     asm = null;
                                     Fail("External assembly failed to load from \"" + fullPath + "\"", e);
@@ -1244,14 +1219,14 @@ namespace Dev2
                                 }
                             }
 
-                            if (asm == null && result)
+                            if(asm == null && result)
                             {
                                 Fail("External assembly failed to load from \"" + fullPath + "\"");
                                 result = false;
                             }
                         }
 
-                        if (result)
+                        if(result)
                         {
                             AppDomain.CurrentDomain.Load(asm.GetName());
                         }
@@ -1266,16 +1241,16 @@ namespace Dev2
 
         #region GC Handling
 
-        private bool StartGcManager()
+        bool StartGcManager()
         {
-            if (_enableGcManager)
+            if(_enableGcManager)
             {
                 WriteLine("SLM garbage collection manager enabled.");
                 _gcmThreadStart = GcmEntryPoint;
                 _lastKnownWorkingSet = -1L;
                 _nextForcedCollection = DateTime.Now.AddSeconds(5.0);
                 _gcmRunning = true;
-                _gcmThread = new Thread(_gcmThreadStart) {IsBackground = false};
+                _gcmThread = new Thread(_gcmThreadStart) { IsBackground = false };
                 _gcmThread.Start();
             }
             else
@@ -1286,23 +1261,23 @@ namespace Dev2
             return true;
         }
 
-        private void GcmEntryPoint()
+        void GcmEntryPoint()
         {
-            while (_gcmRunning)
+            while(_gcmRunning)
             {
                 DateTime now = DateTime.Now;
 
-                if (now >= _nextForcedCollection)
+                if(now >= _nextForcedCollection)
                 {
-                    if (_lastKnownWorkingSet == -1L)
+                    if(_lastKnownWorkingSet == -1L)
                     {
                         _lastKnownWorkingSet = GC.GetTotalMemory(true);
                     }
                     else
                     {
-                        bool shouldCollect = (_lastKnownWorkingSet/1024L/1024L) > _minimumWorkingSet;
+                        bool shouldCollect = (_lastKnownWorkingSet / 1024L / 1024L) > _minimumWorkingSet;
 
-                        if (shouldCollect)
+                        if(shouldCollect)
                         {
                             WriteLine("Collecting...");
                             _lastKnownWorkingSet = GC.GetTotalMemory(true);
@@ -1321,11 +1296,11 @@ namespace Dev2
             }
         }
 
-        private void TerminateGcManager()
+        void TerminateGcManager()
         {
-            if (_enableGcManager)
+            if(_enableGcManager)
             {
-                if (_gcmThread != null)
+                if(_gcmThread != null)
                 {
                     _gcmRunning = false;
                     _gcmThread.Join();
@@ -1340,26 +1315,26 @@ namespace Dev2
 
         #region Initialization Handling
 
-        private void InitializeCommandLineArguments()
+        void InitializeCommandLineArguments()
         {
-            var arguments = new Dictionary<string, string>();
+            Dictionary<string, string> arguments = new Dictionary<string, string>();
 
-            if (_arguments.Any())
+            if(_arguments.Any())
             {
-                foreach (string t in _arguments)
+                foreach(string t in _arguments)
                 {
-                    string[] arg = t.Split(new[] {'='});
+                    string[] arg = t.Split(new[] { '=' });
 
-                    if (arg.Length == 2)
+                    if(arg.Length == 2)
                     {
                         arguments.Add(arg[0].Replace("/", string.Empty), arg[1]);
                     }
                 }
             }
 
-            foreach (var argument in arguments)
+            foreach(KeyValuePair<string, string> argument in arguments)
             {
-                if (argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
+                if(argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
                 {
                     _configFile = argument.Value;
                 }
@@ -1367,11 +1342,11 @@ namespace Dev2
         }
 
         /// <summary>
-        ///     Performs all necessary initialization such that the server is in a state that allows
-        ///     workflow execution.
+        /// Performs all necessary initialization such that the server is in a state that allows
+        /// workflow execution.
         /// </summary>
         /// <returns>false if the initialization failed, otherwise true</returns>
-        private bool InitializeServer()
+        bool InitializeServer()
         {
             bool result = true;
 
@@ -1380,58 +1355,56 @@ namespace Dev2
                 string webServerPort = null;
                 string webServerSslPort = null;
 
-                var arguments = new Dictionary<string, string>();
+                Dictionary<string, string> arguments = new Dictionary<string, string>();
 
-                if (_arguments.Any())
+                if(_arguments.Any())
                 {
-                    foreach (string t in _arguments)
+                    foreach(string t in _arguments)
                     {
-                        string[] arg = t.Split(new[] {'='});
-                        if (arg.Length == 2)
+                        string[] arg = t.Split(new[] { '=' });
+                        if(arg.Length == 2)
                         {
                             arguments.Add(arg[0].Replace("/", string.Empty), arg[1]);
                         }
                     }
                 }
 
-                foreach (var argument in arguments)
+                foreach(KeyValuePair<string, string> argument in arguments)
                 {
-                    if (argument.Key.Equals("endpointAddress", StringComparison.InvariantCultureIgnoreCase))
+                    if(argument.Key.Equals("endpointAddress", StringComparison.InvariantCultureIgnoreCase))
                     {
                         continue;
                     }
 
-                    if (argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
+                    if(argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
                     {
                         webServerPort = argument.Value;
                         continue;
                     }
 
-                    if (argument.Key.Equals("webServerSslPort", StringComparison.InvariantCultureIgnoreCase))
+                    if(argument.Key.Equals("webServerSslPort", StringComparison.InvariantCultureIgnoreCase))
                     {
                         webServerSslPort = argument.Value;
                         continue;
                     }
 
-                    if (argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
+                    if(argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
                     {
                         _configFile = argument.Value;
                     }
                 }
 
-                GlobalConstants.WebServerPort =
-                    webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
-                GlobalConstants.WebServerSslPort =
-                    webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
+                GlobalConstants.WebServerPort = webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
+                GlobalConstants.WebServerSslPort = webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
 
                 _isWebServerEnabled = false;
 
                 Boolean.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
                 Boolean.TryParse(ConfigurationManager.AppSettings["webServerSslEnabled"], out _isWebServerSslEnabled);
 
-                if (_isWebServerEnabled)
+                if(_isWebServerEnabled)
                 {
-                    if (string.IsNullOrEmpty(webServerPort) && _isWebServerEnabled)
+                    if(string.IsNullOrEmpty(webServerPort) && _isWebServerEnabled)
                     {
                         throw new ArgumentException(
                             "Web server port not set but web server is enabled. Please set the webServerPort value in the configuration file.");
@@ -1439,51 +1412,50 @@ namespace Dev2
 
                     int realPort;
 
-                    if (!Int32.TryParse(webServerPort, out realPort))
+                    if(!Int32.TryParse(webServerPort, out realPort))
                     {
-                        throw new ArgumentException(
-                            "Web server port is not valid. Please set the webServerPort value in the configuration file.");
+                        throw new ArgumentException("Web server port is not valid. Please set the webServerPort value in the configuration file.");
                     }
 
                     var endpoints = new List<Dev2Endpoint>();
 
                     var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
-                    string httpUrl = string.Format("http://*:{0}/", webServerPort);
+                    var httpUrl = string.Format("http://*:{0}/", webServerPort);
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
                     EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
 
 
                     // start SSL traffic if it is enabled ;)
-                    if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
+                    if(!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
                     {
                         int realWebServerSslPort;
                         Int32.TryParse(webServerSslPort, out realWebServerSslPort);
 
-                        string sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
+                        var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
 
-                        if (!string.IsNullOrEmpty(sslCertPath))
+                        if(!string.IsNullOrEmpty(sslCertPath))
                         {
                             var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
-                            string httpsUrl = string.Format("https://*:{0}/", webServerSslPort);
-                            bool canEnableSsl = HostSecurityProvider.Instance.EnsureSSL(sslCertPath, httpsEndpoint);
+                            var httpsUrl = string.Format("https://*:{0}/", webServerSslPort);
+                            var canEnableSsl = HostSecurityProvider.Instance.EnsureSSL(sslCertPath, httpsEndpoint);
 
-                            if (canEnableSsl)
+                            if(canEnableSsl)
                             {
                                 endpoints.Add(new Dev2Endpoint(httpsEndpoint, httpsUrl, sslCertPath));
                             }
                             else
                             {
-                                WriteLine("Could not start webserver to listen for SSL traffic with cert [ " +
-                                          sslCertPath + " ]");
+                                WriteLine("Could not start webserver to listen for SSL traffic with cert [ " + sslCertPath + " ]");
                             }
                         }
                     }
 
                     _endpoints = endpoints.ToArray();
                 }
+
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 result = false;
                 Fail("Server initialization failed", ex);
@@ -1497,8 +1469,8 @@ namespace Dev2
         #region Cleanup Handling
 
         /// <summary>
-        ///     Performs all necessary cleanup such that the server is gracefully moved to a state that does not allow
-        ///     workflow execution.
+        /// Performs all necessary cleanup such that the server is gracefully moved to a state that does not allow
+        /// workflow execution.
         /// </summary>
         /// <returns>false if the cleanup failed, otherwise true</returns>
         internal bool CleanupServer()
@@ -1507,13 +1479,13 @@ namespace Dev2
 
             try
             {
-                if (_owinServer != null)
+                if(_owinServer != null)
                 {
                     _owinServer.Dispose();
                     _owinServer = null;
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 LogException(ex);
                 result = false;
@@ -1524,7 +1496,7 @@ namespace Dev2
                 DebugDispatcher.Instance.Shutdown();
                 BackgroundDispatcher.Instance.Shutdown();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 LogException(ex);
                 result = false;
@@ -1535,7 +1507,7 @@ namespace Dev2
             {
                 BinaryDataListStorageLayer.Teardown();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 LogException(e);
             }
@@ -1611,11 +1583,11 @@ namespace Dev2
 
         #region Failure Handling
 
-        private static void Fail(string message, Exception e)
+        static void Fail(string message, Exception e)
         {
-            Exception ex = e;
+            var ex = e;
             var errors = new StringBuilder();
-            while (ex != null)
+            while(ex != null)
             {
                 errors.AppendLine(ex.Message);
                 errors.AppendLine(ex.StackTrace);
@@ -1628,11 +1600,11 @@ namespace Dev2
             WriteLine("");
         }
 
-        private static void Fail(string message, string details = "")
+        static void Fail(string message, string details = "")
         {
             WriteLine("Critical Failure: " + message);
 
-            if (!String.IsNullOrEmpty(details))
+            if(!String.IsNullOrEmpty(details))
             {
                 WriteLine("Details");
                 WriteLine("--");
@@ -1640,6 +1612,7 @@ namespace Dev2
             }
 
             WriteLine("");
+
         }
 
         #endregion
@@ -1647,19 +1620,7 @@ namespace Dev2
         #region Disposal Handling
 
         /// <summary>
-        ///     Public facing implementation of the Dispose interface
-        /// </summary>
-        public void Dispose()
-        {
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        ///     Finalizer for ServerLifecycleManager called when garbage collected.
+        /// Finalizer for ServerLifecycleManager called when garbage collected.
         /// </summary>
         ~ServerLifecycleManager()
         {
@@ -1667,17 +1628,30 @@ namespace Dev2
         }
 
         /// <summary>
-        ///     Proper dispose pattern implementation to ensure Application Server is terminated correctly, even from finalizer.
+        /// Public facing implementation of the Dispose interface
+        /// </summary>
+        public void Dispose()
+        {
+            if(_isDisposed)
+                return;
+            _isDisposed = true;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        ///  Proper dispose pattern implementation to ensure Application Server is terminated correctly, even from finalizer.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed, otherwise false.</param>
-        private void Dispose(bool disposing)
+        void Dispose(bool disposing)
         {
-            if (disposing)
+
+            if(disposing)
             {
                 CleanupServer();
             }
 
-            if (_timer != null)
+            if(_timer != null)
             {
                 _timer.Dispose();
                 _timer = null;
@@ -1690,15 +1664,22 @@ namespace Dev2
 
         #region AssemblyReference
 
-        private sealed class AssemblyReference
+        sealed class AssemblyReference
         {
             public static readonly AssemblyReference[] EmptyReferences = new AssemblyReference[0];
 
-            private readonly string _culture;
-            private readonly string _name;
-            private readonly string _path;
-            private readonly string _publicKeyToken;
-            private readonly string _version;
+            readonly string _name;
+            readonly string _version;
+            readonly string _culture;
+            readonly string _publicKeyToken;
+            readonly string _path;
+
+            public string Name { get { return _name; } }
+            public string Version { get { return _version; } }
+            public string Culture { get { return _culture; } }
+            public string PublicKeyToken { get { return _publicKeyToken; } }
+            public string Path { get { return _path; } }
+            public bool IsGlobalAssemblyCache { get { return _path == null; } }
 
             public AssemblyReference(string name, string version, string culture, string publicKeyToken)
             {
@@ -1713,57 +1694,22 @@ namespace Dev2
                 _name = name;
                 _path = path;
             }
-
-            public string Name
-            {
-                get { return _name; }
-            }
-
-            public string Version
-            {
-                get { return _version; }
-            }
-
-            public string Culture
-            {
-                get { return _culture; }
-            }
-
-            public string PublicKeyToken
-            {
-                get { return _publicKeyToken; }
-            }
-
-            public string Path
-            {
-                get { return _path; }
-            }
-
-            public bool IsGlobalAssemblyCache
-            {
-                get { return _path == null; }
-            }
         }
 
         #endregion
 
         #region WorkflowEntry
 
-        private sealed class WorkflowEntry
+        sealed class WorkflowEntry
         {
-            private readonly string _name;
+            readonly string _name;
             // ReSharper disable UnusedMember.Local
-
+            public string Name { get { return _name; } }
             // ReSharper restore UnusedMember.Local
 
             public WorkflowEntry(string name)
             {
                 _name = name;
-            }
-
-            public string Name
-            {
-                get { return _name; }
             }
         }
 
@@ -1776,31 +1722,31 @@ namespace Dev2
         /// <returns></returns>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/13</date>
-        private bool LoadResourceCatalog()
+        bool LoadResourceCatalog()
         {
             MigrateOldResources();
             Write("Loading resource catalog...  ");
             // First call initializes instance
 #pragma warning disable 168
             // ReSharper disable UnusedVariable
-            ResourceCatalog catalog = ResourceCatalog.Instance;
+            var catalog = ResourceCatalog.Instance;
             // ReSharper restore UnusedVariable
 #pragma warning restore 168
             WriteLine("done.");
             return true;
         }
 
-        private static void MigrateOldResources()
+        static void MigrateOldResources()
         {
-            string oldServicesFolder = Path.Combine(EnvironmentVariables.ApplicationPath, "Services");
-            string oldSourcesFolder = Path.Combine(EnvironmentVariables.ApplicationPath, "Sources");
-            if (Directory.Exists(oldServicesFolder))
+            var oldServicesFolder = Path.Combine(EnvironmentVariables.ApplicationPath, "Services");
+            var oldSourcesFolder = Path.Combine(EnvironmentVariables.ApplicationPath, "Sources");
+            if(Directory.Exists(oldServicesFolder))
             {
                 Write("Migrating old services...  ");
                 MigrateResources(oldServicesFolder);
                 WriteLine("done.");
             }
-            if (Directory.Exists(oldSourcesFolder))
+            if(Directory.Exists(oldSourcesFolder))
             {
                 Write("Migrating old sources...  ");
                 MigrateResources(oldSourcesFolder);
@@ -1808,69 +1754,68 @@ namespace Dev2
             }
         }
 
-        private static void MigrateResources(string oldResourceFolder)
+        static void MigrateResources(string oldResourceFolder)
         {
-            IEnumerable<string> oldResourceFiles = Directory.EnumerateFiles(oldResourceFolder);
+            var oldResourceFiles = Directory.EnumerateFiles(oldResourceFolder);
             try
             {
-                foreach (string oldResourceFile in oldResourceFiles)
+                foreach(var oldResourceFile in oldResourceFiles)
                 {
-                    XElement oldResourceXml = XElement.Load(oldResourceFile);
-                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID,
-                        oldResourceXml.ToStringBuilder());
+                    var oldResourceXml = XElement.Load(oldResourceFile);
+                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, oldResourceXml.ToStringBuilder());
                 }
                 DirectoryHelper.CleanUp(oldResourceFolder);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Dev2Logger.Log.Error("Dev2.ServerLifecycleManager - Error Migrating", ex);
             }
         }
 
         /// <summary>
-        ///     PBI 1018 - Loads the settings provider.
+        /// PBI 1018 - Loads the settings provider.
         /// </summary>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/07</date>
-        private bool LoadSettingsProvider()
+        bool LoadSettingsProvider()
         {
             Write("Loading settings provider...  ");
             // First call to instance loads the provider.
-            SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
+            Runtime.Configuration.SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
             //            var instance = SettingsProvider.Instance;
             //            instance.Start();
             WriteLine("done.");
             return true;
         }
 
-        private void UnloadSettingsProvider()
+        void UnloadSettingsProvider()
         {
             try
             {
             }
-                // ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
-                // ReSharper restore EmptyGeneralCatchClause
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // Called when exiting so no use in throwing error!
             }
         }
 
-        private bool ConfigureLoggging()
+        bool ConfigureLoggging()
         {
             try
             {
                 Write("Configure logging...  ");
 
                 // First call to instance loads the provider.
-                SettingsProvider instance = SettingsProvider.Instance;
-                Configuration settings = instance.Configuration;
+                var instance = Runtime.Configuration.SettingsProvider.Instance;
+                var settings = instance.Configuration;
                 Dev2Logger.LoggingSettings = settings.Logging;
-
+               
                 WriteLine("done.");
                 return true;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Write("fail.");
                 WriteLine(e.Message);
@@ -1879,29 +1824,30 @@ namespace Dev2
         }
 
         // PBI 5389 - Resources Assigned and Allocated to Server
-        private bool LoadServerWorkspace()
+        bool LoadServerWorkspace()
         {
+
             Write("Loading server workspace...  ");
             // First call to instance loads the server workspace.
             // ReSharper disable UnusedVariable
-            WorkspaceRepository instance = WorkspaceRepository.Instance;
+            var instance = WorkspaceRepository.Instance;
             // ReSharper restore UnusedVariable
             WriteLine("done.");
             return true;
         }
 
         // PBI 5389 - Resources Assigned and Allocated to Server
-        private bool LoadHostSecurityProvider()
+        bool LoadHostSecurityProvider()
         {
             // First call to instance loads the provider.
             // ReSharper disable UnusedVariable
-            IHostSecurityProvider instance = HostSecurityProvider.Instance;
+            var instance = HostSecurityProvider.Instance;
 
             // ReSharper restore UnusedVariable
             return true;
         }
 
-        private bool StartDataListServer()
+        bool StartDataListServer()
         {
             // PBI : 5376 - Create instance of the Server compiler
             Write("Starting DataList Server...  ");
@@ -1909,7 +1855,7 @@ namespace Dev2
             DataListFactory.CreateServerDataListCompiler();
             BinaryDataListStorageLayer.Setup();
 
-            double mbReserved = BinaryDataListStorageLayer.GetCapacityMemoryInMb();
+            var mbReserved = BinaryDataListStorageLayer.GetCapacityMemoryInMb();
 
             Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
 
@@ -1918,11 +1864,11 @@ namespace Dev2
             return true;
         }
 
-        private bool StartWebServer()
+        bool StartWebServer()
         {
             bool result = true;
 
-            if (_isWebServerEnabled || _isWebServerSslEnabled)
+            if(_isWebServerEnabled || _isWebServerSslEnabled)
             {
                 try
                 {
@@ -1931,20 +1877,20 @@ namespace Dev2
                         _owinServer = WebServerStartup.Start(_endpoints);
                         EnvironmentVariables.IsServerOnline = true; // flag server as active
                         WriteLine("\r\nWeb Server Started");
-                        foreach (Dev2Endpoint endpoint in _endpoints)
+                        foreach(var endpoint in _endpoints)
                         {
                             WriteLine(string.Format("Web server listening at {0}", endpoint.Url));
                         }
                         SetStarted();
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         LogException(e);
                         Fail("Webserver failed to start", e);
                         Console.ReadLine();
                     }
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     result = false;
                     EnvironmentVariables.IsServerOnline = false; // flag server as inactive
@@ -1962,7 +1908,7 @@ namespace Dev2
 
         internal static void WriteLine(string message)
         {
-            if (Environment.UserInteractive)
+            if(Environment.UserInteractive)
             {
                 Console.WriteLine(message);
                 Dev2Logger.Log.Info(message);
@@ -1971,11 +1917,12 @@ namespace Dev2
             {
                 Dev2Logger.Log.Info(message);
             }
+
         }
 
         internal static void Write(string message)
         {
-            if (Environment.UserInteractive)
+            if(Environment.UserInteractive)
             {
                 Console.Write(message);
                 Dev2Logger.Log.Info(message);
@@ -1987,11 +1934,13 @@ namespace Dev2
         }
 
         #endregion Output Handling
-
-        private static void SetStarted()
+        static void SetStarted()
         {
             try
             {
+
+
+
                 if (File.Exists(".\\ServerStarted"))
                 {
                     File.Delete(".\\ServerStarted");
@@ -2003,10 +1952,10 @@ namespace Dev2
                 Dev2Logger.Log.Error(err);
             }
         }
-
-        private static void LogException(Exception ex)
+        static void LogException(Exception ex)
         {
             Dev2Logger.Log.Error("Dev2.ServerLifecycleManager", ex);
         }
     }
 }
+

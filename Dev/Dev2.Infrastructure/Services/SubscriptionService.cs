@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,10 +19,10 @@ using Dev2.Common.Interfaces.Infrastructure.Events;
 namespace Dev2.Services
 {
     public class SubscriptionService<TEvent> : DisposableObject, ISubscriptionService<TEvent>
-        where TEvent : class, new()
+         where TEvent : class, new()
     {
-        private readonly IObservable<TEvent> _events;
-        private readonly List<IDisposable> _subscriptions;
+        readonly List<IDisposable> _subscriptions;
+        readonly IObservable<TEvent> _events;
 
         public SubscriptionService(IEventPublisher eventPublisher)
         {
@@ -34,24 +35,22 @@ namespace Dev2.Services
             // Don't observe on dispatcher if this is a background thread!
             try
             {
-                Dispatcher dispatcher = Dispatcher.CurrentDispatcher;
-                if (dispatcher.CheckAccess() && !dispatcher.Thread.IsBackground)
+                var dispatcher = Dispatcher.CurrentDispatcher;
+                if(dispatcher.CheckAccess() && !dispatcher.Thread.IsBackground)
                 {
+
                     _events = _events.ObserveOnDispatcher();
                 }
             }
-                // ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
-                // ReSharper restore EmptyGeneralCatchClause
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // FOR TESTING FUNNIES!!
             }
         }
 
-        public int Count
-        {
-            get { return _subscriptions.Count; }
-        }
+        public int Count { get { return _subscriptions.Count; } }
 
         public void Subscribe(Action<TEvent> onNext)
         {
@@ -60,17 +59,17 @@ namespace Dev2.Services
 
         public virtual void Subscribe(Func<TEvent, bool> filter, Action<TEvent> onNext)
         {
-            IObservable<TEvent> events = filter == null ? _events : (_events != null ? _events.Where(filter) : null);
-            if (events != null)
+            var events = filter == null ? _events : (_events != null ? _events.Where(filter) : null);
+            if(events != null)
             {
-                IDisposable subscription = events.Subscribe(onNext);
+                var subscription = events.Subscribe(onNext);
                 _subscriptions.Add(subscription);
             }
         }
 
         public void Unsubscribe()
         {
-            foreach (IDisposable subscription in _subscriptions)
+            foreach(var subscription in _subscriptions)
             {
                 subscription.Dispose();
             }

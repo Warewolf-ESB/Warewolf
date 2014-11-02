@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,7 +12,6 @@
 
 using System;
 using System.Threading;
-using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -20,16 +20,16 @@ namespace Dev2.Runtime.WebServer.Handlers
     {
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            string serviceName = GetServiceName(ctx);
-            string instanceId = GetInstanceID(ctx);
-            string bookmark = GetBookmark(ctx);
-            string postDataListID = GetDataListID(ctx);
-            string workspaceID = GetWorkspaceID(ctx);
+            var serviceName = GetServiceName(ctx);
+            var instanceId = GetInstanceID(ctx);
+            var bookmark = GetBookmark(ctx);
+            var postDataListID = GetDataListID(ctx);
+            var workspaceID = GetWorkspaceID(ctx);
 
             var requestTO = new WebRequestTO();
-            string xml = GetPostData(ctx, postDataListID);
+            var xml = GetPostData(ctx, postDataListID);
 
-            if (!String.IsNullOrEmpty(xml))
+            if(!String.IsNullOrEmpty(xml))
             {
                 requestTO.RawRequestPayload = xml;
             }
@@ -44,9 +44,9 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Execute in its own thread to give proper context ;)
             Thread.CurrentPrincipal = ctx.Request.User;
 
-            IResponseWriter responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(),
-                PublicFormats, ctx.Request.User);
+            var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats, ctx.Request.User);
             ctx.Send(responseWriter);
+
         }
     }
 }

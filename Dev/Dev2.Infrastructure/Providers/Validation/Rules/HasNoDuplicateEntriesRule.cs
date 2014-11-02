@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,16 +27,16 @@ namespace Dev2.Providers.Validation.Rules
 
         public override IActionableErrorInfo Check()
         {
-            string value = GetValue();
+            var value = GetValue();
             string[] fields = value.Split(',');
-            for (int i = 0; i < fields.Length; i++)
+            for(int i = 0; i < fields.Length; i++)
             {
                 fields[i] = ReplaceRecordsetIndexWithBlank(fields[i]);
             }
 
             IEnumerable<string> enumerable = fields.Distinct();
 
-            if (enumerable.Count() != fields.Count())
+            if(enumerable.Count() != fields.Count())
             {
                 return CreatError();
             }
@@ -44,7 +45,7 @@ namespace Dev2.Providers.Validation.Rules
         }
 
         /// <summary>
-        ///     Replaces the index of a recordset with a blank index.
+        /// Replaces the index of a recordset with a blank index.
         /// </summary>
         /// <param name="expression">The expession.</param>
         /// <returns></returns>
@@ -55,7 +56,7 @@ namespace Dev2.Providers.Validation.Rules
         }
 
         /// <summary>
-        ///     Used to extract an index in the recordset notation
+        /// Used to extract an index in the recordset notation
         /// </summary>
         /// <param name="rs">The rs.</param>
         /// <returns></returns>
@@ -64,10 +65,10 @@ namespace Dev2.Providers.Validation.Rules
             string result = string.Empty;
 
             int start = rs.IndexOf("(", StringComparison.Ordinal);
-            if (start > 0)
+            if(start > 0)
             {
                 int end = rs.LastIndexOf(")", StringComparison.Ordinal);
-                if (end < 0)
+                if(end < 0)
                 {
                     end = rs.Length;
                 }

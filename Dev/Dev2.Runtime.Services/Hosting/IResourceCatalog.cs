@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -28,32 +29,31 @@ namespace Dev2.Runtime.Hosting
 
         void RemoveWorkspace(Guid workspaceID);
 
-        IResource GetResource(Guid workspaceID, string resourceName, ResourceType resourceType = ResourceType.Unknown,
-            string version = null);
+        IResource GetResource(Guid workspaceID, string resourceName, ResourceType resourceType = ResourceType.Unknown, string version = null);
 
         IResource GetResource(Guid workspaceID, Guid resourceID);
 
         /// <summary>
-        ///     Gets the contents of the resource with the given name.
+        /// Gets the contents of the resource with the given name.
         /// </summary>
         /// <param name="workspaceID">The workspace ID to be queried.</param>
         /// <param name="resourceID">The resource ID to be queried.</param>
         /// <returns>
-        ///     The resource's contents or <code>string.Empty</code> if not found.
+        /// The resource's contents or <code>string.Empty</code> if not found.
         /// </returns>
         StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID);
 
         /// <summary>
-        ///     Gets the resource's contents.
+        /// Gets the resource's contents.
         /// </summary>
         /// <param name="resource">The resource to be queried.</param>
         /// <returns>
-        ///     The resource's contents or <code>string.Empty</code> if not found.
+        /// The resource's contents or <code>string.Empty</code> if not found.
         /// </returns>
         StringBuilder GetResourceContents(IResource resource);
 
         /// <summary>
-        ///     Gets the contents of the resource with the given guids.
+        /// Gets the contents of the resource with the given guids.
         /// </summary>
         /// <param name="workspaceID">The workspace ID to be queried.</param>
         /// <param name="guidCsv">The guids to be queried.</param>
@@ -63,7 +63,7 @@ namespace Dev2.Runtime.Hosting
         StringBuilder GetPayload(Guid workspaceID, string guidCsv, string type);
 
         /// <summary>
-        ///     Gets the contents of the resources with the given source type.
+        /// Gets the contents of the resources with the given source type.
         /// </summary>
         /// <param name="workspaceID">The workspace ID to be queried.</param>
         /// <param name="sourceType">The type of the source to be queried.</param>
@@ -71,33 +71,26 @@ namespace Dev2.Runtime.Hosting
         StringBuilder GetPayload(Guid workspaceID, enSourceType sourceType);
 
         /// <summary>
-        ///     Gets the contents of the resource with the given name and type (WorkflowService, Service, Source, ReservedService
-        ///     or *).
+        /// Gets the contents of the resource with the given name and type (WorkflowService, Service, Source, ReservedService or *).
         /// </summary>
         /// <param name="workspaceID">The workspace ID to be queried.</param>
         /// <param name="resourceName">The name of the resource to be queried.</param>
         /// <param name="type">The type string: WorkflowService, Service, Source, ReservedService or *, to be queried.</param>
         /// <param name="userRoles">The user roles to be queried.</param>
-        /// <param name="useContains">
-        ///     <code>true</code> if matching resource name's should contain the given <paramref name="resourceName" />;
-        ///     <code>false</code> if resource name's must exactly match the given <paramref name="resourceName" />.
-        /// </param>
+        /// <param name="useContains"><code>true</code> if matching resource name's should contain the given <paramref name="resourceName"/>;
+        /// <code>false</code> if resource name's must exactly match the given <paramref name="resourceName"/>.</param>
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-        /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">
-        ///     ResourceName or Type is missing from the
-        ///     request
-        /// </exception>
-        StringBuilder GetPayload(Guid workspaceID, string resourceName, string type, string userRoles,
-            bool useContains = true);
+        /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">ResourceName or Type is missing from the request</exception>
+        StringBuilder GetPayload(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true);
 
         /// <summary>
-        ///     Loads the workspace.
+        /// Loads the workspace.
         /// </summary>
         /// <param name="workspaceID">The workspace unique identifier.</param>
         void LoadWorkspace(Guid workspaceID);
 
         /// <summary>
-        ///     Loads the workspace via builder.
+        /// Loads the workspace via builder.
         /// </summary>
         /// <param name="workspacePath">The workspace path.</param>
         /// <param name="folders">The folders.</param>
@@ -108,22 +101,17 @@ namespace Dev2.Runtime.Hosting
 
         bool CopyResource(IResource resource, Guid targetWorkspaceID, string userRoles = null);
 
-        ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null,
-            string reason = "", string user = "");
+        ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null,string reason ="",string user ="");
 
-        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null,
-            string reason = "", string user = "");
+        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null, string reason ="",string user ="");
 
-        ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, string userRoles = null,
-            bool deleteVersions = true);
+        ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, string userRoles = null, bool deleteVersions = true);
 
-        // bool RollbackResource(Guid workspaceID, Guid resourceID, Version fromVersion, Version toVersion);
+       // bool RollbackResource(Guid workspaceID, Guid resourceID, Version fromVersion, Version toVersion);
 
-        void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true,
-            IList<string> filesToIgnore = null);
+        void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null);
 
-        List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName,
-            bool useContains = false)
+        List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName, bool useContains = false)
             where TServiceType : DynamicServiceObjectBase;
 
         List<DynamicServiceObjectBase> GetDynamicObjects(IResource resource);
@@ -142,8 +130,7 @@ namespace Dev2.Runtime.Hosting
 
         ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory);
 
-        ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory,
-            List<IResource> resourcesToUpdate);
+        ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, List<IResource> resourcesToUpdate);
 
         T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new();
 

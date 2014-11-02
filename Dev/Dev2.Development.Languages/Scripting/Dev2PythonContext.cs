@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,13 +19,13 @@ using Microsoft.Scripting.Hosting;
 
 namespace Dev2.Development.Languages.Scripting
 {
-    public class Dev2PythonContext : IScriptingContext
+    public class Dev2PythonContext:IScriptingContext
     {
         public string Execute(string scriptValue)
         {
-            ScriptEngine pyEng = Python.CreateEngine();
-
-            string pyFunc = @"def __result__(): " + scriptValue;
+            var pyEng = Python.CreateEngine();
+            
+            string pyFunc =  @"def __result__(): " + scriptValue;     
 
             ScriptSource source = pyEng.CreateScriptSourceFromString(pyFunc, SourceCodeKind.Statements);
 
@@ -37,9 +38,9 @@ namespace Dev2.Development.Languages.Scripting
             //get a delegate to the python function
             var result = scope.GetVariable<Func<dynamic>>("__result__");
 
-            dynamic toReturn = result.Invoke();
+            var toReturn = result.Invoke();
 
-            if (toReturn != null)
+            if(toReturn != null)
             {
                 return toReturn.ToString();
             }
@@ -51,5 +52,6 @@ namespace Dev2.Development.Languages.Scripting
         {
             return enScriptType.Python;
         }
+
     }
 }

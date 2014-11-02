@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,7 +19,7 @@ namespace Dev2.Runtime.WebServer
 {
     public class WebServerContext : ICommunicationContext, IDisposable
     {
-        private readonly HttpRequestMessage _request;
+        readonly HttpRequestMessage _request;
 
         public WebServerContext(HttpRequestMessage request, NameValueCollection requestPaths)
         {
@@ -42,7 +43,7 @@ namespace Dev2.Runtime.WebServer
         public NameValueCollection FetchHeaders()
         {
             var result = new NameValueCollection();
-            foreach (var header in _request.Headers)
+            foreach(var header in _request.Headers)
             {
                 result.Add(header.Key, string.Join("; ", header.Value));
             }
@@ -52,26 +53,26 @@ namespace Dev2.Runtime.WebServer
         #region Implementation of IDisposable
 
         /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
             try
             {
-                if (Request != null && Request.InputStream != null)
+                if(Request != null && Request.InputStream != null)
                 {
                     Request.InputStream.Close();
                     Request.InputStream.Dispose();
                 }
-                if (Response.Response != null)
+                if(Response.Response != null)
                 {
                     ResponseMessage.Dispose();
                     Response.Response.Dispose();
                 }
             }
-                // ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
-                // ReSharper restore EmptyGeneralCatchClause
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // best effort to clean up ;)
             }

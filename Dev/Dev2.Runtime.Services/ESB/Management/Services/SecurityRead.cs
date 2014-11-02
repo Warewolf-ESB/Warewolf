@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,11 +28,11 @@ using Newtonsoft.Json;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     Checks a users permissions on the local file system
+    /// Checks a users permissions on the local file system
     /// </summary>
     public class SecurityRead : IEsbManagementEndpoint
     {
-        private readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
+        readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
 
         public static List<WindowsGroupPermission> DefaultPermissions
         {
@@ -39,22 +40,20 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 return new List<WindowsGroupPermission>
                 {
-                    WindowsGroupPermission.CreateAdministrators(),
-                    WindowsGroupPermission.CreateGuests()
+                   WindowsGroupPermission.CreateAdministrators(),
+                   WindowsGroupPermission.CreateGuests()
                 };
             }
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            if (File.Exists(ServerSecurityService.FileName))
+            if(File.Exists(ServerSecurityService.FileName))
             {
                 string encryptedData;
-                using (
-                    var inStream = new FileStream(ServerSecurityService.FileName, FileMode.Open, FileAccess.Read,
-                        FileShare.ReadWrite))
+                using(var inStream = new FileStream(ServerSecurityService.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    using (var reader = new StreamReader(inStream))
+                    using(var reader = new StreamReader(inStream))
                     {
                         encryptedData = reader.ReadToEnd();
                     }
@@ -62,30 +61,30 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 try
                 {
-                    string decryptData = SecurityEncryption.Decrypt(encryptedData);
+                    var decryptData = SecurityEncryption.Decrypt(encryptedData);
                     var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
-                    List<WindowsGroupPermission> permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
+                    var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
 
                     // We need to change BuiltIn\Administrators to -> Warewolf Administrators ;)
-                    if (permissionGroup.Count > 0)
+                    if(permissionGroup.Count > 0)
                     {
-                        string adminGrp = permissionGroup[0].WindowsGroup;
-                        if (adminGrp == "BuiltIn\\Administrators")
+                        var adminGrp = permissionGroup[0].WindowsGroup;
+                        if(adminGrp == "BuiltIn\\Administrators")
                         {
                             permissionGroup[0].WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText;
                             decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
                         }
                     }
 
-                    bool hasGuestPermission = permissionGroup.Any(permission => permission.IsBuiltInGuests);
-                    bool hasAdminPermission = permissionGroup.Any(permission => permission.IsBuiltInAdministrators);
-                    if (!hasAdminPermission)
+                    var hasGuestPermission = permissionGroup.Any(permission => permission.IsBuiltInGuests);
+                    var hasAdminPermission = permissionGroup.Any(permission => permission.IsBuiltInAdministrators);
+                    if(!hasAdminPermission)
                     {
                         permissionGroup.Add(WindowsGroupPermission.CreateAdministrators());
                         permissionGroup.Sort(QuickSortForPermissions);
                         decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
                     }
-                    if (!hasGuestPermission)
+                    if(!hasGuestPermission)
                     {
                         permissionGroup.Add(WindowsGroupPermission.CreateGuests());
                         permissionGroup.Sort(QuickSortForPermissions);
@@ -93,15 +92,64 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     return new StringBuilder(decryptData);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     Dev2Logger.Log.Error("SecurityRead", e);
                 }
             }
 
             var serializer = new Dev2JsonSerializer();
-            var securitySettingsTo = new SecuritySettingsTO(DefaultPermissions) {CacheTimeout = _cacheTimeout};
+            var securitySettingsTo = new SecuritySettingsTO(DefaultPermissions) { CacheTimeout = _cacheTimeout };
             return serializer.SerializeToBuilder(securitySettingsTo);
+        }
+
+        int QuickSortForPermissions(WindowsGroupPermission x, WindowsGroupPermission y)
+        {
+            var px = x;
+            var py = y;
+
+            if(px == null || py == null)
+            {
+                return 1;
+            }
+
+            // New items must be last
+            //
+            if(px.IsNew)
+            {
+                // px is greater than py
+                return int.MaxValue;
+            }
+            if(py.IsNew)
+            {
+                // px is less than py
+                return int.MinValue;
+            }
+
+            // BuiltInAdministrators must be first
+            if(px.IsBuiltInAdministrators)
+            {
+                // px is less than py
+                return int.MinValue;
+            }
+            if(py.IsBuiltInAdministrators)
+            {
+                // px is greater than py
+                return int.MaxValue;
+            }
+            // IsBuiltInGuests must be second
+            if(px.IsBuiltInGuests)
+            {
+                // px is less than py
+                return int.MinValue + 1;
+            }
+            if(py.IsBuiltInGuests)
+            {
+                // px is greater than py
+                return int.MaxValue - 1;
+            }
+
+            return 1;
         }
 
         public DynamicService CreateServiceEntry()
@@ -109,9 +157,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dynamicService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var serviceAction = new ServiceAction
@@ -129,55 +175,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType()
         {
             return "SecurityReadService";
-        }
-
-        private int QuickSortForPermissions(WindowsGroupPermission x, WindowsGroupPermission y)
-        {
-            WindowsGroupPermission px = x;
-            WindowsGroupPermission py = y;
-
-            if (px == null || py == null)
-            {
-                return 1;
-            }
-
-            // New items must be last
-            //
-            if (px.IsNew)
-            {
-                // px is greater than py
-                return int.MaxValue;
-            }
-            if (py.IsNew)
-            {
-                // px is less than py
-                return int.MinValue;
-            }
-
-            // BuiltInAdministrators must be first
-            if (px.IsBuiltInAdministrators)
-            {
-                // px is less than py
-                return int.MinValue;
-            }
-            if (py.IsBuiltInAdministrators)
-            {
-                // px is greater than py
-                return int.MaxValue;
-            }
-            // IsBuiltInGuests must be second
-            if (px.IsBuiltInGuests)
-            {
-                // px is less than py
-                return int.MinValue + 1;
-            }
-            if (py.IsBuiltInGuests)
-            {
-                // px is greater than py
-                return int.MaxValue - 1;
-            }
-
-            return 1;
         }
     }
 }

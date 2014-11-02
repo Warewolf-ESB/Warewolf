@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,5 +28,6 @@ namespace Dev2.Providers.Errors
         public FixType FixType { get; set; }
 
         public string FixData { get; set; }
+
     }
 }

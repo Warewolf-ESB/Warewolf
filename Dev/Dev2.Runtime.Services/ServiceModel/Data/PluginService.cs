@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,13 +11,11 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 
@@ -35,7 +34,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public PluginService()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.PluginService;
+            ResourceType = Common.Interfaces.Data.ResourceType.PluginService;
             Source = new PluginSource();
             Recordsets = new RecordsetList();
             Method = new ServiceMethod();
@@ -44,9 +43,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         public PluginService(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.PluginService;
-            XElement action = xml.Descendants("Action").FirstOrDefault();
-            if (action == null)
+            ResourceType = Common.Interfaces.Data.ResourceType.PluginService;
+            var action = xml.Descendants("Action").FirstOrDefault();
+            if(action == null)
             {
                 return;
             }
@@ -56,17 +55,16 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             // Handle old service this is not set
             // We also need to redo wizards to correctly return defaults and mappings ;)
-            if (string.IsNullOrEmpty(Namespace))
+            if(string.IsNullOrEmpty(Namespace))
             {
-                string mySource = action.AttributeSafe("SourceName");
+                var mySource = action.AttributeSafe("SourceName");
 
                 // Now look up the old source and fetch namespace ;)
-                List<Source> services =
-                    ResourceCatalog.Instance.GetDynamicObjects<Source>(GlobalConstants.ServerWorkspaceID, mySource);
+                var services = ResourceCatalog.Instance.GetDynamicObjects<Source>(GlobalConstants.ServerWorkspaceID, mySource);
 
-                Source tmp = services.FirstOrDefault();
+                var tmp = services.FirstOrDefault();
 
-                if (tmp != null)
+                if(tmp != null)
                 {
                     Namespace = tmp.AssemblyName;
                 }
@@ -84,7 +82,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         // BUG 9500 - 2013.05.31 - TWR : refactored
         public override XElement ToXml()
         {
-            XElement result = CreateXml(enActionType.Plugin, Source, Recordsets,
+            var result = CreateXml(enActionType.Plugin, Source, Recordsets,
                 new XAttribute("Namespace", Namespace ?? string.Empty)
                 );
             return result;
@@ -97,7 +95,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var result = new PluginService
             {
                 ResourceID = Guid.Empty,
-                Source = {ResourceID = Guid.Empty},
+                Source = { ResourceID = Guid.Empty },
             };
             return result;
         }

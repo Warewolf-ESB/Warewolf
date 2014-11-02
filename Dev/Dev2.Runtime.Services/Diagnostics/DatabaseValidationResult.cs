@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -13,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Runtime.Diagnostics
 {
-    public class DatabaseValidationResult : ValidationResult
+    public class DatabaseValidationResult:ValidationResult
     {
         //PBI 8720
         public IList<string> DatabaseList { get; set; }

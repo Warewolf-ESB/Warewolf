@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,7 +19,7 @@ namespace Dev2.Diagnostics
     {
         public bool Equals(IDebugItemResult x, IDebugItemResult y)
         {
-            if (x != null && y != null)
+            if(x != null && y != null)
             {
                 return x.Type == y.Type
                        && x.Label == y.Label
@@ -33,8 +34,10 @@ namespace Dev2.Diagnostics
 
         public int GetHashCode(IDebugItemResult obj)
         {
-            int hCode = obj.Value.Length ^ obj.GroupName.Length ^ obj.GroupIndex ^ obj.MoreLink.Length;
+            var hCode = obj.Value.Length ^ obj.GroupName.Length ^ obj.GroupIndex ^ obj.MoreLink.Length;
             return hCode.GetHashCode();
         }
+
+
     }
 }

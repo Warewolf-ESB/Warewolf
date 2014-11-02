@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,7 +21,7 @@ namespace Dev2.Runtime.ESB.Execution
     public class RemoteDebugItemParser
     {
         /// <summary>
-        ///     Parses the items.
+        /// Parses the items.
         /// </summary>
         /// <param name="data">The data.</param>
         public static IList<IDebugState> ParseItems(string data)
@@ -28,18 +29,19 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 // Amend for namespace change ;)
-                string parseData = data.Replace("Dev2.Diagnostics.DebugState", "Dev2.Diagnostics.Debug.DebugState");
-                var serializer = new Dev2JsonSerializer();
+                var parseData = data.Replace("Dev2.Diagnostics.DebugState", "Dev2.Diagnostics.Debug.DebugState");
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 IList<IDebugState> debugItems = serializer.Deserialize<List<IDebugState>>(parseData);
 
                 return debugItems;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Log.Error("RemoteDebugItemParser", e);
             }
 
             return null;
         }
+
     }
 }

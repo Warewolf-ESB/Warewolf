@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,7 +26,7 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     The FindDrive service
+    /// The FindDrive service
     /// </summary>
     public class FindDrive : IEsbManagementEndpoint
     {
@@ -37,17 +38,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder tmp;
             Dev2Logger.Log.Info("Find Drive");
             values.TryGetValue("Username", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 username = tmp.ToString();
             }
             values.TryGetValue("Password", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 password = tmp.ToString();
             }
             values.TryGetValue("Domain", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 domain = tmp.ToString();
             }
@@ -60,16 +61,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             const int LOGON32_LOGON_INTERACTIVE = 2;
 // ReSharper restore InconsistentNaming
 
-            var result = new StringBuilder();
+            StringBuilder result = new StringBuilder();
 
             try
             {
-                if (!string.IsNullOrEmpty(username))
+                if(!string.IsNullOrEmpty(username))
                 {
                     domain = (domain.Length > 0 && domain != ".") ? domain : Environment.UserDomainName;
                     bool success = LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE,
-                        LOGON32_PROVIDER_DEFAULT, ref accessToken);
-                    if (success)
+                                             LOGON32_PROVIDER_DEFAULT, ref accessToken);
+                    if(success)
                     {
                         var identity = new WindowsIdentity(accessToken);
                         WindowsImpersonationContext context = identity.Impersonate();
@@ -94,7 +95,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     result.Append("</JSON>");
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
                 result.Append(ex.Message);
@@ -105,20 +106,18 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findDriveService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><Domain ColumnIODirection=\"Input\"/><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+            DynamicService findDriveService = new DynamicService
+                {
+                    Name = HandlesType(),
+                    DataListSpecification = new StringBuilder("<DataList><Domain ColumnIODirection=\"Input\"/><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                };
 
-            var findDriveServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+            ServiceAction findDriveServiceAction = new ServiceAction
+                {
+                    Name = HandlesType(),
+                    ActionType = enActionType.InvokeManagementDynamicService,
+                    SourceMethod = HandlesType()
+                };
 
             findDriveService.Actions.Add(findDriveServiceAction);
 
@@ -131,11 +130,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         #region Private Methods
-
         //We use the following to impersonate a user in the current execution environment
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword,
-            int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
+                                             int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
 // ReSharper disable InconsistentNaming
         private static string GetDriveInfoAsJSON(IEnumerable<DriveInfo> drives)
@@ -143,10 +141,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             string json = "[";
             // ReSharper disable LoopCanBeConvertedToQuery
-            foreach (DriveInfo drive in drives)
-                // ReSharper restore LoopCanBeConvertedToQuery
+            foreach(DriveInfo drive in drives)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
-                if (drive.DriveType == DriveType.Fixed || drive.DriveType == DriveType.Network)
+                if(drive.DriveType == DriveType.Fixed || drive.DriveType == DriveType.Network)
                 {
                     var directory = new DirectoryInfo(drive.Name);
                     string name = Regex.Replace(directory.Name, @"\\", @"/");
@@ -159,7 +157,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             json += "]";
             return json;
         }
-
         #endregion
     }
 }

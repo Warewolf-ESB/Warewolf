@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,7 +25,7 @@ namespace Dev2.TaskScheduler.Wrappers
         private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2TaskDefinition(ITaskServiceConvertorFactory taskServiceConvertorFactory,
-            TaskDefinition taskDefinition)
+                                  TaskDefinition taskDefinition)
         {
             _taskServiceConvertorFactory = taskServiceConvertorFactory;
             _taskDefinition = taskDefinition;
@@ -74,7 +75,7 @@ namespace Dev2.TaskScheduler.Wrappers
             }
 
 
-            if (!action.Path.Contains(GlobalConstants.SchedulerAgentPath))
+            if (!action.Path.Contains( GlobalConstants.SchedulerAgentPath))
             {
                 return false;
             }

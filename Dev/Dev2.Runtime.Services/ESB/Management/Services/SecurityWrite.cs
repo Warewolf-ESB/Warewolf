@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,13 +25,13 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     Checks a users permissions on the local file system
+    /// Checks a users permissions on the local file system
     /// </summary>
     public class SecurityWrite : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            if (values == null)
+            if(values == null)
             {
                 throw new InvalidDataException("Empty values passed.");
             }
@@ -40,17 +41,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder timeoutPeriodString;
             values.TryGetValue("TimeoutPeriod", out timeoutPeriodString);
 
-            if (securitySettings == null || securitySettings.Length == 0)
+            if(securitySettings == null || securitySettings.Length == 0)
             {
                 throw new InvalidDataException("Empty Security Settings passed.");
             }
 
-            var serializer = new Dev2JsonSerializer();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
             try
             {
                 var securitySettingsTo = serializer.Deserialize<SecuritySettingsTO>(securitySettings);
-                if (securitySettingsTo == null)
+                if(securitySettingsTo == null)
                 {
                     throw new InvalidDataException("The security settings are not valid.");
                 }
@@ -58,16 +59,51 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Write(securitySettings);
                 ServerAuthorizationService.Instance.SecurityService.Read();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                throw new InvalidDataException(string.Format("The security settings are not valid. Error: {0}",
-                    e.Message));
+                throw new InvalidDataException(string.Format("The security settings are not valid. Error: {0}", e.Message));
             }
 
-            var msg = new ExecuteMessage {HasError = false};
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
             msg.SetMessage("Success");
 
             return serializer.SerializeToBuilder(msg);
+        }
+
+        public static void Write(SecuritySettingsTO securitySettingsTo)
+        {
+            VerifyArgument.IsNotNull("securitySettingsTO", securitySettingsTo);
+            var securitySettings = new Dev2JsonSerializer().SerializeToBuilder(securitySettingsTo);
+            Write(securitySettings);
+        }
+
+        static void Write(StringBuilder securitySettings)
+        {
+            try
+            {
+                DoFileEncryption(securitySettings.ToString());
+
+                // Deny ACL was causing "Access to the path is denied." errors 
+                // so Barney decided it was OK not to do it.
+            }
+            catch(Exception e)
+            {
+                throw new InvalidDataException(string.Format("The permissions passed is not a valid list of permissions. Error: {0}", e.Message));
+            }
+        }
+
+        static void DoFileEncryption(string permissions)
+        {
+            var byteConverter = new ASCIIEncoding();
+            var encryptedData = SecurityEncryption.Encrypt(permissions);
+            byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
+
+            using(var outStream = new FileStream(ServerSecurityService.FileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
+            {
+                outStream.SetLength(0);
+                outStream.Write(dataToEncrypt, 0, dataToEncrypt.Length);
+                outStream.Flush();
+            }
         }
 
         public DynamicService CreateServiceEntry()
@@ -75,9 +111,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dynamicService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><SecuritySettings ColumnIODirection=\"Input\"></SecuritySettings><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification = new StringBuilder("<DataList><SecuritySettings ColumnIODirection=\"Input\"></SecuritySettings><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var serviceAction = new ServiceAction
@@ -95,45 +129,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType()
         {
             return "SecurityWriteService";
-        }
-
-        public static void Write(SecuritySettingsTO securitySettingsTo)
-        {
-            VerifyArgument.IsNotNull("securitySettingsTO", securitySettingsTo);
-            StringBuilder securitySettings = new Dev2JsonSerializer().SerializeToBuilder(securitySettingsTo);
-            Write(securitySettings);
-        }
-
-        private static void Write(StringBuilder securitySettings)
-        {
-            try
-            {
-                DoFileEncryption(securitySettings.ToString());
-
-                // Deny ACL was causing "Access to the path is denied." errors 
-                // so Barney decided it was OK not to do it.
-            }
-            catch (Exception e)
-            {
-                throw new InvalidDataException(
-                    string.Format("The permissions passed is not a valid list of permissions. Error: {0}", e.Message));
-            }
-        }
-
-        private static void DoFileEncryption(string permissions)
-        {
-            var byteConverter = new ASCIIEncoding();
-            string encryptedData = SecurityEncryption.Encrypt(permissions);
-            byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
-
-            using (
-                var outStream = new FileStream(ServerSecurityService.FileName, FileMode.OpenOrCreate, FileAccess.Write,
-                    FileShare.ReadWrite))
-            {
-                outStream.SetLength(0);
-                outStream.Write(dataToEncrypt, 0, dataToEncrypt.Length);
-                outStream.Flush();
-            }
         }
     }
 }

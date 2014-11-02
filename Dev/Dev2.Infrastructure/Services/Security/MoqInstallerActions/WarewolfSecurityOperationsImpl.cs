@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,34 +18,32 @@ using System.Linq;
 namespace Dev2.Services.Security.MoqInstallerActions
 {
     /// <summary>
-    ///     This is the group operations class used in the installer
+    /// This is the group operations class used in the installer
     /// </summary>
     internal class WarewolfSecurityOperationsImpl : IWarewolfSecurityOperations
     {
         private const string WarewolfGroup = "Warewolf Administrators";
         private const string AdministratorsGroup = "Administrators";
-
-        private const string WarewolfGroupDesc =
-            "Warewolf Administrators have complete and unrestricted access to Warewolf";
+        private const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
 
         // http://ss64.com/nt/syntax-security_groups.html
 
         public void AddWarewolfGroup()
         {
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 DirectoryEntry newGroup = ad.Children.Add(WarewolfGroup, "Group");
-                newGroup.Invoke("Put", new object[] {"Description", WarewolfGroupDesc});
+                newGroup.Invoke("Put", new object[] { "Description", WarewolfGroupDesc });
                 newGroup.CommitChanges();
             }
         }
 
         public bool DoesWarewolfGroupExist()
         {
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                if (ad.Children.Cast<DirectoryEntry>().Any(dChildEntry => dChildEntry.Name == WarewolfGroup))
+                if(ad.Children.Cast<DirectoryEntry>().Any(dChildEntry => dChildEntry.Name == WarewolfGroup))
                 {
                     return true;
                 }
@@ -55,35 +54,36 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public bool IsUserInGroup(string username)
         {
-            if (string.IsNullOrEmpty(username))
+
+            if(string.IsNullOrEmpty(username))
             {
                 throw new ArgumentNullException("username");
             }
 
-            string theUser = username;
-            int domainChar = username.IndexOf("\\", StringComparison.Ordinal);
-            if (domainChar >= 0)
+            var theUser = username;
+            var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
+            if(domainChar >= 0)
             {
                 theUser = username.Substring((domainChar + 1));
             }
 
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                foreach (DirectoryEntry dChildEntry in ad.Children)
+                foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if (dChildEntry.Name == WarewolfGroup)
+                    if(dChildEntry.Name == WarewolfGroup)
                     {
                         // Now check group membership ;)
-                        object members = dChildEntry.Invoke("Members");
+                        var members = dChildEntry.Invoke("Members");
 
-                        if (members != null)
+                        if(members != null)
                         {
-                            foreach (object member in (IEnumerable) members)
+                            foreach(var member in (IEnumerable)members)
                             {
-                                using (var memberEntry = new DirectoryEntry(member))
+                                using(var memberEntry = new DirectoryEntry(member))
                                 {
-                                    if (memberEntry.Name == theUser)
+                                    if(memberEntry.Name == theUser)
                                     {
                                         return true;
                                     }
@@ -99,21 +99,22 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void AddUserToWarewolf(string currentUser)
         {
-            if (string.IsNullOrEmpty(currentUser))
+            if(string.IsNullOrEmpty(currentUser))
             {
                 // ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("Null or Empty User");
                 // ReSharper restore NotResolvedInText
             }
 
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
+
                 ad.Children.SchemaFilter.Add("group");
-                foreach (DirectoryEntry dChildEntry in ad.Children)
+                foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if (dChildEntry.Name == WarewolfGroup)
+                    if(dChildEntry.Name == WarewolfGroup)
                     {
-                        dChildEntry.Invoke("Add", new object[] {currentUser});
+                        dChildEntry.Invoke("Add", new object[] { currentUser });
                     }
                 }
             }
@@ -121,15 +122,15 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void AddAdministratorsGroupToWarewolf()
         {
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                foreach (DirectoryEntry dChildEntry in ad.Children)
+                foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if (dChildEntry.Name == WarewolfGroup)
+                    if(dChildEntry.Name == WarewolfGroup)
                     {
                         const string Entry = "WinNT://./" + AdministratorsGroup;
-                        dChildEntry.Invoke("Add", new object[] {Entry});
+                        dChildEntry.Invoke("Add", new object[] { Entry });
                     }
                 }
             }
@@ -137,23 +138,24 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public bool IsAdminMemberOfWarewolf()
         {
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                foreach (DirectoryEntry dChildEntry in ad.Children)
+                foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if (dChildEntry.Name == WarewolfGroup)
+                    if(dChildEntry.Name == WarewolfGroup)
                     {
                         // Now check group membership ;)
-                        object members = dChildEntry.Invoke("Members");
+                        var members = dChildEntry.Invoke("Members");
 
-                        if (members != null)
+                        if(members != null)
                         {
-                            foreach (object member in (IEnumerable) members)
+                            foreach(var member in (IEnumerable)members)
                             {
-                                using (var memberEntry = new DirectoryEntry(member))
+                                using(var memberEntry = new DirectoryEntry(member))
                                 {
-                                    if (memberEntry.Name == AdministratorsGroup)
+                                    if(memberEntry.Name == AdministratorsGroup)
                                     {
                                         return true;
                                     }
@@ -169,12 +171,12 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void DeleteWarewolfGroup()
         {
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                foreach (DirectoryEntry dChildEntry in ad.Children)
+                foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if (dChildEntry.Name == WarewolfGroup)
+                    if(dChildEntry.Name == WarewolfGroup)
                     {
                         ad.Children.Remove(dChildEntry);
                     }
@@ -184,24 +186,24 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public string FormatUserForInsert(string currentUser, string machineName)
         {
-            if (string.IsNullOrEmpty(currentUser))
+            if(string.IsNullOrEmpty(currentUser))
             {
                 throw new ArgumentNullException("currentUser");
             }
 
-            if (string.IsNullOrEmpty(machineName))
+            if(string.IsNullOrEmpty(machineName))
             {
                 throw new ArgumentNullException("machineName");
             }
 
             // Guest, Dev2\IntegrationTester
-            int domainChar = currentUser.IndexOf("\\", StringComparison.Ordinal);
+            var domainChar = currentUser.IndexOf("\\", StringComparison.Ordinal);
             string user;
             string userPath;
 
 
             // ,user
-            if (domainChar >= 0)
+            if(domainChar >= 0)
             {
                 string domain = currentUser.Substring(0, domainChar);
                 user = currentUser.Substring(domainChar + 1);

@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -13,7 +14,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
@@ -25,7 +25,7 @@ namespace Dev2.Runtime.Security
     {
         public const string FileName = "secure.config";
 
-        private FileSystemWatcher _configWatcher = new FileSystemWatcher();
+        FileSystemWatcher _configWatcher = new FileSystemWatcher();
 
         public ServerSecurityService()
             : this(FileName)
@@ -40,9 +40,9 @@ namespace Dev2.Runtime.Security
         protected override List<WindowsGroupPermission> ReadPermissions()
         {
             var reader = new SecurityRead();
-            StringBuilder result = reader.Execute(null, null);
+            var result = reader.Execute(null, null);
             var serializer = new Dev2JsonSerializer();
-            var securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
+            SecuritySettingsTO securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
             TimeOutPeriod = securitySettingsTO.CacheTimeout;
             return securitySettingsTO.WindowsGroupPermissions;
         }
@@ -54,7 +54,7 @@ namespace Dev2.Runtime.Security
 
         public void InitializeConfigWatcher(string fileName)
         {
-            if (_configWatcher == null)
+            if(_configWatcher == null)
             {
                 _configWatcher = new FileSystemWatcher();
             }
@@ -90,7 +90,7 @@ namespace Dev2.Runtime.Security
             LogEnd();
         }
 
-        private void OnFileChanged()
+        void OnFileChanged()
         {
             try
             {
@@ -111,7 +111,7 @@ namespace Dev2.Runtime.Security
 
         protected override void OnDisposed()
         {
-            if (_configWatcher != null)
+            if(_configWatcher != null)
             {
                 _configWatcher.EnableRaisingEvents = false;
                 _configWatcher.Changed -= OnFileChanged;
@@ -123,16 +123,16 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        protected override void LogStart([CallerMemberName] string methodName = null)
+        protected override void LogStart([CallerMemberName]string methodName = null)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            Dev2Logger.Log.Info("SecurityService" + methodName);
+            Dev2Logger.Log.Info("SecurityService"+ methodName);
         }
 
-        protected override void LogEnd([CallerMemberName] string methodName = null)
+        protected override void LogEnd([CallerMemberName]string methodName = null)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            Dev2Logger.Log.Info("SecurityService" + methodName);
+            Dev2Logger.Log.Info("SecurityService"+ methodName);
         }
     }
 }

@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,7 +11,6 @@
 
 
 using System;
-using System.Reflection;
 using Dev2.Common.Interfaces.Security;
 
 namespace Dev2.Services.Security
@@ -22,13 +22,13 @@ namespace Dev2.Services.Security
             //
             // MUST return null and NOT empty string as the result is used as TargetNullValue in bindings!
             //
-            if (isAuthorized)
+            if(isAuthorized)
             {
                 return null;
             }
 
-            FieldInfo field = value.GetType().GetField(value.ToString());
-            var attribute = Attribute.GetCustomAttribute(field, typeof (ReasonAttribute)) as ReasonAttribute;
+            var field = value.GetType().GetField(value.ToString());
+            var attribute = Attribute.GetCustomAttribute(field, typeof(ReasonAttribute)) as ReasonAttribute;
 
             return attribute == null || String.IsNullOrEmpty(attribute.Reason) ? null : attribute.Reason;
         }
@@ -36,6 +36,7 @@ namespace Dev2.Services.Security
         public static bool IsContributor(this Permissions permissions)
         {
             return permissions.HasFlag(Permissions.Contribute) || permissions.HasFlag(Permissions.Administrator);
+
         }
 
         public static bool CanDebug(this Permissions permissions)
@@ -46,7 +47,7 @@ namespace Dev2.Services.Security
 
         public static Permissions ToPermissions(this AuthorizationContext context)
         {
-            switch (context)
+            switch(context)
             {
                 case AuthorizationContext.Administrator:
                     return Permissions.Administrator;
@@ -67,31 +68,30 @@ namespace Dev2.Services.Security
                     return Permissions.Administrator | Permissions.DeployFrom;
 
                 case AuthorizationContext.Any:
-                    return Permissions.Administrator | Permissions.View | Permissions.Contribute | Permissions.Execute |
-                           Permissions.DeployFrom | Permissions.DeployTo;
+                    return Permissions.Administrator | Permissions.View | Permissions.Contribute | Permissions.Execute | Permissions.DeployFrom | Permissions.DeployTo;
             }
             return Permissions.None;
         }
 
         public static bool Matches(this WindowsGroupPermission permission, string resource)
         {
-            if (permission.IsServer)
+            if(permission.IsServer)
             {
                 return true;
             }
 
             Guid resourceId;
-            if (Guid.TryParse(resource, out resourceId))
+            if(Guid.TryParse(resource, out resourceId))
             {
                 return permission.ResourceID == resourceId;
             }
 
             // ResourceName is in the format: {categoryName}\{resourceName}
-            if (resource != null)
+            if(resource != null)
             {
                 resource = resource.Replace('/', '\\');
             }
-            if (string.IsNullOrEmpty(resource))
+            if(string.IsNullOrEmpty(resource))
             {
                 return true;
             }

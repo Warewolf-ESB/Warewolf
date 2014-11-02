@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,12 +23,11 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
     {
         public const int DefaultChunkSize = 65536;
 
-        private readonly int _chunkSize;
-        private readonly MediaTypeHeaderValue _contentType;
-        private readonly HttpResponseMessage _response;
+        readonly HttpResponseMessage _response;
+        readonly MediaTypeHeaderValue _contentType;
+        readonly int _chunkSize;
 
-        protected HttpPushContentStream(HttpResponseMessage response, MediaTypeHeaderValue contentType,
-            int chunkSize = DefaultChunkSize)
+        protected HttpPushContentStream(HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize = DefaultChunkSize)
         {
             VerifyArgument.IsNotNull("response", response);
             VerifyArgument.IsNotNull("mediaType", contentType);
@@ -38,23 +38,22 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
 
         public void Write()
         {
-            _response.Content = new PushStreamContent((Action<Stream, HttpContent, TransportContext>) WriteToStream,
-                _contentType);
+            _response.Content = new PushStreamContent((Action<Stream, HttpContent, TransportContext>)WriteToStream, _contentType);
         }
 
         protected abstract Stream OpenInputStream();
 
-        private async void WriteToStream(Stream outputStream, HttpContent content, TransportContext context)
+        async void WriteToStream(Stream outputStream, HttpContent content, TransportContext context)
         {
             try
             {
                 var buffer = new byte[_chunkSize];
-                using (Stream inputStream = OpenInputStream())
+                using(var inputStream = OpenInputStream())
                 {
-                    var length = (int) inputStream.Length;
-                    int bytesRead = 1;
+                    var length = (int)inputStream.Length;
+                    var bytesRead = 1;
 
-                    while (length > 0 && bytesRead > 0)
+                    while(length > 0 && bytesRead > 0)
                     {
                         bytesRead = inputStream.Read(buffer, 0, Math.Min(length, buffer.Length));
                         await outputStream.WriteAsync(buffer, 0, bytesRead);
@@ -62,7 +61,7 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
                     }
                 }
             }
-            catch (HttpException)
+            catch(HttpException)
             {
             }
             finally
@@ -71,5 +70,6 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
                 outputStream.Dispose();
             }
         }
+
     }
 }

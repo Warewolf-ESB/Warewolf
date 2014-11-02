@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,7 +23,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             get { return _name; }
             set
             {
-                if (_name == value)
+                if(_name == value)
                 {
                     return;
                 }

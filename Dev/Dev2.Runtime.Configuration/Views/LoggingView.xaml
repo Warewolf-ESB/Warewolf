@@ -10,112 +10,89 @@
              xmlns:trigger="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed"
-                                                   FalseValue="Visible" />
-            <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
-            <converters2:MultiBoolToBoolConverter x:Key="MultiBoolToBoolConverter" Operator="And" />
-        </ResourceDictionary>
+            <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible"/>
+            <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:BooleanInvertConverter x:Key="BooleanInvertConverter"/>
+    	    <converters2:MultiBoolToBoolConverter x:Key="MultiBoolToBoolConverter" Operator="And"/>
+    	</ResourceDictionary>
     </UserControl.Resources>
 
     <!--<ScrollViewer Margin="5,0,0,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">-->
 
-    <Grid cal:Bind.Model="{Binding .}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+		<Grid cal:Bind.Model="{Binding .}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
 
-        <CheckBox Grid.Row="0" Grid.Column="0"
-                  Content="Turn Logging On"
-                  IsChecked="{Binding Object.IsLoggingEnabled, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,5"
-                  AutomationProperties.AutomationId="UI_SettingsLogging_TurnOnLogging_Check" />
+			<CheckBox Grid.Row="0" Grid.Column="0" 
+                      Content="Turn Logging On" IsChecked="{Binding Object.IsLoggingEnabled, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,5" 
+				AutomationProperties.AutomationId="UI_SettingsLogging_TurnOnLogging_Check"/>
 
-        <GroupBox Header="What to log" Padding="3" Grid.Row="1" BorderBrush="#FFB9C9DA"
-                  IsEnabled="{Binding Object.IsLoggingEnabled}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <GroupBox Header="What to log" Padding="3" Grid.Row="1" BorderBrush="#FFB9C9DA"  IsEnabled="{Binding Object.IsLoggingEnabled}">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
 
-                <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+					<Grid Grid.Row="1">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" MinWidth="200" />
-                        <ColumnDefinition Width="2*" />
-                    </Grid.ColumnDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" MinWidth="200"/>
+							<ColumnDefinition Width="2*" />
+						</Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Log :" Margin="0,3,0,0" />
-                    <CheckBox Grid.Row="1" Grid.Column="0" Content="Version"
-                              IsChecked="{Binding Object.IsVersionLogged, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="0,3,0,0"
-                              AutomationProperties.AutomationId="UI_SettingsLogging_Version_Check"
-                              VerticalAlignment="Center" />
-                    <CheckBox Grid.Row="2" Grid.Column="0" Content="Type"
-                              IsChecked="{Binding Object.IsTypeLogged, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="0,3,0,0"
-                              AutomationProperties.AutomationId="UI_SettingsLogging_Type_Check"
-                              VerticalAlignment="Center" />
-                    <CheckBox Grid.Row="3" Grid.Column="0" Content="Duration"
-                              IsChecked="{Binding Object.IsDurationLogged, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="0,3,0,0"
-                              AutomationProperties.AutomationId="UI_SettingsLogging_Duration_Check"
-                              VerticalAlignment="Center" />
-                    <CheckBox Grid.Row="4" Grid.Column="0" Content="Date and Time"
-                              IsChecked="{Binding Object.IsDataAndTimeLogged, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="0,3,0,0"
-                              AutomationProperties.AutomationId="UI_SettingsLogging_DateAndTime_Check"
-                              VerticalAlignment="Center" />
-                    <CheckBox Grid.Row="5" Grid.Column="0" Content="Inputs"
-                              IsChecked="{Binding Object.IsInputLogged, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="0,3,0,0"
-                              AutomationProperties.AutomationId="UI_SettingsLogging_Input_Check"
-                              VerticalAlignment="Center" />
-                    <CheckBox Grid.Row="6" Grid.Column="0" Content="Outputs"
-                              IsChecked="{Binding Object.IsOutputLogged, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="0,3,0,0"
-                              AutomationProperties.AutomationId="UI_SettingsLogging_Ouput_Check"
-                              VerticalAlignment="Center" />
+						<TextBlock Grid.Row="0" Grid.Column="0" Text="Log :" Margin="0,3,0,0" />
+						<CheckBox Grid.Row="1" Grid.Column="0" Content="Version" IsChecked="{Binding Object.IsVersionLogged, UpdateSourceTrigger=PropertyChanged}" Margin="0,3,0,0" 
+							AutomationProperties.AutomationId="UI_SettingsLogging_Version_Check" VerticalAlignment="Center"/>
+						<CheckBox Grid.Row="2" Grid.Column="0" Content="Type" IsChecked="{Binding Object.IsTypeLogged, UpdateSourceTrigger=PropertyChanged}" Margin="0,3,0,0" 
+							AutomationProperties.AutomationId="UI_SettingsLogging_Type_Check" VerticalAlignment="Center"/>
+						<CheckBox Grid.Row="3" Grid.Column="0" Content="Duration" IsChecked="{Binding Object.IsDurationLogged, UpdateSourceTrigger=PropertyChanged}" Margin="0,3,0,0" 
+							AutomationProperties.AutomationId="UI_SettingsLogging_Duration_Check" VerticalAlignment="Center"/>
+						<CheckBox Grid.Row="4" Grid.Column="0" Content="Date and Time" IsChecked="{Binding Object.IsDataAndTimeLogged, UpdateSourceTrigger=PropertyChanged}" Margin="0,3,0,0" 
+							AutomationProperties.AutomationId="UI_SettingsLogging_DateAndTime_Check" VerticalAlignment="Center"/>
+						<CheckBox Grid.Row="5" Grid.Column="0" Content="Inputs" IsChecked="{Binding Object.IsInputLogged, UpdateSourceTrigger=PropertyChanged}" Margin="0,3,0,0" 
+							AutomationProperties.AutomationId="UI_SettingsLogging_Input_Check" VerticalAlignment="Center"/>
+						<CheckBox Grid.Row="6" Grid.Column="0" Content="Outputs" IsChecked="{Binding Object.IsOutputLogged, UpdateSourceTrigger=PropertyChanged}" Margin="0,3,0,0" 
+							AutomationProperties.AutomationId="UI_SettingsLogging_Ouput_Check" VerticalAlignment="Center"/>
 
-                    <StackPanel Grid.Row="7" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBox VerticalAlignment="Center"
-                                 Text="{Binding Object.NestedLevelCount, UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="0,3,0,0" Width="20" />
-                        <TextBlock Text="Nested Levels" VerticalAlignment="Center" Margin="3,0,0,0"
-                                   AutomationProperties.AutomationId="UI_SettingsLogging_NestedLevels_Text" />
-                    </StackPanel>
+						<StackPanel Grid.Row="7" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+							<TextBox VerticalAlignment="Center" Text="{Binding Object.NestedLevelCount, UpdateSourceTrigger=PropertyChanged}" Margin="0,3,0,0" Width="20"/>
+							<TextBlock Text="Nested Levels" VerticalAlignment="Center" Margin="3,0,0,0"
+								AutomationProperties.AutomationId="UI_SettingsLogging_NestedLevels_Text"/>
+						</StackPanel>
 
-                    <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Workflows :" Margin="3"
-                                   Grid.Column="0"
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" />
-                        <CheckBox x:Name="LogAll" Grid.Column="1" Margin="3"
-                                  HorizontalAlignment="Left" Content="Log all" VerticalAlignment="Center" />
-                    </Grid>
+						<Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+							<Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<TextBlock  Text="Workflows :" Margin="3"
+								Grid.Column="0"
+								HorizontalAlignment="Left" VerticalAlignment="Center" />
+							<CheckBox x:Name="LogAll" Grid.Column="1" Margin="3"
+								HorizontalAlignment="Left" Content="Log all" VerticalAlignment="Center"/>
+						</Grid>
 
                     <Grid Margin="0,5,0,5" Grid.Row="1" Grid.Column="1">
                         <Grid.ColumnDefinitions>
@@ -123,82 +100,71 @@
                             <ColumnDefinition Width="25" />
                         </Grid.ColumnDefinitions>
 
-                        <customControls2:FilterTextBox x:Name="FilterTextBox"
-                                                       Grid.Column="0">
+                       <customControls2:FilterTextBox x:Name="FilterTextBox"     
+                                                      Grid.Column="0">
                             <i:Interaction.Triggers>
                                 <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="100">
                                     <cal:ActionMessage MethodName="UpdateSearchFilter">
-                                        <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}" />
+                                        <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}"/>
                                     </cal:ActionMessage>
                                 </trigger:DelayTextChangedEventTrigger>
                             </i:Interaction.Triggers>
                         </customControls2:FilterTextBox>
 
-                        <customControls2:CircularProgressBar
-                            AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"
-                            Grid.Column="1"
-                            Height="15" Width="15"
-                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                        <Button AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID"
-                                Grid.Column="1"
-                                Margin="0,0,4,0"
-                                BorderThickness="0"
-                                Background="Transparent" BorderBrush="Transparent"
-                                Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-
+                        <customControls2:CircularProgressBar AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"
+                                                             Grid.Column="1" 
+                                                             Height="15" Width="15" 
+                                                             VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                             Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        
+                        <Button  AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID" 
+                                 Grid.Column="1" 
+                                 Margin="0,0,4,0" 
+                                 BorderThickness="0"
+                                 Background="Transparent" BorderBrush="Transparent" 
+                                 Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                            
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
-                                    <cal:ActionMessage MethodName="RefreshData" />
+                                    <cal:ActionMessage MethodName="RefreshData"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-
-                            <Image Width="14" Height="14"
+                            
+                            <Image Width="14" Height="14" 
                                    HorizontalAlignment="Left"
-                                   Source="/images/Refresh-32.png" />
+                                   Source="/images/Refresh-32.png"  />
                         </Button>
                     </Grid>
-
+                        
                     <ListBox x:Name="Workflows"
-                             Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="7"
-                             Margin="3"
-                             SelectionMode="Multiple"
-                             Height="200"
-                             DisplayMemberPath="ResourceName"
-                             ItemsSource="{Binding FilteredWorkflows}"
-                             AutomationProperties.AutomationId="UI_SettingsLogging_Workflows_List"
-                             IsEnabled="{Binding LogAll, Converter={StaticResource BooleanInvertConverter}}">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="IsSelected"
-                                        Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="HorizontalContentAlignment"
-                                        Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                                <Setter Property="VerticalContentAlignment"
-                                        Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                                <Setter Property="Padding" Value="2,0,0,0" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                                    Background="{TemplateBinding Background}"
-                                                    Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
-                                                <ContentPresenter
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsSelected" Value="true">
-                                                    <Setter Property="Background" TargetName="Bd"
-                                                            Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                                                    <Setter Property="Foreground"
-                                                            Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
-                                                </Trigger>
-                                                <!--MultiTrigger>
+                                 Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="7" 
+							     Margin="3" 
+							     SelectionMode="Multiple"
+							     Height="200"
+                                 DisplayMemberPath="ResourceName"
+							     ItemsSource="{Binding FilteredWorkflows}"
+				 		 	     AutomationProperties.AutomationId="UI_SettingsLogging_Workflows_List"
+							     IsEnabled="{Binding LogAll, Converter={StaticResource BooleanInvertConverter}}">
+							<ListBox.ItemContainerStyle>
+								<Style TargetType="{x:Type ListBoxItem}">
+									<Setter Property="IsSelected" 
+										Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+									<Setter Property="Background" Value="Transparent"/>
+									<Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+									<Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+									<Setter Property="Padding" Value="2,0,0,0"/>
+									<Setter Property="Template">
+										<Setter.Value>
+											<ControlTemplate TargetType="{x:Type ListBoxItem}">
+												<Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+													<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+												</Border>
+												<ControlTemplate.Triggers>
+													<Trigger Property="IsSelected" Value="true">
+														<Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+														<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+													</Trigger>
+													<!--MultiTrigger>
 							    <MultiTrigger.Conditions>
 								    <Condition Property="IsSelected" Value="true"/>
 								    <Condition Property="Selector.IsSelectionActive" Value="false"/>
@@ -206,108 +172,106 @@
 							    <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
 							    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
 						    </MultiTrigger-->
-                                                <Trigger Property="IsEnabled" Value="false">
-                                                    <Setter Property="Foreground"
-                                                            Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                    </ListBox>
+													<Trigger Property="IsEnabled" Value="false">
+														<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+													</Trigger>
+												</ControlTemplate.Triggers>
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</Style>
+							</ListBox.ItemContainerStyle>
+						</ListBox>
+					</Grid>
+				</Grid>
+			</GroupBox>
+        <GroupBox Header="Where to log to" Padding="3" Grid.Row="2" BorderBrush="#FFB9C9DA"  IsEnabled="{Binding Object.IsLoggingEnabled}">
+				<Grid>
+					<Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" MinWidth="200"/>
+						<ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                                     
+                    <TextBlock Text="Log File Ouput Directory :" Grid.Row="1"
+						HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    
+                    <TextBox Grid.Column="1"  Margin="3" Grid.Row="1"
+                             Text="{Binding Object.LogFileDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						AutomationProperties.AutomationId="UI_SettingsLogging_PostWorkflow_Text">
+                        </TextBox>
+
                 </Grid>
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="Where to log to" Padding="3" Grid.Row="2" BorderBrush="#FFB9C9DA"
-                  IsEnabled="{Binding Object.IsLoggingEnabled}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+			</GroupBox>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MinWidth="200" />
-                    <ColumnDefinition Width="2*" />
-                </Grid.ColumnDefinitions>
+        <GroupBox Header="After logging" Padding="3" Grid.Row="3" BorderBrush="#FFB9C9DA"  IsEnabled="{Binding Object.IsLoggingEnabled}">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
 
-                <TextBlock Text="Log File Ouput Directory :" Grid.Row="1"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" />
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" MinWidth="200"/>
+						<ColumnDefinition Width="2*" />
+					</Grid.ColumnDefinitions>
+                
+					<CheckBox IsThreeState="False" Grid.Row="1" IsChecked="{Binding RunPostWorkflow, Mode=TwoWay}" 
+						Content="Run a workflow"/>
 
-                <TextBox Grid.Column="1" Margin="3" Grid.Row="1"
-                         Text="{Binding Object.LogFileDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         AutomationProperties.AutomationId="UI_SettingsLogging_PostWorkflow_Text" />
+					<TextBlock Grid.Column="0" Grid.Row="2" Text="Workflow name :" 
+						HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Header="After logging" Padding="3" Grid.Row="3" BorderBrush="#FFB9C9DA"
-                  IsEnabled="{Binding Object.IsLoggingEnabled}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MinWidth="200" />
-                    <ColumnDefinition Width="2*" />
-                </Grid.ColumnDefinitions>
-
-                <CheckBox IsThreeState="False" Grid.Row="1" IsChecked="{Binding RunPostWorkflow, Mode=TwoWay}"
-                          Content="Run a workflow" />
-
-                <TextBlock Grid.Column="0" Grid.Row="2" Text="Workflow name :"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" />
-
-                <controls:AutoCompleteBox x:Name="PostWorkflow"
-                                          Grid.Row="2"
-                                          Margin="3"
-                                          Grid.Column="1"
-                                          FilterMode="Contains"
-                                          IsTextCompletionEnabled="True"
-                                          SelectedItem="{Binding PostWorkflowName, Mode=TwoWay, 
+					<controls:AutoCompleteBox  x:Name="PostWorkflow"
+                        Grid.Row="2"
+						Margin="3"
+						Grid.Column="1"
+						FilterMode="Contains"
+						IsTextCompletionEnabled="True"                     
+						SelectedItem="{Binding PostWorkflowName, Mode=TwoWay, 
                             UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                          ItemsSource="{Binding WorkflowNames}"
-                                          IsEnabled="{Binding RunPostWorkflow}"
-                                          MaxDropDownHeight="200"
-                                          AutomationProperties.AutomationId="UI_SettingsLogging_PostWorkflow_Text">
-                    <Validation.ErrorTemplate>
-                        <ControlTemplate>
-                            <!-- Empty template to force damn wpf not to bug on cancel-->
-                        </ControlTemplate>
-                    </Validation.ErrorTemplate>
-                    <!--<controls:AutoCompleteBox.ItemTemplate>
+						ItemsSource="{Binding WorkflowNames}"
+						IsEnabled="{Binding RunPostWorkflow}"
+                        MaxDropDownHeight="200"
+						AutomationProperties.AutomationId="UI_SettingsLogging_PostWorkflow_Text">
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate>
+                                <!-- Empty template to force damn wpf not to bug on cancel-->
+                            </ControlTemplate>
+                        </Validation.ErrorTemplate>
+						<!--<controls:AutoCompleteBox.ItemTemplate>
 							<DataTemplate>
 								<TextBlock Text="{Binding ResourceName}"/>
 							</DataTemplate>
 						</controls:AutoCompleteBox.ItemTemplate>-->
-                </controls:AutoCompleteBox>
+					</controls:AutoCompleteBox>
 
-                <TextBlock Grid.Column="0" Text="Service Input (log name) :" Grid.Row="3"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <ComboBox Grid.Row="3" Grid.Column="1" Margin="3"
-                          SelectedItem="{Binding SelectedServiceInputOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          ItemsSource="{Binding ServiceInputOptions}"
-                          AutomationProperties.AutomationId="UI_SettingsLogging_ServiceInput_Text">
-                    <ComboBox.IsEnabled>
-                        <MultiBinding Converter="{StaticResource MultiBoolToBoolConverter}">
-                            <Binding Path="HasServiceInputOptions" />
-                            <Binding Path="RunPostWorkflow" />
-                        </MultiBinding>
-                    </ComboBox.IsEnabled>
-                    <!--<i:Interaction.Triggers>
+					<TextBlock Grid.Column="0" Text="Service Input (log name) :" Grid.Row="3"
+						HorizontalAlignment="Left" VerticalAlignment="Center"/>
+					<ComboBox Grid.Row="3" Grid.Column="1" Margin="3"
+						SelectedItem="{Binding SelectedServiceInputOption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						ItemsSource="{Binding ServiceInputOptions}"
+						AutomationProperties.AutomationId="UI_SettingsLogging_ServiceInput_Text">
+                        <ComboBox.IsEnabled>
+                            <MultiBinding Converter="{StaticResource MultiBoolToBoolConverter}">
+                                <Binding Path="HasServiceInputOptions"/>
+                                <Binding Path="RunPostWorkflow"/>
+                             </MultiBinding>
+                        </ComboBox.IsEnabled>
+                        <!--<i:Interaction.Triggers>
                             <i:EventTrigger EventName="GotFocus">
                                 <cal:ActionMessage MethodName="LoadServiceInputs" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>-->
                 </ComboBox>
-            </Grid>
-        </GroupBox>
-    </Grid>
-    <!--</ScrollViewer>-->
+				</Grid>
+			</GroupBox>
+		</Grid>
+	<!--</ScrollViewer>-->
 </UserControl>

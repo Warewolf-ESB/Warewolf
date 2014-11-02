@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,21 +22,19 @@ namespace Dev2.Runtime.ServiceModel.Data
     {
         #region ToRecordsetList
 
-        public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription,
-            RecordsetList currentList = null, string defaultFieldName = "")
+        public static RecordsetList ToRecordsetList(this IOutputDescription outputDescription, RecordsetList currentList = null, string defaultFieldName = "")
         {
-            if (outputDescription == null || outputDescription.DataSourceShapes == null ||
-                outputDescription.DataSourceShapes.Count == 0)
+            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
             {
                 throw new Exception("Error retrieving shape from service output.");
             }
 
-            RecordsetList result = currentList ?? new RecordsetList();
+            var result = currentList ?? new RecordsetList();
             var currentFields = new List<RecordsetField>();
 
             #region Create a copy of the current list's fields so that we don't lose the user-defined aliases.
 
-            foreach (Recordset rs in result)
+            foreach(var rs in result)
             {
                 currentFields.AddRange(rs.Fields);
                 rs.Fields.Clear();
@@ -43,43 +42,42 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             #endregion
 
-            List<IPath> paths = outputDescription.DataSourceShapes[0].Paths;
+            var paths = outputDescription.DataSourceShapes[0].Paths;
 
-            foreach (IPath path in paths)
+            foreach(var path in paths)
             {
-                Tuple<string, string> names = SplitRecordsetAndFieldNames(path);
-                string rsName = names.Item1;
-                string rsAlias = rsName;
-                string fieldName = names.Item2;
-                if (string.IsNullOrEmpty(fieldName) && string.IsNullOrEmpty(defaultFieldName))
+                var names = SplitRecordsetAndFieldNames(path);
+                var rsName = names.Item1;
+                var rsAlias = rsName;
+                var fieldName = names.Item2;
+                if(string.IsNullOrEmpty(fieldName) && string.IsNullOrEmpty(defaultFieldName))
                 {
                     continue;
                 }
 
-                if (string.IsNullOrEmpty(fieldName) && !string.IsNullOrEmpty(defaultFieldName))
+                if(string.IsNullOrEmpty(fieldName) && !string.IsNullOrEmpty(defaultFieldName))
                 {
                     fieldName = defaultFieldName;
                 }
 
                 // Bug 10532 - Amend to remove : from the alias ;)
-                string fieldAlias = fieldName.Replace(":", "");
+                var fieldAlias = fieldName.Replace(":", "");
 
-                IPath pathLoop = path;
-                RecordsetField rsField = currentFields.FirstOrDefault(f => f.Path == pathLoop) ??
-                                         new RecordsetField {Path = path, Alias = fieldAlias, RecordsetAlias = rsAlias};
+                var pathLoop = path;
+                var rsField = currentFields.FirstOrDefault(f => f.Path == pathLoop) ?? new RecordsetField { Path = path, Alias = fieldAlias, RecordsetAlias = rsAlias };
                 rsField.Name = fieldName;
 
-                Recordset rs = result.FirstOrDefault(r => r.Name == rsName);
-                if (rs == null)
+                var rs = result.FirstOrDefault(r => r.Name == rsName);
+                if(rs == null)
                 {
-                    rs = new Recordset {Name = rsName};
+                    rs = new Recordset { Name = rsName };
                     result.Add(rs);
                 }
-                int fieldIndex = rs.Fields.Count;
+                var fieldIndex = rs.Fields.Count;
                 rs.Fields.Add(rsField);
 
-                string[] data = path.SampleData.Split(',');
-                for (int recordIndex = 0; recordIndex < data.Length; recordIndex++)
+                var data = path.SampleData.Split(',');
+                for(var recordIndex = 0; recordIndex < data.Length; recordIndex++)
                 {
                     rs.SetValue(recordIndex, fieldIndex, data[recordIndex]);
                 }
@@ -93,17 +91,17 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public static Tuple<string, string> SplitRecordsetAndFieldNames(IPath path)
         {
-            string rsName = string.Empty;
-            string fieldName = path.ActualPath.Replace(".", "");
+            var rsName = string.Empty;
+            var fieldName = path.ActualPath.Replace(".", "");
 
-            int indexOf = path.ActualPath.LastIndexOf("()", StringComparison.InvariantCultureIgnoreCase);
-            if (indexOf != -1)
+            var indexOf = path.ActualPath.LastIndexOf("()", StringComparison.InvariantCultureIgnoreCase);
+            if(indexOf != -1)
             {
                 int length = path.ActualPath.Length;
-                if (indexOf + 2 == length) // This means we have a primitive array as property
+                if(indexOf + 2 == length) // This means we have a primitive array as property
                 {
-                    int upperRecsetName = path.ActualPath.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase);
-                    if (upperRecsetName == -1)
+                    var upperRecsetName = path.ActualPath.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase);
+                    if(upperRecsetName == -1)
                     {
                         rsName = path.ActualPath.Substring(0, indexOf + 2).Replace("()", "").Replace(".", "_");
                     }
@@ -123,5 +121,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
+
     }
 }

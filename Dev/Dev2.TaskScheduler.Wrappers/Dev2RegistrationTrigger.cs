@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,7 +19,7 @@ namespace Dev2.TaskScheduler.Wrappers
     public class Dev2RegistrationTrigger : Dev2Trigger, ITriggerDelay, IWrappedObject<RegistrationTrigger>
     {
         public Dev2RegistrationTrigger(ITaskServiceConvertorFactory taskServiceConvertorFactory,
-            RegistrationTrigger instance)
+                                       RegistrationTrigger instance)
             : base(taskServiceConvertorFactory, instance)
         {
         }

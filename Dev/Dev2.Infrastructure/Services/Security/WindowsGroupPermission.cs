@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,68 +20,43 @@ namespace Dev2.Services.Security
 {
     public class WindowsGroupPermission : ObservableObject
     {
-        public const string BuiltInAdministratorsText = "Warewolf Administrators";
-        public const string AdministratorsText = "BuiltIn\\Administrators";
-        public const string BuiltInGuestsText = "Public";
-        private bool _administrator;
-
-        private bool _contribute;
-        private bool _deployFrom;
-        private bool _deployTo;
-        private bool _enableCellEditing;
-        private bool _execute;
-        private bool _isDeleted;
-        private bool _isNew;
-        private bool _isServer;
-        private ICommand _removeRow;
-        private Guid _resourceId;
-        private string _resourceName;
-        private bool _view;
-        private string _windowsGroup;
-
         public WindowsGroupPermission()
         {
             EnableCellEditing = true;
         }
 
-        public bool IsServer
-        {
-            get { return _isServer; }
-            set { OnPropertyChanged(ref _isServer, value); }
-        }
+        public const string BuiltInAdministratorsText = "Warewolf Administrators";
+        public const string AdministratorsText = "BuiltIn\\Administrators";
+        public const string BuiltInGuestsText = "Public";
+
+        bool _isServer;
+        Guid _resourceId;
+        string _resourceName;
+        string _windowsGroup;
+        bool _view;
+        bool _execute;
+        bool _contribute;
+        bool _deployTo;
+        bool _deployFrom;
+        bool _administrator;
+        bool _isNew;
+        bool _isDeleted;
+        ICommand _removeRow;
+        bool _enableCellEditing;
+
+        public bool IsServer { get { return _isServer; } set { OnPropertyChanged(ref _isServer, value); } }
 
 // ReSharper disable InconsistentNaming
-        public Guid ResourceID
-        {
-            get { return _resourceId; }
-            set { OnPropertyChanged(ref _resourceId, value); }
-        }
-
+        public Guid ResourceID { get { return _resourceId; } set { OnPropertyChanged(ref _resourceId, value); } }
 // ReSharper restore InconsistentNaming
 
-        public string ResourceName
-        {
-            get { return _resourceName; }
-            set { OnPropertyChanged(ref _resourceName, value); }
-        }
+        public string ResourceName { get { return _resourceName; } set { OnPropertyChanged(ref _resourceName, value); } }
 
-        public string WindowsGroup
-        {
-            get { return _windowsGroup; }
-            set { OnPropertyChanged(ref _windowsGroup, value); }
-        }
+        public string WindowsGroup { get { return _windowsGroup; } set { OnPropertyChanged(ref _windowsGroup, value); } }
 
-        public bool IsDeleted
-        {
-            get { return _isDeleted; }
-            set { OnPropertyChanged(ref _isDeleted, value); }
-        }
+        public bool IsDeleted { get { return _isDeleted; } set { OnPropertyChanged(ref _isDeleted, value); } }
 
-        public bool EnableCellEditing
-        {
-            get { return _enableCellEditing; }
-            set { OnPropertyChanged(ref _enableCellEditing, value); }
-        }
+        public bool EnableCellEditing { get { return _enableCellEditing; } set { OnPropertyChanged(ref _enableCellEditing, value); } }
 
         public ICommand RemoveRow
         {
@@ -88,7 +64,7 @@ namespace Dev2.Services.Security
             {
                 return _removeRow ??
                        (_removeRow =
-                           new RelayCommand(o =>
+                       new RelayCommand(o =>
                            {
                                IsDeleted = !IsDeleted;
                                EnableCellEditing = !IsDeleted;
@@ -102,47 +78,19 @@ namespace Dev2.Services.Security
         }
 
 
-        public bool View
-        {
-            get { return _view; }
-            set { OnPropertyChanged(ref _view, value); }
-        }
+        public bool View { get { return _view; } set { OnPropertyChanged(ref _view, value); } }
 
-        public bool Execute
-        {
-            get { return _execute; }
-            set { OnPropertyChanged(ref _execute, value); }
-        }
+        public bool Execute { get { return _execute; } set { OnPropertyChanged(ref _execute, value); } }
 
-        public bool Contribute
-        {
-            get { return _contribute; }
-            set { OnPropertyChanged(ref _contribute, value); }
-        }
+        public bool Contribute { get { return _contribute; } set { OnPropertyChanged(ref _contribute, value); } }
 
-        public bool DeployTo
-        {
-            get { return _deployTo; }
-            set { OnPropertyChanged(ref _deployTo, value); }
-        }
+        public bool DeployTo { get { return _deployTo; } set { OnPropertyChanged(ref _deployTo, value); } }
 
-        public bool DeployFrom
-        {
-            get { return _deployFrom; }
-            set { OnPropertyChanged(ref _deployFrom, value); }
-        }
+        public bool DeployFrom { get { return _deployFrom; } set { OnPropertyChanged(ref _deployFrom, value); } }
 
-        public bool Administrator
-        {
-            get { return _administrator; }
-            set { OnPropertyChanged(ref _administrator, value); }
-        }
+        public bool Administrator { get { return _administrator; } set { OnPropertyChanged(ref _administrator, value); } }
 
-        public bool IsNew
-        {
-            get { return _isNew; }
-            set { OnPropertyChanged(ref _isNew, value); }
-        }
+        public bool IsNew { get { return _isNew; } set { OnPropertyChanged(ref _isNew, value); } }
 
         [JsonIgnore]
         public Permissions Permissions
@@ -150,30 +98,12 @@ namespace Dev2.Services.Security
             get
             {
                 var result = Permissions.None;
-                if (View)
-                {
-                    result |= Permissions.View;
-                }
-                if (Execute)
-                {
-                    result |= Permissions.Execute;
-                }
-                if (Contribute)
-                {
-                    result |= Permissions.Contribute;
-                }
-                if (DeployTo)
-                {
-                    result |= Permissions.DeployTo;
-                }
-                if (DeployFrom)
-                {
-                    result |= Permissions.DeployFrom;
-                }
-                if (Administrator)
-                {
-                    result |= Permissions.Administrator;
-                }
+                if(View) { result |= Permissions.View; }
+                if(Execute) { result |= Permissions.Execute; }
+                if(Contribute) { result |= Permissions.Contribute; }
+                if(DeployTo) { result |= Permissions.DeployTo; }
+                if(DeployFrom) { result |= Permissions.DeployFrom; }
+                if(Administrator) { result |= Permissions.Administrator; }
 
                 return result;
             }
@@ -193,15 +123,17 @@ namespace Dev2.Services.Security
         {
             get
             {
-                return IsServer &&
-                       WindowsGroup.Equals(BuiltInAdministratorsText, StringComparison.InvariantCultureIgnoreCase);
+                return IsServer && WindowsGroup.Equals(BuiltInAdministratorsText, StringComparison.InvariantCultureIgnoreCase);
             }
         }
 
         [JsonIgnore]
         public bool IsBuiltInGuests
         {
-            get { return IsServer && IsBuiltInGuestsForExecution; }
+            get
+            {
+                return IsServer && IsBuiltInGuestsForExecution;
+            }
         }
 
         [JsonIgnore]
@@ -209,8 +141,7 @@ namespace Dev2.Services.Security
         {
             get
             {
-                return WindowsGroup != null &&
-                       WindowsGroup.Equals(BuiltInGuestsText, StringComparison.InvariantCultureIgnoreCase);
+                return WindowsGroup != null && WindowsGroup.Equals(BuiltInGuestsText, StringComparison.InvariantCultureIgnoreCase);
             }
         }
 
@@ -237,6 +168,7 @@ namespace Dev2.Services.Security
                 DeployTo = true,
                 DeployFrom = true,
                 Administrator = true
+
             };
         }
 
@@ -253,7 +185,7 @@ namespace Dev2.Services.Security
                 DeployFrom = true,
                 Administrator = true
             }
-                ;
+;
         }
 
         public static WindowsGroupPermission CreateGuests()
@@ -268,6 +200,7 @@ namespace Dev2.Services.Security
                 DeployTo = false,
                 DeployFrom = false,
                 Administrator = false
+
             };
         }
     }

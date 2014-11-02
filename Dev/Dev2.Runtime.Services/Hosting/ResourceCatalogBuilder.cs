@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,8 +26,9 @@ using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.Hosting
 {
+
     /// <summary>
-    ///     Transfer FileStream and FilePath together
+    /// Transfer FileStream and FilePath together
     /// </summary>
 // ReSharper disable InconsistentNaming
     internal class ResourceBuilderTO
@@ -37,43 +39,38 @@ namespace Dev2.Runtime.Hosting
     }
 
     /// <summary>
-    ///     Used to build up the resource catalog ;)
+    /// Used to build up the resource catalog ;)
     /// </summary>
     public class ResourceCatalogBuilder
     {
-        private readonly object _addLock = new object();
+        private readonly List<IResource> _resources = new List<IResource>();
         private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
         private readonly IResourceUpgrader _resourceUpgrader;
-        private readonly List<IResource> _resources = new List<IResource>();
+        private readonly object _addLock = new object();
 
         public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)
         {
             _resourceUpgrader = resourceUpgrader;
         }
-
         public ResourceCatalogBuilder()
         {
             _resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
         }
-
-        public IList<IResource> ResourceList
-        {
-            get { return _resources; }
-        }
+        public IList<IResource> ResourceList { get { return _resources; } }
 
 
         public void BuildCatalogFromWorkspace(string workspacePath, params string[] folders)
         {
-            if (string.IsNullOrEmpty(workspacePath))
+            if(string.IsNullOrEmpty(workspacePath))
             {
                 throw new ArgumentNullException("workspacePath");
             }
-            if (folders == null)
+            if(folders == null)
             {
                 throw new ArgumentNullException("folders");
             }
 
-            if (folders.Length == 0 || !Directory.Exists(workspacePath))
+            if(folders.Length == 0 || !Directory.Exists(workspacePath))
             {
                 return;
             }
@@ -82,22 +79,21 @@ namespace Dev2.Runtime.Hosting
 
             try
             {
-                foreach (
-                    string path in
-                        folders.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl"))
-                            .Select(f => Path.Combine(workspacePath, f)))
+
+                foreach(var path in folders.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(workspacePath, f)))
                 {
-                    if (!Directory.Exists(path))
+                    if(!Directory.Exists(path))
                     {
                         continue;
                     }
 
-                    string[] files = Directory.GetFiles(path, "*.xml");
-                    foreach (string file in files)
+                    var files = Directory.GetFiles(path, "*.xml");
+                    foreach(var file in files)
                     {
+
                         FileAttributes fa = File.GetAttributes(file);
 
-                        if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                        if((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                         {
                             Dev2Logger.Log.Info("Removed READONLY Flag from [ " + file + " ]");
                             File.SetAttributes(file, FileAttributes.Normal);
@@ -105,50 +101,50 @@ namespace Dev2.Runtime.Hosting
 
                         // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
                         // In many cases, this will avoid blocking a ThreadPool thread.  
-                        var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite,
-                            4096, true);
-                        streams.Add(new ResourceBuilderTO {FilePath = file, FileStream = sourceStream});
+                        var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
+                        streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
+
                     }
                 }
 
                 // Use the parallel task library to process file system ;)
                 Parallel.ForEach(streams.ToArray(), currentItem =>
                 {
+
                     XElement xml = null;
 
                     try
                     {
                         xml = XElement.Load(currentItem.FileStream);
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         Dev2Logger.Log.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
                     }
 
                     StringBuilder result = xml.ToStringBuilder();
 
-                    bool isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
-                    if (isValid)
+                    var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
+                    if(isValid)
                     {
                         var resource = new Resource(xml)
                         {
-                            FilePath = currentItem.FilePath
+                            FilePath = currentItem.FilePath                     
                         };
 
                         //2013.08.26: Prevent duplicate unassigned folder in save dialog and studio explorer tree by interpreting 'unassigned' as blank
-                        if (resource.ResourcePath.ToUpper() == "UNASSIGNED")
+                        if(resource.ResourcePath.ToUpper() == "UNASSIGNED")
                         {
                             resource.ResourcePath = string.Empty;
                             // DON'T FORCE A SAVE HERE - EVER!!!!
                         }
-                        xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version,
-                            (a =>
-                            {
-                                StringBuilder updateXml = a.ToStringBuilder();
-                                StringBuilder signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
-                                signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8);
-                            }));
-                        if (resource.IsUpgraded)
+                        xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, (a =>
+                        {
+                            StringBuilder updateXml = a.ToStringBuilder();
+                            var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
+                            signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8);
+                        }));
+                        if(resource.IsUpgraded)
                         {
                             // Must close the source stream first and then add a new target stream 
                             // otherwise the file will be remain locked
@@ -157,24 +153,22 @@ namespace Dev2.Runtime.Hosting
                             xml = resource.UpgradeXml(xml, resource);
 
                             StringBuilder updateXml = xml.ToStringBuilder();
-                            StringBuilder signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
+                            var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
                             signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8);
                         }
-                        if (resource.VersionInfo == null)
+                        if(resource.VersionInfo == null)
                         {
+                            
                         }
 
-                        lock (_addLock)
+                        lock(_addLock)
                         {
                             AddResource(resource, currentItem.FilePath);
                         }
                     }
                     else
                     {
-                        Dev2Logger.Log.Debug(
-                            string.Format(
-                                "'{0}' wasn't loaded because it isn't signed or has modified since it was signed.",
-                                currentItem.FilePath));
+                        Dev2Logger.Log.Debug(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
                     }
                 });
             }
@@ -183,7 +177,7 @@ namespace Dev2.Runtime.Hosting
                 // Close all FileStream instances in a finally block after the tasks are complete. 
                 // If each FileStream was instead created in a using statement, the FileStream 
                 // might be disposed of before the task was complete
-                foreach (ResourceBuilderTO stream in streams)
+                foreach(var stream in streams)
                 {
                     stream.FileStream.Close();
                 }
@@ -191,21 +185,21 @@ namespace Dev2.Runtime.Hosting
         }
 
         /// <summary>
-        ///     Adds the resource.
+        /// Adds the resource.
         /// </summary>
         /// <param name="res">The res.</param>
         /// <param name="filePath">The file path.</param>
         private void AddResource(IResource res, string filePath)
         {
-            if (!_addedResources.Contains(res.ResourceID))
+            if(!_addedResources.Contains(res.ResourceID))
             {
                 _resources.Add(res);
                 _addedResources.Add(res.ResourceID);
             }
             else
             {
-                IResource dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
-                if (dupRes != null)
+                var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
+                if(dupRes != null)
                 {
                     Dev2Logger.Log.Debug(
                         string.Format(
@@ -221,5 +215,6 @@ namespace Dev2.Runtime.Hosting
                 }
             }
         }
+
     }
 }

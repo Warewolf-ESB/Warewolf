@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,9 +16,17 @@ namespace Dev2
 {
     public abstract class DisposableObject : IDisposable
     {
-        private bool _isDisposed;
+        bool _isDisposed;
 
         #region Implementation of IDisposable
+
+        ~DisposableObject()
+        {
+            // Do not re-create Dispose clean-up code here.
+            // Calling Dispose(false) is optimal in terms of
+            // readability and maintainability.
+            Dispose(false);
+        }
 
         // Do not make this method virtual.
         // A derived class should not be able to override this method.
@@ -33,14 +42,6 @@ namespace Dev2
             GC.SuppressFinalize(this);
         }
 
-        ~DisposableObject()
-        {
-            // Do not re-create Dispose clean-up code here.
-            // Calling Dispose(false) is optimal in terms of
-            // readability and maintainability.
-            Dispose(false);
-        }
-
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
         // or indirectly by a user's code. Managed and unmanaged resources
@@ -48,14 +49,14 @@ namespace Dev2
         // If disposing equals false, the method has been called by the
         // runtime from inside the finalizer and you should not reference
         // other objects. Only unmanaged resources can be disposed.
-        private void Dispose(bool disposing)
+        void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!_isDisposed)
+            if(!_isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
-                if (disposing)
+                if(disposing)
                 {
                     // Dispose managed resources.
                     OnDisposed();

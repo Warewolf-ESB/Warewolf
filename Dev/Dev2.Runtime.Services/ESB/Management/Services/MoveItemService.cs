@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -28,12 +29,6 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class MoveItemService : IEsbManagementEndpoint
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
-
-        public IExplorerServerResourceRepository ServerExplorerRepo
-        {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
-        }
 
         public string HandlesType()
         {
@@ -75,24 +70,19 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><itemToMove ColumnIODirection=\"Input\"/><newPath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToMove ColumnIODirection=\"Input\"/><newPath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
-            var fetchItemsAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             findServices.Actions.Add(fetchItemsAction);
 
             return findServices;
+        }
+
+        public IExplorerServerResourceRepository ServerExplorerRepo
+        {
+            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
+            set { _serverExplorerRepository = value; }
         }
     }
 }

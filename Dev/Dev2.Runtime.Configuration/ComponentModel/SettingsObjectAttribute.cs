@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,14 +17,14 @@ using Dev2.Runtime.Configuration.ViewModels;
 namespace Dev2.Runtime.Configuration.ComponentModel
 {
     /// <summary>
-    ///     Used to indicate that a property is a setting object
+    /// Used to indicate that a property is a setting object
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class SettingsObjectAttribute : Attribute
     {
         public SettingsObjectAttribute(Type view, Type viewModel)
         {
-            if (!CheckInheretenceHierarchy(view, typeof (UserControl)))
+            if (!CheckInheretenceHierarchy(view, typeof(UserControl)))
             {
                 throw new Exception("View type must inherit from UserControl.");
             }
@@ -33,7 +34,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
                 throw new Exception("View type must contain a parameterless contructor.");
             }
 
-            if (!CheckInheretenceHierarchy(viewModel, typeof (SettingsViewModelBase)))
+            if (!CheckInheretenceHierarchy(viewModel, typeof(SettingsViewModelBase)))
             {
                 throw new Exception("ViewModel type must inherit from SettingsViewModelBase.");
             }
@@ -42,7 +43,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             {
                 throw new Exception("ViewModel type must contain a parameterless contructor.");
             }
-
+            
             View = view;
             ViewModel = viewModel;
         }

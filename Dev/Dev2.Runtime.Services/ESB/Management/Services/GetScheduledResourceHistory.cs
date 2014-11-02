@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,31 +21,20 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Security;
 using Dev2.Scheduler;
-using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetScheduledResourceHistory : IEsbManagementEndpoint
     {
         private IServerSchedulerFactory _schedulerFactory;
-        private ISecurityWrapper _securityWrapper;
+        ISecurityWrapper _securityWrapper;
 
-        public IServerSchedulerFactory SchedulerFactory
-        {
-            get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
-            set { _schedulerFactory = value; }
-        }
-
-        public ISecurityWrapper SecurityWrapper
-        {
-            get { return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance); }
-            set { _securityWrapper = value; }
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, Workspaces.IWorkspace theWorkspace)
         {
             try
             {
+
+
                 StringBuilder tmp;
                 values.TryGetValue("Resource", out tmp);
                 var serializer = new Dev2JsonSerializer();
@@ -52,11 +42,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (tmp != null)
                 {
                     var res = serializer.Deserialize<IScheduledResource>(tmp);
-                    Dev2Logger.Log.Info("Get Scheduled History. " + tmp);
+                    Dev2Logger.Log.Info("Get Scheduled History. " +tmp);
                     IList<IResourceHistory> resources;
-                    using (
-                        IScheduledResourceModel model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId,
-                            SecurityWrapper))
+                    using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                     {
                         resources = model.CreateHistory(res);
                     }
@@ -77,9 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var getResourceHistory = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var getHistoryAction = new ServiceAction
@@ -98,6 +84,24 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType()
         {
             return "GetScheduledResourceHistoryService";
+        }
+
+        public IServerSchedulerFactory SchedulerFactory
+        {
+            get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
+            set { _schedulerFactory = value; }
+        }
+
+        public ISecurityWrapper SecurityWrapper
+        {
+            get
+            {
+                return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
+            }
+            set
+            {
+                _securityWrapper = value;
+            }
         }
     }
 }

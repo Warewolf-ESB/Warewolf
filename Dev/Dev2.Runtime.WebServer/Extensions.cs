@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,7 +23,7 @@ namespace Dev2.Runtime.WebServer
     {
         public static bool IsAuthenticated(this IPrincipal user)
         {
-            if (user == null)
+            if(user == null)
             {
                 Dev2Logger.Log.Debug("Null User");
             }
@@ -32,14 +33,14 @@ namespace Dev2.Runtime.WebServer
 
         public static Encoding GetContentEncoding(this HttpContent content)
         {
-            string encoding = content == null ? String.Empty : content.Headers.ContentEncoding.FirstOrDefault();
-            if (!String.IsNullOrEmpty(encoding))
+            var encoding = content == null ? String.Empty : content.Headers.ContentEncoding.FirstOrDefault();
+            if(!String.IsNullOrEmpty(encoding))
             {
                 try
                 {
                     return Encoding.GetEncoding(encoding);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     Dev2Logger.Log.Error("Dev2.Runtime.WebServer.Extensions", ex);
                 }

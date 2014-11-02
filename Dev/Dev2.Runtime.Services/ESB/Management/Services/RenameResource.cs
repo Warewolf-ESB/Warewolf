@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,7 +26,7 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     Adds a resource
+    /// Adds a resource
     /// </summary>
     public class RenameResource : IEsbManagementEndpoint
     {
@@ -33,11 +34,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
+
+
                 var res = new ExecuteMessage {HasError = false};
 
                 string resourceId = null;
                 string newName = null;
-                if (values == null)
+                if(values == null)
                 {
                     throw new InvalidDataContractException("No parameter values provided.");
                 }
@@ -49,29 +52,27 @@ namespace Dev2.Runtime.ESB.Management.Services
                     resourceId = tmp.ToString();
                 }
                 values.TryGetValue("NewName", out tmp);
-                if (tmp != null)
+                if(tmp != null)
                 {
                     newName = tmp.ToString();
                 }
 
-                if (resourceId == null)
+                if(resourceId == null)
                 {
                     throw new InvalidDataContractException("No value provided for ResourceID parameter.");
                 }
-                if (String.IsNullOrEmpty(newName))
+                if(String.IsNullOrEmpty(newName))
                 {
                     throw new InvalidDataContractException("No value provided for NewName parameter.");
                 }
 
                 Guid id;
                 Guid.TryParse(resourceId, out id);
-                Dev2Logger.Log.Info(String.Format("Rename Resource. ResourceId:{0} NewName:{1}", resourceId, newName));
-                ResourceCatalogResult saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID,
-                    id, newName);
+                Dev2Logger.Log.Info(String.Format( "Rename Resource. ResourceId:{0} NewName:{1}",resourceId,newName));
+                var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, id, newName);
                 if (saveToWorkSpaceResult.Status == ExecStatus.Success)
                 {
-                    ResourceCatalogResult saveToLocalServerResult = ResourceCatalog.Instance.RenameResource(Guid.Empty,
-                        id, newName);
+                    var saveToLocalServerResult = ResourceCatalog.Instance.RenameResource(Guid.Empty, id, newName);
                     if (saveToLocalServerResult.Status == ExecStatus.Success)
                     {
                         res.SetMessage(saveToLocalServerResult.Message);
@@ -84,8 +85,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 res.SetMessage(saveToWorkSpaceResult.Message);
 
-                var serializer = new Dev2JsonSerializer();
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(res);
+
             }
             catch (Exception err)
             {
@@ -96,19 +98,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var newDs = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><ResourceID ColumnIODirection=\"Input\"/><NewName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><NewName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;

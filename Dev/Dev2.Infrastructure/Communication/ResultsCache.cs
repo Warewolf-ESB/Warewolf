@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,26 +18,27 @@ namespace Dev2.Communication
 {
     public class ResultsCache
     {
-        private static ResultsCache _instance;
         private readonly ConcurrentDictionary<string, string> _resultCache = new ConcurrentDictionary<string, string>();
 
-        private ResultsCache()
-        {
-        }
-
+        private static ResultsCache _instance;
         public static ResultsCache Instance
         {
-            get { return _instance ?? (_instance = new ResultsCache()); }
+            get
+            {
+                return _instance ?? (_instance = new ResultsCache());
+            }
         }
+
+        private ResultsCache() { }
 
         public bool AddResult(FutureReceipt receipt, string payload)
         {
-            if (string.IsNullOrEmpty(payload))
+            if(string.IsNullOrEmpty(payload))
             {
                 throw new ArgumentNullException("payload");
             }
 
-            if (receipt == null)
+            if(receipt == null)
             {
                 throw new ArgumentNullException("receipt");
             }
@@ -46,13 +48,13 @@ namespace Dev2.Communication
 
         public string FetchResult(FutureReceipt receipt)
         {
-            if (receipt == null)
+            if(receipt == null)
             {
                 throw new ArgumentNullException("receipt");
             }
 
             string result;
-            if (!_resultCache.TryRemove(receipt.ToKey(), out result))
+            if(!_resultCache.TryRemove(receipt.ToKey(), out result))
             {
                 result = string.Empty;
             }
@@ -61,12 +63,12 @@ namespace Dev2.Communication
 
         public bool ContainsPendingRequestForUser(string user)
         {
-            if (string.IsNullOrEmpty(user))
+            if(string.IsNullOrEmpty(user))
             {
                 throw new ArgumentNullException("user");
             }
 
-            bool hasResults = _resultCache.Keys.Any(c => c.Contains(user + "!"));
+            var hasResults = _resultCache.Keys.Any(c => c.Contains(user + "!"));
             return hasResults;
         }
     }

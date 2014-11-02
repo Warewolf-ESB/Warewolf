@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -9,7 +10,6 @@
 */
 
 
-using System;
 using System.Collections;
 using System.ComponentModel;
 
@@ -17,8 +17,8 @@ namespace Dev2.Services.Security
 {
     public class WindowsGroupPermissionComparer : IComparer
     {
-        private readonly int _direction;
-        private readonly string _sortMemberPath;
+        readonly int _direction;
+        readonly string _sortMemberPath;
 
         public WindowsGroupPermissionComparer(ListSortDirection direction, string sortMemberPath)
         {
@@ -32,59 +32,59 @@ namespace Dev2.Services.Security
             var px = x as WindowsGroupPermission;
             var py = y as WindowsGroupPermission;
 
-            if (px == null || py == null)
+            if(px == null || py == null)
             {
                 return 1;
             }
 
             // New items must be last
             //
-            if (px.IsNew)
+            if(px.IsNew)
             {
                 // px is greater than py
                 return int.MaxValue;
             }
-            if (py.IsNew)
+            if(py.IsNew)
             {
                 // px is less than py
                 return int.MinValue;
             }
 
             // BuiltInAdministrators must be first
-            if (px.IsBuiltInAdministrators)
+            if(px.IsBuiltInAdministrators)
             {
                 // px is less than py
                 return int.MinValue;
             }
-            if (py.IsBuiltInAdministrators)
+            if(py.IsBuiltInAdministrators)
             {
                 // px is greater than py
                 return int.MaxValue;
             }
 
-            if (px.IsBuiltInGuests)
+            if(px.IsBuiltInGuests)
             {
                 // px is less than py
                 return int.MinValue + 1;
             }
-            if (py.IsBuiltInGuests)
+            if(py.IsBuiltInGuests)
             {
                 // px is greater than py
                 return int.MaxValue - 1;
             }
 
-            int result = Compare(px, py);
-            return _direction*result;
+            var result = Compare(px, py);
+            return _direction * result;
         }
 
-        private int Compare(WindowsGroupPermission px, WindowsGroupPermission py)
+        int Compare(WindowsGroupPermission px, WindowsGroupPermission py)
         {
-            switch (_sortMemberPath)
+            switch(_sortMemberPath)
             {
                 case "ResourceName":
-                    return String.Compare(px.ResourceName, py.ResourceName, StringComparison.InvariantCulture);
+                    return System.String.Compare(px.ResourceName, py.ResourceName, System.StringComparison.InvariantCulture);
                 case "WindowsGroup":
-                    return String.Compare(px.WindowsGroup, py.WindowsGroup, StringComparison.InvariantCulture);
+                    return System.String.Compare(px.WindowsGroup, py.WindowsGroup, System.StringComparison.InvariantCulture);
                 case "View":
                     return px.View.CompareTo(py.View);
                 case "Execute":
@@ -100,5 +100,7 @@ namespace Dev2.Services.Security
             }
             return 0;
         }
+
+
     }
 }

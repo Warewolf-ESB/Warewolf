@@ -1,4 +1,5 @@
-﻿/*
+﻿
+/*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -15,7 +16,6 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -40,59 +40,62 @@ namespace Dev2.Runtime.ESB.Management.Services
         #region Implementation of IEsbManagementEndpoint
 
         /// <summary>
-        ///     Executes the service
+        /// Executes the service
         /// </summary>
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
         /// <returns></returns>
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+
             try
             {
-                var dependancyNames = new List<string>();
 
-                bool dependsOnMe = false;
-                string resourceNamesString = string.Empty;
-                string dependsOnMeString = string.Empty;
-                StringBuilder tmp;
-                values.TryGetValue("ResourceNames", out tmp);
-                if (tmp != null)
-                {
-                    resourceNamesString = tmp.ToString();
-                }
-                values.TryGetValue("GetDependsOnMe", out tmp);
-                if (tmp != null)
-                {
-                    dependsOnMeString = tmp.ToString();
-                }
+         
+            List<string> dependancyNames = new List<string>();
 
-                var resourceNames = JsonConvert.DeserializeObject<List<string>>(resourceNamesString);
-                Dev2Logger.Log.Info("Get Dependencies On List. " + resourceNamesString);
-                if (!string.IsNullOrEmpty(dependsOnMeString))
+            bool dependsOnMe = false;
+            string resourceNamesString = string.Empty;
+            string dependsOnMeString = string.Empty;
+            StringBuilder tmp;
+            values.TryGetValue("ResourceNames", out tmp);
+            if(tmp != null)
+            {
+                resourceNamesString = tmp.ToString();
+            }
+            values.TryGetValue("GetDependsOnMe", out tmp);
+            if(tmp != null)
+            {
+                dependsOnMeString = tmp.ToString();
+            }
+
+            List<string> resourceNames = JsonConvert.DeserializeObject<List<string>>(resourceNamesString);
+            Dev2Logger.Log.Info("Get Dependencies On List. "+resourceNamesString);
+            if(!string.IsNullOrEmpty(dependsOnMeString))
+            {
+                if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
                 {
-                    if (!bool.TryParse(dependsOnMeString, out dependsOnMe))
+                    dependsOnMe = false;
+                }
+            }
+            if(dependsOnMe)
+            {
+                //TODO : other way
+            }
+            else
+            {
+                foreach(string resourceName in resourceNames)
+                {
+                    var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceName);
+                    if(resource != null)
                     {
-                        dependsOnMe = false;
+                        dependancyNames.AddRange(FetchRecursiveDependancies(resource.ResourceID, theWorkspace.ID));
                     }
                 }
-                if (dependsOnMe)
-                {
-                    //TODO : other way
-                }
-                else
-                {
-                    foreach (string resourceName in resourceNames)
-                    {
-                        IResource resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceName);
-                        if (resource != null)
-                        {
-                            dependancyNames.AddRange(FetchRecursiveDependancies(resource.ResourceID, theWorkspace.ID));
-                        }
-                    }
-                }
+            }
 
-                var serializer = new Dev2JsonSerializer();
-                return serializer.SerializeToBuilder(dependancyNames);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(dependancyNames);
             }
             catch (Exception e)
             {
@@ -102,7 +105,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         /// <summary>
-        ///     Creates the service entry.
+        /// Creates the service entry.
         /// </summary>
         /// <returns></returns>
         public DynamicService CreateServiceEntry()
@@ -110,9 +113,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><ResourceNames ColumnIODirection=\"Input\"/><GetDependsOnMe ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification = new StringBuilder("<DataList><ResourceNames ColumnIODirection=\"Input\"/><GetDependsOnMe ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var sa = new ServiceAction
@@ -133,25 +134,26 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private IEnumerable<string> FetchRecursiveDependancies(Guid resourceId, Guid workspaceId)
         {
-            var results = new List<string>();
-            IResource resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
-            if (resource != null)
+            List<string> results = new List<string>();
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
+            if(resource != null)
             {
-                IList<IResourceForTree> dependencies = resource.Dependencies;
+                var dependencies = resource.Dependencies;
 
-                if (dependencies != null)
+                if(dependencies != null)
                 {
 // ReSharper disable ImplicitlyCapturedClosure
                     dependencies.ForEach(c =>
 // ReSharper restore ImplicitlyCapturedClosure
                     {
-                        if (c.ResourceID != Guid.Empty)
+                       
+                        if(c.ResourceID != Guid.Empty)
                         {
+                      
                             results.Add(c.ResourceID.ToString());
                         }
                     });
-                    dependencies.ToList()
-                        .ForEach(c => results.AddRange(FetchRecursiveDependancies(c.ResourceID, workspaceId)));
+                    dependencies.ToList().ForEach(c => results.AddRange(FetchRecursiveDependancies(c.ResourceID, workspaceId)));
                 }
             }
             return results;

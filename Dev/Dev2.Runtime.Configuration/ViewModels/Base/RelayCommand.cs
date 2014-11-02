@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,12 +17,12 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 {
     public class RelayCommand : ICommand
     {
-        private readonly Predicate<object> _canHandlingMethodExecute;
-        private readonly Action<object> _handlingMethod;
+        readonly Action<object> _handlingMethod;
+        readonly Predicate<object> _canHandlingMethodExecute;
 
         public RelayCommand(Action<object> handlingMethod, Predicate<object> canHandingMethodExecute)
         {
-            if (handlingMethod == null)
+            if(handlingMethod == null)
             {
                 // ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("HandingMethod");
@@ -32,9 +33,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
             _canHandlingMethodExecute = canHandingMethodExecute;
         }
 
-        public RelayCommand(Action<object> handlingMethod) : this(handlingMethod, null)
-        {
-        }
+        public RelayCommand(Action<object> handlingMethod) : this(handlingMethod, null) { }
 
         #region ICommand Members
 
@@ -61,8 +60,8 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
     {
         #region Fields
 
-        private readonly Predicate<T> _canExecute;
-        private readonly Action<T> _execute;
+        readonly Action<T> _execute;
+        readonly Predicate<T> _canExecute;
 
         #endregion // Fields
 
@@ -74,13 +73,13 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         }
 
         /// <summary>
-        ///     Creates a new command.
+        /// Creates a new command.
         /// </summary>
         /// <param name="execute">The execution logic.</param>
         /// <param name="canExecute">The execution status logic.</param>
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            if (execute == null)
+            if(execute == null)
                 throw new ArgumentNullException("execute");
 
             _execute = execute;
@@ -94,7 +93,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         public bool CanExecute(object parameter)
         {
             // ReSharper disable SimplifyConditionalTernaryExpression
-            return _canExecute == null ? true : _canExecute((T) parameter);
+            return _canExecute == null ? true : _canExecute((T)parameter);
             // ReSharper restore SimplifyConditionalTernaryExpression
         }
 
@@ -106,7 +105,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         public void Execute(object parameter)
         {
-            _execute((T) parameter);
+            _execute((T)parameter);
         }
 
         #endregion // ICommand Members

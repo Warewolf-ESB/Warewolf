@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,7 +25,6 @@ namespace Dev2.Runtime.Execution
         #endregion
 
         #region singleton
-
         private static readonly Lazy<ExecutableServiceRepository> _instance
             = new Lazy<ExecutableServiceRepository>(() => new ExecutableServiceRepository());
 
@@ -35,9 +35,11 @@ namespace Dev2.Runtime.Execution
 
         public static ExecutableServiceRepository Instance
         {
-            get { return _instance.Value; }
+            get
+            {
+                return _instance.Value;
+            }
         }
-
         #endregion
 
         public int Count
@@ -53,8 +55,8 @@ namespace Dev2.Runtime.Execution
         public void Add(IExecutableService service)
         {
             ClearNullExecutions();
-            IExecutableService parent = GetParent(service.WorkspaceID, service.ParentID);
-            if (parent == null)
+            var parent = GetParent(service.WorkspaceID, service.ParentID);
+            if(parent == null)
             {
                 _activeExecutions.Add(service);
             }
@@ -64,11 +66,11 @@ namespace Dev2.Runtime.Execution
             }
         }
 
-        private void ClearNullExecutions()
+        void ClearNullExecutions()
         {
-            if (_activeExecutions != null && _activeExecutions.Count > 0)
+            if(_activeExecutions != null && _activeExecutions.Count>0)
             {
-                for (int i = _activeExecutions.Count - 1; i >= 0; i--)
+                for (var i = _activeExecutions.Count-1; i>=0; i--)
                 {
                     if (_activeExecutions[i] == null)
                     {
@@ -80,12 +82,12 @@ namespace Dev2.Runtime.Execution
 
         public bool Remove(IExecutableService service)
         {
-            bool exists = _activeExecutions.Remove(service);
-
-            foreach (IExecutableService executableService in _activeExecutions)
+            var exists = _activeExecutions.Remove(service);
+                
+            foreach(var executableService in _activeExecutions)
             {
                 exists = executableService.AssociatedServices.Remove(service);
-                if (exists)
+                if(exists)
                 {
                     return true;
                 }
@@ -96,16 +98,13 @@ namespace Dev2.Runtime.Execution
 
         private IExecutableService GetParent(Guid workspaceID, Guid parentID)
         {
-            IExecutableService service =
-                _activeExecutions.ToList()
-                    .FirstOrDefault(e => e != null && e.ID == parentID && e.WorkspaceID == workspaceID);
+            var service = _activeExecutions.ToList().FirstOrDefault(e => e!=null &&e.ID == parentID && e.WorkspaceID == workspaceID);
             return service;
         }
 
         public IExecutableService Get(Guid workspaceID, Guid id)
         {
-            IExecutableService service =
-                _activeExecutions.ToList().FirstOrDefault(e => e.ID == id && e.WorkspaceID == workspaceID);
+            var service = _activeExecutions.ToList().FirstOrDefault(e => e.ID == id && e.WorkspaceID == workspaceID);
             return service;
         }
 

@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -43,12 +44,12 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class SecurityEncryption
     {
-        private const string InitVector = "@1B2c3D4e5F6g7H8"; // Must be 16 bytes  
-        private const string PassPhrase = "Pas5pr@se"; // Any string  
-        private const string SaltValue = "s@1tValue"; // Any string  
-        private const string HashAlgorithm = "SHA1"; // Can also be "MD5", "SHA1" is stronger  
-        private const int PasswordIterations = 2; // Can be any number, usually 1 or 2         
-        private const int KeySize = 256;
+        const string InitVector = "@1B2c3D4e5F6g7H8"; // Must be 16 bytes  
+        const string PassPhrase = "Pas5pr@se"; // Any string  
+        const string SaltValue = "s@1tValue"; // Any string  
+        const string HashAlgorithm = "SHA1"; // Can also be "MD5", "SHA1" is stronger  
+        const int PasswordIterations = 2; // Can be any number, usually 1 or 2         
+        const int KeySize = 256;
 
         /// <summary>
         ///     Encrypts specified plaintext using Rijndael symmetric key algorithm
@@ -66,12 +67,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             // Let us assume that strings only contain ASCII codes.
             // If strings include Unicode characters, use Unicode, UTF7, or UTF8 
             // encoding.
-            byte[] initVectorBytes = Encoding.ASCII.GetBytes(InitVector);
-            byte[] saltValueBytes = Encoding.ASCII.GetBytes(SaltValue);
+            var initVectorBytes = Encoding.ASCII.GetBytes(InitVector);
+            var saltValueBytes = Encoding.ASCII.GetBytes(SaltValue);
 
             // Convert our plaintext into a byte array.
             // Let us assume that plaintext contains UTF8-encoded characters.
-            byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
             // First, we must create a password, from which the key will be derived.
             // This password will be generated from the specified passphrase and 
@@ -86,11 +87,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             // Use the password to generate pseudo-random bytes for the encryption
             // key. Specify the size of the key in bytes (instead of bits).
 #pragma warning disable 612,618
-            byte[] keyBytes = password.GetBytes(KeySize/8);
+            var keyBytes = password.GetBytes(KeySize / 8);
 #pragma warning restore 612,618
 
             // Create uninitialized Rijndael encryption object.
-            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
+            var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC };
 
             // It is reasonable to set encryption mode to Cipher Block Chaining
             // (CBC). Use default options for other symmetric key parameters.
@@ -98,15 +99,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             // Generate encryptor from the existing key bytes and initialization 
             // vector. Key size will be defined based on the number of the key 
             // bytes.
-            ICryptoTransform encryptor = symmetricKey.CreateEncryptor(
+            var encryptor = symmetricKey.CreateEncryptor(
                 keyBytes,
                 initVectorBytes);
 
             // Define memory stream which will be used to hold encrypted data.
-            using (var memoryStream = new MemoryStream())
+            using(var memoryStream = new MemoryStream())
             {
+
                 // Define cryptographic stream (always use Write mode for encryption).
-                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                using(var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                 {
                     // Start encrypting.
                     cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
@@ -115,14 +117,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                     cryptoStream.FlushFinalBlock();
 
                     // Convert our encrypted data from a memory stream into a byte array.
-                    byte[] cipherTextBytes = memoryStream.ToArray();
+                    var cipherTextBytes = memoryStream.ToArray();
 
                     // Close both streams.
                     memoryStream.Close();
                     cryptoStream.Close();
 
                     // Convert encrypted data into a base64-encoded string.
-                    string cipherText = Convert.ToBase64String(cipherTextBytes);
+                    var cipherText = Convert.ToBase64String(cipherTextBytes);
 
                     // Return encrypted string.
                     return cipherText;
@@ -152,11 +154,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             // arrays. Let us assume that strings only contain ASCII codes.
             // If strings include Unicode characters, use Unicode, UTF7, or UTF8
             // encoding.
-            byte[] initVectorBytes = Encoding.ASCII.GetBytes(InitVector);
-            byte[] saltValueBytes = Encoding.ASCII.GetBytes(SaltValue);
+            var initVectorBytes = Encoding.ASCII.GetBytes(InitVector);
+            var saltValueBytes = Encoding.ASCII.GetBytes(SaltValue);
 
             // Convert our ciphertext into a byte array.
-            byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
+            var cipherTextBytes = Convert.FromBase64String(cipherText);
 
             // First, we must create a password, from which the key will be 
             // derived. This password will be generated from the specified 
@@ -172,11 +174,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             // Use the password to generate pseudo-random bytes for the encryption
             // key. Specify the size of the key in bytes (instead of bits).
 #pragma warning disable 612,618
-            byte[] keyBytes = password.GetBytes(KeySize/8);
+            var keyBytes = password.GetBytes(KeySize / 8);
 #pragma warning restore 612,618
 
             // Create uninitialized Rijndael encryption object.
-            var symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
+            var symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC };
 
             // It is reasonable to set encryption mode to Cipher Block Chaining
             // (CBC). Use default options for other symmetric key parameters.
@@ -184,23 +186,25 @@ namespace Dev2.Runtime.ESB.Management.Services
             // Generate decryptor from the existing key bytes and initialization 
             // vector. Key size will be defined based on the number of the key 
             // bytes.
-            ICryptoTransform decryptor = symmetricKey.CreateDecryptor(
+            var decryptor = symmetricKey.CreateDecryptor(
                 keyBytes,
                 initVectorBytes);
 
             // Define memory stream which will be used to hold encrypted data.
-            using (var memoryStream = new MemoryStream(cipherTextBytes))
+            using(var memoryStream = new MemoryStream(cipherTextBytes))
             {
+
                 // Define cryptographic stream (always use Read mode for encryption).
-                using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                using(var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                 {
+
                     // Since at this point we don't know what the size of decrypted data
                     // will be, allocate the buffer long enough to hold cipher-text
                     // plain-text is never longer than cipher-text.
                     var plainTextBytes = new byte[cipherTextBytes.Length];
 
                     // Start decrypting.
-                    int decryptedByteCount = cryptoStream.Read(plainTextBytes,
+                    var decryptedByteCount = cryptoStream.Read(plainTextBytes,
                         0,
                         plainTextBytes.Length);
 
@@ -210,7 +214,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     // Convert decrypted data into a string. 
                     // Let us assume that the original plaintext string was UTF8-encoded.
-                    string plainText = Encoding.UTF8.GetString(plainTextBytes,
+                    var plainText = Encoding.UTF8.GetString(plainTextBytes,
                         0,
                         decryptedByteCount);
 

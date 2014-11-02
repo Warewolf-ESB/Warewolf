@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,12 +26,12 @@ namespace Dev2.Runtime.WebServer.Controllers
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
             where TRequestHandler : class, IRequestHandler, new()
         {
-            if (!IsAuthenticated())
+            if(!IsAuthenticated())
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
-            var context = new WebServerContext(Request, requestVariables) {Request = {User = User}};
+            var context = new WebServerContext(Request, requestVariables) { Request = { User = User } };
             var handler = CreateHandler<TRequestHandler>();
             handler.ProcessRequest(context);
 

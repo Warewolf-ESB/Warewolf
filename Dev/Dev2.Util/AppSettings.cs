@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +18,10 @@ namespace Dev2.Util
 
         public static string ServicesAddress
         {
-            get { return LocalHost + "/wwwroot/services/Service/Resources/{0}"; }
+            get
+            {
+                return LocalHost + "/wwwroot/services/Service/Resources/{0}";
+            }
         }
     }
 }

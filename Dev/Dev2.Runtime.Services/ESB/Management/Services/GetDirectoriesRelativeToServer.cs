@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -29,7 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetDirectoriesRelativeToServer : IEsbManagementEndpoint
     {
-        private IExplorerServerResourceRepository _serverExplorerRepository;
+        IExplorerServerResourceRepository _serverExplorerRepository;
 
         #region Implementation of ISpookyLoadable<string>
 
@@ -42,14 +43,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #region Implementation of IEsbManagementEndpoint
 
-        public IExplorerServerResourceRepository ServerExplorerRepo
-        {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
-        }
-
         /// <summary>
-        ///     Executes the service
+        /// Executes the service
         /// </summary>
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
@@ -58,31 +53,33 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                string directory = null;
-                var result = new StringBuilder();
-                if (values == null)
-                {
-                    throw new InvalidDataContractException("No parameter values provided.");
-                }
-                StringBuilder tmp;
-                values.TryGetValue("Directory", out tmp);
-                if (tmp != null)
-                {
-                    directory = tmp.ToString();
-                }
-                if (String.IsNullOrEmpty(directory))
-                {
-                    throw new InvalidDataContractException("No value provided for Directory parameter.");
-                }
-                Dev2Logger.Log.Info("Get Directories Relative to Server. " + directory);
-                result.Append("<JSON>");
-                IExplorerItem explorerItem = ServerExplorerRepo.Load(ResourceType.Folder, string.Empty);
-                var jsonTreeNode = new JsonTreeNode(explorerItem);
-                var serializer = new Dev2JsonSerializer();
-                string directoryInfoAsJson = serializer.Serialize(jsonTreeNode);
-                result.Append(directoryInfoAsJson);
-                result.Append("</JSON>");
-                return result;
+
+          
+            string directory = null;
+            StringBuilder result = new StringBuilder();
+            if(values == null)
+            {
+                throw new InvalidDataContractException("No parameter values provided.");
+            }
+            StringBuilder tmp;
+            values.TryGetValue("Directory", out tmp);
+            if(tmp != null)
+            {
+                directory = tmp.ToString();
+            }
+            if(String.IsNullOrEmpty(directory))
+            {
+                throw new InvalidDataContractException("No value provided for Directory parameter.");
+            }
+            Dev2Logger.Log.Info("Get Directories Relative to Server. "+directory);
+            result.Append("<JSON>");
+            var explorerItem = ServerExplorerRepo.Load(ResourceType.Folder, string.Empty);
+            var jsonTreeNode = new JsonTreeNode(explorerItem);
+            var serializer = new Dev2JsonSerializer();
+            var directoryInfoAsJson = serializer.Serialize(jsonTreeNode);
+            result.Append(directoryInfoAsJson);
+            result.Append("</JSON>");
+            return result;
             }
             catch (Exception e)
             {
@@ -91,8 +88,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
+        public IExplorerServerResourceRepository ServerExplorerRepo
+        {
+            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
+            set { _serverExplorerRepository = value; }
+        }
         /// <summary>
-        ///     Creates the service entry.
+        /// Creates the service entry.
         /// </summary>
         /// <returns></returns>
         public DynamicService CreateServiceEntry()
@@ -100,9 +102,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification = new StringBuilder("<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var sa = new ServiceAction
@@ -124,7 +124,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public JsonTreeNode(IExplorerItem explorerItem)
         {
-            if (explorerItem.ResourceType == ResourceType.Server)
+            if(explorerItem.ResourceType == ResourceType.Server)
             {
                 title = "Root";
                 key = "root";
@@ -132,15 +132,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             else
             {
                 title = explorerItem.DisplayName;
-                string name =
-                    Regex.Replace(explorerItem.ResourcePath.Replace(EnvironmentVariables.ApplicationPath + "\\", ""),
-                        @"\\", @"\\");
+                string name = Regex.Replace(explorerItem.ResourcePath.Replace(EnvironmentVariables.ApplicationPath + "\\", ""), @"\\", @"\\");
                 key = name;
             }
             isFolder = true;
             isLazy = false;
             children = new List<JsonTreeNode>();
-            foreach (IExplorerItem child in explorerItem.Children)
+            foreach(var child in explorerItem.Children)
             {
                 children.Add(new JsonTreeNode(child));
             }

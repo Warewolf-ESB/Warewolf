@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -57,16 +58,18 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var service = JsonConvert.DeserializeObject<PluginService>(args, new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Objects
-                });
+           
+                
+                var service = JsonConvert.DeserializeObject<PluginService>(args,new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            });
                 return FetchRecordset(service, true);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 RaiseError(ex);
-                return new RecordsetList {new Recordset {HasErrors = true, ErrorMessage = ex.Message}};
+                return new RecordsetList { new Recordset { HasErrors = true, ErrorMessage = ex.Message } };
             }
         }
 
@@ -81,13 +84,13 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var pluginSource = JsonConvert.DeserializeObject<PluginSource>(args);
-                if (pluginSource != null)
+                if(pluginSource != null)
                 {
                     var broker = new PluginBroker();
                     return broker.GetNamespaces(pluginSource);
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 RaiseError(ex);
             }
@@ -107,11 +110,10 @@ namespace Dev2.Runtime.ServiceModel
                 // BUG 9500 - 2013.05.31 - TWR : changed to use PluginService as args 
                 var service = JsonConvert.DeserializeObject<PluginService>(args);
                 var broker = new PluginBroker();
-                result = broker.GetMethods(((PluginSource) service.Source).AssemblyLocation,
-                    ((PluginSource) service.Source).AssemblyName, service.Namespace);
+                result = broker.GetMethods(((PluginSource)service.Source).AssemblyLocation, ((PluginSource)service.Source).AssemblyName, service.Namespace);
                 return result;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 RaiseError(ex);
             }

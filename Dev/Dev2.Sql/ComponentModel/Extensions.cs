@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -7,6 +8,7 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
+
 
 
 using System;
@@ -20,6 +22,7 @@ namespace Warewolf.ComponentModel
         public static string ToStringSafe(this string s)
         {
             return string.IsNullOrEmpty(s) ? string.Empty : s;
+
         }
 
         public static string ToStringSafe(this object obj)

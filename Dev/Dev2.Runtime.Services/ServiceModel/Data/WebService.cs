@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,14 +11,12 @@
 
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.Util;
@@ -30,13 +29,12 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     public class WebService : Service, IDisposable
     {
-        private bool _disposed;
+        bool _disposed;
 
         #region Properties
-
         public string RequestUrl { get; set; }
 
-        [JsonConverter(typeof (StringEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public WebRequestMethod RequestMethod { get; set; }
 
         public string RequestHeaders { get; set; }
@@ -52,10 +50,20 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region CTOR
 
+        public static WebService Create()
+        {
+            var result = new WebService
+            {
+                ResourceID = Guid.Empty,
+                Source = { ResourceID = Guid.Empty },
+            };
+            return result;
+        }
+
         public WebService()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.WebService;
+            ResourceType = Common.Interfaces.Data.ResourceType.WebService;
             Source = new WebSource();
             Recordsets = new RecordsetList();
             Method = new ServiceMethod();
@@ -64,9 +72,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         public WebService(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.WebService;
-            XElement action = xml.Descendants("Action").FirstOrDefault();
-            if (action == null)
+            ResourceType = Common.Interfaces.Data.ResourceType.WebService;
+            var action = xml.Descendants("Action").FirstOrDefault();
+            if(action == null)
             {
                 return;
             }
@@ -74,9 +82,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             RequestUrl = action.AttributeSafe("RequestUrl");
             JsonPath = action.AttributeSafe("JsonPath");
             WebRequestMethod requestMethod;
-            RequestMethod = Enum.TryParse(action.AttributeSafe("RequestMethod"), true, out requestMethod)
-                ? requestMethod
-                : WebRequestMethod.Get;
+            RequestMethod = Enum.TryParse(action.AttributeSafe("RequestMethod"), true, out requestMethod) ? requestMethod : WebRequestMethod.Get;
             RequestHeaders = action.ElementSafe("RequestHeaders");
             RequestBody = action.ElementSafe("RequestBody");
 
@@ -85,23 +91,13 @@ namespace Dev2.Runtime.ServiceModel.Data
             Recordsets = CreateOutputsRecordsetList(action);
         }
 
-        public static WebService Create()
-        {
-            var result = new WebService
-            {
-                ResourceID = Guid.Empty,
-                Source = {ResourceID = Guid.Empty},
-            };
-            return result;
-        }
-
         #endregion
 
         #region ToXml
 
         public override XElement ToXml()
         {
-            XElement result = CreateXml(enActionType.InvokeWebService, Source, Recordsets,
+            var result = CreateXml(enActionType.InvokeWebService, Source, Recordsets,
                 new XAttribute("RequestUrl", RequestUrl ?? string.Empty),
                 new XAttribute("RequestMethod", RequestMethod.ToString()),
                 new XAttribute("JsonPath", JsonPath ?? string.Empty),
@@ -118,25 +114,25 @@ namespace Dev2.Runtime.ServiceModel.Data
         public IOutputDescription GetOutputDescription()
         {
             IOutputDescription result = null;
-            IDataSourceShape dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+            var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
 
-            string requestResponse = Scrubber.Scrub(RequestResponse);
+            var requestResponse = Scrubber.Scrub(RequestResponse);
 
             try
             {
                 result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                 dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
                 result.DataSourceShapes.Add(dataSourceShape);
-                IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+                var dataBrowser = DataBrowserFactory.CreateDataBrowser();
                 dataSourceShape.Paths.AddRange(dataBrowser.Map(requestResponse));
             }
 
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+                var dataBrowser = DataBrowserFactory.CreateDataBrowser();
                 var errorResult = new XElement("Error");
                 errorResult.Add(ex);
-                string data = errorResult.ToString();
+                var data = errorResult.ToString();
                 dataSourceShape.Paths.AddRange(dataBrowser.Map(data));
             }
             return result;
@@ -147,6 +143,13 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region Implementation of IDisposable
 
         // This destructor will run only if the Dispose method does not get called. 
+        ~WebService()
+        {
+            // Do not re-create Dispose clean-up code here. 
+            // Calling Dispose(false) is optimal in terms of 
+            // readability and maintainability.
+            Dispose(false);
+        }
 
         // Implement IDisposable. 
         // Do not make this method virtual. 
@@ -162,14 +165,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             GC.SuppressFinalize(this);
         }
 
-        ~WebService()
-        {
-            // Do not re-create Dispose clean-up code here. 
-            // Calling Dispose(false) is optimal in terms of 
-            // readability and maintainability.
-            Dispose(false);
-        }
-
         // Dispose(bool disposing) executes in two distinct scenarios. 
         // If disposing equals true, the method has been called directly 
         // or indirectly by a user's code. Managed and unmanaged resources 
@@ -180,16 +175,16 @@ namespace Dev2.Runtime.ServiceModel.Data
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called. 
-            if (!_disposed)
+            if(!_disposed)
             {
                 // If disposing equals true, dispose all managed 
                 // and unmanaged resources. 
-                if (disposing)
+                if(disposing)
                 {
                     // Dispose managed resources.
-                    if (Source != null)
+                    if(Source != null)
                     {
-                        ((WebSource) Source).Dispose();
+                        ((WebSource)Source).Dispose();
                         Source = null;
                     }
                 }
@@ -206,7 +201,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public void ApplyPath()
         {
-            if (String.IsNullOrEmpty(RequestResponse) || String.IsNullOrEmpty(JsonPath))
+            if(String.IsNullOrEmpty(RequestResponse) || String.IsNullOrEmpty(JsonPath))
             {
                 return;
             }
@@ -215,17 +210,18 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             try
             {
-                JObject json = JObject.Parse(RequestResponse);
-                var context = new JsonPathContext {ValueSystem = new JsonNetValueSystem()};
-                IEnumerable<object> values = context.SelectNodes(json, JsonPath).Select(node => node.Value);
-                string newResponseValue = JsonConvert.SerializeObject(values);
+                var json = JObject.Parse(RequestResponse);
+                var context = new JsonPathContext { ValueSystem = new JsonNetValueSystem() };
+                var values = context.SelectNodes(json, JsonPath).Select(node => node.Value);
+                var newResponseValue = JsonConvert.SerializeObject(values);
 
                 JsonPathResult = newResponseValue;
             }
-            catch (JsonException je)
+            catch(JsonException je)
             {
                 Dev2Logger.Log.Error(je);
             }
         }
+
     }
 }

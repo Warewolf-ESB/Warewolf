@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,16 +15,12 @@ using System.Text;
 
 namespace Dev2.Communication
 {
+
     /// <summary>
-    ///     Internal Service Request Object - Used mainly by the studio, but server can send request if service is web based
+    /// Internal Service Request Object - Used mainly by the studio, but server can send request if service is web based
     /// </summary>
     public class EsbExecuteRequest
     {
-        public EsbExecuteRequest()
-        {
-            ExecuteResult = new StringBuilder();
-        }
-
         public string ServiceName { get; set; }
 
         public Dictionary<string, StringBuilder> Args { get; set; }
@@ -31,6 +28,11 @@ namespace Dev2.Communication
         public StringBuilder ExecuteResult { get; set; }
 
         public bool WasInternalService { get; set; }
+ 
+        public EsbExecuteRequest()
+        {
+            ExecuteResult = new StringBuilder();
+        }
 
         public void AddArgument(string key, StringBuilder value)
         {

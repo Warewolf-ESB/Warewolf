@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,18 +28,18 @@ namespace Dev2.Runtime.Configuration.ViewModels
 {
     public class LoggingViewModel : SettingsViewModelBase, IDataErrorInfo
     {
-        #region private fields
 
-        private ListCollectionView _filteredWorkflowNames;
-        private bool _isRefreshing;
-        private bool _logAll;
-        private string _postWorkflowName;
-        private bool _runPostWorkflow;
-        private string _searchText = string.Empty;
-        private string _selectedServiceInputOption;
+        #region private fields
         private ObservableCollection<string> _serviceInputOptions;
+        private bool _logAll;
         private string _webServerUri;
         private BindableCollection<string> _workflowNames;
+        private ListCollectionView _filteredWorkflowNames;
+        private string _postWorkflowName;
+        private string _selectedServiceInputOption;
+        private bool _runPostWorkflow;
+        private string _searchText = string.Empty;
+        private bool _isRefreshing;
 
         #endregion private fields
 
@@ -58,7 +59,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get { return _isRefreshing; }
             set
             {
-                if (_isRefreshing == value)
+                if(_isRefreshing == value)
                 {
                     return;
                 }
@@ -74,7 +75,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get { return _searchText; }
             set
             {
-                if (_searchText == value)
+                if(_searchText == value)
                 {
                     return;
                 }
@@ -89,18 +90,18 @@ namespace Dev2.Runtime.Configuration.ViewModels
         {
             get
             {
-                if (_filteredWorkflowNames == null)
+                if(_filteredWorkflowNames == null)
                 {
                     _filteredWorkflowNames = new ListCollectionView(LoggingSettings.Workflows)
-                    {
-                        Filter = o =>
                         {
-                            var descriptor = (IWorkflowDescriptor) o;
-                            return String.IsNullOrWhiteSpace(SearchText) ||
-                                   descriptor.ResourceName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                   descriptor.IsSelected;
-                        }
-                    };
+                            Filter = o =>
+                                {
+                                    var descriptor = (IWorkflowDescriptor)o;
+                                    return String.IsNullOrWhiteSpace(SearchText) ||
+                                           descriptor.ResourceName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                                           descriptor.IsSelected;
+                                }
+                        };
                 }
                 return _filteredWorkflowNames;
             }
@@ -111,17 +112,17 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get { return _runPostWorkflow; }
             set
             {
-                if (_runPostWorkflow == value)
+                if(_runPostWorkflow == value)
                 {
                     return;
                 }
 
                 _runPostWorkflow = value;
 
-                if (!LoggingSettings.IsInitializing)
+                if(!LoggingSettings.IsInitializing)
                 {
                     LoggingSettings.RunPostWorkflow = _runPostWorkflow;
-                    if (!RunPostWorkflow)
+                    if(!RunPostWorkflow)
                     {
                         ServiceInputOptions.Clear();
                         PostWorkflowName = string.Empty;
@@ -134,7 +135,10 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public BindableCollection<string> WorkflowNames
         {
-            get { return _workflowNames ?? (_workflowNames = new BindableCollection<string>()); }
+            get
+            {
+                return _workflowNames ?? (_workflowNames = new BindableCollection<string>());
+            }
         }
 
         public string PostWorkflowName
@@ -142,17 +146,16 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get { return _postWorkflowName; }
             set
             {
-                if (_postWorkflowName == value)
+                if(_postWorkflowName == value)
                 {
                     return;
                 }
 
                 _postWorkflowName = value;
 
-                if (!LoggingSettings.IsInitializing)
+                if(!LoggingSettings.IsInitializing)
                 {
-                    IWorkflowDescriptor postWorkflow =
-                        LoggingSettings.Workflows.FirstOrDefault(wf => wf.ResourceName == _postWorkflowName);
+                    var postWorkflow = LoggingSettings.Workflows.FirstOrDefault(wf => wf.ResourceName == _postWorkflowName);
                     LoggingSettings.PostWorkflow = postWorkflow;
                     UpdatePostWorkflow(postWorkflow);
                 }
@@ -166,13 +169,13 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get { return _selectedServiceInputOption; }
             set
             {
-                if (_selectedServiceInputOption == value)
+                if(_selectedServiceInputOption == value)
                 {
                     return;
                 }
 
                 _selectedServiceInputOption = value;
-                if (!LoggingSettings.IsInitializing)
+                if(!LoggingSettings.IsInitializing)
                 {
                     LoggingSettings.ServiceInput = _selectedServiceInputOption;
                 }
@@ -196,7 +199,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             get
             {
                 return _serviceInputOptions ??
-                       (_serviceInputOptions = new ObservableCollection<string>());
+                    (_serviceInputOptions = new ObservableCollection<string>());
             }
         }
 
@@ -207,7 +210,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             {
                 _logAll = value;
 
-                if (LoggingSettings == null)
+                if(LoggingSettings == null)
                 {
                     return;
                 }
@@ -241,20 +244,20 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public void UpdatePostWorkflow(IWorkflowDescriptor postWorkflow)
         {
-            if (postWorkflow == null && !string.IsNullOrWhiteSpace(PostWorkflowName))
+            if(postWorkflow == null && !string.IsNullOrWhiteSpace(PostWorkflowName))
             {
                 ClearPostWorkflow(false);
             }
-            else if (postWorkflow != null)
+            else if(postWorkflow != null)
             {
                 LoggingSettings.PostWorkflow =
                     LoggingSettings.Workflows
-                        .FirstOrDefault(wf =>
-                            wf.ResourceID.Equals(LoggingSettings.PostWorkflow.ResourceID));
+                                   .FirstOrDefault(wf =>
+                                                   wf.ResourceID.Equals(LoggingSettings.PostWorkflow.ResourceID));
                 PostWorkflowName = postWorkflow.ResourceName;
                 LoadServiceInputs();
             }
-            else if (!string.IsNullOrWhiteSpace(PostWorkflowName))
+            else if(!string.IsNullOrWhiteSpace(PostWorkflowName))
             {
                 LoggingSettings.PostWorkflow = null;
                 LoggingSettings.ServiceInput = string.Empty;
@@ -265,25 +268,25 @@ namespace Dev2.Runtime.Configuration.ViewModels
         {
             ServiceInputOptions.Clear();
 
-            if (LoggingSettings.PostWorkflow == null)
+            if(LoggingSettings.PostWorkflow == null)
             {
                 LoggingSettings.ServiceInput = string.Empty;
                 return;
             }
 
-            IEnumerable<DataListVariable> datalistInputs = GetDataListInputs();
-            if (datalistInputs != null)
+            var datalistInputs = GetDataListInputs();
+            if(datalistInputs != null)
             {
                 datalistInputs.ToList().ForEach(i =>
-                {
-                    if (!ServiceInputOptions.Contains(i.Name))
                     {
-                        ServiceInputOptions.Add(i.Name);
-                    }
-                });
+                        if(!ServiceInputOptions.Contains(i.Name))
+                        {
+                            ServiceInputOptions.Add(i.Name);
+                        }
+                    });
             }
 
-            if (ServiceInputOptions.Contains(LoggingSettings.ServiceInput))
+            if(ServiceInputOptions.Contains(LoggingSettings.ServiceInput))
             {
                 _selectedServiceInputOption = LoggingSettings.ServiceInput;
             }
@@ -316,19 +319,19 @@ namespace Dev2.Runtime.Configuration.ViewModels
         private void InitPostWorkflow()
         {
             _runPostWorkflow = LoggingSettings.RunPostWorkflow;
-            if (!RunPostWorkflow) return;
+            if(!RunPostWorkflow) return;
 
-            IWorkflowDescriptor postWorkflow = LoggingSettings.PostWorkflow;
+            var postWorkflow = LoggingSettings.PostWorkflow;
             UpdatePostWorkflow(postWorkflow);
         }
 
         private void LoadWorkflows()
         {
             WorkflowNames.Clear();
-            IEnumerable<WorkflowDescriptor> resources = GetResources();
-            foreach (WorkflowDescriptor resource in resources)
+            var resources = GetResources();
+            foreach(var resource in resources)
             {
-                if (LoggingSettings.Workflows.All(wf => wf.ResourceID != resource.ResourceID))
+                if(LoggingSettings.Workflows.All(wf => wf.ResourceID != resource.ResourceID))
                 {
                     resource.IsSelected = LogAll;
                     LoggingSettings.Workflows.Add(resource);
@@ -337,21 +340,21 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
 
             //Remove deleted workflows from settings
-            foreach (IWorkflowDescriptor descriptor in LoggingSettings.Workflows.ToList())
+            foreach(var descriptor in LoggingSettings.Workflows.ToList())
             {
-                if (!WorkflowNames.Contains(descriptor.ResourceName))
+                if(!WorkflowNames.Contains(descriptor.ResourceName))
                 {
                     LoggingSettings.Workflows.Remove(descriptor);
-                    if (LoggingSettings.PostWorkflow.ResourceName == descriptor.ResourceName)
+                    if(LoggingSettings.PostWorkflow.ResourceName == descriptor.ResourceName)
                     {
                         ClearPostWorkflow();
                     }
                 }
             }
 
-            if (LoggingSettings.RunPostWorkflow && LoggingSettings.PostWorkflow != null)
+            if(LoggingSettings.RunPostWorkflow && LoggingSettings.PostWorkflow != null)
             {
-                if (LoggingSettings.Workflows.All(wf => wf.ResourceName != LoggingSettings.PostWorkflow.ResourceName))
+                if(LoggingSettings.Workflows.All(wf => wf.ResourceName != LoggingSettings.PostWorkflow.ResourceName))
                 {
                     ClearPostWorkflow();
                 }
@@ -367,7 +370,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             PostWorkflowName = string.Empty;
             RunPostWorkflow = false;
 
-            if (clearServiceInput)
+            if(clearServiceInput)
             {
                 ServiceInputOptions.Clear();
                 SelectedServiceInputOption = string.Empty;
@@ -376,7 +379,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void ToggleLogAll(bool logAll)
         {
-            foreach (IWorkflowDescriptor workflowDescriptor in LoggingSettings.Workflows)
+            foreach(var workflowDescriptor in LoggingSettings.Workflows)
             {
                 workflowDescriptor.IsSelected = logAll;
             }
@@ -386,13 +389,13 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void SettingsChanged()
         {
-            if (LoggingSettings == null)
+            if(LoggingSettings == null)
             {
                 return;
             }
 
             var loggingSettings = Object as LoggingSettings;
-            if (loggingSettings != null)
+            if(loggingSettings != null)
             {
                 _webServerUri = loggingSettings.WebServerUri + "/wwwroot/services/Service/Resources/";
                 loggingSettings.PropertyChanged += LoggingSettingsPropertyChanged;
@@ -409,16 +412,14 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void LoggingSettingsPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
+            switch(e.PropertyName)
             {
-                case "Workflows":
-                    UpdateSearchFilter(SearchText);
+                case "Workflows": UpdateSearchFilter(SearchText);
                     break;
                 case "IsInitializing":
                     IsRefreshing = LoggingSettings.IsInitializing;
                     break;
-                case "LogAll":
-                    UpdateSearchFilter(SearchText);
+                case "LogAll": UpdateSearchFilter(SearchText);
                     break;
             }
         }
@@ -427,13 +428,13 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private IEnumerable<WorkflowDescriptor> GetResources()
         {
-            string address = String.Format(_webServerUri + "{0}", "Services");
+            var address = String.Format(_webServerUri + "{0}", "Services");
             return CommunicationService.GetResources(address);
         }
 
         private IEnumerable<DataListVariable> GetDataListInputs()
         {
-            string address = String.Format(_webServerUri + "{0}", "DataListInputVariables");
+            var address = String.Format(_webServerUri + "{0}", "DataListInputVariables");
             return CommunicationService.GetDataListInputs(address, LoggingSettings.PostWorkflow.ResourceID);
         }
 
@@ -458,9 +459,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
             {
                 string result = string.Empty;
                 propertyName = propertyName ?? string.Empty;
-                if (LoggingSettings.IsLoggingEnabled && RunPostWorkflow && propertyName == "PostWorkflowName")
+                if(LoggingSettings.IsLoggingEnabled && RunPostWorkflow && propertyName == "PostWorkflowName")
                 {
-                    if (!WorkflowNames.Contains(PostWorkflowName))
+                    if(!WorkflowNames.Contains(PostWorkflowName))
                     {
                         result = "Invalid workflow selected";
                     }

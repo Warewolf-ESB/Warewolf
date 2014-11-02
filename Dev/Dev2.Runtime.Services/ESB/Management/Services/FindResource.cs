@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,43 +21,43 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     Find resources in the service catalog
+    /// Find resources in the service catalog
     /// </summary>
     public class FindResource : IEsbManagementEndpoint
     {
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
-                string resourceName = null;
-                string type = null;
 
-                StringBuilder tmp;
-                values.TryGetValue("ResourceName", out tmp);
-                if (tmp != null)
-                {
-                    resourceName = tmp.ToString();
-                }
-                values.TryGetValue("ResourceType", out tmp);
-                if (tmp != null)
-                {
-                    type = tmp.ToString();
-                }
-                Dev2Logger.Log.Info("Find Resource. ResourceName: " + resourceName);
-                IList<Resource> resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type,
-                    string.Empty);
+   
+            string resourceName = null;
+            string type = null;
 
-                IList<SerializableResource> resourceList =
-                    resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
+            StringBuilder tmp;
+            values.TryGetValue("ResourceName", out tmp);
+            if(tmp != null)
+            {
+                resourceName = tmp.ToString();
+            }
+            values.TryGetValue("ResourceType", out tmp);
+            if(tmp != null)
+            {
+                type = tmp.ToString();
+            }
+            Dev2Logger.Log.Info("Find Resource. ResourceName: "+resourceName);
+            var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, string.Empty);
 
-                var serializer = new Dev2JsonSerializer();
-                return serializer.SerializeToBuilder(resourceList);
+            IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
+
+            var serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(resourceList);
             }
             catch (Exception err)
             {
@@ -64,23 +65,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw;
             }
         }
-
+        
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
-            var findServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+            var findServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             findServices.Actions.Add(findServiceAction);
 

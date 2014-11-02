@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,11 +20,10 @@ namespace Dev2
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected bool OnPropertyChanged<T>(ref T propertyValue, T newValue,
-            [CallerMemberName] string propertyName = null)
+        protected bool OnPropertyChanged<T>(ref T propertyValue, T newValue, [CallerMemberName] string propertyName = null)
         {
-            bool propertyChanged = !EqualityComparer<T>.Default.Equals(propertyValue, newValue);
-            if (propertyChanged)
+            var propertyChanged = !EqualityComparer<T>.Default.Equals(propertyValue, newValue);
+            if(propertyChanged)
             {
                 propertyValue = newValue;
                 OnPropertyChanged(propertyName);
@@ -33,11 +33,12 @@ namespace Dev2
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
+            var handler = PropertyChanged;
+            if(handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
     }
 }

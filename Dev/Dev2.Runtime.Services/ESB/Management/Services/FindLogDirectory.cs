@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,24 +25,24 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    ///     The find directory service
+    /// The find directory service
     /// </summary>
     public class FindLogDirectory : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var result = new ExecuteMessage {HasError = false};
+            var result = new ExecuteMessage { HasError = false };
 
             Dev2Logger.Log.Info("Find Log Directory");
             try
             {
-                string logdir = Dev2Logger.GetDirectoryPath(SettingsProvider.Instance.Configuration.Logging);
-                object cleanedDir = CleanUp(logdir);
+                var logdir = Dev2Logger.GetDirectoryPath(SettingsProvider.Instance.Configuration.Logging);
+                var cleanedDir = CleanUp(logdir);
                 result.Message.Append("<JSON>");
                 result.Message.Append(@"{""PathToSerialize"":""");
                 result.Message.Append(cleanedDir);
                 result.Message.Append(@"""}");
-                result.Message.Append("</JSON>");
+                result.Message.Append("</JSON>");    
             }
             catch (Exception ex)
             {
@@ -50,26 +51,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 result.HasError = true;
             }
 
-            var serializer = new Dev2JsonSerializer();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
         }
 
         public DynamicService CreateServiceEntry()
         {
-            var findDirectoryService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification =
-                    new StringBuilder(
-                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+            DynamicService findDirectoryService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
-            var findDirectoryServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+            ServiceAction findDirectoryServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             findDirectoryService.Actions.Add(findDirectoryServiceAction);
 

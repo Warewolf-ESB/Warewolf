@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -38,38 +39,34 @@ namespace Dev2.Collections
     //
     public class ConcurrentDictionarySafeConverter<TKey, TValue> : JsonConverter
     {
-        private readonly Type _targetType = typeof (ConcurrentDictionarySafe<TKey, TValue>);
+        readonly Type _targetType = typeof(ConcurrentDictionarySafe<TKey, TValue>);
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var converter = new KeyValuePairConverter();
-            var dict = (ConcurrentDictionarySafe<TKey, TValue>) value;
-            IEnumerator<KeyValuePair<TKey, TValue>> enumerator = dict.GetEnumerator();
+            var dict = (ConcurrentDictionarySafe<TKey, TValue>)value;
+            var enumerator = dict.GetEnumerator();
             writer.WriteStartArray();
-            while (enumerator.MoveNext())
+            while(enumerator.MoveNext())
             {
-                KeyValuePair<TKey, TValue> entry = enumerator.Current;
+                var entry = enumerator.Current;
                 converter.WriteJson(writer, entry, serializer);
+
             }
             writer.WriteEndArray();
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-            JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            ConcurrentDictionarySafe<TKey, TValue> result = existingValue as ConcurrentDictionarySafe<TKey, TValue> ??
-                                                            (objectType == _targetType
-                                                                ? new ConcurrentDictionarySafe<TKey, TValue>()
-                                                                : (ConcurrentDictionarySafe<TKey, TValue>)
-                                                                    Activator.CreateInstance(objectType));
+            var result = existingValue as ConcurrentDictionarySafe<TKey, TValue> ?? (objectType == _targetType ? new ConcurrentDictionarySafe<TKey, TValue>() : (ConcurrentDictionarySafe<TKey, TValue>)Activator.CreateInstance(objectType));
 
-            Type entryType = typeof (KeyValuePair<TKey, TValue>);
+            var entryType = typeof(KeyValuePair<TKey, TValue>);
             var converter = new KeyValuePairConverter();
 
             reader.Read();
-            while (reader.TokenType == JsonToken.StartObject)
+            while(reader.TokenType == JsonToken.StartObject)
             {
-                var entry = (KeyValuePair<TKey, TValue>) converter.ReadJson(reader, entryType, null, serializer);
+                var entry = (KeyValuePair<TKey, TValue>)converter.ReadJson(reader, entryType, null, serializer);
                 result.AddOrUpdate(entry.Key, entry.Value, (key, value) => default(TValue));
                 reader.Read();
             }

@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -33,18 +34,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         //      AbstractDatabaseBroker<DbServer2>.TheCache 
         // will have completely different, independent values.
         //
-        public static ConcurrentDictionary<string, ServiceMethodList> TheCache =
-            new ConcurrentDictionary<string, ServiceMethodList>();
-
+        public static ConcurrentDictionary<string, ServiceMethodList> TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
         //
         // ReSharper restore StaticFieldInGenericType
 
         #endregion
-
+        
         public virtual List<string> GetDatabases(DbSource dbSource)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
-            using (TDbServer server = CreateDbServer())
+            using(var server = CreateDbServer())
             {
                 server.Connect(dbSource.ConnectionString);
                 return server.FetchDatabases();
@@ -57,9 +56,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             // Check the cache for a value ;)
             ServiceMethodList cacheResult;
-            if (!dbSource.ReloadActions)
+            if(!dbSource.ReloadActions)
             {
-                if (GetCachedResult(dbSource, out cacheResult))
+                if(GetCachedResult(dbSource, out cacheResult))
                 {
                     return cacheResult;
                 }
@@ -71,41 +70,39 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Function to handle procedures returned by the data broker
             //
-            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> procedureFunc =
-                (command, parameters, helpText, executeAction) =>
-                {
-                    ServiceMethod serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
-                    serviceMethods.Add(serviceMethod);
-                    return true;
-                };
+            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, helpText, executeAction) =>
+            {
+                var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
+                serviceMethods.Add(serviceMethod);
+                return true;
+            };
 
             //
             // Function to handle functions returned by the data broker
             //
-            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> functionFunc =
-                (command, parameters, helpText, executeAction) =>
-                {
-                    ServiceMethod serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
-                    serviceMethods.Add(serviceMethod);
-                    return true;
-                };
+            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, helpText,executeAction) =>
+            {
+                var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
+                serviceMethods.Add(serviceMethod);
+                return true;
+            };
 
             //
             // Get stored procedures and functions for this database source
             //
-            using (TDbServer server = CreateDbServer())
+            using(var server = CreateDbServer())
             {
                 server.Connect(dbSource.ConnectionString);
                 server.FetchStoredProcedures(procedureFunc, functionFunc);
             }
 
             // Add to cache ;)
-            TheCache.AddOrUpdate(dbSource.ConnectionString, serviceMethods, (s, list) => serviceMethods);
+            TheCache.AddOrUpdate(dbSource.ConnectionString, serviceMethods,(s, list) => serviceMethods);
 
             return GetCachedResult(dbSource, out cacheResult) ? cacheResult : serviceMethods;
         }
 
-        private bool GetCachedResult(DbSource dbSource, out ServiceMethodList cacheResult)
+        bool GetCachedResult(DbSource dbSource, out ServiceMethodList cacheResult)
         {
             TheCache.TryGetValue(dbSource.ConnectionString, out cacheResult);
             if (cacheResult != null)
@@ -121,26 +118,26 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             VerifyArgument.IsNotNull("dbService.Source", dbService.Source);
 
             IOutputDescription result;
-            using (TDbServer server = CreateDbServer())
+            using(var server = CreateDbServer())
             {
-                server.Connect(((DbSource) dbService.Source).ConnectionString);
+                server.Connect(((DbSource)dbService.Source).ConnectionString);
                 server.BeginTransaction();
                 try
                 {
                     //
                     // Execute command and normalize XML
                     //
-                    IDbCommand command = CommandFromServiceMethod(server, dbService.Method);
-                    DataTable dataTable = server.FetchDataTable(command);
+                    var command = CommandFromServiceMethod(server, dbService.Method);
+                    var dataTable = server.FetchDataTable(command);
 
                     //
                     // Map shape of XML
                     //
                     result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
-                    IDataSourceShape dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+                    var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
                     result.DataSourceShapes.Add(dataSourceShape);
 
-                    IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+                    var dataBrowser = DataBrowserFactory.CreateDataBrowser();
                     dataSourceShape.Paths.AddRange(dataBrowser.Map(dataTable));
                 }
                 finally
@@ -165,14 +162,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return (payload.Replace("&lt;", "<").Replace("&gt;", ">"));
         }
 
-        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters,
-            string sourceCode, string executeAction)
+        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)
         {
-            return new ServiceMethod(command.CommandText, sourceCode,
-                parameters.Select(MethodParameterFromDataParameter), null, null, executeAction);
+            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null,executeAction);
         }
 
-        private static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
+        static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
         {
             return new MethodParameter
             {
@@ -180,33 +175,31 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             };
         }
 
-        private static IDbCommand CommandFromServiceMethod(TDbServer server, ServiceMethod serviceMethod)
+        static IDbCommand CommandFromServiceMethod(TDbServer server, ServiceMethod serviceMethod)
         {
-            IDbCommand command = server.CreateCommand();
+            var command = server.CreateCommand();
 
             command.CommandText = serviceMethod.ExecuteAction;
-            command.CommandType = serviceMethod.ExecuteAction.Contains("select")
-                ? CommandType.Text
-                : CommandType.StoredProcedure;
+            command.CommandType = serviceMethod.ExecuteAction.Contains("select") ? CommandType.Text : CommandType.StoredProcedure;
 
-            foreach (MethodParameter methodParameter in serviceMethod.Parameters)
+            foreach(var methodParameter in serviceMethod.Parameters)
             {
-                IDbDataParameter dataParameter = DataParameterFromMethodParameter(command, methodParameter);
+                var dataParameter = DataParameterFromMethodParameter(command, methodParameter);
                 command.Parameters.Add(dataParameter);
             }
 
             return command;
         }
 
-        private static IDbDataParameter DataParameterFromMethodParameter(IDbCommand command,
-            MethodParameter methodParameter)
+        static IDbDataParameter DataParameterFromMethodParameter(IDbCommand command, MethodParameter methodParameter)
         {
-            IDbDataParameter parameter = command.CreateParameter();
+            var parameter = command.CreateParameter();
 
             parameter.ParameterName = string.Format("@{0}", methodParameter.Name);
             parameter.Value = methodParameter.Value;
 
             return parameter;
         }
+
     }
 }

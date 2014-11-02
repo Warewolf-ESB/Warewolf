@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,13 +17,13 @@ namespace Dev2.Runtime.Diagnostics
 {
     public abstract class ExceptionManager
     {
+        public bool HasErrors { get; private set; }
+        public string Error { get; private set; }
+
         protected ExceptionManager()
         {
             ClearError();
         }
-
-        public bool HasErrors { get; private set; }
-        public string Error { get; private set; }
 
         protected void ClearError()
         {

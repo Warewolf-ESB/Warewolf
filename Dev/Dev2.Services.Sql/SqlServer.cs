@@ -1,3 +1,4 @@
+
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,32 +25,52 @@ namespace Dev2.Services.Sql
 {
     public class SqlServer : IDbServer
     {
-        private readonly IDbFactory _factory;
-        private IDbCommand _command;
-        private IDbConnection _connection;
-        private IDbTransaction _transaction;
+        IDbConnection _connection;
+        IDbCommand _command;
+        IDbTransaction _transaction;
+        readonly IDbFactory _factory;
+        public bool IsConnected { get { return _connection != null && _connection.State == ConnectionState.Open; } }
 
-        public bool IsConnected
+        public string ConnectionString { get { return _connection == null ? null : _connection.ConnectionString; } }
+
+        #region Connect
+
+        public bool Connect(string connectionString)
         {
-            get { return _connection != null && _connection.State == ConnectionState.Open; }
+            _connection = _factory.CreateConnection(connectionString);
+            _connection.Open();
+            return true;
         }
 
-        public string ConnectionString
+        public bool Connect(string connectionString, CommandType commandType, string commandText)
         {
-            get { return _connection == null ? null : _connection.ConnectionString; }
+            _connection = _factory.CreateConnection(connectionString);
+
+            VerifyArgument.IsNotNull("commandText", commandText);
+            if(commandText.ToLower().StartsWith("select "))
+            {
+                commandType = CommandType.Text;
+            }
+
+            _command = _factory.CreateCommand(_connection, commandType, commandText);
+
+            _connection.Open();
+            return true;
         }
+
+        #endregion
 
         public IDbCommand CreateCommand()
         {
             VerifyConnection();
-            IDbCommand command = _connection.CreateCommand();
+            var command = _connection.CreateCommand();
             command.Transaction = _transaction;
             return command;
         }
 
         public void BeginTransaction()
         {
-            if (IsConnected)
+            if(IsConnected)
             {
                 _transaction = _connection.BeginTransaction();
             }
@@ -57,7 +78,7 @@ namespace Dev2.Services.Sql
 
         public void RollbackTransaction()
         {
-            if (_transaction != null)
+            if(_transaction != null)
             {
                 _transaction.Rollback();
                 _transaction.Dispose();
@@ -73,13 +94,12 @@ namespace Dev2.Services.Sql
 
             const string DatabaseColumnName = "database_name";
 
-            DataTable databases = GetSchemaFromConnection(_connection, "Databases");
+            var databases = GetSchemaFromConnection(_connection, "Databases");
 
             // 2013.07.10 - BUG 9933 - AL - sort database list
-            DataRow[] orderedRows = databases.Select("", DatabaseColumnName);
+            var orderedRows = databases.Select("", DatabaseColumnName);
 
-            List<string> result =
-                orderedRows.Select(row => (row[DatabaseColumnName] ?? string.Empty).ToString()).Distinct().ToList();
+            var result = orderedRows.Select(row => (row[DatabaseColumnName] ?? string.Empty).ToString()).Distinct().ToList();
 
             return result;
         }
@@ -88,19 +108,19 @@ namespace Dev2.Services.Sql
 
         #region FetchDataTable
 
-        public DataTable FetchDataTable(IDbCommand command)
-        {
-            VerifyArgument.IsNotNull("command", command);
-
-            return ExecuteReader(command, (CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo),
-                reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
-        }
-
         public DataTable FetchDataTable(params IDbDataParameter[] parameters)
         {
             VerifyConnection();
             AddParameters(_command, parameters);
             return FetchDataTable(_command);
+        }
+
+        public DataTable FetchDataTable(IDbCommand command)
+        {
+            VerifyArgument.IsNotNull("command", command);
+
+            return ExecuteReader(command, (CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo),
+                                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
         #endregion
@@ -118,58 +138,53 @@ namespace Dev2.Services.Sql
             VerifyArgument.IsNotNull("command", command);
             AddParameters(command, parameters);
             return _factory.FetchDataSet(command);
+
+
         }
 
         #endregion
 
         #region FetchStoredProcedures
 
-        public void FetchStoredProcedures(
-            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
-            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
-            bool continueOnProcessorException = false)
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
 
-            DataTable proceduresDataTable = GetSchema(_connection);
-            DataColumn procedureDataColumn = GetDataColumn(proceduresDataTable, "ROUTINE_NAME");
-            DataColumn procedureTypeColumn = GetDataColumn(proceduresDataTable, "ROUTINE_TYPE");
-            DataColumn procedureSchemaColumn = GetDataColumn(proceduresDataTable, "SPECIFIC_SCHEMA");
-                // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
+            var proceduresDataTable = GetSchema(_connection);
+            var procedureDataColumn = GetDataColumn(proceduresDataTable, "ROUTINE_NAME");
+            var procedureTypeColumn = GetDataColumn(proceduresDataTable, "ROUTINE_TYPE");
+            var procedureSchemaColumn = GetDataColumn(proceduresDataTable, "SPECIFIC_SCHEMA"); // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
 
-            foreach (DataRow row in proceduresDataTable.Rows)
+            foreach(DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
+                var fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
 
-                using (
-                    IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
-                        fullProcedureName))
+                using(var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
                 {
                     try
                     {
-                        List<IDbDataParameter> parameters = GetProcedureParameters(command);
+                        var parameters = GetProcedureParameters(command);
 
-                        string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                        var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
-                        if (IsStoredProcedure(row, procedureTypeColumn))
+                        if(IsStoredProcedure(row, procedureTypeColumn))
                         {
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
                         }
-                        else if (IsFunction(row, procedureTypeColumn))
+                        else if(IsFunction(row, procedureTypeColumn))
                         {
                             functionProcessor(command, parameters, helpText, fullProcedureName);
                         }
-                        else if (IsTableValueFunction(row, procedureTypeColumn))
+                        else if(IsTableValueFunction(row, procedureTypeColumn))
                         {
-                            functionProcessor(command, parameters, helpText,
-                                CreateTVFCommand(fullProcedureName, parameters));
+                            functionProcessor(command, parameters, helpText, CreateTVFCommand(fullProcedureName, parameters));
                         }
                     }
-                    catch (Exception)
+                    catch(Exception)
                     {
-                        if (!continueOnProcessorException)
+                        if(!continueOnProcessorException)
                         {
                             throw;
                         }
@@ -179,15 +194,15 @@ namespace Dev2.Services.Sql
         }
 
         // ReSharper disable InconsistentNaming
-        private string CreateTVFCommand(string fullProcedureName, List<IDbDataParameter> parameters)
-            // ReSharper restore InconsistentNaming
+        string CreateTVFCommand(string fullProcedureName, List<IDbDataParameter> parameters)
+        // ReSharper restore InconsistentNaming
         {
-            if (parameters == null || parameters.Count == 0)
+            if(parameters == null || parameters.Count == 0)
             {
                 return string.Format("select * from {0}()", fullProcedureName);
             }
             var sql = new StringBuilder(string.Format("select * from {0}(", fullProcedureName));
-            for (int i = 0; i < parameters.Count; i++)
+            for(int i = 0; i < parameters.Count; i++)
             {
                 sql.Append(parameters[i].ParameterName);
                 sql.Append(i < parameters.Count - 1 ? "," : "");
@@ -204,7 +219,7 @@ namespace Dev2.Services.Sql
             {
                 helpText = GetHelpText(con, fullProcedureName);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 helpText = "Could not fetch because of : " + e.Message;
             }
@@ -216,9 +231,9 @@ namespace Dev2.Services.Sql
 
         #region VerifyConnection
 
-        private void VerifyConnection()
+        void VerifyConnection()
         {
-            if (!IsConnected)
+            if(!IsConnected)
             {
                 throw new Exception("Please connect first.");
             }
@@ -226,50 +241,22 @@ namespace Dev2.Services.Sql
 
         #endregion
 
-        #region Connect
-
-        public bool Connect(string connectionString)
-        {
-            _connection = _factory.CreateConnection(connectionString);
-            _connection.Open();
-            return true;
-        }
-
-        public bool Connect(string connectionString, CommandType commandType, string commandText)
-        {
-            _connection = _factory.CreateConnection(connectionString);
-
-            VerifyArgument.IsNotNull("commandText", commandText);
-            if (commandText.ToLower().StartsWith("select "))
-            {
-                commandType = CommandType.Text;
-            }
-
-            _command = _factory.CreateCommand(_connection, commandType, commandText);
-
-            _connection.Open();
-            return true;
-        }
-
-        #endregion
-
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
-            Func<IDataReader, T> handler)
+        static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataReader, T> handler)
         {
             try
             {
-                using (IDataReader reader = command.ExecuteReader(commandBehavior))
+                using(var reader = command.ExecuteReader(commandBehavior))
                 {
                     return handler(reader);
                 }
             }
-            catch (DbException e)
+            catch(DbException e)
             {
-                if (e.Message.Contains("There is no text for object "))
+                if(e.Message.Contains("There is no text for object "))
                 {
                     var exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
-                    exceptionDataTable.LoadDataRow(new object[] {e.Message}, true);
+                    exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
                     return handler(new DataTableReader(exceptionDataTable));
                 }
                 throw;
@@ -277,46 +264,50 @@ namespace Dev2.Services.Sql
         }
 
 
+
         public static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
         {
             command.Parameters.Clear();
-            if (parameters != null && parameters.Count > 0)
+            if(parameters != null && parameters.Count > 0)
             {
-                foreach (IDbDataParameter parameter in parameters)
+                foreach(var parameter in parameters)
                 {
                     command.Parameters.Add(parameter);
                 }
             }
         }
 
-        private DataTable GetSchema(IDbConnection connection)
+        DataTable GetSchema(IDbConnection connection)
         {
+
+
+
             const string CommandText = GlobalConstants.SchemaQuery;
-            using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
+            using(var command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
             {
                 return FetchDataTable(command);
             }
+
         }
 
-        private DataTable GetSchemaFromConnection(IDbConnection connection, string collectionName)
+        DataTable GetSchemaFromConnection(IDbConnection connection, string collectionName)
         {
+
             return _factory.GetSchema(connection, collectionName); //todo: fix this
         }
 
-        private string GetHelpText(IDbConnection connection, string objectName)
+        string GetHelpText(IDbConnection connection, string objectName)
         {
-            using (
-                IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
-                    string.Format("sp_helptext '{0}'", objectName)))
+            using(var command = _factory.CreateCommand(connection, CommandType.Text, string.Format("sp_helptext '{0}'", objectName)))
             {
                 return ExecuteReader(command, (CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo),
                     delegate(IDataReader reader)
                     {
                         var sb = new StringBuilder();
-                        while (reader.Read())
+                        while(reader.Read())
                         {
-                            object value = reader.GetValue(0);
-                            if (value != null)
+                            var value = reader.GetValue(0);
+                            if(value != null)
                             {
                                 sb.Append(value);
                             }
@@ -326,50 +317,46 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private static DataColumn GetDataColumn(DataTable dataTable, string columnName)
+        static DataColumn GetDataColumn(DataTable dataTable, string columnName)
         {
-            DataColumn dataColumn = dataTable.Columns[columnName];
-            if (dataColumn == null)
+            var dataColumn = dataTable.Columns[columnName];
+            if(dataColumn == null)
             {
-                throw new Exception(string.Format("SQL Server - Unable to load '{0}' column of '{1}'.", columnName,
-                    dataTable.TableName));
+                throw new Exception(string.Format("SQL Server - Unable to load '{0}' column of '{1}'.", columnName, dataTable.TableName));
             }
             return dataColumn;
         }
 
-        private static string GetFullProcedureName(DataRow row, DataColumn procedureDataColumn,
-            DataColumn procedureSchemaColumn)
+        static string GetFullProcedureName(DataRow row, DataColumn procedureDataColumn, DataColumn procedureSchemaColumn)
         {
-            string procedureName = row[procedureDataColumn].ToString();
-            string schemaName = row[procedureSchemaColumn].ToString();
+            var procedureName = row[procedureDataColumn].ToString();
+            var schemaName = row[procedureSchemaColumn].ToString();
             return schemaName + "." + procedureName;
         }
 
-        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command)
+        List<IDbDataParameter> GetProcedureParameters(IDbCommand command)
         {
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
-            string originalCommandText = command.CommandText;
+            var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
-            string[] parts = command.CommandText.Split('.');
+            var parts = command.CommandText.Split('.');
             command.CommandType = CommandType.Text;
-            command.CommandText =
-                string.Format(
-                    "select * from information_schema.parameters where specific_name='{0}' and specific_schema='{1}'",
-                    parts[1], parts[0]);
-            DataTable dataTable = FetchDataTable(command);
-            foreach (DataRow row in dataTable.Rows)
+            command.CommandText = string.Format("select * from information_schema.parameters where specific_name='{0}' and specific_schema='{1}'", parts[1], parts[0]);
+            var dataTable = FetchDataTable(command);
+            foreach(DataRow row in dataTable.Rows)
             {
+
                 var parameterName = row["PARAMETER_NAME"] as string;
-                if (String.IsNullOrEmpty(parameterName))
+                if(String.IsNullOrEmpty(parameterName))
                 {
                     continue;
                 }
                 SqlDbType sqlType;
                 Enum.TryParse(row["DATA_TYPE"] as string, true, out sqlType);
-                int maxLength = row["CHARACTER_MAXIMUM_LENGTH"] is int ? (int) row["CHARACTER_MAXIMUM_LENGTH"] : -1;
+                var maxLength = row["CHARACTER_MAXIMUM_LENGTH"] is int ? (int)row["CHARACTER_MAXIMUM_LENGTH"] : -1;
                 var sqlParameter = new SqlParameter(parameterName, sqlType, maxLength);
                 command.Parameters.Add(sqlParameter);
-                if (parameterName.ToLower() == "@return_value")
+                if(parameterName.ToLower() == "@return_value")
                 {
                     continue;
                 }
@@ -381,17 +368,16 @@ namespace Dev2.Services.Sql
 
         public static bool IsStoredProcedure(DataRow row, DataColumn procedureTypeColumn)
         {
-            if (row == null || procedureTypeColumn == null)
+            if(row == null || procedureTypeColumn == null)
             {
                 return false;
             }
-            return row[procedureTypeColumn].ToString().Equals("SQL_STORED_PROCEDURE") ||
-                   row[procedureTypeColumn].ToString().Equals("CLR_STORED_PROCEDURE");
+            return row[procedureTypeColumn].ToString().Equals("SQL_STORED_PROCEDURE") || row[procedureTypeColumn].ToString().Equals("CLR_STORED_PROCEDURE");
         }
 
         public static bool IsFunction(DataRow row, DataColumn procedureTypeColumn)
         {
-            if (row == null || procedureTypeColumn == null)
+            if(row == null || procedureTypeColumn == null)
             {
                 return false;
             }
@@ -401,7 +387,7 @@ namespace Dev2.Services.Sql
 
         public static bool IsTableValueFunction(DataRow row, DataColumn procedureTypeColumn)
         {
-            if (row == null || procedureTypeColumn == null)
+            if(row == null || procedureTypeColumn == null)
             {
                 return false;
             }
@@ -411,7 +397,16 @@ namespace Dev2.Services.Sql
 
         #region IDisposable
 
-        private bool _disposed;
+        [ExcludeFromCodeCoverage]
+        ~SqlServer()
+        {
+            // Do not re-create Dispose clean-up code here. 
+            // Calling Dispose(false) is optimal in terms of 
+            // readability and maintainability.
+            Dispose(false);
+        }
+
+        bool _disposed;
 
         public SqlServer()
         {
@@ -437,15 +432,6 @@ namespace Dev2.Services.Sql
             GC.SuppressFinalize(this);
         }
 
-        [ExcludeFromCodeCoverage]
-        ~SqlServer()
-        {
-            // Do not re-create Dispose clean-up code here. 
-            // Calling Dispose(false) is optimal in terms of 
-            // readability and maintainability.
-            Dispose(false);
-        }
-
         // Dispose(bool disposing) executes in two distinct scenarios. 
         // If disposing equals true, the method has been called directly 
         // or indirectly by a user's code. Managed and unmanaged resources 
@@ -456,26 +442,26 @@ namespace Dev2.Services.Sql
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called. 
-            if (!_disposed)
+            if(!_disposed)
             {
                 // If disposing equals true, dispose all managed 
                 // and unmanaged resources. 
-                if (disposing)
+                if(disposing)
                 {
                     // Dispose managed resources.
-                    if (_transaction != null)
+                    if(_transaction != null)
                     {
                         _transaction.Dispose();
                     }
 
-                    if (_command != null)
+                    if(_command != null)
                     {
                         _command.Dispose();
                     }
 
-                    if (_connection != null)
+                    if(_connection != null)
                     {
-                        if (_connection.State != ConnectionState.Closed)
+                        if(_connection.State != ConnectionState.Closed)
                         {
                             _connection.Close();
                         }
@@ -494,5 +480,6 @@ namespace Dev2.Services.Sql
         }
 
         #endregion
+
     }
 }
