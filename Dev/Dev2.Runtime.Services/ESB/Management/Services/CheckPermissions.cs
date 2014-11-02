@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,7 +22,7 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Checks a users permissions on the local file system
+    ///     Checks a users permissions on the local file system
     /// </summary>
     public class CheckPermissions : IEsbManagementEndpoint
     {
@@ -37,30 +36,30 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             StringBuilder tmp;
             values.TryGetValue("Username", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 username = tmp.ToString();
                 values.TryGetValue("Password", out tmp);
-                if(tmp != null)
+                if (tmp != null)
                 {
                     password = tmp.ToString();
                     values.TryGetValue("FilePath", out tmp);
-                    if(tmp != null)
+                    if (tmp != null)
                     {
                         path = tmp.ToString();
                     }
                 }
             }
 
-            if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(path))
             {
                 throw new InvalidDataContractException("FilePath or Username or Password is missing");
             }
 
-            if(username == string.Empty)
+            if (username == string.Empty)
             {
-                if(!FileIO.CheckPermissions(WindowsIdentity.GetCurrent(), path, FileSystemRights.Read) &&
-                   !FileIO.CheckPermissions(WindowsIdentity.GetCurrent(), path, FileSystemRights.ReadData))
+                if (!FileIO.CheckPermissions(WindowsIdentity.GetCurrent(), path, FileSystemRights.Read) &&
+                    !FileIO.CheckPermissions(WindowsIdentity.GetCurrent(), path, FileSystemRights.ReadData))
                 {
                     result.Append(string.Concat("Insufficient permission for '", path, "'."));
                 }
@@ -69,8 +68,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 // we have a username and password set :)
 
-                if(!FileIO.CheckPermissions(username, password, path, FileSystemRights.Read) &&
-                   FileIO.CheckPermissions(username, password, path, FileSystemRights.ReadData))
+                if (!FileIO.CheckPermissions(username, password, path, FileSystemRights.Read) &&
+                    FileIO.CheckPermissions(username, password, path, FileSystemRights.ReadData))
                 {
                     result.Append("<Errors>");
                     result.Append(string.Concat("Insufficient permission for '", path, "'."));
@@ -86,7 +85,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var checkPermissionsService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><FilePath ColumnIODirection=\"Input\"><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><FilePath ColumnIODirection=\"Input\"><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var checkPermissionsServiceAction = new ServiceAction

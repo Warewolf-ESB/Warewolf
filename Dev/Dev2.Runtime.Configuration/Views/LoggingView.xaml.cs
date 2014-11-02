@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,11 +9,10 @@
 */
 
 
-
 namespace Dev2.Runtime.Configuration.Views
 {
     /// <summary>
-    /// Interaction logic for LogginView.xaml
+    ///     Interaction logic for LogginView.xaml
     /// </summary>
     public partial class LoggingView
     {

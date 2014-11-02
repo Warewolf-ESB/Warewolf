@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,6 +11,8 @@
 
 using System;
 using System.IO;
+using System.Security.Principal;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.WebServer.Responses;
@@ -20,21 +21,21 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public class WebsiteServiceHandler : AbstractWebRequestHandler
     {
-        readonly ServiceInvoker _serviceInvoker = new ServiceInvoker();
+        private readonly ServiceInvoker _serviceInvoker = new ServiceInvoker();
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
             // Read post data which is expected to be JSON
             string args;
-            using(var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
+            using (var reader = new StreamReader(ctx.Request.InputStream, ctx.Request.ContentEncoding))
             {
                 args = reader.ReadToEnd();
             }
 
-            var className = GetClassName(ctx);
-            var methodName = GetMethodName(ctx);
-            var dataListID = GetDataListID(ctx);
-            var workspaceID = GetWorkspaceID(ctx);
+            string className = GetClassName(ctx);
+            string methodName = GetMethodName(ctx);
+            string dataListID = GetDataListID(ctx);
+            string workspaceID = GetWorkspaceID(ctx);
             dynamic result;
             try
             {
@@ -49,16 +50,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                 //
 
                 // Ensure we execute as the correct user ;)
-                var userPrinciple = ctx.Request.User;
-                if(userPrinciple != null)
+                IPrincipal userPrinciple = ctx.Request.User;
+                if (userPrinciple != null)
                 {
-                    System.Threading.Thread.CurrentPrincipal = userPrinciple;
+                    Thread.CurrentPrincipal = userPrinciple;
                     Dev2Logger.Log.Info("WEB EXECUTION USER CONTEXT [ " + userPrinciple.Identity.Name + " ]");
                 }
 
                 result = _serviceInvoker.Invoke(className, methodName, args, workspaceGuid, dataListGuid);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result = new ValidationResult
                 {

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,11 +25,12 @@ namespace Dev2.Runtime.Configuration.ViewModels
         #region events
 
         public delegate void UnderlyingObjectChangedHandler();
+
         public event UnderlyingObjectChangedHandler UnderlyingObjectChanged;
 
         protected void OnUnderlyingObjectChanged()
         {
-            if(UnderlyingObjectChanged != null)
+            if (UnderlyingObjectChanged != null)
             {
                 UnderlyingObjectChanged();
             }
@@ -42,10 +42,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public object Object
         {
-            get
-            {
-                return _object;
-            }
+            get { return _object; }
             set
             {
                 _object = value;
@@ -57,6 +54,5 @@ namespace Dev2.Runtime.Configuration.ViewModels
         public ICommunicationService CommunicationService { get; set; }
 
         #endregion
-
     }
 }

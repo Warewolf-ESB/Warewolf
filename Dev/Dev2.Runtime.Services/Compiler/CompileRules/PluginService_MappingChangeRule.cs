@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,8 +10,10 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data.ServiceModel.Helper;
@@ -23,7 +24,7 @@ using Newtonsoft.Json;
 namespace Dev2.Runtime.Compiler.CompileRules
 {
     /// <summary>
-    /// Detect IO mapping changes for WFs
+    ///     Detect IO mapping changes for WFs
     /// </summary>
 // ReSharper disable InconsistentNaming
     internal class PluginService_MappingChangeRule : IServiceCompileRule
@@ -40,27 +41,29 @@ namespace Dev2.Runtime.Compiler.CompileRules
             beforeAction = beforeAction.Replace(GlobalConstants.EmptyValidatorTag, ""); // clean up stilly XML tags
 
 
-            var outputMappings = ServiceUtils.ExtractOutputMapping(beforeAction);
-            var inputMappings = ServiceUtils.ExtractInputMapping(beforeAction);
+            string outputMappings = ServiceUtils.ExtractOutputMapping(beforeAction);
+            string inputMappings = ServiceUtils.ExtractInputMapping(beforeAction);
 
-            var outputMappingsPost = ServiceUtils.ExtractOutputMapping(afterAction);
-            var inputMappingsPost = ServiceUtils.ExtractInputMapping(afterAction);
+            string outputMappingsPost = ServiceUtils.ExtractOutputMapping(afterAction);
+            string inputMappingsPost = ServiceUtils.ExtractInputMapping(afterAction);
 
-            var inputParser = DataListFactory.CreateInputParser();
-            var outputParser = DataListFactory.CreateOutputParser();
+            IDev2LanguageParser inputParser = DataListFactory.CreateInputParser();
+            IDev2LanguageParser outputParser = DataListFactory.CreateOutputParser();
 
-            var preInputs = inputParser.Parse(inputMappings);
-            var preOutputs = outputParser.Parse(outputMappings);
+            IList<IDev2Definition> preInputs = inputParser.Parse(inputMappings);
+            IList<IDev2Definition> preOutputs = outputParser.Parse(outputMappings);
 
-            var postInputs = inputParser.Parse(inputMappingsPost);
-            var postOutputs = outputParser.Parse(outputMappingsPost);
+            IList<IDev2Definition> postInputs = inputParser.Parse(inputMappingsPost);
+            IList<IDev2Definition> postOutputs = outputParser.Parse(outputMappingsPost);
 
-            if (ServiceUtils.MappingValuesChanged(preInputs, postInputs) || ServiceUtils.MappingValuesChanged(preOutputs, postOutputs))
+            if (ServiceUtils.MappingValuesChanged(preInputs, postInputs) ||
+                ServiceUtils.MappingValuesChanged(preOutputs, postOutputs))
             {
-                var tmpInput = inputParser.Parse(inputMappingsPost);
-                var tmpOutput = outputParser.Parse(outputMappingsPost);
+                IList<IDev2Definition> tmpInput = inputParser.Parse(inputMappingsPost);
+                IList<IDev2Definition> tmpOutput = outputParser.Parse(outputMappingsPost);
 
-                var defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input><Output>" + JsonConvert.SerializeObject(tmpOutput) + "</Output></Args>";
+                string defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input><Output>" +
+                                JsonConvert.SerializeObject(tmpOutput) + "</Output></Args>";
 
                 return
                     (new CompileMessageTO
@@ -72,9 +75,8 @@ namespace Dev2.Runtime.Compiler.CompileRules
                         ErrorType = ErrorType.Critical
                     });
             }
-            
-            return null;
 
+            return null;
         }
     }
 }

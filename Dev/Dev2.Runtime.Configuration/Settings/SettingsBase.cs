@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,7 +18,6 @@ namespace Dev2.Runtime.Configuration.Settings
 {
     public abstract class SettingsBase : PropertyChangedBase
     {
-
         #region Fields
 
         private string _error = string.Empty;
@@ -32,10 +30,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public bool HasChanges
         {
-            get
-            {
-                return _hasChanges;
-            }
+            get { return _hasChanges; }
             protected set
             {
                 if (_hasChanges == value)
@@ -50,10 +45,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public bool IsInitializing
         {
-            get
-            {
-                return _isInitializing;
-            }
+            get { return _isInitializing; }
             set
             {
                 if (_isInitializing == value)
@@ -68,10 +60,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public string Error
         {
-            get
-            {
-                return _error;
-            }
+            get { return _error; }
             set
             {
                 if (_error == value)
@@ -89,7 +78,7 @@ namespace Dev2.Runtime.Configuration.Settings
         {
             get { return !string.IsNullOrWhiteSpace(Error); }
         }
-        
+
         public string SettingName { get; private set; }
 
         public string DisplayName { get; private set; }
@@ -115,13 +104,13 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region CTOR
 
-        protected SettingsBase(string settingName, string displayName,string webServerUri)
+        protected SettingsBase(string settingName, string displayName, string webServerUri)
         {
-            if(string.IsNullOrEmpty(settingName))
+            if (string.IsNullOrEmpty(settingName))
             {
                 throw new ArgumentNullException("settingName");
             }
-            if(string.IsNullOrEmpty(displayName))
+            if (string.IsNullOrEmpty(displayName))
             {
                 throw new ArgumentNullException("displayName");
             }
@@ -134,14 +123,14 @@ namespace Dev2.Runtime.Configuration.Settings
             WebServerUri = webServerUri;
         }
 
-        protected SettingsBase(XElement xml,string webServerUri)
+        protected SettingsBase(XElement xml, string webServerUri)
         {
-            if(xml == null)
+            if (xml == null)
             {
                 throw new ArgumentNullException("xml");
             }
-            var displayName = xml.AttributeSafe("DisplayName");
-            if(string.IsNullOrEmpty(displayName))
+            string displayName = xml.AttributeSafe("DisplayName");
+            if (string.IsNullOrEmpty(displayName))
             {
                 throw new NoNullAllowedException("displayName");
             }

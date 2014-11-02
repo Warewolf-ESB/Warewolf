@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,8 +19,8 @@ namespace Dev2.Services
     public class MemoSubscriptionService<TEvent> : DisposableObject, IMemoSubscriptionService<TEvent>
         where TEvent : class, IMemo, new()
     {
-        readonly ISubscriptionService<TEvent> _subscriptionService;
-        readonly List<Guid> _subscriptions;
+        private readonly ISubscriptionService<TEvent> _subscriptionService;
+        private readonly List<Guid> _subscriptions;
 
         public MemoSubscriptionService(IEventPublisher eventPublisher)
             : this(new SubscriptionService<TEvent>(eventPublisher))
@@ -38,7 +37,7 @@ namespace Dev2.Services
 
         public void Subscribe(Guid memoInstanceID, Action<TEvent> onNext)
         {
-            if(!_subscriptions.Contains(memoInstanceID))
+            if (!_subscriptions.Contains(memoInstanceID))
             {
                 _subscriptions.Add(memoInstanceID);
                 _subscriptionService.Subscribe(m => m.InstanceID == memoInstanceID, onNext);

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,25 +20,24 @@ namespace Dev2.Scheduler
 {
     public class ScheduledResource : IScheduledResource, INotifyPropertyChanged
     {
-        string _name;
-        string _workflowName;
-        SchedulerStatus _status;
-
-        private bool _runAsapIfScheduleMissed;
         private bool _allowMultipleIstances;
-        int _numberOfHistoryToKeep;
-        IScheduleTrigger _trigger;
-        bool _isDirty;
-        private string _userName;
-        private string _password;
-        string _oldName;
         private IErrorResultTO _errors;
-        DateTime _nextRunDate;
+        private bool _isDirty;
+        private string _name;
+        private DateTime _nextRunDate;
+        private int _numberOfHistoryToKeep;
+        private string _oldName;
+        private string _password;
+        private bool _runAsapIfScheduleMissed;
+        private SchedulerStatus _status;
+        private IScheduleTrigger _trigger;
+        private string _userName;
+        private string _workflowName;
 
-        public ScheduledResource(string name, SchedulerStatus status, DateTime nextRunDate, IScheduleTrigger trigger, string workflowName)
+        public ScheduledResource(string name, SchedulerStatus status, DateTime nextRunDate, IScheduleTrigger trigger,
+            string workflowName)
         {
-
-            var history = name.Split(new[] { '~' });
+            string[] history = name.Split(new[] {'~'});
 
             WorkflowName = workflowName;
             Trigger = trigger;
@@ -47,7 +45,7 @@ namespace Dev2.Scheduler
             NextRunDate = nextRunDate;
             Status = status;
             Name = history.First();
-            if(history.Length == 2)
+            if (history.Length == 2)
                 NumberOfHistoryToKeep = int.Parse(history[1]);
             IsDirty = false;
             _errors = new ErrorResultTO();
@@ -55,10 +53,7 @@ namespace Dev2.Scheduler
 
         public bool IsDirty
         {
-            get
-            {
-                return _isDirty;
-            }
+            get { return _isDirty; }
             set
             {
                 _isDirty = value;
@@ -68,10 +63,7 @@ namespace Dev2.Scheduler
 
         public string OldName
         {
-            get
-            {
-                return _oldName;
-            }
+            get { return _oldName; }
             set
             {
                 _oldName = value;
@@ -81,10 +73,7 @@ namespace Dev2.Scheduler
 
         public string Name
         {
-            get
-            {
-                return _name;
-            }
+            get { return _name; }
             set
             {
                 _name = value;
@@ -94,10 +83,7 @@ namespace Dev2.Scheduler
 
         public SchedulerStatus Status
         {
-            get
-            {
-                return _status;
-            }
+            get { return _status; }
             set
             {
                 _status = value;
@@ -107,10 +93,7 @@ namespace Dev2.Scheduler
 
         public DateTime NextRunDate
         {
-            get
-            {
-                return _nextRunDate;
-            }
+            get { return _nextRunDate; }
             set
             {
                 _nextRunDate = value;
@@ -120,10 +103,7 @@ namespace Dev2.Scheduler
 
         public IScheduleTrigger Trigger
         {
-            get
-            {
-                return _trigger;
-            }
+            get { return _trigger; }
             set
             {
                 _trigger = value;
@@ -133,10 +113,7 @@ namespace Dev2.Scheduler
 
         public int NumberOfHistoryToKeep
         {
-            get
-            {
-                return _numberOfHistoryToKeep;
-            }
+            get { return _numberOfHistoryToKeep; }
             set
             {
                 _numberOfHistoryToKeep = value;
@@ -146,10 +123,7 @@ namespace Dev2.Scheduler
 
         public string WorkflowName
         {
-            get
-            {
-                return _workflowName;
-            }
+            get { return _workflowName; }
             set
             {
                 _workflowName = value;
@@ -199,17 +173,17 @@ namespace Dev2.Scheduler
 
         public IErrorResultTO Errors
         {
-            get
-            {
-                return _errors;
-            }
+            get { return _errors; }
             set
             {
                 _errors = value;
                 OnPropertyChanged("Errors");
             }
         }
+
         public bool IsNew { get; set; }
+
+        public Guid ResourceId { get; set; }
 
         #region INotifyPropertyChanged
 
@@ -217,7 +191,7 @@ namespace Dev2.Scheduler
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -229,6 +203,5 @@ namespace Dev2.Scheduler
         {
             return String.Format("Name:{0} ResourceId:{1}", Name, ResourceId);
         }
-        public Guid ResourceId { get; set; }
     }
 }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,16 +14,16 @@ using System.Windows.Threading;
 
 namespace Dev2.Network.Messaging
 {
-    public class DispatcherFrameToken<T> where T : class 
+    public class DispatcherFrameToken<T> where T : class
     {
         #region Class Members
 
-        private T _result;
-        private DispatcherFrame _dispatcherFrame;
         private readonly object _dispatcherFrameLock;
-        private DispatcherTimer _timeoutTimer;
+        private readonly T _timeoutResult;
+        private readonly DispatcherTimer _timeoutTimer;
         private bool _cancelled;
-        private T _timeoutResult;
+        private DispatcherFrame _dispatcherFrame;
+        private T _result;
 
         #endregion Class Members
 

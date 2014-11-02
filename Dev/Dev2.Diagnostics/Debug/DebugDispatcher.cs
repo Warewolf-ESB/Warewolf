@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,7 +21,7 @@ namespace Dev2.Diagnostics.Debug
     public class DebugDispatcher : IDebugDispatcher
     {
         // The Guid is the workspace ID of the writer
-        private readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
+
         private static readonly ConcurrentQueue<IDebugState> WriterQueue = new ConcurrentQueue<IDebugState>();
         private static readonly Thread WriterThread = new Thread(WriteLoop);
         private static readonly ManualResetEventSlim WriteWaithandle = new ManualResetEventSlim(false);
@@ -31,13 +30,11 @@ namespace Dev2.Diagnostics.Debug
 
         #region Singleton Instance
 
-        static DebugDispatcher _instance;
+        private static DebugDispatcher _instance;
+
         public static DebugDispatcher Instance
         {
-            get
-            {
-                return _instance ?? (_instance = new DebugDispatcher());
-            }
+            get { return _instance ?? (_instance = new DebugDispatcher()); }
         }
 
         #endregion
@@ -50,9 +47,8 @@ namespace Dev2.Diagnostics.Debug
         }
 
         // Prevent instantiation
-        DebugDispatcher()
+        private DebugDispatcher()
         {
-
         }
 
         #endregion
@@ -62,14 +58,11 @@ namespace Dev2.Diagnostics.Debug
         #region Count
 
         /// <summary>
-        /// Gets the number of writers.
+        ///     Gets the number of writers.
         /// </summary>
         public int Count
         {
-            get
-            {
-                return _writers.Count;
-            }
+            get { return _writers.Count; }
         }
 
         #endregion
@@ -79,13 +72,13 @@ namespace Dev2.Diagnostics.Debug
         #region Add
 
         /// <summary>
-        /// Adds the specified writer to the dispatcher.
+        ///     Adds the specified writer to the dispatcher.
         /// </summary>
         /// <param name="workspaceId">The ID of the workspace to which the writer belongs.</param>
         /// <param name="writer">The writer to be added.</param>
         public void Add(Guid workspaceId, IDebugWriter writer)
         {
-            if(writer == null || _shutdownRequested)
+            if (writer == null || _shutdownRequested)
             {
                 return;
             }
@@ -97,7 +90,7 @@ namespace Dev2.Diagnostics.Debug
         #region Remove
 
         /// <summary>
-        /// Removes the specified workspace from the dispatcher.
+        ///     Removes the specified workspace from the dispatcher.
         /// </summary>
         /// <param name="workspaceId">The ID of workspace to be removed.</param>
         public void Remove(Guid workspaceId)
@@ -111,10 +104,10 @@ namespace Dev2.Diagnostics.Debug
         #region Get
 
         /// <summary>
-        /// Gets the writer for the given workspace ID.
+        ///     Gets the writer for the given workspace ID.
         /// </summary>
         /// <param name="workspaceId">The workspace ID to be queried.</param>
-        /// <returns>The <see cref="IDebugWriter"/> with the specified ID, or <code>null</code> if not found.</returns>
+        /// <returns>The <see cref="IDebugWriter" /> with the specified ID, or <code>null</code> if not found.</returns>
         public IDebugWriter Get(Guid workspaceId)
         {
             IDebugWriter writer;
@@ -129,9 +122,9 @@ namespace Dev2.Diagnostics.Debug
         public void Shutdown()
         {
             _shutdownRequested = true;
-            lock(WaitHandleGuard)
+            lock (WaitHandleGuard)
             {
-                while(WriterQueue.Count > 0)
+                while (WriterQueue.Count > 0)
                 {
                     IDebugState debugState;
                     WriterQueue.TryDequeue(out debugState);
@@ -145,15 +138,16 @@ namespace Dev2.Diagnostics.Debug
         #region Write
 
         // BUG 9706 - 2013.06.22 - TWR : extracted from DsfNativeActivity.DispatchDebugState
-        public void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
+        public void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerId = null,
+            string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
         {
-            if(debugState == null)
+            if (debugState == null)
             {
                 return;
             }
 
             // Serialize debugState to a local repo so calling server can manage the data 
-            if(isRemoteInvoke)
+            if (isRemoteInvoke)
             {
                 RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerId, debugState);
                 return;
@@ -161,22 +155,22 @@ namespace Dev2.Diagnostics.Debug
 
             // local dispatch 
             // do we have any remote objects to dispatch locally? 
-            if(remoteDebugItems != null)
+            if (remoteDebugItems != null)
             {
                 Guid parentId;
                 Guid.TryParse(parentInstanceId, out parentId);
-                foreach(var item in remoteDebugItems)
+                foreach (IDebugState item in remoteDebugItems)
                 {
                     // re-jigger it so it will dispatch and display
                     item.WorkspaceID = debugState.WorkspaceID;
                     item.OriginatingResourceID = debugState.OriginatingResourceID;
                     item.Server = remoteInvokerId;
                     Guid remoteEnvironmentId;
-                    if(Guid.TryParse(remoteInvokerId, out remoteEnvironmentId))
+                    if (Guid.TryParse(remoteInvokerId, out remoteEnvironmentId))
                     {
                         item.EnvironmentID = remoteEnvironmentId;
                     }
-                    if(item.ParentID == Guid.Empty)
+                    if (item.ParentID == Guid.Empty)
                     {
                         item.ParentID = parentId;
                     }
@@ -185,16 +179,14 @@ namespace Dev2.Diagnostics.Debug
 
                 remoteDebugItems.Clear();
             }
-            Dev2Logger.Log.Debug(string.Format("EnvironmentID: {0} Debug:{1}", debugState.EnvironmentID, debugState.DisplayName));
+            Dev2Logger.Log.Debug(string.Format("EnvironmentID: {0} Debug:{1}", debugState.EnvironmentID,
+                debugState.DisplayName));
             QueueWrite(debugState);
         }
 
         public bool IsQueueEmpty
         {
-            get
-            {
-                return WriterQueue.IsEmpty;
-            }
+            get { return WriterQueue.IsEmpty; }
         }
 
         #endregion
@@ -202,11 +194,11 @@ namespace Dev2.Diagnostics.Debug
         #region QueueWrite
 
         // BUG 9706 - 2013.06.22 - TWR : refactored
-        static void QueueWrite(IDebugState debugState)
+        private static void QueueWrite(IDebugState debugState)
         {
-            if(debugState != null)
+            if (debugState != null)
             {
-                lock(WaitHandleGuard)
+                lock (WaitHandleGuard)
                 {
                     WriterQueue.Enqueue(debugState);
                     WriteWaithandle.Set();
@@ -220,31 +212,31 @@ namespace Dev2.Diagnostics.Debug
 
         private static void WriteLoop()
         {
-            while(true)
+            while (true)
             {
                 WriteWaithandle.Wait();
 
-                if(_shutdownRequested)
+                if (_shutdownRequested)
                 {
                     return;
                 }
 
                 IDebugState debugState;
-                if(WriterQueue.TryDequeue(out debugState))
+                if (WriterQueue.TryDequeue(out debugState))
                 {
-                    if(debugState != null)
+                    if (debugState != null)
                     {
                         IDebugWriter writer;
-                        if((writer = Instance.Get(debugState.WorkspaceID)) != null)
+                        if ((writer = Instance.Get(debugState.WorkspaceID)) != null)
                         {
                             writer.Write(debugState);
                         }
                     }
                 }
 
-                lock(WaitHandleGuard)
+                lock (WaitHandleGuard)
                 {
-                    if(WriterQueue.Count == 0)
+                    if (WriterQueue.Count == 0)
                     {
                         WriteWaithandle.Reset();
                     }
@@ -254,11 +246,14 @@ namespace Dev2.Diagnostics.Debug
 
         #endregion WriteLoop
 
+        private readonly ConcurrentDictionary<Guid, IDebugWriter> _writers =
+            new ConcurrentDictionary<Guid, IDebugWriter>();
+
         public void Flush()
         {
-            lock(WaitHandleGuard)
+            lock (WaitHandleGuard)
             {
-                while(WriterQueue.Count > 0)
+                while (WriterQueue.Count > 0)
                 {
                     IDebugState debugState;
                     WriterQueue.TryDequeue(out debugState);

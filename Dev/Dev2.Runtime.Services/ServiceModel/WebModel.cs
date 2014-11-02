@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,15 +19,14 @@ using Dev2.Runtime.Diagnostics;
 namespace Dev2.Runtime.ServiceModel
 {
     /// <summary>
-    /// A model class for pushing and pulling JSON serialized objects to and from Web into the Server
+    ///     A model class for pushing and pulling JSON serialized objects to and from Web into the Server
     /// </summary>
     public class WebModel : ExceptionManager
     {
-
         #region Model Save
 
         /// <summary>
-        /// Saves the JSON model for decisions from the wizard ;)
+        ///     Saves the JSON model for decisions from the wizard ;)
         /// </summary>
         /// <param name="args">The args.</param>
         /// <param name="workspaceId">The workspace ID.</param>
@@ -38,16 +36,16 @@ namespace Dev2.Runtime.ServiceModel
         {
             string result = "{ \"message\" : \"Error Saving Model\"} ";
 
-            if(dataListId != GlobalConstants.NullDataListID)
+            if (dataListId != GlobalConstants.NullDataListID)
             {
-                var compiler = DataListFactory.CreateDataListCompiler();
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO errors;
 
                 // remove the silly Choose... from the string
                 args = Dev2DecisionStack.RemoveDummyOptionsFromModel(new StringBuilder(args));
                 // remove [[]], &, !
                 args = Dev2DecisionStack.RemoveNaughtyCharsFromModel(args);
-                
+
                 compiler.UpsertSystemTag(dataListId, enSystemTag.SystemModel, args, out errors);
 
                 result = "{  \"message\" : \"Saved Model\"} ";
@@ -58,10 +56,10 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-
         #region Model Fetch
+
         /// <summary>
-        /// Fetches the decision model.
+        ///     Fetches the decision model.
         /// </summary>
         /// <param name="args">The args.</param>
         /// <param name="workspaceId">The workspace ID.</param>
@@ -69,16 +67,15 @@ namespace Dev2.Runtime.ServiceModel
         /// <returns></returns>
         public string FetchDecisionModel(string args, Guid workspaceId, Guid dataListId)
         {
-
-            if(dataListId != GlobalConstants.NullDataListID)
+            if (dataListId != GlobalConstants.NullDataListID)
             {
-                var compiler = DataListFactory.CreateDataListCompiler();
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
                 ErrorResultTO errors;
 
-                var result = compiler.FetchSystemModelAsWebModel<Dev2DecisionStack>(dataListId, out errors);
+                string result = compiler.FetchSystemModelAsWebModel<Dev2DecisionStack>(dataListId, out errors);
 
-                if(errors.HasErrors())
+                if (errors.HasErrors())
                 {
                     compiler.UpsertSystemTag(dataListId, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
                 }
@@ -90,7 +87,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         /// <summary>
-        /// Fetches the switch expression.
+        ///     Fetches the switch expression.
         /// </summary>
         /// <param name="args">The args.</param>
         /// <param name="workspaceId">The workspace ID.</param>
@@ -98,15 +95,15 @@ namespace Dev2.Runtime.ServiceModel
         /// <returns></returns>
         public string FetchSwitchExpression(string args, Guid workspaceId, Guid dataListId)
         {
-            if(dataListId != GlobalConstants.NullDataListID)
+            if (dataListId != GlobalConstants.NullDataListID)
             {
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
                 ErrorResultTO errors;
 
-                var result = compiler.FetchSystemModelAsWebModel<Dev2Switch>(dataListId, out errors);
+                string result = compiler.FetchSystemModelAsWebModel<Dev2Switch>(dataListId, out errors);
 
-                if(errors.HasErrors())
+                if (errors.HasErrors())
                 {
                     compiler.UpsertSystemTag(dataListId, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
                 }

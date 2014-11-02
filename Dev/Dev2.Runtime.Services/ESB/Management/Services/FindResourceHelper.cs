@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,8 +11,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Security;
@@ -25,27 +26,33 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IAuthorizationService _authorizationService;
 
+
+        internal IAuthorizationService AuthorizationService
+        {
+            get { return _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance); }
+            set { _authorizationService = value; }
+        }
+
         /// <summary>
-        /// Strips for ship.
+        ///     Strips for ship.
         /// </summary>
         /// <param name="resource">The resource.</param>
         /// <returns></returns>
         public SerializableResource SerializeResourceForStudio(IResource resource)
         {
-
             // convert the fliping errors due to json issues in c# ;(
             var errors = new List<ErrorInfo>();
-            var parseErrors = resource.Errors;
-            if(parseErrors != null)
+            List<IErrorInfo> parseErrors = resource.Errors;
+            if (parseErrors != null)
             {
                 errors.AddRange(parseErrors.Select(error => (error as ErrorInfo)));
             }
 
-            var datalist = "<DataList></DataList>";
+            string datalist = "<DataList></DataList>";
 
-            if(resource.DataList != null)
+            if (resource.DataList != null)
             {
-                var replace = resource.DataList.Replace("\"", GlobalConstants.SerializableResourceQuote);
+                StringBuilder replace = resource.DataList.Replace("\"", GlobalConstants.SerializableResourceQuote);
                 datalist = replace.Replace("'", GlobalConstants.SerializableResourceSingleQuote).ToString();
             }
 
@@ -64,19 +71,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Errors = errors,
                 IsNewResource = resource.IsNewResource
             };
-        }
-
-
-        internal IAuthorizationService AuthorizationService
-        {
-            get
-            {
-                return _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance);
-            }
-            set
-            {
-                _authorizationService = value;
-            }
         }
     }
 }

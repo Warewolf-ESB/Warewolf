@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,9 +18,9 @@ namespace Dev2.Services.Security
 {
     public interface IAuthorizationService
     {
+        ISecurityService SecurityService { get; }
         event EventHandler PermissionsChanged;
         event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
-        ISecurityService SecurityService { get; }
 
         bool IsAuthorized(AuthorizationContext context, string resource);
         bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource);

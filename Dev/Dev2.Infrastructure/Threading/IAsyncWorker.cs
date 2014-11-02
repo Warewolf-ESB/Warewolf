@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,8 +17,8 @@ namespace Dev2.Threading
     public interface IAsyncWorker
     {
         /// <summary>
-        /// Starts the specified background action and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
+        ///     Starts the specified background action and continues with the UI action
+        ///     on the thread this was invoked from (typically the UI thread).
         /// </summary>
         /// <param name="backgroundAction">The background action.</param>
         /// <param name="uiAction">The UI action.</param>
@@ -29,9 +28,9 @@ namespace Dev2.Threading
         Task Start(Action backgroundAction, Action uiAction);
 
         /// <summary>
-        /// Starts the specified background action and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
-        /// calls an error handler should an exception occur
+        ///     Starts the specified background action and continues with the UI action
+        ///     on the thread this was invoked from (typically the UI thread).
+        ///     calls an error handler should an exception occur
         /// </summary>
         /// <param name="backgroundAction">The background action.</param>
         /// <param name="uiAction">The UI action.</param>
@@ -39,8 +38,8 @@ namespace Dev2.Threading
         Task Start(Action backgroundAction, Action uiAction, Action<Exception> onError);
 
         /// <summary>
-        /// Starts the specified background action and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
+        ///     Starts the specified background action and continues with the UI action
+        ///     on the thread this was invoked from (typically the UI thread).
         /// </summary>
         /// <param name="backgroundAction">The background action.</param>
         /// <returns></returns>
@@ -49,8 +48,8 @@ namespace Dev2.Threading
         Task Start(Action backgroundAction);
 
         /// <summary>
-        /// Starts the specified background function and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
+        ///     Starts the specified background function and continues with the UI action
+        ///     on the thread this was invoked from (typically the UI thread).
         /// </summary>
         /// <param name="backgroundFunc">The background function - returns the result to be processed on the UI thread.</param>
         /// <param name="uiAction">The UI action to be taken on the given background result.</param>

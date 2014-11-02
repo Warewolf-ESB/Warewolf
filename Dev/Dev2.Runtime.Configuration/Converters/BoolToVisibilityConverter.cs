@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,6 +10,7 @@
 
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
@@ -18,18 +18,18 @@ namespace Dev2.Runtime.Configuration.Converters
 {
     public class BoolToVisibilityConverter : IValueConverter
     {
-        public Visibility TrueValue { get; set; }
-        public Visibility FalseValue { get; set; }
-
         public BoolToVisibilityConverter()
         {
             TrueValue = Visibility.Visible;
             FalseValue = Visibility.Collapsed;
         }
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public Visibility TrueValue { get; set; }
+        public Visibility FalseValue { get; set; }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool? boolValue = value as bool?;
+            var boolValue = value as bool?;
 
             if (boolValue == null)
             {
@@ -44,7 +44,7 @@ namespace Dev2.Runtime.Configuration.Converters
             return FalseValue;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return Binding.DoNothing;
         }

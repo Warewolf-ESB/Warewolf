@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,7 +21,7 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Find Server Username
+    ///     Find Server Username
     /// </summary>
     public class FindServerUsername : IEsbManagementEndpoint
     {
@@ -31,7 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Log.Info("Find Server User Name");
-         
+
                 return new StringBuilder(Environment.UserDomainName + "\\" + Environment.UserName);
             }
             catch (Exception err)
@@ -43,9 +42,21 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService findServerUsernameService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findServerUsernameService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
 
-            ServiceAction findServerUsernameServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceName = HandlesType(), SourceMethod = HandlesType() };
+            var findServerUsernameServiceAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceName = HandlesType(),
+                SourceMethod = HandlesType()
+            };
 
             findServerUsernameService.Actions.Add(findServerUsernameServiceAction);
 

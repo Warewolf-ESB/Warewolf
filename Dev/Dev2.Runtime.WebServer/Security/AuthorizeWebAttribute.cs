@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -13,6 +12,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -43,33 +43,39 @@ namespace Dev2.Runtime.WebServer.Security
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             VerifyArgument.IsNotNull("actionContext", actionContext);
-            var user = actionContext.ControllerContext.RequestContext.Principal;
-            if(!user.IsAuthenticated())
+            IPrincipal user = actionContext.ControllerContext.RequestContext.Principal;
+            if (!user.IsAuthenticated())
             {
-                actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
+                actionContext.Response =
+                    actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                        "Authorization has been denied for this request.");
                 return;
             }
-            var authorizationRequest = GetAuthorizationRequest(actionContext);
-            if(!Service.IsAuthorized(authorizationRequest))
+            AuthorizationRequest authorizationRequest = GetAuthorizationRequest(actionContext);
+            if (!Service.IsAuthorized(authorizationRequest))
             {
-                actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Access has been denied for this request.");
+                actionContext.Response =
+                    actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden,
+                        "Access has been denied for this request.");
             }
         }
 
-        AuthorizationRequest GetAuthorizationRequest(HttpActionContext actionContext)
+        private AuthorizationRequest GetAuthorizationRequest(HttpActionContext actionContext)
         {
             AuthorizationRequest authorizationRequest = actionContext.GetAuthorizationRequest();
 
             try
             {
-                var absolutePath = actionContext.Request.RequestUri.AbsolutePath;
-                var startIndex = GetNameStartIndex(absolutePath);
-                if(startIndex > -1)
+                string absolutePath = actionContext.Request.RequestUri.AbsolutePath;
+                int startIndex = GetNameStartIndex(absolutePath);
+                if (startIndex > -1)
                 {
-                    var resourceName = HttpUtility.UrlDecode(absolutePath.Substring(startIndex, absolutePath.Length - startIndex));
-                    var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+                    string resourceName =
+                        HttpUtility.UrlDecode(absolutePath.Substring(startIndex, absolutePath.Length - startIndex));
+                    IResource resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID,
+                        resourceName);
 
-                    if(resource != null && resource.ResourceType == ResourceType.ReservedService)
+                    if (resource != null && resource.ResourceType == ResourceType.ReservedService)
                     {
                         authorizationRequest = new AuthorizationRequest
                         {
@@ -81,7 +87,7 @@ namespace Dev2.Runtime.WebServer.Security
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error(e);
             }
@@ -89,10 +95,10 @@ namespace Dev2.Runtime.WebServer.Security
             return authorizationRequest;
         }
 
-        int GetNameStartIndex(string absolutePath)
+        private int GetNameStartIndex(string absolutePath)
         {
-            var startIndex = absolutePath.IndexOf("services/", StringComparison.InvariantCultureIgnoreCase);
-            if(startIndex == -1)
+            int startIndex = absolutePath.IndexOf("services/", StringComparison.InvariantCultureIgnoreCase);
+            if (startIndex == -1)
             {
                 return -1;
             }

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
+using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
@@ -40,8 +42,10 @@ namespace Dev2.Runtime.WebServer.Hubs
     [HubName("esb")]
     public class EsbHub : ServerHub, IDebugWriter, IExplorerRepositorySync
     {
-        static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
-        readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
+        private static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache =
+            new ConcurrentDictionary<Guid, StringBuilder>();
+
+        private readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
         public EsbHub()
         {
@@ -72,39 +76,41 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void AddItemMessage(IExplorerItem addedItem)
         {
-            if(addedItem != null)
+            if (addedItem != null)
             {
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
-                var item = _serializer.Serialize(addedItem);
-                var hubCallerConnectionContext = Clients;
+                string item = _serializer.Serialize(addedItem);
+                IHubCallerConnectionContext hubCallerConnectionContext = Clients;
                 hubCallerConnectionContext.All.ItemAddedMessage(item);
-            }           
+            }
         }
 
         #endregion
 
-        void ResourceSaved(IResource resource)
+        private void ResourceSaved(IResource resource)
         {
-            var factory = new ExplorerItemFactory(ResourceCatalog.Instance, new DirectoryWrapper(), ServerAuthorizationService.Instance);
-            var resourceItem = factory.CreateResourceItem(resource);
+            var factory = new ExplorerItemFactory(ResourceCatalog.Instance, new DirectoryWrapper(),
+                ServerAuthorizationService.Instance);
+            ServerExplorerItem resourceItem = factory.CreateResourceItem(resource);
             AddItemMessage(resourceItem);
         }
 
-        void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
+        private void PermissionsHaveBeenModified(object sender,
+            PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
-            var user = Context.User;
+            IPrincipal user = Context.User;
             var permissionsMemo = new PermissionsModifiedMemo
             {
                 ModifiedPermissions = ServerAuthorizationService.Instance.GetPermissions(user),
                 ServerID = HostSecurityProvider.Instance.ServerID
             };
-            var serializedMemo = _serializer.Serialize(permissionsMemo);
-            Clients.Caller.SendPermissionsMemo(serializedMemo);        
+            string serializedMemo = _serializer.Serialize(permissionsMemo);
+            Clients.Caller.SendPermissionsMemo(serializedMemo);
         }
 
-        void SendResourceMessages(Guid resourceId, IList<ICompileMessageTO> compileMessageTos)
+        private void SendResourceMessages(Guid resourceId, IList<ICompileMessageTO> compileMessageTos)
         {
-            SendResourcesAffectedMemo(resourceId,compileMessageTos);
+            SendResourcesAffectedMemo(resourceId, compileMessageTos);
         }
 
         public async Task AddDebugWriter(Guid workspaceId)
@@ -123,20 +129,20 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             // Set Requesting User as per what is authorized ;)
             // Sneaky people may try to forge packets to get payload ;)
-            if(Context.User.Identity.Name != null)
+            if (Context.User.Identity.Name != null)
             {
                 receipt.User = Context.User.Identity.Name;
             }
 
             try
             {
-                var value = ResultsCache.Instance.FetchResult(receipt);
+                string value = ResultsCache.Instance.FetchResult(receipt);
                 var task = new Task<string>(() => value);
 
                 task.Start();
                 return await task;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 // ReSharper disable InvokeAsExtensionMethod
                 Dev2Logger.Log.Error(this, e);
@@ -155,9 +161,10 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <param name="dataListId">The data list unique identifier.</param>
         /// <param name="messageId">The message unique identifier.</param>
         /// <returns></returns>
-        public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
+        public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId,
+            Guid messageId)
         {
-            var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = Context.User };
+            var internalServiceRequestHandler = new InternalServiceRequestHandler {ExecutingUser = Context.User};
             try
             {
                 var task = new Task<Receipt>(() =>
@@ -165,39 +172,41 @@ namespace Dev2.Runtime.WebServer.Hubs
                     try
                     {
                         StringBuilder sb;
-                        if(!MessageCache.TryGetValue(messageId, out sb))
+                        if (!MessageCache.TryGetValue(messageId, out sb))
                         {
                             sb = new StringBuilder();
                             MessageCache.TryAdd(messageId, sb);
                         }
                         sb.Append(envelope.Content);
 
-                        if(endOfStream)
+                        if (endOfStream)
                         {
                             MessageCache.TryRemove(messageId, out sb);
                             var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
 
-                            var user = string.Empty;
+                            string user = string.Empty;
                             // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                            if(Context.User.Identity != null)
+                            if (Context.User.Identity != null)
                                 // ReSharper restore ConditionIsAlwaysTrueOrFalse
                             {
                                 user = Context.User.Identity.Name;
                                 // set correct principle ;)
                                 Thread.CurrentPrincipal = Context.User;
-                                Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
+                                Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " +
+                                                     request.ServiceName + " ]");
                             }
 
-                            var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId);
+                            StringBuilder processRequest = internalServiceRequestHandler.ProcessRequest(request,
+                                workspaceId, dataListId, Context.ConnectionId);
                             // Convert to chunked msg store for fetch ;)
-                            var length = processRequest.Length;
-                            var startIdx = 0;
-                            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+                            int length = processRequest.Length;
+                            int startIdx = 0;
+                            var rounds = (int) Math.Ceiling(length/GlobalConstants.MAX_SIZE_FOR_STRING);
 
-                            for(var q = 0; q < rounds; q++)
+                            for (int q = 0; q < rounds; q++)
                             {
-                                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                                if(len > (length - startIdx))
+                                var len = (int) GlobalConstants.MAX_SIZE_FOR_STRING;
+                                if (len > (length - startIdx))
                                 {
                                     len = (length - startIdx);
                                 }
@@ -210,22 +219,24 @@ namespace Dev2.Runtime.WebServer.Hubs
                                     User = user
                                 };
 
-                                var value = processRequest.Substring(startIdx, len);
+                                string value = processRequest.Substring(startIdx, len);
 
-                                if(!ResultsCache.Instance.AddResult(future, value))
+                                if (!ResultsCache.Instance.AddResult(future, value))
                                 {
-                                    Dev2Logger.Log.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
+                                    Dev2Logger.Log.Error(
+                                        new Exception("Failed to build future receipt for [ " + Context.ConnectionId +
+                                                      " ] Value [ " + value + " ]"));
                                 }
 
                                 startIdx += len;
                             }
 
-                            return new Receipt { PartID = envelope.PartID, ResultParts = rounds };
+                            return new Receipt {PartID = envelope.PartID, ResultParts = rounds};
                         }
 
-                        return new Receipt { PartID = envelope.PartID, ResultParts = -1 };
+                        return new Receipt {PartID = envelope.PartID, ResultParts = -1};
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Dev2Logger.Log.Error(e);
                     }
@@ -234,7 +245,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 task.Start();
                 return await task;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error(e);
             }
@@ -243,36 +254,19 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         protected void OnCompilerMessageReceived(IList<ICompileMessageTO> messages)
         {
-            WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => (m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged)), CoalesceMappingChangedErrors);
-            WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
-
+            WriteEventProviderClientMessage<DesignValidationMemo>(
+                messages.Where(
+                    m =>
+                        (m.MessageType == CompileMessageType.MappingChange ||
+                         m.MessageType == CompileMessageType.MappingIsRequiredChanged)), CoalesceMappingChangedErrors);
+            WriteEventProviderClientMessage<DesignValidationMemo>(
+                messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
         }
-
-        #region CoalesceMappingChangedErrors
-
-        static void CoalesceMappingChangedErrors(DesignValidationMemo memo, ICompileMessageTO compilerMessage)
-        {
-            memo.ServiceID = compilerMessage.ServiceID;
-            memo.IsValid = false;
-            memo.Errors.Add(compilerMessage.ToErrorInfo());
-        }
-
-        #endregion
-
-        #region CoalesceResourceSavedErrors
-
-        static void CoalesceResourceSavedErrors(DesignValidationMemo memo, ICompileMessageTO compilerMessage)
-        {
-            memo.ServiceID = compilerMessage.ServiceID;
-            memo.IsValid = true;
-        }
-
-        #endregion
 
         public void SendMemo(Memo memo)
         {
-            var serializedMemo = _serializer.Serialize(memo);
-            var hubCallerConnectionContext = Clients;
+            string serializedMemo = _serializer.Serialize(memo);
+            IHubCallerConnectionContext hubCallerConnectionContext = Clients;
 
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
 
@@ -282,56 +276,60 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
         {
-            var msgs = new CompileMessageList { Dependants = new List<string>() };
+            var msgs = new CompileMessageList {Dependants = new List<string>()};
             messages.ToList().ForEach(s => msgs.Dependants.Add(s.ServiceName));
             msgs.MessageList = messages;
             msgs.ServiceID = resourceId;
-            var serializedMemo = _serializer.Serialize(msgs);
-            var hubCallerConnectionContext = Clients;
+            string serializedMemo = _serializer.Serialize(msgs);
+            IHubCallerConnectionContext hubCallerConnectionContext = Clients;
 
             hubCallerConnectionContext.All.ReceiveResourcesAffectedMemo(serializedMemo);
         }
 
         public void SendDebugState(DebugState debugState)
         {
-            var debugSerializated = _serializer.Serialize(debugState);
+            string debugSerializated = _serializer.Serialize(debugState);
 
-            var hubCallerConnectionContext = Clients;
-            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            IHubCallerConnectionContext hubCallerConnectionContext = Clients;
+            dynamic user = hubCallerConnectionContext.User(Context.User.Identity.Name);
             //var user = hubCallerConnectionContext.All;
             user.SendDebugState(debugSerializated);
         }
 
-        void WriteEventProviderClientMessage<TMemo>(IEnumerable<ICompileMessageTO> messages, Action<TMemo, ICompileMessageTO> coalesceErrors)
+        private void WriteEventProviderClientMessage<TMemo>(IEnumerable<ICompileMessageTO> messages,
+            Action<TMemo, ICompileMessageTO> coalesceErrors)
             where TMemo : IMemo, new()
         {
-            var messageArray = messages.ToArray();
-            if(messageArray.Length == 0)
+            ICompileMessageTO[] messageArray = messages.ToArray();
+            if (messageArray.Length == 0)
             {
                 return;
             }
 
             // we need to broadcast per service and per unique ID messages
-            var serviceGroupings = messageArray.GroupBy(to => to.ServiceID).ToList();
+            List<IGrouping<Guid, ICompileMessageTO>> serviceGroupings =
+                messageArray.GroupBy(to => to.ServiceID).ToList();
             WriteEventProviderClientMessage(serviceGroupings, coalesceErrors);
 
-            var instanceGroupings = messageArray.Where(to => to.UniqueID != Guid.Empty).GroupBy(to => to.UniqueID).ToList();
+            List<IGrouping<Guid, ICompileMessageTO>> instanceGroupings =
+                messageArray.Where(to => to.UniqueID != Guid.Empty).GroupBy(to => to.UniqueID).ToList();
             WriteEventProviderClientMessage(instanceGroupings, coalesceErrors);
         }
 
-        void WriteEventProviderClientMessage<TMemo>(IEnumerable<IGrouping<Guid, ICompileMessageTO>> groupings, Action<TMemo, ICompileMessageTO> coalesceErrors)
+        private void WriteEventProviderClientMessage<TMemo>(IEnumerable<IGrouping<Guid, ICompileMessageTO>> groupings,
+            Action<TMemo, ICompileMessageTO> coalesceErrors)
             where TMemo : IMemo, new()
         {
-            var memo = new TMemo { ServerID = HostSecurityProvider.Instance.ServerID };
+            var memo = new TMemo {ServerID = HostSecurityProvider.Instance.ServerID};
 
-            foreach(var grouping in groupings)
+            foreach (var grouping in groupings)
             {
-                if(grouping.Key == Guid.Empty)
+                if (grouping.Key == Guid.Empty)
                 {
                     continue;
                 }
                 memo.InstanceID = grouping.Key;
-                foreach(var message in grouping)
+                foreach (ICompileMessageTO message in grouping)
                 {
                     memo.WorkspaceID = message.WorkspaceID;
                     coalesceErrors(memo, message);
@@ -376,7 +374,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
             var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
-            if(authorizationServiceBase != null)
+            if (authorizationServiceBase != null)
             {
                 authorizationServiceBase.Dispose();
             }
@@ -393,16 +391,16 @@ namespace Dev2.Runtime.WebServer.Hubs
             return base.OnDisconnected();
         }
 
-        void ConnectionActions()
+        private void ConnectionActions()
         {
             SetupEvents();
 
-            var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
-            var hubCallerConnectionContext = Clients;
-            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            Guid workspaceId = Server.GetWorkspaceID(Context.User.Identity);
+            IHubCallerConnectionContext hubCallerConnectionContext = Clients;
+            dynamic user = hubCallerConnectionContext.User(Context.User.Identity.Name);
             user.SendWorkspaceID(workspaceId);
             user.SendServerID(HostSecurityProvider.Instance.ServerID);
-            PermissionsHaveBeenModified(null,null);
+            PermissionsHaveBeenModified(null, null);
         }
 
         protected void SetupEvents()
@@ -410,14 +408,35 @@ namespace Dev2.Runtime.WebServer.Hubs
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
             ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
             ServerExplorerRepository.Instance.MessageSubscription(this);
-            if(ResourceCatalog.Instance.ResourceSaved == null)
+            if (ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
             }
-            if(ResourceCatalog.Instance.SendResourceMessages == null)
+            if (ResourceCatalog.Instance.SendResourceMessages == null)
             {
                 ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
             }
+        }
+
+        #endregion
+
+        #region CoalesceMappingChangedErrors
+
+        private static void CoalesceMappingChangedErrors(DesignValidationMemo memo, ICompileMessageTO compilerMessage)
+        {
+            memo.ServiceID = compilerMessage.ServiceID;
+            memo.IsValid = false;
+            memo.Errors.Add(compilerMessage.ToErrorInfo());
+        }
+
+        #endregion
+
+        #region CoalesceResourceSavedErrors
+
+        private static void CoalesceResourceSavedErrors(DesignValidationMemo memo, ICompileMessageTO compilerMessage)
+        {
+            memo.ServiceID = compilerMessage.ServiceID;
+            memo.IsValid = true;
         }
 
         #endregion

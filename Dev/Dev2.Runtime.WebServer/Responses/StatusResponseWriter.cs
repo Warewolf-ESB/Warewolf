@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,7 +15,7 @@ namespace Dev2.Runtime.WebServer.Responses
 {
     public class StatusResponseWriter : IResponseWriter
     {
-        readonly HttpStatusCode _statusCode;
+        private readonly HttpStatusCode _statusCode;
 
         public StatusResponseWriter(HttpStatusCode statusCode = HttpStatusCode.NoContent)
         {

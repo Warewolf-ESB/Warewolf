@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -30,33 +29,33 @@ namespace Dev2.Runtime.ESB.Management.Services
             string filePath = null;
             string directory = null;
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage {HasError = false};
 
             StringBuilder tmp;
             values.TryGetValue("FilePath", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 filePath = tmp.ToString();
             }
             values.TryGetValue("Directory", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 directory = tmp.ToString();
             }
 
-            if(String.IsNullOrWhiteSpace(filePath))
+            if (String.IsNullOrWhiteSpace(filePath))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage("Can't delete a file if no filename is passed.", filePath, directory));
                 Dev2Logger.Log.Info(msg.Message.ToString());
             }
-            else if(String.IsNullOrWhiteSpace(directory))
+            else if (String.IsNullOrWhiteSpace(directory))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage("Can't delete a file if no directory is passed.", filePath, directory));
                 Dev2Logger.Log.Info(msg.Message.ToString());
             }
-            else if(!Directory.Exists(directory))
+            else if (!Directory.Exists(directory))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage("No such directory exists on the server.", filePath, directory));
@@ -64,9 +63,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                var path = Path.Combine(directory, filePath);
+                string path = Path.Combine(directory, filePath);
 
-                if(!File.Exists(path))
+                if (!File.Exists(path))
                 {
                     msg.HasError = true;
                     msg.SetMessage(FormatMessage("No such file exists on the server.", filePath, directory));
@@ -79,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         File.Delete(path);
                         msg.SetMessage("Success");
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         msg.HasError = true;
                         msg.SetMessage(FormatMessage(ex.Message, filePath, directory));
@@ -88,15 +87,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(msg);
         }
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService findDirectoryService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Directory ColumnIODirection=\"Input\"/><FilePath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findDirectoryService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><Directory ColumnIODirection=\"Input\"/><FilePath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
 
-            ServiceAction findDirectoryServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var findDirectoryServiceAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            };
 
             findDirectoryService.Actions.Add(findDirectoryServiceAction);
 
@@ -108,7 +118,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return "DeleteLogService";
         }
 
-        static string FormatMessage(string message, string filePath, string directory)
+        private static string FormatMessage(string message, string filePath, string directory)
         {
             return string.Format("DeleteLog: Error deleting '{0}' from '{1}'...{2}", filePath, directory, message);
         }

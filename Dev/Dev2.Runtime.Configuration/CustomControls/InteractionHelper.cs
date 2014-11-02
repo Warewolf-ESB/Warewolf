@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,10 +21,10 @@ using System.Windows.Input;
 namespace System.Windows.Controls
 {
     /// <summary>
-    /// The InteractionHelper provides controls with support for all of the
-    /// common interactions like mouse movement, mouse clicks, key presses,
-    /// etc., and also incorporates proper event semantics when the control is
-    /// disabled.
+    ///     The InteractionHelper provides controls with support for all of the
+    ///     common interactions like mouse movement, mouse clicks, key presses,
+    ///     etc., and also incorporates proper event semantics when the control is
+    ///     disabled.
     /// </summary>
     internal sealed class InteractionHelper
     {
@@ -33,75 +32,28 @@ namespace System.Windows.Controls
         // click distance and time thresholds.
 
         /// <summary>
-        /// The threshold used to determine whether two clicks are temporally
-        /// local and considered a double click (or triple, quadruple, etc.).
-        /// 500 milliseconds is the default double click value on Windows.
-        /// This value would ideally be pulled form the system settings.
+        ///     The threshold used to determine whether two clicks are temporally
+        ///     local and considered a double click (or triple, quadruple, etc.).
+        ///     500 milliseconds is the default double click value on Windows.
+        ///     This value would ideally be pulled form the system settings.
         /// </summary>
         private const double SequentialClickThresholdInMilliseconds = 500.0;
 
         /// <summary>
-        /// The threshold used to determine whether two clicks are spatially
-        /// local and considered a double click (or triple, quadruple, etc.)
-        /// in pixels squared.  We use pixels squared so that we can compare to
-        /// the distance delta without taking a square root.
+        ///     The threshold used to determine whether two clicks are spatially
+        ///     local and considered a double click (or triple, quadruple, etc.)
+        ///     in pixels squared.  We use pixels squared so that we can compare to
+        ///     the distance delta without taking a square root.
         /// </summary>
-        private const double SequentialClickThresholdInPixelsSquared = 3.0 * 3.0;
+        private const double SequentialClickThresholdInPixelsSquared = 3.0*3.0;
 
         /// <summary>
-        /// Gets the control the InteractionHelper is targeting.
-        /// </summary>
-        public Control Control { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the control has focus.
-        /// </summary>
-        public bool IsFocused { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the mouse is over the control.
-        /// </summary> 
-        public bool IsMouseOver { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the read-only property is set.
-        /// </summary>
-        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Linked file.")]
-        public bool IsReadOnly { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the mouse button is pressed down
-        /// over the control.
-        /// </summary>
-        public bool IsPressed { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the last time the control was clicked.
-        /// </summary>
-        /// <remarks>
-        /// The value is stored as Utc time because it is slightly more
-        /// per formant than converting to local time.
-        /// </remarks>
-        private DateTime LastClickTime { get; set; }
-
-        /// <summary>
-        /// Gets or sets the mouse position of the last click.
-        /// </summary>
-        /// <remarks>The value is relative to the control.</remarks>
-        private Point LastClickPosition { get; set; }
-
-        /// <summary>
-        /// Gets the number of times the control was clicked.
-        /// </summary>
-        public int ClickCount { get; private set; }
-
-        /// <summary>
-        /// Reference used to call UpdateVisualState on the base class.
+        ///     Reference used to call UpdateVisualState on the base class.
         /// </summary>
         private readonly IUpdateVisualState _updateVisualState;
 
         /// <summary>
-        /// Initializes a new instance of the InteractionHelper class.
+        ///     Initializes a new instance of the InteractionHelper class.
         /// </summary>
         /// <param name="control">Control receiving interaction.</param>
         public InteractionHelper(Control control)
@@ -116,52 +68,54 @@ namespace System.Windows.Controls
         }
 
         #region UpdateVisualState
+
         /// <summary>
-        /// Update the visual state of the control.
+        ///     Update the visual state of the control.
         /// </summary>
         /// <param name="useTransitions">
-        /// A value indicating whether to automatically generate transitions to
-        /// the new state, or instantly transition to the new state.
+        ///     A value indicating whether to automatically generate transitions to
+        ///     the new state, or instantly transition to the new state.
         /// </param>
         /// <remarks>
-        /// UpdateVisualState works differently than the rest of the injected
-        /// functionality.  Most of the other events are overridden by the
-        /// calling class which calls Allow, does what it wants, and then calls
-        /// Base.  UpdateVisualState is the opposite because a number of the
-        /// methods in InteractionHelper need to trigger it in the calling
-        /// class.  We do this using the IUpdateVisualState internal interface.
+        ///     UpdateVisualState works differently than the rest of the injected
+        ///     functionality.  Most of the other events are overridden by the
+        ///     calling class which calls Allow, does what it wants, and then calls
+        ///     Base.  UpdateVisualState is the opposite because a number of the
+        ///     methods in InteractionHelper need to trigger it in the calling
+        ///     class.  We do this using the IUpdateVisualState internal interface.
         /// </remarks>
         private void UpdateVisualState(bool useTransitions)
         {
-            if(_updateVisualState != null)
+            if (_updateVisualState != null)
             {
                 _updateVisualState.UpdateVisualState(useTransitions);
             }
         }
 
         /// <summary>
-        /// Update the visual state of the control.
+        ///     Update the visual state of the control.
         /// </summary>
         /// <param name="useTransitions">
-        /// A value indicating whether to automatically generate transitions to
-        /// the new state, or instantly transition to the new state.
+        ///     A value indicating whether to automatically generate transitions to
+        ///     the new state, or instantly transition to the new state.
         /// </param>
         public void UpdateVisualStateBase(bool useTransitions)
         {
             // Handle the Common states
-            if(!Control.IsEnabled)
+            if (!Control.IsEnabled)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateDisabled, VisualStates.StateNormal);
             }
-            else if(IsReadOnly)
+            else if (IsReadOnly)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateReadOnly, VisualStates.StateNormal);
             }
-            else if(IsPressed)
+            else if (IsPressed)
             {
-                VisualStates.GoToState(Control, useTransitions, VisualStates.StatePressed, VisualStates.StateMouseOver, VisualStates.StateNormal);
+                VisualStates.GoToState(Control, useTransitions, VisualStates.StatePressed, VisualStates.StateMouseOver,
+                    VisualStates.StateNormal);
             }
-            else if(IsMouseOver)
+            else if (IsMouseOver)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateMouseOver, VisualStates.StateNormal);
             }
@@ -171,7 +125,7 @@ namespace System.Windows.Controls
             }
 
             // Handle the Focused states
-            if(IsFocused)
+            if (IsFocused)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateFocused, VisualStates.StateUnfocused);
             }
@@ -180,10 +134,58 @@ namespace System.Windows.Controls
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateUnfocused);
             }
         }
+
         #endregion UpdateVisualState
 
         /// <summary>
-        /// Handle the control's Loaded event.
+        ///     Gets the control the InteractionHelper is targeting.
+        /// </summary>
+        public Control Control { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether the control has focus.
+        /// </summary>
+        public bool IsFocused { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether the mouse is over the control.
+        /// </summary>
+        public bool IsMouseOver { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether the read-only property is set.
+        /// </summary>
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Linked file.")]
+        public bool IsReadOnly { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether the mouse button is pressed down
+        ///     over the control.
+        /// </summary>
+        public bool IsPressed { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets the last time the control was clicked.
+        /// </summary>
+        /// <remarks>
+        ///     The value is stored as Utc time because it is slightly more
+        ///     per formant than converting to local time.
+        /// </remarks>
+        private DateTime LastClickTime { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the mouse position of the last click.
+        /// </summary>
+        /// <remarks>The value is relative to the control.</remarks>
+        private Point LastClickPosition { get; set; }
+
+        /// <summary>
+        ///     Gets the number of times the control was clicked.
+        /// </summary>
+        public int ClickCount { get; private set; }
+
+        /// <summary>
+        ///     Handle the control's Loaded event.
         /// </summary>
         /// <param name="sender">The control.</param>
         /// <param name="e">Event arguments.</param>
@@ -193,14 +195,14 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Handle changes to the control's IsEnabled property.
+        ///     Handle changes to the control's IsEnabled property.
         /// </summary>
         /// <param name="sender">The control.</param>
         /// <param name="e">Event arguments.</param>
         private void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            bool enabled = (bool)e.NewValue;
-            if(!enabled)
+            var enabled = (bool) e.NewValue;
+            if (!enabled)
             {
                 IsPressed = false;
                 IsMouseOver = false;
@@ -211,14 +213,14 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Handles changes to the control's IsReadOnly property.
+        ///     Handles changes to the control's IsReadOnly property.
         /// </summary>
         /// <param name="value">The value of the property.</param>
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Linked file.")]
         public void OnIsReadOnlyChanged(bool value)
         {
             IsReadOnly = value;
-            if(!value)
+            if (!value)
             {
                 IsPressed = false;
                 IsMouseOver = false;
@@ -229,7 +231,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Update the visual state of the control when its template is changed.
+        ///     Update the visual state of the control when its template is changed.
         /// </summary>
         public void OnApplyTemplateBase()
         {
@@ -237,22 +239,23 @@ namespace System.Windows.Controls
         }
 
         #region GotFocus
+
         /// <summary>
-        /// Check if the control's GotFocus event should be handled.
+        ///     Check if the control's GotFocus event should be handled.
         /// </summary>
         /// <param name="e">Event arguments.</param>
         /// <returns>
-        /// A value indicating whether the event should be handled.
+        ///     A value indicating whether the event should be handled.
         /// </returns>
         public bool AllowGotFocus(RoutedEventArgs e)
         {
-            if(e == null)
+            if (e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if(enabled)
+            if (enabled)
             {
                 IsFocused = true;
             }
@@ -260,31 +263,33 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Base implementation of the virtual GotFocus event handler.
+        ///     Base implementation of the virtual GotFocus event handler.
         /// </summary>
         public void OnGotFocusBase()
         {
             UpdateVisualState(true);
         }
+
         #endregion GotFocus
 
         #region LostFocus
+
         /// <summary>
-        /// Check if the control's LostFocus event should be handled.
+        ///     Check if the control's LostFocus event should be handled.
         /// </summary>
         /// <param name="e">Event arguments.</param>
         /// <returns>
-        /// A value indicating whether the event should be handled.
+        ///     A value indicating whether the event should be handled.
         /// </returns>
         public bool AllowLostFocus(RoutedEventArgs e)
         {
-            if(e == null)
+            if (e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if(enabled)
+            if (enabled)
             {
                 IsFocused = false;
             }
@@ -292,32 +297,34 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Base implementation of the virtual LostFocus event handler.
+        ///     Base implementation of the virtual LostFocus event handler.
         /// </summary>
         public void OnLostFocusBase()
         {
             IsPressed = false;
             UpdateVisualState(true);
         }
+
         #endregion LostFocus
 
         #region MouseEnter
+
         /// <summary>
-        /// Check if the control's MouseEnter event should be handled.
+        ///     Check if the control's MouseEnter event should be handled.
         /// </summary>
         /// <param name="e">Event arguments.</param>
         /// <returns>
-        /// A value indicating whether the event should be handled.
+        ///     A value indicating whether the event should be handled.
         /// </returns>
         public bool AllowMouseEnter(MouseEventArgs e)
         {
-            if(e == null)
+            if (e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if(enabled)
+            if (enabled)
             {
                 IsMouseOver = true;
             }
@@ -325,31 +332,33 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Base implementation of the virtual MouseEnter event handler.
+        ///     Base implementation of the virtual MouseEnter event handler.
         /// </summary>
         public void OnMouseEnterBase()
         {
             UpdateVisualState(true);
         }
+
         #endregion MouseEnter
 
         #region MouseLeave
+
         /// <summary>
-        /// Check if the control's MouseLeave event should be handled.
+        ///     Check if the control's MouseLeave event should be handled.
         /// </summary>
         /// <param name="e">Event arguments.</param>
         /// <returns>
-        /// A value indicating whether the event should be handled.
+        ///     A value indicating whether the event should be handled.
         /// </returns>
         public bool AllowMouseLeave(MouseEventArgs e)
         {
-            if(e == null)
+            if (e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if(enabled)
+            if (enabled)
             {
                 IsMouseOver = false;
             }
@@ -357,31 +366,33 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Base implementation of the virtual MouseLeave event handler.
+        ///     Base implementation of the virtual MouseLeave event handler.
         /// </summary>
         public void OnMouseLeaveBase()
         {
             UpdateVisualState(true);
         }
+
         #endregion MouseLeave
 
         #region MouseLeftButtonDown
+
         /// <summary>
-        /// Check if the control's MouseLeftButtonDown event should be handled.
+        ///     Check if the control's MouseLeftButtonDown event should be handled.
         /// </summary>
         /// <param name="e">Event arguments.</param>
         /// <returns>
-        /// A value indicating whether the event should be handled.
+        ///     A value indicating whether the event should be handled.
         /// </returns>
         public bool AllowMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if(e == null)
+            if (e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if(enabled)
+            if (enabled)
             {
                 // Get the current position and time
                 DateTime now = DateTime.UtcNow;
@@ -392,11 +403,11 @@ namespace System.Windows.Controls
                 Point lastPosition = LastClickPosition;
                 double dx = position.X - lastPosition.X;
                 double dy = position.Y - lastPosition.Y;
-                double distance = dx * dx + dy * dy;
+                double distance = dx*dx + dy*dy;
 
                 // Check if the values fall under the sequential click temporal
                 // and spatial thresholds
-                if(timeDelta < SequentialClickThresholdInMilliseconds &&
+                if (timeDelta < SequentialClickThresholdInMilliseconds &&
                     distance < SequentialClickThresholdInPixelsSquared)
                 {
                     // TODO: Does each click have to be within the single time
@@ -424,32 +435,34 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Base implementation of the virtual MouseLeftButtonDown event
-        /// handler.
+        ///     Base implementation of the virtual MouseLeftButtonDown event
+        ///     handler.
         /// </summary>
         public void OnMouseLeftButtonDownBase()
         {
             UpdateVisualState(true);
         }
+
         #endregion MouseLeftButtonDown
 
         #region MouseLeftButtonUp
+
         /// <summary>
-        /// Check if the control's MouseLeftButtonUp event should be handled.
+        ///     Check if the control's MouseLeftButtonUp event should be handled.
         /// </summary>
         /// <param name="e">Event arguments.</param>
         /// <returns>
-        /// A value indicating whether the event should be handled.
+        ///     A value indicating whether the event should be handled.
         /// </returns>
         public bool AllowMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            if(e == null)
+            if (e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if(enabled)
+            if (enabled)
             {
                 IsPressed = false;
             }
@@ -457,50 +470,55 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Base implementation of the virtual MouseLeftButtonUp event handler.
+        ///     Base implementation of the virtual MouseLeftButtonUp event handler.
         /// </summary>
         public void OnMouseLeftButtonUpBase()
         {
             UpdateVisualState(true);
         }
+
         #endregion MouseLeftButtonUp
 
         #region KeyDown
+
         /// <summary>
-        /// Check if the control's KeyDown event should be handled.
+        ///     Check if the control's KeyDown event should be handled.
         /// </summary>
         /// <param name="e">Event arguments.</param>
         /// <returns>
-        /// A value indicating whether the event should be handled.
+        ///     A value indicating whether the event should be handled.
         /// </returns>
         public bool AllowKeyDown(KeyEventArgs e)
         {
-            if(e == null)
+            if (e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             return Control.IsEnabled;
         }
+
         #endregion KeyDown
 
         #region KeyUp
+
         /// <summary>
-        /// Check if the control's KeyUp event should be handled.
+        ///     Check if the control's KeyUp event should be handled.
         /// </summary>
         /// <param name="e">Event arguments.</param>
         /// <returns>
-        /// A value indicating whether the event should be handled.
+        ///     A value indicating whether the event should be handled.
         /// </returns>
         public bool AllowKeyUp(KeyEventArgs e)
         {
-            if(e == null)
+            if (e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             return Control.IsEnabled;
         }
+
         #endregion KeyUp
     }
 }

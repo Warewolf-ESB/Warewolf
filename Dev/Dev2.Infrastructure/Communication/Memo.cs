@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -37,7 +36,7 @@ namespace Dev2.Communication
 
         public string ToString(ISerializer serializer)
         {
-            var serialize = serializer.Serialize(this);
+            string serialize = serializer.Serialize(this);
             var envelope = new Envelope
             {
                 Type = GetType(),
@@ -56,7 +55,7 @@ namespace Dev2.Communication
 
         public bool Equals(IMemo other)
         {
-            if(other == null)
+            if (other == null)
             {
                 return false;
             }

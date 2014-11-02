@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,18 +19,19 @@ using System.Diagnostics.CodeAnalysis;
 namespace System.Windows.Controls
 {
     /// <summary>
-    /// The IUpdateVisualState interface is used to provide the
-    /// InteractionHelper with access to the type's UpdateVisualState method.
+    ///     The IUpdateVisualState interface is used to provide the
+    ///     InteractionHelper with access to the type's UpdateVisualState method.
     /// </summary>
-    [SuppressMessage("Microsoft.Design", "CA1064:ExceptionsShouldBePublic", Justification = "This is not an exception class.")]
+    [SuppressMessage("Microsoft.Design", "CA1064:ExceptionsShouldBePublic",
+        Justification = "This is not an exception class.")]
     internal interface IUpdateVisualState
     {
         /// <summary>
-        /// Update the visual state of the control.
+        ///     Update the visual state of the control.
         /// </summary>
         /// <param name="useTransitions">
-        /// A value indicating whether to automatically generate transitions to
-        /// the new state, or instantly transition to the new state.
+        ///     A value indicating whether to automatically generate transitions to
+        ///     the new state, or instantly transition to the new state.
         /// </param>
         void UpdateVisualState(bool useTransitions);
     }

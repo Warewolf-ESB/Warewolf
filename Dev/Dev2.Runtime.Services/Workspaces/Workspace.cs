@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,16 +16,15 @@ using System.Runtime.Serialization;
 namespace Dev2.Workspaces
 {
     /// <summary>
-    /// A workspace.
+    ///     A workspace.
     /// </summary>
     [Serializable]
     public partial class Workspace : IWorkspace
     {
-
         #region Initialization
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Workspace" /> class.
+        ///     Initializes a new instance of the <see cref="Workspace" /> class.
         /// </summary>
         /// <param name="workspaceID">The id of the workspace.</param>
         public Workspace(Guid workspaceID)
@@ -40,26 +38,18 @@ namespace Dev2.Workspaces
         #region ID
 
         /// <summary>
-        /// Gets or sets the unique ID.
+        ///     Gets or sets the unique ID.
         /// </summary>
-        public Guid ID
-        {
-            get;
-            private set;
-        }
+        public Guid ID { get; private set; }
 
         #endregion
 
         #region Items
 
         /// <summary>
-        /// Gets the items for this workspace.
+        ///     Gets the items for this workspace.
         /// </summary>
-        public IList<IWorkspaceItem> Items
-        {
-            get;
-            private set;
-        }
+        public IList<IWorkspaceItem> Items { get; private set; }
 
         #endregion
 
@@ -67,17 +57,17 @@ namespace Dev2.Workspaces
 
         protected Workspace(SerializationInfo info, StreamingContext context)
         {
-            if(info == null)
+            if (info == null)
             {
                 throw new ArgumentNullException("info");
             }
-            ID = (Guid)info.GetValue("ID", typeof(Guid));
-            Items = (IList<IWorkspaceItem>)info.GetValue("Items", typeof(IList<IWorkspaceItem>));
+            ID = (Guid) info.GetValue("ID", typeof (Guid));
+            Items = (IList<IWorkspaceItem>) info.GetValue("Items", typeof (IList<IWorkspaceItem>));
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if(info == null)
+            if (info == null)
             {
                 throw new ArgumentNullException("info");
             }
@@ -91,7 +81,7 @@ namespace Dev2.Workspaces
 
         public bool Equals(IWorkspace other)
         {
-            if(other == null)
+            if (other == null)
             {
                 return false;
             }
@@ -100,7 +90,7 @@ namespace Dev2.Workspaces
 
         public override bool Equals(object obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return false;
             }
@@ -115,6 +105,5 @@ namespace Dev2.Workspaces
         }
 
         #endregion
-
     }
 }

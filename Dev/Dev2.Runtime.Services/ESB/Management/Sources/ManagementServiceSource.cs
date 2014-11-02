@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,14 +15,14 @@ using Dev2.DynamicServices;
 namespace Dev2.Runtime.ESB.Management.Sources
 {
     /// <summary>
-    /// Root source for management services
-    /// Replace : GetDefaultSources() in DynamicServicesHost
+    ///     Root source for management services
+    ///     Replace : GetDefaultSources() in DynamicServicesHost
     /// </summary>
-    public class ManagementServiceSource 
+    public class ManagementServiceSource
     {
         public Source CreateSourceEntry()
         {
-            Source s = new Source();
+            var s = new Source();
             s.Name = HandlesType();
             s.Type = enSourceType.ManagementDynamicService;
 

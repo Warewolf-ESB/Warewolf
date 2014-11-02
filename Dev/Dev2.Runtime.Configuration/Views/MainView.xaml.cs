@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +16,7 @@ using Dev2.Runtime.Configuration.ViewModels;
 namespace Dev2.Runtime.Configuration.Views
 {
     /// <summary>
-    /// Interaction logic for SettingsView.xaml
+    ///     Interaction logic for SettingsView.xaml
     /// </summary>
     public partial class MainView
     {
@@ -28,9 +27,9 @@ namespace Dev2.Runtime.Configuration.Views
 
         private void TreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            MainViewModel mainViewModel = DataContext as MainViewModel;
+            var mainViewModel = DataContext as MainViewModel;
 
-            if(mainViewModel != null)
+            if (mainViewModel != null)
             {
                 mainViewModel.SelectedSettingsObjects = e.NewValue as SettingsObject;
             }

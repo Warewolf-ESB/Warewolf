@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,6 +21,7 @@ using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Action = System.Action;
 
 namespace Dev2.Runtime.Configuration.ViewModels
 {
@@ -29,28 +29,29 @@ namespace Dev2.Runtime.Configuration.ViewModels
     {
         #region Fields
 
+        private RelayCommand _cancelCommand;
+        private RelayCommand _clearErrorsCommand;
         private ObservableCollection<string> _errors;
-        private List<SettingsObject> _settingsObjects;
-        private SettingsObject _selectedSettingsObjects;
-        private UserControl _settingsView;
         private Visibility _errorsVisible;
         private XElement _initConfigXML;
 
         private RelayCommand _saveCommand;
-        private RelayCommand _cancelCommand;
-        private RelayCommand _clearErrorsCommand;
         private bool _saveSuccess;
+        private SettingsObject _selectedSettingsObjects;
+        private List<SettingsObject> _settingsObjects;
+        private UserControl _settingsView;
 
         #endregion
 
         #region Constructor
 
-        public MainViewModel(XElement configurationXML, Func<XElement, XElement> saveCallback, System.Action cancelCallback, System.Action settingChangedCallback)
+        public MainViewModel(XElement configurationXML, Func<XElement, XElement> saveCallback, Action cancelCallback,
+            Action settingChangedCallback)
         {
             Errors = new ObservableCollection<string>();
             ClearErrors();
 
-            if(!SetConfiguration(configurationXML)) return;
+            if (!SetConfiguration(configurationXML)) return;
 
             SaveCallback = saveCallback;
             CancelCallback = cancelCallback;
@@ -62,7 +63,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         private bool SetConfiguration(XElement configurationXML)
         {
             // Check for null
-            if(configurationXML == null)
+            if (configurationXML == null)
             {
                 SetError("'configurationXML' of the MainViewModel was null.");
                 return false;
@@ -74,7 +75,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 Configuration = new Settings.Configuration(configurationXML);
                 Configuration.PropertyChanged += ConfigurationPropertyChanged;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 SetError(string.Format("Error parsing '{0}' input.", configurationXML));
                 return false;
@@ -85,7 +86,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             {
                 SettingsObjects = SettingsObject.BuildGraph(Configuration);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 SetError(string.Format("Error building settings graph from '{0}'.", configurationXML));
                 return false;
@@ -101,10 +102,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public bool SaveSuccess
         {
-            get
-            {
-                return _saveSuccess;
-            }
+            get { return _saveSuccess; }
             private set
             {
                 _saveSuccess = value;
@@ -114,10 +112,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public Visibility ErrorsVisible
         {
-            get
-            {
-                return _errorsVisible;
-            }
+            get { return _errorsVisible; }
             private set
             {
                 _errorsVisible = value;
@@ -127,10 +122,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public List<SettingsObject> SettingsObjects
         {
-            get
-            {
-                return _settingsObjects;
-            }
+            get { return _settingsObjects; }
             private set
             {
                 _settingsObjects = value;
@@ -140,10 +132,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public ObservableCollection<string> Errors
         {
-            get
-            {
-                return _errors;
-            }
+            get { return _errors; }
             private set
             {
                 _errors = value;
@@ -153,10 +142,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public SettingsObject SelectedSettingsObjects
         {
-            get
-            {
-                return _selectedSettingsObjects;
-            }
+            get { return _selectedSettingsObjects; }
             set
             {
                 _selectedSettingsObjects = value;
@@ -167,15 +153,12 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public UserControl SettingsView
         {
-            get
-            {
-                return _settingsView;
-            }
+            get { return _settingsView; }
             // ReSharper disable UnusedMember.Local
             private set
-            // ReSharper restore UnusedMember.Local
+                // ReSharper restore UnusedMember.Local
             {
-                if(value == null)
+                if (value == null)
                 {
                     throw new ArgumentNullException("value");
                 }
@@ -220,9 +203,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
         #region Private Properties
 
         private Func<XElement, XElement> SaveCallback { get; set; }
-        private System.Action CancelCallback { get; set; }
+        private Action CancelCallback { get; set; }
         // ReSharper disable UnusedAutoPropertyAccessor.Local
-        private System.Action SettingChangedCallback { get; set; }
+        private Action SettingChangedCallback { get; set; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         #endregion
@@ -231,11 +214,11 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void ConfigurationPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case "HasChanges":
                     CommandManager.InvalidateRequerySuggested();
-                    if(Configuration.HasChanges)
+                    if (Configuration.HasChanges)
                     {
                         SaveSuccess = false;
                     }
@@ -260,7 +243,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         {
             SaveSuccess = false;
 
-            if(SaveCallback == null)
+            if (SaveCallback == null)
             {
                 return;
             }
@@ -271,19 +254,19 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 SetConfiguration(newConfig);
                 SaveSuccess = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SaveSuccess = false;
-                SetError(string.Format("The following error occurred while executing the save callback '{0}'.", ex.Message));
+                SetError(string.Format("The following error occurred while executing the save callback '{0}'.",
+                    ex.Message));
             }
-
         }
 
         private void Cancel()
         {
             SaveSuccess = false;
 
-            if(CancelCallback == null)
+            if (CancelCallback == null)
             {
                 return;
             }
@@ -293,9 +276,10 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 CancelCallback();
                 SetConfiguration(_initConfigXML);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SetError(string.Format("The following error occurred while executing the cancel callback '{0}'.", ex.Message));
+                SetError(string.Format("The following error occurred while executing the cancel callback '{0}'.",
+                    ex.Message));
             }
         }
 
@@ -308,7 +292,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         private void SetError(string error)
         {
             Errors.Add(error);
-            if(Errors.Count == 0)
+            if (Errors.Count == 0)
             {
                 ErrorsVisible = Visibility.Collapsed;
             }
@@ -320,13 +304,13 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         private void UpdateSettingsView(SettingsObject settingsObject)
         {
-            if(!settingsObject.IsSelected)
+            if (!settingsObject.IsSelected)
             {
                 settingsObject.IsSelected = true;
             }
 
             // Instantiate view model
-            var vm = CreateViewModel(settingsObject.ViewModel, settingsObject.Object);
+            SettingsViewModelBase vm = CreateViewModel(settingsObject.ViewModel, settingsObject.Object);
             Items.Add(vm);
             ActivateItem(vm);
         }
@@ -340,7 +324,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
             finally
             {
-                if(viewModel != null)
+                if (viewModel != null)
                 {
                     viewModel.CommunicationService = CommunicationService;
                     viewModel.Object = Object;
@@ -349,6 +333,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
             return viewModel;
         }
+
         #endregion
     }
 }

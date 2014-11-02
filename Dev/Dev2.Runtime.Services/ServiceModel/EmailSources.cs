@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,7 +15,6 @@ using System.Net.Mail;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -27,7 +25,7 @@ namespace Dev2.Runtime.ServiceModel
     // PBI 953 - 2013.05.16 - TWR - Created
     public class EmailSources : ExceptionManager
     {
-        readonly IResourceCatalog _resourceCatalog;
+        private readonly IResourceCatalog _resourceCatalog;
 
         #region CTOR
 
@@ -38,7 +36,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public EmailSources(IResourceCatalog resourceCatalog)
         {
-            if(resourceCatalog == null)
+            if (resourceCatalog == null)
             {
                 throw new ArgumentNullException("resourceCatalog");
             }
@@ -55,14 +53,15 @@ namespace Dev2.Runtime.ServiceModel
             var result = new EmailSource();
             try
             {
-                var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
-                if(!string.IsNullOrEmpty(xmlStr))
+                string xmlStr =
+                    ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
+                if (!string.IsNullOrEmpty(xmlStr))
                 {
-                    var xml = XElement.Parse(xmlStr);
+                    XElement xml = XElement.Parse(xmlStr);
                     result = new EmailSource(xml);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -81,17 +80,17 @@ namespace Dev2.Runtime.ServiceModel
                 var source = JsonConvert.DeserializeObject<EmailSource>(args);
 
                 _resourceCatalog.SaveResource(workspaceId, source);
-                if(workspaceId != GlobalConstants.ServerWorkspaceID)
+                if (workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, source);
                 }
 
                 return source.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
+                return new ValidationResult {IsValid = false, ErrorMessage = ex.Message}.ToString();
             }
         }
 
@@ -107,10 +106,10 @@ namespace Dev2.Runtime.ServiceModel
                 var source = JsonConvert.DeserializeObject<EmailSource>(args);
                 return CanConnectServer(source);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message };
+                return new ValidationResult {IsValid = false, ErrorMessage = ex.Message};
             }
         }
 
@@ -118,11 +117,11 @@ namespace Dev2.Runtime.ServiceModel
 
         #region CanConnectServer
 
-        ValidationResult CanConnectServer(EmailSource emailSource)
+        private ValidationResult CanConnectServer(EmailSource emailSource)
         {
             try
             {
-                var userParts = emailSource.UserName.Split(new[] { '@' });
+                string[] userParts = emailSource.UserName.Split(new[] {'@'});
 
                 var smtp = new SmtpClient(emailSource.Host, emailSource.Port)
                 {
@@ -134,7 +133,8 @@ namespace Dev2.Runtime.ServiceModel
 
                 try
                 {
-                    smtp.Send(emailSource.TestFromAddress, emailSource.TestToAddress, "Test Message", "This is a test message");
+                    smtp.Send(emailSource.TestFromAddress, emailSource.TestToAddress, "Test Message",
+                        "This is a test message");
                     return new ValidationResult();
                 }
                 finally
@@ -142,18 +142,18 @@ namespace Dev2.Runtime.ServiceModel
                     smtp.Dispose();
                 }
             }
-            catch(SmtpException sex)
+            catch (SmtpException sex)
             {
                 RaiseError(sex);
-                var message = sex.Message;
-                if(sex.StatusCode == SmtpStatusCode.MustIssueStartTlsFirst && sex.Message.Contains("Learn more at"))
+                string message = sex.Message;
+                if (sex.StatusCode == SmtpStatusCode.MustIssueStartTlsFirst && sex.Message.Contains("Learn more at"))
                 {
                     message = message.Replace(" Learn more at", "");
                 }
                 var errors = new StringBuilder();
                 errors.AppendFormat("{0} ", message);
                 Exception ex = sex.InnerException;
-                while(ex != null)
+                while (ex != null)
                 {
                     errors.AppendFormat("{0} ", ex.Message);
                     ex = ex.InnerException;

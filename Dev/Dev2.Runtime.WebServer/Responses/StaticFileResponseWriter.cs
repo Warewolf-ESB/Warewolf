@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,9 +17,9 @@ namespace Dev2.Runtime.WebServer.Responses
 {
     public class StaticFileResponseWriter : IResponseWriter
     {
-        readonly string _file;
-        readonly MediaTypeHeaderValue _contentType;
-        readonly int _chunkSize;
+        private readonly int _chunkSize;
+        private readonly MediaTypeHeaderValue _contentType;
+        private readonly string _file;
 
         public StaticFileResponseWriter(string file, string contentType, int chunkSize = 1024)
         {
@@ -35,7 +34,6 @@ namespace Dev2.Runtime.WebServer.Responses
         {
             var stream = new HttpFileStream(OpenFileStream, context.ResponseMessage, _contentType, _chunkSize);
             stream.Write();
-
         }
 
         protected virtual Stream OpenFileStream()

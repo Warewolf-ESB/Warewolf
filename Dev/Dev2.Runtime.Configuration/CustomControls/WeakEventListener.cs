@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,32 +19,23 @@ using System.Diagnostics.CodeAnalysis;
 namespace System.Windows.Controls
 {
     /// <summary>
-    /// Implements a weak event listener that allows the owner to be garbage
-    /// collected if its only remaining link is an event handler.
+    ///     Implements a weak event listener that allows the owner to be garbage
+    ///     collected if its only remaining link is an event handler.
     /// </summary>
     /// <typeparam name="TInstance">Type of instance listening for the event.</typeparam>
     /// <typeparam name="TSource">Type of source for the event.</typeparam>
     /// <typeparam name="TEventArgs">Type of event arguments for the event.</typeparam>
-    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used as link target in several projects.")]
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses",
+        Justification = "Used as link target in several projects.")]
     internal class WeakEventListener<TInstance, TSource, TEventArgs> where TInstance : class
     {
         /// <summary>
-        /// WeakReference to the instance listening for the event.
+        ///     WeakReference to the instance listening for the event.
         /// </summary>
-        private WeakReference _weakInstance;
+        private readonly WeakReference _weakInstance;
 
         /// <summary>
-        /// Gets or sets the method to call when the event fires.
-        /// </summary>
-        public Action<TInstance, TSource, TEventArgs> OnEventAction { get; set; }
-
-        /// <summary>
-        /// Gets or sets the method to call when detaching from the event.
-        /// </summary>
-        public Action<WeakEventListener<TInstance, TSource, TEventArgs>> OnDetachAction { get; set; }
-
-        /// <summary>
-        /// Initializes a new instances of the WeakEventListener class.
+        ///     Initializes a new instances of the WeakEventListener class.
         /// </summary>
         /// <param name="instance">Instance subscribing to the event.</param>
         public WeakEventListener(TInstance instance)
@@ -58,13 +48,23 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Handler for the subscribed event calls OnEventAction to handle it.
+        ///     Gets or sets the method to call when the event fires.
+        /// </summary>
+        public Action<TInstance, TSource, TEventArgs> OnEventAction { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the method to call when detaching from the event.
+        /// </summary>
+        public Action<WeakEventListener<TInstance, TSource, TEventArgs>> OnDetachAction { get; set; }
+
+        /// <summary>
+        ///     Handler for the subscribed event calls OnEventAction to handle it.
         /// </summary>
         /// <param name="source">Event source.</param>
         /// <param name="eventArgs">Event arguments.</param>
         public void OnEvent(TSource source, TEventArgs eventArgs)
         {
-            TInstance target = (TInstance)_weakInstance.Target;
+            var target = (TInstance) _weakInstance.Target;
             if (null != target)
             {
                 // Call registered action
@@ -81,7 +81,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Detaches from the subscribed event.
+        ///     Detaches from the subscribed event.
         /// </summary>
         public void Detach()
         {

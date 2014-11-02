@@ -281,7 +281,7 @@ namespace WPF.JoshSmith.Panels
 
         private class DegenerateSibling : UIElement
         {
-            private UIElement _element;
+            private readonly UIElement _element;
 
             public DegenerateSibling(UIElement element)
             {

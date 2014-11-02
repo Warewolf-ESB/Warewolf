@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,8 +10,10 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data.ServiceModel.Helper;
@@ -23,7 +24,7 @@ using Newtonsoft.Json;
 namespace Dev2.Runtime.Compiler.CompileRules
 {
     /// <summary>
-    /// Detect IO mapping changes for WFs
+    ///     Detect IO mapping changes for WFs
     /// </summary>
     // ReSharper disable InconsistentNaming
     internal class WebService_IsRequiredChangeRule : IServiceCompileRule
@@ -36,17 +37,17 @@ namespace Dev2.Runtime.Compiler.CompileRules
         public CompileMessageTO ApplyRule(Guid serviceID, StringBuilder beforeAction, StringBuilder afterAction)
         {
             // Inputs, Outputs ;)
-            var inputMappingsPost = ServiceUtils.ExtractInputMapping(afterAction);
+            string inputMappingsPost = ServiceUtils.ExtractInputMapping(afterAction);
 
-            var inputParser = DataListFactory.CreateInputParser();
+            IDev2LanguageParser inputParser = DataListFactory.CreateInputParser();
 
-            var postInputs = inputParser.Parse(inputMappingsPost);
+            IList<IDev2Definition> postInputs = inputParser.Parse(inputMappingsPost);
 
-            if(postInputs.Any(definition => definition.IsRequired))
+            if (postInputs.Any(definition => definition.IsRequired))
             {
-                var tmpInput = inputParser.Parse(inputMappingsPost);
+                IList<IDev2Definition> tmpInput = inputParser.Parse(inputMappingsPost);
 
-                var defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input></Args>";
+                string defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input></Args>";
 
                 return
                     (new CompileMessageTO
@@ -60,9 +61,9 @@ namespace Dev2.Runtime.Compiler.CompileRules
             }
             else
             {
-                var tmpInput = inputParser.Parse(inputMappingsPost);
+                IList<IDev2Definition> tmpInput = inputParser.Parse(inputMappingsPost);
 
-                var defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input></Args>";
+                string defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input></Args>";
 
                 return
                     (new CompileMessageTO
@@ -74,7 +75,6 @@ namespace Dev2.Runtime.Compiler.CompileRules
                         ErrorType = ErrorType.None
                     });
             }
-
         }
     }
 }

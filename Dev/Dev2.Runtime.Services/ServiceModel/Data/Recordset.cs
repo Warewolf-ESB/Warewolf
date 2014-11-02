@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -44,13 +43,13 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region NewRecord
 
         /// <summary>
-        /// Creates a new record with a label.
+        ///     Creates a new record with a label.
         /// </summary>
         /// <returns>A new record instance.</returns>
         public RecordsetRecord NewRecord()
         {
-            var name = Name;
-            if(!string.IsNullOrEmpty(Name) && Name.Contains("()"))
+            string name = Name;
+            if (!string.IsNullOrEmpty(Name) && Name.Contains("()"))
             {
                 name = name.Replace("()", "");
                 name = name + "(" + (Records.Count + 1) + ")";
@@ -67,34 +66,34 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region SetValue
 
         /// <summary>
-        /// Sets the value of the field at the given record/field index.
-        /// <remarks>
-        /// A new row is added if <paramref name="recordIndex"/> is greater than or equal to <see cref="Records"/> count.
-        /// A new field is added if <paramref name="fieldIndex"/> is greater than or equal to <see cref="Fields"/> count.
-        /// </remarks>
+        ///     Sets the value of the field at the given record/field index.
+        ///     <remarks>
+        ///         A new row is added if <paramref name="recordIndex" /> is greater than or equal to <see cref="Records" /> count.
+        ///         A new field is added if <paramref name="fieldIndex" /> is greater than or equal to <see cref="Fields" /> count.
+        ///     </remarks>
         /// </summary>
         /// <param name="recordIndex">The index of the record to be updated.</param>
         /// <param name="fieldIndex">The index of the field to be updated.</param>
         /// <param name="value">The value.</param>
         public void SetValue(int recordIndex, int fieldIndex, string value)
         {
-            var record = recordIndex >= Records.Count ? null : Records[recordIndex];
+            RecordsetRecord record = recordIndex >= Records.Count ? null : Records[recordIndex];
             SetValue(ref record, fieldIndex, value);
         }
 
         /// <summary>
-        /// Sets the value of the field at the given field index in the given row.
-        /// <remarks>
-        /// A new row is added if <paramref name="record"/> is <code>null</code>.
-        /// A new field is added if <paramref name="fieldIndex"/> is greater than or equal to <see cref="Fields"/> count.
-        /// </remarks>
+        ///     Sets the value of the field at the given field index in the given row.
+        ///     <remarks>
+        ///         A new row is added if <paramref name="record" /> is <code>null</code>.
+        ///         A new field is added if <paramref name="fieldIndex" /> is greater than or equal to <see cref="Fields" /> count.
+        ///     </remarks>
         /// </summary>
         /// <param name="record">The record to be updated; may be null.</param>
         /// <param name="fieldIndex">The index of the field to be updated.</param>
         /// <param name="value">The value.</param>
         public void SetValue(ref RecordsetRecord record, int fieldIndex, string value)
         {
-            if(record == null)
+            if (record == null)
             {
                 record = NewRecord();
                 Records.Add(record);
@@ -106,7 +105,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Label = Fields[fieldIndex].Alias,
                 Value = value
             };
-            if(fieldIndex >= record.Count)
+            if (fieldIndex >= record.Count)
             {
                 record.Add(cell);
             }
@@ -126,6 +125,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
     }
 }

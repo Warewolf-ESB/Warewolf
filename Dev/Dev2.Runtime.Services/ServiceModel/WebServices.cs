@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -30,8 +29,8 @@ namespace Dev2.Runtime.ServiceModel
     // PBI 1220 - 2013.05.20 - TWR - Created
     public class WebServices : Services
     {
-        static readonly WebExecuteString DefaultWebExecute = WebSources.Execute;
-        readonly WebExecuteString _webExecute = DefaultWebExecute;
+        private static readonly WebExecuteString DefaultWebExecute = WebSources.Execute;
+        private readonly WebExecuteString _webExecute = DefaultWebExecute;
 
         #region CTOR
 
@@ -44,7 +43,8 @@ namespace Dev2.Runtime.ServiceModel
         {
         }
 
-        public WebServices(IResourceCatalog resourceCatalog, WebExecuteString webExecute, IAuthorizationService authorizationService)
+        public WebServices(IResourceCatalog resourceCatalog, WebExecuteString webExecute,
+            IAuthorizationService authorizationService)
             : base(resourceCatalog, authorizationService)
         {
             VerifyArgument.IsNotNull("webExecute", webExecute);
@@ -76,18 +76,18 @@ namespace Dev2.Runtime.ServiceModel
             {
                 service = JsonConvert.DeserializeObject<WebService>(args);
 
-                if(string.IsNullOrEmpty(service.RequestResponse))
+                if (string.IsNullOrEmpty(service.RequestResponse))
                 {
                     ErrorResultTO errors;
                     ExecuteRequest(service, true, out errors, _webExecute);
-                    ((WebSource)service.Source).DisposeClient();
+                    ((WebSource) service.Source).DisposeClient();
                 }
 
-                var preTestRsData = service.Recordsets;
+                RecordsetList preTestRsData = service.Recordsets;
                 service.RequestMessage = string.Empty;
                 service.JsonPathResult = string.Empty;
 
-                if(service.RequestResponse.IsJSON() && String.IsNullOrEmpty(service.JsonPath))
+                if (service.RequestResponse.IsJSON() && String.IsNullOrEmpty(service.JsonPath))
                 {
                     service.ApplyPath();
                     // we need to timeout this request after 10 seconds due to nasty pathing issues ;)
@@ -101,9 +101,9 @@ namespace Dev2.Runtime.ServiceModel
                     jsonMapTask.Start();
                     jsonMapTask.Wait(10000);
 
-                    if(!jsonMapTask.IsCompleted)
+                    if (!jsonMapTask.IsCompleted)
                     {
-                        if(jsonMapTaskThread != null)
+                        if (jsonMapTaskThread != null)
                         {
                             jsonMapTaskThread.Abort();
                         }
@@ -118,12 +118,11 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     service.Recordsets = FetchRecordset(service, true);
                 }
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                if(service.Recordsets.Count > 0)
+                if (service.Recordsets.Count > 0)
                 {
                     service.Recordsets[0].HasErrors = true;
                     service.Recordsets[0].ErrorMessage = ex.Message;
@@ -141,15 +140,15 @@ namespace Dev2.Runtime.ServiceModel
             {
                 service = JsonConvert.DeserializeObject<WebService>(args);
                 service.ApplyPath();
-                var oldResult = service.RequestResponse;
+                string oldResult = service.RequestResponse;
                 service.RequestResponse = service.JsonPathResult;
                 service.Recordsets = FetchRecordset(service, true);
                 service.RequestResponse = oldResult;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                if(service.Recordsets.Count > 0)
+                if (service.Recordsets.Count > 0)
                 {
                     service.Recordsets[0].HasErrors = true;
                     service.Recordsets[0].ErrorMessage = ex.Message;
@@ -170,16 +169,18 @@ namespace Dev2.Runtime.ServiceModel
             ExecuteRequest(service, throwError, out errors, DefaultWebExecute);
         }
 
-        public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors, WebExecuteString webExecute)
+        public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors,
+            WebExecuteString webExecute)
         {
-            var requestHeaders = SetParameters(service.Method.Parameters, service.RequestHeaders);
-            var headers = string.IsNullOrEmpty(requestHeaders)
-                              ? new string[0]
-                              : requestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
-            var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
-            var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
-            if(!String.IsNullOrEmpty(service.JsonPath))
+            string requestHeaders = SetParameters(service.Method.Parameters, service.RequestHeaders);
+            string[] headers = string.IsNullOrEmpty(requestHeaders)
+                ? new string[0]
+                : requestHeaders.Split(new[] {'\n', '\r', ';'}, StringSplitOptions.RemoveEmptyEntries);
+            string requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
+            string requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
+            service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl,
+                requestBody, throwError, out errors, headers);
+            if (!String.IsNullOrEmpty(service.JsonPath))
             {
                 service.ApplyPath();
             }
@@ -189,14 +190,12 @@ namespace Dev2.Runtime.ServiceModel
 
         #region SetParameters
 
-        static string SetParameters(IEnumerable<MethodParameter> parameters, string s)
+        private static string SetParameters(IEnumerable<MethodParameter> parameters, string s)
         {
-            return parameters.Aggregate(s ?? "", (current, parameter) => current.Replace("[[" + parameter.Name + "]]", parameter.Value));
+            return parameters.Aggregate(s ?? "",
+                (current, parameter) => current.Replace("[[" + parameter.Name + "]]", parameter.Value));
         }
 
         #endregion
-
     }
-
-
 }

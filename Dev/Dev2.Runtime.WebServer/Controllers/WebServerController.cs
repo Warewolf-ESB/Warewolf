@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,6 +16,7 @@ using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 
 // ReSharper disable InconsistentNaming
+
 namespace Dev2.Runtime.WebServer.Controllers
 {
     [AuthorizeWeb]
@@ -64,8 +64,8 @@ namespace Dev2.Runtime.WebServer.Controllers
             // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("{0}/{1}", folder, file) }
+                {"website", website},
+                {"path", string.Format("{0}/{1}", folder, file)}
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -78,8 +78,8 @@ namespace Dev2.Runtime.WebServer.Controllers
             // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", path }
+                {"website", website},
+                {"path", path}
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -91,8 +91,8 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("content/{0}", file) }
+                {"website", website},
+                {"path", string.Format("content/{0}", file)}
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -104,8 +104,8 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("images/{0}", file) }
+                {"website", website},
+                {"path", string.Format("images/{0}", file)}
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -117,8 +117,8 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("scripts/{0}", file) }
+                {"website", website},
+                {"path", string.Format("scripts/{0}", file)}
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -130,8 +130,8 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", string.Format("views/{0}", file) }
+                {"website", website},
+                {"path", string.Format("views/{0}", file)}
             };
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
@@ -144,10 +144,10 @@ namespace Dev2.Runtime.WebServer.Controllers
             // DO NOT replace {method} with {action} in route mapping --> {action} is a reserved placeholder!
             var requestVariables = new NameValueCollection
             {
-                { "website", __website__ }, 
-                { "path", __path__ },
-                { "name", __name__ },
-                { "action", __method__ },
+                {"website", __website__},
+                {"path", __path__},
+                {"name", __name__},
+                {"action", __method__},
             };
 
             return ProcessRequest<WebsiteServiceHandler>(requestVariables);
@@ -160,7 +160,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             var requestVariables = new NameValueCollection
             {
-                { "servicename", __name__ }
+                {"servicename", __name__}
             };
 
             return Request.Method == HttpMethod.Post

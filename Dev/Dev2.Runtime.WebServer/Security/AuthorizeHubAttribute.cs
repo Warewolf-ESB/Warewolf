@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -39,11 +38,12 @@ namespace Dev2.Runtime.WebServer.Security
         {
             VerifyArgument.IsNotNull("hubDescriptor", hubDescriptor);
             VerifyArgument.IsNotNull("request", request);
-            var result = request.User.IsAuthenticated() && Service.IsAuthorized(hubDescriptor.GetAuthorizationRequest(request));
+            bool result = request.User.IsAuthenticated() &&
+                          Service.IsAuthorized(hubDescriptor.GetAuthorizationRequest(request));
 
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
-            if(request.User.Identity != null)
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+            if (request.User.Identity != null)
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 Dev2Logger.Log.Debug("AuthorizeHubConnection For [ " + request.User.Identity.Name + " ]");
             }

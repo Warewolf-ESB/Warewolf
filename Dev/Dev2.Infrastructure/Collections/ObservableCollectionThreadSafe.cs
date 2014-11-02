@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,7 +19,7 @@ namespace Dev2.Collections
 {
     public class ObservableCollectionThreadSafe<T> : ObservableCollection<T>
     {
-        readonly Dispatcher _dispatcher;
+        private readonly Dispatcher _dispatcher;
 
         public ObservableCollectionThreadSafe()
         {
@@ -46,9 +45,10 @@ namespace Dev2.Collections
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if(!_dispatcher.CheckAccess())
+            if (!_dispatcher.CheckAccess())
             {
-                _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(e)), DispatcherPriority.Normal, new object[] { });
+                _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(e)), DispatcherPriority.Normal,
+                    new object[] {});
             }
             else
             {
@@ -60,11 +60,11 @@ namespace Dev2.Collections
 
         internal DispatcherFrame TestDispatcherFrame { get; set; }
 
-        void RaiseCollectionChanged(object param)
+        private void RaiseCollectionChanged(object param)
         {
             // MUST be called on the dispatcher thread!
-            base.OnCollectionChanged((NotifyCollectionChangedEventArgs)param);
-            if(TestDispatcherFrame != null)
+            base.OnCollectionChanged((NotifyCollectionChangedEventArgs) param);
+            if (TestDispatcherFrame != null)
             {
                 TestDispatcherFrame.Continue = false;
             }

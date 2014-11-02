@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,10 +11,12 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
+using log4net.Config;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+
 [assembly: AssemblyTitle("Dev2.Diagnostics")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
@@ -23,8 +24,10 @@ using System.Runtime.InteropServices;
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
+
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
+
 [assembly: Guid("1156686a-edb6-43b5-b558-11a133d4df1e")]
-[assembly: log4net.Config.XmlConfigurator(Watch = false)]
+[assembly: XmlConfigurator(Watch = false)]

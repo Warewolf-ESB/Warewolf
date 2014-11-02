@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,8 +15,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Diagnostics
 {
-
-
     public class DirectoryPath : PropertyChangedBase, IDirectoryPath
     {
         private string _path;
@@ -25,10 +22,7 @@ namespace Dev2.Diagnostics
 
         public string RealPath
         {
-            get
-            {
-                return _path;
-            }
+            get { return _path; }
             set
             {
                 if (_path == value)
@@ -44,10 +38,7 @@ namespace Dev2.Diagnostics
 
         public string PathToSerialize
         {
-            get
-            {
-                return _pathToSerialize;
-            }
+            get { return _pathToSerialize; }
             set
             {
                 if (_pathToSerialize == value)

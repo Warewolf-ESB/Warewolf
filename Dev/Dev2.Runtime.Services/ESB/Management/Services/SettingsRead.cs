@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,7 +25,7 @@ using Newtonsoft.Json;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Checks a users permissions on the local file system
+    ///     Checks a users permissions on the local file system
     /// </summary>
     public class SettingsRead : IEsbManagementEndpoint
     {
@@ -35,11 +34,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             var settings = new Settings();
             try
             {
-                var securityRead = CreateSecurityReadEndPoint();
-                var jsonPermissions = securityRead.Execute(values, theWorkspace);
+                IEsbManagementEndpoint securityRead = CreateSecurityReadEndPoint();
+                StringBuilder jsonPermissions = securityRead.Execute(values, theWorkspace);
                 settings.Security = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
                 settings.HasError = true;
@@ -47,13 +46,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 settings.Security = new SecuritySettingsTO(SecurityRead.DefaultPermissions);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(settings);
-        }
-
-        protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint()
-        {
-            return new SecurityRead();
         }
 
         public DynamicService CreateServiceEntry()
@@ -61,7 +55,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dynamicService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var serviceAction = new ServiceAction
@@ -79,6 +75,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         public string HandlesType()
         {
             return "SettingsReadService";
+        }
+
+        protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint()
+        {
+            return new SecurityRead();
         }
     }
 }

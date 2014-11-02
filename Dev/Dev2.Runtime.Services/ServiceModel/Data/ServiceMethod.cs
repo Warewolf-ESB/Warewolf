@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,16 +25,17 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region CTOR
 
         public ServiceMethod()
-            : this(string.Empty, string.Empty, null, null, null,null)
+            : this(string.Empty, string.Empty, null, null, null, null)
         {
         }
 
         public ServiceMethod(string error, string stackTrace)
-            : this("Error : " + error, stackTrace, null, null, null,null)
+            : this("Error : " + error, stackTrace, null, null, null, null)
         {
         }
 
-        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters, IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs,string executeAction)
+        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters,
+            IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs, string executeAction)
         {
             Name = name;
             SourceCode = sourceCode;
@@ -43,12 +43,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             Parameters = new List<MethodParameter>();
             Outputs = new List<MethodOutput>();
             ExecuteAction = executeAction;
-            if(parameters != null)
+            if (parameters != null)
             {
                 Parameters.AddRange(parameters);
             }
 
-            if(outputs != null)
+            if (outputs != null)
             {
                 Outputs.AddRange(outputs);
             }
@@ -96,6 +96,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
     }
 }

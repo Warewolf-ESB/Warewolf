@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -43,28 +42,28 @@ namespace Dev2.Runtime.ESB.Management.Services
         #region Implementation of IEsbManagementEndpoint
 
         /// <summary>
-        /// Executes the service
+        ///     Executes the service
         /// </summary>
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
         /// <returns></returns>
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
-            if(values == null)
+            if (values == null)
             {
                 throw new InvalidDataContractException("No parameter values provided.");
             }
             string database = null;
             StringBuilder tmp;
             values.TryGetValue("Database", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 database = tmp.ToString();
             }
 
-            if(string.IsNullOrEmpty(database))
+            if (string.IsNullOrEmpty(database))
             {
                 var res = new DbTableList("No database set.");
                 Dev2Logger.Log.Debug("No database set.");
@@ -77,24 +76,25 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 dbSource = serializer.Deserialize<DbSource>(database);
 
-                if(dbSource.ResourceID != Guid.Empty)
+                if (dbSource.ResourceID != Guid.Empty)
                 {
-                    runtimeDbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
+                    runtimeDbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID,
+                        dbSource.ResourceID);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error(e);
                 var res = new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message);
                 return serializer.SerializeToBuilder(res);
             }
-            if(runtimeDbSource == null)
+            if (runtimeDbSource == null)
             {
                 var res = new DbTableList("Invalid Database source");
                 Dev2Logger.Log.Debug("Invalid Database source");
                 return serializer.SerializeToBuilder(res);
             }
-            if(string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
+            if (string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
             {
                 var res = new DbTableList("Invalid database sent {0}.", database);
                 Dev2Logger.Log.Debug(String.Format("Invalid database sent {0}.", database));
@@ -106,33 +106,40 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Log.Info("Get Database Tables. " + dbSource.DatabaseName);
                 var tables = new DbTableList();
                 DataTable columnInfo;
-                using(var connection = new SqlConnection(dbSource.ConnectionString))
+                using (var connection = new SqlConnection(dbSource.ConnectionString))
                 {
                     connection.Open();
                     columnInfo = connection.GetSchema("Tables");
                 }
-                if(columnInfo != null)
+                if (columnInfo != null)
                 {
-                    foreach(DataRow row in columnInfo.Rows)
+                    foreach (DataRow row in columnInfo.Rows)
                     {
                         var tableName = row["TABLE_NAME"] as string;
                         var schema = row["TABLE_SCHEMA"] as string;
                         tableName = '[' + tableName + ']';
-                        var dbTable = tables.Items.Find(table => table.TableName == tableName && table.Schema == schema);
-                        if(dbTable == null)
+                        DbTable dbTable =
+                            tables.Items.Find(table => table.TableName == tableName && table.Schema == schema);
+                        if (dbTable == null)
                         {
-                            dbTable = new DbTable { Schema = schema, TableName = tableName, Columns = new List<IDbColumn>() };
+                            dbTable = new DbTable
+                            {
+                                Schema = schema,
+                                TableName = tableName,
+                                Columns = new List<IDbColumn>()
+                            };
                             tables.Items.Add(dbTable);
                         }
                     }
                 }
-                if(tables.Items.Count == 0)
+                if (tables.Items.Count == 0)
                 {
                     tables.HasErrors = true;
-                    const string ErrorFormat = "The login provided in the database source uses {0} and most probably does not have permissions to perform the following query: "
-                                          + "\r\n\r\n{1}SELECT * FROM INFORMATION_SCHEMA.TABLES;{2}";
+                    const string ErrorFormat =
+                        "The login provided in the database source uses {0} and most probably does not have permissions to perform the following query: "
+                        + "\r\n\r\n{1}SELECT * FROM INFORMATION_SCHEMA.TABLES;{2}";
 
-                    if(dbSource.AuthenticationType == AuthenticationType.User)
+                    if (dbSource.AuthenticationType == AuthenticationType.User)
                     {
                         tables.Errors = string.Format(ErrorFormat,
                             "SQL Authentication (User: '" + dbSource.UserID + "')",
@@ -146,7 +153,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 return serializer.SerializeToBuilder(tables);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var tables = new DbTableList(ex);
                 return serializer.SerializeToBuilder(tables);
@@ -154,7 +161,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         /// <summary>
-        /// Creates the service entry.
+        ///     Creates the service entry.
         /// </summary>
         /// <returns></returns>
         public DynamicService CreateServiceEntry()
@@ -162,7 +169,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Database ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><Database ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var sa = new ServiceAction

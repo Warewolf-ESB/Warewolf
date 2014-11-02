@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,6 +15,7 @@ using System.Windows;
 using System.Windows.Data;
 
 // ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class NullToVisibilityConverter : IValueConverter
@@ -26,21 +26,13 @@ namespace Dev2.Studio.Core.AppResources.Converters
             NotNullVisibilityValue = Visibility.Visible;
         }
 
-        public Visibility NullVisibilityValue
-        {
-            get;
-            set;
-        }
+        public Visibility NullVisibilityValue { get; set; }
 
-        public Visibility NotNullVisibilityValue
-        {
-            get;
-            set;
-        }
+        public Visibility NotNullVisibilityValue { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value == null)
+            if (value == null)
             {
                 return NullVisibilityValue;
             }

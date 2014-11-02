@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,15 +23,21 @@ using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
+
 namespace Dev2.Runtime.ServiceModel
 {
-    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null);
-    public delegate string WebExecuteBinary(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null);
+    public delegate string WebExecuteString(
+        WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError,
+        out ErrorResultTO errors, string[] headers = null);
+
+    public delegate string WebExecuteBinary(
+        WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError,
+        out ErrorResultTO errors, string[] headers = null);
 
     // PBI 5656 - 2013.05.20 - TWR - Created
     public class WebSources : ExceptionManager
     {
-        readonly IResourceCatalog _resourceCatalog;
+        private readonly IResourceCatalog _resourceCatalog;
 
         #region CTOR
 
@@ -43,7 +48,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public WebSources(IResourceCatalog resourceCatalog)
         {
-            if(resourceCatalog == null)
+            if (resourceCatalog == null)
             {
                 throw new ArgumentNullException("resourceCatalog");
             }
@@ -60,14 +65,15 @@ namespace Dev2.Runtime.ServiceModel
             var result = new WebSource();
             try
             {
-                var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
-                if(!string.IsNullOrEmpty(xmlStr))
+                string xmlStr =
+                    ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
+                if (!string.IsNullOrEmpty(xmlStr))
                 {
-                    var xml = XElement.Parse(xmlStr);
+                    XElement xml = XElement.Parse(xmlStr);
                     result = new WebSource(xml);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -86,17 +92,17 @@ namespace Dev2.Runtime.ServiceModel
                 var source = JsonConvert.DeserializeObject<WebSource>(args);
 
                 _resourceCatalog.SaveResource(workspaceId, source);
-                if(workspaceId != GlobalConstants.ServerWorkspaceID)
+                if (workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, source);
                 }
 
                 return source.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
+                return new ValidationResult {IsValid = false, ErrorMessage = ex.Message}.ToString();
             }
         }
 
@@ -112,10 +118,10 @@ namespace Dev2.Runtime.ServiceModel
                 var source = JsonConvert.DeserializeObject<WebSource>(args);
                 return CanConnectServer(source);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message };
+                return new ValidationResult {IsValid = false, ErrorMessage = ex.Message};
             }
         }
 
@@ -123,23 +129,23 @@ namespace Dev2.Runtime.ServiceModel
 
         #region CanConnectServer
 
-        ValidationResult CanConnectServer(WebSource source)
+        private ValidationResult CanConnectServer(WebSource source)
         {
             try
             {
                 ErrorResultTO errors;
                 return new ValidationResult
                 {
-                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, true, out errors)
+                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string) null, true, out errors)
                 };
             }
-            catch(WebException wex)
+            catch (WebException wex)
             {
                 RaiseError(wex);
 
                 var errors = new StringBuilder();
                 Exception ex = wex;
-                while(ex != null)
+                while (ex != null)
                 {
                     errors.AppendFormat("{0} ", ex.Message);
                     ex = ex.InnerException;
@@ -160,16 +166,20 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Execute
 
-        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null)
+        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data,
+            bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
             EnsureWebClient(source, headers);
-            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, throwError, out errors);
+            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, throwError,
+                out errors);
         }
 
-        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)
+        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data,
+            bool throwError, out ErrorResultTO errors, string[] headers = null)
         {
             EnsureWebClient(source, headers);
-            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, throwError, out errors);
+            return Execute(source.Client, string.Format("{0}{1}", source.Address, relativeUri), method, data, throwError,
+                out errors);
         }
 
         #endregion
@@ -177,12 +187,13 @@ namespace Dev2.Runtime.ServiceModel
         #region Execute(client, address, method, data)
 
         // ReSharper disable UnusedParameter.Local
-        static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, bool throwError, out ErrorResultTO errors)
-        // ReSharper restore UnusedParameter.Local
+        private static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data,
+            bool throwError, out ErrorResultTO errors)
+            // ReSharper restore UnusedParameter.Local
         {
             EnsureContentType(client);
             errors = new ErrorResultTO();
-            switch(method)
+            switch (method)
             {
                 case WebRequestMethod.Get:
                     return client.DownloadData(address);
@@ -192,13 +203,14 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        static string Execute(WebClient client, string address, WebRequestMethod method, string data, bool throwError, out ErrorResultTO errors)
+        private static string Execute(WebClient client, string address, WebRequestMethod method, string data,
+            bool throwError, out ErrorResultTO errors)
         {
             EnsureContentType(client);
             errors = new ErrorResultTO();
             try
             {
-                switch(method)
+                switch (method)
                 {
                     case WebRequestMethod.Get:
                         return FixResponse(client.DownloadString(address));
@@ -207,10 +219,10 @@ namespace Dev2.Runtime.ServiceModel
                         return FixResponse(client.UploadString(address, method.ToString().ToUpperInvariant(), data));
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 errors.AddError(e.Message);
-                if(throwError)
+                if (throwError)
                 {
                     throw;
                 }
@@ -224,10 +236,10 @@ namespace Dev2.Runtime.ServiceModel
             return string.Empty;
         }
 
-        static void EnsureContentType(WebClient client)
+        private static void EnsureContentType(WebClient client)
         {
-            var contentType = client.Headers["Content-Type"];
-            if(string.IsNullOrEmpty(contentType))
+            string contentType = client.Headers["Content-Type"];
+            if (string.IsNullOrEmpty(contentType))
             {
                 contentType = "application/x-www-form-urlencoded";
             }
@@ -238,9 +250,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region FixResponse
 
-        static string FixResponse(string result)
+        private static string FixResponse(string result)
         {
-            if(string.IsNullOrEmpty(result))
+            if (string.IsNullOrEmpty(result))
             {
                 return result;
             }
@@ -251,23 +263,23 @@ namespace Dev2.Runtime.ServiceModel
 
         #region EnsureWebClient
 
-        static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
+        private static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
         {
-            if(source.Client != null)
+            if (source.Client != null)
             {
                 return;
             }
 
             source.Client = new WebClient();
 
-            if(source.AuthenticationType == AuthenticationType.User)
+            if (source.AuthenticationType == AuthenticationType.User)
             {
                 source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
             }
 
-            if(headers != null)
+            if (headers != null)
             {
-                foreach(var header in headers)
+                foreach (string header in headers)
                 {
                     source.Client.Headers.Add(header.Trim());
                 }
@@ -276,5 +288,4 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
     }
-
 }

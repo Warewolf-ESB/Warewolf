@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,7 +22,8 @@ namespace Dev2.Runtime.ESB.Execution
     {
         protected IServiceExecution WebserviceExecution;
 
-        public WebServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+        public WebServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace,
+            IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             WebserviceExecution = new WebserviceExecution(dataObj, false);
@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Execution
         public override Guid Execute(out ErrorResultTO errors)
         {
             WebserviceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
-            var result = WebserviceExecution.Execute(out errors);
+            Guid result = WebserviceExecution.Execute(out errors);
             return result;
         }
     }

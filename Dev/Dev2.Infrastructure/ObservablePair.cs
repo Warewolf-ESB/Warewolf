@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,8 +16,8 @@ namespace Dev2
 {
     public class ObservablePair<TKey, TValue> : ObservableObject, IEquatable<ObservablePair<TKey, TValue>>
     {
-        TKey _key;
-        TValue _value;
+        private TKey _key;
+        private TValue _value;
 
         public ObservablePair()
         {
@@ -30,9 +29,17 @@ namespace Dev2
             _value = value;
         }
 
-        public TKey Key { get { return _key; } set { OnPropertyChanged(ref _key, value); } }
+        public TKey Key
+        {
+            get { return _key; }
+            set { OnPropertyChanged(ref _key, value); }
+        }
 
-        public TValue Value { get { return _value; } set { OnPropertyChanged(ref _value, value); } }
+        public TValue Value
+        {
+            get { return _value; }
+            set { OnPropertyChanged(ref _value, value); }
+        }
 
         public bool Equals(ObservablePair<TKey, TValue> other)
         {
@@ -41,7 +48,7 @@ namespace Dev2
 
         public override bool Equals(Object obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return false;
             }
@@ -57,7 +64,7 @@ namespace Dev2
 
         public static bool operator ==(ObservablePair<TKey, TValue> pair1, ObservablePair<TKey, TValue> pair2)
         {
-            if((object)pair1 == null || ((object)pair2) == null)
+            if ((object) pair1 == null || ((object) pair2) == null)
             {
                 return Equals(pair1, pair2);
             }
@@ -66,7 +73,7 @@ namespace Dev2
 
         public static bool operator !=(ObservablePair<TKey, TValue> pair1, ObservablePair<TKey, TValue> pair2)
         {
-            if(pair1 == null || pair2 == null)
+            if (pair1 == null || pair2 == null)
             {
                 return !Equals(pair1, pair2);
             }

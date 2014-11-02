@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,50 +15,54 @@ using System.Reflection;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
-using log4net.Repository.Hierarchy;
 using Vestris.ResourceLib;
 
 namespace Dev2.Runtime.Hosting
 {
-    public class ResourceUpgrader:IResourceUpgrader
+    public class ResourceUpgrader : IResourceUpgrader
     {
         public ResourceUpgrader(List<IUpgradePath> availableUpgrades)
         {
-            VerifyArgument.IsNotNull("availableUpgrades",availableUpgrades);
+            VerifyArgument.IsNotNull("availableUpgrades", availableUpgrades);
             AvailableUpgrades = availableUpgrades;
-
         }
 
         #region Implementation of IResourceUpgrader
 
         public XElement UpgradeResource(XElement sourceVersion, Version destinationVersion, Action<XElement> onUpgrade)
         {
-            var available = AvailableUpgrades.Where(a => a.CanUpgrade(sourceVersion)).OrderBy(a=>a.UpgradesFrom).Select(a=>a.Upgrade.UpgradeFunc).ToList();
+            List<Func<XElement, XElement>> available =
+                AvailableUpgrades.Where(a => a.CanUpgrade(sourceVersion))
+                    .OrderBy(a => a.UpgradesFrom)
+                    .Select(a => a.Upgrade.UpgradeFunc)
+                    .ToList();
             if (available.Any())
             {
-                var outputLang = available.Aggregate((a, b) => (x => (b(a(x)))));
-                
-                var output =  outputLang(sourceVersion);
-                output.SetAttributeValue("ServerVersion",GetVersion());
+                Func<XElement, XElement> outputLang = available.Aggregate((a, b) => (x => (b(a(x)))));
+
+                XElement output = outputLang(sourceVersion);
+                output.SetAttributeValue("ServerVersion", GetVersion());
                 onUpgrade(output);
                 return output;
             }
-          
+
             return sourceVersion;
         }
 
-        static Version GetVersion()
+        public List<IUpgradePath> AvailableUpgrades { get; private set; }
+
+        private static Version GetVersion()
         {
-            var asm = Assembly.GetExecutingAssembly();
+            Assembly asm = Assembly.GetExecutingAssembly();
             var versionResource = new VersionResource();
-            var fileName = asm.Location;
+            string fileName = asm.Location;
 
             string message = "Getting Version for: " + fileName;
             Console.Write(message);
             Dev2Logger.Log.Info(message);
 
             versionResource.LoadFrom(fileName);
-            Version v = new Version(versionResource.FileVersion);
+            var v = new Version(versionResource.FileVersion);
 
             message = "Got Version for: " + fileName;
             Console.Write(message);
@@ -67,8 +70,6 @@ namespace Dev2.Runtime.Hosting
 
             return v;
         }
-
-        public List<IUpgradePath> AvailableUpgrades { get; private set; }
 
         #endregion
     }

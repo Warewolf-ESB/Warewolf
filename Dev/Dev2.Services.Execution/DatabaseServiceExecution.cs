@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,8 +26,7 @@ namespace Dev2.Services.Execution
 {
     public class DatabaseServiceExecution : ServiceExecutionAbstract<DbService, DbSource>
     {
-        SqlServer _sqlServer;
-
+        private SqlServer _sqlServer;
 
         #region Constuctors
 
@@ -39,32 +37,33 @@ namespace Dev2.Services.Execution
 
         public SqlServer SqlServer
         {
-            get
-            {
-                return _sqlServer;
-            }
+            get { return _sqlServer; }
         }
 
         #endregion
 
         #region SqlServer
 
-        void SetupSqlServer(ErrorResultTO errors)
+        private void SetupSqlServer(ErrorResultTO errors)
         {
             try
             {
                 _sqlServer = new SqlServer();
-                var connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, String.IsNullOrEmpty(Service.Method.ExecuteAction) ? Service.Method.Name : Service.Method.ExecuteAction);
-                if(!connected)
+                bool connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure,
+                    String.IsNullOrEmpty(Service.Method.ExecuteAction)
+                        ? Service.Method.Name
+                        : Service.Method.ExecuteAction);
+                if (!connected)
                 {
-                    Dev2Logger.Log.Error(string.Format("Failed to connect with the following connection string: '{0}'", Source.ConnectionString));
+                    Dev2Logger.Log.Error(string.Format("Failed to connect with the following connection string: '{0}'",
+                        Source.ConnectionString));
                 }
             }
-            catch(SqlException sex)
+            catch (SqlException sex)
             {
                 // 2013.06.24 - TWR - added errors logging
                 var errorMessages = new StringBuilder();
-                for(var i = 0; i < sex.Errors.Count; i++)
+                for (int i = 0; i < sex.Errors.Count; i++)
                 {
                     errorMessages.Append("Index #" + i + Environment.NewLine +
                                          "Message: " + sex.Errors[i].Message + Environment.NewLine +
@@ -75,7 +74,7 @@ namespace Dev2.Services.Execution
                 errors.AddError(errorMessages.ToString());
                 Dev2Logger.Log.Error(errorMessages.ToString());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // 2013.06.24 - TWR - added errors logging
                 errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
@@ -83,15 +82,16 @@ namespace Dev2.Services.Execution
             }
         }
 
-        void DestroySqlServer()
+        private void DestroySqlServer()
         {
-            if(SqlServer == null)
+            if (SqlServer == null)
             {
                 return;
             }
             SqlServer.Dispose();
             _sqlServer = null;
         }
+
         #endregion
 
         #region Execute
@@ -111,37 +111,39 @@ namespace Dev2.Services.Execution
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
             object executeService;
-            var result = SqlExecution(invokeErrors, out executeService) ? executeService : string.Empty;
+            object result = SqlExecution(invokeErrors, out executeService) ? executeService : string.Empty;
 
             ErrorResult.MergeErrors(invokeErrors);
 
             return result;
         }
 
-        bool SqlExecution(ErrorResultTO errors, out object executeService)
+        private bool SqlExecution(ErrorResultTO errors, out object executeService)
         {
             try
             {
-                if(SqlServer != null)
+                if (SqlServer != null)
                 {
-                    var parameters = GetSqlParameters(Service.Method.Parameters);
+                    List<SqlParameter> parameters = GetSqlParameters(Service.Method.Parameters);
 
-                    if(parameters != null)
+                    if (parameters != null)
                     {
                         // ReSharper disable CoVariantArrayConversion
-                        using(var dataSet = SqlServer.FetchDataTable(parameters.ToArray()))
-                        // ReSharper restore CoVariantArrayConversion
+                        using (DataTable dataSet = SqlServer.FetchDataTable(parameters.ToArray()))
+                            // ReSharper restore CoVariantArrayConversion
                         {
                             ApplyColumnMappings(dataSet);
                             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-                            executeService = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
+                            executeService =
+                                compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE),
+                                    dataSet, InstanceOutputDefintions, DataObj.DataListID, out errors);
                             return true;
                         }
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
             }
@@ -152,19 +154,21 @@ namespace Dev2.Services.Execution
         #endregion
 
         #region GetSqlParameters
-        static List<SqlParameter> GetSqlParameters(IList<MethodParameter> methodParameters)
+
+        private static List<SqlParameter> GetSqlParameters(IList<MethodParameter> methodParameters)
         {
             var sqlParameters = new List<SqlParameter>();
 
-            if(methodParameters.Count > 0)
+            if (methodParameters.Count > 0)
             {
 #pragma warning disable 219
-                var pos = 0;
+                int pos = 0;
 #pragma warning restore 219
-                foreach(var parameter in methodParameters)
+                foreach (MethodParameter parameter in methodParameters)
                 {
-
-                    if(parameter.EmptyToNull && (parameter.Value == null || string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
+                    if (parameter.EmptyToNull &&
+                        (parameter.Value == null ||
+                         string.Compare(parameter.Value, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0))
                     {
                         sqlParameters.Add(new SqlParameter(string.Format("@{0}", parameter.Name), DBNull.Value));
                     }
@@ -177,23 +181,24 @@ namespace Dev2.Services.Execution
             }
             return sqlParameters;
         }
+
         #endregion
 
-        void ApplyColumnMappings(DataTable dataTable)
+        private void ApplyColumnMappings(DataTable dataTable)
         {
-            if(string.IsNullOrEmpty(Service.OutputSpecification))
+            if (string.IsNullOrEmpty(Service.OutputSpecification))
             {
                 return;
             }
 
-            var outputs = XElement.Parse(Service.OutputSpecification);
-            foreach(var output in outputs.Elements("Output"))
+            XElement outputs = XElement.Parse(Service.OutputSpecification);
+            foreach (XElement output in outputs.Elements("Output"))
             {
-                var originalName = output.AttributeSafe("OriginalName", true);
-                var mappedName = output.AttributeSafe("Name", true);
-                if(originalName != null && mappedName != null)
+                string originalName = output.AttributeSafe("OriginalName", true);
+                string mappedName = output.AttributeSafe("Name", true);
+                if (originalName != null && mappedName != null)
                 {
-                    var dc = dataTable.Columns[originalName];
+                    DataColumn dc = dataTable.Columns[originalName];
                     dc.ColumnName = mappedName;
                 }
             }

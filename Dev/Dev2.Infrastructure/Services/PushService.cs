@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,7 +18,7 @@ namespace Dev2.Services
 {
     public class PushService : IPushService
     {
-        readonly ISerializer _serializer;
+        private readonly ISerializer _serializer;
 
         public PushService()
             : this(new Dev2JsonSerializer())
@@ -41,7 +40,7 @@ namespace Dev2.Services
 
             return new Task<string>(() =>
             {
-                var memo = (IMemo)Memo.Parse(_serializer, jsonObj);
+                var memo = (IMemo) Memo.Parse(_serializer, jsonObj);
 
                 // TODO: process message
 

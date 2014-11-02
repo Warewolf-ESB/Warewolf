@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,16 +19,19 @@ using System.Diagnostics.CodeAnalysis;
 namespace System.Windows.Controls
 {
     /// <summary>
-    /// Represents the method that will handle the
-    /// <see cref="E:System.Windows.Controls.AutoCompleteBox.Populated" />
-    /// event of a <see cref="T:System.Windows.Controls.AutoCompleteBox" />
-    /// control.
+    ///     Represents the method that will handle the
+    ///     <see cref="E:System.Windows.Controls.AutoCompleteBox.Populated" />
+    ///     event of a <see cref="T:System.Windows.Controls.AutoCompleteBox" />
+    ///     control.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
-    /// <param name="e">A
-    /// <see cref="T:System.Windows.Controls.PopulatedEventArgs" /> that
-    /// contains the event data.</param>
+    /// <param name="e">
+    ///     A
+    ///     <see cref="T:System.Windows.Controls.PopulatedEventArgs" /> that
+    ///     contains the event data.
+    /// </param>
     /// <QualityBand>Stable</QualityBand>
-    [SuppressMessage("Microsoft.Design", "CA1003:UseGenericEventHandlerInstances", Justification = "There is no generic RoutedEventHandler.")]
+    [SuppressMessage("Microsoft.Design", "CA1003:UseGenericEventHandlerInstances",
+        Justification = "There is no generic RoutedEventHandler.")]
     public delegate void PopulatedEventHandler(object sender, PopulatedEventArgs e);
 }

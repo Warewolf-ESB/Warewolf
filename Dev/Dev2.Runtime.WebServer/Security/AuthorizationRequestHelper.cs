@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -42,7 +41,8 @@ namespace Dev2.Runtime.WebServer.Security
             return GetAuthorizationRequest(context.Hub.Context.Request, context.GetRequestType());
         }
 
-        static AuthorizationRequest GetAuthorizationRequest(this IRequest request, WebServerRequestType requestType)
+        private static AuthorizationRequest GetAuthorizationRequest(this IRequest request,
+            WebServerRequestType requestType)
         {
             return new AuthorizationRequest
             {
@@ -53,17 +53,17 @@ namespace Dev2.Runtime.WebServer.Security
             };
         }
 
-        static WebServerRequestType GetRequestType(this IHubIncomingInvokerContext context)
+        private static WebServerRequestType GetRequestType(this IHubIncomingInvokerContext context)
         {
             return ParseRequestType(context.MethodDescriptor.Hub.Name, context.MethodDescriptor.Name);
         }
 
-        static WebServerRequestType GetRequestType(this HttpActionContext context)
+        private static WebServerRequestType GetRequestType(this HttpActionContext context)
         {
             return ParseRequestType("Web", context.ActionDescriptor.ActionName);
         }
 
-        static WebServerRequestType ParseRequestType(string source, string actionName)
+        private static WebServerRequestType ParseRequestType(string source, string actionName)
         {
             WebServerRequestType requestType;
             Enum.TryParse(source + actionName, true, out requestType);

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,55 +25,51 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchDebugItemFile : IEsbManagementEndpoint
     {
-
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-
             Dev2Logger.Log.Info("Fetch Debug Item File Started");
             try
             {
+                var result = new ExecuteMessage {HasError = false};
 
-        
-            var result = new ExecuteMessage { HasError = false };
-
-            if(values == null)
-            {
-                Dev2Logger.Log.Debug("values are missing");
-                throw new InvalidDataContractException("values are missing");
-            }
-
-            StringBuilder tmp;
-            values.TryGetValue("DebugItemFilePath", out tmp);
-            if(tmp == null || tmp.Length == 0)
-            {
-                Dev2Logger.Log.Debug("DebugItemFilePath is missing");
-                throw new InvalidDataContractException("DebugItemFilePath is missing");
-            }
-
-            string debugItemFilePath = tmp.ToString();
-
-            if(File.Exists(debugItemFilePath))
-            {
-                Dev2Logger.Log.Debug("DebugItemFilePath found");
-
-                var lines = File.ReadLines(debugItemFilePath);
-                foreach(var line in lines)
+                if (values == null)
                 {
-                    result.Message.AppendLine(line);
+                    Dev2Logger.Log.Debug("values are missing");
+                    throw new InvalidDataContractException("values are missing");
                 }
 
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                return serializer.SerializeToBuilder(result);
-            }
-            Dev2Logger.Log.Debug("DebugItemFilePath not found, throwing an exception");
-            throw new InvalidDataContractException(string.Format("DebugItemFilePath {0} not found", debugItemFilePath));
+                StringBuilder tmp;
+                values.TryGetValue("DebugItemFilePath", out tmp);
+                if (tmp == null || tmp.Length == 0)
+                {
+                    Dev2Logger.Log.Debug("DebugItemFilePath is missing");
+                    throw new InvalidDataContractException("DebugItemFilePath is missing");
+                }
+
+                string debugItemFilePath = tmp.ToString();
+
+                if (File.Exists(debugItemFilePath))
+                {
+                    Dev2Logger.Log.Debug("DebugItemFilePath found");
+
+                    IEnumerable<string> lines = File.ReadLines(debugItemFilePath);
+                    foreach (string line in lines)
+                    {
+                        result.Message.AppendLine(line);
+                    }
+
+                    var serializer = new Dev2JsonSerializer();
+                    return serializer.SerializeToBuilder(result);
+                }
+                Dev2Logger.Log.Debug("DebugItemFilePath not found, throwing an exception");
+                throw new InvalidDataContractException(string.Format("DebugItemFilePath {0} not found",
+                    debugItemFilePath));
             }
             catch (Exception e)
             {
                 Dev2Logger.Log.Error(e);
                 throw;
             }
-
         }
 
         public DynamicService CreateServiceEntry()
@@ -82,7 +77,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var findDirectoryService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><DebugItemFilePath ColumnIODirection=\"Input\"></DebugItemFilePath><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><DebugItemFilePath ColumnIODirection=\"Input\"></DebugItemFilePath><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var findDirectoryServiceAction = new ServiceAction

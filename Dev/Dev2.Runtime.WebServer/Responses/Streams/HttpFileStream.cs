@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,9 +18,10 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
 {
     public class HttpFileStream : HttpPushContentStream
     {
-        readonly Func<Stream> _openInputStream;    
+        private readonly Func<Stream> _openInputStream;
 
-        public HttpFileStream(Func<Stream> openInputStream, HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize = DefaultChunkSize)
+        public HttpFileStream(Func<Stream> openInputStream, HttpResponseMessage response,
+            MediaTypeHeaderValue contentType, int chunkSize = DefaultChunkSize)
             : base(response, contentType, chunkSize)
         {
             VerifyArgument.IsNotNull("openInputStream", openInputStream);

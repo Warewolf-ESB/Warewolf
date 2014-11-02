@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -13,6 +12,7 @@
 using System.Network;
 
 // ReSharper disable CheckNamespace
+
 namespace Dev2.DynamicServices
 {
     // ReSharper disable InconsistentNaming
@@ -25,7 +25,6 @@ namespace Dev2.DynamicServices
         public static readonly PacketTemplate Server_OnDebugWriterAddition = new PacketTemplate(0, 1, true);
         public static readonly PacketTemplate Server_OnDebugWriterSubtraction = new PacketTemplate(0, 2, true);
 
-        public static readonly PacketTemplate Client_OnDebugWriterWrite = new PacketTemplate(0, 1, true); 
-
+        public static readonly PacketTemplate Client_OnDebugWriterWrite = new PacketTemplate(0, 1, true);
     }
 }

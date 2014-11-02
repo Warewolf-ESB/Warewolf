@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -32,13 +31,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersion : IEsbManagementEndpoint
     {
-        const string PayloadStart = "<XamlDefinition>";
-        const string PayloadEnd = "</XamlDefinition>";
-        const string AltPayloadStart = "<Actions>";
-        const string AltPayloadEnd = "</Actions>";
+        private const string PayloadStart = "<XamlDefinition>";
+        private const string PayloadEnd = "</XamlDefinition>";
+        private const string AltPayloadStart = "<Actions>";
+        private const string AltPayloadEnd = "</Actions>";
+
         #region Implementation of ISpookyLoadable<string>
+
+        private IResourceCatalog _resourceCatalog;
         private IServerVersionRepository _serverExplorerRepository;
-        IResourceCatalog _resourceCatalog   ;
 
         public string HandlesType()
         {
@@ -50,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         #region Implementation of IEsbManagementEndpoint
 
         /// <summary>
-        /// Executes the service
+        ///     Executes the service
         /// </summary>
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
@@ -60,7 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                var res = new ExecuteMessage { HasError = false };
+                var res = new ExecuteMessage {HasError = false};
                 if (values == null)
                 {
                     throw new ArgumentNullException("values");
@@ -71,18 +72,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentNullException("No resourceId was found in the incoming data");
 // ReSharper restore NotResolvedInText
                 }
-               
+
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
                 Dev2Logger.Log.Info("Get Version. " + version);
-                var result = ServerVersionRepo.GetVersion(version);
-                var resource = Resources.GetResource(theWorkspace.ID, version.ResourceId);
+                StringBuilder result = ServerVersionRepo.GetVersion(version);
+                IResource resource = Resources.GetResource(theWorkspace.ID, version.ResourceId);
                 if (resource != null && resource.ResourceType == ResourceType.DbSource)
                 {
                     res.Message.Append(result);
                 }
                 else
                 {
-                    var startIdx = result.IndexOf(PayloadStart, 0, false);
+                    int startIdx = result.IndexOf(PayloadStart, 0, false);
 
                     if (startIdx >= 0)
                     {
@@ -94,7 +95,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                         if (startIdx > 0)
                         {
-                            var len = result.Length - startIdx;
+                            int len = result.Length - startIdx;
                             result = result.Remove(startIdx, len);
 
                             res.Message.Append(result.Unescape());
@@ -114,7 +115,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                             if (startIdx > 0)
                             {
-                                var len = result.Length - startIdx;
+                                int len = result.Length - startIdx;
                                 result = result.Remove(startIdx, len);
 
                                 res.Message.Append(result.Unescape());
@@ -128,12 +129,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                 }
 
-                Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+                var dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
 
 
                 return serializer.SerializeToBuilder(res);
-
             }
             catch (Exception e)
             {
@@ -144,23 +144,41 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         /// <summary>
-        /// Creates the service entry.
+        ///     Creates the service entry.
         /// </summary>
         /// <returns></returns>
         public DynamicService CreateServiceEntry()
         {
-            var serviceAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
+            var serviceAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                SourceMethod = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService
+            };
 
-            var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var serviceEntry = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
             serviceEntry.Actions.Add(serviceAction);
 
             return serviceEntry;
         }
 
         #endregion
+
         public IServerVersionRepository ServerVersionRepo
         {
-            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper()); }
+            get
+            {
+                return _serverExplorerRepository ??
+                       new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance,
+                           new DirectoryWrapper(),
+                           EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
+            }
             set { _serverExplorerRepository = value; }
         }
 

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,10 +16,9 @@ namespace Dev2.Services.Security
 {
     public interface ISecurityService : IDisposable
     {
-        event EventHandler PermissionsChanged;
-
         IReadOnlyList<WindowsGroupPermission> Permissions { get; }
         TimeSpan TimeOutPeriod { get; set; }
+        event EventHandler PermissionsChanged;
 
         void Read();
         event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;

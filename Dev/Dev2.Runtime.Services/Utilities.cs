@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,14 +18,15 @@ namespace Dev2.Runtime
     {
         #region GenerateString
 
-        public static string GenerateString(this Random random, int length, string prefix = "", bool includeSpaces = false)
+        public static string GenerateString(this Random random, int length, string prefix = "",
+            bool includeSpaces = false)
         {
-            var modulo = length / 3;
+            int modulo = length/3;
             var builder = new StringBuilder(prefix);
-            for(var k = 0; k < length; k++)
+            for (int k = 0; k < length; k++)
             {
-                var ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
-                if(k % modulo != 0)
+                char ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26*random.NextDouble() + 65)));
+                if (k%modulo != 0)
                 {
                     ch = char.ToLower(ch);
                 }
@@ -36,6 +36,5 @@ namespace Dev2.Runtime
         }
 
         #endregion
-
     }
 }

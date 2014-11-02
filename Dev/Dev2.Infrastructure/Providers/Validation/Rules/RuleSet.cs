@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,7 +22,7 @@ namespace Dev2.Providers.Validation.Rules
         public RuleSet(IEnumerable<RuleBase> rules = null)
         {
             Rules = new List<IRuleBase>();
-            if(rules != null)
+            if (rules != null)
             {
                 Rules.AddRange(rules.Where(r => r != null));
             }
@@ -31,7 +30,7 @@ namespace Dev2.Providers.Validation.Rules
 
         public void Add(IRuleBase rule)
         {
-            if(rule == null)
+            if (rule == null)
             {
                 throw new ArgumentNullException("rule");
             }
@@ -42,22 +41,22 @@ namespace Dev2.Providers.Validation.Rules
 
         public List<IActionableErrorInfo> ValidateRules()
         {
-            var errors = from rule in Rules
-                         let errorTO = rule.Check()
-                         where errorTO != null
-                         select errorTO;
+            IEnumerable<IActionableErrorInfo> errors = from rule in Rules
+                let errorTO = rule.Check()
+                where errorTO != null
+                select errorTO;
             return errors.ToList();
         }
 
         public List<IActionableErrorInfo> ValidateRules(string labelText, Action doError)
         {
             var result = new List<IActionableErrorInfo>();
-            foreach(var rule in Rules)
+            foreach (IRuleBase rule in Rules)
             {
                 rule.LabelText = labelText;
                 rule.DoError = doError;
-                var err = rule.Check();
-                if(err != null)
+                IActionableErrorInfo err = rule.Check();
+                if (err != null)
                 {
                     result.Add(err);
                 }

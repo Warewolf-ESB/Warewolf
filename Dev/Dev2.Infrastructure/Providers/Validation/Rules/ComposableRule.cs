@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,47 +16,44 @@ namespace Dev2.Providers.Validation.Rules
 {
     public class ComposableRule<T> : RuleBase
     {
-        readonly Rule<T> _baseRule;
-        Func<IActionableErrorInfo> _check;
+        private readonly Rule<T> _baseRule;
+        private Func<IActionableErrorInfo> _check;
+
         public ComposableRule(Rule<T> baseRule)
         {
             VerifyArgument.IsNotNull("baseRule", baseRule);
             _baseRule = baseRule;
             _check = _baseRule.Check;
-
         }
 
         public ComposableRule<T> And(Rule<T> andRule)
         {
-
             VerifyArgument.IsNotNull("andRule", andRule);
-            var b = _check;
+            Func<IActionableErrorInfo> b = _check;
             _check = () =>
-                {
-                    var a = b();
+            {
+                IActionableErrorInfo a = b();
 
-                    if (a != null)
-                        return a;
-                    return andRule.Check();
-                };
+                if (a != null)
+                    return a;
+                return andRule.Check();
+            };
             return this;
         }
 
         public ComposableRule<T> Or(Rule<T> orRule)
         {
-
             VerifyArgument.IsNotNull("orRule", orRule);
-            var b = _check;
+            Func<IActionableErrorInfo> b = _check;
             _check = () =>
+            {
+                IActionableErrorInfo a = b();
+                if (a == null)
                 {
-                    var a = b();
-                    if (a == null)
-                    {
-                        return orRule.Check();
-                    }
-                    return a;
-
-                };
+                    return orRule.Check();
+                }
+                return a;
+            };
             return this;
         }
 

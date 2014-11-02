@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,7 +15,7 @@ using Jurassic;
 
 namespace Dev2.Development.Languages.Scripting
 {
-    public class JavaScriptContext: IScriptingContext
+    public class JavaScriptContext : IScriptingContext
     {
         public string Execute(string scriptValue)
         {

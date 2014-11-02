@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,6 +10,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -31,17 +31,23 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/dbSources/Get
         public DbSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
-            var result = new DbSource { ResourceID = Guid.Empty, ResourceType = ResourceType.DbSource, AuthenticationType = AuthenticationType.Windows };
+            var result = new DbSource
+            {
+                ResourceID = Guid.Empty,
+                ResourceType = ResourceType.DbSource,
+                AuthenticationType = AuthenticationType.Windows
+            };
             try
             {
-                var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
-                if(!string.IsNullOrEmpty(xmlStr))
+                string xmlStr =
+                    ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
+                if (!string.IsNullOrEmpty(xmlStr))
                 {
-                    var xml = XElement.Parse(xmlStr);
+                    XElement xml = XElement.Parse(xmlStr);
                     result = new DbSource(xml);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -60,17 +66,17 @@ namespace Dev2.Runtime.ServiceModel
                 var databaseSourceDetails = JsonConvert.DeserializeObject<DbSource>(args);
 
                 // Setup ports using default
-                switch(databaseSourceDetails.ServerType)
+                switch (databaseSourceDetails.ServerType)
                 {
                     case enSourceType.SqlDatabase:
-                        {
-                            databaseSourceDetails.Port = 1433;
-                            break;
-                        }
+                    {
+                        databaseSourceDetails.Port = 1433;
+                        break;
+                    }
                 }
 
                 ResourceCatalog.Instance.SaveResource(workspaceId, databaseSourceDetails);
-                if(workspaceId != GlobalConstants.ServerWorkspaceID)
+                if (workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     //2012.03.12: Ashley Lewis - BUG 9208
                     ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, databaseSourceDetails);
@@ -78,10 +84,10 @@ namespace Dev2.Runtime.ServiceModel
 
                 return databaseSourceDetails.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                return new DatabaseValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
+                return new DatabaseValidationResult {IsValid = false, ErrorMessage = ex.Message}.ToString();
             }
         }
 
@@ -92,7 +98,7 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/DbSources/Search
         public string Search(string term, Guid workspaceId, Guid dataListId)
         {
-            var results = GetComputerNames.ComputerNames.FindAll(s => s.Contains(term));
+            List<string> results = GetComputerNames.ComputerNames.FindAll(s => s.Contains(term));
 
             return JsonConvert.SerializeObject(results);
         }
@@ -113,7 +119,7 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var dbSourceDetails = JsonConvert.DeserializeObject<DbSource>(args);
-                switch(dbSourceDetails.ResourceType)
+                switch (dbSourceDetails.ResourceType)
                 {
                     case ResourceType.DbSource:
                         result.ErrorMessage = null;
@@ -121,7 +127,7 @@ namespace Dev2.Runtime.ServiceModel
                         break;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 result.ErrorMessage = ex.Message;
@@ -137,10 +143,10 @@ namespace Dev2.Runtime.ServiceModel
         {
             var result = new DatabaseValidationResult();
 
-            switch(dbSourceDetails.ServerType)
+            switch (dbSourceDetails.ServerType)
             {
                 case enSourceType.SqlDatabase:
-                    var broker = CreateDatabaseBroker();
+                    SqlDatabaseBroker broker = CreateDatabaseBroker();
                     result.DatabaseList = broker.GetDatabases(dbSourceDetails);
                     break;
                 default:

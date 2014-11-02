@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,7 +18,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     // This behaviour appears to be caused by the IEnumerable<T> interface of IList<T>
     public class RecordsetRecord
     {
-        readonly List<RecordsetCell> _cells;
+        private readonly List<RecordsetCell> _cells;
 
         #region CTOR
 
@@ -42,30 +41,18 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public RecordsetCell this[int index]
         {
-            get
-            {
-                return _cells[index];
-            }
-            set
-            {
-                _cells[index] = value;
-            }
+            get { return _cells[index]; }
+            set { _cells[index] = value; }
         }
 
         public int Count
         {
-            get
-            {
-                return _cells.Count;
-            }
+            get { return _cells.Count; }
         }
 
         public RecordsetCell[] Cells
         {
-            get
-            {
-                return _cells.ToArray();
-            }
+            get { return _cells.ToArray(); }
         }
 
         #endregion
@@ -79,7 +66,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public void Add(RecordsetCell item)
         {
-            if(item == null)
+            if (item == null)
             {
                 throw new ArgumentNullException("item");
             }
@@ -92,6 +79,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
     }
 }

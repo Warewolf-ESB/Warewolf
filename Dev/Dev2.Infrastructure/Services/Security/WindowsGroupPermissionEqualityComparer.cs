@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,20 +18,21 @@ namespace Dev2.Services.Security
         #region Implementation of IEqualityComparer<in WindowsGroupPermission>
 
         /// <summary>
-        /// Determines whether the specified objects are equal.
+        ///     Determines whether the specified objects are equal.
         /// </summary>
         /// <returns>
-        /// true if the specified objects are equal; otherwise, false.
+        ///     true if the specified objects are equal; otherwise, false.
         /// </returns>
-        /// <param name="x">The first object of type <paramref name="T"/> to compare.</param><param name="y">The second object of type <paramref name="T"/> to compare.</param>
+        /// <param name="x">The first object of type <paramref name="T" /> to compare.</param>
+        /// <param name="y">The second object of type <paramref name="T" /> to compare.</param>
         public bool Equals(WindowsGroupPermission x, WindowsGroupPermission y)
         {
-            var isEqual = x.Permissions.Equals(y.Permissions) && x.ResourceID.Equals(y.ResourceID);
-            if(!string.IsNullOrEmpty(x.ResourceName) && !string.IsNullOrEmpty(y.ResourceName))
+            bool isEqual = x.Permissions.Equals(y.Permissions) && x.ResourceID.Equals(y.ResourceID);
+            if (!string.IsNullOrEmpty(x.ResourceName) && !string.IsNullOrEmpty(y.ResourceName))
             {
                 isEqual = isEqual && x.ResourceName.Equals(y.ResourceName);
             }
-            if(!string.IsNullOrEmpty(x.WindowsGroup) && !string.IsNullOrEmpty(y.WindowsGroup))
+            if (!string.IsNullOrEmpty(x.WindowsGroup) && !string.IsNullOrEmpty(y.WindowsGroup))
             {
                 isEqual = isEqual && x.WindowsGroup.Equals(y.WindowsGroup);
             }
@@ -40,21 +40,25 @@ namespace Dev2.Services.Security
         }
 
         /// <summary>
-        /// Returns a hash code for the specified object.
+        ///     Returns a hash code for the specified object.
         /// </summary>
         /// <returns>
-        /// A hash code for the specified object.
+        ///     A hash code for the specified object.
         /// </returns>
-        /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
+        /// <param name="obj">The <see cref="T:System.Object" /> for which a hash code is to be returned.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        ///     The type of <paramref name="obj" /> is a reference type and
+        ///     <paramref name="obj" /> is null.
+        /// </exception>
         public int GetHashCode(WindowsGroupPermission obj)
         {
-            var hashCode = 0;
+            int hashCode = 0;
             hashCode += obj.Permissions.GetHashCode() + obj.ResourceID.GetHashCode();
-            if(!string.IsNullOrEmpty(obj.ResourceName))
+            if (!string.IsNullOrEmpty(obj.ResourceName))
             {
                 hashCode += obj.ResourceName.GetHashCode();
             }
-            if(!string.IsNullOrEmpty(obj.WindowsGroup))
+            if (!string.IsNullOrEmpty(obj.WindowsGroup))
             {
                 hashCode += obj.WindowsGroup.GetHashCode();
             }

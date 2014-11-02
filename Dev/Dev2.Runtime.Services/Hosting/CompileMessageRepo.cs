@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,33 +24,21 @@ using Dev2.Data.ServiceModel.Messages;
 namespace Dev2.Runtime.Hosting
 {
     /// <summary>
-    /// Used to store compile time message ;)
+    ///     Used to store compile time message ;)
     /// </summary>
     public class CompileMessageRepo : IDisposable
     {
         // used for storing message about resources ;) 
-        readonly IDictionary<Guid, IList<ICompileMessageTO>> _messageRepo = new Dictionary<Guid, IList<ICompileMessageTO>>();
-        static Subject<IList<ICompileMessageTO>> _allMessages = new Subject<IList<ICompileMessageTO>>();
+
+        private static Subject<IList<ICompileMessageTO>> _allMessages = new Subject<IList<ICompileMessageTO>>();
         private static readonly object Lock = new object();
         private static bool _changes;
-        private static readonly Timer PersistTimer = new Timer(1000 * 5); // wait 5 seconds to fire ;)
-
-        /// <summary>
-        /// Gets or sets the persistence path.
-        /// </summary>
-        /// <value>
-        /// The persistence path.
-        /// </value>
-        public string PersistencePath { get; private set; }
+        private static readonly Timer PersistTimer = new Timer(1000*5); // wait 5 seconds to fire ;)
 
         private static CompileMessageRepo _instance;
-        public static CompileMessageRepo Instance
-        {
-            get
-            {
-                return _instance ?? (_instance = new CompileMessageRepo());
-            }
-        }
+
+        private readonly IDictionary<Guid, IList<ICompileMessageTO>> _messageRepo =
+            new Dictionary<Guid, IList<ICompileMessageTO>>();
 
         public CompileMessageRepo()
             : this(null, false)
@@ -60,19 +47,19 @@ namespace Dev2.Runtime.Hosting
 
         public CompileMessageRepo(string persistPath, bool activateBackgroundWorker = true)
         {
-            if(persistPath != null)
+            if (persistPath != null)
             {
                 PersistencePath = persistPath;
             }
 
-            var path = PersistencePath;
+            string path = PersistencePath;
 
-            if(string.IsNullOrEmpty(PersistencePath))
+            if (string.IsNullOrEmpty(PersistencePath))
             {
                 path = Path.Combine(EnvironmentVariables.RootPersistencePath, "CompileMessages");
             }
 
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
@@ -80,12 +67,24 @@ namespace Dev2.Runtime.Hosting
             // Hydrate from disk ;)
             HydrateFromDisk(path);
 
-            if(activateBackgroundWorker)
+            if (activateBackgroundWorker)
             {
                 // Init Persistence ;)
                 InitPersistence(path);
             }
+        }
 
+        /// <summary>
+        ///     Gets or sets the persistence path.
+        /// </summary>
+        /// <value>
+        ///     The persistence path.
+        /// </value>
+        public string PersistencePath { get; private set; }
+
+        public static CompileMessageRepo Instance
+        {
+            get { return _instance ?? (_instance = new CompileMessageRepo()); }
         }
 
         public bool Ping()
@@ -97,7 +96,7 @@ namespace Dev2.Runtime.Hosting
         {
             IList<ICompileMessageTO> messages;
 
-            if(_messageRepo.TryGetValue(wId, out messages))
+            if (_messageRepo.TryGetValue(wId, out messages))
             {
                 return messages.Count;
             }
@@ -105,28 +104,34 @@ namespace Dev2.Runtime.Hosting
             return -1;
         }
 
+        public void ClearObservable()
+        {
+            _allMessages.OnCompleted();
+            _allMessages = new Subject<IList<ICompileMessageTO>>();
+        }
+
         #region Private Methods
 
         /// <summary>
-        /// Hydrates from disk.
+        ///     Hydrates from disk.
         /// </summary>
         /// <param name="path">The path.</param>
         private void HydrateFromDisk(string path)
         {
-            lock(Lock)
+            lock (Lock)
             {
                 try
                 {
-                    var files = Directory.GetFiles(path);
+                    string[] files = Directory.GetFiles(path);
 
-                    foreach(var f in files)
+                    foreach (string f in files)
                     {
-                        var fname = Path.GetFileName(f);
-                        if(fname != null)
+                        string fname = Path.GetFileName(f);
+                        if (fname != null)
                         {
                             fname = fname.Replace(".msg", "");
-                            BinaryFormatter bf = new BinaryFormatter();
-                            using(Stream s = new FileStream(f, FileMode.OpenOrCreate))
+                            var bf = new BinaryFormatter();
+                            using (Stream s = new FileStream(f, FileMode.OpenOrCreate))
                             {
                                 try
                                 {
@@ -134,10 +139,10 @@ namespace Dev2.Runtime.Hosting
 
                                     var listOf = (obj as IList<ICompileMessageTO>);
 
-                                    if(listOf != null)
+                                    if (listOf != null)
                                     {
                                         Guid id;
-                                        if(Guid.TryParse(fname, out id))
+                                        if (Guid.TryParse(fname, out id))
                                         {
                                             _messageRepo[id] = listOf;
                                             _allMessages.OnNext(listOf);
@@ -148,7 +153,7 @@ namespace Dev2.Runtime.Hosting
                                         }
                                     }
                                 }
-                                catch(Exception e)
+                                catch (Exception e)
                                 {
                                     Dev2Logger.Log.Error(e);
                                 }
@@ -156,7 +161,7 @@ namespace Dev2.Runtime.Hosting
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Log.Error(e);
                 }
@@ -164,15 +169,13 @@ namespace Dev2.Runtime.Hosting
         }
 
 
-
-
         /// <summary>
-        /// Inits the persistence.
+        ///     Inits the persistence.
         /// </summary>
         /// <param name="path">The path.</param>
         private void InitPersistence(string path)
         {
-            PersistTimer.Interval = 1000 * 5; // every 5 seconds
+            PersistTimer.Interval = 1000*5; // every 5 seconds
             PersistTimer.Enabled = true;
             PersistTimer.Elapsed += (sender, args) => Persist(path);
         }
@@ -181,29 +184,48 @@ namespace Dev2.Runtime.Hosting
 
         #region Public Methods
 
+        public IObservable<IList<ICompileMessageTO>> AllMessages
+        {
+            get { return _allMessages; }
+        }
+
+        public void Dispose()
+        {
+            if (PersistTimer != null)
+            {
+                try
+                {
+                    PersistTimer.Close();
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Log.Error(e);
+                }
+            }
+        }
 
         /// <summary>
-        /// Persists the specified path.
+        ///     Persists the specified path.
         /// </summary>
         /// <param name="path">The path.</param>
         public void Persist(string path)
         {
-            if(_changes)
+            if (_changes)
             {
-                lock(Lock)
+                lock (Lock)
                 {
                     try
                     {
                         // Persistence work ;)
-                        var keys = _messageRepo.Keys;
-                        foreach(var k in keys)
+                        ICollection<Guid> keys = _messageRepo.Keys;
+                        foreach (Guid k in keys)
                         {
                             IList<ICompileMessageTO> val;
-                            if(_messageRepo.TryGetValue(k, out val))
+                            if (_messageRepo.TryGetValue(k, out val))
                             {
-                                var pPath = Path.Combine(path, k + ".msg");
-                                BinaryFormatter bf = new BinaryFormatter();
-                                using(Stream s = new FileStream(pPath, FileMode.OpenOrCreate))
+                                string pPath = Path.Combine(path, k + ".msg");
+                                var bf = new BinaryFormatter();
+                                using (Stream s = new FileStream(pPath, FileMode.OpenOrCreate))
                                 {
                                     bf.Serialize(s, val);
                                 }
@@ -212,7 +234,7 @@ namespace Dev2.Runtime.Hosting
 
                         _changes = false;
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Dev2Logger.Log.Error(e);
                     }
@@ -222,34 +244,34 @@ namespace Dev2.Runtime.Hosting
 
 
         /// <summary>
-        /// Adds the message.
+        ///     Adds the message.
         /// </summary>
         /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="msgs">The MSGS.</param>
         /// <returns></returns>
         public bool AddMessage(Guid workspaceId, IList<ICompileMessageTO> msgs)
         {
-            if(msgs.Count == 0)
+            if (msgs.Count == 0)
             {
                 return true;
             }
-            lock(Lock)
+            lock (Lock)
             {
                 IList<ICompileMessageTO> messages;
-                if(!_messageRepo.TryGetValue(workspaceId, out messages))
+                if (!_messageRepo.TryGetValue(workspaceId, out messages))
                 {
                     messages = new List<ICompileMessageTO>();
                 }
 
                 // clean up any messages with the same id and add
 
-                for(int i = (messages.Count - 1); i >= 0; i--)
+                for (int i = (messages.Count - 1); i >= 0; i--)
                 {
                     messages.Remove(messages[i]);
                 }
 
                 // now add new messages ;)
-                foreach(var msg in msgs)
+                foreach (ICompileMessageTO msg in msgs)
                 {
                     messages.Add(msg);
                 }
@@ -263,22 +285,23 @@ namespace Dev2.Runtime.Hosting
         }
 
         /// <summary>
-        /// Removes the message.
+        ///     Removes the message.
         /// </summary>
         /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="serviceId">The service ID.</param>
         /// <returns></returns>
         public bool RemoveMessages(Guid workspaceId, Guid serviceId)
         {
-            lock(Lock)
+            lock (Lock)
             {
                 IList<ICompileMessageTO> messages;
-                if(_messageRepo.TryGetValue(workspaceId, out messages))
+                if (_messageRepo.TryGetValue(workspaceId, out messages))
                 {
-                    var candidateMessage = messages.Where(c => c.ServiceID == serviceId);
+                    IEnumerable<ICompileMessageTO> candidateMessage = messages.Where(c => c.ServiceID == serviceId);
 
-                    var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ?? candidateMessage.ToList();
-                    foreach(var msg in compileMessageTos)
+                    IList<ICompileMessageTO> compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
+                                                                 candidateMessage.ToList();
+                    foreach (ICompileMessageTO msg in compileMessageTos)
                     {
                         messages.Remove(msg);
                     }
@@ -291,42 +314,44 @@ namespace Dev2.Runtime.Hosting
         }
 
         /// <summary>
-        /// Fetches the messages.
+        ///     Fetches the messages.
         /// </summary>
         /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="serviceId">The service ID.</param>
         /// <param name="deps">The deps.</param>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<IResourceForTree> deps, CompileMessageType[] filter = null)
+        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<IResourceForTree> deps,
+            CompileMessageType[] filter = null)
         {
             IList<ICompileMessageTO> result = new List<ICompileMessageTO>();
 
-            lock(Lock)
+            lock (Lock)
             {
                 IList<ICompileMessageTO> messages;
-                if(_messageRepo.TryGetValue(workspaceId, out messages))
+                if (_messageRepo.TryGetValue(workspaceId, out messages))
                 {
                     // Fetch dep list and process ;)
-                    if(deps != null)
+                    if (deps != null)
                     {
-                        foreach(var d in deps)
+                        foreach (IResourceForTree d in deps)
                         {
                             IResourceForTree d1 = d;
-                            var candidateMessage = messages.Where(c => c.ServiceID == d1.ResourceID);
-                            var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
-                                                    candidateMessage.ToList();
+                            IEnumerable<ICompileMessageTO> candidateMessage =
+                                messages.Where(c => c.ServiceID == d1.ResourceID);
+                            IList<ICompileMessageTO> compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
+                                                                         candidateMessage.ToList();
 
-                            foreach(var msg in compileMessageTos)
+                            foreach (ICompileMessageTO msg in compileMessageTos)
                             {
-                                if(filter != null)
+                                if (filter != null)
                                 {
                                     // TODO : Apply filter logic ;)
                                 }
                                 else
                                 {
                                     // Adjust unique id for return so design surface understands where message goes ;)
-                                    var tmpMsg = msg.Clone();
+                                    ICompileMessageTO tmpMsg = msg.Clone();
                                     tmpMsg.UniqueID = d1.UniqueID;
                                     result.Add(tmpMsg);
                                 }
@@ -336,26 +361,26 @@ namespace Dev2.Runtime.Hosting
                 }
             }
 
-            return new CompileMessageList { MessageList = result, ServiceID = serviceId };
+            return new CompileMessageList {MessageList = result, ServiceID = serviceId};
         }
 
-        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<string> dependants, CompileMessageType[] filter = null)
+        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<string> dependants,
+            CompileMessageType[] filter = null)
         {
             IList<ICompileMessageTO> result = new List<ICompileMessageTO>();
 
-            lock(Lock)
+            lock (Lock)
             {
                 IList<ICompileMessageTO> messages;
-                if(_messageRepo.TryGetValue(workspaceId, out messages))
+                if (_messageRepo.TryGetValue(workspaceId, out messages))
                 {
+                    IEnumerable<ICompileMessageTO> candidateMessage = messages.Where(c => c.ServiceID == serviceId);
+                    IList<ICompileMessageTO> compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
+                                                                 candidateMessage.ToList();
 
-                    var candidateMessage = messages.Where(c => c.ServiceID == serviceId);
-                    var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
-                                            candidateMessage.ToList();
-
-                    foreach(var msg in compileMessageTos)
+                    foreach (ICompileMessageTO msg in compileMessageTos)
                     {
-                        if(filter != null)
+                        if (filter != null)
                         {
                             // TODO : Apply filter logic ;)
                         }
@@ -366,40 +391,16 @@ namespace Dev2.Runtime.Hosting
                     }
                 }
             }
-            var compileMessageList = new CompileMessageList { MessageList = result, ServiceID = serviceId, Dependants = dependants };
+            var compileMessageList = new CompileMessageList
+            {
+                MessageList = result,
+                ServiceID = serviceId,
+                Dependants = dependants
+            };
             RemoveMessages(workspaceId, serviceId);
             return compileMessageList;
         }
 
-        public IObservable<IList<ICompileMessageTO>> AllMessages
-        {
-            get
-            {
-                return _allMessages;
-            }
-        }
-
-        public void Dispose()
-        {
-            if(PersistTimer != null)
-            {
-                try
-                {
-                    PersistTimer.Close();
-                }
-                catch(Exception e)
-                {
-                    Dev2Logger.Log.Error(e);
-                }
-            }
-        }
-
         #endregion
-
-        public void ClearObservable()
-        {
-            _allMessages.OnCompleted();
-            _allMessages = new Subject<IList<ICompileMessageTO>>();
-        }
     }
 }

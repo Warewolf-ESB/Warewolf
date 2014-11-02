@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,12 +20,13 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Find a resource by its id
+    ///     Find a resource by its id
     /// </summary>
     // ReSharper disable InconsistentNaming
     public class FindResourcesByID : IEsbManagementEndpoint
@@ -36,30 +36,29 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
+                string guidCsv = string.Empty;
+                string type = null;
 
+                StringBuilder tmp;
+                values.TryGetValue("GuidCsv", out tmp);
+                if (tmp != null)
+                {
+                    guidCsv = tmp.ToString();
+                }
+                values.TryGetValue("ResourceType", out tmp);
+                if (tmp != null)
+                {
+                    type = tmp.ToString();
+                }
+                Dev2Logger.Log.Info("Find Resource By Id. " + guidCsv);
+                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
+                IList<Resource> resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, guidCsv, type);
 
-            string guidCsv = string.Empty;
-            string type = null;
+                IList<SerializableResource> resourceList =
+                    resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
 
-            StringBuilder tmp;
-            values.TryGetValue("GuidCsv", out tmp);
-            if(tmp != null)
-            {
-                guidCsv = tmp.ToString();
-            }
-            values.TryGetValue("ResourceType", out tmp);
-            if(tmp != null)
-            {
-                type = tmp.ToString();
-            }
-            Dev2Logger.Log.Info("Find Resource By Id. "+guidCsv);
-            // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, guidCsv, type);
-
-            IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
-
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(resourceList);
+                var serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(resourceList);
             }
             catch (Exception err)
             {
@@ -70,9 +69,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findResourcesByIdAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
+            var findResourcesByIdAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                SourceMethod = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService
+            };
 
-            var findResourcesByIdService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><GuidCsv ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findResourcesByIdService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><GuidCsv ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
             findResourcesByIdService.Actions.Add(findResourcesByIdAction);
 
             return findResourcesByIdService;

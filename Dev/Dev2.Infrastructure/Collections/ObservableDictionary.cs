@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -33,13 +32,12 @@ namespace Dev2.Collections
     {
         #region fields
 
-        readonly Dictionary<TKey, TValue> _dictionaryCache = new Dictionary<TKey, TValue>();
-        [NonSerialized]
-        readonly SerializationInfo _siInfo;
-        int _countCache;
-        int _dictionaryCacheVersion;
+        private readonly Dictionary<TKey, TValue> _dictionaryCache = new Dictionary<TKey, TValue>();
+        [NonSerialized] private readonly SerializationInfo _siInfo;
         protected KeyedDictionaryEntryCollection<TKey> KeyedEntryCollection;
-        int _version;
+        private int _countCache;
+        private int _dictionaryCacheVersion;
+        private int _version;
 
         #endregion fields
 
@@ -56,7 +54,7 @@ namespace Dev2.Collections
         {
             KeyedEntryCollection = new KeyedDictionaryEntryCollection<TKey>();
 
-            foreach(var entry in dictionary)
+            foreach (var entry in dictionary)
             {
                 DoAddEntry(entry.Key, entry.Value);
             }
@@ -71,7 +69,7 @@ namespace Dev2.Collections
         {
             KeyedEntryCollection = new KeyedDictionaryEntryCollection<TKey>(comparer);
 
-            foreach(var entry in dictionary)
+            foreach (var entry in dictionary)
             {
                 DoAddEntry(entry.Key, entry.Value);
             }
@@ -94,30 +92,46 @@ namespace Dev2.Collections
 
         #region public
 
-        public IEqualityComparer<TKey> Comparer { get { return KeyedEntryCollection.Comparer; } }
+        public IEqualityComparer<TKey> Comparer
+        {
+            get { return KeyedEntryCollection.Comparer; }
+        }
 
-        public int Count { get { return KeyedEntryCollection.Count; } }
+        public int Count
+        {
+            get { return KeyedEntryCollection.Count; }
+        }
 
-        public Dictionary<TKey, TValue>.KeyCollection Keys { get { return TrueDictionary.Keys; } }
+        public Dictionary<TKey, TValue>.KeyCollection Keys
+        {
+            get { return TrueDictionary.Keys; }
+        }
 
-        public TValue this[TKey key] { get { return (TValue)KeyedEntryCollection[key].Value; } set { DoSetEntry(key, value); } }
+        public TValue this[TKey key]
+        {
+            get { return (TValue) KeyedEntryCollection[key].Value; }
+            set { DoSetEntry(key, value); }
+        }
 
-        public Dictionary<TKey, TValue>.ValueCollection Values { get { return TrueDictionary.Values; } }
+        public Dictionary<TKey, TValue>.ValueCollection Values
+        {
+            get { return TrueDictionary.Values; }
+        }
 
         #endregion public
 
         #region private
 
-        Dictionary<TKey, TValue> TrueDictionary
+        private Dictionary<TKey, TValue> TrueDictionary
         {
             get
             {
-                if(_dictionaryCacheVersion != _version)
+                if (_dictionaryCacheVersion != _version)
                 {
                     _dictionaryCache.Clear();
-                    foreach(var entry in KeyedEntryCollection)
+                    foreach (DictionaryEntry entry in KeyedEntryCollection)
                     {
-                        _dictionaryCache.Add((TKey)entry.Key, (TValue)entry.Value);
+                        _dictionaryCache.Add((TKey) entry.Key, (TValue) entry.Value);
                     }
                     _dictionaryCacheVersion = _version;
                 }
@@ -165,8 +179,8 @@ namespace Dev2.Collections
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            var result = KeyedEntryCollection.Contains(key);
-            value = result ? (TValue)KeyedEntryCollection[key].Value : default(TValue);
+            bool result = KeyedEntryCollection.Contains(key);
+            value = result ? (TValue) KeyedEntryCollection[key].Value : default(TValue);
             return result;
         }
 
@@ -183,8 +197,8 @@ namespace Dev2.Collections
         protected virtual bool ClearEntries()
         {
             // check whether there are entries to clear
-            var result = (Count > 0);
-            if(result)
+            bool result = (Count > 0);
+            if (result)
             {
                 // if so, clear the dictionary
                 KeyedEntryCollection.Clear();
@@ -195,8 +209,8 @@ namespace Dev2.Collections
         protected int GetIndexAndEntryForKey(TKey key, out DictionaryEntry entry)
         {
             entry = new DictionaryEntry();
-            var index = -1;
-            if(KeyedEntryCollection.Contains(key))
+            int index = -1;
+            if (KeyedEntryCollection.Contains(key))
             {
                 entry = KeyedEntryCollection[key];
                 index = KeyedEntryCollection.IndexOf(entry);
@@ -206,7 +220,7 @@ namespace Dev2.Collections
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
         {
-            if(CollectionChanged != null)
+            if (CollectionChanged != null)
             {
                 CollectionChanged(this, args);
             }
@@ -214,7 +228,7 @@ namespace Dev2.Collections
 
         protected virtual void OnPropertyChanged(string name)
         {
-            if(PropertyChanged != null)
+            if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
@@ -228,16 +242,16 @@ namespace Dev2.Collections
 
         protected virtual bool SetEntry(TKey key, TValue value)
         {
-            var keyExists = KeyedEntryCollection.Contains(key);
+            bool keyExists = KeyedEntryCollection.Contains(key);
 
             // if identical key/value pair already exists, nothing to do
-            if(keyExists && value.Equals((TValue)KeyedEntryCollection[key].Value))
+            if (keyExists && value.Equals((TValue) KeyedEntryCollection[key].Value))
             {
                 return false;
             }
 
             // otherwise, remove the existing entry
-            if(keyExists)
+            if (keyExists)
             {
                 KeyedEntryCollection.Remove(key);
             }
@@ -252,37 +266,37 @@ namespace Dev2.Collections
 
         #region private
 
-        void DoAddEntry(TKey key, TValue value)
+        private void DoAddEntry(TKey key, TValue value)
         {
-            if(AddEntry(key, value))
+            if (AddEntry(key, value))
             {
                 _version++;
 
                 DictionaryEntry entry;
-                var index = GetIndexAndEntryForKey(key, out entry);
+                int index = GetIndexAndEntryForKey(key, out entry);
                 FireEntryAddedNotifications(entry, index);
             }
         }
 
-        void DoClearEntries()
+        private void DoClearEntries()
         {
-            if(ClearEntries())
+            if (ClearEntries())
             {
                 _version++;
                 FireResetNotifications();
             }
         }
 
-        bool DoRemoveEntry(TKey key)
+        private bool DoRemoveEntry(TKey key)
         {
             DictionaryEntry entry;
-            var index = GetIndexAndEntryForKey(key, out entry);
+            int index = GetIndexAndEntryForKey(key, out entry);
 
-            var result = RemoveEntry(key);
-            if(result)
+            bool result = RemoveEntry(key);
+            if (result)
             {
                 _version++;
-                if(index > -1)
+                if (index > -1)
                 {
                     FireEntryRemovedNotifications(entry, index);
                 }
@@ -291,17 +305,17 @@ namespace Dev2.Collections
             return result;
         }
 
-        void DoSetEntry(TKey key, TValue value)
+        private void DoSetEntry(TKey key, TValue value)
         {
             DictionaryEntry entry;
-            var index = GetIndexAndEntryForKey(key, out entry);
+            int index = GetIndexAndEntryForKey(key, out entry);
 
-            if(SetEntry(key, value))
+            if (SetEntry(key, value))
             {
                 _version++;
 
                 // if prior entry existed for this key, fire the removed notifications
-                if(index > -1)
+                if (index > -1)
                 {
                     FireEntryRemovedNotifications(entry, index);
 
@@ -315,31 +329,33 @@ namespace Dev2.Collections
             }
         }
 
-        void FireEntryAddedNotifications(DictionaryEntry entry, int index)
+        private void FireEntryAddedNotifications(DictionaryEntry entry, int index)
         {
             // fire the relevant PropertyChanged notifications
             FirePropertyChangedNotifications();
 
             // fire CollectionChanged notification
             OnCollectionChanged(index > -1
-                ? new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value), index)
+                ? new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,
+                    new KeyValuePair<TKey, TValue>((TKey) entry.Key, (TValue) entry.Value), index)
                 : new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
-        void FireEntryRemovedNotifications(DictionaryEntry entry, int index)
+        private void FireEntryRemovedNotifications(DictionaryEntry entry, int index)
         {
             // fire the relevant PropertyChanged notifications
             FirePropertyChangedNotifications();
 
             // fire CollectionChanged notification
             OnCollectionChanged(index > -1
-                ? new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value), index)
+                ? new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
+                    new KeyValuePair<TKey, TValue>((TKey) entry.Key, (TValue) entry.Value), index)
                 : new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
-        void FirePropertyChangedNotifications()
+        private void FirePropertyChangedNotifications()
         {
-            if(Count != _countCache)
+            if (Count != _countCache)
             {
                 _countCache = Count;
                 OnPropertyChanged("Count");
@@ -349,7 +365,7 @@ namespace Dev2.Collections
             }
         }
 
-        void FireResetNotifications()
+        private void FireResetNotifications()
         {
             // fire the relevant PropertyChanged notifications
             FirePropertyChangedNotifications();
@@ -386,11 +402,21 @@ namespace Dev2.Collections
             return TryGetValue(key, out value);
         }
 
-        ICollection<TKey> IDictionary<TKey, TValue>.Keys { get { return Keys; } }
+        ICollection<TKey> IDictionary<TKey, TValue>.Keys
+        {
+            get { return Keys; }
+        }
 
-        ICollection<TValue> IDictionary<TKey, TValue>.Values { get { return Values; } }
+        ICollection<TValue> IDictionary<TKey, TValue>.Values
+        {
+            get { return Values; }
+        }
 
-        TValue IDictionary<TKey, TValue>.this[TKey key] { get { return (TValue)KeyedEntryCollection[key].Value; } set { DoSetEntry(key, value); } }
+        TValue IDictionary<TKey, TValue>.this[TKey key]
+        {
+            get { return (TValue) KeyedEntryCollection[key].Value; }
+            set { DoSetEntry(key, value); }
+        }
 
         #endregion IDictionary<TKey, TValue>
 
@@ -398,7 +424,7 @@ namespace Dev2.Collections
 
         void IDictionary.Add(object key, object value)
         {
-            DoAddEntry((TKey)key, (TValue)value);
+            DoAddEntry((TKey) key, (TValue) value);
         }
 
         void IDictionary.Clear()
@@ -408,7 +434,7 @@ namespace Dev2.Collections
 
         bool IDictionary.Contains(object key)
         {
-            return KeyedEntryCollection.Contains((TKey)key);
+            return KeyedEntryCollection.Contains((TKey) key);
         }
 
         IDictionaryEnumerator IDictionary.GetEnumerator()
@@ -416,20 +442,36 @@ namespace Dev2.Collections
             return new Enumerator<TKey, TValue>(this, true);
         }
 
-        bool IDictionary.IsFixedSize { get { return false; } }
+        bool IDictionary.IsFixedSize
+        {
+            get { return false; }
+        }
 
-        bool IDictionary.IsReadOnly { get { return false; } }
+        bool IDictionary.IsReadOnly
+        {
+            get { return false; }
+        }
 
-        object IDictionary.this[object key] { get { return KeyedEntryCollection[(TKey)key].Value; } set { DoSetEntry((TKey)key, (TValue)value); } }
+        object IDictionary.this[object key]
+        {
+            get { return KeyedEntryCollection[(TKey) key].Value; }
+            set { DoSetEntry((TKey) key, (TValue) value); }
+        }
 
-        ICollection IDictionary.Keys { get { return Keys; } }
+        ICollection IDictionary.Keys
+        {
+            get { return Keys; }
+        }
 
         void IDictionary.Remove(object key)
         {
-            DoRemoveEntry((TKey)key);
+            DoRemoveEntry((TKey) key);
         }
 
-        ICollection IDictionary.Values { get { return Values; } }
+        ICollection IDictionary.Values
+        {
+            get { return Values; }
+        }
 
         #endregion IDictionary
 
@@ -452,28 +494,34 @@ namespace Dev2.Collections
 
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int index)
         {
-            if(array == null)
+            if (array == null)
             {
                 throw new ArgumentNullException("array");
             }
-            if((index < 0) || (index > array.Length))
+            if ((index < 0) || (index > array.Length))
             {
                 throw new ArgumentOutOfRangeException("index");
             }
-            if((array.Length - index) < KeyedEntryCollection.Count)
+            if ((array.Length - index) < KeyedEntryCollection.Count)
             {
                 throw new ArgumentException("CopyTo() failed:  supplied array was too small");
             }
 
-            foreach(var entry in KeyedEntryCollection)
+            foreach (DictionaryEntry entry in KeyedEntryCollection)
             {
-                array[index++] = new KeyValuePair<TKey, TValue>((TKey)entry.Key, (TValue)entry.Value);
+                array[index++] = new KeyValuePair<TKey, TValue>((TKey) entry.Key, (TValue) entry.Value);
             }
         }
 
-        int ICollection<KeyValuePair<TKey, TValue>>.Count { get { return KeyedEntryCollection.Count; } }
+        int ICollection<KeyValuePair<TKey, TValue>>.Count
+        {
+            get { return KeyedEntryCollection.Count; }
+        }
 
-        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly { get { return false; } }
+        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
+        {
+            get { return false; }
+        }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> kvp)
         {
@@ -486,14 +534,23 @@ namespace Dev2.Collections
 
         void ICollection.CopyTo(Array array, int index)
         {
-            ((ICollection)KeyedEntryCollection).CopyTo(array, index);
+            ((ICollection) KeyedEntryCollection).CopyTo(array, index);
         }
 
-        int ICollection.Count { get { return KeyedEntryCollection.Count; } }
+        int ICollection.Count
+        {
+            get { return KeyedEntryCollection.Count; }
+        }
 
-        bool ICollection.IsSynchronized { get { return ((ICollection)KeyedEntryCollection).IsSynchronized; } }
+        bool ICollection.IsSynchronized
+        {
+            get { return ((ICollection) KeyedEntryCollection).IsSynchronized; }
+        }
 
-        object ICollection.SyncRoot { get { return ((ICollection)KeyedEntryCollection).SyncRoot; } }
+        object ICollection.SyncRoot
+        {
+            get { return ((ICollection) KeyedEntryCollection).SyncRoot; }
+        }
 
         #endregion ICollection
 
@@ -519,13 +576,13 @@ namespace Dev2.Collections
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if(info == null)
+            if (info == null)
             {
                 throw new ArgumentNullException("info");
             }
 
             var entries = new Collection<DictionaryEntry>();
-            foreach(var entry in KeyedEntryCollection)
+            foreach (DictionaryEntry entry in KeyedEntryCollection)
             {
                 entries.Add(entry);
             }
@@ -538,13 +595,13 @@ namespace Dev2.Collections
 
         public virtual void OnDeserialization(object sender)
         {
-            if(_siInfo != null)
+            if (_siInfo != null)
             {
                 var entries = (Collection<DictionaryEntry>)
-                              _siInfo.GetValue("entries", typeof(Collection<DictionaryEntry>));
-                foreach(var entry in entries)
+                    _siInfo.GetValue("entries", typeof (Collection<DictionaryEntry>));
+                foreach (DictionaryEntry entry in entries)
                 {
-                    AddEntry((TKey)entry.Key, (TValue)entry.Value);
+                    AddEntry((TKey) entry.Key, (TValue) entry.Value);
                 }
             }
         }
@@ -569,7 +626,8 @@ namespace Dev2.Collections
 
         #region KeyedDictionaryEntryCollection<TKey>
 
-        protected class KeyedDictionaryEntryCollection<TDictionaryKey> : KeyedCollection<TDictionaryKey, DictionaryEntry>
+        protected class KeyedDictionaryEntryCollection<TDictionaryKey> :
+            KeyedCollection<TDictionaryKey, DictionaryEntry>
         {
             #region constructors
 
@@ -594,7 +652,7 @@ namespace Dev2.Collections
 
             protected override TDictionaryKey GetKeyForItem(DictionaryEntry entry)
             {
-                return (TDictionaryKey)entry.Key;
+                return (TDictionaryKey) entry.Key;
             }
 
             #endregion protected
@@ -612,7 +670,8 @@ namespace Dev2.Collections
 
         [Serializable]
         [StructLayout(LayoutKind.Sequential)]
-        public struct Enumerator<TEnumKey, TEnumValue> : IEnumerator<KeyValuePair<TEnumKey, TEnumValue>>, IDictionaryEnumerator
+        public struct Enumerator<TEnumKey, TEnumValue> : IEnumerator<KeyValuePair<TEnumKey, TEnumValue>>,
+            IDictionaryEnumerator
         {
             #region constructors
 
@@ -656,9 +715,11 @@ namespace Dev2.Collections
             {
                 ValidateVersion();
                 _index++;
-                if(_index < _dictionary.KeyedEntryCollection.Count)
+                if (_index < _dictionary.KeyedEntryCollection.Count)
                 {
-                    _current = new KeyValuePair<TEnumKey, TEnumValue>((TEnumKey)_dictionary.KeyedEntryCollection[_index].Key, (TEnumValue)_dictionary.KeyedEntryCollection[_index].Value);
+                    _current =
+                        new KeyValuePair<TEnumKey, TEnumValue>((TEnumKey) _dictionary.KeyedEntryCollection[_index].Key,
+                            (TEnumValue) _dictionary.KeyedEntryCollection[_index].Value);
                     return true;
                 }
                 _index = -2;
@@ -670,21 +731,21 @@ namespace Dev2.Collections
 
             #region private
 
-            void ValidateCurrent()
+            private void ValidateCurrent()
             {
-                if(_index == -1)
+                if (_index == -1)
                 {
                     throw new InvalidOperationException("The enumerator has not been started.");
                 }
-                if(_index == -2)
+                if (_index == -2)
                 {
                     throw new InvalidOperationException("The enumerator has reached the end of the collection.");
                 }
             }
 
-            void ValidateVersion()
+            private void ValidateVersion()
             {
-                if(_version != _dictionary._version)
+                if (_version != _dictionary._version)
                 {
                     throw new InvalidOperationException("The enumerator is not valid because the dictionary changed.");
                 }
@@ -701,7 +762,7 @@ namespace Dev2.Collections
                 get
                 {
                     ValidateCurrent();
-                    if(_isDictionaryEntryEnumerator)
+                    if (_isDictionaryEntryEnumerator)
                     {
                         return new DictionaryEntry(_current.Key, _current.Value);
                     }
@@ -728,6 +789,7 @@ namespace Dev2.Collections
                     return new DictionaryEntry(_current.Key, _current.Value);
                 }
             }
+
             object IDictionaryEnumerator.Key
             {
                 get
@@ -736,6 +798,7 @@ namespace Dev2.Collections
                     return _current.Key;
                 }
             }
+
             object IDictionaryEnumerator.Value
             {
                 get
@@ -749,11 +812,11 @@ namespace Dev2.Collections
 
             #region fields
 
-            readonly ObservableDictionary<TEnumKey, TEnumValue> _dictionary;
-            readonly int _version;
-            int _index;
-            KeyValuePair<TEnumKey, TEnumValue> _current;
-            readonly bool _isDictionaryEntryEnumerator;
+            private readonly ObservableDictionary<TEnumKey, TEnumValue> _dictionary;
+            private readonly int _version;
+            private int _index;
+            private KeyValuePair<TEnumKey, TEnumValue> _current;
+            private readonly bool _isDictionaryEntryEnumerator;
 
             #endregion fields
         }

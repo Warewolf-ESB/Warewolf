@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,6 +10,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -23,28 +23,28 @@ namespace Dev2.Runtime.WebServer.Handlers
     {
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            var uriString = ctx.Request.Uri.OriginalString;
+            string uriString = ctx.Request.Uri.OriginalString;
 
-            if(uriString.IndexOf("wwwroot", StringComparison.InvariantCultureIgnoreCase) < 0)
+            if (uriString.IndexOf("wwwroot", StringComparison.InvariantCultureIgnoreCase) < 0)
             {
                 // http://127.0.0.1:1234/services/"/themes/system/js/json2.js"
                 new WebGetRequestHandler().ProcessRequest(ctx);
                 return;
             }
 
-            var website = GetWebsite(ctx);
-            var path = GetPath(ctx);
-            var extension = Path.GetExtension(uriString);
+            string website = GetWebsite(ctx);
+            string path = GetPath(ctx);
+            string extension = Path.GetExtension(uriString);
 
-            if(string.IsNullOrEmpty(extension))
+            if (string.IsNullOrEmpty(extension))
             {
                 //
                 // REST request e.g. http://localhost:1234/wwwroot/sources/server
                 //
                 const string ContentToken = "getParameterByName(\"content\")";
 
-                var layoutFilePath = string.Format("{0}\\webs\\{1}\\layout.htm", Location, website);
-                var contentPath = string.Format("\"/{0}/views/{1}.htm\"", website, path);
+                string layoutFilePath = string.Format("{0}\\webs\\{1}\\layout.htm", Location, website);
+                string contentPath = string.Format("\"/{0}/views/{1}.htm\"", website, path);
 
                 ctx.Send(new DynamicFileResponseWriter(layoutFilePath, ContentToken, contentPath));
                 return;
@@ -64,42 +64,44 @@ namespace Dev2.Runtime.WebServer.Handlers
             // If path is a string with a backslash then we are processing the following request
             //       http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm
             //
-            if(!string.IsNullOrEmpty(path) && path.IndexOf('/') == -1)
+            if (!string.IsNullOrEmpty(path) && path.IndexOf('/') == -1)
             {
                 uriString = uriString.Replace(path, "");
             }
 
-            var result = GetFileFromPath(new Uri(uriString));
+            IResponseWriter result = GetFileFromPath(new Uri(uriString));
 
             ctx.Send(result);
         }
 
-        IResponseWriter GetFileFromPath(Uri uri)
+        private IResponseWriter GetFileFromPath(Uri uri)
         {
-            var filePath = string.Format("{0}\\Webs{1}\\{2}", Location,
+            string filePath = string.Format("{0}\\Webs{1}\\{2}", Location,
                 Path.GetDirectoryName(uri.LocalPath),
                 Path.GetFileName(uri.LocalPath));
             return GetFileFromPath(filePath);
         }
 
-        static IResponseWriter GetFileFromPath(string filePath)
+        private static IResponseWriter GetFileFromPath(string filePath)
         {
-            var supportedFileExtensions = ConfigurationManager.AppSettings["SupportedFileExtensions"];
-            var extension = Path.GetExtension(filePath);
-            var ext = string.IsNullOrEmpty(extension) ? "" : extension;
-            var isSupportedExtensionList = supportedFileExtensions.Split(new[] { ',' })
+            string supportedFileExtensions = ConfigurationManager.AppSettings["SupportedFileExtensions"];
+            string extension = Path.GetExtension(filePath);
+            string ext = string.IsNullOrEmpty(extension) ? "" : extension;
+            IEnumerable<string> isSupportedExtensionList = supportedFileExtensions.Split(new[] {','})
                 .ToList()
-                .Where(supportedExtension => supportedExtension.Trim().Equals(ext, StringComparison.InvariantCultureIgnoreCase));
+                .Where(
+                    supportedExtension =>
+                        supportedExtension.Trim().Equals(ext, StringComparison.InvariantCultureIgnoreCase));
 
-            if(string.IsNullOrEmpty(supportedFileExtensions) || !isSupportedExtensionList.Any())
+            if (string.IsNullOrEmpty(supportedFileExtensions) || !isSupportedExtensionList.Any())
             {
                 return new StatusResponseWriter(HttpStatusCode.NotFound);
             }
 
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 string contentType;
-                switch(ext.ToLower())
+                switch (ext.ToLower())
                 {
                     case ".js":
                         contentType = "text/javascript";
@@ -147,6 +149,5 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             return new StatusResponseWriter(HttpStatusCode.NotFound);
         }
-
     }
 }

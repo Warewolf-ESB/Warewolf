@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,9 +20,10 @@ namespace Dev2.Runtime.ESB.Execution
     // BUG 9619 - 2013.06.05 - TWR - Refactored
     public class PluginServiceContainer : EsbExecutionContainer
     {
-        readonly IServiceExecution _pluginServiceExecution;
+        private readonly IServiceExecution _pluginServiceExecution;
 
-        public PluginServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
+        public PluginServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace,
+            IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             _pluginServiceExecution = new PluginServiceExecution(dataObj, true);
@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Execution
             // set the output definition ;)
             _pluginServiceExecution.InstanceOutputDefintions = InstanceOutputDefinition;
 
-            var result = _pluginServiceExecution.Execute(out errors);
+            Guid result = _pluginServiceExecution.Execute(out errors);
             return result;
         }
     }

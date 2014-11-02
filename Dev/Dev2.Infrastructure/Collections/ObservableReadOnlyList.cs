@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,18 +21,18 @@ namespace Dev2.Collections
 {
     public class ObservableReadOnlyList<T> : IList<T>, IObservableReadOnlyList<T>
     {
-        readonly ObservableCollection<T> _list;
-        readonly Dispatcher _dispatcher;
+        private readonly Dispatcher _dispatcher;
+        private readonly ObservableCollection<T> _list;
 
         #region CTOR
 
         public ObservableReadOnlyList()
-            : this((IEnumerable<T>)null)
+            : this((IEnumerable<T>) null)
         {
         }
 
         public ObservableReadOnlyList(List<T> list)
-            : this((IEnumerable<T>)list)
+            : this((IEnumerable<T>) list)
         {
         }
 
@@ -89,9 +88,15 @@ namespace Dev2.Collections
             return _list.Remove(item);
         }
 
-        public int Count { get { return _list.Count; } }
+        public int Count
+        {
+            get { return _list.Count; }
+        }
 
-        public bool IsReadOnly { get { return true; } }
+        public bool IsReadOnly
+        {
+            get { return true; }
+        }
 
         #endregion
 
@@ -112,7 +117,11 @@ namespace Dev2.Collections
             _list.RemoveAt(index);
         }
 
-        public T this[int index] { get { return _list[index]; } set { _list[index] = value; } }
+        public T this[int index]
+        {
+            get { return _list[index]; }
+            set { _list[index] = value; }
+        }
 
         #endregion
 
@@ -124,14 +133,17 @@ namespace Dev2.Collections
 
         #region InitCollectionChanged
 
-        void InitCollectionChanged()
+        internal DispatcherFrame TestDispatcherFrame { get; set; }
+
+        private void InitCollectionChanged()
         {
             // Post the CollectionChanged event on the creator thread
             _list.CollectionChanged += (sender, args) =>
             {
-                if(!_dispatcher.CheckAccess())
+                if (!_dispatcher.CheckAccess())
                 {
-                    _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(args)), DispatcherPriority.Normal, new object[] { });
+                    _dispatcher.BeginInvoke(new Action(() => RaiseCollectionChanged(args)), DispatcherPriority.Normal,
+                        new object[] {});
                 }
                 else
                 {
@@ -140,15 +152,13 @@ namespace Dev2.Collections
             };
         }
 
-        internal DispatcherFrame TestDispatcherFrame { get; set; }
-
-        void RaiseCollectionChanged(object param)
+        private void RaiseCollectionChanged(object param)
         {
             // MUST be called on the dispatcher thread!
-            if(CollectionChanged != null)
+            if (CollectionChanged != null)
             {
-                CollectionChanged(this, (NotifyCollectionChangedEventArgs)param);
-                if(TestDispatcherFrame != null)
+                CollectionChanged(this, (NotifyCollectionChangedEventArgs) param);
+                if (TestDispatcherFrame != null)
                 {
                     TestDispatcherFrame.Continue = false;
                 }
@@ -156,6 +166,5 @@ namespace Dev2.Collections
         }
 
         #endregion
-
     }
 }

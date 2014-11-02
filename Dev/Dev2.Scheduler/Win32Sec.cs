@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -44,8 +43,7 @@ internal struct LSA_UNICODE_STRING
 {
     internal ushort Length;
     internal ushort MaximumLength;
-    [MarshalAs(UnmanagedType.LPWStr)]
-    internal string Buffer;
+    [MarshalAs(UnmanagedType.LPWStr)] internal string Buffer;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -92,23 +90,13 @@ internal sealed class Win32Sec
 /// </summary>
 public class SecurityWrapper : ISecurityWrapper
 {
-    private readonly IAuthorizationService _authorizationService;
-
-    private enum Access
-    {
-        POLICY_READ = 0x20006,
-        POLICY_ALL_ACCESS = 0x00F0FFF,
-        POLICY_EXECUTE = 0X20801,
-
-        POLICY_WRITE = 0X207F8
-    }
-
     private const uint STATUS_ACCESS_DENIED = 0xc0000022;
     private const uint STATUS_INSUFFICIENT_RESOURCES = 0xc000009a;
     private const uint STATUS_NO_MEMORY = 0xc0000017;
     private const uint STATUS_NO_MORE_ENTRIES = 0xc000001A;
     private const uint ERROR_NO_MORE_ITEMS = 2147483674;
     private const uint ERROR_PRIVILEGE_DOES_NOT_EXIST = 3221225568;
+    private readonly IAuthorizationService _authorizationService;
     private LSA_HANDLE lsaHandle;
 
 
@@ -136,7 +124,7 @@ public class SecurityWrapper : ISecurityWrapper
         lsaAttr.Attributes = 0;
         lsaAttr.SecurityDescriptor = IntPtr.Zero;
         lsaAttr.SecurityQualityOfService = IntPtr.Zero;
-        lsaAttr.Length = Marshal.SizeOf(typeof(LSA_OBJECT_ATTRIBUTES));
+        lsaAttr.Length = Marshal.SizeOf(typeof (LSA_OBJECT_ATTRIBUTES));
         lsaHandle = IntPtr.Zero;
         LSA_UNICODE_STRING[] system = null;
         if (MachineName != null)
@@ -144,7 +132,7 @@ public class SecurityWrapper : ISecurityWrapper
             system = new LSA_UNICODE_STRING[1];
             system[0] = InitLsaString(MachineName);
         }
-        uint ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out lsaHandle);
+        uint ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int) Access.POLICY_ALL_ACCESS, out lsaHandle);
         TestReturnValue(ret);
     }
 
@@ -170,12 +158,12 @@ public class SecurityWrapper : ISecurityWrapper
         if (ret == 0)
         {
             var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
-            for (int i = 0, elemOffs = (int)buffer; i < count; i++)
+            for (int i = 0, elemOffs = (int) buffer; i < count; i++)
             {
                 LsaInfo[i] =
                     (LSA_ENUMERATION_INFORMATION)
-                    Marshal.PtrToStructure((IntPtr)elemOffs, typeof(LSA_ENUMERATION_INFORMATION));
-                elemOffs += Marshal.SizeOf(typeof(LSA_ENUMERATION_INFORMATION));
+                        Marshal.PtrToStructure((IntPtr) elemOffs, typeof (LSA_ENUMERATION_INFORMATION));
+                elemOffs += Marshal.SizeOf(typeof (LSA_ENUMERATION_INFORMATION));
                 var SID = new SecurityIdentifier(LsaInfo[i].PSid);
                 Accounts.Add(ResolveAccountName(SID));
             }
@@ -196,13 +184,49 @@ public class SecurityWrapper : ISecurityWrapper
             }
             catch (Exception)
             {
-                var localGroups = GetLocalUserGroupsForTaskSchedule(userName);
+                IEnumerable<string> localGroups = GetLocalUserGroupsForTaskSchedule(userName);
 
-                var intersection = localGroups.Intersect(Accounts);
+                IEnumerable<string> intersection = localGroups.Intersect(Accounts);
 
                 return intersection.Any();
-
             }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    ///     Disposes of this LSA wrapper
+    /// </summary>
+    public void Dispose()
+    {
+        if (lsaHandle != IntPtr.Zero)
+        {
+            Win32Sec.LsaClose(lsaHandle);
+            lsaHandle = IntPtr.Zero;
+        }
+        GC.SuppressFinalize(this);
+    }
+
+    public bool IsWarewolfAuthorised(string privilege, string userName, string resourceGuid)
+    {
+        userName = CleanUser(userName);
+
+        IPrincipal identity;
+        try
+        {
+            identity = new WindowsPrincipal(new WindowsIdentity(userName));
+        }
+        catch (Exception)
+        {
+            IEnumerable<string> groups = GetLocalUserGroupsForTaskSchedule(userName);
+            var tmp = new GenericIdentity(userName);
+            identity = new GenericPrincipal(tmp, groups.ToArray());
+        }
+
+        if (_authorizationService.IsAuthorized(identity, AuthorizationContext.Execute, resourceGuid))
+        {
+            return true;
         }
 
         return false;
@@ -221,12 +245,12 @@ public class SecurityWrapper : ISecurityWrapper
         if (ret == 0)
         {
             var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
-            for (int i = 0, elemOffs = (int)buffer; i < count; i++)
+            for (int i = 0, elemOffs = (int) buffer; i < count; i++)
             {
                 LsaInfo[i] =
                     (LSA_ENUMERATION_INFORMATION)
-                    Marshal.PtrToStructure((IntPtr)elemOffs, typeof(LSA_ENUMERATION_INFORMATION));
-                elemOffs += Marshal.SizeOf(typeof(LSA_ENUMERATION_INFORMATION));
+                        Marshal.PtrToStructure((IntPtr) elemOffs, typeof (LSA_ENUMERATION_INFORMATION));
+                elemOffs += Marshal.SizeOf(typeof (LSA_ENUMERATION_INFORMATION));
                 var SID = new SecurityIdentifier(LsaInfo[i].PSid);
                 accounts.Add(ResolveAccountName(SID));
             }
@@ -243,8 +267,8 @@ public class SecurityWrapper : ISecurityWrapper
         using (var pcLocal = new PrincipalContext(ContextType.Machine))
         {
             // ReSharper disable LoopCanBeConvertedToQuery
-            foreach (var grp in FetchSchedulerGroups())
-            // ReSharper restore LoopCanBeConvertedToQuery
+            foreach (string grp in FetchSchedulerGroups())
+                // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if (CleanUser(grp).ToLower() == userName.ToLower())
                 {
@@ -254,10 +278,10 @@ public class SecurityWrapper : ISecurityWrapper
                 {
                     try
                     {
-                        var group = GroupPrincipal.FindByIdentity(pcLocal, grp);
+                        GroupPrincipal group = GroupPrincipal.FindByIdentity(pcLocal, grp);
                         if (group != null)
                         {
-                            var members = group.GetMembers();
+                            PrincipalSearchResult<Principal> members = group.GetMembers();
                             if (members.Any(member => member.SamAccountName.ToLower() == userName.ToLower()))
                             {
                                 groups.Add(grp);
@@ -269,9 +293,7 @@ public class SecurityWrapper : ISecurityWrapper
                         Dev2Logger.Log.Error(String.Format("Scheduler Error Enumerating Groups:{0}", grp), err);
                     }
                 }
-
             }
-
         }
         return groups;
     }
@@ -279,13 +301,14 @@ public class SecurityWrapper : ISecurityWrapper
     private static string CleanUser(string userName)
     {
         if (userName.Contains("\\"))
-            userName = userName.Split(new[] { '\\' }).Last();
+            userName = userName.Split(new[] {'\\'}).Last();
         return userName;
     }
 
 
     /// <summary>
-    ///     Resolves the SID into it's account name. If the SID cannot be resolved the SDDL for the SID (for example "S-1-5-21-3708151440-578689555-182056876-1009") is returned.
+    ///     Resolves the SID into it's account name. If the SID cannot be resolved the SDDL for the SID (for example
+    ///     "S-1-5-21-3708151440-578689555-182056876-1009") is returned.
     /// </summary>
     /// <param name="SID">The Security Identifier to resolve to an account name</param>
     /// <returns>An account name for example "NT AUTHORITY\LOCAL SERVICE" or SID in SDDL form</returns>
@@ -294,7 +317,7 @@ public class SecurityWrapper : ISecurityWrapper
     {
         try
         {
-            return SID.Translate(typeof(NTAccount)).Value;
+            return SID.Translate(typeof (NTAccount)).Value;
         }
         catch (Exception)
         {
@@ -327,21 +350,7 @@ public class SecurityWrapper : ISecurityWrapper
         {
             throw new OutOfMemoryException();
         }
-        throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int)ReturnValue));
-    }
-
-
-    /// <summary>
-    ///     Disposes of this LSA wrapper
-    /// </summary>
-    public void Dispose()
-    {
-        if (lsaHandle != IntPtr.Zero)
-        {
-            Win32Sec.LsaClose(lsaHandle);
-            lsaHandle = IntPtr.Zero;
-        }
-        GC.SuppressFinalize(this);
+        throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int) ReturnValue));
     }
 
 
@@ -361,34 +370,17 @@ public class SecurityWrapper : ISecurityWrapper
     private static LSA_UNICODE_STRING InitLsaString(string Value)
     {
         if (Value.Length > 0x7ffe) throw new ArgumentException("String too long");
-        var lus = new LSA_UNICODE_STRING { Buffer = Value, Length = (ushort)(Value.Length * sizeof(char)) };
-        lus.MaximumLength = (ushort)(lus.Length + sizeof(char));
+        var lus = new LSA_UNICODE_STRING {Buffer = Value, Length = (ushort) (Value.Length*sizeof (char))};
+        lus.MaximumLength = (ushort) (lus.Length + sizeof (char));
         return lus;
     }
 
-    public bool IsWarewolfAuthorised(string privilege, string userName, string resourceGuid)
+    private enum Access
     {
-        userName = CleanUser(userName);
+        POLICY_READ = 0x20006,
+        POLICY_ALL_ACCESS = 0x00F0FFF,
+        POLICY_EXECUTE = 0X20801,
 
-        IPrincipal identity;
-        try
-        {
-            identity = new WindowsPrincipal(new WindowsIdentity(userName));
-        }
-        catch (Exception)
-        {
-            var groups = GetLocalUserGroupsForTaskSchedule(userName);
-            var tmp = new GenericIdentity(userName);
-            identity = new GenericPrincipal(tmp, groups.ToArray());
-        }
-
-        if (_authorizationService.IsAuthorized(identity, AuthorizationContext.Execute, resourceGuid))
-        {
-            return true;
-        }
-
-        return false;
+        POLICY_WRITE = 0X207F8
     }
 }
-
-

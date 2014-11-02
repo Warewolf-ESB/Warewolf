@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -13,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -29,7 +29,19 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class GetScheduledResources : IEsbManagementEndpoint
     {
         private IServerSchedulerFactory _schedulerFactory;
-        ISecurityWrapper _securityWrapper;
+        private ISecurityWrapper _securityWrapper;
+
+        public IServerSchedulerFactory SchedulerFactory
+        {
+            get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
+            set { _schedulerFactory = value; }
+        }
+
+        public ISecurityWrapper SecurityWrapper
+        {
+            get { return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance); }
+            set { _securityWrapper = value; }
+        }
 
         public string HandlesType()
         {
@@ -40,19 +52,22 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-
                 Dev2Logger.Log.Info("Get Scheduled Resources");
                 ObservableCollection<IScheduledResource> resources;
-                using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
+                using (
+                    IScheduledResourceModel model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId,
+                        SecurityWrapper))
                 {
                     resources = model.GetScheduledResources();
                 }
 
-                var sb = new StringBuilder(JsonConvert.SerializeObject(resources, Formatting.Indented, new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
-                }));
+                var sb =
+                    new StringBuilder(JsonConvert.SerializeObject(resources, Formatting.Indented,
+                        new JsonSerializerSettings
+                        {
+                            TypeNameHandling = TypeNameHandling.Objects,
+                            TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                        }));
                 return sb;
             }
             catch (Exception err)
@@ -62,32 +77,25 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public IServerSchedulerFactory SchedulerFactory
-        {
-            get { return _schedulerFactory ?? new ServerSchedulerFactory(); }
-            set { _schedulerFactory = value; }
-        }
-
         public DynamicService CreateServiceEntry()
         {
-            DynamicService getScheduledResourcesService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList></DataList>") };
+            var getScheduledResourcesService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification = new StringBuilder("<DataList></DataList>")
+            };
 
-            ServiceAction getScheduledResourcesAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceName = HandlesType(), SourceMethod = HandlesType() };
+            var getScheduledResourcesAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceName = HandlesType(),
+                SourceMethod = HandlesType()
+            };
 
             getScheduledResourcesService.Actions.Add(getScheduledResourcesAction);
 
             return getScheduledResourcesService;
-        }
-        public ISecurityWrapper SecurityWrapper
-        {
-            get
-            {
-                return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
-            }
-            set
-            {
-                _securityWrapper = value;
-            }
         }
     }
 }

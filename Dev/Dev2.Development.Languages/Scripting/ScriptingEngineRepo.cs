@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,9 +16,8 @@ using Dev2.Common.Interfaces.Scripting;
 
 namespace Dev2.Development.Languages.Scripting
 {
-    public class ScriptingEngineRepo : SpookyAction<IScriptingContext,enScriptType>
+    public class ScriptingEngineRepo : SpookyAction<IScriptingContext, enScriptType>
     {
-
         public IScriptingContext CreateFindMissingStrategy(enScriptType typeOf)
         {
             return FindMatch(typeOf);
@@ -28,17 +26,16 @@ namespace Dev2.Development.Languages.Scripting
 
         public IScriptingContext CreateEngine(enScriptType ScriptType)
         {
-            switch(ScriptType)
+            switch (ScriptType)
             {
-                case enScriptType.JavaScript :
-                    return  new JavaScriptContext();
+                case enScriptType.JavaScript:
+                    return new JavaScriptContext();
                 case enScriptType.Python:
                     return new Dev2PythonContext();
                 case enScriptType.Ruby:
                     return new RubyContext();
-                default : throw new Exception("Invalid scripting context");
-
-
+                default:
+                    throw new Exception("Invalid scripting context");
             }
         }
     }

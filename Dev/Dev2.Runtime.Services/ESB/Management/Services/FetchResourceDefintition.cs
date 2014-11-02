@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,77 +26,55 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Fetch a service body definition
+    ///     Fetch a service body definition
     /// </summary>
     public class FetchResourceDefintition : IEsbManagementEndpoint
     {
-        const string PayloadStart = "<XamlDefinition>";
-        const string PayloadEnd = "</XamlDefinition>";
-        const string AltPayloadStart = "<Actions>";
-        const string AltPayloadEnd = "</Actions>";
+        private const string PayloadStart = "<XamlDefinition>";
+        private const string PayloadEnd = "</XamlDefinition>";
+        private const string AltPayloadStart = "<Actions>";
+        private const string AltPayloadEnd = "</Actions>";
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
+                var res = new ExecuteMessage {HasError = false};
 
-          
-            var res = new ExecuteMessage { HasError = false };
+                string serviceId = null;
+                StringBuilder tmp;
+                values.TryGetValue("ResourceID", out tmp);
 
-            string serviceId = null;
-            StringBuilder tmp;
-            values.TryGetValue("ResourceID", out tmp);
-
-            if(tmp != null)
-            {
-                serviceId = tmp.ToString();
-            }
-
-            Guid resourceId;
-            Guid.TryParse(serviceId, out resourceId);
-            Dev2Logger.Log.Info("Fetch Resource definition. ResourceId:"+resourceId);
-            var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
-            var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceId);
-
-            if(resource != null && resource.ResourceType == ResourceType.DbSource)
-            {
-                res.Message.Append(result);
-            }
-            else
-            {
-                var startIdx = result.IndexOf(PayloadStart, 0, false);
-
-                if(startIdx >= 0)
+                if (tmp != null)
                 {
-                    // remove beginning junk
-                    startIdx += PayloadStart.Length;
-                    result = result.Remove(0, startIdx);
+                    serviceId = tmp.ToString();
+                }
 
-                    startIdx = result.IndexOf(PayloadEnd, 0, false);
+                Guid resourceId;
+                Guid.TryParse(serviceId, out resourceId);
+                Dev2Logger.Log.Info("Fetch Resource definition. ResourceId:" + resourceId);
+                StringBuilder result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
+                IResource resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceId);
 
-                    if(startIdx > 0)
-                    {
-                        var len = result.Length - startIdx;
-                        result = result.Remove(startIdx, len);
-
-                        res.Message.Append(result.Unescape());
-                    }
+                if (resource != null && resource.ResourceType == ResourceType.DbSource)
+                {
+                    res.Message.Append(result);
                 }
                 else
                 {
-                    // handle services ;)
-                    startIdx = result.IndexOf(AltPayloadStart, 0, false);
-                    if(startIdx >= 0)
+                    int startIdx = result.IndexOf(PayloadStart, 0, false);
+
+                    if (startIdx >= 0)
                     {
-                        // remove begging junk
-                        startIdx += AltPayloadStart.Length;
+                        // remove beginning junk
+                        startIdx += PayloadStart.Length;
                         result = result.Remove(0, startIdx);
 
-                        startIdx = result.IndexOf(AltPayloadEnd, 0, false);
+                        startIdx = result.IndexOf(PayloadEnd, 0, false);
 
-                        if(startIdx > 0)
+                        if (startIdx > 0)
                         {
-                            var len = result.Length - startIdx;
+                            int len = result.Length - startIdx;
                             result = result.Remove(startIdx, len);
 
                             res.Message.Append(result.Unescape());
@@ -105,18 +82,38 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     else
                     {
-                        // send the entire thing ;)
-                        res.Message.Append(result);
+                        // handle services ;)
+                        startIdx = result.IndexOf(AltPayloadStart, 0, false);
+                        if (startIdx >= 0)
+                        {
+                            // remove begging junk
+                            startIdx += AltPayloadStart.Length;
+                            result = result.Remove(0, startIdx);
+
+                            startIdx = result.IndexOf(AltPayloadEnd, 0, false);
+
+                            if (startIdx > 0)
+                            {
+                                int len = result.Length - startIdx;
+                                result = result.Remove(startIdx, len);
+
+                                res.Message.Append(result.Unescape());
+                            }
+                        }
+                        else
+                        {
+                            // send the entire thing ;)
+                            res.Message.Append(result);
+                        }
                     }
                 }
-            }
 
-            // Finally, clean the definition as per execution hydration rules ;)
-            Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
-            res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
+                // Finally, clean the definition as per execution hydration rules ;)
+                var dev2XamlCleaner = new Dev2XamlCleaner();
+                res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(res);
+                var serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(res);
             }
             catch (Exception err)
             {
@@ -127,9 +124,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var serviceAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
+            var serviceAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                SourceMethod = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService
+            };
 
-            var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var serviceEntry = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
             serviceEntry.Actions.Add(serviceAction);
 
             return serviceEntry;
@@ -139,6 +147,5 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return "FetchResourceDefinitionService";
         }
-
     }
 }

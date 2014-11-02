@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,7 +15,10 @@ namespace Dev2.Runtime.Hosting
 {
     public interface IResourceIterator
     {
-        void IterateAll(Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters);
-        void Iterate(string resourcePath, Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters);
+        void IterateAll(Guid workspaceID, Func<ResourceIteratorResult, bool> action,
+            params ResourceDelimiter[] delimiters);
+
+        void Iterate(string resourcePath, Guid workspaceID, Func<ResourceIteratorResult, bool> action,
+            params ResourceDelimiter[] delimiters);
     }
 }

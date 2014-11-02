@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,36 +23,36 @@ using System.Windows.Media;
 namespace System.Windows.Controls
 {
     /// <summary>
-    /// PopupHelper is a simple wrapper type that helps abstract platform
-    /// differences out of the Popup.
+    ///     PopupHelper is a simple wrapper type that helps abstract platform
+    ///     differences out of the Popup.
     /// </summary>
     internal class PopupHelper
     {
 #if SILVERLIGHT
-        /// <summary>
-        /// A value indicating whether Silverlight has loaded at least once, 
-        /// so that the wrapping canvas is not recreated.
-        /// </summary>
+    /// <summary>
+    /// A value indicating whether Silverlight has loaded at least once, 
+    /// so that the wrapping canvas is not recreated.
+    /// </summary>
         private bool _hasControlLoaded;
 #endif
 
         /// <summary>
-        /// Gets a value indicating whether a visual popup state is being used
-        /// in the current template for the Closed state. Setting this value to
-        /// true will delay the actual setting of Popup.IsOpen to false until
-        /// after the visual state's transition for Closed is complete.
+        ///     Gets a value indicating whether a visual popup state is being used
+        ///     in the current template for the Closed state. Setting this value to
+        ///     true will delay the actual setting of Popup.IsOpen to false until
+        ///     after the visual state's transition for Closed is complete.
         /// </summary>
         public bool UsesClosingVisualState { get; private set; }
 
         /// <summary>
-        /// Gets or sets the parent control.
+        ///     Gets or sets the parent control.
         /// </summary>
         private Control Parent { get; set; }
 
 #if SILVERLIGHT
-        /// <summary>
-        /// Gets or sets the expansive area outside of the popup.
-        /// </summary>
+    /// <summary>
+    /// Gets or sets the expansive area outside of the popup.
+    /// </summary>
         private Canvas OutsidePopupCanvas { get; set; }
 
         /// <summary>
@@ -63,19 +62,20 @@ namespace System.Windows.Controls
 #endif
 
         /// <summary>
-        /// Gets or sets the maximum drop down height value.
+        ///     Gets or sets the maximum drop down height value.
         /// </summary>
         public double MaxDropDownHeight { get; set; }
 
         /// <summary>
-        /// Gets the Popup control instance.
+        ///     Gets the Popup control instance.
         /// </summary>
         public Popup Popup { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the actual Popup is open.
+        ///     Gets or sets a value indicating whether the actual Popup is open.
         /// </summary>
-        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Provided for completeness.")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode",
+            Justification = "Provided for completeness.")]
         public bool IsOpen
         {
             get { return Popup.IsOpen; }
@@ -83,30 +83,30 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Gets or sets the popup child framework element. Can be used if an
-        /// assumption is made on the child type.
+        ///     Gets or sets the popup child framework element. Can be used if an
+        ///     assumption is made on the child type.
         /// </summary>
         private FrameworkElement PopupChild { get; set; }
 
         /// <summary>
-        /// The Closed event is fired after the Popup closes.
+        ///     The Closed event is fired after the Popup closes.
         /// </summary>
         public event EventHandler Closed;
 
         /// <summary>
-        /// Fired when the popup children have a focus event change, allows the
-        /// parent control to update visual states or react to the focus state.
+        ///     Fired when the popup children have a focus event change, allows the
+        ///     parent control to update visual states or react to the focus state.
         /// </summary>
         public event EventHandler FocusChanged;
 
         /// <summary>
-        /// Fired when the popup children intercept an event that may indicate
-        /// the need for a visual state update by the parent control.
+        ///     Fired when the popup children intercept an event that may indicate
+        ///     the need for a visual state update by the parent control.
         /// </summary>
         public event EventHandler UpdateVisualStates;
 
         /// <summary>
-        /// Initializes a new instance of the PopupHelper class.
+        ///     Initializes a new instance of the PopupHelper class.
         /// </summary>
         /// <param name="parent">The parent control.</param>
         public PopupHelper(Control parent)
@@ -116,7 +116,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Initializes a new instance of the PopupHelper class.
+        ///     Initializes a new instance of the PopupHelper class.
         /// </summary>
         /// <param name="parent">The parent control.</param>
         /// <param name="popup">The Popup template part.</param>
@@ -127,24 +127,25 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Arrange the popup.
+        ///     Arrange the popup.
         /// </summary>
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "This try-catch pattern is used by other popup controls to keep the runtime up.")]
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
+            Justification = "This try-catch pattern is used by other popup controls to keep the runtime up.")]
         public void Arrange()
         {
-            if(Popup == null
+            if (Popup == null
                 || PopupChild == null
 #if SILVERLIGHT
  || OutsidePopupCanvas == null
 #endif
- || Application.Current == null
+                || Application.Current == null
 #if SILVERLIGHT
  || Application.Current.Host == null
                 || Application.Current.Host.Content == null
 #endif
                 // ReSharper disable RedundantLogicalConditionalExpressionOperand
- || false)
-            // ReSharper restore RedundantLogicalConditionalExpressionOperand
+                || false)
+                // ReSharper restore RedundantLogicalConditionalExpressionOperand
             {
                 return;
             }
@@ -155,17 +156,17 @@ namespace System.Windows.Controls
             double rootHeight = hostContent.ActualHeight;
 #else
             UIElement u = Parent;
-            if(Application.Current.Windows.Count > 0)
+            if (Application.Current.Windows.Count > 0)
             {
                 // TODO: USE THE CURRENT WINDOW INSTEAD! WALK THE TREE!
                 u = Application.Current.Windows[0];
             }
-            while((u as Window) == null && u != null)
+            while ((u as Window) == null && u != null)
             {
                 u = VisualTreeHelper.GetParent(u) as UIElement;
             }
-            Window w = u as Window;
-            if(w == null)
+            var w = u as Window;
+            if (w == null)
             {
                 return;
             }
@@ -178,8 +179,8 @@ namespace System.Windows.Controls
             double popupContentHeight = PopupChild.ActualHeight;
 
             // ReSharper disable CompareOfFloatsByEqualityOperator
-            if(rootHeight == 0 || rootWidth == 0 || popupContentWidth == 0 || popupContentHeight == 0)
-            // ReSharper restore CompareOfFloatsByEqualityOperator
+            if (rootHeight == 0 || rootWidth == 0 || popupContentWidth == 0 || popupContentHeight == 0)
+                // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 return;
             }
@@ -192,9 +193,9 @@ namespace System.Windows.Controls
 
             // Use or come up with a maximum popup height.
             double popupMaxHeight = MaxDropDownHeight;
-            if(double.IsInfinity(popupMaxHeight) || double.IsNaN(popupMaxHeight))
+            if (double.IsInfinity(popupMaxHeight) || double.IsNaN(popupMaxHeight))
             {
-                popupMaxHeight = (rootHeight - myControlHeight) * 3 / 5;
+                popupMaxHeight = (rootHeight - myControlHeight)*3/5;
             }
 
             popupContentWidth = Math.Min(popupContentWidth, rootWidth);
@@ -204,7 +205,7 @@ namespace System.Windows.Controls
             // We prefer to align the popup box with the left edge of the 
             // control, if it will fit.
             double popupX = rootOffsetX;
-            if(rootWidth < popupX + popupContentWidth)
+            if (rootWidth < popupX + popupContentWidth)
             {
                 // Since it doesn't fit when strictly left aligned, we shift it 
                 // to the left until it does fit.
@@ -215,17 +216,17 @@ namespace System.Windows.Controls
             // We prefer to put the popup below the combobox if it will fit.
             bool below = true;
             double popupY = rootOffsetY + myControlHeight;
-            if(rootHeight < popupY + popupContentHeight)
+            if (rootHeight < popupY + popupContentHeight)
             {
                 below = false;
                 // It doesn't fit below the combobox, lets try putting it above 
                 // the combobox.
                 popupY = rootOffsetY - popupContentHeight;
-                if(popupY < 0)
+                if (popupY < 0)
                 {
                     // doesn't really fit below either.  Now we just pick top 
                     // or bottom based on wich area is bigger.
-                    if(rootOffsetY < (rootHeight - myControlHeight) / 2)
+                    if (rootOffsetY < (rootHeight - myControlHeight)/2)
                     {
                         below = true;
                         popupY = rootOffsetY + myControlHeight;
@@ -239,7 +240,9 @@ namespace System.Windows.Controls
 
             // Now that we have positioned the popup we may need to truncate 
             // its size.
-            popupMaxHeight = below ? Math.Min(rootHeight - popupY, popupMaxHeight) : Math.Min(rootOffsetY, popupMaxHeight);
+            popupMaxHeight = below
+                ? Math.Min(rootHeight - popupY, popupMaxHeight)
+                : Math.Min(rootOffsetY, popupMaxHeight);
 
             Popup.HorizontalOffset = 0;
             Popup.VerticalOffset = 0;
@@ -272,29 +275,29 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Fires the Closed event.
+        ///     Fires the Closed event.
         /// </summary>
         /// <param name="e">The event data.</param>
         private void OnClosed(EventArgs e)
         {
             EventHandler handler = Closed;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, e);
             }
         }
 
         /// <summary>
-        /// Actually closes the popup after the VSM state animation completes.
+        ///     Actually closes the popup after the VSM state animation completes.
         /// </summary>
         /// <param name="sender">Event source.</param>
         /// <param name="e">Event arguments.</param>
         private void OnPopupClosedStateChanged(object sender, VisualStateChangedEventArgs e)
         {
             // Delayed closing of the popup until now
-            if(e != null && e.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
+            if (e != null && e.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
             {
-                if(Popup != null)
+                if (Popup != null)
                 {
                     Popup.IsOpen = false;
                 }
@@ -303,43 +306,43 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Should be called by the parent control before the base
-        /// OnApplyTemplate method is called.
+        ///     Should be called by the parent control before the base
+        ///     OnApplyTemplate method is called.
         /// </summary>
         public void BeforeOnApplyTemplate()
         {
-            if(UsesClosingVisualState)
+            if (UsesClosingVisualState)
             {
                 // Unhook the event handler for the popup closed visual state group.
                 // This code is used to enable visual state transitions before 
                 // actually setting the underlying Popup.IsOpen property to false.
                 VisualStateGroup groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
-                if(null != groupPopupClosed)
+                if (null != groupPopupClosed)
                 {
                     groupPopupClosed.CurrentStateChanged -= OnPopupClosedStateChanged;
                     UsesClosingVisualState = false;
                 }
             }
 
-            if(Popup != null)
+            if (Popup != null)
             {
                 Popup.Closed -= Popup_Closed;
             }
         }
 
         /// <summary>
-        /// Should be called by the parent control after the base
-        /// OnApplyTemplate method is called.
+        ///     Should be called by the parent control after the base
+        ///     OnApplyTemplate method is called.
         /// </summary>
         public void AfterOnApplyTemplate()
         {
-            if(Popup != null)
+            if (Popup != null)
             {
                 Popup.Closed += Popup_Closed;
             }
 
             VisualStateGroup groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
-            if(null != groupPopupClosed)
+            if (null != groupPopupClosed)
             {
                 groupPopupClosed.CurrentStateChanged += OnPopupClosedStateChanged;
                 UsesClosingVisualState = true;
@@ -348,15 +351,15 @@ namespace System.Windows.Controls
             // TODO: Consider moving to the DropDownPopup setter
             // TODO: Although in line with other implementations, what happens 
             // when the template is swapped out?
-            if(Popup != null)
+            if (Popup != null)
             {
                 PopupChild = Popup.Child as FrameworkElement;
 
-                if(PopupChild != null)
+                if (PopupChild != null)
                 {
 #if SILVERLIGHT
-                    // For Silverlight only, we just create the popup child with 
-                    // canvas a single time.
+    // For Silverlight only, we just create the popup child with 
+    // canvas a single time.
                     if (!_hasControlLoaded)
                     {
                         _hasControlLoaded = true;
@@ -384,7 +387,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// The size of the popup child has changed.
+        ///     The size of the popup child has changed.
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event data.</param>
@@ -394,7 +397,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Connected to the Popup Closed event and fires the Closed event.
+        ///     Connected to the Popup Closed event and fires the Closed event.
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event data.</param>
@@ -404,34 +407,34 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Connected to several events that indicate that the FocusChanged 
-        /// event should bubble up to the parent control.
+        ///     Connected to several events that indicate that the FocusChanged
+        ///     event should bubble up to the parent control.
         /// </summary>
         /// <param name="e">The event data.</param>
         private void OnFocusChanged(EventArgs e)
         {
             EventHandler handler = FocusChanged;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, e);
             }
         }
 
         /// <summary>
-        /// Fires the UpdateVisualStates event.
+        ///     Fires the UpdateVisualStates event.
         /// </summary>
         /// <param name="e">The event data.</param>
         private void OnUpdateVisualStates(EventArgs e)
         {
             EventHandler handler = UpdateVisualStates;
-            if(handler != null)
+            if (handler != null)
             {
                 handler(this, e);
             }
         }
 
         /// <summary>
-        /// The popup child has received focus.
+        ///     The popup child has received focus.
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event data.</param>
@@ -441,7 +444,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// The popup child has lost focus.
+        ///     The popup child has lost focus.
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event data.</param>
@@ -451,7 +454,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// The popup child has had the mouse enter its bounds.
+        ///     The popup child has had the mouse enter its bounds.
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event data.</param>
@@ -461,7 +464,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// The mouse has left the popup child's bounds.
+        ///     The mouse has left the popup child's bounds.
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event data.</param>

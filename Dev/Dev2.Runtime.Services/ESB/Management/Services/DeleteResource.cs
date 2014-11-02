@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,38 +24,38 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Delete a resource ;)
+    ///     Delete a resource ;)
     /// </summary>
     public class DeleteResource : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             string type = null;
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             StringBuilder tmp;
             values.TryGetValue("ResourceID", out tmp);
             Guid resourceId = Guid.Empty;
-            if(tmp != null)
+            if (tmp != null)
             {
-                if(!Guid.TryParse(tmp.ToString(), out resourceId))
+                if (!Guid.TryParse(tmp.ToString(), out resourceId))
                 {
                     Dev2Logger.Log.Info("Delete Resource Service. Invalid Parameter Guid:");
-                    var failureResult = new ExecuteMessage { HasError = true };
+                    var failureResult = new ExecuteMessage {HasError = true};
                     failureResult.SetMessage("Invalid guid passed for ResourceID");
                     return serializer.SerializeToBuilder(failureResult);
                 }
             }
             values.TryGetValue("ResourceType", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 type = tmp.ToString();
             }
 
             Dev2Logger.Log.Info("Delete Resource Service. Resource:" + resourceId);
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceId, type);
+            ResourceCatalogResult msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceId, type);
 
-            var result = new ExecuteMessage { HasError = false };
+            var result = new ExecuteMessage {HasError = false};
             result.SetMessage(msg.Message);
             result.HasError = msg.Status != ExecStatus.Success;
             return serializer.SerializeToBuilder(result);
@@ -72,7 +71,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var deleteResourceService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var deleteResourceAction = new ServiceAction

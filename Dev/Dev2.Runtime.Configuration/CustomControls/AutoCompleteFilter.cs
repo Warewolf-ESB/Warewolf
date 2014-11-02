@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,20 +18,20 @@
 namespace System.Windows.Controls
 {
     /// <summary>
-    /// A predefined set of filter functions for the known, built-in 
-    /// AutoCompleteFilterMode enumeration values.
+    ///     A predefined set of filter functions for the known, built-in
+    ///     AutoCompleteFilterMode enumeration values.
     /// </summary>
     internal static class AutoCompleteSearch
     {
         /// <summary>
-        /// Index function that retrieves the filter for the provided 
-        /// AutoCompleteFilterMode.
+        ///     Index function that retrieves the filter for the provided
+        ///     AutoCompleteFilterMode.
         /// </summary>
         /// <param name="FilterMode">The built-in search mode.</param>
         /// <returns>Returns the string-based comparison function.</returns>
         public static AutoCompleteFilterPredicate<string> GetFilter(AutoCompleteFilterMode FilterMode)
         {
-            switch(FilterMode)
+            switch (FilterMode)
             {
                 case AutoCompleteFilterMode.Contains:
                     return Contains;
@@ -78,7 +77,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the string value begins with the text.
+        ///     Check if the string value begins with the text.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -89,7 +88,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the string value begins with the text.
+        ///     Check if the string value begins with the text.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -100,7 +99,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the string value begins with the text.
+        ///     Check if the string value begins with the text.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -111,7 +110,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the string value begins with the text.
+        ///     Check if the string value begins with the text.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -122,8 +121,8 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the prefix is contained in the string value. The current 
-        /// culture's case insensitive string comparison operator is used.
+        ///     Check if the prefix is contained in the string value. The current
+        ///     culture's case insensitive string comparison operator is used.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -134,7 +133,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the prefix is contained in the string value.
+        ///     Check if the prefix is contained in the string value.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -145,7 +144,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the prefix is contained in the string value.
+        ///     Check if the prefix is contained in the string value.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -156,7 +155,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the prefix is contained in the string value.
+        ///     Check if the prefix is contained in the string value.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -167,7 +166,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the string values are equal.
+        ///     Check if the string values are equal.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -178,7 +177,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the string values are equal.
+        ///     Check if the string values are equal.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -189,7 +188,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the string values are equal.
+        ///     Check if the string values are equal.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>
@@ -200,7 +199,7 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
-        /// Check if the string values are equal.
+        ///     Check if the string values are equal.
         /// </summary>
         /// <param name="text">The AutoCompleteBox prefix text.</param>
         /// <param name="value">The item's string value.</param>

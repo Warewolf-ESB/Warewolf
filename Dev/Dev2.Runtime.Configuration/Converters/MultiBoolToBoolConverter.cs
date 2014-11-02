@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,6 +10,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
@@ -30,12 +30,12 @@ namespace Dev2.Runtime.Configuration.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if(Operator == LogicalOperator.None)
+            if (Operator == LogicalOperator.None)
                 throw new Exception("Operator need to be specified");
 
-            var list = values.ToList().Cast<bool>();
+            IEnumerable<bool> list = values.ToList().Cast<bool>();
 
-            if(Operator == LogicalOperator.And)
+            if (Operator == LogicalOperator.And)
             {
                 return list.All(l => l);
             }

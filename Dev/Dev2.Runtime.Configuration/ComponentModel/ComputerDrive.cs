@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,21 +24,22 @@ namespace Dev2.Runtime.Configuration.ComponentModel
     {
         #region fields
 
-        bool _loaded;
         private ObservableCollection<ComputerDrive> _children;
+        private string _fullTitle = string.Empty;
+        private bool _loaded;
         private ComputerDrive _parent;
         private string _title;
-        private string _fullTitle = string.Empty;
 
         #endregion fields
 
         #region properties
+
         public string Title
         {
             get { return _title; }
             set
             {
-                if(_title == value)
+                if (_title == value)
                 {
                     return;
                 }
@@ -55,7 +55,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             get { return _fullTitle; }
             set
             {
-                if(_fullTitle == value)
+                if (_fullTitle == value)
                 {
                     return;
                 }
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
         {
             get
             {
-                if(_children == null)
+                if (_children == null)
                 {
                     _children = new ObservableCollection<ComputerDrive>();
                     _children.CollectionChanged += (s, e) => NotifyOfPropertyChange(() => ChildrenCount);
@@ -88,7 +88,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             get { return _parent; }
             set
             {
-                if(_parent == value)
+                if (_parent == value)
                 {
                     return;
                 }
@@ -99,10 +99,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         public bool Loaded
         {
-            get
-            {
-                return _loaded;
-            }
+            get { return _loaded; }
             set
             {
                 _loaded = value;
@@ -116,7 +113,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         public static List<ComputerDrive> DeserializeJson(Stream stream)
         {
-            using(TextReader textReader = new StreamReader(stream))
+            using (TextReader textReader = new StreamReader(stream))
             {
                 var computerDrives = JsonConvert.DeserializeObject<List<ComputerDrive>>(textReader.ReadToEnd());
                 return computerDrives;
@@ -125,21 +122,23 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         public void LoadChildren()
         {
-            if(Loaded)
-            { return; }
+            if (Loaded)
+            {
+                return;
+            }
 
             Loaded = true;
-            var currentTitle = PrepareTitleForService();
+            string currentTitle = PrepareTitleForService();
             LoadDrivesOrDirectories(currentTitle);
         }
 
         private void LoadDrivesOrDirectories(string currentTitle)
         {
-            using(var wc = new WebClient())
+            using (var wc = new WebClient())
             {
                 wc.OpenReadCompleted += ChildrenReadCompleted;
                 Uri webUri;
-                if(string.IsNullOrEmpty(currentTitle) || currentTitle.Equals("/"))
+                if (string.IsNullOrEmpty(currentTitle) || currentTitle.Equals("/"))
                 {
                     webUri = GetDriveUri();
                 }
@@ -153,20 +152,20 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         private static Uri GetDirectoryUri(string currentTitle)
         {
-            var address = AppSettings.LocalHost + "/services/FindDirectoryService";
+            string address = AppSettings.LocalHost + "/services/FindDirectoryService";
             return new Uri(address + "?DirectoryPath=" + currentTitle);
         }
 
         private static Uri GetDriveUri()
         {
-            var address = AppSettings.LocalHost + "/services/FindDriveService";
+            string address = AppSettings.LocalHost + "/services/FindDriveService";
             return new Uri(address);
         }
 
         private string PrepareTitleForService()
         {
-            var currentTitle = FullTitle;
-            if(!currentTitle.EndsWith("\\"))
+            string currentTitle = FullTitle;
+            if (!currentTitle.EndsWith("\\"))
             {
                 currentTitle += "/";
             }
@@ -180,16 +179,16 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         private void ChildrenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
-            if(e.Error != null || e.Cancelled)
+            if (e.Error != null || e.Cancelled)
             {
                 return;
             }
 
             Children.Clear();
-            var list = DeserializeJson(e.Result);
-            foreach(var drive in list)
+            List<ComputerDrive> list = DeserializeJson(e.Result);
+            foreach (ComputerDrive drive in list)
             {
-                if(drive.Title.StartsWith("$"))
+                if (drive.Title.StartsWith("$"))
                 {
                     continue;
                 }
@@ -207,7 +206,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         private string GetDirectoryPath(ComputerDrive drive)
         {
-            if(drive.Parent == null || string.IsNullOrWhiteSpace(drive.Parent.Title))
+            if (drive.Parent == null || string.IsNullOrWhiteSpace(drive.Parent.Title))
                 return drive.Title;
 
             return drive.Title.Insert(0, CreateFullTitle(drive.Parent) + "\\");

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,31 +9,30 @@
 */
 
 
-
 namespace Dev2.Workspaces
 {
     /// <summary>
-    /// Defines the possible actions on an <see cref="IWorkspaceItem"/>.
+    ///     Defines the possible actions on an <see cref="IWorkspaceItem" />.
     /// </summary>
     public enum WorkspaceItemAction
     {
         /// <summary>
-        /// No action - the item the server version.
+        ///     No action - the item the server version.
         /// </summary>
         None,
 
         /// <summary>
-        /// The item has been edited or requested for editing.
+        ///     The item has been edited or requested for editing.
         /// </summary>
         Edit,
 
         /// <summary>
-        /// Discard any edits and revert to server version.
+        ///     Discard any edits and revert to server version.
         /// </summary>
         Discard,
 
         /// <summary>
-        /// Commit any edits and overwrite server version.
+        ///     Commit any edits and overwrite server version.
         /// </summary>
         Commit
     }

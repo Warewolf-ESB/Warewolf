@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -29,6 +28,12 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
 
+        public IExplorerServerResourceRepository ServerExplorerRepo
+        {
+            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
+            set { _serverExplorerRepository = value; }
+        }
+
         public string HandlesType()
         {
             return "AddFolderService";
@@ -36,35 +41,39 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-           
             var serializer = new Dev2JsonSerializer();
             var itemToAdd = serializer.Deserialize<ServerExplorerItem>(values["itemToAdd"]);
-            Dev2Logger.Log.Info("Add Folder Service." +itemToAdd);
+            Dev2Logger.Log.Info("Add Folder Service." + itemToAdd);
             itemToAdd.Permissions = Permissions.Contribute;
-            if(itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
+            if (itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
             {
                 itemToAdd.ResourcePath = itemToAdd.ResourcePath.Remove(0, 5);
             }
 
-            var item = ServerExplorerRepo.AddItem(itemToAdd, theWorkspace.ID);
+            IExplorerRepositoryResult item = ServerExplorerRepo.AddItem(itemToAdd, theWorkspace.ID);
             return serializer.SerializeToBuilder(item);
         }
 
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToAdd ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findServices = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><itemToAdd ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
 
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var fetchItemsAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            };
 
             findServices.Actions.Add(fetchItemsAction);
 
             return findServices;
-        }
-
-        public IExplorerServerResourceRepository ServerExplorerRepo
-        {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
         }
     }
 }

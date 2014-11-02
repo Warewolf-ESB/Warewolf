@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,6 +16,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
@@ -30,7 +30,7 @@ using ServiceStack.Common.Extensions;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Internal service to fetch compile time messages
+    ///     Internal service to fetch compile time messages
     /// </summary>
     public class FetchDependantCompileMessages : IEsbManagementEndpoint
     {
@@ -39,26 +39,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             string serviceId = null;
             string workspaceId = null;
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var result = new ExecuteMessage { HasError = false };
+            var serializer = new Dev2JsonSerializer();
+            var result = new ExecuteMessage {HasError = false};
 
             StringBuilder tmp;
             values.TryGetValue("ServiceID", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 serviceId = tmp.ToString();
             }
             values.TryGetValue("WorkspaceID", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 workspaceId = tmp.ToString();
             }
             values.TryGetValue("FilterList", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
             }
 
-            if(string.IsNullOrEmpty(serviceId) || string.IsNullOrEmpty(workspaceId))
+            if (string.IsNullOrEmpty(serviceId) || string.IsNullOrEmpty(workspaceId))
             {
                 throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
             }
@@ -70,36 +70,38 @@ namespace Dev2.Runtime.ESB.Management.Services
             Guid.TryParse(serviceId, out sGuid);
 
 
-            var thisService = ResourceCatalog.Instance.GetResource(wGuid, sGuid);
+            IResource thisService = ResourceCatalog.Instance.GetResource(wGuid, sGuid);
             var msgs = new CompileMessageList();
             var dependants = new List<Guid>();
-            if(thisService != null)
+            if (thisService != null)
             {
-                var workspaceGuids = WorkspaceRepository.Instance.GetWorkspaceGuids();
+                ICollection<Guid> workspaceGuids = WorkspaceRepository.Instance.GetWorkspaceGuids();
                 workspaceGuids.ForEach(guid =>
                 {
-                    var union = dependants.Union(ResourceCatalog.Instance.GetDependants(guid, thisService.ResourceID));
+                    IEnumerable<Guid> union =
+                        dependants.Union(ResourceCatalog.Instance.GetDependants(guid, thisService.ResourceID));
                     dependants = union.ToList();
                 });
-                
-                var enumerable = dependants.Select(a =>
+
+                IEnumerable<string> enumerable = dependants.Select(a =>
                 {
-                    var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID,a) ?? ResourceCatalog.Instance.GetResource(wGuid,a);
-                    return resource==null?"": resource.ResourcePath;
+                    IResource resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, a) ??
+                                         ResourceCatalog.Instance.GetResource(wGuid, a);
+                    return resource == null ? "" : resource.ResourcePath;
                 });
-                var deps = enumerable.Distinct().ToList();
-                if(deps.Count > 0)
+                List<string> deps = enumerable.Distinct().ToList();
+                if (deps.Count > 0)
                 {
                     // ReSharper disable ExpressionIsAlwaysNull
                     msgs = new CompileMessageList();
                     var compileMessageTo = new CompileMessageTO
                     {
-                        ErrorType = ErrorType.Critical, 
+                        ErrorType = ErrorType.Critical,
                         MessageType = CompileMessageType.MappingChange
                     };
-                    msgs.Dependants =new List<string>();
+                    msgs.Dependants = new List<string>();
                     deps.ForEach(s => msgs.Dependants.Add(s));
-                    msgs.MessageList = new List<ICompileMessageTO> { compileMessageTo };
+                    msgs.MessageList = new List<ICompileMessageTO> {compileMessageTo};
                     // ReSharper restore ExpressionIsAlwaysNull
                     return serializer.SerializeToBuilder(msgs);
                 }
@@ -114,8 +116,19 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var newDs = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
+            var sa = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            };
             newDs.Actions.Add(sa);
 
             return newDs;

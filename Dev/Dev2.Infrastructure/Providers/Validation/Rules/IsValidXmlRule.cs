@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,16 +25,16 @@ namespace Dev2.Providers.Validation.Rules
 
         public override IActionableErrorInfo Check()
         {
-            var value = GetValue();
+            string value = GetValue();
             bool isValid;
 
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             try
             {
                 doc.LoadXml(value);
                 isValid = true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 isValid = false;
             }

@@ -1,21 +1,21 @@
 ﻿<Window x:Class="Dev2.Runtime.Configuration.Views.FileBrowser"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:sotc="clr-namespace:Dev2.Runtime.Configuration.ViewModels"
+        xmlns:sotc="clr-namespace:Dev2.Runtime.Configuration.ViewModels"
         xmlns:componentModel="clr-namespace:Dev2.Runtime.Configuration.ComponentModel"
         Title="FileBrowser" Height="300" Width="300">
     <Window.Resources>
-    <HierarchicalDataTemplate DataType="{x:Type componentModel:ComputerDrive}" 
-                              ItemsSource="{Binding Path=Children}">
-        <TextBlock Text="{Binding Path=Title}" 
-                 ToolTip="{Binding Path=Title}" />
-    </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type componentModel:ComputerDrive}"
+                                  ItemsSource="{Binding Path=Children}">
+            <TextBlock Text="{Binding Path=Title}"
+                       ToolTip="{Binding Path=Title}" />
+        </HierarchicalDataTemplate>
     </Window.Resources>
     <TreeView>
         <TreeViewItem Header="Computer" x:Name="_browserTree"
-            x:FieldModifier="public" ItemsSource="{Binding ComputerDrives}">
-            <TreeViewItem TextBlock.FontStyle="Italic" 
-                    Header="Loading..."/>
+                      x:FieldModifier="public" ItemsSource="{Binding ComputerDrives}">
+            <TreeViewItem TextBlock.FontStyle="Italic"
+                          Header="Loading..." />
         </TreeViewItem>
     </TreeView>
 </Window>

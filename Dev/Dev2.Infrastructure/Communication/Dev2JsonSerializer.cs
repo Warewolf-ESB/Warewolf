@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,6 +11,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -21,22 +21,25 @@ using Newtonsoft.Json;
 namespace Dev2.Communication
 {
     /// <summary>
-    /// A JSON implementation of an <see cref="ISerializer"/>
+    ///     A JSON implementation of an <see cref="ISerializer" />
     /// </summary>
     public class Dev2JsonSerializer : ISerializer
     {
 // ReSharper disable RedundantNameQualifier
-        const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
+        private const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
 // ReSharper restore RedundantNameQualifier
-        readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
-            };
-        readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Objects
-            };
+
+        private readonly JsonSerializerSettings _deSerializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Objects
+        };
+
+        private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
+            TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+        };
+
         public string Serialize<T>(T message)
         {
             VerifyArgument.IsNotNull("message", message);
@@ -56,48 +59,30 @@ namespace Dev2.Communication
             return JsonConvert.DeserializeObject(message, type, _deSerializerSettings);
         }
 
-        public StringBuilder SerializeToBuilder(object obj)
-        {
-            StringBuilder result = new StringBuilder();
-
-            using(StringWriter sw = new StringWriter(result))
-            {
-                var jsonSerializer = new JsonSerializer { TypeNameHandling = _serializerSettings.TypeNameHandling, TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat };
-                using(var jsonTextWriter = new JsonTextWriter(sw))
-                {
-                    jsonSerializer.Serialize(jsonTextWriter, obj);
-                    jsonTextWriter.Flush();
-                    jsonTextWriter.Close();
-                }
-            }
-
-            return result;
-        }
-
         // Please use this for all your deserialize needs ;)
         public T Deserialize<T>(StringBuilder message)
         {
-            if(message != null && message.Length > 0)
+            if (message != null && message.Length > 0)
             {
-                JsonSerializer serializer = new JsonSerializer { TypeNameHandling = _deSerializerSettings.TypeNameHandling };
-                using(MemoryStream ms = new MemoryStream(message.Length))
+                var serializer = new JsonSerializer {TypeNameHandling = _deSerializerSettings.TypeNameHandling};
+                using (var ms = new MemoryStream(message.Length))
                 {
                     // now load the stream ;)
 
-                    var length = message.Length;
-                    var startIdx = 0;
-                    var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+                    int length = message.Length;
+                    int startIdx = 0;
+                    var rounds = (int) Math.Ceiling(length/GlobalConstants.MAX_SIZE_FOR_STRING);
 
 
-                    for(int i = 0; i < rounds; i++)
+                    for (int i = 0; i < rounds; i++)
                     {
-                        var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                        if(len > (message.Length - startIdx))
+                        var len = (int) GlobalConstants.MAX_SIZE_FOR_STRING;
+                        if (len > (message.Length - startIdx))
                         {
                             len = (message.Length - startIdx);
                         }
 
-                        var bytes = Encoding.UTF8.GetBytes(message.Substring(startIdx, len));
+                        byte[] bytes = Encoding.UTF8.GetBytes(message.Substring(startIdx, len));
                         ms.Write(bytes, 0, bytes.Length);
                         startIdx += len;
                     }
@@ -109,27 +94,47 @@ namespace Dev2.Communication
                     try
                     {
                         // finally do the conversion ;)
-                        using(StreamReader sr = new StreamReader(ms))
+                        using (var sr = new StreamReader(ms))
                         {
-                            using(JsonReader jr = new JsonTextReader(sr))
+                            using (JsonReader jr = new JsonTextReader(sr))
                             {
                                 var result = serializer.Deserialize<T>(jr);
                                 return result;
                             }
                         }
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                        // ReSharper disable EmptyGeneralCatchClause
                     catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                        // ReSharper restore EmptyGeneralCatchClause
                     {
                         // Do nothing default(T) returned below ;)
                     }
                 }
-
             }
 
             return default(T);
         }
 
+        public StringBuilder SerializeToBuilder(object obj)
+        {
+            var result = new StringBuilder();
+
+            using (var sw = new StringWriter(result))
+            {
+                var jsonSerializer = new JsonSerializer
+                {
+                    TypeNameHandling = _serializerSettings.TypeNameHandling,
+                    TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat
+                };
+                using (var jsonTextWriter = new JsonTextWriter(sw))
+                {
+                    jsonSerializer.Serialize(jsonTextWriter, obj);
+                    jsonTextWriter.Flush();
+                    jsonTextWriter.Close();
+                }
+            }
+
+            return result;
+        }
     }
 }

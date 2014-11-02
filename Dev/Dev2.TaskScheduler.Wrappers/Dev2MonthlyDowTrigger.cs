@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,7 +19,7 @@ namespace Dev2.TaskScheduler.Wrappers
     public class Dev2MonthlyDowTrigger : Dev2Trigger, IMonthlyDOWTrigger
     {
         public Dev2MonthlyDowTrigger(ITaskServiceConvertorFactory taskServiceConvertorFactory,
-                                     MonthlyDOWTrigger instance) : base(taskServiceConvertorFactory, instance)
+            MonthlyDOWTrigger instance) : base(taskServiceConvertorFactory, instance)
         {
         }
 
@@ -38,31 +37,26 @@ namespace Dev2.TaskScheduler.Wrappers
         public DaysOfTheWeek DaysOfWeek
         {
             get { return Instance.DaysOfWeek; }
-          
         }
 
         public MonthsOfTheYear MonthsOfYear
         {
             get { return Instance.MonthsOfYear; }
-       
         }
 
         public TimeSpan RandomDelay
         {
             get { return Instance.RandomDelay; }
-
         }
 
         public bool RunOnLastWeekOfMonth
         {
             get { return Instance.RunOnLastWeekOfMonth; }
-      
         }
 
         public WhichWeek WeeksOfMonth
         {
             get { return Instance.WeeksOfMonth; }
-           
         }
     }
 }

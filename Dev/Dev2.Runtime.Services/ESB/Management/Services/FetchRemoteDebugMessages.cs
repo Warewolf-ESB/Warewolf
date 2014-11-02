@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,6 +15,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
@@ -25,7 +25,7 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Internal service to fetch compile time messages
+    ///     Internal service to fetch compile time messages
     /// </summary>
     public class FetchRemoteDebugMessages : IEsbManagementEndpoint
     {
@@ -33,36 +33,34 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
+                Dev2Logger.Log.Info("Fetch Remote Debug Messages");
+                string invokerId = null;
+                var serializer = new Dev2JsonSerializer();
 
-         
-            Dev2Logger.Log.Info("Fetch Remote Debug Messages");
-            string invokerId = null;
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                StringBuilder tmp;
+                values.TryGetValue("InvokerID", out tmp);
+                if (tmp != null)
+                {
+                    invokerId = tmp.ToString();
+                }
 
-            StringBuilder tmp;
-            values.TryGetValue("InvokerID", out tmp);
-            if(tmp != null)
-            {
-                invokerId = tmp.ToString();
-            }
+                if (string.IsNullOrEmpty(invokerId))
+                {
+                    throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
+                }
 
-            if(string.IsNullOrEmpty(invokerId))
-            {
-                throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
-            }
+                Guid iGuid;
+                // RemoteDebugMessageRepo
+                Guid.TryParse(invokerId, out iGuid);
 
-            Guid iGuid;
-            // RemoteDebugMessageRepo
-            Guid.TryParse(invokerId, out iGuid);
+                if (iGuid != Guid.Empty)
+                {
+                    IList<IDebugState> items = RemoteDebugMessageRepo.Instance.FetchDebugItems(iGuid);
 
-            if(iGuid != Guid.Empty)
-            {
-                var items = RemoteDebugMessageRepo.Instance.FetchDebugItems(iGuid);
+                    return serializer.SerializeToBuilder(items);
+                }
 
-                return serializer.SerializeToBuilder(items);
-            }
-
-            return new StringBuilder();
+                return new StringBuilder();
             }
             catch (Exception err)
             {
@@ -73,8 +71,19 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder( "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var newDs = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
+            var sa = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            };
             newDs.Actions.Add(sa);
 
             return newDs;

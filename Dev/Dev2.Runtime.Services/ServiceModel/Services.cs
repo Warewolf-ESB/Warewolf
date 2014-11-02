@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -11,9 +10,11 @@
 
 
 using System;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
@@ -35,8 +36,8 @@ namespace Dev2.Runtime.ServiceModel
 
     public class Services : ExceptionManager
     {
-        readonly IResourceCatalog _resourceCatalog;
-        readonly IAuthorizationService _authorizationService;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IResourceCatalog _resourceCatalog;
 
         #region CTOR
 
@@ -60,32 +61,31 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Services/Get
         public Service Get(string args, Guid workspaceId, Guid dataListId)
         {
-            ResourceType resourceType = ResourceType.Unknown;
+            var resourceType = ResourceType.Unknown;
             try
             {
                 var webRequestPoco = JsonConvert.DeserializeObject<WebRequestPoco>(args);
-                var resourceTypeStr = webRequestPoco.ResourceType;
+                string resourceTypeStr = webRequestPoco.ResourceType;
                 resourceType = Resources.ParseResourceType(resourceTypeStr);
-                var resourceId = webRequestPoco.ResourceId;
-                var xmlStr = _resourceCatalog.GetResourceContents(workspaceId, Guid.Parse(resourceId));
+                string resourceId = webRequestPoco.ResourceId;
+                StringBuilder xmlStr = _resourceCatalog.GetResourceContents(workspaceId, Guid.Parse(resourceId));
 
-                if(xmlStr != null && xmlStr.Length != 0)
+                if (xmlStr != null && xmlStr.Length != 0)
                 {
                     return DeserializeService(xmlStr.ToXElement(), resourceType);
                 }
                 return GetDefaultService(resourceType);
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
                 return GetDefaultService(resourceType);
             }
         }
 
-        static Service GetDefaultService(ResourceType resourceType)
+        private static Service GetDefaultService(ResourceType resourceType)
         {
-            switch(resourceType)
+            switch (resourceType)
             {
                 case ResourceType.DbService:
                     return DbService.Create();
@@ -106,20 +106,20 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var service = DeserializeService(args);
+                Service service = DeserializeService(args);
                 _resourceCatalog.SaveResource(workspaceId, service);
 
-                if(workspaceId != GlobalConstants.ServerWorkspaceID)
+                if (workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, service);
                 }
 
                 return service.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                return new ValidationResult { IsValid = false, ErrorMessage = ex.Message }.ToString();
+                return new ValidationResult {IsValid = false, ErrorMessage = ex.Message}.ToString();
             }
         }
 
@@ -131,18 +131,18 @@ namespace Dev2.Runtime.ServiceModel
         public ServiceMethodList DbMethods(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new ServiceMethodList();
-            if(!string.IsNullOrEmpty(args))
+            if (!string.IsNullOrEmpty(args))
             {
                 try
                 {
-                    Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+                    var serialiser = new Dev2JsonSerializer();
                     var source = serialiser.Deserialize<DbSource>(args);
                     var actualSource = _resourceCatalog.GetResource<DbSource>(workspaceId, source.ResourceID);
                     actualSource.ReloadActions = source.ReloadActions;
-                    var serviceMethods = FetchMethods(actualSource);
+                    ServiceMethodList serviceMethods = FetchMethods(actualSource);
                     result.AddRange(serviceMethods);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     RaiseError(ex);
                     result.Add(new ServiceMethod(ex.Message, ex.StackTrace));
@@ -162,13 +162,13 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var service = JsonConvert.DeserializeObject<DbService>(args);
                 service.Source = _resourceCatalog.GetResource<DbSource>(workspaceId, service.Source.ResourceID);
-                if(string.IsNullOrEmpty(service.Recordset.Name))
+                if (string.IsNullOrEmpty(service.Recordset.Name))
                 {
                     service.Recordset.Name = service.Method.Name;
                 }
 
-                var addFields = service.Recordset.Fields.Count == 0;
-                if(addFields)
+                bool addFields = service.Recordset.Fields.Count == 0;
+                if (addFields)
                 {
                     service.Recordset.Fields.Clear();
                 }
@@ -176,10 +176,10 @@ namespace Dev2.Runtime.ServiceModel
 
                 return FetchRecordset(service, addFields);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                return new Recordset { HasErrors = true, ErrorMessage = ex.Message };
+                return new Recordset {HasErrors = true, ErrorMessage = ex.Message};
             }
         }
 
@@ -189,16 +189,16 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual Recordset FetchRecordset(DbService dbService, bool addFields)
         {
-
-            if(dbService == null)
+            if (dbService == null)
             {
                 throw new ArgumentNullException("dbService");
             }
 
-            var broker = CreateDatabaseBroker();
-            var outputDescription = broker.TestService(dbService);
+            SqlDatabaseBroker broker = CreateDatabaseBroker();
+            IOutputDescription outputDescription = broker.TestService(dbService);
 
-            if(outputDescription == null || outputDescription.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+            if (outputDescription == null || outputDescription.DataSourceShapes == null ||
+                outputDescription.DataSourceShapes.Count == 0)
             {
                 throw new Exception("Error retrieving shape from service output.");
             }
@@ -213,7 +213,7 @@ namespace Dev2.Runtime.ServiceModel
             dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
             dbService.Recordset.Fields.Clear();
 
-            ServiceMappingHelper smh = new ServiceMappingHelper();
+            var smh = new ServiceMappingHelper();
 
             smh.MapDbOutputs(outputDescription, ref dbService, addFields);
 
@@ -222,23 +222,23 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
         {
-            if(pluginService == null)
+            if (pluginService == null)
             {
                 throw new ArgumentNullException("pluginService");
             }
             var broker = new PluginBroker();
-            var outputDescription = broker.TestPlugin(pluginService);
+            IOutputDescription outputDescription = broker.TestPlugin(pluginService);
             return outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
         }
 
         public virtual RecordsetList FetchRecordset(WebService webService, bool addFields)
         {
-            if(webService == null)
+            if (webService == null)
             {
                 throw new ArgumentNullException("webService");
             }
 
-            var outputDescription = webService.GetOutputDescription();
+            IOutputDescription outputDescription = webService.GetOutputDescription();
             return outputDescription.ToRecordsetList(webService.Recordsets);
         }
 
@@ -248,7 +248,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
-            var broker = CreateDatabaseBroker();
+            SqlDatabaseBroker broker = CreateDatabaseBroker();
             return broker.GetServiceMethods(dbSource);
         }
 
@@ -258,7 +258,10 @@ namespace Dev2.Runtime.ServiceModel
 
         public WebPermission IsReadOnly(string resourceId, Guid workspaceId, Guid dataListId)
         {
-            return new WebPermission { IsReadOnly = !_authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId) };
+            return new WebPermission
+            {
+                IsReadOnly = !_authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId)
+            };
         }
 
         #endregion
@@ -273,7 +276,7 @@ namespace Dev2.Runtime.ServiceModel
         protected virtual Service DeserializeService(string args)
         {
             var service = JsonConvert.DeserializeObject<Service>(args);
-            switch(service.ResourceType)
+            switch (service.ResourceType)
             {
                 case ResourceType.DbService:
                     return JsonConvert.DeserializeObject<DbService>(args);
@@ -283,9 +286,9 @@ namespace Dev2.Runtime.ServiceModel
 
         protected virtual Service DeserializeService(XElement xml, ResourceType resourceType)
         {
-            if(xml != null)
+            if (xml != null)
             {
-                switch(resourceType)
+                switch (resourceType)
                 {
                     case ResourceType.DbService:
                         return new DbService(xml);
@@ -293,7 +296,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             else
             {
-                switch(resourceType)
+                switch (resourceType)
                 {
                     case ResourceType.DbService:
                         return DbService.Create();
@@ -303,6 +306,5 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-
     }
 }

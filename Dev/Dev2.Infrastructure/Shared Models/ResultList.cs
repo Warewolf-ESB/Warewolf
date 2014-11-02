@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,11 +18,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     public class ResultList<T>
     {
-        public bool HasErrors { get; set; }
-        public string Errors { get; set; }
-
-        public List<T> Items { get; private set; }
-
         public ResultList()
         {
             Items = new List<T>();
@@ -40,8 +34,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             : this()
         {
             var errors = new StringBuilder();
-            var tmp = ex;
-            while(tmp != null)
+            Exception tmp = ex;
+            while (tmp != null)
             {
                 errors.AppendLine(tmp.Message);
                 tmp = tmp.InnerException;
@@ -50,6 +44,11 @@ namespace Dev2.Runtime.ServiceModel.Data
             HasErrors = true;
             Errors = errors.ToString();
         }
+
+        public bool HasErrors { get; set; }
+        public string Errors { get; set; }
+
+        public List<T> Items { get; private set; }
 
         public override string ToString()
         {

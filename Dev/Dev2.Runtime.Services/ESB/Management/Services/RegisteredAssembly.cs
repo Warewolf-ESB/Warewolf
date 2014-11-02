@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,15 +22,15 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Find registred assemblies
+    ///     Find registred assemblies
     /// </summary>
     public class RegisteredAssembly : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            SortedSet<string> gacList = new SortedSet<string>();
+            var gacList = new SortedSet<string>();
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             Dev2Logger.Log.Info("Registered Assembly");
             try
             {
@@ -42,7 +41,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     try
                     {
-                        gacList.Add(GAC.GetDisplayName(assemblyName, ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE | ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN));
+                        gacList.Add(GAC.GetDisplayName(assemblyName,
+                            ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE | ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN));
                     }
                     catch (Exception e)
                     {
@@ -68,24 +68,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Log.Error(ex);
                 result.Append(ex.Message);
             }
-            
+
             return result;
         }
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService registeredAssemblyService = new DynamicService
-                {
-                    Name = HandlesType(),
-                    DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-                };
+            var registeredAssemblyService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
 
-            ServiceAction registeredAssemblyAction = new ServiceAction
-                {
-                    Name = HandlesType(),
-                    SourceMethod = HandlesType(),
-                    ActionType = enActionType.InvokeManagementDynamicService
-                };
+            var registeredAssemblyAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                SourceMethod = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService
+            };
 
             registeredAssemblyService.Actions.Add(registeredAssemblyAction);
 

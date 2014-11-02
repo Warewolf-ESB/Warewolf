@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,12 +18,12 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management
 {
     /// <summary>
-    /// The internal managment interface all Management Methods must implement
+    ///     The internal managment interface all Management Methods must implement
     /// </summary>
     public interface IEsbManagementEndpoint : ISpookyLoadable<string>
     {
         /// <summary>
-        /// Executes the service
+        ///     Executes the service
         /// </summary>
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
@@ -32,10 +31,9 @@ namespace Dev2.Runtime.ESB.Management
         StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace);
 
         /// <summary>
-        /// Creates the service entry.
+        ///     Creates the service entry.
         /// </summary>
         /// <returns></returns>
         DynamicService CreateServiceEntry();
-
     }
 }

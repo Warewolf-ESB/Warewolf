@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,34 +16,33 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.ComponentModel;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Configuration.Settings;
+using log4net;
 using log4net.Core;
+using log4net.Repository;
+using log4net.Repository.Hierarchy;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
+
 namespace Dev2.Common
 {
     /// <summary>
-    /// A single common logging location ;)
+    ///     A single common logging location ;)
     /// </summary>
     public static class Dev2Logger
     {
-        public static log4net.ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-       
+        public static ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public  static void SetLog(log4net.ILog log)
-        {
-            Log = log;
-        }
-        
 
-        static LoggingSettings _loggingSettings;
-        static IDictionary<Guid, string> _workflowsToLog;
+        private static LoggingSettings _loggingSettings;
+        private static IDictionary<Guid, string> _workflowsToLog;
 
         public static bool EnableLogOutput { get; private set; }
-        
+
         public static LoggingSettings LoggingSettings
         {
             get { return _loggingSettings; }
@@ -59,82 +57,77 @@ namespace Dev2.Common
                 UpdateSettings(_loggingSettings);
             }
         }
+
         public static bool EnableDebugOutput
         {
-            get
-            {
-               return ((log4net.Repository.Hierarchy.Logger)Log.Logger).Level <= Level.Debug;
-            }
+            get { return ((Logger) Log.Logger).Level <= Level.Debug; }
 // ReSharper disable ValueParameterNotUsed
             set
 // ReSharper restore ValueParameterNotUsed
             {
-                if(value)
-                UpdateLoggingConfig("Debug");
+                if (value)
+                    UpdateLoggingConfig("Debug");
             }
         }
+
         public static bool EnableErrorOutput
         {
-            get
-            {
-                return ((log4net.Repository.Hierarchy.Logger)Log.Logger).Level <= Level.Error;
-            }
+            get { return ((Logger) Log.Logger).Level <= Level.Error; }
 // ReSharper disable ValueParameterNotUsed
             set
 // ReSharper restore ValueParameterNotUsed
             {
                 if (value)
-                UpdateLoggingConfig("Error");
+                    UpdateLoggingConfig("Error");
             }
         }
+
         public static bool EnableInfoOutput
         {
-            get
-            {
-                return ((log4net.Repository.Hierarchy.Logger)Log.Logger).Level <= Level.Info;
-            }
+            get { return ((Logger) Log.Logger).Level <= Level.Info; }
 // ReSharper disable ValueParameterNotUsed
             set
 // ReSharper restore ValueParameterNotUsed
             {
                 if (value)
-                UpdateLoggingConfig("INFO");
+                    UpdateLoggingConfig("INFO");
             }
         }
+
         public static bool EnableTraceOutput
         {
-            get
-            {
-                return ((log4net.Repository.Hierarchy.Logger)Log.Logger).Level <= Level.Info;
-            }
+            get { return ((Logger) Log.Logger).Level <= Level.Info; }
 // ReSharper disable ValueParameterNotUsed
             set
 // ReSharper restore ValueParameterNotUsed
             {
                 if (value)
-                UpdateLoggingConfig("DEBUG");
+                    UpdateLoggingConfig("DEBUG");
             }
+        }
+
+        public static void SetLog(ILog log)
+        {
+            Log = log;
         }
 
 
         private static void UpdateLoggingConfig(string Level)
         {
-
-            log4net.Repository.ILoggerRepository repository = log4net.LogManager.GetAllRepositories().First();
+            ILoggerRepository repository = LogManager.GetAllRepositories().First();
             repository.Threshold = repository.LevelMap[Level];
-            log4net.Repository.Hierarchy.Hierarchy hier = (log4net.Repository.Hierarchy.Hierarchy)repository;
-            var loggers = hier.GetCurrentLoggers();
-            foreach (var logger in loggers)
+            var hier = (Hierarchy) repository;
+            ILogger[] loggers = hier.GetCurrentLoggers();
+            foreach (ILogger logger in loggers)
             {
-                ((log4net.Repository.Hierarchy.Logger)logger).Level = hier.LevelMap[Level];
+                ((Logger) logger).Level = hier.LevelMap[Level];
             }
-            
+
 
             //Configure the root logger.
-            log4net.Repository.Hierarchy.Hierarchy h = (log4net.Repository.Hierarchy.Hierarchy)log4net.LogManager.GetRepository();
-            log4net.Repository.Hierarchy.Logger rootLogger = h.Root;
+            var h = (Hierarchy) LogManager.GetRepository();
+            Logger rootLogger = h.Root;
             rootLogger.Level = h.LevelMap[Level];
-
         }
 
         public static void UpdateSettings(LoggingSettings loggingSettings)
@@ -151,23 +144,21 @@ namespace Dev2.Common
                     return;
                 }
 
-                var dirPath = GetDirectoryPath(LoggingSettings);
-                var dirExists = Directory.Exists(dirPath);
+                string dirPath = GetDirectoryPath(LoggingSettings);
+                bool dirExists = Directory.Exists(dirPath);
                 if (!dirExists)
                 {
                     Directory.CreateDirectory(dirPath);
                 }
 
                 _workflowsToLog = new Dictionary<Guid, string>();
-                foreach (var wf in LoggingSettings.Workflows)
+                foreach (IWorkflowDescriptor wf in LoggingSettings.Workflows)
                 {
                     _workflowsToLog.Add(Guid.Parse(wf.ResourceID), wf.ResourceName);
                 }
-
             });
         }
 
-       
 
         ///// <summary>
         ///// Only continue with logging if workflow selected in logsettings or allworkflows selected
@@ -187,6 +178,7 @@ namespace Dev2.Common
 
             return ShouldLog(debugState.OriginatingResourceID);
         }
+
         [ExcludeFromCodeCoverage] // wf debug logging
         public static bool ShouldLog(Guid resourceID)
         {
@@ -198,14 +190,14 @@ namespace Dev2.Common
 
             //only log if included in the settings
             bool shouldlog = LoggingSettings.LogAll ||
-                _workflowsToLog.ContainsKey(resourceID);
+                             _workflowsToLog.ContainsKey(resourceID);
             return shouldlog;
         }
 
         [ExcludeFromCodeCoverage] // wf debug logging
         public static string GetDirectoryPath(LoggingSettings loggingSettings)
         {
-            var dirPath = loggingSettings.LogFileDirectory;
+            string dirPath = loggingSettings.LogFileDirectory;
 
             if (string.IsNullOrWhiteSpace(dirPath))
             {
@@ -213,10 +205,11 @@ namespace Dev2.Common
             }
             return dirPath;
         }
+
         [ExcludeFromCodeCoverage] // wf debug logging
         public static string GetDefaultLogDirectoryPath()
         {
-            var rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             if (rootDir != null)
             {
@@ -225,8 +218,5 @@ namespace Dev2.Common
 
             return string.Empty;
         }
-
     }
-
-
 }

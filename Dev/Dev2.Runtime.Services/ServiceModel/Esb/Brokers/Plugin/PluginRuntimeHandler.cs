@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
@@ -25,13 +25,12 @@ using Unlimited.Framework.Converters.Graph;
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
     /// <summary>
-    /// Handler that invokes a plugin in its own app domain
+    ///     Handler that invokes a plugin in its own app domain
     /// </summary>
     public class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
-
         /// <summary>
-        /// Runs the specified setup information.
+        ///     Runs the specified setup information.
         /// </summary>
         /// <param name="setupInfo">The setup information.</param>
         /// <returns></returns>
@@ -39,22 +38,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             Assembly loadedAssembly;
 
-            if(!TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+            if (!TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
             {
                 return null;
             }
 
-            var parameters = BuildParameterList(setupInfo.Parameters);
-            var typeList = BuildTypeList(setupInfo.Parameters);
+            object[] parameters = BuildParameterList(setupInfo.Parameters);
+            Type[] typeList = BuildTypeList(setupInfo.Parameters);
 
-            var type = loadedAssembly.GetType(setupInfo.Fullname);
-            var methodToRun = type.GetMethod(setupInfo.Method, typeList);
-            var instance = Activator.CreateInstance(type);
-            var pluginResult = methodToRun.Invoke(instance, parameters);
+            Type type = loadedAssembly.GetType(setupInfo.Fullname);
+            MethodInfo methodToRun = type.GetMethod(setupInfo.Method, typeList);
+            object instance = Activator.CreateInstance(type);
+            object pluginResult = methodToRun.Invoke(instance, parameters);
 
             // do formating here to avoid object serialization issues ;)
-            var formater = setupInfo.OutputFormatter;
-            if(formater != null)
+            IOutputFormatter formater = setupInfo.OutputFormatter;
+            if (formater != null)
             {
                 pluginResult = AdjustPluginResult(pluginResult, methodToRun);
 
@@ -68,39 +67,39 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             Assembly loadedAssembly;
 
-            if(!TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+            if (!TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
             {
                 return null;
             }
 
-            var parameters = BuildParameterList(setupInfo.Parameters);
-            var typeList = BuildTypeList(setupInfo.Parameters);
+            object[] parameters = BuildParameterList(setupInfo.Parameters);
+            Type[] typeList = BuildTypeList(setupInfo.Parameters);
 
-            var type = loadedAssembly.GetType(setupInfo.Fullname);
-            var methodToRun = type.GetMethod(setupInfo.Method, typeList);
-            var instance = Activator.CreateInstance(type);
-            var pluginResult = methodToRun.Invoke(instance, parameters);
+            Type type = loadedAssembly.GetType(setupInfo.Fullname);
+            MethodInfo methodToRun = type.GetMethod(setupInfo.Method, typeList);
+            object instance = Activator.CreateInstance(type);
+            object pluginResult = methodToRun.Invoke(instance, parameters);
 
             // do formating here to avoid object serialization issues ;)
-            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
+            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            IDataSourceShape dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
 
-            if(pluginResult != null)
+            if (pluginResult != null)
             {
                 pluginResult = AdjustPluginResult(pluginResult, methodToRun);
 
-                var tmpData = dataBrowser.Map(pluginResult);
+                IEnumerable<IPath> tmpData = dataBrowser.Map(pluginResult);
                 dataSourceShape.Paths.AddRange(tmpData);
             }
 
-            var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
+            IOutputDescription result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
             result.DataSourceShapes.Add(dataSourceShape);
 
             return result;
         }
 
         /// <summary>
-        /// Lists the namespaces.
+        ///     Lists the namespaces.
         /// </summary>
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
@@ -109,22 +108,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             Assembly loadedAssembly;
             IEnumerable<string> namespaces = new string[0];
-            if(TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+            if (TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
             {
                 // ensure we flush out the rubbish that GAC brings ;)
                 namespaces = loadedAssembly.GetTypes()
-                                         .Select(t => t.FullName)
-                                         .Distinct()
-                                         .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
-                                                  && q.IndexOf("+", StringComparison.Ordinal) < 0
-                                                  && q.IndexOf("<", StringComparison.Ordinal) < 0
-                                                  && !q.StartsWith("_"));
+                    .Select(t => t.FullName)
+                    .Distinct()
+                    .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
+                                && q.IndexOf("+", StringComparison.Ordinal) < 0
+                                && q.IndexOf("<", StringComparison.Ordinal) < 0
+                                && !q.StartsWith("_"));
             }
             return namespaces;
         }
 
         /// <summary>
-        /// Lists the methods.
+        ///     Lists the methods.
         /// </summary>
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
@@ -134,15 +133,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             Assembly assembly;
             var serviceMethodList = new ServiceMethodList();
-            if(TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            if (TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
             {
-                var type = assembly.GetType(fullName);
-                var methodInfos = type.GetMethods();
+                Type type = assembly.GetType(fullName);
+                MethodInfo[] methodInfos = type.GetMethods();
 
                 methodInfos.ToList().ForEach(info =>
                 {
-                    var serviceMethod = new ServiceMethod { Name = info.Name };
-                    var parameterInfos = info.GetParameters().ToList();
+                    var serviceMethod = new ServiceMethod {Name = info.Name};
+                    List<ParameterInfo> parameterInfos = info.GetParameters().ToList();
                     parameterInfos.ForEach(parameterInfo =>
                         serviceMethod.Parameters.Add(
                             new MethodParameter
@@ -164,20 +163,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             string result = string.Empty;
 
-            if(toLoad.StartsWith(GlobalConstants.GACPrefix))
+            if (toLoad.StartsWith(GlobalConstants.GACPrefix))
             {
                 try
                 {
-                    var readlLoad = toLoad.Remove(0, GlobalConstants.GACPrefix.Length);
+                    string readlLoad = toLoad.Remove(0, GlobalConstants.GACPrefix.Length);
                     Assembly.Load(readlLoad);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Log.Error(e);
                     result = e.Message;
                 }
             }
-            else if(toLoad.EndsWith(".dll"))
+            else if (toLoad.EndsWith(".dll"))
             {
                 try
                 {
@@ -189,7 +188,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     {
                         Assembly.UnsafeLoadFrom(toLoad);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Dev2Logger.Log.Error(e);
                         result = e.Message;
@@ -206,18 +205,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         /// <summary>
-        /// Fetches the name space list object.
+        ///     Fetches the name space list object.
         /// </summary>
         /// <param name="pluginSource">The plugin source.</param>
         /// <returns></returns>
         public NamespaceList FetchNamespaceListObject(PluginSource pluginSource)
         {
             // BUG 9500 - 2013.05.31 - TWR : added check to avoid nulling AssemblyLocation/Name in tests 
-            if(string.IsNullOrEmpty(pluginSource.AssemblyLocation))
+            if (string.IsNullOrEmpty(pluginSource.AssemblyLocation))
             {
                 pluginSource = new PluginSources().Get(pluginSource.ResourceID.ToString(), Guid.Empty, Guid.Empty);
             }
-            var interrogatePlugin = ReadNamespaces(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
+            IEnumerable<NamespaceItem> interrogatePlugin = ReadNamespaces(pluginSource.AssemblyLocation,
+                pluginSource.AssemblyName);
             var namespacelist = new NamespaceList();
             namespacelist.AddRange(interrogatePlugin);
             return namespacelist;
@@ -225,7 +225,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
         /// <summary>
-        /// Adjusts the plugin result.
+        ///     Adjusts the plugin result.
         /// </summary>
         /// <param name="pluginResult">The plugin result.</param>
         /// <param name="methodToRun">The method automatic run.</param>
@@ -234,11 +234,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             object result = pluginResult;
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-            if((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String")
+            if ((methodToRun.ReturnType.IsPrimitive || methodToRun.ReturnType.FullName == "System.String")
                 && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
             {
                 // add our special tags ;)
-                result = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult, GlobalConstants.PrimitiveReturnValueTag);
+                result = string.Format("<{0}>{1}</{2}>", GlobalConstants.PrimitiveReturnValueTag, pluginResult,
+                    GlobalConstants.PrimitiveReturnValueTag);
             }
 
             return result;
@@ -246,7 +247,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
         /// <summary>
-        /// Reads the namespaces.
+        ///     Reads the namespaces.
         /// </summary>
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
@@ -254,7 +255,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         private IEnumerable<NamespaceItem> ReadNamespaces(string assemblyLocation, string assemblyName)
         {
             var result = new List<NamespaceItem>();
-            var list = ListNamespaces(assemblyLocation, assemblyName);
+            IEnumerable<string> list = ListNamespaces(assemblyLocation, assemblyName);
             list.ForEach(fullName =>
                 result.Add(new NamespaceItem
                 {
@@ -267,14 +268,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         /// <summary>
-        /// Builds the parameter list.
+        ///     Builds the parameter list.
         /// </summary>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
         private object[] BuildParameterList(List<MethodParameter> parameters)
         {
-
-            if(parameters.Count == 0) return new object[] { };
+            if (parameters.Count == 0) return new object[] {};
             var parameterValues = new object[parameters.Count];
             int pos = 0;
             parameters.ForEach(parameter =>
@@ -286,14 +286,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         /// <summary>
-        /// Builds the type list.
+        ///     Builds the type list.
         /// </summary>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
         private Type[] BuildTypeList(List<MethodParameter> parameters)
         {
-
-            if(parameters.Count == 0) return new Type[] { };
+            if (parameters.Count == 0) return new Type[] {};
             var typeList = new Type[parameters.Count];
             int pos = 0;
             parameters.ForEach(parameter =>
@@ -306,7 +305,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
         /// <summary>
-        /// Tries the load assembly.
+        ///     Tries the load assembly.
         /// </summary>
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
@@ -316,9 +315,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             loadedAssembly = null;
 
-            if(assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
+            if (assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
             {
-
                 // Culture=neutral, PublicKeyToken=b77a5c561934e089
                 // , Version=2.0.0.0
                 try
@@ -327,7 +325,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Log.Error(e.Message);
                 }
@@ -348,20 +346,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         LoadDepencencies(loadedAssembly, assemblyLocation);
                         return true;
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Dev2Logger.Log.Error(e);
                     }
                 }
                 try
                 {
-                    var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
-                    var loadedObject = objHAndle.Unwrap();
+                    ObjectHandle objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
+                    object loadedObject = objHAndle.Unwrap();
                     loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
                     LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Log.Error(e);
                 }
@@ -371,7 +369,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
         /// <summary>
-        /// Loads the dependencies.
+        ///     Loads the dependencies.
         /// </summary>
         /// <param name="asm">The asm.</param>
         /// <param name="assemblyLocation">The assembly location.</param>
@@ -379,11 +377,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         private void LoadDepencencies(Assembly asm, string assemblyLocation)
         {
             // load dependencies ;)
-            if(asm != null)
+            if (asm != null)
             {
-                var toLoadAsm = asm.GetReferencedAssemblies();
+                AssemblyName[] toLoadAsm = asm.GetReferencedAssemblies();
 
-                foreach(var toLoad in toLoadAsm)
+                foreach (AssemblyName toLoad in toLoadAsm)
                 {
                     // TODO : Detect GAC or File System Load ;)
                     try
@@ -392,10 +390,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     catch
                     {
-                        var path = Path.GetDirectoryName(assemblyLocation);
-                        if(path != null)
+                        string path = Path.GetDirectoryName(assemblyLocation);
+                        if (path != null)
                         {
-                            var myLoad = Path.Combine(path, toLoad.Name + ".dll");
+                            string myLoad = Path.Combine(path, toLoad.Name + ".dll");
                             Assembly.UnsafeLoadFrom(myLoad);
                         }
                     }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,7 +19,7 @@ namespace Dev2.Runtime.WebServer.Security
 {
     public class QueryString : INameValueCollection
     {
-        readonly IEnumerable<KeyValuePair<string, string>> _items;
+        private readonly IEnumerable<KeyValuePair<string, string>> _items;
 
         public QueryString(IEnumerable<KeyValuePair<string, string>> items)
         {
@@ -40,14 +39,14 @@ namespace Dev2.Runtime.WebServer.Security
 
         public IEnumerable<string> GetValues(string key)
         {
-            var value = this[key];
-            if(string.IsNullOrEmpty(value))
+            string value = this[key];
+            if (string.IsNullOrEmpty(value))
             {
                 return new string[0];
             }
 
-            var values = value.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-            for(var i = 0; i < values.Length; i++)
+            string[] values = value.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < values.Length; i++)
             {
                 values[i] = values[i].Trim();
             }
@@ -63,7 +62,9 @@ namespace Dev2.Runtime.WebServer.Security
         {
             get
             {
-                var item = _items.FirstOrDefault(i => string.Compare(i.Key, key, StringComparison.InvariantCultureIgnoreCase) == 0);
+                KeyValuePair<string, string> item =
+                    _items.FirstOrDefault(
+                        i => string.Compare(i.Key, key, StringComparison.InvariantCultureIgnoreCase) == 0);
                 return string.IsNullOrEmpty(item.Value) ? string.Empty : item.Value;
             }
         }

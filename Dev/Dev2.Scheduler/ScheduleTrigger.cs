@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,16 +21,18 @@ namespace Dev2.Scheduler
 {
     public class ScheduleTrigger : IScheduleTrigger
     {
-        private IDev2TaskService _service;
         private ITaskServiceConvertorFactory _factory;
-        public ScheduleTrigger(TaskState state, ITrigger trigger, IDev2TaskService service, ITaskServiceConvertorFactory factory)
+        private IDev2TaskService _service;
+
+        public ScheduleTrigger(TaskState state, ITrigger trigger, IDev2TaskService service,
+            ITaskServiceConvertorFactory factory)
         {
             _service = service;
             _factory = factory;
             State = state;
             Trigger = trigger;
-
         }
+
         [JsonIgnore]
         public ITrigger Trigger
         {
@@ -39,15 +40,20 @@ namespace Dev2.Scheduler
             set { if (value != null) NativeXML = SetXmlFromTrigger(value); }
         }
 
+        [JsonConverter(typeof (StringEnumConverter))]
+        public TaskState State { get; private set; }
+
+        public string NativeXML { get; set; }
+
         private string SetXmlFromTrigger(ITrigger value)
         {
-            _factory= _factory ?? new TaskServiceConvertorFactory();
-           _service= _service ?? new Dev2TaskService(_factory);
-            using (var task = _service.NewTask())
+            _factory = _factory ?? new TaskServiceConvertorFactory();
+            _service = _service ?? new Dev2TaskService(_factory);
+            using (IDev2TaskDefinition task = _service.NewTask())
             {
                 task.AddAction(_factory.CreateExecAction("notepad"));
                 task.AddTrigger(value);
-              
+
                 return task.XmlText;
             }
         }
@@ -57,7 +63,7 @@ namespace Dev2.Scheduler
         {
             _factory = _factory ?? new TaskServiceConvertorFactory();
             _service = _service ?? new Dev2TaskService(_factory);
-            using (var task = _service.NewTask())
+            using (IDev2TaskDefinition task = _service.NewTask())
             {
                 task.AddAction(_factory.CreateExecAction("notepad"));
 
@@ -65,8 +71,5 @@ namespace Dev2.Scheduler
                 return task.Triggers.FirstOrDefault();
             }
         }
-        [JsonConverter(typeof(StringEnumConverter))]
-        public TaskState State { get; private set; }
-        public string NativeXML { get; set; }
     }
 }

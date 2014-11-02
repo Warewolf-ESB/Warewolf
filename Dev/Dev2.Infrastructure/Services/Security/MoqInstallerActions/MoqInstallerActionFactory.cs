@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -10,12 +9,10 @@
 */
 
 
-
 namespace Dev2.Services.Security.MoqInstallerActions
 {
     public static class MoqInstallerActionFactory
     {
-
         public static IMoqInstallerActions CreateInstallerActions()
         {
             return new InstallerActionsForDevelopment();

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,13 +26,12 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// The find directory service
+    ///     The find directory service
     /// </summary>
     public class FindDirectory : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-
             Dev2Logger.Log.Info("Find Directory");
             string username = string.Empty;
             string domain = string.Empty;
@@ -43,28 +41,28 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder tmp;
 
             values.TryGetValue("Username", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 username = tmp.ToString();
             }
 
             values.TryGetValue("Password", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 password = tmp.ToString();
             }
             values.TryGetValue("Domain", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 domain = tmp.ToString();
             }
             values.TryGetValue("DirectoryPath", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 dir = tmp.ToString();
             }
 
-            if(string.IsNullOrEmpty(dir))
+            if (string.IsNullOrEmpty(dir))
             {
                 throw new InvalidDataContractException("Directory is required and not provided");
             }
@@ -79,17 +77,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             const int LOGON32_LOGON_INTERACTIVE = 2;
 // ReSharper restore InconsistentNaming
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             bool isDir = false;
             try
             {
-                if(username.Length > 0)
+                if (username.Length > 0)
                 {
                     domain = (domain.Length > 0 && domain != ".") ? domain : Environment.UserDomainName;
                     bool success = LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE,
-                                             LOGON32_PROVIDER_DEFAULT, ref accessToken);
-                    if(success)
+                        LOGON32_PROVIDER_DEFAULT, ref accessToken);
+                    if (success)
                     {
                         var identity = new WindowsIdentity(accessToken);
                         WindowsImpersonationContext context = identity.Impersonate();
@@ -97,12 +95,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                         FileAttributes attr = File.GetAttributes(dir);
 
                         //detect whether its a directory or file
-                        if((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                        if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                         {
                             isDir = true;
                         }
 
-                        if(isDir)
+                        if (isDir)
                         {
                             var directory = new DirectoryInfo(dir);
 
@@ -129,12 +127,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     FileAttributes attr = File.GetAttributes(dir);
 
                     //detect whether its a directory or file
-                    if((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                    if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
                     {
                         isDir = true;
                     }
 
-                    if(isDir)
+                    if (isDir)
                     {
                         var directory = new DirectoryInfo(dir);
                         result.Append("<JSON>");
@@ -149,7 +147,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
                 result.AppendFormat("Error: {0}", ex.Message);
@@ -160,18 +158,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService findDirectoryService = new DynamicService
-                {
-                    Name = HandlesType(),
-                    DataListSpecification = new StringBuilder("<DataList><Domain ColumnIODirection=\"Input\"/><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><DirectoryPath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-                };
+            var findDirectoryService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><Domain ColumnIODirection=\"Input\"/><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><DirectoryPath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
 
-            ServiceAction findDirectoryServiceAction = new ServiceAction
-                {
-                    Name = HandlesType(),
-                    ActionType = enActionType.InvokeManagementDynamicService,
-                    SourceMethod = HandlesType()
-                };
+            var findDirectoryServiceAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            };
 
             findDirectoryService.Actions.Add(findDirectoryServiceAction);
 
@@ -188,44 +188,43 @@ namespace Dev2.Runtime.ESB.Management.Services
         //We use the following to impersonate a user in the current execution environment
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword,
-                                             int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
+            int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
         /// <summary>
-        /// Gets the directory info as JSON.
+        ///     Gets the directory info as JSON.
         /// </summary>
         /// <param name="directory">The directory.</param>
         /// <returns></returns>
         private string GetDirectoryInfoAsJson(DirectoryInfo directory)
         {
-           
             int count = 0;
             string json = "[";
             try
             {
-                foreach(DirectoryInfo d in directory.GetDirectories())
+                foreach (DirectoryInfo d in directory.GetDirectories())
                 {
                     string name = Regex.Replace(d.Name, @"\\", @"\\");
                     json += @"{""title"":""" + name + @""", ""isFolder"": true, ""key"":""" +
                             name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
-                    if(count < (directory.GetDirectories().Length + directory.GetFiles().Length - 1))
+                    if (count < (directory.GetDirectories().Length + directory.GetFiles().Length - 1))
                     {
                         json += ',';
                     }
                     count++;
                 }
 
-                foreach(FileInfo f in directory.GetFiles())
+                foreach (FileInfo f in directory.GetFiles())
                 {
                     json += @"{""title"":""" + f.Name + @""", ""key"":""" +
                             f.Name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
-                    if(count < (directory.GetDirectories().Length + directory.GetFiles().Length - 1))
+                    if (count < (directory.GetDirectories().Length + directory.GetFiles().Length - 1))
                     {
                         json += ',';
                     }
                     count++;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
             }

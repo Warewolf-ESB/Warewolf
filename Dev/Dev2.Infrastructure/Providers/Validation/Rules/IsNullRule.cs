@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,7 +24,7 @@ namespace Dev2.Providers.Validation.Rules
 
         public override IActionableErrorInfo Check()
         {
-            var value = GetValue();
+            object value = GetValue();
             return value == null ? CreatError() : null;
         }
     }

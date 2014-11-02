@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,10 +24,12 @@ namespace Dev2.Runtime.Security
     public class HostSecurityProvider : IHostSecurityProvider
     {
         public static readonly Guid InternalServerID = new Guid("51A58300-7E9D-4927-A57B-E5D700B11B55");
-        public static readonly string InternalPublicKey = "BgIAAACkAABSU0ExAAQAAAEAAQBlsJw+ibEmPy3P93PV7a8QjuHqS4QR+yP/+6CVUUpqvUE3hguQUzZ4Fw28hz0LwMLK8Sc1qb0s0FFiH9Ju6O+fIXruGzC3CjzN8wZRGoV2IvfmJ/nMKQ/NVESx9virJA1xTIZa9Za3PQvGbPh1ce0me5YJd3VOHKUqqJCbVeE7pg==";
 
-        readonly RSACryptoServiceProvider _serverKey;
-        readonly RSACryptoServiceProvider _systemKey;
+        public static readonly string InternalPublicKey =
+            "BgIAAACkAABSU0ExAAQAAAEAAQBlsJw+ibEmPy3P93PV7a8QjuHqS4QR+yP/+6CVUUpqvUE3hguQUzZ4Fw28hz0LwMLK8Sc1qb0s0FFiH9Ju6O+fIXruGzC3CjzN8wZRGoV2IvfmJ/nMKQ/NVESx9virJA1xTIZa9Za3PQvGbPh1ce0me5YJd3VOHKUqqJCbVeE7pg==";
+
+        private readonly RSACryptoServiceProvider _serverKey;
+        private readonly RSACryptoServiceProvider _systemKey;
         public Guid ServerID { get; private set; }
 
         #region Singleton Instance
@@ -41,11 +42,11 @@ namespace Dev2.Runtime.Security
         // completes before the instance variable can be accessed. Lastly, this approach uses a syncRoot 
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
-        static volatile IHostSecurityProvider TheInstance;
-        static readonly object SyncRoot = new Object();
+        private static volatile IHostSecurityProvider TheInstance;
+        private static readonly object SyncRoot = new Object();
 
         /// <summary>
-        /// Gets the repository instance.
+        ///     Gets the repository instance.
         /// </summary>
         public static IHostSecurityProvider Instance
         {
@@ -71,7 +72,7 @@ namespace Dev2.Runtime.Security
         #region Ctor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HostSecurityProvider" /> class.
+        ///     Initializes a new instance of the <see cref="HostSecurityProvider" /> class.
         /// </summary>
         /// <param name="config">The config to be used.</param>
         protected HostSecurityProvider(ISecureConfig config)
@@ -97,13 +98,13 @@ namespace Dev2.Runtime.Security
                 throw new ArgumentNullException("xml");
             }
 
-            using(Stream s = xml.EncodeForXmlDocument())
+            using (Stream s = xml.EncodeForXmlDocument())
             {
                 var doc = new XmlDocument();
                 doc.Load(s);
 
                 // Validate server ID, this is a check which can be done quickly in order to skip loading the whole file for verification        
-                var serverID = GetServerID(doc);
+                Guid serverID = GetServerID(doc);
 
                 /*
                  * NOTE : 
@@ -126,7 +127,7 @@ namespace Dev2.Runtime.Security
 
                 // Find the "Signature" node and add it to the SignedXml object
                 var signedXml = new SignedXml(doc);
-                var nodeList = doc.GetElementsByTagName("Signature");
+                XmlNodeList nodeList = doc.GetElementsByTagName("Signature");
 
                 // allow unsigned resources with our internal server ID
                 if (nodeList.Count == 0 && serverID == InternalServerID)
@@ -137,8 +138,8 @@ namespace Dev2.Runtime.Security
                 signedXml.LoadXml((XmlElement) nodeList[0]);
 
 
-                var result = (serverID == ServerID && signedXml.CheckSignature(_serverKey)) ||
-                             (serverID != InternalServerID == signedXml.CheckSignature(_systemKey));
+                bool result = (serverID == ServerID && signedXml.CheckSignature(_serverKey)) ||
+                              (serverID != InternalServerID == signedXml.CheckSignature(_systemKey));
 
 
                 // Check if signed by the server or the system
@@ -152,7 +153,6 @@ namespace Dev2.Runtime.Security
 
         public StringBuilder SignXml(StringBuilder xml)
         {
-           
             if (xml == null || xml.Length == 0)
             {
                 throw new ArgumentNullException("xml");
@@ -161,10 +161,10 @@ namespace Dev2.Runtime.Security
             // remove the signature element here as it does not pick up correctly futher down ;(
             xml = RemoveSignature(xml);
 
-            using(Stream s = xml.EncodeForXmlDocument())
+            using (Stream s = xml.EncodeForXmlDocument())
             {
                 var doc = new XmlDocument();
-               
+
                 doc.Load(s);
 
                 SetServerID(doc);
@@ -187,7 +187,7 @@ namespace Dev2.Runtime.Security
 
                 // Get the XML representation of the signature and save
                 // it to an XmlElement object.
-                var xmlDigitalSignature = signedXml.GetXml();
+                XmlElement xmlDigitalSignature = signedXml.GetXml();
 
                 // Append the element to the XML document.
                 if (doc.DocumentElement != null)
@@ -195,8 +195,8 @@ namespace Dev2.Runtime.Security
                     doc.DocumentElement.AppendChild(doc.ImportNode(xmlDigitalSignature, true));
                 }
 
-                StringBuilder result = new StringBuilder();
-                using (StringWriter sw = new StringWriter(result))
+                var result = new StringBuilder();
+                using (var sw = new StringWriter(result))
                 {
                     doc.Save(sw);
                 }
@@ -211,30 +211,32 @@ namespace Dev2.Runtime.Security
         #endregion
 
         #region Remove Signature
-        StringBuilder RemoveSignature(StringBuilder sb)
+
+        private StringBuilder RemoveSignature(StringBuilder sb)
         {
             const string signatureStart = "<Signature xmlns";
             const string signatureEnd = "</Signature>";
 
-            var startIdx = sb.IndexOf(signatureStart, 0,false);
+            int startIdx = sb.IndexOf(signatureStart, 0, false);
             if (startIdx >= 0)
             {
-                var endIdx = sb.IndexOf(signatureEnd, startIdx,false);
+                int endIdx = sb.IndexOf(signatureEnd, startIdx, false);
 
                 if (endIdx >= 0)
                 {
-                    var len = (endIdx - startIdx) + signatureEnd.Length;
+                    int len = (endIdx - startIdx) + signatureEnd.Length;
                     return sb.Remove(startIdx, len);
                 }
             }
 
             return sb;
         }
+
         #endregion
 
         #region Get/Set ServerID
 
-        void SetServerID(XmlDocument doc)
+        private void SetServerID(XmlDocument doc)
         {
             if (doc.DocumentElement != null)
             {
@@ -242,11 +244,11 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        static Guid GetServerID(XmlDocument doc)
+        private static Guid GetServerID(XmlDocument doc)
         {
             if (doc.DocumentElement != null)
             {
-                var attr = doc.DocumentElement.Attributes["ServerID"];
+                XmlAttribute attr = doc.DocumentElement.Attributes["ServerID"];
                 if (attr != null)
                 {
                     if (!string.IsNullOrEmpty(attr.Value))
@@ -265,6 +267,7 @@ namespace Dev2.Runtime.Security
         #endregion
 
         #region EnsureSSL
+
         public bool EnsureSSL(string certPath, IPEndPoint endPoint)
         {
             bool result = false;
@@ -293,7 +296,7 @@ namespace Dev2.Runtime.Security
 
         public void EnsureAccessToPort(string url)
         {
-            var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
+            string args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
             try
             {
                 bool invoke = ProcessHost.Invoke(null, "netsh.exe", args);
@@ -306,8 +309,8 @@ namespace Dev2.Runtime.Security
             {
                 Dev2Logger.Log.Error(e);
             }
-            
         }
+
         #endregion
     }
 }

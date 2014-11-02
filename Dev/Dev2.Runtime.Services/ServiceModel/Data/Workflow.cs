@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -23,22 +23,22 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public Workflow()
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService;
+            ResourceType = ResourceType.WorkflowService;
             DataList = new XElement("DataList");
         }
 
         public Workflow(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService;
+            ResourceType = ResourceType.WorkflowService;
             DataList = xml.Element("DataList") ?? new XElement("DataList");
             Comment = xml.ElementSafe("Comment");
             IconPath = xml.ElementSafe("IconPath");
             Tags = xml.ElementSafe("Tags");
             HelpLink = xml.ElementSafe("HelpLink");
 
-            var action = xml.Descendants("Action").FirstOrDefault();
-            if(action == null)
+            XElement action = xml.Descendants("Action").FirstOrDefault();
+            if (action == null)
             {
                 return;
             }
@@ -60,9 +60,9 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public override XElement ToXml()
         {
-            var result = base.ToXml();
-            var serviceDefinition = XamlDefinition.ToXElement();
-            
+            XElement result = base.ToXml();
+            XElement serviceDefinition = XamlDefinition.ToXElement();
+
             result.AddFirst(new XElement("Action",
                 new XAttribute("Name", "InvokeWorkflow"),
                 new XAttribute("Type", "Workflow"),
@@ -77,6 +77,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
     }
 }

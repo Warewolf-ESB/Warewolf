@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,29 +19,33 @@ using System.Collections;
 namespace System.Windows.Controls
 {
     /// <summary>
-    /// Provides data for the
-    /// <see cref="E:System.Windows.Controls.AutoCompleteBox.Populated" />
-    /// event.
+    ///     Provides data for the
+    ///     <see cref="E:System.Windows.Controls.AutoCompleteBox.Populated" />
+    ///     event.
     /// </summary>
     /// <QualityBand>Stable</QualityBand>
     public class PopulatedEventArgs : RoutedEventArgs
     {
         /// <summary>
-        /// Gets the list of possible matches added to the drop-down portion of
-        /// the <see cref="T:System.Windows.Controls.AutoCompleteBox" />
-        /// control.
+        ///     Gets the list of possible matches added to the drop-down portion of
+        ///     the <see cref="T:System.Windows.Controls.AutoCompleteBox" />
+        ///     control.
         /// </summary>
-        /// <value>The list of possible matches added to the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" />.</value>
+        /// <value>
+        ///     The list of possible matches added to the
+        ///     <see cref="T:System.Windows.Controls.AutoCompleteBox" />.
+        /// </value>
         public IEnumerable Data { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="T:System.Windows.Controls.PopulatedEventArgs" />.
+        ///     Initializes a new instance of the
+        ///     <see cref="T:System.Windows.Controls.PopulatedEventArgs" />.
         /// </summary>
-        /// <param name="data">The list of possible matches added to the
-        /// drop-down portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.</param>
+        /// <param name="data">
+        ///     The list of possible matches added to the
+        ///     drop-down portion of the
+        ///     <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
+        /// </param>
         public PopulatedEventArgs(IEnumerable data)
         {
             Data = data;
@@ -50,12 +53,14 @@ namespace System.Windows.Controls
 
 #if !SILVERLIGHT
         /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="T:System.Windows.Controls.PopulatedEventArgs" />.
+        ///     Initializes a new instance of the
+        ///     <see cref="T:System.Windows.Controls.PopulatedEventArgs" />.
         /// </summary>
-        /// <param name="data">The list of possible matches added to the
-        /// drop-down portion of the
-        /// <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.</param>
+        /// <param name="data">
+        ///     The list of possible matches added to the
+        ///     drop-down portion of the
+        ///     <see cref="T:System.Windows.Controls.AutoCompleteBox" /> control.
+        /// </param>
         /// <param name="routedEvent">The routed event identifier for this instance.</param>
         public PopulatedEventArgs(IEnumerable data, RoutedEvent routedEvent)
             : base(routedEvent)

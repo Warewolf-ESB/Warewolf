@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -42,7 +41,7 @@ namespace Dev2.Runtime.WebServer
 
             GlobalHost.Configuration.DefaultMessageBufferSize = 2000;
             var startOptions = new StartOptions();
-            foreach(var endpoint in endpoints)
+            foreach (Dev2Endpoint endpoint in endpoints)
             {
                 startOptions.Urls.Add(endpoint.Url);
             }
@@ -51,9 +50,9 @@ namespace Dev2.Runtime.WebServer
 
         public void Configuration(IAppBuilder app)
         {
-            var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
-            listener.AuthenticationSchemes = AuthenticationSchemes.Ntlm;  // Enable NTLM auth
-            listener.IgnoreWriteExceptions = true;  // ignore errors written to disconnected clients.
+            var listener = (HttpListener) app.Properties[typeof (HttpListener).FullName];
+            listener.AuthenticationSchemes = AuthenticationSchemes.Ntlm; // Enable NTLM auth
+            listener.IgnoreWriteExceptions = true; // ignore errors written to disconnected clients.
 
             // Enable cross-domain calls
             app.UseCors(CorsOptions.AllowAll);
@@ -64,7 +63,7 @@ namespace Dev2.Runtime.WebServer
             //
 
             // Add SignalR routing...
-            var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true, EnableJSONP = true };
+            var hubConfiguration = new HubConfiguration {EnableDetailedErrors = true, EnableJSONP = true};
             app.MapSignalR("/dsf", hubConfiguration);
 
             // Add web server routing...
@@ -73,6 +72,5 @@ namespace Dev2.Runtime.WebServer
             config.EnsureInitialized();
             app.UseWebApi(config);
         }
-
     }
 }

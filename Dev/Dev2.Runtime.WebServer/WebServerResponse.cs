@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,15 +20,16 @@ namespace Dev2.Runtime.WebServer
         {
             VerifyArgument.IsNotNull("response", response);
             IEnumerable<string> origins;
-            if (response.RequestMessage != null && response.RequestMessage.Headers != null && response.RequestMessage.Headers.TryGetValues("Origin", out origins))
+            if (response.RequestMessage != null && response.RequestMessage.Headers != null &&
+                response.RequestMessage.Headers.TryGetValues("Origin", out origins))
             {
-                var origin = origins.FirstOrDefault();
+                string origin = origins.FirstOrDefault();
                 if (!string.IsNullOrEmpty(origin))
                 {
                     response.Headers.Add("Access-Control-Allow-Origin", origin);
                 }
             }
-            response.Headers.Add("Access-Control-Allow-Credentials","true");
+            response.Headers.Add("Access-Control-Allow-Credentials", "true");
             Response = response;
         }
 

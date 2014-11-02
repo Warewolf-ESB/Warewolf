@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,7 +22,7 @@ namespace Dev2.Runtime.WebServer.Hubs
     {
         public void SendMemo(Memo memo)
         {
-            var serializedMemo = JsonConvert.SerializeObject(memo);
+            string serializedMemo = JsonConvert.SerializeObject(memo);
             Server.SendMemo(serializedMemo, Context.ConnectionId);
         }
     }

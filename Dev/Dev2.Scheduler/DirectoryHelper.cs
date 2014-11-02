@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -26,7 +25,7 @@ namespace Dev2.Scheduler
 
         public string CreateIfNotExists(string debugOutputPath)
         {
-            if(!Directory.Exists(debugOutputPath))
+            if (!Directory.Exists(debugOutputPath))
             {
                 return Directory.CreateDirectory(debugOutputPath).Name;
             }

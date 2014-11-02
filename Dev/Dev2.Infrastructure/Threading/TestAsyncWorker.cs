@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -29,9 +28,9 @@ namespace Dev2.Threading
         }
 
         /// <summary>
-        /// Starts the specified background action and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
-        /// calls an error handler should an exception occur
+        ///     Starts the specified background action and continues with the UI action
+        ///     on the thread this was invoked from (typically the UI thread).
+        ///     calls an error handler should an exception occur
         /// </summary>
         /// <param name="backgroundAction">The background action.</param>
         /// <param name="uiAction">The UI action.</param>
@@ -42,8 +41,8 @@ namespace Dev2.Threading
         }
 
         /// <summary>
-        /// Starts the specified background action and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
+        ///     Starts the specified background action and continues with the UI action
+        ///     on the thread this was invoked from (typically the UI thread).
         /// </summary>
         /// <param name="backgroundAction">The background action.</param>
         /// <returns></returns>
@@ -58,7 +57,7 @@ namespace Dev2.Threading
         {
             var task = new Task(() =>
             {
-                var result = backgroundFunc.Invoke();
+                TBackgroundResult result = backgroundFunc.Invoke();
                 uiAction.Invoke(result);
             });
             task.RunSynchronously();

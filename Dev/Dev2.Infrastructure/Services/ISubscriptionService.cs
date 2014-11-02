@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,7 +14,7 @@ using System;
 namespace Dev2.Services
 {
     public interface ISubscriptionService<out TEvent> : IDisposable
-         where TEvent : class, new()
+        where TEvent : class, new()
     {
         int Count { get; }
 

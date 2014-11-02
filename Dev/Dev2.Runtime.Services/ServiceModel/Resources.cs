@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,6 +18,7 @@ using System.Xml.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Data.Binary_Objects;
+using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.Collections;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -35,16 +35,16 @@ namespace Dev2.Runtime.ServiceModel
 
         public static volatile Dictionary<ResourceType, string> RootFolders = new Dictionary<ResourceType, string>
         {
-            { ResourceType.Unknown, "Resources" },
-            { ResourceType.Server, "Resources" },
-            { ResourceType.DbService, "Resources" },
-            { ResourceType.DbSource, "Resources" },
-            { ResourceType.PluginService, "Resources" },
-            { ResourceType.PluginSource, "Resources" },
-            { ResourceType.EmailSource, "Resources" },
-            { ResourceType.WebSource, "Resources" },
-            { ResourceType.WebService, "Resources" },
-            { ResourceType.WorkflowService, "Resources" },
+            {ResourceType.Unknown, "Resources"},
+            {ResourceType.Server, "Resources"},
+            {ResourceType.DbService, "Resources"},
+            {ResourceType.DbSource, "Resources"},
+            {ResourceType.PluginService, "Resources"},
+            {ResourceType.PluginSource, "Resources"},
+            {ResourceType.EmailSource, "Resources"},
+            {ResourceType.WebSource, "Resources"},
+            {ResourceType.WebService, "Resources"},
+            {ResourceType.WorkflowService, "Resources"},
         };
 
         #endregion
@@ -61,20 +61,21 @@ namespace Dev2.Runtime.ServiceModel
                 string resourceTypeStr = argsObj.resourceType.Value;
                 result = Read(workspaceId, ParseResourceType(resourceTypeStr));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
             return result;
         }
+
         // POST: Service/Resources/Services
         public ResourceList Services(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new ResourceList();
             try
             {
-                var resourceType = ParseResourceType(args);
-                if(resourceType == ResourceType.WorkflowService)
+                ResourceType resourceType = ParseResourceType(args);
+                if (resourceType == ResourceType.WorkflowService)
                 {
                     result = Read(workspaceId, resourceType);
                 }
@@ -83,7 +84,7 @@ namespace Dev2.Runtime.ServiceModel
                     throw new ArgumentException("Resource Type passed not WorkflowService");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
             }
@@ -99,24 +100,34 @@ namespace Dev2.Runtime.ServiceModel
         {
             args = args.Replace("\\\\", "\\");
             args = args.Replace("root", "");
-            var explorerItem = ServerExplorerRepository.Instance.Load(workspaceId);
-            var folders = explorerItem.Descendants().Where(item => item.ResourceType == ResourceType.Folder
-                                        && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
-                                            .Select(item => item.DisplayName);
+            IExplorerItem explorerItem = ServerExplorerRepository.Instance.Load(workspaceId);
+            IEnumerable<string> folders = explorerItem.Descendants()
+                .Where(item => item.ResourceType == ResourceType.Folder
+                               &&
+                               (args == ""
+                                   ? item.ResourcePath == item.DisplayName
+                                   : GetResourceParent(item.ResourcePath) == args))
+                .Select(item => item.DisplayName);
             var paths = new SortedSet<string>(folders);
-            var resources = explorerItem.Descendants().Where(item => (item.ResourceType > ResourceType.Unknown && item.ResourceType < ResourceType.ServerSource)
-                                        && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
-                                            .Select(item => item.DisplayName);
+            IEnumerable<string> resources = explorerItem.Descendants()
+                .Where(
+                    item => (item.ResourceType > ResourceType.Unknown && item.ResourceType < ResourceType.ServerSource)
+                            &&
+                            (args == ""
+                                ? item.ResourcePath == item.DisplayName
+                                : GetResourceParent(item.ResourcePath) == args))
+                .Select(item => item.DisplayName);
             var names = new SortedSet<string>(resources);
-            var pathsAndNames = JsonConvert.SerializeObject(new PathsAndNamesTO { Names = names, Paths = paths });
+            string pathsAndNames = JsonConvert.SerializeObject(new PathsAndNamesTO {Names = names, Paths = paths});
             return pathsAndNames;
         }
 
 
-
-        string GetResourceParent(string resourcePath)
+        private string GetResourceParent(string resourcePath)
         {
-            return resourcePath.Contains("\\") ? resourcePath.Substring(0, resourcePath.LastIndexOf("\\", StringComparison.Ordinal)) : resourcePath;
+            return resourcePath.Contains("\\")
+                ? resourcePath.Substring(0, resourcePath.LastIndexOf("\\", StringComparison.Ordinal))
+                : resourcePath;
         }
 
         //2013.08.26: Ashley Lewis for bug 10208 - Workflows are stored in the same folder but are distinct to the save dialog
@@ -133,7 +144,7 @@ namespace Dev2.Runtime.ServiceModel
             ResourceIterator.Instance.IterateAll(workspaceId, iteratorResult =>
             {
                 string value;
-                if(iteratorResult.Values.TryGetValue(1, out value))
+                if (iteratorResult.Values.TryGetValue(1, out value))
                 {
                     result.Add(value);
                 }
@@ -150,21 +161,23 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        /////////////////////////////////////////////////////////////////
-        // Static Helper methods
-        /////////////////////////////////////////////////////////////////
-
         #region Read
 
         public static ResourceList Read(Guid workspaceId, ResourceType resourceType)
         {
             var resources = new ResourceList();
-            var explorerItem = ServerExplorerRepository.Instance.Load(resourceType, workspaceId);
+            IExplorerItem explorerItem = ServerExplorerRepository.Instance.Load(resourceType, workspaceId);
             explorerItem.Descendants().ForEach(item =>
             {
-                if(item.ResourceType == resourceType)
+                if (item.ResourceType == resourceType)
                 {
-                    resources.Add(new Resource { ResourceID = item.ResourceId, ResourceType = resourceType, ResourceName = item.DisplayName, ResourcePath = item.ResourcePath });
+                    resources.Add(new Resource
+                    {
+                        ResourceID = item.ResourceId,
+                        ResourceType = resourceType,
+                        ResourceName = item.DisplayName,
+                        ResourcePath = item.ResourcePath
+                    });
                 }
             });
             return resources;
@@ -181,20 +194,21 @@ namespace Dev2.Runtime.ServiceModel
 
         public static string ReadXml(Guid workspaceId, string directoryName, string resourceId)
         {
-            var result = String.Empty;
+            string result = String.Empty;
             Guid id;
-            var delimiterStart = Guid.TryParse(resourceId, out id) ? " ID=\"" : " Name=\"";
+            string delimiterStart = Guid.TryParse(resourceId, out id) ? " ID=\"" : " Name=\"";
 
             ResourceIterator.Instance.Iterate(directoryName, workspaceId, iteratorResult =>
             {
                 string value;
-                if(iteratorResult.Values.TryGetValue(1, out value) && resourceId.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                if (iteratorResult.Values.TryGetValue(1, out value) &&
+                    resourceId.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = iteratorResult.Content;
                     return false;
                 }
                 return true;
-            }, new ResourceDelimiter { ID = 1, Start = delimiterStart, End = "\"" });
+            }, new ResourceDelimiter {ID = 1, Start = delimiterStart, End = "\""});
             return result;
         }
 
@@ -209,7 +223,7 @@ namespace Dev2.Runtime.ServiceModel
         internal static ResourceType ParseResourceType(string resourceTypeStr)
         {
             ResourceType resourceType;
-            if(!Enum.TryParse(resourceTypeStr, out resourceType))
+            if (!Enum.TryParse(resourceTypeStr, out resourceType))
             {
                 resourceType = ResourceType.Unknown;
             }
@@ -218,40 +232,43 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
+        /////////////////////////////////////////////////////////////////
+        // Static Helper methods
+        /////////////////////////////////////////////////////////////////
+
         public string DataListInputVariables(string resourceId, Guid workspaceId, Guid dataListId)
         {
             Guid rsId;
-            if(!Guid.TryParse(resourceId, out rsId))
+            if (!Guid.TryParse(resourceId, out rsId))
             {
                 RaiseError(new ArgumentException("Invalid ResouceID."));
                 return "";
             }
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, rsId);
-            if(resource == null)
+            IResource resource = ResourceCatalog.Instance.GetResource(workspaceId, rsId);
+            if (resource == null)
             {
                 RaiseError(new ArgumentException("Workflow not found."));
                 return "";
             }
-            var services = ResourceCatalog.Instance.GetDynamicObjects(resource);
+            List<DynamicServiceObjectBase> services = ResourceCatalog.Instance.GetDynamicObjects(resource);
 
-            var tmp = services.FirstOrDefault();
+            DynamicServiceObjectBase tmp = services.FirstOrDefault();
             var result = new StringBuilder("<DataList></DataList>");
 
-            if(tmp != null)
+            if (tmp != null)
             {
                 result = tmp.DataListSpecification;
             }
 
-            using(var sr = new StringReader(result.ToString()))
+            using (var sr = new StringReader(result.ToString()))
             {
-
-                var dataListSpec = XElement.Load(sr);
-                if(dataListSpec.HasElements)
+                XElement dataListSpec = XElement.Load(sr);
+                if (dataListSpec.HasElements)
                 {
                     var validElements = new List<DataListVariable>();
-                    var xElements = dataListSpec.Elements();
+                    IEnumerable<XElement> xElements = dataListSpec.Elements();
                     xElements.ForEach(element => GetInputElements(element, validElements));
-                    var dataListInputVariables = JsonConvert.SerializeObject(validElements);
+                    string dataListInputVariables = JsonConvert.SerializeObject(validElements);
                     return dataListInputVariables;
                 }
 
@@ -259,26 +276,27 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        static void GetInputElements(XElement element, List<DataListVariable> validElements)
+        private static void GetInputElements(XElement element, List<DataListVariable> validElements)
         {
-            if(IsInputElement(element) && !element.HasElements)
+            if (IsInputElement(element) && !element.HasElements)
             {
-                validElements.Add(new DataListVariable { Name = element.Name.LocalName });
+                validElements.Add(new DataListVariable {Name = element.Name.LocalName});
             }
         }
 
-        static bool IsInputElement(XElement element)
+        private static bool IsInputElement(XElement element)
         {
-            if(element.HasAttributes)
+            if (element.HasAttributes)
             {
                 XAttribute xAttribute = element.Attribute("ColumnIODirection");
-                if(xAttribute != null)
+                if (xAttribute != null)
                 {
-                    var value = xAttribute.Value;
+                    string value = xAttribute.Value;
                     enDev2ColumnArgumentDirection columnIoDirection;
-                    if(Enum.TryParse(value, true, out columnIoDirection))
+                    if (Enum.TryParse(value, true, out columnIoDirection))
                     {
-                        return columnIoDirection == enDev2ColumnArgumentDirection.Input || columnIoDirection == enDev2ColumnArgumentDirection.Both;
+                        return columnIoDirection == enDev2ColumnArgumentDirection.Input ||
+                               columnIoDirection == enDev2ColumnArgumentDirection.Both;
                     }
                 }
             }
@@ -303,14 +321,14 @@ namespace Dev2.Runtime.ServiceModel
     {
         public static IEnumerable<IExplorerItem> Descendants(this IExplorerItem root)
         {
-            var nodes = new Stack<IExplorerItem>(new[] { root });
-            while(nodes.Any())
+            var nodes = new Stack<IExplorerItem>(new[] {root});
+            while (nodes.Any())
             {
                 IExplorerItem node = nodes.Pop();
                 yield return node;
-                if(node.Children != null)
+                if (node.Children != null)
                 {
-                    foreach(var n in node.Children) nodes.Push(n);
+                    foreach (IExplorerItem n in node.Children) nodes.Push(n);
                 }
             }
         }

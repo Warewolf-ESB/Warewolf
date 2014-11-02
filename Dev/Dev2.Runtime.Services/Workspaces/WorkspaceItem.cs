@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,6 +15,7 @@ using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 
 // ReSharper disable CheckNamespace
+
 namespace Dev2.Workspaces
 {
     [Serializable]
@@ -28,7 +28,7 @@ namespace Dev2.Workspaces
 
         #region Initialization
 
-        public WorkspaceItem(Guid workspaceId, Guid serverId,Guid environmentId,Guid resourceId)
+        public WorkspaceItem(Guid workspaceId, Guid serverId, Guid environmentId, Guid resourceId)
         {
             ID = resourceId;
             WorkspaceID = workspaceId;
@@ -43,79 +43,55 @@ namespace Dev2.Workspaces
         #region ID
 
         /// <summary>
-        /// The unique ID of the item.
+        ///     The unique ID of the item.
         /// </summary>
-        public Guid ID
-        {
-            get;
-            private set;
-        }
+        public Guid ID { get; private set; }
 
         #endregion
 
         #region WorkspaceID
 
         /// <summary>
-        /// Gets or sets the workspace ID.
+        ///     Gets or sets the workspace ID.
         /// </summary>
-        public Guid WorkspaceID
-        {
-            get;
-            private set;
-        }
+        public Guid WorkspaceID { get; private set; }
 
         #endregion
 
         #region ServerID
 
         /// <summary>
-        /// Gets or sets the server ID.
+        ///     Gets or sets the server ID.
         /// </summary>
-        public Guid ServerID
-        {
-            get;
-            private set;
-        }
+        public Guid ServerID { get; private set; }
 
         #endregion
 
         #region Action
 
         /// <summary>
-        /// Gets or sets the action to be taken on the item.
+        ///     Gets or sets the action to be taken on the item.
         /// </summary>
-        public WorkspaceItemAction Action
-        {
-            get;
-            set;
-        }
+        public WorkspaceItemAction Action { get; set; }
 
         #endregion
 
         #region ServiceName
 
         /// <summary>
-        /// Gets or sets the name of the service.
+        ///     Gets or sets the name of the service.
         /// </summary>
-        public string ServiceName
-        {
-            get;
-            set;
-        }
+        public string ServiceName { get; set; }
 
         #endregion
 
         #region ServiceType
 
         /// <summary>
-        /// Gets or sets the type of the service.
-        /// <remarks>Must map to a <see cref="enDynamicServiceObjectType"/> value</remarks>
+        ///     Gets or sets the type of the service.
+        ///     <remarks>Must map to a <see cref="enDynamicServiceObjectType" /> value</remarks>
         /// </summary>
-        public string ServiceType
-        {
-            get;
-            set;
-        }
+        public string ServiceType { get; set; }
 
         #endregion
 
@@ -127,12 +103,12 @@ namespace Dev2.Workspaces
             {
                 throw new ArgumentNullException("info");
             }
-            ID = (Guid)info.GetValue("ID", typeof(Guid));
-            WorkspaceID = (Guid)info.GetValue("WorkspaceID", typeof(Guid));
-            ServerID = (Guid)info.GetValue("ServerID", typeof(Guid));
-            Action = (WorkspaceItemAction)info.GetValue("Action", typeof(WorkspaceItemAction));
-            ServiceName = (string)info.GetValue("ServiceName", typeof(string));
-            IsWorkflowSaved = (bool)info.GetValue("IsWorkflowSaved", typeof(bool));
+            ID = (Guid) info.GetValue("ID", typeof (Guid));
+            WorkspaceID = (Guid) info.GetValue("WorkspaceID", typeof (Guid));
+            ServerID = (Guid) info.GetValue("ServerID", typeof (Guid));
+            Action = (WorkspaceItemAction) info.GetValue("Action", typeof (WorkspaceItemAction));
+            ServiceName = (string) info.GetValue("ServiceName", typeof (string));
+            IsWorkflowSaved = (bool) info.GetValue("IsWorkflowSaved", typeof (bool));
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -143,7 +119,7 @@ namespace Dev2.Workspaces
             }
             info.AddValue("ID", ID);
             info.AddValue("WorkspaceID", WorkspaceID);
-            info.AddValue("ServerID", ServerID); 
+            info.AddValue("ServerID", ServerID);
             info.AddValue("Action", Action);
             info.AddValue("ServiceName", ServiceName);
             info.AddValue("IsWorkflowSaved", IsWorkflowSaved);
@@ -151,11 +127,7 @@ namespace Dev2.Workspaces
 
         #endregion
 
-        public bool IsWorkflowSaved
-        {
-            get;
-            set;
-        }
+        public bool IsWorkflowSaved { get; set; }
 
         #region IEquatable       
 
@@ -205,11 +177,11 @@ namespace Dev2.Workspaces
             if (Guid.TryParse(GetAttributeValue(xml, "EnvironmentID"), out envId))
             {
                 EnvironmentID = envId;
-            } 
+            }
             ServiceName = GetAttributeValue(xml, "ServiceName");
             bool isWorkflowSaved;
             string attributeValue = GetAttributeValue(xml, "IsWorkflowSaved");
-            if(String.IsNullOrEmpty(attributeValue))
+            if (String.IsNullOrEmpty(attributeValue))
             {
                 isWorkflowSaved = true;
             }
@@ -221,11 +193,13 @@ namespace Dev2.Workspaces
             ServiceType = GetAttributeValue(xml, "ServiceType");
 
             WorkspaceItemAction action;
-            Action = Enum.TryParse(GetAttributeValue(xml, "Action"), true, out action) ? action : WorkspaceItemAction.None;
+            Action = Enum.TryParse(GetAttributeValue(xml, "Action"), true, out action)
+                ? action
+                : WorkspaceItemAction.None;
         }
 
         /// <summary>
-        /// Gets the XML representation of this instance.
+        ///     Gets the XML representation of this instance.
         /// </summary>
         public virtual XElement ToXml()
         {
@@ -242,9 +216,9 @@ namespace Dev2.Workspaces
             return result;
         }
 
-        static string GetAttributeValue(XElement x, string name)
+        private static string GetAttributeValue(XElement x, string name)
         {
-            var attr = x.Attribute(name);
+            XAttribute attr = x.Attribute(name);
             return attr == null ? string.Empty : attr.Value;
         }
 

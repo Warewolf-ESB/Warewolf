@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,6 +17,7 @@ using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.ViewModels;
 using Dev2.Runtime.Configuration.Views;
+using Action = System.Action;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
@@ -30,9 +30,9 @@ namespace Dev2.Runtime.Configuration.Settings
     {
         #region Fields
 
+        private BackupSettings _backup;
         private LoggingSettings _logging;
         private SecuritySettings _security;
-        private BackupSettings _backup;
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public Configuration(XElement xml)
         {
-            if(xml == null)
+            if (xml == null)
             {
                 throw new ArgumentNullException("xml");
             }
@@ -68,8 +68,8 @@ namespace Dev2.Runtime.Configuration.Settings
             get
             {
                 return (Logging != null && Logging.HasChanges) ||
-                     (Security != null && Security.HasChanges) ||
-                      (Backup != null && Backup.HasChanges);
+                       (Security != null && Security.HasChanges) ||
+                       (Backup != null && Backup.HasChanges);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Dev2.Runtime.Configuration.Settings
             }
         }
 
-        [SettingsObject(typeof(LoggingView), typeof(LoggingViewModel))]
+        [SettingsObject(typeof (LoggingView), typeof (LoggingViewModel))]
         public LoggingSettings Logging
         {
             get { return _logging; }
@@ -117,6 +117,7 @@ namespace Dev2.Runtime.Configuration.Settings
         #endregion
 
         #region Methods
+
         public XElement ToXml()
         {
             var result = new XElement("Settings",
@@ -140,7 +141,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public void Init(XElement xml)
         {
-            if(xml == null)
+            if (xml == null)
             {
                 Version = new Version(1, 0);
                 Logging = new LoggingSettings(WebServerUri);
@@ -169,13 +170,13 @@ namespace Dev2.Runtime.Configuration.Settings
 
         private void SettingChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == "HasError" || e.PropertyName == "Error")
+            if (e.PropertyName == "HasError" || e.PropertyName == "Error")
             {
                 NotifyOfPropertyChange(() => HasError);
                 return;
             }
 
-            if(e.PropertyName == "HasChanges")
+            if (e.PropertyName == "HasChanges")
             {
                 NotifyOfPropertyChange(() => HasChanges);
             }
@@ -185,13 +186,14 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region Static Methods
 
-        public static UserControl EntryPoint(XElement configurationXML, Func<XElement, XElement> saveCallback, System.Action cancelCallback, System.Action settingChangedCallback)
+        public static UserControl EntryPoint(XElement configurationXML, Func<XElement, XElement> saveCallback,
+            Action cancelCallback, Action settingChangedCallback)
         {
-            MainView settingsView = new MainView();
-            MainViewModel mainViewModel = new MainViewModel(configurationXML, saveCallback, cancelCallback, settingChangedCallback);
+            var settingsView = new MainView();
+            var mainViewModel = new MainViewModel(configurationXML, saveCallback, cancelCallback, settingChangedCallback);
             settingsView.DataContext = mainViewModel;
 
-            if(mainViewModel.SettingsObjects != null && mainViewModel.SettingsObjects.Count > 0)
+            if (mainViewModel.SettingsObjects != null && mainViewModel.SettingsObjects.Count > 0)
             {
                 mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];
             }

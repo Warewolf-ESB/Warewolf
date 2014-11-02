@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,8 +16,7 @@ namespace Dev2.Providers.Errors
 {
     public class ActionableErrorInfo : ErrorInfo, IActionableErrorInfo
     {
-        [NonSerialized]
-        readonly Action _do;
+        [NonSerialized] private readonly Action _do;
 
         public ActionableErrorInfo()
         {
@@ -42,7 +40,7 @@ namespace Dev2.Providers.Errors
 
         public void Do()
         {
-            if(_do != null)
+            if (_do != null)
             {
                 _do();
             }

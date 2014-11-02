@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,6 +15,7 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -27,16 +27,16 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public DbSource()
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.DbSource;
+            ResourceType = ResourceType.DbSource;
         }
 
         public DbSource(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.DbSource;
+            ResourceType = ResourceType.DbSource;
 
             // Setup type include default port
-            switch(xml.AttributeSafe("ServerType"))
+            switch (xml.AttributeSafe("ServerType"))
             {
                 case "SqlDatabase":
                     ServerType = enSourceType.SqlDatabase;
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region Properties
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof (StringEnumConverter))]
         public enSourceType ServerType { get; set; }
 
         public string Server { get; set; }
@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public int Port { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof (StringEnumConverter))]
         public AuthenticationType AuthenticationType { get; set; }
 
 // ReSharper disable InconsistentNaming
@@ -79,13 +79,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             get
             {
-                var stringBuilder = base.DataList;
+                StringBuilder stringBuilder = base.DataList;
                 return stringBuilder != null ? stringBuilder.ToString() : null;
             }
-            set
-            {
-                base.DataList = value.ToStringBuilder();
-            }
+            set { base.DataList = value.ToStringBuilder(); }
         }
 
         #endregion
@@ -99,7 +96,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             //
             get
             {
-                switch(ServerType)
+                switch (ServerType)
                 {
                     case enSourceType.SqlDatabase:
                         return string.Format("Data Source={0}{2};Initial Catalog={1};{3}", Server, DatabaseName,
@@ -118,32 +115,32 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             set
             {
-                if(string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     return;
                 }
 
                 AuthenticationType = AuthenticationType.Windows;
 
-                foreach(var prm in value.Split(';').Select(p => p.Split('=')))
+                foreach (var prm in value.Split(';').Select(p => p.Split('=')))
                 {
                     int port;
-                    switch(prm[0].ToLowerInvariant())
+                    switch (prm[0].ToLowerInvariant())
                     {
                         case "server":
                         case "data source":
-                            var arr = prm[1].Split(','); // may include port number after comma
+                            string[] arr = prm[1].Split(','); // may include port number after comma
                             Server = arr[0];
-                            if(arr.Length > 1)
+                            if (arr.Length > 1)
                             {
-                                if(Int32.TryParse(arr[1], out port))
+                                if (Int32.TryParse(arr[1], out port))
                                 {
                                     Port = port;
                                 }
                             }
                             break;
                         case "port":
-                            if(Int32.TryParse(prm[1], out port))
+                            if (Int32.TryParse(prm[1], out port))
                             {
                                 Port = port;
                             }
@@ -175,7 +172,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public override XElement ToXml()
         {
-            var result = base.ToXml();
+            XElement result = base.ToXml();
             result.Add(new XAttribute("ServerType", ServerType));
             result.Add(new XAttribute("Type", ServerType));
             result.Add(new XAttribute("ConnectionString", ConnectionString ?? string.Empty));

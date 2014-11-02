@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,12 +23,12 @@ namespace Dev2.Runtime.Configuration.Services
 
         public WebCommunicationService()
         {
-            _webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
+            _webClient = new WebClient {Credentials = CredentialCache.DefaultCredentials};
         }
 
         public IEnumerable<WorkflowDescriptor> GetResources(string uri)
         {
-            var workflowsJSON = _webClient.UploadString(uri, "WorkflowService");
+            string workflowsJSON = _webClient.UploadString(uri, "WorkflowService");
             var workFlowlist = JsonConvert.DeserializeObject<IEnumerable<WorkflowDescriptor>>(workflowsJSON);
 
             return workFlowlist.ToList();
@@ -37,7 +36,7 @@ namespace Dev2.Runtime.Configuration.Services
 
         public IEnumerable<DataListVariable> GetDataListInputs(string uri, string resourceID)
         {
-            var datalistJSON = _webClient.UploadString(uri, resourceID);
+            string datalistJSON = _webClient.UploadString(uri, resourceID);
             return JsonConvert.DeserializeObject<IEnumerable<DataListVariable>>(datalistJSON);
         }
     }

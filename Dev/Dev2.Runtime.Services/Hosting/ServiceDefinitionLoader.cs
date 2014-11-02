@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -23,21 +22,22 @@ using Dev2.DynamicServices.Objects.Base;
 
 namespace Dev2.Runtime.Hosting
 {
+
     #region Service MetaData
 
     public class ServiceMetaData
     {
         /// <summary>
-        /// Extracts the meta data.
+        ///     Extracts the meta data.
         /// </summary>
         /// <param name="xe">The executable.</param>
         /// <param name="obj">The object.</param>
         /// <returns></returns>
         public static ServiceMetaData ExtractMetaData(XElement xe, ref DynamicServiceObjectBase obj)
         {
-            ServiceMetaData result = new ServiceMetaData();
+            var result = new ServiceMetaData();
 
-            var tmp = ExtractValue(xe, "Category");
+            string tmp = ExtractValue(xe, "Category");
             obj.Category = tmp;
 
             tmp = ExtractValue(xe, "DisplayName");
@@ -61,19 +61,19 @@ namespace Dev2.Runtime.Hosting
         }
 
         /// <summary>
-        /// Extracts the value.
+        ///     Extracts the value.
         /// </summary>
         /// <param name="xe">The executable.</param>
         /// <param name="elementName">Name of the element.</param>
         /// <param name="useElementSafe">if set to <c>true</c> [use element safe].</param>
         /// <returns></returns>
-        public static string ExtractValue(XElement xe, string elementName,bool useElementSafe = false)
+        public static string ExtractValue(XElement xe, string elementName, bool useElementSafe = false)
         {
-            var tmp = xe.Element(elementName);
+            XElement tmp = xe.Element(elementName);
 
-            if(tmp != null)
+            if (tmp != null)
             {
-                var extractValue = tmp.Value;
+                string extractValue = tmp.Value;
                 if (useElementSafe)
                 {
                     extractValue = xe.ElementStringSafe(elementName);
@@ -87,11 +87,11 @@ namespace Dev2.Runtime.Hosting
 
         public static Guid SetID(ref XElement xe)
         {
-            Guid id = new Guid();
+            var id = new Guid();
 
-            var tmpId = xe.AttributeSafe("ID");
+            string tmpId = xe.AttributeSafe("ID");
 
-            if(!string.IsNullOrEmpty(tmpId))
+            if (!string.IsNullOrEmpty(tmpId))
             {
                 Guid.TryParse(tmpId, out id);
             }
@@ -101,7 +101,6 @@ namespace Dev2.Runtime.Hosting
             }
 
             return id;
-
         }
     }
 
@@ -111,28 +110,28 @@ namespace Dev2.Runtime.Hosting
     {
         public List<DynamicServiceObjectBase> GenerateServiceGraph(StringBuilder serviceData)
         {
-            if(serviceData == null || serviceData.Length == 0)
+            if (serviceData == null || serviceData.Length == 0)
             {
                 throw new ArgumentException("serviceData");
             }
 
-            List<DynamicServiceObjectBase> result = new List<DynamicServiceObjectBase>();
-            var xe = serviceData.ToXElement();
+            var result = new List<DynamicServiceObjectBase>();
+            XElement xe = serviceData.ToXElement();
 
-            if(IsSource(serviceData))
+            if (IsSource(serviceData))
             {
-                Source src = new Source();
+                var src = new Source();
                 var tmp = src as DynamicServiceObjectBase;
                 ServiceMetaData.ExtractMetaData(xe, ref tmp);
 
-                var typeOf = xe.AttributeSafe("ResourceType");
+                string typeOf = xe.AttributeSafe("ResourceType");
 
                 enSourceType sourceType;
                 src.Type = !Enum.TryParse(typeOf, out sourceType) ? enSourceType.Unknown : sourceType;
 
                 src.ConnectionString = xe.AttributeSafe("ConnectionString");
-                var tmpUri = xe.AttributeSafe("Uri");
-                if(!string.IsNullOrEmpty(tmpUri))
+                string tmpUri = xe.AttributeSafe("Uri");
+                if (!string.IsNullOrEmpty(tmpUri))
                 {
                     src.WebServiceUri = new Uri(tmpUri);
                 }
@@ -141,93 +140,92 @@ namespace Dev2.Runtime.Hosting
                 src.AssemblyLocation = xe.AttributeSafe("AssemblyLocation");
 
                 // PBI 6597: TWR - added source ID check
-                var id = ServiceMetaData.SetID(ref xe);
+                Guid id = ServiceMetaData.SetID(ref xe);
                 src.ID = id;
                 src.ResourceDefinition = serviceData;
 
                 result.Add(src);
-
             }
             else
             {
-                DynamicService ds = new DynamicService();
+                var ds = new DynamicService();
                 var tmp = ds as DynamicServiceObjectBase;
                 ServiceMetaData.ExtractMetaData(xe, ref tmp);
 
                 // set the resource def ;)
                 ds.ResourceDefinition = serviceData;
 
-                var actions = xe.Element("Actions");
+                XElement actions = xe.Element("Actions");
                 XElement action = actions != null ? actions.Element("Action") : xe.Element("Action");
 
-                if(action != null)
+                if (action != null)
                 {
-                    ServiceAction sa = new ServiceAction { Name = action.AttributeSafe("Name"), ResourceDefinition = serviceData };
+                    var sa = new ServiceAction {Name = action.AttributeSafe("Name"), ResourceDefinition = serviceData};
 
                     // Set service action ;)
                     enActionType actionType;
-                    var typeOf = action.AttributeSafe("Type");
-                    if(Enum.TryParse(typeOf, out actionType))
+                    string typeOf = action.AttributeSafe("Type");
+                    if (Enum.TryParse(typeOf, out actionType))
                     {
                         sa.ActionType = actionType;
                     }
 
-                    var element = action.Element("Outputs");
-                    if(element != null)
+                    XElement element = action.Element("Outputs");
+                    if (element != null)
                     {
                         sa.OutputSpecification = element.Value;
                     }
 
                     // set name and id ;)
                     sa.ServiceName = ds.Name;
-                    var id = ServiceMetaData.SetID(ref xe);
+                    Guid id = ServiceMetaData.SetID(ref xe);
                     ds.ID = id;
 
-                    if(IsWorkflow(serviceData))
+                    if (IsWorkflow(serviceData))
                     {
                         // Convert to StringBuilder
-                        var xElement = action.Element("XamlDefinition");
-                        if(xElement != null)
+                        XElement xElement = action.Element("XamlDefinition");
+                        if (xElement != null)
                         {
-                            var def = xElement.ToStringBuilder();
+                            StringBuilder def = xElement.ToStringBuilder();
                             def = def.Replace("<XamlDefinition>", "").Replace("</XamlDefinition>", "");
                             sa.XamlDefinition = def.Unescape();
                         }
 
-                        var dataList = xe.Element("DataList");
-                        if(dataList != null)
+                        XElement dataList = xe.Element("DataList");
+                        if (dataList != null)
                         {
                             ds.DataListSpecification = dataList.ToStringBuilder();
                         }
                     }
                     else
                     {
-                        if(sa.ActionType == enActionType.InvokeStoredProc)
+                        if (sa.ActionType == enActionType.InvokeStoredProc)
                         {
                             int timeout;
                             Int32.TryParse(action.AttributeSafe("CommandTimeout"), out timeout);
                             sa.CommandTimeout = timeout;
                         }
 
-                        var xElement = action.Element("OutputDescription");
-                        if(xElement != null)
+                        XElement xElement = action.Element("OutputDescription");
+                        if (xElement != null)
                         {
                             sa.OutputDescription = xElement.Value;
                         }
 
                         // process inputs and outputs ;)
-                        var inputs = action.Element("Inputs");
+                        XElement inputs = action.Element("Inputs");
 
-                        if(inputs != null)
+                        if (inputs != null)
                         {
-                            var inputCollection = inputs.Elements("Input");
+                            IEnumerable<XElement> inputCollection = inputs.Elements("Input");
 
-                            foreach(var inputItem in inputCollection)
+                            foreach (XElement inputItem in inputCollection)
                             {
                                 bool emptyToNull;
                                 bool.TryParse(inputItem.AttributeSafe("EmptyToNull"), out emptyToNull);
 
-                                ServiceActionInput sai = new ServiceActionInput
+                                var sai = new ServiceActionInput
                                 {
                                     Name = inputItem.AttributeSafe("Name"),
                                     Source = inputItem.AttributeSafe("Source"),
@@ -236,19 +234,21 @@ namespace Dev2.Runtime.Hosting
                                     NativeType = inputItem.AttributeSafe("NativeType")
                                 };
 
-                                if(string.IsNullOrEmpty(sai.NativeType))
+                                if (string.IsNullOrEmpty(sai.NativeType))
                                 {
                                     sai.NativeType = "object";
                                 }
 
                                 // handle validators ;)
-                                var validators = inputItem.Elements("Validator");
-                                foreach(var validator in validators)
+                                IEnumerable<XElement> validators = inputItem.Elements("Validator");
+                                foreach (XElement validator in validators)
                                 {
-                                    Validator v = new Validator();
+                                    var v = new Validator();
 
                                     enValidationType validatorType;
-                                    v.ValidatorType = !Enum.TryParse(validator.AttributeSafe("Type"), out validatorType) ? enValidationType.Required : validatorType;
+                                    v.ValidatorType = !Enum.TryParse(validator.AttributeSafe("Type"), out validatorType)
+                                        ? enValidationType.Required
+                                        : validatorType;
 
                                     sai.Validators.Add(v);
                                 }
@@ -262,25 +262,23 @@ namespace Dev2.Runtime.Hosting
                     ds.Actions.Add(sa);
                     result.Add(ds);
                 }
-
             }
 
             return result;
         }
 
-        bool IsSource(StringBuilder serviceData)
+        private bool IsSource(StringBuilder serviceData)
         {
             return (serviceData.IndexOf("<Source ", 0, false) == 0);
         }
 
-        bool IsWorkflow(StringBuilder serviceData)
+        private bool IsWorkflow(StringBuilder serviceData)
         {
-
-            var startIdx = serviceData.IndexOf("<XamlDefinition>", 0, false);
-            if(startIdx >= 0)
+            int startIdx = serviceData.IndexOf("<XamlDefinition>", 0, false);
+            if (startIdx >= 0)
             {
-                var endIdx = serviceData.IndexOf("</XamlDefinition>", startIdx, false);
-                var dif = endIdx - startIdx;
+                int endIdx = serviceData.IndexOf("</XamlDefinition>", startIdx, false);
+                int dif = endIdx - startIdx;
 
                 // we know a blank wf is larger then our max string size ;)
                 return (startIdx > 0 && dif > (GlobalConstants.MAX_SIZE_FOR_STRING - 1024));

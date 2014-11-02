@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +16,7 @@ using Dev2.Services.Sql;
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
     /// <summary>
-    /// A Microsoft SQL specific database broker implementation
+    ///     A Microsoft SQL specific database broker implementation
     /// </summary>
     public class SqlDatabaseBroker : AbstractDatabaseBroker<SqlServer>
     {
@@ -27,32 +26,31 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
             var xDoc = new XmlDocument();
             xDoc.LoadXml(payload);
-            var nl = xDoc.SelectNodes("//NewDataSet/Table/*[starts-with(local-name(),'XML_')]");
-            var foundXMLFrags = 0;
+            XmlNodeList nl = xDoc.SelectNodes("//NewDataSet/Table/*[starts-with(local-name(),'XML_')]");
+            int foundXMLFrags = 0;
 
-            if(nl != null)
+            if (nl != null)
             {
-                foreach(XmlNode n in nl)
+                foreach (XmlNode n in nl)
                 {
-                    var tmp = n.InnerXml;
+                    string tmp = n.InnerXml;
                     result = result.Append(tmp);
                     foundXMLFrags++;
                 }
             }
 
-            var res = result.ToString();
+            string res = result.ToString();
 
-            if(foundXMLFrags >= 1)
+            if (foundXMLFrags >= 1)
             {
                 res = "<FromXMLPayloads>" + res + "</FromXMLPayloads>";
             }
-            else if(foundXMLFrags == 0)
+            else if (foundXMLFrags == 0)
             {
                 res = payload;
             }
 
             return base.NormalizeXmlPayload(res);
         }
-
     }
 }

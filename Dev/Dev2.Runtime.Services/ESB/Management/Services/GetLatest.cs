@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,19 +24,19 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Get the latest services
+    ///     Get the latest services
     /// </summary>
     public class GetLatest : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage res = new ExecuteMessage { HasError = false };
+            var res = new ExecuteMessage {HasError = false};
 
             string editedItemsXml = null;
 
             StringBuilder tmp;
             values.TryGetValue("EditedItemsXml", out tmp);
-            if(tmp != null)
+            if (tmp != null)
             {
                 editedItemsXml = tmp.ToString();
             }
@@ -46,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var editedItems = new List<string>();
 
-                if(!string.IsNullOrWhiteSpace(editedItemsXml))
+                if (!string.IsNullOrWhiteSpace(editedItemsXml))
                 {
                     editedItems.AddRange(XElement.Parse(editedItemsXml)
                         .Elements()
@@ -56,21 +55,32 @@ namespace Dev2.Runtime.ESB.Management.Services
                 WorkspaceRepository.Instance.GetLatest(theWorkspace, editedItems);
                 res.SetMessage("Workspace updated " + DateTime.Now);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 res.SetMessage("Error updating workspace " + DateTime.Now);
                 Dev2Logger.Log.Error(ex);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(res);
         }
 
         public DynamicService CreateServiceEntry()
         {
-            var getLatestAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var getLatestAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            };
 
-            var getLatestService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><EditedItemsXml ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var getLatestService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><EditedItemsXml ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
             getLatestService.Actions.Add(getLatestAction);
 
             return getLatestService;

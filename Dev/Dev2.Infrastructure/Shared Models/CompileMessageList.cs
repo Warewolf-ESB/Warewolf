@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -27,10 +26,7 @@ namespace Dev2.Data.ServiceModel.Messages
 
         public int Count
         {
-            get
-            {
-                return MessageList == null ? 0 : MessageList.Count;
-            }
+            get { return MessageList == null ? 0 : MessageList.Count; }
         }
 
         public IList<string> Dependants { get; set; }

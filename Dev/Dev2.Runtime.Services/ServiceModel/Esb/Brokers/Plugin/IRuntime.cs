@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +16,7 @@ using Dev2.Runtime.ServiceModel.Data;
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
     /// <summary>
-    /// Interface for Plugin Invoke
+    ///     Interface for Plugin Invoke
     /// </summary>
     public interface IRuntime
     {

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -28,7 +27,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             get { return _isSelected; }
             set
             {
-                if(_isSelected == value)
+                if (_isSelected == value)
                 {
                     return;
                 }
@@ -46,7 +45,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         public WorkflowDescriptor(XElement xml)
         {
-            if(xml == null)
+            if (xml == null)
             {
                 return;
             }

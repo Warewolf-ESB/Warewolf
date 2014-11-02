@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,28 +23,28 @@ using Dev2.Workspaces;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
-    /// Find Computers service
+    ///     Find Computers service
     /// </summary>
-    class FindNetworkComputers : IEsbManagementEndpoint
+    internal class FindNetworkComputers : IEsbManagementEndpoint
     {
-
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             Dev2Logger.Log.Info("Find Network Computers");
             string json = "[";
             try
             {
-                var computers = GetComputerNames.ComputerNames;
+                List<string> computers = GetComputerNames.ComputerNames;
                 // DirectoryEntry with WinNT: was timing out, swapped to using a NetworkBrowser...
-                json = computers.Cast<object>().Aggregate(json, (current, comp) => current + (@"{""ComputerName"":""" + comp + @"""},"));
+                json = computers.Cast<object>()
+                    .Aggregate(json, (current, comp) => current + (@"{""ComputerName"":""" + comp + @"""},"));
                 json += "]";
                 json = json.Replace(",]", "]"); // remove last comma
                 result.Append("<JSON>");
                 result.Append(json);
                 result.Append("</JSON>");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Log.Error(ex);
                 result.Append(ex.Message);
@@ -56,9 +55,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService findNetworkComputersService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findNetworkComputersService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
 
-            ServiceAction findNetworkComputersAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var findNetworkComputersAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            };
 
             findNetworkComputersService.Actions.Add(findNetworkComputersAction);
 
@@ -70,7 +80,4 @@ namespace Dev2.Runtime.ESB.Management.Services
             return "FindNetworkComputersService";
         }
     }
-
-
-    
 }

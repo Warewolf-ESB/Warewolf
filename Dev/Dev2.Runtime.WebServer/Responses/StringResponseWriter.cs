@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,8 +17,8 @@ namespace Dev2.Runtime.WebServer.Responses
 {
     public class StringResponseWriter : IResponseWriter
     {
-        readonly string _text;
-        readonly MediaTypeHeaderValue _contentType;
+        private readonly MediaTypeHeaderValue _contentType;
+        private readonly string _text;
 
         public StringResponseWriter(string text, string contentType)
             : this(text, MediaTypeHeaderValue.Parse(contentType))
@@ -41,21 +40,21 @@ namespace Dev2.Runtime.WebServer.Responses
             UpdateContentDisposition(context.ResponseMessage);
         }
 
-        void UpdateContentDisposition(HttpResponseMessage responseMessage)
+        private void UpdateContentDisposition(HttpResponseMessage responseMessage)
         {
-            var contentLength = Encoding.UTF8.GetByteCount(_text);
-            if(contentLength > WebServerStartup.SizeCapForDownload)
+            int contentLength = Encoding.UTF8.GetByteCount(_text);
+            if (contentLength > WebServerStartup.SizeCapForDownload)
             {
                 string extension = null;
-                if(ContentTypes.Json.Equals(_contentType))
+                if (ContentTypes.Json.Equals(_contentType))
                 {
                     extension = "json";
                 }
-                else if(ContentTypes.Xml.Equals(_contentType))
+                else if (ContentTypes.Xml.Equals(_contentType))
                 {
                     extension = "xml";
                 }
-                if(extension != null)
+                if (extension != null)
                 {
                     var contentDisposition = new ContentDispositionHeaderValue("attachment");
                     contentDisposition.Parameters.Add(new NameValueHeaderValue("filename", "Output." + extension));

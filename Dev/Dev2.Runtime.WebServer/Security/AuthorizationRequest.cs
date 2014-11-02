@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,7 +18,11 @@ namespace Dev2.Runtime.WebServer.Security
 {
     public class AuthorizationRequest : IAuthorizationRequest
     {
-        public Tuple<string, string> Key { get { return new Tuple<string, string>(User.Identity.Name, Url.OriginalString); } }
+        public Tuple<string, string> Key
+        {
+            get { return new Tuple<string, string>(User.Identity.Name, Url.OriginalString); }
+        }
+
         public WebServerRequestType RequestType { get; set; }
         public IPrincipal User { get; set; }
         public Uri Url { get; set; }

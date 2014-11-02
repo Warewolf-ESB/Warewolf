@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,7 +17,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     public class DbColumn : IDbColumn
     {
-        SqlDbType _sqlDataType;
+        private SqlDbType _sqlDataType;
 
         public DbColumn()
         {
@@ -43,10 +42,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public SqlDbType SqlDataType
         {
-            get
-            {
-                return _sqlDataType;
-            }
+            get { return _sqlDataType; }
             set
             {
                 _sqlDataType = value;
@@ -60,13 +56,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             get
             {
-                if(SqlDataType == SqlDbType.VarChar || SqlDataType == SqlDbType.Char || SqlDataType == SqlDbType.NVarChar || SqlDataType == SqlDbType.NChar || SqlDataType == SqlDbType.VarBinary || SqlDataType == SqlDbType.Binary)
+                if (SqlDataType == SqlDbType.VarChar || SqlDataType == SqlDbType.Char ||
+                    SqlDataType == SqlDbType.NVarChar || SqlDataType == SqlDbType.NChar ||
+                    SqlDataType == SqlDbType.VarBinary || SqlDataType == SqlDbType.Binary)
                 {
                     return string.Format("{0} ({1})", SqlDataType, MaxLength).ToLower();
                 }
 
                 return SqlDataType.ToString().ToLower();
-
             }
         }
 
@@ -74,92 +71,91 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             get
             {
-                if(DataType == null)
+                if (DataType == null)
                 {
                     return string.Empty;
                 }
 
                 // TODO: Implement Mapping CLR Parameter Data: http://technet.microsoft.com/en-us/library/ms131092.aspx
-                if(DataType == typeof(string))
+                if (DataType == typeof (string))
                 {
                     return string.Format("{0}({1})", DataType.Name, MaxLength);
                 }
 
                 return DataType.Name;
-
             }
         }
 
         public static Type ConvertSqlDbType(SqlDbType sqlDbType)
         {
             // http://msdn.microsoft.com/en-us/library/system.data.sqldbtype.aspx
-            switch(sqlDbType)
+            switch (sqlDbType)
             {
                 case SqlDbType.BigInt:
-                    return typeof(long);
+                    return typeof (long);
                 case SqlDbType.Binary:
-                    return typeof(byte[]);
+                    return typeof (byte[]);
                 case SqlDbType.Bit:
-                    return typeof(bool);
+                    return typeof (bool);
                 case SqlDbType.Char:
-                    return typeof(char);
+                    return typeof (char);
                 case SqlDbType.DateTime:
-                    return typeof(DateTime);
+                    return typeof (DateTime);
                 case SqlDbType.Decimal:
-                    return typeof(decimal);
+                    return typeof (decimal);
                 case SqlDbType.Float:
-                    return typeof(double);
+                    return typeof (double);
                 case SqlDbType.Image:
-                    return typeof(byte[]);
+                    return typeof (byte[]);
                 case SqlDbType.Int:
-                    return typeof(int);
+                    return typeof (int);
                 case SqlDbType.Money:
-                    return typeof(decimal);
+                    return typeof (decimal);
                 case SqlDbType.NChar:
-                    return typeof(string);
+                    return typeof (string);
                 case SqlDbType.NText:
-                    return typeof(string);
+                    return typeof (string);
                 case SqlDbType.NVarChar:
-                    return typeof(string);
+                    return typeof (string);
                 case SqlDbType.Real:
-                    return typeof(Single);
+                    return typeof (Single);
                 case SqlDbType.UniqueIdentifier:
-                    return typeof(Guid);
+                    return typeof (Guid);
                 case SqlDbType.SmallDateTime:
-                    return typeof(DateTime);
+                    return typeof (DateTime);
                 case SqlDbType.SmallInt:
-                    return typeof(short);
+                    return typeof (short);
                 case SqlDbType.SmallMoney:
-                    return typeof(decimal);
+                    return typeof (decimal);
                 case SqlDbType.Text:
-                    return typeof(string);
+                    return typeof (string);
                 case SqlDbType.Timestamp:
-                    return typeof(byte[]);
+                    return typeof (byte[]);
                 case SqlDbType.TinyInt:
-                    return typeof(byte);
+                    return typeof (byte);
                 case SqlDbType.VarBinary:
-                    return typeof(byte[]);
+                    return typeof (byte[]);
                 case SqlDbType.VarChar:
-                    return typeof(string);
+                    return typeof (string);
                 case SqlDbType.Variant:
-                    return typeof(object);
+                    return typeof (object);
                 case SqlDbType.Xml:
-                    return typeof(string);
+                    return typeof (string);
                 case SqlDbType.Udt:
-                    return typeof(object);
+                    return typeof (object);
                 case SqlDbType.Structured:
-                    return typeof(object);
+                    return typeof (object);
                 case SqlDbType.Date:
-                    return typeof(DateTime);
+                    return typeof (DateTime);
                 case SqlDbType.Time:
-                    return typeof(TimeSpan);
+                    return typeof (TimeSpan);
                 case SqlDbType.DateTime2:
-                    return typeof(DateTime);
+                    return typeof (DateTime);
                 case SqlDbType.DateTimeOffset:
-                    return typeof(DateTimeOffset);
+                    return typeof (DateTimeOffset);
             }
 
-            return typeof(object);
+            return typeof (object);
         }
     }
 }

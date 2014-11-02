@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,20 +16,20 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 namespace Dev2.Diagnostics.Debug
 {
     /// <summary>
-    /// Used to store remote debug data ;)
+    ///     Used to store remote debug data ;)
     /// </summary>
     public class RemoteDebugMessageRepo
     {
-        readonly IDictionary<Guid, IList<IDebugState>> _data = new Dictionary<Guid, IList<IDebugState>>();
-        static readonly object Lock = new object();
+        private static readonly object Lock = new object();
 
         private static RemoteDebugMessageRepo _instance;
+        private readonly IDictionary<Guid, IList<IDebugState>> _data = new Dictionary<Guid, IList<IDebugState>>();
 
         /// <summary>
-        /// Gets the instance.
+        ///     Gets the instance.
         /// </summary>
         /// <value>
-        /// The instance.
+        ///     The instance.
         /// </value>
         public static RemoteDebugMessageRepo Instance
         {
@@ -38,7 +37,7 @@ namespace Dev2.Diagnostics.Debug
         }
 
         /// <summary>
-        /// Adds the debug item.
+        ///     Adds the debug item.
         /// </summary>
         /// <param name="remoteInvokeID">The remote invoke ID.</param>
         /// <param name="ds">The ds.</param>
@@ -46,19 +45,19 @@ namespace Dev2.Diagnostics.Debug
         {
             Guid id;
             Guid.TryParse(remoteInvokeID, out id);
-            if(id != Guid.Empty)
+            if (id != Guid.Empty)
             {
-                lock(Lock)
+                lock (Lock)
                 {
                     IList<IDebugState> list;
-                    if(_data.TryGetValue(id, out list))
+                    if (_data.TryGetValue(id, out list))
                     {
-                        if(list.Contains(ds)) return;
+                        if (list.Contains(ds)) return;
                         list.Add(ds);
                     }
                     else
                     {
-                        list = new List<IDebugState> { ds };
+                        list = new List<IDebugState> {ds};
                         _data[id] = list;
                     }
                 }
@@ -66,17 +65,16 @@ namespace Dev2.Diagnostics.Debug
         }
 
         /// <summary>
-        /// Fetches the debug items.
+        ///     Fetches the debug items.
         /// </summary>
         /// <param name="remoteInvokeID">The remote invoke ID.</param>
         /// <returns></returns>
         public IList<IDebugState> FetchDebugItems(Guid remoteInvokeID)
         {
-
-            lock(Lock)
+            lock (Lock)
             {
                 IList<IDebugState> list;
-                if(_data.TryGetValue(remoteInvokeID, out list))
+                if (_data.TryGetValue(remoteInvokeID, out list))
                 {
                     _data.Remove(remoteInvokeID); // clear out all messages ;)
                     return list;

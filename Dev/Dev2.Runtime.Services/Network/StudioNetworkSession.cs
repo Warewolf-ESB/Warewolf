@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,18 +17,18 @@ namespace Dev2.DynamicServices
 {
     public class StudioNetworkSession : NetworkContext, IStudioNetworkSession
     {
+        private readonly object _auxiliaryLock;
         private StudioAccount _account;
-        private object _auxiliaryLock;
         private HashSet<AuxiliaryConnectionRequest> _auxiliaryRequests;
-
-        public StudioAccount Account
-        {
-            get { return _account; }
-        }
 
         public StudioNetworkSession()
         {
             _auxiliaryLock = new object();
+        }
+
+        public StudioAccount Account
+        {
+            get { return _account; }
         }
 
         protected override void OnAttached(InboundAuthenticationBroker broker, NetworkAccount account)
@@ -48,7 +47,10 @@ namespace Dev2.DynamicServices
 
             lock (_auxiliaryLock)
             {
-                (_auxiliaryRequests ?? (_auxiliaryRequests = new HashSet<AuxiliaryConnectionRequest>(AuxiliaryConnectionRequestEqualityComparer.Singleton))).Add(new AuxiliaryConnectionRequest(result = Guid.NewGuid()));
+                (_auxiliaryRequests ??
+                 (_auxiliaryRequests =
+                     new HashSet<AuxiliaryConnectionRequest>(AuxiliaryConnectionRequestEqualityComparer.Singleton))).Add
+                    (new AuxiliaryConnectionRequest(result = Guid.NewGuid()));
             }
 
             return result;
@@ -64,9 +66,32 @@ namespace Dev2.DynamicServices
             _account = null;
         }
 
+        private sealed class AuxiliaryConnectionRequest
+        {
+            private readonly DateTime _expiration;
+            private readonly Guid _identifier;
+
+            public AuxiliaryConnectionRequest(Guid identifier)
+            {
+                _expiration = DateTime.Now.AddMinutes(2.0);
+                _identifier = identifier;
+            }
+
+            public DateTime Expiration
+            {
+                get { return _expiration; }
+            }
+
+            public Guid Identifier
+            {
+                get { return _identifier; }
+            }
+        }
+
         private sealed class AuxiliaryConnectionRequestEqualityComparer : IEqualityComparer<AuxiliaryConnectionRequest>
         {
-            public static readonly AuxiliaryConnectionRequestEqualityComparer Singleton = new AuxiliaryConnectionRequestEqualityComparer();
+            public static readonly AuxiliaryConnectionRequestEqualityComparer Singleton =
+                new AuxiliaryConnectionRequestEqualityComparer();
 
             public bool Equals(AuxiliaryConnectionRequest x, AuxiliaryConnectionRequest y)
             {
@@ -76,21 +101,6 @@ namespace Dev2.DynamicServices
             public int GetHashCode(AuxiliaryConnectionRequest obj)
             {
                 return obj.Identifier.GetHashCode();
-            }
-        }
-
-        private sealed class AuxiliaryConnectionRequest
-        {
-            private DateTime _expiration;
-            private Guid _identifier;
-
-            public DateTime Expiration { get { return _expiration; } }
-            public Guid Identifier { get { return _identifier; } }
-
-            public AuxiliaryConnectionRequest(Guid identifier)
-            {
-                _expiration = DateTime.Now.AddMinutes(2.0);
-                _identifier = identifier;
             }
         }
     }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -30,6 +29,12 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
 
+        public IExplorerServerResourceRepository ServerExplorerRepo
+        {
+            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
+            set { _serverExplorerRepository = value; }
+        }
+
         public string HandlesType()
         {
             return "DeleteItemService";
@@ -41,22 +46,22 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                if(values == null)
+                if (values == null)
                 {
                     throw new ArgumentNullException("values");
-                }               
+                }
                 StringBuilder itemBeingDeleted;
-                if(!values.TryGetValue("itemToDelete", out itemBeingDeleted))
+                if (!values.TryGetValue("itemToDelete", out itemBeingDeleted))
                 {
                     throw new ArgumentException("itemToDelete value not supplied.");
                 }
                 var itemToDelete = serializer.Deserialize<ServerExplorerItem>(itemBeingDeleted);
-                Dev2Logger.Log.Info("Delete Item Service."+itemToDelete);
+                Dev2Logger.Log.Info("Delete Item Service." + itemToDelete);
                 item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Dev2Logger.Log.Error("Delete Item Error" ,e);
+                Dev2Logger.Log.Error("Delete Item Error", e);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             return serializer.SerializeToBuilder(item);
@@ -64,18 +69,24 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToAdd ColumnIODirection=\"itemToDelete\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findServices = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><itemToAdd ColumnIODirection=\"itemToDelete\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
 
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var fetchItemsAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            };
 
             findServices.Actions.Add(fetchItemsAction);
 
             return findServices;
-        }
-        public IExplorerServerResourceRepository ServerExplorerRepo
-        {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
         }
     }
 }

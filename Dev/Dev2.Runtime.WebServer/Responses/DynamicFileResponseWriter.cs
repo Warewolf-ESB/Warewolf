@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -19,11 +18,11 @@ namespace Dev2.Runtime.WebServer.Responses
 {
     public class DynamicFileResponseWriter : IResponseWriter
     {
-        static readonly MediaTypeHeaderValue ContentType = ContentTypes.Html;
+        private static readonly MediaTypeHeaderValue ContentType = ContentTypes.Html;
 
-        readonly string _layoutFile;
-        readonly string _contentPathToken;
-        readonly string _contentPath;
+        private readonly string _contentPath;
+        private readonly string _contentPathToken;
+        private readonly string _layoutFile;
 
         public DynamicFileResponseWriter(string layoutFile, string contentPathToken, string contentPath)
         {
@@ -37,16 +36,16 @@ namespace Dev2.Runtime.WebServer.Responses
 
         public void Write(WebServerContext context)
         {
-            var content = GetContent();
+            string content = GetContent();
             context.ResponseMessage.Content = new StringContent(content);
             context.ResponseMessage.Content.Headers.ContentType = ContentType;
         }
 
-        string GetContent()
+        private string GetContent()
         {
-            var layoutContent = ReadLayoutFile();
+            string layoutContent = ReadLayoutFile();
             var builder = new StringBuilder(layoutContent);
-            var content = builder.Replace(_contentPathToken, _contentPath).ToString();
+            string content = builder.Replace(_contentPathToken, _contentPath).ToString();
             return content;
         }
 

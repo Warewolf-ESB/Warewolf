@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,6 +20,7 @@ namespace Dev2.Runtime.WebServer.Responses
         public static readonly MediaTypeHeaderValue Plain = MediaTypeHeaderValue.Parse("text/plain");
         public static readonly MediaTypeHeaderValue Json = MediaTypeHeaderValue.Parse("application/json");
 
-        public static readonly MediaTypeHeaderValue ForceDownload = MediaTypeHeaderValue.Parse("application/force-download; charset=utf-8");
+        public static readonly MediaTypeHeaderValue ForceDownload =
+            MediaTypeHeaderValue.Parse("application/force-download; charset=utf-8");
     }
 }

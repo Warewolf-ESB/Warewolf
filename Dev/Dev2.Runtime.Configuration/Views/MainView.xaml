@@ -1,60 +1,62 @@
 ﻿<UserControl x:Class="Dev2.Runtime.Configuration.Views.MainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <Style x:Key="ImageTickStyle" TargetType="{x:Type Image}">
             <Setter Property="Height" Value="15" />
             <Setter Property="Width" Value="15" />
             <Setter Property="Source" Value="/Dev2.Runtime.Configuration;component/Images/ServiceStatusOK-32.png" />
         </Style>
     </UserControl.Resources>
-    
+
     <ScrollViewer Margin="5,0,0,0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
         <Grid cal:Bind.Model="{Binding .}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" MinWidth="250"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="8*"/>
-        </Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-       
-        <Grid Grid.Column="0" Grid.RowSpan="2" Margin="5">
-            <TreeView Name="Tree" Grid.Column="0" ItemsSource="{Binding SettingsObjects}" SelectedItemChanged="TreeView_OnSelectedItemChanged">
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>
-                    </Style>
-                </TreeView.ItemContainerStyle>
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <TextBlock Text="{Binding Object.DisplayName}" />
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
-        </Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" MinWidth="250" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-		<GridSplitter Width="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Grid.RowSpan="2"/>
-        
-        <ContentControl x:Name="ActiveItem" Grid.Column="2" Margin="3,0,0,0"  />
+            <Grid Grid.Column="0" Grid.RowSpan="2" Margin="5">
+                <TreeView Name="Tree" Grid.Column="0" ItemsSource="{Binding SettingsObjects}"
+                          SelectedItemChanged="TreeView_OnSelectedItemChanged">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding Object.DisplayName}" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </Grid>
 
-		<Border Grid.Row="1" Grid.Column="2" Margin="5">
-            <Grid HorizontalAlignment="Right">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                 </Grid.ColumnDefinitions>
-                    
+            <GridSplitter Width="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                          Grid.RowSpan="2" />
+
+            <ContentControl x:Name="ActiveItem" Grid.Column="2" Margin="3,0,0,0" />
+
+            <Border Grid.Row="1" Grid.Column="2" Margin="5">
+                <Grid HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
                     <!--<StackPanel Orientation="Horizontal" Margin="0,0,5,0" 
                             Visibility="{Binding SaveSuccessfull, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                         <Image Style="{StaticResource ImageAlertStyle}" />
@@ -62,34 +64,38 @@
                                AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
                                VerticalAlignment="Center" Margin="3,0,0,0"/>
                     </StackPanel>-->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0" 
-                            Visibility="{Binding SaveSuccess, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Image Style="{StaticResource ImageTickStyle}" />
-                    <TextBlock Text="Settings saved successfully" 
-                               AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
-                               VerticalAlignment="Center" Margin="3,0,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0"
+                                Visibility="{Binding SaveSuccess, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Image Style="{StaticResource ImageTickStyle}" />
+                        <TextBlock Text="Settings saved successfully"
+                                   AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
+                                   VerticalAlignment="Center" Margin="3,0,0,0" />
+                    </StackPanel>
+
+                    <Button HorizontalAlignment="Right" Content="Save" Command="{Binding SaveCommand}" Margin="5,3,5,0"
+                            Width="80"
+                            Grid.Column="1"
+                            AutomationProperties.AutomationId="UI_SettingsSaveBtn" />
+
+                    <Button HorizontalAlignment="Right" Content="Cancel" Command="{Binding CancelCommand}"
+                            Margin="8,3,5,0" Width="80"
+                            Grid.Column="2"
+                            AutomationProperties.AutomationId="UI_SettingsCancelBtn" />
+                </Grid>
+            </Border>
+
+            <Border Grid.ColumnSpan="3" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="White"
+                    Visibility="{Binding ErrorsVisible}" d:IsHidden="true">
+                <StackPanel>
+                    <TextBlock Text="Errors" FontSize="20" />
+                    <ScrollViewer Height="100" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding Errors}" Margin="0,5,0,0" />
+                    </ScrollViewer>
+                    <Button Content="Close" Command="{Binding ClearErrorsCommand}" HorizontalAlignment="Left"
+                            Width="50" Margin="0,3,0,0" />
                 </StackPanel>
-                
-                <Button HorizontalAlignment="Right" Content="Save" Command="{Binding SaveCommand}" Margin="5,3,5,0" Width="80" 
-                    Grid.Column="1"
-                    AutomationProperties.AutomationId="UI_SettingsSaveBtn"/>
-
-                <Button HorizontalAlignment="Right" Content="Cancel" Command="{Binding CancelCommand}" Margin="8,3,5,0" Width="80" 
-                        Grid.Column="2"
-                        AutomationProperties.AutomationId="UI_SettingsCancelBtn"/>
-            </Grid>		
-		</Border>
-
-        <Border Grid.ColumnSpan="3" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White"
-                Visibility="{Binding ErrorsVisible}" d:IsHidden="true">
-            <StackPanel>
-                <TextBlock Text="Errors" FontSize="20" />
-                <ScrollViewer Height="100" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding Errors}" Margin="0,5,0,0" />
-                </ScrollViewer>
-                <Button Content="Close" Command="{Binding ClearErrorsCommand}" HorizontalAlignment="Left" Width="50" Margin="0,3,0,0"/>
-            </StackPanel>
-        </Border>
-    </Grid>
-        </ScrollViewer>
+            </Border>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

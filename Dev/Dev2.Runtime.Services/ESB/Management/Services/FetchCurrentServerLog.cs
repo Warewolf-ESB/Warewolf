@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -25,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchCurrentServerLog : IEsbManagementEndpoint
     {
-        readonly string _serverLogPath;
+        private readonly string _serverLogPath;
 
         public FetchCurrentServerLog()
             : this(Path.Combine(EnvironmentVariables.ApplicationPath, "WareWolf-Server.log"))
@@ -37,33 +36,35 @@ namespace Dev2.Runtime.ESB.Management.Services
             _serverLogPath = serverLogPath;
         }
 
-        public string ServerLogPath { get { return _serverLogPath; } }
+        public string ServerLogPath
+        {
+            get { return _serverLogPath; }
+        }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
-
-            Dev2Logger.Log.Info("Fetch Server Log Started");
-            var result = new ExecuteMessage { HasError = false };
-            if(File.Exists(_serverLogPath))
-            {
-                var lines = File.ReadLines(_serverLogPath);
-
-                foreach (var line in lines)
+                Dev2Logger.Log.Info("Fetch Server Log Started");
+                var result = new ExecuteMessage {HasError = false};
+                if (File.Exists(_serverLogPath))
                 {
-                    result.Message.Append(line);
+                    IEnumerable<string> lines = File.ReadLines(_serverLogPath);
+
+                    foreach (string line in lines)
+                    {
+                        result.Message.Append(line);
+                    }
+
+                    File.Delete(_serverLogPath);
                 }
 
-                File.Delete(_serverLogPath);
-            }
-
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(result);
+                var serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(result);
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error("Fetch Server Log Error",err);
+                Dev2Logger.Log.Error("Fetch Server Log Error", err);
                 throw;
             }
         }
@@ -73,7 +74,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             var findDirectoryService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification =
+                    new StringBuilder(
+                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var findDirectoryServiceAction = new ServiceAction
