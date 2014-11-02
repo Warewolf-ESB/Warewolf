@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -24,7 +23,7 @@ namespace Dev2.TaskScheduler.Wrappers
         private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2TriggerCollection(ITaskServiceConvertorFactory taskServiceConvertorFactory,
-                                     TriggerCollection nativeInstance)
+            TriggerCollection nativeInstance)
         {
             _taskServiceConvertorFactory = taskServiceConvertorFactory;
             _nativeInstance = nativeInstance;

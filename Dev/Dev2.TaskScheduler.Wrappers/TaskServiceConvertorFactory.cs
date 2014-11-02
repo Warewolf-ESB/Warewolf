@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -15,6 +14,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.Win32.TaskScheduler;
+using Action = Microsoft.Win32.TaskScheduler.Action;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
@@ -70,16 +70,16 @@ namespace Dev2.TaskScheduler.Wrappers
             return new Dev2RepetitionPattern(repetitionPattern);
         }
 
-        public IAction CreateAction(Microsoft.Win32.TaskScheduler.Action action)
+        public IAction CreateAction(Action action)
         {
             return new Dev2Action(action);
         }
 
         public IDev2TaskService CreateTaskService(string targetServer, string userName, string accountDomain,
-                                                  string password, bool forceV1)
+            string password, bool forceV1)
         {
             return new Dev2TaskService(this,
-                                       new TaskService(targetServer, userName, accountDomain, password, forceV1));
+                new TaskService(targetServer, userName, accountDomain, password, forceV1));
         }
 
 
@@ -101,7 +101,7 @@ namespace Dev2.TaskScheduler.Wrappers
         public ITaskEventLog CreateTaskEventLog(string taskPath)
         {
             return new Dev2TaskEventLog(this,
-                                        new TaskEventLog(DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0)), taskPath));
+                new TaskEventLog(DateTime.Now.Subtract(new TimeSpan(30, 0, 0, 0)), taskPath));
         }
 
         public ITaskEventLog CreateTaskEventLog(string taskPath, DateTime startDate)
@@ -117,7 +117,7 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public ITrigger SanitiseTrigger(ITrigger resource)
         {
-            ITrigger trigger= new Dev2Trigger(this,resource.Instance);
+            ITrigger trigger = new Dev2Trigger(this, resource.Instance);
             Trigger serialisedTrigger = resource.Instance;
             switch (resource.Instance.TriggerType)
             {
@@ -132,7 +132,7 @@ namespace Dev2.TaskScheduler.Wrappers
                 case TaskTriggerType.Daily:
 // ReSharper disable PossibleNullReferenceException
                     trigger = new Dev2DailyTrigger(this,
-                                                   new DailyTrigger((serialisedTrigger as DailyTrigger).DaysInterval));
+                        new DailyTrigger((serialisedTrigger as DailyTrigger).DaysInterval));
 // ReSharper restore PossibleNullReferenceException
 
                     break;
@@ -147,7 +147,7 @@ namespace Dev2.TaskScheduler.Wrappers
 
                         trigger = new Dev2EventTrigger(this, new EventTrigger(log, source, eventId));
                     }
-            
+
 
                     break;
                 case TaskTriggerType.Idle:
@@ -171,8 +171,8 @@ namespace Dev2.TaskScheduler.Wrappers
                     var b = (serialisedTrigger as MonthlyDOWTrigger);
                     trigger = new Dev2MonthlyDowTrigger(this,
 // ReSharper disable PossibleNullReferenceException
-                                                        new MonthlyDOWTrigger(b.DaysOfWeek, b.MonthsOfYear,
-                                                                              b.WeeksOfMonth));
+                        new MonthlyDOWTrigger(b.DaysOfWeek, b.MonthsOfYear,
+                            b.WeeksOfMonth));
 // ReSharper restore PossibleNullReferenceException
 
                     break;
@@ -185,7 +185,12 @@ namespace Dev2.TaskScheduler.Wrappers
 
                     var sessionStateChangeTrigger = resource.Instance as SessionStateChangeTrigger;
                     if (sessionStateChangeTrigger != null)
-                        trigger = new Dev2Trigger(this, new SessionStateChangeTrigger { UserId = sessionStateChangeTrigger.UserId, StateChange = sessionStateChangeTrigger.StateChange });
+                        trigger = new Dev2Trigger(this,
+                            new SessionStateChangeTrigger
+                            {
+                                UserId = sessionStateChangeTrigger.UserId,
+                                StateChange = sessionStateChangeTrigger.StateChange
+                            });
                     break;
                 case TaskTriggerType.Time:
                     var y = (serialisedTrigger as TimeTrigger);

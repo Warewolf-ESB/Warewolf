@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -38,25 +37,21 @@ namespace Dev2.TaskScheduler.Wrappers
         public int[] DaysOfMonth
         {
             get { return Instance.DaysOfMonth; }
-          
         }
 
         public MonthsOfTheYear MonthsOfYear
         {
             get { return Instance.MonthsOfYear; }
-            
         }
 
         public TimeSpan RandomDelay
         {
             get { return Instance.RandomDelay; }
-           
         }
 
         public bool RunOnLastDayOfMonth
         {
             get { return Instance.RunOnLastDayOfMonth; }
-           
         }
     }
 }

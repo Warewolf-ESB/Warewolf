@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -54,18 +53,18 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
         /// <summary>
         ///     Gets or sets the days of the week on which the task runs.
         /// </summary>
-        DaysOfTheWeek DaysOfWeek { get;  }
+        DaysOfTheWeek DaysOfWeek { get; }
 
         /// <summary>
         ///     Gets or sets a delay time that is randomly added to the start time of the trigger.
         /// </summary>
         /// <exception cref="NotV1SupportedException">Not supported under Task Scheduler 1.0.</exception>
-        TimeSpan RandomDelay { get;  }
+        TimeSpan RandomDelay { get; }
 
         /// <summary>
         ///     Gets or sets the interval between the weeks in the schedule.
         /// </summary>
-        short WeeksInterval { get;  }
+        short WeeksInterval { get; }
     }
 
 
@@ -92,7 +91,9 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
         string Subscription { get; set; }
 
         /// <summary>
-        ///     Gets a collection of named XPath queries. Each query in the collection is applied to the last matching event XML returned from the subscription query specified in the Subscription property. The name of the query can be used as a variable in the message of a
+        ///     Gets a collection of named XPath queries. Each query in the collection is applied to the last matching event XML
+        ///     returned from the subscription query specified in the Subscription property. The name of the query can be used as a
+        ///     variable in the message of a
         ///     <see
         ///         cref="ShowMessageAction" />
         ///     action.
@@ -115,7 +116,8 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
         bool GetBasic(out string log, out string source, out int? eventId);
 
         /// <summary>
-        ///     Sets the subscription for a basic event. This will replace the contents of the <see cref="Subscription" /> property and clear all entries in the
+        ///     Sets the subscription for a basic event. This will replace the contents of the <see cref="Subscription" /> property
+        ///     and clear all entries in the
         ///     <see
         ///         cref="ValueQueries" />
         ///     property.
@@ -144,29 +146,29 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
         /// <summary>
         ///     Gets or sets the days of the week during which the task runs.
         /// </summary>
-        DaysOfTheWeek DaysOfWeek { get;  }
+        DaysOfTheWeek DaysOfWeek { get; }
 
         /// <summary>
         ///     Gets or sets the months of the year during which the task runs.
         /// </summary>
-        MonthsOfTheYear MonthsOfYear { get;  }
+        MonthsOfTheYear MonthsOfYear { get; }
 
         /// <summary>
         ///     Gets or sets a delay time that is randomly added to the start time of the trigger.
         /// </summary>
         /// <exception cref="NotV1SupportedException">Not supported under Task Scheduler 1.0.</exception>
-        TimeSpan RandomDelay { get;  }
+        TimeSpan RandomDelay { get; }
 
         /// <summary>
         ///     Gets or sets a Boolean value that indicates that the task runs on the last week of the month.
         /// </summary>
         /// <exception cref="NotV1SupportedException">Not supported under Task Scheduler 1.0.</exception>
-        bool RunOnLastWeekOfMonth { get;  }
+        bool RunOnLastWeekOfMonth { get; }
 
         /// <summary>
         ///     Gets or sets the weeks of the month during which the task runs.
         /// </summary>
-        WhichWeek WeeksOfMonth { get;  }
+        WhichWeek WeeksOfMonth { get; }
     }
 
 
@@ -180,19 +182,19 @@ namespace Dev2.TaskScheduler.Wrappers.Interfaces
         /// <summary>
         ///     Gets or sets the months of the year during which the task runs.
         /// </summary>
-        MonthsOfTheYear MonthsOfYear { get;  }
+        MonthsOfTheYear MonthsOfYear { get; }
 
         /// <summary>
         ///     Gets or sets a delay time that is randomly added to the start time of the trigger.
         /// </summary>
         /// <exception cref="NotV1SupportedException">Not supported under Task Scheduler 1.0.</exception>
-        TimeSpan RandomDelay { get;  }
+        TimeSpan RandomDelay { get; }
 
         /// <summary>
         ///     Gets or sets a Boolean value that indicates that the task runs on the last day of the month.
         /// </summary>
         /// <exception cref="NotV1SupportedException">Not supported under Task Scheduler 1.0.</exception>
-        bool RunOnLastDayOfMonth { get;  }
+        bool RunOnLastDayOfMonth { get; }
     }
 
     public interface IRegistrationTrigger : ITrigger, ITriggerDelay, IWrappedObject<RegistrationTrigger>
