@@ -30,12 +30,9 @@ namespace Dev2.DataList.Contract
      */
     public enum enSystemTag {
         InstanceId,
-        Bookmark,
         ParentWorkflowInstanceId,
         ParentServiceName,
         ParentInstanceID,
-        Resumption,
-        Dev2ResumeData,
         Dev2Error,
         SystemModel,
         Service,

@@ -129,11 +129,6 @@ namespace Dev2.Tests.Runtime.ESB
             container.PerformLogExecution(LogUri);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedLogUri, container.LogExecutionUrl);
-            Assert.IsFalse(container.LogExecutionWebRequest.UseDefaultCredentials);
-            var credentials = container.LogExecutionWebRequest.Credentials as NetworkCredential;
-            Assert.IsNotNull(credentials);
-            Assert.AreEqual(_connection.UserName, credentials.UserName);
-            Assert.AreEqual(_connection.Password, credentials.Password);
 
         }
 

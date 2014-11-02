@@ -210,6 +210,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 _canViewInBrowser = value;
                 NotifyOfPropertyChange(() => CanViewInBrowser);
+                ViewInBrowserCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -227,10 +228,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 _canDebug = value;
                 NotifyOfPropertyChange(() => CanDebug);
+                OkCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public ICommand OkCommand
+        public RelayCommand OkCommand
         {
             get
             {
@@ -238,7 +240,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public ICommand ViewInBrowserCommand
+        public RelayCommand ViewInBrowserCommand
         {
             get
             {
@@ -361,7 +363,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void LoadWorkflowInputs()
         {
             WorkflowInputs.Clear();
+            if (Broker != null)
+                Broker.Dispose();
             Broker = Dev2StudioSessionFactory.CreateBroker();
+            if (DebugTo != null)
+                DebugTo.CleanUp();
             DebugTo = Broker.InitDebugSession(DebugTo);
             XmlData = DebugTo.XmlData;
             RememberInputs = DebugTo.RememberInputs;

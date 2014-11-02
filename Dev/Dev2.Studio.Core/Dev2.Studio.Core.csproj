@@ -315,7 +315,6 @@
     <Compile Include="InterfaceImplementors\ServerProvider.cs" />
     <Compile Include="Interfaces\IDeployService.cs" />
     <Compile Include="Interfaces\IDeployDTO.cs" />
-    <Compile Include="Interfaces\IDialogueViewModel.cs" />
     <Compile Include="Interfaces\IContextualResourceModel.cs" />
     <Compile Include="Factories\ServiceDebugInfoModelFactory.cs" />
     <Compile Include="Factories\WebActivityFactory.cs" />

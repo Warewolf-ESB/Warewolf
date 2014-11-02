@@ -76,7 +76,7 @@ namespace Dev2.Studio.Core.Models.DataList
             set
             {
                 _children = value;
-                NotifyOfPropertyChange(() => Children);
+                NotifyOfPropertyChange(() => Children);                
             }
         }
 

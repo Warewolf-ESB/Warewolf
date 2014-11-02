@@ -9,13 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -27,13 +26,13 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public DbSource()
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.DbSource;
+            ResourceType = ResourceType.DbSource;
         }
 
         public DbSource(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.DbSource;
+            ResourceType = ResourceType.DbSource;
 
             // Setup type include default port
             switch(xml.AttributeSafe("ServerType"))
@@ -102,6 +101,14 @@ namespace Dev2.Runtime.ServiceModel.Data
                 switch(ServerType)
                 {
                     case enSourceType.SqlDatabase:
+                        var isNamedInstance = Server != null && Server.Contains('\\');
+                        if (isNamedInstance)
+                        {
+                            if (Port == 1433)
+                            {
+                                Port = 0;
+                            }
+                        }
                         return string.Format("Data Source={0}{2};Initial Catalog={1};{3}", Server, DatabaseName,
                             (Port > 0 ? "," + Port : string.Empty),
                             AuthenticationType == AuthenticationType.Windows

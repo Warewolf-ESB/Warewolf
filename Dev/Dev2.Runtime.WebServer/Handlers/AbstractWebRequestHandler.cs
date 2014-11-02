@@ -51,7 +51,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
         {
-            lock(ExecutionObject)
+            //lock(ExecutionObject)
             {
                 string executePayload;
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();

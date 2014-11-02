@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +18,7 @@ using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
@@ -35,7 +35,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
-using ServiceStack.Common.Extensions;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -85,7 +84,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
         }
 
+        // ReSharper disable TooManyDependencies
         public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IConnectControlViewModel sourceConnectControlVm, IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null,IConnectControlSingleton connectControlSingleton = null)
+            // ReSharper restore TooManyDependencies
             : base(eventAggregator)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -113,13 +114,13 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Commands
 
-        public ICommand SelectAllDependanciesCommand
+        public RelayCommand SelectAllDependanciesCommand
         {
             get;
             private set;
         }
 
-        public ICommand DeployCommand
+        public RelayCommand DeployCommand
         {
             get;
             private set;
@@ -219,7 +220,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             if(SelectedDestinationServer != null && SelectedDestinationServer.IsConnected)
             {
-                return SelectedDestinationServer.IsAuthorizedDeployTo;
+               return SelectedDestinationServer.IsAuthorizedDeployTo;
             }
             return false;
         }
@@ -539,15 +540,15 @@ namespace Dev2.Studio.ViewModels.Deploy
             _sourceStatPredicates.Add("Services",
                                             n => _deployStatsCalculator
                                           .SelectForDeployPredicateWithTypeAndCategories
-                                          (n, Common.Interfaces.Data.ResourceType.DbService | Common.Interfaces.Data.ResourceType.PluginService | Common.Interfaces.Data.ResourceType.WebService, blankCategories, exclusionCategories));
+                                          (n, ResourceType.DbService | ResourceType.PluginService | ResourceType.WebService, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Workflows",
                                       n => _deployStatsCalculator.
                                                SelectForDeployPredicateWithTypeAndCategories
-                                               (n, Common.Interfaces.Data.ResourceType.WorkflowService, blankCategories, exclusionCategories));
+                                               (n, ResourceType.WorkflowService, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Sources",
                                       n => _deployStatsCalculator
                                                .SelectForDeployPredicateWithTypeAndCategories
-                                               (n, Common.Interfaces.Data.ResourceType.DbSource | Common.Interfaces.Data.ResourceType.PluginSource | Common.Interfaces.Data.ResourceType.WebSource | Common.Interfaces.Data.ResourceType.ServerSource | Common.Interfaces.Data.ResourceType.EmailSource, blankCategories, exclusionCategories));
+                                               (n, ResourceType.DbSource | ResourceType.PluginSource | ResourceType.WebSource | ResourceType.ServerSource | ResourceType.EmailSource, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Unknown",
                                       n => _deployStatsCalculator.SelectForDeployPredicate(n));
             _targetStatPredicates.Add("New Resources",
@@ -593,7 +594,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     {
                         if(resourceTreeViewModel != null)
                         {
-                            IEnumerable<IExplorerItemModel> checkedITems = resourceTreeViewModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false));
+                            IEnumerable<IExplorerItemModel> checkedITems = resourceTreeViewModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)&& model.ResourceType != ResourceType.Folder);
                             selectedResourcesTreeViewModels.AddRange(checkedITems);
                         }
                     }
@@ -821,6 +822,11 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // Setting the SelectedSourceServer will run the LoadSourceEnvironment method, 
                 // which takes care of selecting and expanding the correct node
                 //
+                if(SourceConnectControlViewModel != null)
+                {
+                    SourceConnectControlViewModel.UpdateActiveEnvironment(environment,false);
+                    SourceConnectControlViewModel.SetTargetEnvironment();
+                }
                 SelectedSourceServer = server;
             }
         }
@@ -879,7 +885,19 @@ namespace Dev2.Studio.ViewModels.Deploy
             Dev2Logger.Log.Info(message.GetType().Name);
             _initialItemResourceID = message.ResourceID;
             _initialItemEnvironmentID = message.EnvironmentID;
+            SourceConnectControlViewModel.SetTargetEnvironment();
+
             SelectSourceServerFromInitialValue();
+            var root = Source.ExplorerItemModels.FirstOrDefault();
+            if (root != null)
+            {
+                var resourceTreeViewModels = root.Descendants().First(a => a.ResourceId == message.ResourceID);
+
+                if (resourceTreeViewModels != null)
+                {
+                    resourceTreeViewModels.IsChecked = true;
+                }
+            }
         }
 
         public void Handle(EnvironmentDeletedMessage message)

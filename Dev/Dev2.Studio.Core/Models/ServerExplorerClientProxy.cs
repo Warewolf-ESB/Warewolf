@@ -21,7 +21,7 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Models
 {
-    public class ServerExplorerClientProxy : IExplorerResourceRepository
+    public class ServerExplorerClientProxy : IClientExplorerResourceRepository
     {
         public ICommunicationControllerFactory CommunicationControllerFactory { get; private set; }
         private readonly IEnvironmentConnection _connection;
@@ -106,6 +106,15 @@ namespace Dev2.Models
             controller.AddPayloadArgument("itemToMove", serializer.SerializeToBuilder(itemToMove).ToString());
             controller.AddPayloadArgument("newPath", newPath);
             return controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, workSpaceId);
+        }
+
+        public string GetServerVersion()
+        {
+            var controller = CommunicationControllerFactory.CreateController("GetServerVersion");
+            var version =  controller.ExecuteCommand<string>(Connection, Guid.Empty);
+            if(String.IsNullOrEmpty(version))
+                return "less than 0.4.19.1";
+            return version;
         }
     }
 }

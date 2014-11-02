@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -265,13 +264,13 @@ namespace Dev2.Runtime.ESB.Control
             finally
             {
                 // clean up after the request has executed ;)
-                if(dataObject.IsDebug && !_doNotWipeDataList && !dataObject.IsRemoteInvoke)
+                if (dataObject.IsDebug && !_doNotWipeDataList && !dataObject.IsRemoteInvoke)
                 {
                     DataListRegistar.ClearDataList();
                 }
                 else
                 {
-                    foreach(var thread in dataObject.ThreadsToDispose)
+                    foreach (var thread in dataObject.ThreadsToDispose)
                     {
                         DataListRegistar.DisposeScope(thread.Key, resultID);
                     }
@@ -426,21 +425,17 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 if(!invokeErrors.HasErrors())
                 {
-                    var task = Task.Factory.StartNew(() =>
+                    Task.Factory.StartNew(() =>
                     {
                         Dev2Logger.Log.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
                         ErrorResultTO error;
                         clonedDataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dl1, shapeOfData, out error);
-                        executionContainer.Execute(out error);
+                        var execute = executionContainer.Execute(out error);
+                        var fetchBinaryDataList = compiler.FetchBinaryDataList(execute, out error);
+                        fetchBinaryDataList.Dispose();
+                        return execute;
                     });
-
-                    // ReSharper disable ImplicitlyCapturedClosure
-                    task.ContinueWith(o =>
-                        // ReSharper restore ImplicitlyCapturedClosure
-                        {
-                            DataListRegistar.DisposeScope(o.Id, clonedDataObject.DataListID);
-                            o.Dispose();
-                        });
+                   
                 }
             }
             else

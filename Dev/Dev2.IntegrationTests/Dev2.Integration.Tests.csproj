@@ -274,6 +274,7 @@
     <Compile Include="Server Test\RelativeUriResourceTest.cs" />
     <Compile Include="Server Test\ServerLifecycleManagerTest.cs" />
     <Compile Include="Runtime.ServiceModel\ConnectionTests.cs" />
+    <Compile Include="Server Test\TimeZoneChanges.cs" />
     <Compile Include="Server Test\WebServerTests\WebServerTests.cs" />
     <Compile Include="Server Test\Workspace\XML\XmlResource.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnviromentModelTests.cs" />

@@ -402,6 +402,13 @@ Server: Version {1}
 Sofware development by: www.dev2.co.za
 </value>
   </data>
+  <data name="Server_About_Content" xml:space="preserve">
+    <value>Server: Version {1}
+
+Sofware development by: www.dev2.co.za
+</value>
+  </data>
+  
   <data name="About_Header_Text" xml:space="preserve">
     <value>About</value>
   </data>

@@ -11,6 +11,7 @@
 
 
 using System;
+using System.ComponentModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Models;
@@ -42,9 +43,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             NavigationViewModel = navigationViewModel;
             ActivityType = dsfActivityType;
-
+            NavigationViewModel.PropertyChanged+=CheckIfSelectedItemChanged;
             Init();
             EventPublishers.Aggregator.Subscribe(this);
+        }
+
+        void CheckIfSelectedItemChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            if (propertyChangedEventArgs.PropertyName == "SelectedItem")
+            {
+                OkCommand.RaiseCanExecuteChanged();
+            }
         }
 
         void Init()
@@ -98,7 +107,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Commands
 
-        public ICommand OkCommand
+        public RelayCommand OkCommand
         {
             get
             {
@@ -141,8 +150,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
 
-            return explorerItemModel != null
-                && isMatched;
+            return explorerItemModel != null && isMatched;
         }
 
         public ICommand CancelCommand

@@ -284,7 +284,7 @@ namespace Dev2.Core.Tests.Dialogs
             var envRepo = new TestLoadEnvironmentRespository(mockEnvironmentModel.Object, mockEnvironmentModel2.Object);
             var selectedResource = mockResourceRepository.Object.All().ToList()[1];
 
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
 
             var repository = new StudioResourceRepository(GetTestData(), Guid.Empty, _Invoke)
             {

@@ -34,7 +34,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         private SettingsObject _selectedSettingsObjects;
         private UserControl _settingsView;
         private Visibility _errorsVisible;
-        private XElement _initConfigXML;
+        private XElement _initConfigXml;
 
         private RelayCommand _saveCommand;
         private RelayCommand _cancelCommand;
@@ -45,12 +45,12 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         #region Constructor
 
-        public MainViewModel(XElement configurationXML, Func<XElement, XElement> saveCallback, System.Action cancelCallback, System.Action settingChangedCallback)
+        public MainViewModel(XElement configurationXml, Func<XElement, XElement> saveCallback, System.Action cancelCallback, System.Action settingChangedCallback)
         {
             Errors = new ObservableCollection<string>();
             ClearErrors();
 
-            if(!SetConfiguration(configurationXML)) return;
+            if(!SetConfiguration(configurationXml)) return;
 
             SaveCallback = saveCallback;
             CancelCallback = cancelCallback;
@@ -59,10 +59,10 @@ namespace Dev2.Runtime.Configuration.ViewModels
             CommunicationService = new WebCommunicationService();
         }
 
-        private bool SetConfiguration(XElement configurationXML)
+        private bool SetConfiguration(XElement configurationXml)
         {
             // Check for null
-            if(configurationXML == null)
+            if(configurationXml == null)
             {
                 SetError("'configurationXML' of the MainViewModel was null.");
                 return false;
@@ -71,12 +71,12 @@ namespace Dev2.Runtime.Configuration.ViewModels
             // Try parse configuration xml
             try
             {
-                Configuration = new Settings.Configuration(configurationXML);
+                Configuration = new Settings.Configuration(configurationXml);
                 Configuration.PropertyChanged += ConfigurationPropertyChanged;
             }
             catch(Exception)
             {
-                SetError(string.Format("Error parsing '{0}' input.", configurationXML));
+                SetError(string.Format("Error parsing '{0}' input.", configurationXml));
                 return false;
             }
 
@@ -87,11 +87,11 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
             catch(Exception)
             {
-                SetError(string.Format("Error building settings graph from '{0}'.", configurationXML));
+                SetError(string.Format("Error building settings graph from '{0}'.", configurationXml));
                 return false;
             }
 
-            _initConfigXML = configurationXML;
+            _initConfigXml = configurationXml;
             return true;
         }
 
@@ -184,7 +184,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public ICommand SaveCommand
+        public RelayCommand SaveCommand
         {
             get
             {
@@ -193,7 +193,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public ICommand CancelCommand
+        public RelayCommand CancelCommand
         {
             get
             {
@@ -202,7 +202,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public ICommand ClearErrorsCommand
+        public RelayCommand ClearErrorsCommand
         {
             get
             {
@@ -235,6 +235,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
             {
                 case "HasChanges":
                     CommandManager.InvalidateRequerySuggested();
+                    SaveCommand.RaiseCanExecuteChanged();
+                    CancelCommand.RaiseCanExecuteChanged();
+                    ClearErrorsCommand.RaiseCanExecuteChanged();
                     if(Configuration.HasChanges)
                     {
                         SaveSuccess = false;
@@ -242,6 +245,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
                     break;
                 case "HasError":
                     CommandManager.InvalidateRequerySuggested();
+                    SaveCommand.RaiseCanExecuteChanged();
+                    CancelCommand.RaiseCanExecuteChanged();
+                    ClearErrorsCommand.RaiseCanExecuteChanged();
                     break;
             }
         }
@@ -291,7 +297,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             try
             {
                 CancelCallback();
-                SetConfiguration(_initConfigXML);
+                SetConfiguration(_initConfigXml);
             }
             catch(Exception ex)
             {
@@ -308,14 +314,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         private void SetError(string error)
         {
             Errors.Add(error);
-            if(Errors.Count == 0)
-            {
-                ErrorsVisible = Visibility.Collapsed;
-            }
-            else
-            {
-                ErrorsVisible = Visibility.Visible;
-            }
+            ErrorsVisible = Errors.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void UpdateSettingsView(SettingsObject settingsObject)

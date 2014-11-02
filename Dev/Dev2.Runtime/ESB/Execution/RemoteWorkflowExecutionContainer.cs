@@ -63,7 +63,6 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void PerformLogExecution(string logUri)
         {
-            var connection = GetConnection(DataObject.EnvironmentID);
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             var expressionsEntry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, logUri, false, out errors);
@@ -73,7 +72,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var cols = itr.FetchNextRowData();
                 foreach(var c in cols)
                 {
-                    var buildGetWebRequest = BuildGetWebRequest(c.TheValue, connection.AuthenticationType, connection.UserName, connection.Password);
+                    var buildGetWebRequest = BuildSimpleGetWebRequest(c.TheValue);
                     if(buildGetWebRequest == null)
                     {
                         throw new Exception("Invalid Url to execute for logging");
@@ -210,7 +209,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             try
             {
-                var req = WebRequest.Create(requestUri);
+                var req = BuildSimpleGetWebRequest(requestUri);
                 if(authenticationType == AuthenticationType.Windows)
                 {
                     req.UseDefaultCredentials = true;
@@ -238,6 +237,21 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 req.Headers.Add(HttpRequestHeader.From, remoteInvokerId); // Set to remote invoke ID ;)
                 req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
+                return req;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+        }
+
+        WebRequest BuildSimpleGetWebRequest(string requestUri)
+        {
+            try
+            {
+                var req = WebRequest.Create(requestUri);
+                req.Method = "GET";
+                // set header for server to know this is a remote invoke ;)                
                 return req;
             }
             catch(Exception)

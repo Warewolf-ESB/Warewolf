@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Microsoft.Win32;
 
 namespace Dev2.Common
 {
@@ -22,8 +23,21 @@ namespace Dev2.Common
 
     public static class GlobalConstants
     {
+
+         static GlobalConstants()
+         {
+             SystemEvents.TimeChanged += (sender, args) =>
+             {
+                 // ReSharper disable once ConvertToLambdaExpression
+                 CultureInfo.CurrentCulture.ClearCachedData();
+             };
+            
+         }
         // ReSharper disable InconsistentNaming
         //Default TimeoutValue
+        // ReSharper disable UnusedMember.Global
+        public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
+        // ReSharper restore UnusedMember.Global
 
         // Max String Size
         // ReSharper disable InconsistentNaming
@@ -36,7 +50,9 @@ namespace Dev2.Common
         // ReSharper restore InconsistentNaming
 
         // Force Webserver Constants
+        // ReSharper disable UnusedMember.Global
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
+     
 
         //Runtime Configuration
         public const string Dev2RuntimeConfigurationAssemblyName = "Dev2.Runtime.Configuration.dll";
@@ -222,7 +238,6 @@ or type_desc LIKE '%Procedure%'";
         public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";
         public const string VersionDownloadPath = "Installers\\";
         public const string VersionFolder = "VersionControl";
-        public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
         public static readonly Guid NullDataListID = Guid.Empty;
 
         // Server WorkspaceID
@@ -236,7 +251,11 @@ or type_desc LIKE '%Procedure%'";
 
         // Security
         //public const string BuiltInAdministrator = "BuiltIn\\Administrators";
+        // ReSharper disable ConvertToConstant.Global
+        // ReSharper disable FieldCanBeMadeReadOnly.Global
         public static String PublicUsername = @"\";
+      
+ 
 
         // GAC
         public static readonly string GACPrefix = "GAC:";
@@ -248,7 +267,9 @@ or type_desc LIKE '%Procedure%'";
         public static readonly string RemoteServerInvoke = "RemoteWarewolfServer";
 
         // Date Time
+        // ReSharper disable MemberCanBePrivate.Global
         public static readonly string LongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+
         public static readonly string ShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortTimePattern + " " + LongTimePattern;
         public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
@@ -315,14 +336,16 @@ or type_desc LIKE '%Procedure%'";
             "Not XML"
         };
 
-        public static int VersionCount = 20;
 
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        public static int VersionCount = 20;
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
         public static string WebServiceTimeoutMessage =
             "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
 
 
         // Limit WF execution
-        public static int MaxWorkflowsToExecute = 50;
+        public static int MaxWorkflowsToExecute = 1010;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
         public static string WebServerPort { get; set; }
@@ -330,4 +353,8 @@ or type_desc LIKE '%Procedure%'";
 
         // ReSharper restore InconsistentNaming
     }
+    // ReSharper restore UnusedMember.Global
+    // ReSharper restore ConvertToConstant.Global
+    // ReSharper restore FieldCanBeMadeReadOnly.Global
+    // ReSharper restore MemberCanBePrivate.Global
 }

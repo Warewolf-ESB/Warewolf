@@ -70,7 +70,7 @@
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedDatabaseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpDatabase}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpDatabase}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
@@ -93,11 +93,11 @@
                   ItemsSource="{Binding Tables}"
                   DisplayMemberPath="FullName"
                   SelectedItem="{Binding SelectedTable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipTableName}"
+                  ToolTip="{x:Static help:HelpTextResources.SQLBulkInsertToolTipTable}"
                   attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedTableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpTableName}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpTable}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
@@ -114,7 +114,7 @@
                                x:Name="LargeDataGrid"
                                ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
-                               Margin="0,3">
+                               Margin="0,0,0,6">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
@@ -123,7 +123,7 @@
                                         MinWidth="125"
                                         Header="Input Data or [[Variable]]"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
+                                        d:DataContext="{d:DesignInstance Type=local:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
@@ -133,11 +133,12 @@
                                                     MaxHeight="80"
                                                     TextWrapping="Wrap"
                                                     WrapInBrackets="False"
-                                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsMappingFieldFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipInputColumn}"                                                    
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpInputColumn}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpInputData}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="InputColumn"
@@ -242,7 +243,7 @@
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsBatchSizeFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_BatchSize_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpBatchSize}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpBatchSize}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="BatchSize"
@@ -281,7 +282,7 @@
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipCheckConstraints}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_CheckConstraints_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpCheckConstraints}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpCheckConstraints}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="CheckConstraints"
@@ -298,7 +299,7 @@
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipKeepTableLock}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_KeepTableLock_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpKeepTableLock}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpTablelock}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="KeepTableLock"
@@ -315,7 +316,7 @@
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipFireTriggers}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_FireTriggers_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpFireTriggers}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpFiretriggers}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="FireTriggers"
@@ -332,7 +333,7 @@
                       ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipKeepIdentity}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_KeepIdentity_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpKeepIdentity}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpKeepidentity}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="KeepIdentity"
@@ -363,10 +364,10 @@
                       Grid.ColumnSpan="2"
                       Content="Skip blank rows"
                       IsChecked="{Binding ModelItem.IgnoreBlankRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.SqlBulkInsertToolTipIgnoreBlankRows}"
+                      ToolTip="{x:Static help:HelpTextResources.SQLBulkInsertToolTipSkipblankrows}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_IgnoreBlankRows_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpIgnoreBlankRows}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpSkipblankrows}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="IgnoreBlankRows"
@@ -392,7 +393,7 @@
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SqlBulkInsertHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SQLBulkInsertHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="Result"

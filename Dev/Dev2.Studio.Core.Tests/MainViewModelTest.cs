@@ -16,6 +16,7 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
@@ -36,6 +37,7 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Workspaces;
+using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels;
@@ -738,6 +740,7 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             WindowManager.Setup(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null)).Verifiable();
+           CustomContainer.Register(new DialogViewModelFactory() as IDialogViewModelFactory);
             MainViewModel.DisplayAboutDialogueCommand.Execute(null);
             WindowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
         }

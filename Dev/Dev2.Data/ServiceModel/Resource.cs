@@ -49,6 +49,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.WebSource, "Source" },
             { ResourceType.WebService, "Service" },
             { ResourceType.WorkflowService, "Service" },
+            { ResourceType.ServerSource, "Source" },
         };
         IVersionInfo _versionInfo;
 

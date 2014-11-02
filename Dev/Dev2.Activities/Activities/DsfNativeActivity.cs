@@ -34,6 +34,7 @@ using Dev2.Simulation;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -791,6 +792,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return WorkSurfaceMappingId;
         }
         #endregion
+
+        public virtual IList<IActionableErrorInfo> PerformValidation()
+        {
+            return new List<IActionableErrorInfo>();
+        }
 
     }
 }

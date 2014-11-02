@@ -9,11 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Input;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 
 namespace Dev2.Activities.Preview
@@ -33,9 +31,20 @@ namespace Dev2.Activities.Preview
 
         public event EventHandler<PreviewRequestedEventArgs> PreviewRequested;
 
-        public ICommand PreviewCommand { get; private set; }
+        public RelayCommand PreviewCommand { get; private set; }
 
-        public bool CanPreview { get { return _canPreview; } set { OnPropertyChanged(ref _canPreview, value); } }
+        public bool CanPreview
+        {
+            get
+            {
+                return _canPreview;
+            }
+            set
+            {
+                OnPropertyChanged(ref _canPreview, value);
+                PreviewCommand.RaiseCanExecuteChanged();
+            }
+        }
 
         public bool IsPreviewFocused { get { return _isPreviewFocused; } set { OnPropertyChanged(ref _isPreviewFocused, value); } }
 

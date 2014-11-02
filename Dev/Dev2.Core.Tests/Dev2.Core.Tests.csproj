@@ -168,6 +168,7 @@
     <Compile Include="DataList\BinaryDataListItemTest.cs" />
     <Compile Include="DataList\BinaryDataListTest.cs" />
     <Compile Include="DataList\BrokerTest.cs" />
+    <Compile Include="DataList\DebugToTests.cs" />
     <Compile Include="DataList\Dev2DataListBuilderTest.cs" />
     <Compile Include="Dev2.Network\MockNetworkServer.cs" />
     <Compile Include="Dev2.Network\MockNetworkContext.cs" />
