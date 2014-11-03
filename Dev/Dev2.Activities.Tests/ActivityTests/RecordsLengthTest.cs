@@ -57,6 +57,21 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
+        [TestMethod]
+        public void CountOutputToScalar_With_NonExistantRecSet_Expected_Errors()
+        {
+
+            SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
+
+            IDSFDataObject result = ExecuteProcess();
+            var res = Compiler.HasErrors(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(res);
+        }
+
         //Bug 7853
         [TestMethod]
         public void RecordsetLengthOutputToScalar_With_EmptyRecSet_Expected_ScalarValueCorrectlySetTo0()
