@@ -27,12 +27,15 @@
 /Dev/Dev2.Server/bin/Debug/ActiveDirectory
 /Dev/Dev2.Server/bin/Debug/CefSharp
 /Dev/Dev2.Server/bin/Debug/SSL Generation
+/Dev/Dev2.Server/bin/Debug/ServerStarted
 /Dev/Dev2.Server/bin/Debug/*.dll
 /Dev/Dev2.Server/bin/Debug/*.pdb
 /Dev/Dev2.Server/bin/Debug/*.exe
 /Dev/Dev2.Server/bin/Debug/*.xml
 /Dev/Dev2.Server/bin/Debug/*.config
 /Dev/Dev2.Server/bin/Debug/*.manifest
+/Dev/Dev2.Server/bin/Debug/*.log
+/Dev/Dev2.Server/bin/Debug/*.cer
 ####################################################################################
 # Other Build Output Folders
 ####################################################################################
