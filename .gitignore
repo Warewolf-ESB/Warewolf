@@ -9,21 +9,44 @@
 *.uws
 *.suo
 *.user
-####################################################################################
-# Build Output Folders
-####################################################################################
+
 /Dev/packages
+/Dev/TestResults
+/bin
+/TestResults
+####################################################################################
+# Server Build Output Folders
+####################################################################################
+/Dev/Dev2.Server/obj
 /Dev/Dev2.Server/bin/x86
 /Dev/Dev2.Server/bin/x64
 /Dev/Dev2.Server/bin/Release
+
+####### Server bin/Debug is used to manage resources for CI to test against ########
 /Dev/Dev2.Server/bin/Debug/Workspaces
-/Dev/TestResults
+/Dev/Dev2.Server/bin/Debug/ActiveDirectory
+/Dev/Dev2.Server/bin/Debug/CefSharp
+/Dev/Dev2.Server/bin/Debug/SSL Generation
+/Dev/Dev2.Server/bin/Debug/ServerStarted
+/Dev/Dev2.Server/bin/Debug/*.dll
+/Dev/Dev2.Server/bin/Debug/*.pdb
+/Dev/Dev2.Server/bin/Debug/*.exe
+/Dev/Dev2.Server/bin/Debug/*.xml
+/Dev/Dev2.Server/bin/Debug/*.config
+/Dev/Dev2.Server/bin/Debug/*.manifest
+/Dev/Dev2.Server/bin/Debug/*.log
+/Dev/Dev2.Server/bin/Debug/*.cer
+####################################################################################
+# Other Build Output Folders
+####################################################################################
 /Dev/ConsoleAppToTestExecuteCommandLineActivity/bin
 /Dev/ConsoleAppToTestExecuteCommandLineActivity/obj
 /Dev/Dev2.Activities/bin
 /Dev/Dev2.Activities/obj
 /Dev/Dev2.Activities.Designers/bin
 /Dev/Dev2.Activities.Designers/obj
+/Dev/Dev2.Activities.Designers.Tests/bin
+/Dev/Dev2.Activities.Designers.Tests/obj
 /Dev/Dev2.Activities.Tests/bin
 /Dev/Dev2.Activities.Tests/obj
 /Dev/Dev2.Activities.Specs/bin
@@ -38,8 +61,12 @@
 /Dev/Dev2.Core/obj
 /Dev/Dev2.Core.Tests/bin
 /Dev/Dev2.Core.Tests/obj
+/Dev/Dev2.Crypto.HashGenerator/bin
+/Dev/Dev2.Crypto.HashGenerator/obj
 /Dev/Dev2.CustomControls/bin
 /Dev/Dev2.CustomControls/obj
+/Dev/Dev2.CustomControls.Tests/bin
+/Dev/Dev2.CustomControls.Tests/obj
 /Dev/Dev2.Data/bin
 /Dev/Dev2.Data/obj
 /Dev/Dev2.Data.Tests/bin
@@ -80,11 +107,6 @@
 /Dev/Dev2.Runtime.WebServer/obj
 /Dev/Dev2.Scheduler/bin
 /Dev/Dev2.Scheduler/obj
-/Dev/Dev2.Server/bin/Debug/Warewolf Server.exe.config
-/Dev/Dev2.Server/bin/Debug/Warewolf Server.vshost.exe
-/Dev/Dev2.Server/bin/Debug/Warewolf Server.vshost.exe.config
-/Dev/Dev2.Server/bin/Debug/Warewolf Server.vshost.exe.manifest
-/Dev/Dev2.Server/obj
 /Dev/Dev2.Services.Execution/bin
 /Dev/Dev2.Services.Execution/obj
 /Dev/Dev2.Services.Sql/bin
@@ -103,6 +125,8 @@
 /Dev/Dev2.TaskScheduler.Wrappers/obj
 /Dev/Dev2.UndoFramework/bin
 /Dev/Dev2.UndoFramework/obj
+/Dev/Dev2.UndoFramework.Tests/bin
+/Dev/Dev2.UndoFramework.Tests/obj
 /Dev/Dev2.Util/bin
 /Dev/Dev2.Util/obj
 /Dev/Dev2.UnitTestUtils/bin
@@ -123,11 +147,6 @@
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
 /Dev/SFTPServer/bin
 /Dev/SFTPServer/obj
-
-######### These two help with build automation: ####################################
-/TestResults
-/bin
-######### Note: these only apply to root bin and test result directories ###########
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
