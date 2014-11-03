@@ -182,7 +182,11 @@ namespace Dev2.PathOperations
             finally
             {
                 _fileLock.ExitWriteLock();
-                _filesToDelete.ForEach(RemoveTmpFile);
+                for(var index = _filesToDelete.Count-1; index > 0; index--)
+                {
+                    var name = _filesToDelete[index];
+                    RemoveTmpFile(name);
+                }
             }
             return result;
         }
