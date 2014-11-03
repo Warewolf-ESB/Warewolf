@@ -363,7 +363,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void LoadWorkflowInputs()
         {
             WorkflowInputs.Clear();
+            if (Broker != null)
+                Broker.Dispose();
             Broker = Dev2StudioSessionFactory.CreateBroker();
+            if (DebugTo != null)
+                DebugTo.CleanUp();
             DebugTo = Broker.InitDebugSession(DebugTo);
             XmlData = DebugTo.XmlData;
             RememberInputs = DebugTo.RememberInputs;
