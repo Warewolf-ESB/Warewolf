@@ -61,7 +61,7 @@ namespace Dev2.PathOperations
     [Serializable]
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
-        private static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         const int LOGON32_PROVIDER_DEFAULT = 0;
         //This parameter causes LogonUser to create a primary token. 
         // ReSharper disable once InconsistentNaming
