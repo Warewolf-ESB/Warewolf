@@ -338,56 +338,58 @@ namespace Dev2.Runtime.ESB.Control
             else
             {
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
-                if(executionContainer != null)
+                if (executionContainer != null)
                 {
-                    if(!isLocal)
+                    if (!isLocal)
                     {
                         _doNotWipeDataList = true;
-                        SetRemoteExecutionDataList(dataObject, executionContainer);
+                        SetRemoteExecutionDataList(dataObject, executionContainer, errors);
                     }
-                    
-                    executionContainer.InstanceOutputDefinition = outputDefs;
-                    result = executionContainer.Execute(out invokeErrors);
-                    errors.MergeErrors(invokeErrors);
-                    string errorString = compiler.FetchErrors(dataObject.DataListID, true);
-                    invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                    errors.MergeErrors(invokeErrors);
-                    // If Web-service or Plugin, skip the final shaping junk ;)
-                    if(SubExecutionRequiresShape(workspaceId, dataObject.ServiceName))
+                    if (!errors.HasErrors())
                     {
-                        if(!dataObject.IsDataListScoped && remainingMappings != null)
+                        executionContainer.InstanceOutputDefinition = outputDefs;
+                        result = executionContainer.Execute(out invokeErrors);
+                        errors.MergeErrors(invokeErrors);
+                        string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                        invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                        errors.MergeErrors(invokeErrors);
+                        // If Web-service or Plugin, skip the final shaping junk ;)
+                        if (SubExecutionRequiresShape(workspaceId, dataObject.ServiceName))
                         {
-                            // Adjust the remaining output mappings ;)
-                            compiler.SetParentID(dataObject.DataListID, oldID);
-                            var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
-                            compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value,
-                                           out invokeErrors);
-                            errors.MergeErrors(invokeErrors);
+                            if (!dataObject.IsDataListScoped && remainingMappings != null)
+                            {
+                                // Adjust the remaining output mappings ;)
+                                compiler.SetParentID(dataObject.DataListID, oldID);
+                                var outputMappings = remainingMappings.FirstOrDefault(c => c.Key == enDev2ArgumentType.Output);
+                                compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputMappings.Value,
+                                               out invokeErrors);
+                                errors.MergeErrors(invokeErrors);
+                            }
+                            else
+                            {
+                                compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs, out invokeErrors);
+                                errors.MergeErrors(invokeErrors);
+                            }
                         }
-                        else
-                        {
-                            compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs, out invokeErrors);
-                            errors.MergeErrors(invokeErrors);
-                        }
-                    }
 
-                    // The act of doing this moves the index data correctly ;)
-                    // We need to remove this in the future.
+                        // The act of doing this moves the index data correctly ;)
+                        // We need to remove this in the future.
 #pragma warning disable 168
-                    // ReSharper disable UnusedVariable
-                    var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                    var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-                    // ReSharper restore UnusedVariable
+                        // ReSharper disable UnusedVariable
+                        var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                        var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                        // ReSharper restore UnusedVariable
 #pragma warning restore 168
 
-                    return result;
+                        return result;
+                    }
+                    errors.AddError("Null container returned");
                 }
-                errors.AddError("Null container returned");
             }
             return result;
         }
 
-        static void SetRemoteExecutionDataList(IDSFDataObject dataObject, EsbExecutionContainer executionContainer)
+        static void SetRemoteExecutionDataList(IDSFDataObject dataObject, EsbExecutionContainer executionContainer, ErrorResultTO errors)
         {
             var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
             if(remoteContainer != null)
@@ -398,6 +400,11 @@ namespace Dev2.Runtime.ESB.Control
                     fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
                     var remoteDataList = fetchRemoteResource.DataList;
                     dataObject.RemoteInvokeResultShape = new StringBuilder(remoteDataList);
+                }
+                else
+                {
+                    var message = string.Format("Remote Execution Failed. Service: {0} not found.", dataObject.ServiceName);
+                    errors.AddError(message);
                 }
             }
         }
@@ -419,7 +426,7 @@ namespace Dev2.Runtime.ESB.Control
                         {
                             invokeErrors.AddError("Asynchronous execution failed: Remote server unreachable");
                         }
-                        SetRemoteExecutionDataList(dataObject, executionContainer);
+                        SetRemoteExecutionDataList(dataObject, executionContainer, invokeErrors);
                         shapeOfData = dataObject.RemoteInvokeResultShape;
                     }
                 }
