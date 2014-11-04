@@ -75,6 +75,21 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(expected, actual);
 
+        } 
+        
+        [TestMethod]
+        public void CountOutputToScalar_With_NonExistantRecSet_Expected_Errors()
+        {
+
+            SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
+
+            IDSFDataObject result = ExecuteProcess();
+            var res = Compiler.HasErrors(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(res);
         }
 
         //2013.06.03: Ashley Lewis for bug 9498 - multiple regions in result

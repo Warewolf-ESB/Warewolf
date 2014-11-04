@@ -90,14 +90,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
     </Reference>
-    <Reference Include="Dev2.Activities.Designers">
-      <HintPath>..\Dev2.Studio\bin\Debug\Dev2.Activities.Designers.dll</HintPath>
-    </Reference>
-    <Reference Include="Dev2.Common.Interfaces">
-      <HintPath>..\Dev2.Common.Interfaces\bin\x86\Debug\Dev2.Common.Interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
-      <HintPath>..\Dev2.Studio\bin\Debug\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin">
@@ -659,6 +653,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{b95b724a-b052-4e18-98a4-88072c8df2c2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities.Tests\Dev2.Activities.Tests.csproj">
       <Project>{2A8088A6-8F8D-42FD-B877-D809C494C561}</Project>
       <Name>Dev2.Activities.Tests</Name>
@@ -666,6 +664,10 @@
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
       <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>

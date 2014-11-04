@@ -98,7 +98,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         bdl.TryGetEntry(rs, out recset, out err);
                         allErrors.AddError(err);
-
+                        try
+                        {
+                            // ReSharper disable UnusedVariable
+                            var hasValue = recset.FetchScalar().TheValue;
+                            // ReSharper restore UnusedVariable
+                        }
+                        catch(Exception e)
+                        {
+                            allErrors.AddError(e.Message);
+                        }
                         if(dataObject.IsDebugMode())
                         {
                             AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Recordset", recset, executionId));
