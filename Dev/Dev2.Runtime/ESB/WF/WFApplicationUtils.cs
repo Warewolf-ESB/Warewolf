@@ -173,15 +173,19 @@ namespace Dev2.Runtime.ESB.WF
         }
         private static void GetValue(IBinaryDataListEntry tmpEntry, IDev2Definition defn)
         {
+            if (tmpEntry != null)
+            {
+                if (String.IsNullOrEmpty(defn.RecordSetName))
+                {
 
-            if(String.IsNullOrEmpty(defn.RecordSetName))
-            {
-                tmpEntry.FetchScalar(); // ask trav what this side effect means
-            }
-            else
-            {
-                string error;
-                tmpEntry.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, GlobalConstants.AllColumns, out error);
+                    tmpEntry.FetchScalar(); // ask trav what this side effect means
+
+                }
+                else
+                {
+                    string error;
+                    tmpEntry.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, GlobalConstants.AllColumns, out error);
+                }
             }
         }
 
