@@ -38,8 +38,8 @@ namespace Dev2.Studio.UI.Tests.Tests.VariableList
         [TestCleanup]
         public void MyTestCleanup()
         {
+            RestartStudioOnFailure();
             TabManagerUIMap.CloseAllTabs();
-            
         }
 
         [TestMethod]
