@@ -1296,6 +1296,21 @@ namespace Dev2.Models
             }
         }
 
+        public string ResourcePathWithoutName {
+            get
+            {
+                if (ResourcePath != null)
+                {
+                    if (ResourcePath.Contains("\\"))
+                    {
+                        return ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
+                    }
+                    return "";
+                }
+                return null;
+            }
+        }
+
         private string GetRenamePath(string existingPath, string newName)
         {
             if (!existingPath.Contains("\\"))
