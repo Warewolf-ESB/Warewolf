@@ -435,7 +435,7 @@ namespace Dev2.AppResources.Repositories
             }
             model.Parent.RemoveChild(model);
             model.ResourcePath = newPath;
-            ItemAddedMessageHandler(new ServerExplorerItem(model.DisplayName,model.ResourceId,model.ResourceType,null,model.Permissions,newPath+"\\"+model.DisplayName));
+            ItemAddedMessageHandler(new ServerExplorerItem(model.DisplayName,model.ResourceId,model.ResourceType,null,model.Permissions,newPath+"\\"+model.DisplayName){ServerId = model.EnvironmentId});
 
             RefreshVersionHistory(model.EnvironmentId, model.ResourceId);
         }
