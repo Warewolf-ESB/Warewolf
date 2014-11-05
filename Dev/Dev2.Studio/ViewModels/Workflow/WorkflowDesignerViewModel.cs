@@ -893,13 +893,24 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 catch (Exception)
                 {
-                    IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
+
+                    if (!DataListUtil.IsValueRecordset((decisionValue)))
+                    {
+                        IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
+
+
+                        decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                    }
+                else
+                    {
+                          IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
                         DataListSingleton
                             .ActiveDataList
                             .WriteToResourceModel
                             (), true);
-
-                    decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                        decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                    }
+                    
                 }
             }
             return decisionFields;
