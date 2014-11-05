@@ -26,10 +26,17 @@ taskkill /im "Warewolf Server.exe"
 REM  Wait 10 seconds ;)
 ping -n 10 127.0.0.1 > nul
 
-REM ** Start Warewolf server from deployed subdirectory **
-START "%DeploymentDirectory%\Server\Warewolf Server.exe" /D %DeploymentDirectory%\Server "Warewolf Server.exe"
+IF EXIST "%DeploymentDirectory%\Server\ServerStarted" DEL "%DeploymentDirectory%\Server\ServerStarted"
 
-REM  Wait 20 seconds ;)
-ping -n 20 127.0.0.1 > nul
+REM ** Start Warewolf server from deployed binaries **
+START "%DeploymentDirectory%\Server\Warewolf Server.exe" /D "%DeploymentDirectory%\Server" "Warewolf Server.exe"
 
+rem ping server until it responds
+:WaitForServerStart
+IF EXIST "%DeploymentDirectory%\Server\ServerStarted" goto exit 
+rem wait for 10 seconds before trying again
+@echo Waiting 10 seconds...
+ping -n 10 127.0.0.1 > nul
+goto WaitForServerStart
+:exit
 exit 0

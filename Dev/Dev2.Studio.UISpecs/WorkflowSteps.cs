@@ -264,7 +264,7 @@ namespace Dev2.Studio.UI.Specs
             {
                 Bootstrap.Teardown(true);
                 Playback.Cleanup();
-                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation);
+                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation, Bootstrap.StudioTimeOut);
                 Playback.Initialize();
             }
         }
@@ -756,7 +756,7 @@ namespace Dev2.Studio.UI.Specs
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown();
             Playback.Cleanup();
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.ServerLocation);
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.ServerLocation, Bootstrap.ServerTimeOut);
             Playback.Initialize();
         }
 
@@ -768,11 +768,11 @@ namespace Dev2.Studio.UI.Specs
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown(true);
             Playback.Cleanup();
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation);
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation, Bootstrap.StudioTimeOut);
             Playback.Initialize();
         }
 
-        static void RunSpecifiedFileWithUserNameAndPassword(string userName, string password, string fileLocation)
+        static void RunSpecifiedFileWithUserNameAndPassword(string userName, string password, string fileLocation, int timeOut)
         {
             var sspw = new SecureString();
 
@@ -808,7 +808,7 @@ namespace Dev2.Studio.UI.Specs
             //proc.StartInfo.Arguments = "";
 
             proc.Start();
-            Playback.Wait(Bootstrap.WaitMs);
+            Playback.Wait(timeOut);
         }
 
         [When(@"I drag ""(.*)"" onto ""(.*)""")]

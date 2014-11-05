@@ -9,12 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 
 namespace Dev2.Studio.UI.Tests.Tests.Activities
 {
@@ -37,8 +35,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCleanup]
         public void MyTestCleanup()
         {
+            RestartStudioOnFailure();
             TabManagerUIMap.CloseAllTabs();
-            
         }
         #endregion
 

@@ -51,6 +51,8 @@
 /Dev/Dev2.Activities.Tests/obj
 /Dev/Dev2.Activities.Specs/bin
 /Dev/Dev2.Activities.Specs/obj
+/Dev/Dev2.CodedUI.SpecGenerator/bin
+/Dev/Dev2.CodedUI.SpecGenerator/obj
 /Dev/Dev2.Common/bin
 /Dev/Dev2.Common/obj
 /Dev/Dev2.Common.Test/bin
@@ -121,8 +123,12 @@
 /Dev/Dev2.Studio.Core.Specs/obj
 /Dev/Dev2.Studio.Core.Tests/bin
 /Dev/Dev2.Studio.Core.Tests/obj
+/Dev/Dev2.Studio.UISpecs/bin
+/Dev/Dev2.Studio.UISpecs/obj
 /Dev/Dev2.TaskScheduler.Wrappers/bin
 /Dev/Dev2.TaskScheduler.Wrappers/obj
+/Dev/Dev2.UI.Tests/Dev2.Studio.UI.Tests/bin
+/Dev/Dev2.UI.Tests/Dev2.Studio.UI.Tests/obj
 /Dev/Dev2.UndoFramework/bin
 /Dev/Dev2.UndoFramework/obj
 /Dev/Dev2.UndoFramework.Tests/bin
