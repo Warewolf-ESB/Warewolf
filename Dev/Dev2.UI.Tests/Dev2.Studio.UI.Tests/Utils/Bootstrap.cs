@@ -329,7 +329,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                     proc.Kill();
                 }
                 // ReSharper disable EmptyGeneralCatchClause
-                catch(Exception e)
+                catch(Exception)
                 // ReSharper restore EmptyGeneralCatchClause
                 {
                     // Do nothing
