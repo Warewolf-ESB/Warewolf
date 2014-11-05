@@ -1,5 +1,5 @@
 
-<Service Name="EndPointInterrogator" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="77fa689a-8a80-448c-b53d-cf9d7e0852a4" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+<Service Name="EndPointInterrogator" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="77fa689a-8a80-448c-b53d-cf9d7e0852a4" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="EndPointInterrogator"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -106,7 +106,7 @@
   </Action>
   <AuthorRoles>Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>asdasdasd</Comment>
-  <Category>Integration Test Resources\EndPointInterrogator</Category>
+  <Category>Integration Test Resources\TestCategory\EndPointInterrogator</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
@@ -124,6 +124,7 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
+  <VersionInfo DateTimeStamp="2014-11-05T11:12:32.8064217+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="77fa689a-8a80-448c-b53d-cf9d7e0852a4" VersionId="710691b5-7d0e-42f3-8bd4-3cde8cdf8623" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -133,9 +134,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>8KaN4NV5iIrp1UPVM4pKX28NEco=</DigestValue>
+        <DigestValue>W1yW3ygsap1I1+q7Fqjop05r9KI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ao5+Z2ImOnadzSUyXpGj6GyLRRFnecTCxeDccjE/CcdJZ9AUbn5ZZ/orpVGIFqFjr5qUH675fenHViPSomOGsC42iTwnay4+vWJql6qPj1prlowlKfOYa2lXwcFaxrkltsKT4Gya18fwjXxq5F2eS/zUXn1vH/Avd3BFF8HAIWs=</SignatureValue>
+    <SignatureValue>UY/izgrwp/Z00vqeAHEbA7MY1DRS3zFh0349J6hMT6lGOvQRaMP0acyS3yNv4vJGqjuz2/LcevR88BoH3V8A/CzrAR7M72gICGpbM76EOiE1OuYbWW+ifzTSlmajejnfsfbRQgvnwqa1T5F/h3ZqU8FdLBHDgQGLEYvCdeNjjgI=</SignatureValue>
   </Signature>
 </Service>
