@@ -627,9 +627,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 c => c.Category == activity.ServiceName) as IContextualResourceModel;
                                     droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == droppedActivity.ServiceServer);
-            if(droppedActivity.FriendlySourceName.Expression.ToString() != environmentModel.DisplayName)
-                environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Name == droppedActivity.FriendlySourceName.Expression.ToString());
-
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, environmentModel);
                                     modelProperty1.SetValue(droppedActivity);
                                 }
