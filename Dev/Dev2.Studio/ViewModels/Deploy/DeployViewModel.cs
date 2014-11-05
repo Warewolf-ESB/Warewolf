@@ -632,8 +632,10 @@ namespace Dev2.Studio.ViewModels.Deploy
                 {
                     var items = explorerItemModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)).ToList();
                     _deployStatsCalculator.ConflictingResources = new ObservableCollection<DeployDialogTO>();
+                    
                     _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
                     _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
+                    DeployCommand.RaiseCanExecuteChanged();
                 }
             }
             NotifyOfPropertyChange(() => CanDeploy);

@@ -54,6 +54,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IsSearchCriteriaVisible = true;
             From = from;
             To = to;
+            IsSearchTypeFocused = false;
         }
 
         [FindMissing]
