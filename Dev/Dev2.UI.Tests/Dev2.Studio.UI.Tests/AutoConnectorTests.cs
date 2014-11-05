@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -38,8 +37,8 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void MyTestCleanup()
         {
+            RestartStudioOnFailure();
             TabManagerUIMap.CloseAllTabs();
-            
         }
 
         #endregion

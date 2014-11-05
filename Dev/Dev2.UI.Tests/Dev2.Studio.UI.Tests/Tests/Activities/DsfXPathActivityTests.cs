@@ -41,8 +41,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCleanup]
         public void MyTestCleanup()
         {
+            RestartStudioOnFailure();
             TabManagerUIMap.CloseAllTabs();
-            
         }
 
         #endregion

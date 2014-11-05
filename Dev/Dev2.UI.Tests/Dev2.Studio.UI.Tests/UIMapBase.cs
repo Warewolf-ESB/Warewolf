@@ -46,6 +46,7 @@ using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests
 {
@@ -763,7 +764,7 @@ namespace Dev2.Studio.UI.Tests
 
         #region Init
 
-        public static void Init()
+        protected static void Init()
         {
             try
             {
@@ -791,19 +792,14 @@ namespace Dev2.Studio.UI.Tests
             Bootstrap.Init();
         }
 
-        #endregion
-
-        #region On Error
-
-        static void PlaybackPlaybackError(object sender, PlaybackErrorEventArgs e)
+        protected static void RestartStudioOnFailure()
         {
-            //Drop image ;)
-            var imageDropFilename = Path.Combine(new Bootstrap().TestContext.TestResultsDirectory, Guid.NewGuid() + ".bmp");
-            using(var tempImage = new Bitmap(UITestControl.Desktop.CaptureImage()))
+            if(Bootstrap.testContext.CurrentTestOutcome == UnitTestOutcome.Passed)
             {
-                tempImage.Save(imageDropFilename);
+                return;
             }
-            new Bootstrap().TestContext.AddResultFile(imageDropFilename);
+            Bootstrap.Teardown(true);
+            Bootstrap.Init();
         }
 
         #endregion
