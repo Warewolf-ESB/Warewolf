@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Activities.Statements;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -92,8 +91,9 @@ namespace Dev2.Studio.Views.Explorer
                     destination.Children.Any(
                         a => a.DisplayName == source.DisplayName && a.ResourceType != ResourceType.Folder)
                     );
-            return ( 
-               
+            return (
+               (
+                 source.ResourcePathWithoutName != destination.ResourcePathWithoutName) &&
                 destination.Parent.Children.Any(a=>a.DisplayName == source.DisplayName && a.ResourceType!= ResourceType.Folder)
                 );
         }

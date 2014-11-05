@@ -206,7 +206,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(outputExprRule);
                         ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
                     }
-                    ruleSet.Add(new IsStringEmptyRule(() => OutputVariable));
                     break;
 
                 case "At":
