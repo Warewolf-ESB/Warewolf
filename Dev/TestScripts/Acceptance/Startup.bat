@@ -33,10 +33,10 @@ START "%DeploymentDirectory%\Server\Warewolf Server.exe" /D "%DeploymentDirector
 
 rem ping server until it responds
 :WaitForServerStart
-IF EXIST "%DeploymentDirectory%\Server\ServerStarted" goto StartStudio 
+IF EXIST "%DeploymentDirectory%\Server\ServerStarted" goto exit 
 rem wait for 10 seconds before trying again
 @echo Waiting 10 seconds...
 ping -n 10 127.0.0.1 > nul
 goto WaitForServerStart
-
+:exit
 exit 0
