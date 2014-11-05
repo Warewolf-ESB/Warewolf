@@ -332,6 +332,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             WriteToResourceModel();
             EventPublisher.Publish(new UpdateIntellisenseMessage());
+            FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
         }
 
         public void AddMissingDataListItems(IList<IDataListVerifyPart> parts, bool async)

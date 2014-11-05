@@ -1,7 +1,7 @@
 
-<Service ID="2655f332-6a1b-468a-8402-fe45c73da1fa" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecordsetWithStarIndex" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="2655f332-6a1b-468a-8402-fe45c73da1fa" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecordsetWithStarIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>DeleteRecordUsingRecordsetWithStarIndex</DisplayName>
-  <Category>Sample Project\Integration Test Resources\DeleteRecordUsingRecordsetWithStarIndex</Category>
+  <Category>Integration Test Resources\DeleteRecordUsingRecordsetWithStarIndex</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -246,7 +246,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.0540708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="2655f332-6a1b-468a-8402-fe45c73da1fa" VersionId="20cf498c-1e4c-4842-ab72-26da34ae6de8" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -256,9 +255,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>WxXM6gih1LvwxJp0KmywChdfiTg=</DigestValue>
+        <DigestValue>Ldhn+zD9887Vm5izy7X7o7AA7dg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>fVFiZJW2yMJLsEFe2Ukx6IA7Gy1Z1qOPfw7sx2QEJs05dKpQ75D/jvnENmuIw8vGhleJ2pQ7GZXhiX0TQa9wvfQBfauJyPE51UblIhQ5RYznCLsUZohzeiU98AikHeq59USfjklY/2f7+8tmt3dcJexDz+Gfus8O1DuYXJkBqpI=</SignatureValue>
+    <SignatureValue>JUc2SPpdRAqs2embqeDL45+g5JbroyETOeEl/iACSTkVWUbSbRyo8Y0X61Noa1LMq55qaZxp1FtFb3zcCYK4GWYTzJ/FF76uR8gw3xsDd8EjOqIc/X1h/utUIP3RDLfTibZFe+Va7kVONqx1IcGU5F3K6RNQShHi7COVTxx0Sqw=</SignatureValue>
   </Signature>
 </Service>

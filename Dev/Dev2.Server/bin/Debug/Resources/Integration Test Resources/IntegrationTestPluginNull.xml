@@ -1,5 +1,5 @@
 
-<Service ID="b767fc64-7816-46a9-9a61-f7412a168e97" Version="1.0" Name="IntegrationTestPluginNull" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="b767fc64-7816-46a9-9a61-f7412a168e97" Version="1.0" Name="IntegrationTestPluginNull" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="IntegrationTestPluginNull" Type="Plugin" SourceID="bf69bfdf-6978-4f24-bd39-be6f38690c85" SourceName="testingPluginSrc" SourceMethod="SampleSend" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
       <Inputs>
@@ -39,11 +39,10 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>IntegrationTestPluginNull</DisplayName>
-  <Category>Sample Project\Integration Test Resources\IntegrationTestPluginNull</Category>
+  <Category>Integration Test Resources\IntegrationTestPluginNull</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:38.0450708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="b767fc64-7816-46a9-9a61-f7412a168e97" VersionId="237b5a50-ff1f-4b37-9447-cecd20c46718" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -53,9 +52,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>55PIWBIaJJRs6pyLvkXIUFqNCOg=</DigestValue>
+        <DigestValue>/T+NsrVave5sZgX6TWf6PvBVywg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>I0lwgSzHldhjE2XE4g5y5U6zuwpHQ1amxktrJx8ukjsoC9Ktn+6wJKd+dW5IXtqII74yvBqjK3uCgp/kn8vAzhmB3uL3SMsqxC77xlgFJHwYHBFiKCbELSo3LZ3v3RXmry//Z8eMxzc77wHbW4a+28Hy9ZYT4totNAlXA1vRP5A=</SignatureValue>
+    <SignatureValue>FNqipm/EVeRwILlNzPhY7OMIgl/93t8DJrwmlhz6zkfS4pCoR8A+M7FOGYz9w9UR9MzxUaMcxTSvCxEs4MQd3FyDkaVhrO96uY0+qRFzhL6qsu9w2WhxksobZbKkhVWjph7ZUXk14wgXBh6WuwEc0fUR5Nlxc2MMVwTHkzsxZeQ=</SignatureValue>
   </Signature>
 </Service>

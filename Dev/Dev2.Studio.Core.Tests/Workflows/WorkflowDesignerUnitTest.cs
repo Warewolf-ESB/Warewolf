@@ -259,6 +259,57 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual("RecSet().f1", actual[0], "Find missing found an invalid variable in a decision");
         }
 
+        [TestMethod]
+        public void GetDecisionElementsWhenItemAlreadyInDataListShouldNotReturnRecsetIfScalar()
+        {
+            //Execute
+            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.ResourceModel;
+            var eventAggregator = new EventAggregator();
+
+
+            var model = CreateWorkflowDesignerViewModel(eventAggregator, resourceModel.Object, null, false);
+            var dataListViewModel = new DataListViewModel();
+
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+
+
+            var recsetModel = new DataListItemModel("RecSet");
+            dataListViewModel.RecsetCollection.Add(recsetModel);
+            dataListViewModel.RecsetCollection[2].Children.Add(new DataListItemModel("a", parent: recsetModel));
+            const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[a]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
+            var actual = model.GetDecisionElements(expression, dataListViewModel);
+            model.Dispose();
+            //Assert
+            Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
+            Assert.AreEqual("{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}", actual[0], "Find missing found an invalid variable in a decision");
+        }
+
+        [TestMethod]
+        public void GetDecisionElementsWhenItemAlreadyInDataListShouldNotReturnRecsetIfScalarNonExistent()
+        {
+            //Execute
+            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.ResourceModel;
+            var eventAggregator = new EventAggregator();
+
+
+            var model = CreateWorkflowDesignerViewModel(eventAggregator, resourceModel.Object, null, false);
+            var dataListViewModel = new DataListViewModel();
+
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+
+
+            var recsetModel = new DataListItemModel("RecSet");
+            dataListViewModel.RecsetCollection.Add(recsetModel);
+            dataListViewModel.RecsetCollection[2].Children.Add(new DataListItemModel("aasszzz", parent: recsetModel));
+            const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[a]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
+            var actual = model.GetDecisionElements(expression, dataListViewModel);
+            model.Dispose();
+            //Assert
+            Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
+            Assert.AreEqual("{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}", actual[0], "Find missing found an invalid variable in a decision");
+        }
+
+
         #endregion
 
         #region Set Unused DataList Items

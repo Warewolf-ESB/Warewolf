@@ -1,5 +1,5 @@
 
-<Service Name="DataSplitTestWithRecordsetWithIndex" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="57eafdcd-0307-4162-9087-d9569fd5a9c2" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="DataSplitTestWithRecordsetWithIndex" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="57eafdcd-0307-4162-9087-d9569fd5a9c2" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DataSplitTestWithRecordsetWithIndex" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -92,7 +92,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>a</Comment>
-  <Category>Sample Project\Integration Test Resources\DataSplitTestWithRecordsetWithIndex</Category>
+  <Category>Integration Test Resources\DataSplitTestWithRecordsetWithIndex</Category>
   <Tags>
   </Tags>
   <HelpLink>a:/</HelpLink>
@@ -105,7 +105,6 @@
       <field Description="" />
     </Contacts>
   </DataList>
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.9890708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="57eafdcd-0307-4162-9087-d9569fd5a9c2" VersionId="e53e5784-4495-4824-949b-6613a4ad08c5" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -115,9 +114,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ARlfnnYhiVvEvClvm1Not4QZa7E=</DigestValue>
+        <DigestValue>4zDZtrVWGy7FgKsUe2/oF9tIWYU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>OFRPBxF9kUwEowAxKYCvGx0Kcohdm892q0insRM1f8tmUAZLl560abgJqbCt83uHoyhpv9wtS+qSV/ObwIe3zdTM1hJLltMoV+RC4uU4Fx0q7oFgYGBqu4GxfV/abJRI4Zrx5q2jE2+lZOyLNN/mIkSp0G4ft6+9PECd5U2vm60=</SignatureValue>
+    <SignatureValue>uFi7xc8e5WDm8siE9q6gLEsrjUSHoP56pJeC0Ds4HLuSOVgCo2sOq+gKWRXK9yRhARzBdpfEqftjEuKOjeK0rDrOEVdDHBfBmgk9TNMNNU+go/LVMbTmRet9Tx3C8DusQPcsNc9cjPVBTSUetT3GbvIP4cAzhTU8b79voYZpeKM=</SignatureValue>
   </Signature>
 </Service>

@@ -1,7 +1,7 @@
 
-<Service ID="e409ce08-9ff1-4946-a461-a8cfe21d39e8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RenameFolderOnFileSystemTest" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="e409ce08-9ff1-4946-a461-a8cfe21d39e8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RenameFolderOnFileSystemTest" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>RenameFolderOnFileSystemTest</DisplayName>
-  <Category>Sample Project\Integration Test Resources\RenameFolderOnFileSystemTest</Category>
+  <Category>Integration Test Resources\RenameFolderOnFileSystemTest</Category>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Test workflow for renaming a folder on the local file system</Comment>
   <Tags>
@@ -122,7 +122,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.7580708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="e409ce08-9ff1-4946-a461-a8cfe21d39e8" VersionId="aa8805fd-69ef-45a8-8d98-bdaa99246991" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -132,9 +131,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>/KcbYgDmcOxdTUSztxW27YUQrzA=</DigestValue>
+        <DigestValue>mSIH7yA+KSTfZWm0X6ZDOyrUwzQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>K0T6Qao/KSRhe53sGuWjnXRuJd5uAMQBBjVfskuEh5SKNWneXirzrRbq/+Z//l0hqXg7zOpsh/xJp/HDVQxGHsYNIbLvJ+bdTgO0NaqjAZlXeg66eDtFHxc7mCwaKJIV83R4l6E5pYr2Y7NNZi1BC9l502vf2YWS+acd2h11WDg=</SignatureValue>
+    <SignatureValue>ha59oC/ksTlndhrGD74IEv2mQ7Y137ZiJq/vcDPbAfsI5tUu1WIrczx8LtFODFRMXTtTxMba5UOGcqOLY6wG6kF22zbS/4DbBkT+1bbI4r5AiLbcAshR7bQTqqtLSvVBO9hLBYAxecpORChpJ2zcTLWb1y15rcf6gM/n4P+LqHU=</SignatureValue>
   </Signature>
 </Service>

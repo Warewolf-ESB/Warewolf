@@ -57,24 +57,19 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
-        //Bug 7853
         [TestMethod]
-        public void RecordsetLengthOutputToScalar_With_EmptyRecSet_Expected_ScalarValueCorrectlySetTo0()
+        public void CountOutputToScalar_With_NonExistantRecSet_Expected_Errors()
         {
 
             SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"0";
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "TestCountvar", out actual, out error);
+            var res = Compiler.HasErrors(result.DataListID);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
-
+            Assert.IsTrue(res);
         }
 
         //2013.06.03: Ashley Lewis for bug 9498 - multiple regions in result

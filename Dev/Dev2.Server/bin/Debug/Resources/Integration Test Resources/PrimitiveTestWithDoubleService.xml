@@ -1,5 +1,5 @@
 
-<Service ID="e8110b2f-384c-4d62-98df-0675c702e5b2" Version="1.0" Name="PrimitiveTestWithDoubleService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="e8110b2f-384c-4d62-98df-0675c702e5b2" Version="1.0" Name="PrimitiveTestWithDoubleService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="PrimitiveTestWithDoubleService" Type="Plugin" SourceID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" SourceName="PrimitivePluginTestSrc" SourceMethod="FetchDoubleValue" Namespace="Dev2.PrimitiveTestDLL.TestClass">
       <Inputs>
@@ -24,11 +24,10 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithDoubleService</DisplayName>
-  <Category>Sample Project\Integration Test Resources\PrimitiveTestWithDoubleService</Category>
+  <Category>Integration Test Resources\PrimitiveTestWithDoubleService</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.6340708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="e8110b2f-384c-4d62-98df-0675c702e5b2" VersionId="668c709f-b981-4ac3-95cb-59bd0bc76b87" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -38,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>JDrNaCxTA5zI+Q5pUFBmmCNpbxg=</DigestValue>
+        <DigestValue>Ty1D0SkZ33sOKrlo5pLllXgCXzQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>tNC92McM7N6dHKjqefnbWh71eJLGk57PfQNN/1kZhO6TjMEJEOsGav/tY6Sc7NUqb9QvyiUSIxiTY4gd0O9bUMTwsi20DstoMy8qENt9DoQP+rXzvHZjWQkRoc2mw9Yn3KOSUZxyGVFJZAofaJpsXNb+B2BnqIlSrXz8w2ky3WI=</SignatureValue>
+    <SignatureValue>G68JahI1RqLFLW3AJT76tXZymOWq3k4r1W0dgDOpo2G5XZVglzLD/IKuhP27N1B7txf81ibKoLcE4Nf3tUKRkeOw8XHHeIfDgNz4fiRstHtuEIi/l7BTR79FklI9Pj73SEBWyaytE6vxVXa6Jp6NZW96yR/LVGwBpLNDCfkQWgI=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service Name="FindRecordsGeneralTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="f7bc68ca-58c7-4aa6-a55a-129627338951" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="FindRecordsGeneralTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="f7bc68ca-58c7-4aa6-a55a-129627338951" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="FindRecordsGeneralTest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -187,7 +187,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Workflow for testing the general use of the finf records tool</Comment>
-  <Category>Sample Project\Integration Test Resources\FindRecordsGeneralTest</Category>
+  <Category>Integration Test Resources\FindRecordsGeneralTest</Category>
   <Tags>
   </Tags>
   <HelpLink>a:/</HelpLink>
@@ -206,7 +206,6 @@
       <FindRes Description="" />
     </Results>
   </DataList>
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:37.8030708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="f7bc68ca-58c7-4aa6-a55a-129627338951" VersionId="2c723e7d-153f-4d01-a5fb-8ed7ff062b60" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -216,9 +215,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>163hyq0NKTPFVbLeoYFlHQOcogU=</DigestValue>
+        <DigestValue>ayqPYriBk3BiyXNzdpcF89pDL64=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>sZQkhyXua6+q+uZoBBam1YH3/NP2Wf7SU1vgsakB4PoUhQlW0bhqlBaB/fjV1g3o1cqHt0g2+ra5PR+cuEyGRlxLMGBBOvRAUeE1AUGS5I5JbxfzG2z7ugrwPXju+/O0xGnnssApRSegTTDS5oUnR+mH6bG3q7aOoBe1vxeZmLc=</SignatureValue>
+    <SignatureValue>oUE/RvkVjHpyewuGxDkB7e2C4KLB046SnSqkYqbj1W4sX/32DLaQ/d/J0N902eycm47wktJ2gEGBH2vTE1CA8S1tePg3d3Dew2zT6ukorV/r1wsMk/+gmBJVwPEPrRJOOd5mCi1t6VLub0XCls0sh/8+s5GjSRZxijqufXfVF0I=</SignatureValue>
   </Signature>
 </Service>

@@ -28,6 +28,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -44,6 +45,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         public const string ActualSourceHolder = "actualSource";
         public const string SourceUsernameHolder = "sourceUsername";
         public const string SourcePasswordHolder = "sourcePassword";
+        public const string ValidationErrors = "validationErrors";
+        public const string ValidationMessage = "validationMessage";
 
         [Then(@"the execution has ""(.*)"" error")]
         [Then(@"the execution has '(.*)' error")]
@@ -192,6 +195,56 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             ScenarioContext.Current.Add(DestinationUsernameHolder, userName.Replace('"', ' ').Trim());
             ScenarioContext.Current.Add(DestinationPasswordHolder, password.Replace('"', ' ').Trim());
+        }
+
+        [When(@"validating the tool")]
+        public void WhenValidatingTheTool()
+        {
+            var dev2Activity = TestStartNode.Action as IDev2Activity;
+            if(dev2Activity != null)
+            {
+                var validationErrors = dev2Activity.PerformValidation();
+                ScenarioContext.Current.Add(ValidationErrors, validationErrors);
+            }
+        }
+
+        [Then(@"validation is '(.*)'")]
+        public void ThenValidationIs(string expectedValidationResult)
+        {
+            IList<IActionableErrorInfo> validationErrors;
+            ScenarioContext.Current.TryGetValue(ValidationErrors, out validationErrors);
+            if (expectedValidationResult.Equals("True", StringComparison.OrdinalIgnoreCase))
+            {
+                if (validationErrors != null)
+                {
+                    Assert.AreEqual(0,validationErrors.Count);
+                }
+            }
+            else
+            {
+                Assert.IsNotNull(validationErrors);
+                Assert.AreNotEqual(0, validationErrors.Count);
+            }
+        }
+
+        [Then(@"validation message is '(.*)'")]
+        public void ThenValidationMessageIs(string validationMessage)
+        {
+            IList<IActionableErrorInfo> validationErrors;
+            ScenarioContext.Current.TryGetValue(ValidationErrors, out validationErrors);
+            if (string.IsNullOrEmpty(validationMessage))
+            {
+                if (validationErrors != null)
+                {
+                    Assert.AreEqual(0,validationErrors.Count);
+                }
+            }
+            else
+            {
+                Assert.IsNotNull(validationErrors);
+                var completeMessage = string.Join(";", validationErrors.Select(info => info.Message));
+                Assert.AreEqual(validationMessage, completeMessage);
+            }
         }
 
         [Given(@"result as '(.*)'")]

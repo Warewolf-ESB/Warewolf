@@ -1,7 +1,7 @@
 
-<Service ID="688f2415-e051-4cd7-bcf8-0c4515c2cb78" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber_Rounding" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="688f2415-e051-4cd7-bcf8-0c4515c2cb78" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber_Rounding" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>FormatNumber_Rounding</DisplayName>
-  <Category>Sample Project\Integration Test Resources\FormatNumber_Rounding</Category>
+  <Category>Integration Test Resources\FormatNumber_Rounding</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -299,7 +299,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:38.2010708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="688f2415-e051-4cd7-bcf8-0c4515c2cb78" VersionId="fa75a0b8-51f9-4c0c-821c-76a806e4c655" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -309,9 +308,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ZmUNU3b9QIRwyANKXgt8tPQEH8I=</DigestValue>
+        <DigestValue>32p6RUDFFzP4g6JfwDlJgE5iQHo=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>o8t6AhP0IkKAixNyeMN/jJAD6z10O77RsvpMlWy63sXzFL7ZqBA7hYmMATOQfcw1CwYUlDjM/bxzhkUjgFtyAG8Y7CMpGvcOztRXuqfO+y6YgL6y+TWe2HlrtF7HWVzWz9QJdCeqvZimeLwqLe4LAsNUs/IYbF2B8QmXInSq84U=</SignatureValue>
+    <SignatureValue>DyXMRbqb8prosu7glNCj6MjXcCc9f30VgRIoqhztHhtrGNjzZmK72lR3zgYfeTFE10joRP/bS3aUiVUN9wnTJ0uK95+TIGTLaFd3hgqzgeliOshQeq1ny5PeYl1B2e9TycdqR5ZkZgHCWoFNuj/vkXVmbXZ8fJO00WV49/cC+Eg=</SignatureValue>
   </Signature>
 </Service>

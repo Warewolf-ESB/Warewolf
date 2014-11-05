@@ -1,5 +1,5 @@
 
-<Service ID="df9e59ed-11f0-4359-bd21-7ad35898b383" Version="1.0" Name="Get Rows" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="df9e59ed-11f0-4359-bd21-7ad35898b383" Version="1.0" Name="Get Rows" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_proc_get_Rows" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.proc_get_Rows">
       <Inputs>
@@ -123,11 +123,10 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>Get Rows</DisplayName>
-  <Category>Sample Project\Integration Test Resources\Get Rows</Category>
+  <Category>Integration Test Resources\Get Rows</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:38.2260708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="df9e59ed-11f0-4359-bd21-7ad35898b383" VersionId="c4a47546-f897-4145-ba14-f56a961d734d" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -137,9 +136,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>JCRq2KxQ3y/ZioEAqDjMCJexnkg=</DigestValue>
+        <DigestValue>z3k7WtDflb1hpq/MfrVsTaGJAYk=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>czxg0gIGo8taLT7O1z/s3m2sJwwmHTAdhg7XU2xlaK7rrXZSBIVjcNBb7cLrcijylD8fygxtu4DPca0cvxWupAC01+5YGnL6hSK7oFSAr3Hu0s+eoJJ9jZv79xBMbxXIC4aQ3Z7NCvzuOJBmKbiQiREsyX/mkZHyA61/Pn0vo0s=</SignatureValue>
+    <SignatureValue>eFvxOLvCrrF1x4WloLaBk2ZzbOw/3udTo7SNYWm1fIgZTdQwr17qCnnjahwIVRZRyvHgserQtDAlqGBmY1cL+klxPDKjV9Fdmxt4aglyNK/4wGYadlY4hj04m9xfNbJ0yR/l3S4aPPQfItJq5Wm7IKJ3fFuzvIwBhvnJsAOeMIE=</SignatureValue>
   </Signature>
 </Service>

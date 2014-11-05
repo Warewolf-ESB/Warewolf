@@ -1,5 +1,5 @@
 
-<Service ID="325d3f4f-ebe4-409a-9fbc-afed1c715790" Version="1.0" Name="PrimitiveTestWithXmlString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="325d3f4f-ebe4-409a-9fbc-afed1c715790" Version="1.0" Name="PrimitiveTestWithXmlString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="PrimitiveTestWithXmlString" Type="Plugin" SourceID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" SourceName="PrimitivePluginTestSrc" SourceMethod="FetchXmlString" Namespace="Dev2.PrimitiveTestDLL.TestClass">
       <Inputs>
@@ -24,11 +24,10 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithXmlString</DisplayName>
-  <Category>Sample Project\Integration Test Resources\PrimitiveTestWithXmlString</Category>
+  <Category>Integration Test Resources\PrimitiveTestWithXmlString</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.7090708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="325d3f4f-ebe4-409a-9fbc-afed1c715790" VersionId="4d9e4d59-57a7-42c5-b21c-7770a6f8a70b" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -38,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ez5k6a11T+gXOjN2INBCUIiKZyw=</DigestValue>
+        <DigestValue>5fjoaQ8iVTNy9+3+bxCMVfSh3I0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ocHSYNnzjPiGnHPsOXf52DcDjFX07+7dfDsweWkYlWcsidkS18CYqlCH2X4QRTYASbztFX4n5N6WVqrQ3geoevH3f1yN4DOpQSno8onzBxar5nNmdjJiW0aHGN75W3opAXahWumXppOQREpZpIF2rh2BPvPB4FyFbQV0hkLPnRk=</SignatureValue>
+    <SignatureValue>vZzMjjup5PUxH4lsR0HPy2UyI1eaZIXv/WsnE1W4pSwujGG0FhZkuXXXkqljwiWdFvYpLzvdN5DfNgckp/5bodAk/lJFMkSjPbF5mq6UNj3/QCkJXJgKaFcZN3zqvm70U2C++POE0EgC5ui/fyb38dDep4vT6qZZOm2O8vRECok=</SignatureValue>
   </Signature>
 </Service>

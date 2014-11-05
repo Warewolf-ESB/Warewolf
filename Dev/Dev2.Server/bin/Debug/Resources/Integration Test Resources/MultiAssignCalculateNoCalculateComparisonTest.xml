@@ -1,5 +1,5 @@
 
-<Service Name="MultiAssignCalculateNoCalculateComparisonTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="03514601-1eea-427d-8d9b-c3605a1bd1f9" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="MultiAssignCalculateNoCalculateComparisonTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="03514601-1eea-427d-8d9b-c3605a1bd1f9" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="MultiAssignCalculateNoCalculateComparisonTest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -112,7 +112,7 @@
   </AuthorRoles>
   <Comment>
   </Comment>
-  <Category>Sample Project\Integration Test Resources\MultiAssignCalculateNoCalculateComparisonTest</Category>
+  <Category>Integration Test Resources\MultiAssignCalculateNoCalculateComparisonTest</Category>
   <Tags>
   </Tags>
   <IconPath>
@@ -125,7 +125,6 @@
     <Input Description="" />
     <NoCalcResult Description="" />
   </DataList>
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.9230708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="03514601-1eea-427d-8d9b-c3605a1bd1f9" VersionId="10f6bd7b-1171-4e95-a4c2-2dffb92e01cf" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -135,9 +134,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>R5WXCRkHwI460Ulmpnv05RzEC2M=</DigestValue>
+        <DigestValue>Etkwf9GhmgpWCwwTu2RE5xIfyxE=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>K5UFE0ZL5cjPa7xF4Tcml6Sgp0GV6/UTLpJtjpr1fHtBq8TXK5xFuNwPzHTm5TUhebFya4jTpggOVfW7vPGtT1eibYDzjK7Xw7tiotaNPq5zQAbNPw+EPyukHqVrYu2gQTXXCLXuq9rukzSXHzfbYQdLIugJzU1sTi95tXA+6NA=</SignatureValue>
+    <SignatureValue>YShMtUwRt6LPyjSlOp/7VUsfsjsXXYl23dpdHsu4NGw627C5VP99lRcji6Fr/oi6e5ACgM+uW+4xGrN8j/NsrEN4aMe4EHSOWHf/WIiIHZ4ox0hCoBYpDg34oR0K1Ws2hSboKqoEyAqNv/stYlZe3LhtMG9NGoFCH2EBkaaif9E=</SignatureValue>
   </Signature>
 </Service>

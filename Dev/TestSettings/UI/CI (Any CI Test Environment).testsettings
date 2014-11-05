@@ -1,11 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="UI Test" id="3FF8768C-291F-4E01-831B-5671BD57EB3D" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestSettings name="UI Test" id="A398B693-5F47-4782-81B9-1AEB1FD22FAA" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote UI test run.</Description>
-  <Deployment/>
+  <Deployment>
+		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+        
+            <!--For Build Agents-->
+        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
+  </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
+    <Scripts setupScript="..\Dev\TestScripts\UI\Startup.bat" cleanupScript="..\Dev\TestScripts\UI\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <Hosts skipUnhostableTests="false" />
+    <Buckets size="1" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
@@ -25,15 +34,8 @@
     </TestTypeSpecific>
     <AgentRule name="Run in UI Environment Pool">
       <SelectionCriteria>
-        <AgentProperty name="Pool" value="UI" />
-        <AgentProperty name="ID" value="1" />
+        <AgentProperty name="Pool" value="Acceptance Testing" />
       </SelectionCriteria>
-	  <DataCollectors>
-        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
-        </DataCollector>
-	    <DataCollector uri="datacollector://microsoft/SystemInfo/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo.SystemInfoDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="System Information">
-	    </DataCollector>
-	  </DataCollectors>
     </AgentRule>
   </Execution>
 </TestSettings>

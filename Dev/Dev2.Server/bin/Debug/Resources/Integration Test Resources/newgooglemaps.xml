@@ -1,5 +1,5 @@
 
-<Service ID="748d7f31-74b1-446d-a9c5-a5aa8fc9680f" Version="1.0" Name="newgooglemaps" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="748d7f31-74b1-446d-a9c5-a5aa8fc9680f" Version="1.0" Name="newgooglemaps" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="newgooglemaps" Type="InvokeWebService" SourceID="a00626a4-ec09-46ad-8c97-ea6c44bbc582" SourceName="Google Address Lookup" SourceMethod="" RequestUrl="/maps/api/geocode/json?sensor=true&amp;address=[[address]]" RequestMethod="Get" JsonPath="">
       <RequestHeaders><![CDATA[]]></RequestHeaders>
@@ -40,11 +40,10 @@
   <DataList />
   <TypeOf>InvokeWebService</TypeOf>
   <DisplayName>newgooglemaps</DisplayName>
-  <Category>Sample Project\Integration Test Resources\newgooglemaps</Category>
+  <Category>Integration Test Resources\newgooglemaps</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.2470708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="748d7f31-74b1-446d-a9c5-a5aa8fc9680f" VersionId="c95826c9-d3b5-485b-af3e-c21e83cacc94" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -54,9 +53,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>l/MVV6oxTiHzcbscSGfWM4rwG5I=</DigestValue>
+        <DigestValue>uhLWIDHOp5+iUCJaVHJ2DYlM5fo=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Nfn6h6xZbPYBodco9+vGllOUYoPsWMSMwWUG9cz7BDfob9ExcHl4/sPtp3dyrXplfVJjHi1ohdGHJZJlQpXEmHt25T9lW5kzFIb/F44q2oFcZtXVYYA/UnQdZACIJPZIdpMIVDwmvyqhUakhk4penv5bvtpiiAaBRYmltDfZ9pE=</SignatureValue>
+    <SignatureValue>snWQKzMtLRXS8/CccrVtxZ/WPM+0uEoDwz2nwfjdylV+jJrm+fNLZ/BJys9E2vHJTUhDiAFVK/nMsq6IGNKXKPvXoyGug9w3dVFHBdZqr8beX7913hPJNkl4Oo+gR30uTkAg3ksIwXoMGNaG2K5a0240WVuE81VhHF12+dSRRgw=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service ID="3f57e8ba-0763-41fa-ac78-a4c9de0948f3" Name="ServiceToBindFrom" Version="1.0" ResourceType="WorkflowService" Category="Services" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.20.1">
+<Service ID="3f57e8ba-0763-41fa-ac78-a4c9de0948f3" Name="ServiceToBindFrom" Version="1.0" ResourceType="WorkflowService" Category="Services" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="ServiceToBindFrom" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Unlimited.Applications.BusinessDesignStudio.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Unlimited.Framework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -65,7 +65,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,</AuthorRoles>
   <Comment>testing</Comment>
-  <Category>Sample Project\Integration Test Resources\ServiceToBindFrom</Category>
+  <Category>Integration Test Resources\ServiceToBindFrom</Category>
   <Tags>
   </Tags>
   <HelpLink>a:\</HelpLink>
@@ -78,7 +78,6 @@
     <result Description="" />
     <testingVariable Description="" />
   </DataList>
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.0240708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="3f57e8ba-0763-41fa-ac78-a4c9de0948f3" VersionId="80383914-d782-4fef-8669-36bd4c918ab3" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -88,9 +87,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>9Mlxc5uzSuKWfX2pWJniYsPVLdQ=</DigestValue>
+        <DigestValue>moDFCK+sSvstz+PePgWP0vqYktM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Wq7jW/ZIICC9X5BAObuK2MyzKlvCWgUiSGKSegWe2wRJt53iQPVYr0b7ADNBfE750K7kEukg9FMVykj4H7unFgdYVrkbBxtA0bJtLCnFA4qQ/cUPrhwVzqV6l5QgDBeKJPD0IleklseHVCrnngS/SuTZkor2H36UnBXBnIbQq7Q=</SignatureValue>
+    <SignatureValue>MoSf8EgRgG4WfEu9b0me3I26zFtoL0C+b8QUgHjKrAcN0+aBixW7ZQYqzToR7/YLaykcD+hwHNMbJ92sUOriuG52PSNjDhdtlm+fVqS9pOh+YKrC94nQlc2CGC3gRBxn2G2PLFZ3kq9L8VEAHM7K6W2UkyqXh/ZwoetlxkW5Ikg=</SignatureValue>
   </Signature>
 </Service>

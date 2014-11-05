@@ -1,5 +1,5 @@
 
-<Service Name="ReplaceToolUsingRecordsetWithStar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="894d221e-3c74-481b-bd3c-2dcb19294566" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service Name="ReplaceToolUsingRecordsetWithStar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="894d221e-3c74-481b-bd3c-2dcb19294566" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="ReplaceToolUsingRecordsetWithStar"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -166,7 +166,7 @@
   </Action>
   <Comment>
   </Comment>
-  <Category>Sample Project\Integration Test Resources\ReplaceToolUsingRecordsetWithStar</Category>
+  <Category>Integration Test Resources\ReplaceToolUsingRecordsetWithStar</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
@@ -185,7 +185,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:35.8230708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="894d221e-3c74-481b-bd3c-2dcb19294566" VersionId="09b658ee-dc49-4d1f-964e-2eb37fb594b4" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -195,9 +194,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>EY0BO/8BcsU8WX1aO0wiOUk60P8=</DigestValue>
+        <DigestValue>8hwsu8aorpbKGjgMtXVpsE9msv0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>lRsfqHfhLVIOVv1cxc2SEoO9u7wNkk1/TOmMMCAhKOjIcq0a86a/ZkJ2wkLB3XqkmE73ws4vLHpGSjSTLzWU7i9FVvH2uWszRp2+3qtHMLd4dJ2exQX6J2kv4YsvVsU6Te8olMH/PpNXcS7DuwAverUVDTMrJwzOWF0vfcSztlc=</SignatureValue>
+    <SignatureValue>CfhET/1sYPEGmv+innzagTYTgz18NrZslqMvtgSRtZ7pHAQp4VmTMpI2xvWsfeDghuVZ4c7lXs+50OqY5zU6z/AX/2xPCpFlY+TnaOZEjXhlE4STUwmMdlKMxg7VOwwjgzcq1NYadSihYqiZPBJowZ5TtkwvemqFzmlLULk9xJE=</SignatureValue>
   </Signature>
 </Service>

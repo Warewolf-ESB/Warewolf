@@ -1036,7 +1036,7 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\11714Nested").FirstOrDefault();
+            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\"+nestedWF).FirstOrDefault();
             if(resource == null)
             {
                 // ReSharper disable NotResolvedInText
@@ -1051,6 +1051,8 @@ namespace Dev2.Activities.Specs.Composition
             {
 
                 ServiceName = resource.Category,
+                ResourceID = resource.ID,
+                EnvironmentID = environmentModel.ID,
                 UniqueID = resource.ID.ToString(),
                 InputMapping = inputMapping,
                 OutputMapping = outputMapping

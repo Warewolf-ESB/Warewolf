@@ -31,6 +31,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
+// ReSharper disable ConvertToAutoProperty
 {
     /// <summary>
     /// PBI : 1172
@@ -39,7 +40,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </summary>
     public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify
     {
-        // Travis.Frisinger - 01.02.2013 : Bug 8579
 
         internal string DefferedReadFileContents = string.Empty;
         private string _username;
@@ -82,53 +82,47 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     //Execute the concrete action for the specified activity
                     IList<OutputTO> outputs = ExecuteConcreteAction(context, out errors);
+
                     allErrors.MergeErrors(errors);
 
-                    if(outputs.Count > 0)
+                    if (outputs.Count > 0)
                     {
-                        foreach(OutputTO output in outputs)
+                        foreach (OutputTO output in outputs)
                         {
-                            if(output.OutputStrings.Count > 0)
+                            if (output.OutputStrings.Count > 0)
                             {
-                                foreach(string value in output.OutputStrings)
+                                foreach (string value in output.OutputStrings)
                                 {
-                                    if(output.OutPutDescription == GlobalConstants.ErrorPayload)
+                                    if (output.OutPutDescription == GlobalConstants.ErrorPayload)
                                     {
                                         errors.AddError(value);
                                     }
                                     else
                                     {
-                                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
+                                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                         {
-
                                             toUpsert.Add(region, value);
                                         }
                                     }
-
                                 }
-
                                 toUpsert.FlushIterationFrame();
                             }
                         }
-
                         compiler.Upsert(dlId, toUpsert, out errors);
-                        if(dataObject.IsDebugMode())
+                        if (dataObject.IsDebugMode())
                         {
-                            if(!String.IsNullOrEmpty(Result))
+                            if (!String.IsNullOrEmpty(Result))
                             {
-                                foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                                foreach (var debugOutputTo in toUpsert.DebugOutputs)
                                 {
                                     AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                                 }
                             }
                         }
-
                         allErrors.MergeErrors(errors);
                     }
-
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     allErrors.AddError(ex.Message);
                 }

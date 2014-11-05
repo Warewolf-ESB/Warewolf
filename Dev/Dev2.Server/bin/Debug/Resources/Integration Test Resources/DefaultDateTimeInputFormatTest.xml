@@ -1,7 +1,7 @@
 
-<Service ID="1c3f96c0-242a-437a-9240-d3da855e0863" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DefaultDateTimeInputFormatTest" ResourceType="WorkflowService" ServerVersion="0.4.20.1">
+<Service ID="1c3f96c0-242a-437a-9240-d3da855e0863" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DefaultDateTimeInputFormatTest" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>DefaultDateTimeInputFormatTest</DisplayName>
-  <Category>Sample Project\Integration Test Resources\DefaultDateTimeInputFormatTest</Category>
+  <Category>Integration Test Resources\DefaultDateTimeInputFormatTest</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>
@@ -90,7 +90,6 @@
   <BizRule />
   <WorkflowActivityDef />
   <Source />
-  <VersionInfo DateTimeStamp="2014-10-29T09:29:36.9550708+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="1c3f96c0-242a-437a-9240-d3da855e0863" VersionId="3a286c98-d943-40b8-b94b-cb7da509d622" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -100,9 +99,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>l9AGeVS9GohblFQRws8d/1k95y0=</DigestValue>
+        <DigestValue>1GKKuGKVj7LIJEAcPQmpY7BnDO0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>voxP8L2pDMtvFbBdaznlvbMXUqkPHVxdKrN7NZvXlGlWdeSyFIZzKXJacF4ViYJ3h1cj/kn+ls18TDw7nK6/7p4fM+LtU1ODvjRWHDyqJfgSfDUX6C48Aqe5fYGmBhUCC5LpuTMiGiR+N6gNUkjnRXEz5ILGAwTnktdE01/HtZw=</SignatureValue>
+    <SignatureValue>fGjy1URCnDzg6DeosAbtxgpg+B843IRLvrVSVyw21a7RvTZNsDGivl3tYoR1Wr7FB+eB+J5jGIU9JePCqSug1RiO3QnBbyTfX79DaXPAnAICjMQST7YmG7R7AUNU9iUJErjzs86bkLDt7DL4yCpCY9W0oyMbGINdVk2WMlLpeag=</SignatureValue>
   </Signature>
 </Service>
