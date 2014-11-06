@@ -47,26 +47,12 @@ Scenario Outline: Move file at location
 	   | 23 | SFTP to FTP    | [[sourcePath]] | sftp://localhost/movefile2.txt                               | dev2              | Q/ulw&]  | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/moved4.txt          | ""                | ""           | True     | [[result]]             | Success | NO           |
 	   | 24 | SFTP to FTPS   | [[sourcePath]] | sftp://localhost/movefile3.txt                               | dev2              | Q/ulw&]  | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved4.txt          | integrationtester | I73573r0     | True     | [[result]]             | Success | NO           |
 	   | 25 | SFTP to SFTP   | [[sourcePath]] | sftp://localhost/movefile4.txt                               | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/moved4.txt                               | dev2              | Q/ulw&]      | True     | [[result]]             | Success | NO           |
-	#bug 12180	   | 26 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[result]][[a]]        | Failure | AN           |
-   #| 27 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[a]]*]]               | Failure | AN           |
-	#   | 28 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[var@]]               | Failure | AN           |
-	#   | 29 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[var]]00]]            | Failure | AN           |
-	#   | 30 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[(1var)]]             | Failure | AN           |
-	#   | 31 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[var[[a]]]]           | Failure | AN           |
-	#   | 32 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[var.a]]              | Failure | AN           |
-	#   | 33 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[@var]]               | Failure | AN           |
-	#   | 34 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[var 1]]              | Failure | AN           |
-	#   | 35 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[rec(1).[[rec().1]]]] | Failure | AN           |
-	#   | 36 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[rec(@).a]]           | Failure | AN           |
-	#   | 37 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[rec"()".a]]          | Failure | AN           |
-	#   | 38 | Local to Local | [[sourcePath]] | c:\copyfile0.txt                                             | ""                | ""       | [[destPath]] | C:\copied00.txt                                           | ""                | ""           | True     | [[rec([[[[b]]]]).a]]   | Failure | AN           |
-	#																																																												 
-	#
+
 
 	 
 
 
- Scenario Outline: Move file at location1
+ #Scenario Outline: Move file at location1
 #	Given I have a source path '<File or Folder>' with value '<sourceLocation>' 
 #	And source credentials as '<username>' and '<password>'
 #	And I have a destination path '<destination>' with value '<destinationLocation>'
