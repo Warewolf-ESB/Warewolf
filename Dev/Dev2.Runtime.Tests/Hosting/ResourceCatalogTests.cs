@@ -2943,13 +2943,14 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
-            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+            const string depResourceName = "Bug6619";
+            SaveResources(path, null, false, false, new[] { depResourceName, resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            var resource = result.FirstOrDefault(r => r.ResourceName == "Bug6619Dep");
-            var depresource = result.FirstOrDefault(r => r.ResourceName == "Bug6619");
+            var resource = result.FirstOrDefault(r => r.ResourceName == resourceName);
+            var depresource = result.FirstOrDefault(r => r.ResourceName == depResourceName);
             Assert.IsNotNull(resource);
             var beforeService = rc.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourcePath).FirstOrDefault();
             Assert.IsNotNull(beforeService);
@@ -2981,10 +2982,11 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("false", isValid);
             Assert.AreEqual(CompileMessageType.MappingChange, messageType);
             Assert.IsNotNull(depresource);
+            Assert.AreEqual(1, messages.MessageList.Count, "Too many update resource messages produced.");
             var message = messages.MessageList[0];
             Assert.AreEqual(workspaceID, message.WorkspaceID);
-            Assert.AreEqual(depresource.ResourceID, message.ServiceID);
             Assert.AreEqual(depresource.ResourceName, message.ServiceName);
+            Assert.AreEqual(depresource.ResourceID, message.ServiceID);
             Assert.AreNotEqual(depresource.ResourceID, message.UniqueID);
             Assert.AreNotEqual(resource.ResourceID, message.UniqueID);
         }
@@ -3052,10 +3054,11 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("false", isValid);
             Assert.AreEqual(CompileMessageType.MappingChange, messageType);
             Assert.IsNotNull(depresource);
+            Assert.AreEqual(1, messages.MessageList.Count, "Too many update resource messages produced.");
             var message = messages.MessageList[0];
             Assert.AreEqual(workspaceID, message.WorkspaceID);
-            Assert.AreEqual(depresource.ResourceID, message.ServiceID);
             Assert.AreEqual(depresource.ResourceName, message.ServiceName);
+            Assert.AreEqual(depresource.ResourceID, message.ServiceID);
             Assert.AreNotEqual(depresource.ResourceID, message.UniqueID);
             Assert.AreNotEqual(resource.ResourceID, message.UniqueID);
         }
@@ -3104,11 +3107,6 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
         }
-
-
-
-
-
 
         [TestMethod]
         public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()

@@ -1940,9 +1940,6 @@ namespace Dev2
         {
             try
             {
-
-
-
                 if (File.Exists(".\\ServerStarted"))
                 {
                     File.Delete(".\\ServerStarted");
