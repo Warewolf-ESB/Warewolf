@@ -120,7 +120,7 @@ this.ScenarioSetup(scenarioInfo);
                     "AutoID,Count Records(CountRecordsDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 25
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
-                    "AutoID,BARNEY\\Decision Testing(ServiceDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "AutoID,Integration Test Resources\\Decision Testing(ServiceDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,FlowDecisionDesigner\" is invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -151,7 +151,8 @@ this.ScenarioSetup(scenarioInfo);
                     "AutoID,Length(RecordsLengthDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
-                    "AutoID,BARNEY\\Javascript Testing(ServiceDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "AutoID,Integration Test Resources\\Javascript Testing(ServiceDesigner)\" is visibl" +
+                    "e", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,FlowDecisionDesigner\" is invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
