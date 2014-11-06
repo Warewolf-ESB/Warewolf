@@ -22,7 +22,7 @@ Scenario: SequenceSmallViewControlFlowNotAllowedWorkflowOtherAllowedLargeViewCon
 	And I click "RESOURCEPICKEROKBUTTON"
 	When I double click point "5,5" on "WORKSURFACE,Sequence(SequenceDesigner)"
 	Then "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,Count Records(CountRecordsDesigner)" is visible
-	And "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,BARNEY\Decision Testing(ServiceDesigner)" is visible
+	And "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,Integration Test Resources\Decision Testing(ServiceDesigner)" is visible
 	And "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,FlowDecisionDesigner" is invisible within "3" seconds	
 	#LargeViewControlFlowNotAllowedWorkflowOtherAllowed
 	When I double click "TOOLBOX,PART_SearchBox"
@@ -35,6 +35,6 @@ Scenario: SequenceSmallViewControlFlowNotAllowedWorkflowOtherAllowedLargeViewCon
 	And I click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID"
 	And I click "RESOURCEPICKEROKBUTTON"
 	Then "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,Length(RecordsLengthDesigner)" is visible
-	And "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,BARNEY\Javascript Testing(ServiceDesigner)" is visible
+	And "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,Integration Test Resources\Javascript Testing(ServiceDesigner)" is visible
 	And "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,FlowDecisionDesigner" is invisible within "3" seconds	
 	
