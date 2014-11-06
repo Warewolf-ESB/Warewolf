@@ -11,6 +11,7 @@ Go to the community site: http://community.warewolf.io for :
 * [Contributing](http://community.warewolf.io/list/35540-knowledge-base/?category=13910)
 * [Roadmap](http://community.warewolf.io/topic/517581-roadmap/)
 * [Help, Support and Info](http://community.warewolf.io)
+* [Support HelpDesk and Bug Reporting](http://community.warewolf.io)
 
 You can download the latest compiled release from http://warewolf.io
 
