@@ -82,13 +82,13 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        protected virtual async void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
+        protected virtual void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
         {
             if (buildGetWebRequest == null)
             {
                 return;
             }
-            await buildGetWebRequest.GetResponseAsync();
+            buildGetWebRequest.GetResponseAsync();
         }
 
         public override Guid Execute(out ErrorResultTO errors)
