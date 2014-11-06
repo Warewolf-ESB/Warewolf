@@ -2982,8 +2982,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("false", isValid);
             Assert.AreEqual(CompileMessageType.MappingChange, messageType);
             Assert.IsNotNull(depresource);
-            Assert.AreEqual(1, messages.MessageList.Count, "Too many update resource messages produced.");
-            var message = messages.MessageList[0];
+            var message = messages.MessageList.FirstOrDefault(msg => msg.WorkspaceID != Guid.Empty);
+            Assert.IsNotNull(message, "No valid update resource messages published");
             Assert.AreEqual(workspaceID, message.WorkspaceID);
             Assert.AreEqual(depresource.ResourceName, message.ServiceName);
             Assert.AreEqual(depresource.ResourceID, message.ServiceID);
@@ -3054,8 +3054,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("false", isValid);
             Assert.AreEqual(CompileMessageType.MappingChange, messageType);
             Assert.IsNotNull(depresource);
-            Assert.AreEqual(1, messages.MessageList.Count, "Too many update resource messages produced.");
-            var message = messages.MessageList[0];
+            var message = messages.MessageList.FirstOrDefault(msg => msg.WorkspaceID != Guid.Empty);
+            Assert.IsNotNull(message, "No valid update resource messages published");
             Assert.AreEqual(workspaceID, message.WorkspaceID);
             Assert.AreEqual(depresource.ResourceName, message.ServiceName);
             Assert.AreEqual(depresource.ResourceID, message.ServiceID);
