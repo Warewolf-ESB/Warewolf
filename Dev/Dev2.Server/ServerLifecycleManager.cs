@@ -315,7 +315,7 @@ namespace Dev2
                 var miq = MoqInstallerActionFactory.CreateInstallerActions();
                 miq.ExecuteMoqInstallerActions();
             }
-            catch(Exception)
+            catch(Exception e)
             {
                 // Throw new exception to make it easy for developer to understand issue
                 throw new Exception("Ensure you are running as an Administrator. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
