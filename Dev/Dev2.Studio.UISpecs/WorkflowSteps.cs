@@ -230,9 +230,6 @@ namespace Dev2.Studio.UI.Specs
         {
             try
             {
-                //Playback.Initialize();
-                //Playback.PlaybackError += PlaybackPlaybackError;
-
                 Playback.PlaybackSettings.ContinueOnError = false;
                 Playback.PlaybackSettings.ShouldSearchFailFast = true;
                 Playback.PlaybackSettings.SearchTimeout = 1000;
@@ -245,7 +242,6 @@ namespace Dev2.Studio.UI.Specs
                 // make the mouse quick ;)
                 Mouse.MouseMoveSpeed = 20000;
                 Mouse.MouseDragSpeed = 20000;
-               
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch
