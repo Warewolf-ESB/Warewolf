@@ -234,7 +234,7 @@ namespace Dev2.Network
                             case HttpStatusCode.Unauthorized:
                             case HttpStatusCode.Forbidden:
                                 UpdateIsAuthorized(false);
-                                throw new NotConnectedException();
+                                throw new UnauthorizedAccessException();
                         }
                     }
                     throw new NotConnectedException();
