@@ -87,6 +87,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdornedControl">
