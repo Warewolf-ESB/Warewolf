@@ -49,7 +49,7 @@ goto WaitForServerStart
 
 :StartStudio
 REM ** Start Warewolf studio from deployed binaries **
-START "%DeploymentDirectory%\Studio\Warewolf Studio.exe" /D "%DeploymentDirectory%\Studio" "Warewolf Studio.exe"
+START "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" /D "%DeploymentDirectory%\..\Studio" "Warewolf Studio.exe"
 
 REM  Wait 30 seconds ;)
 ping -n 30 127.0.0.1 > nul
