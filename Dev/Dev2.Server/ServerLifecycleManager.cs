@@ -318,7 +318,7 @@ namespace Dev2
             catch(Exception)
             {
                 // Throw new exception to make it easy for developer to understand issue
-                //throw new Exception("Ensure no Warewolf service is running on this machine. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
+                throw new Exception("Ensure you are running as an Administrator. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
             }
 #endif
 
