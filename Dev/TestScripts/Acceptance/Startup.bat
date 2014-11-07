@@ -36,7 +36,7 @@ IF NOT EXIST %TestRunDirectory%\..\..\..\nircmd.exe GOTO RegularStartup
 %TestRunDirectory%\..\..\..\nircmd.exe elevate "%DeploymentDirectory%\Warewolf Server.exe"
 GOTO WaitForServerStart
 :RegularStartup
-START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%\Server" "Warewolf Server.exe"
+START "%DeploymentDirectory%\Warewolf Server.exe" /D %DeploymentDirectory% "Warewolf Server.exe"
 
 rem ping server until it responds
 :WaitForServerStart
