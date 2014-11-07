@@ -628,6 +628,36 @@ Scenario: Assign addition of all variables to scalar2
 	| 12 | [[new(1).a]]      = 12345678910Warewolf |
 
 
+#Scenario Outline: Assign multiple variables to the end of a recordset
+#    Given I have variable '<Var>' with value '<Va1>'
+#	Given I have variable "[[rec(10).a]]" with value "1"
+#	And I assign the value '<Value>' to a variable '<Variable>'	
+#	When validating the tool
+#	Then validation is '<Validation>'
+#	And validation message is '<DesignValidation>'
+#	When the assign tool is executed
+#	And the execution has "<errorOccured>" error
+#	And execution error message will be '<ExecutionError>'
+#	And the debug inputs as
+#	| # | Variable       | New Value |
+#	| 1 | <VarinDebugOutput>   = | <Value>   |                                                                                                                                                     
+#	And the debug output as
+#	| # |                         |
+#	| 1 | <Variable>   =  <Value> |
+#Examples:
+#      | No | Variable             | Value | Var       | Val | Validation | DesignValidation                                                  | errorOccured | ExecutionError                                                      | VarinDebugOutput | ValueinDebugOutput |
+#      | 1  | [[a]]                | ""    |           |     | False      | ""                                                                | NO           | ""                                                                  | [[a]]            | ""                 |
+#      | 2  | [[rec().a]]          | ""    |           |     | False      | ""                                                                | NO           | ""                                                                  | [[rec(1).a]]     | ""                 |
+#      | 3  | [[rec([[index]]).a]] | Test  | [[Index]] | 1   | False      | ""                                                                | NO           | ""                                                                  | [[rec(1).a]]     | Test               |
+#      | 4  | [[rec().[[z]]]]      | Test  | [[z]]     | a   | False      | ""                                                                | NO           | ""                                                                  | [[rec(1).a]]     | Test               |
+#      | 5  | [[[[Mr().a]]]]       | Test  |           |     | False      | ""                                                                | AN           | 1.Invalid Region [[[[Mr().a]]]]                                     | ""               | ""                 |
+#      | 6  | [[a]][[b]]           | Test  |           |     | False      | ""                                                                | AN           | 1.Invalid Region [[[[Mr().a]]]]                                     | ""               | ""                 |
+#      | 7  | [[mr().[[z]]]]       | Test  | [[z]]     | a   | True       | 'Variable'-[[mr()]] does not exist in your variable list          | AN           | 1.'Variable'-[[mr()]] does not exist in your variable list          | ""               | ""                 |
+#      | 8  |                      | Test  | ""        | ""  | True       | 'Variable' cannot be empty                                        | AN           | 1.'Variable' cannot be empty                                        | ""               | ""                 |
+#      | 9  | [[rec().a b]]        | Test  | ""        | ""  | True       | 'Variable'-Recordset field name a b contains invalid character(s) | AN           | 1.'Variable'-Recordset field name a b contains invalid character(s) | ""               | ""                 |
+
+
+    
 
 
 
