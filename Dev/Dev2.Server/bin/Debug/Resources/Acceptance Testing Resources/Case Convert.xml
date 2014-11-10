@@ -1,7 +1,7 @@
 
 <Service ID="008f5bdb-e6e6-4d65-b9cf-20ea8f8c0dcb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Case Convert" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Case Convert</DisplayName>
-  <Category>Integration Test Resources\Case Convert</Category>
+  <Category>Acceptance Testing Resources\Case Convert</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

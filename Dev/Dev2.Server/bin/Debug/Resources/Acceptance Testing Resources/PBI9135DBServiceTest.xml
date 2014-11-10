@@ -1,7 +1,7 @@
 
 <Service ID="4578dde3-f9ca-4de2-bb6c-d75b1bb9bf08" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PBI9135DBServiceTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>PBI9135DBServiceTest</DisplayName>
-  <Category>Integration Test Resources\PBI9135DBServiceTest</Category>
+  <Category>Acceptance Testing Resources\PBI9135DBServiceTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

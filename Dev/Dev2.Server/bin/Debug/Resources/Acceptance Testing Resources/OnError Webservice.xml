@@ -25,7 +25,7 @@
   <DataList />
   <TypeOf>InvokeWebService</TypeOf>
   <DisplayName>OnError Webservice</DisplayName>
-  <Category>Integration Test Resources\OnError Webservice</Category>
+  <Category>Acceptance Testing Resources\OnError Webservice</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

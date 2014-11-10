@@ -24,7 +24,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithDoubleService</DisplayName>
-  <Category>Integration Test Resources\PrimitiveTestWithDoubleService</Category>
+  <Category>Acceptance Testing Resources\PrimitiveTestWithDoubleService</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

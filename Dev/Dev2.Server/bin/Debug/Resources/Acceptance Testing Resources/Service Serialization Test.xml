@@ -1,7 +1,7 @@
 
 <Service ID="3f9a27d6-3d4c-41f6-bfcc-ed078a693d97" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Service Serialization Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Service Serialization Test</DisplayName>
-  <Category>Integration Test Resources\Service Serialization Test</Category>
+  <Category>Acceptance Testing Resources\Service Serialization Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -1,7 +1,7 @@
 
 <Service ID="e47cc599-865a-414c-8a37-1b28283479c0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEach DB Test" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>ForEach DB Test</DisplayName>
-  <Category>Integration Test Resources\ForEach DB Test</Category>
+  <Category>Acceptance Testing Resources\ForEach DB Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

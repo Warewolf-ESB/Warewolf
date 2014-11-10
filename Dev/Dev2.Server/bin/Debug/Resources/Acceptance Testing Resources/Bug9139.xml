@@ -1,7 +1,7 @@
 
 <Service ID="f03204a7-2d2b-4b4a-b5b9-afa6cb14873b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug9139" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Bug9139</DisplayName>
-  <Category>Integration Test Resources\Bug9139</Category>
+  <Category>Acceptance Testing Resources\Bug9139</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -26,7 +26,7 @@
   <DataList />
   <TypeOf>InvokeWebService</TypeOf>
   <DisplayName>FetchCities</DisplayName>
-  <Category>Integration Test Resources\TestCategory\FetchCities</Category>
+  <Category>Acceptance Testing Resources\TestCategory\FetchCities</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

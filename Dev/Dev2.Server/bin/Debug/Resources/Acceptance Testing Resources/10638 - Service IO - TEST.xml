@@ -1,7 +1,7 @@
 
 <Service ID="63d4e615-6675-4f39-955f-88ca0220677d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="10638 - Service IO - TEST" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>10638 - Service IO - TEST</DisplayName>
-  <Category>Integration Test Resources\10638 - Service IO - TEST</Category>
+  <Category>Acceptance Testing Resources\10638 - Service IO - TEST</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

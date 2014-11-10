@@ -1,7 +1,7 @@
 
 <Service ID="673f4af3-1966-4a82-8e8f-ef294d8ccd9c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Unique" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>Unique</DisplayName>
-  <Category>Integration Test Resources\Unique</Category>
+  <Category>Acceptance Testing Resources\Unique</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

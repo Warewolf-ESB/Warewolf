@@ -1,7 +1,7 @@
 
 <Service ID="87093935-5381-487a-b984-3d08ac762cfc" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PluginsReturningXMLfromXML" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>PluginsReturningXMLfromXML</DisplayName>
-  <Category>Integration Test Resources\PluginsReturningXMLfromXML</Category>
+  <Category>Acceptance Testing Resources\PluginsReturningXMLfromXML</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

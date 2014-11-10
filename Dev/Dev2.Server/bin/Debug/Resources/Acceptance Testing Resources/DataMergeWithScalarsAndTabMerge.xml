@@ -356,7 +356,7 @@
   </Action>
   <Comment>
   </Comment>
-  <Category>Integration Test Resources\DataMergeWithScalarsAndTabMerge</Category>
+  <Category>Acceptance Testing Resources\DataMergeWithScalarsAndTabMerge</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>

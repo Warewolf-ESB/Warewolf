@@ -1,7 +1,7 @@
 
 <Service ID="1d4ca937-8d1c-40ef-bb4c-86424c80650b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11466_RemoteExecution_SameName" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>11466_RemoteExecution_SameName</DisplayName>
-  <Category>Integration Test Resources\11466_RemoteExecution_SameName</Category>
+  <Category>Acceptance Testing Resources\11466_RemoteExecution_SameName</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

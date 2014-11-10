@@ -1,7 +1,7 @@
 
 <Service ID="4e98fabf-1978-4075-83da-adc61e13e6dd" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecsetWithBlankIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>DeleteRecordUsingRecsetWithBlankIndex</DisplayName>
-  <Category>Integration Test Resources\DeleteRecordUsingRecsetWithBlankIndex</Category>
+  <Category>Acceptance Testing Resources\DeleteRecordUsingRecsetWithBlankIndex</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

@@ -1,7 +1,7 @@
 
 <Source ID="7d4736e1-e4aa-45f6-ae16-fa1fc71d786c" Version="1.0" Name="testingRemotePluginSrc" ResourceType="PluginSource" IsValid="false" AssemblyLocation="\\rsaklfsvrsbspdc\Company\HgCo.WindowsLive.SkyDriveServiceClient.dll" AssemblyName="HgCo.WindowsLive.SkyDriveServiceClient" Type="Plugin" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <DisplayName>testingRemotePluginSrc</DisplayName>
-  <Category>Integration Test Resources\testingRemotePluginSrc</Category>
+  <Category>Acceptance Testing Resources\testingRemotePluginSrc</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

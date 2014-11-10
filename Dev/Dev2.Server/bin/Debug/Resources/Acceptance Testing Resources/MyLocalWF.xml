@@ -1,7 +1,7 @@
 
 <Service ID="82d937c4-4ea0-496c-a033-d881fc2ef577" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MyLocalWF" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>MyLocalWF</DisplayName>
-  <Category>Integration Test Resources\MyLocalWF</Category>
+  <Category>Acceptance Testing Resources\MyLocalWF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

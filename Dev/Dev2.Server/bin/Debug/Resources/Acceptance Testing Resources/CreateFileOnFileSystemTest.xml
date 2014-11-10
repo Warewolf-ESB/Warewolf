@@ -89,7 +89,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Test workflow for createing a file on the local file system</Comment>
-  <Category>Integration Test Resources\CreateFileOnFileSystemTest</Category>
+  <Category>Acceptance Testing Resources\CreateFileOnFileSystemTest</Category>
   <Tags>
   </Tags>
   <HelpLink>a:/</HelpLink>

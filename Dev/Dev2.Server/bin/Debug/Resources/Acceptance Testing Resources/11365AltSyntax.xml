@@ -1,7 +1,7 @@
 
 <Service ID="fb9e8fa4-133c-4d3d-930f-cb34c40085ce" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11365AltSyntax" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.20.1">
   <DisplayName>11365AltSyntax</DisplayName>
-  <Category>Integration Test Resources\11365AltSyntax</Category>
+  <Category>Acceptance Testing Resources\11365AltSyntax</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

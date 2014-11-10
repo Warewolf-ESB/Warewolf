@@ -1,7 +1,7 @@
 
 <Service ID="def46bb8-3636-4230-aa35-0f243412f1f5" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="InnerWF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.20.1">
   <DisplayName>InnerWF</DisplayName>
-  <Category>Integration Test Resources\InnerWF</Category>
+  <Category>Acceptance Testing Resources\InnerWF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -1,7 +1,7 @@
 
 <Service ID="00bf2c94-fff9-4d04-8e3e-c20d65558766" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug 10475 Outer WF" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Bug 10475 Outer WF</DisplayName>
-  <Category>Integration Test Resources\Bug 10475 Outer WF</Category>
+  <Category>Acceptance Testing Resources\Bug 10475 Outer WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

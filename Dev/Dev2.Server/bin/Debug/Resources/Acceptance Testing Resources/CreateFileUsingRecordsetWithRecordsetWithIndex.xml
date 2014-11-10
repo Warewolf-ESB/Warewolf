@@ -1,7 +1,7 @@
 
 <Service ID="129b7f38-430d-4053-98f5-f0b9de509c51" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileUsingRecordsetWithRecordsetWithIndex" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>CreateFileUsingRecordsetWithRecordsetWithIndex</DisplayName>
-  <Category>Integration Test Resources\CreateFileUsingRecordsetWithRecordsetWithIndex</Category>
+  <Category>Acceptance Testing Resources\CreateFileUsingRecordsetWithRecordsetWithIndex</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

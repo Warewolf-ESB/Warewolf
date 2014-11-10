@@ -1,7 +1,7 @@
 
 <Service ID="9ab65c05-233a-406e-a1db-f349caf76dab" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="NewForEachScalarTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>NewForEachScalarTest</DisplayName>
-  <Category>Integration Test Resources\NewForEachScalarTest</Category>
+  <Category>Acceptance Testing Resources\NewForEachScalarTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Testing if the for each works with scalars</Comment>

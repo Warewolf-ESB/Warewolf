@@ -1,7 +1,7 @@
 
 <Service ID="eaead84d-b71a-4b22-8897-becd4a15989e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Data Merge" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Data Merge</DisplayName>
-  <Category>Integration Test Resources\Data Merge</Category>
+  <Category>Acceptance Testing Resources\Data Merge</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

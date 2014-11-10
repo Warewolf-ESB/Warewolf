@@ -74,7 +74,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>testing</Comment>
-  <Category>Integration Test Resources\TestForEachOutput</Category>
+  <Category>Acceptance Testing Resources\TestForEachOutput</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>

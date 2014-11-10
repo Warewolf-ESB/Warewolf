@@ -23,7 +23,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>MapLocations</DisplayName>
-  <Category>Integration Test Resources\MapLocations</Category>
+  <Category>Acceptance Testing Resources\MapLocations</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

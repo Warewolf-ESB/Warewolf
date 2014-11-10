@@ -1,7 +1,7 @@
 
 <Service ID="b05a38b9-e4a2-4f7f-995b-fac82a83851e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachUpgradeFileOpsTests" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>ForEachUpgradeFileOpsTests</DisplayName>
-  <Category>Integration Test Resources\ForEachUpgradeFileOpsTests</Category>
+  <Category>Acceptance Testing Resources\ForEachUpgradeFileOpsTests</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -26,7 +26,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>IntegrationTestDBNullInsertsDBWithNull</DisplayName>
-  <Category>Integration Test Resources\IntegrationTestDBNullInsertsDBWithNull</Category>
+  <Category>Acceptance Testing Resources\IntegrationTestDBNullInsertsDBWithNull</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

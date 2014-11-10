@@ -1,7 +1,7 @@
 
 <Service ID="7f3f8abf-2163-4e5d-9ec2-c9e4730262a2" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileUsingRecordsetWithNoIndexTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>CreateFileUsingRecordsetWithNoIndexTest</DisplayName>
-  <Category>Integration Test Resources\CreateFileUsingRecordsetWithNoIndexTest</Category>
+  <Category>Acceptance Testing Resources\CreateFileUsingRecordsetWithNoIndexTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

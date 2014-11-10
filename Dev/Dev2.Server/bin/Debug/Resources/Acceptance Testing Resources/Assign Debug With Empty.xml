@@ -1,7 +1,7 @@
 
 <Service ID="a520ced3-b1e7-4793-be2b-7741798bf570" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Assign Debug With Empty" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Assign Debug With Empty</DisplayName>
-  <Category>Integration Test Resources\Assign Debug With Empty</Category>
+  <Category>Acceptance Testing Resources\Assign Debug With Empty</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

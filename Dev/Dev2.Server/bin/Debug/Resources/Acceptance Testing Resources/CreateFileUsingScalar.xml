@@ -1,7 +1,7 @@
 
 <Service ID="4f8afc45-6f32-4449-8e2a-1581b06fd920" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileUsingScalar" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>CreateFileUsingScalar</DisplayName>
-  <Category>Integration Test Resources\CreateFileUsingScalar</Category>
+  <Category>Acceptance Testing Resources\CreateFileUsingScalar</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

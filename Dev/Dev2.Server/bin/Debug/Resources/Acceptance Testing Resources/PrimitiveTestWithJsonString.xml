@@ -24,7 +24,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithJsonString</DisplayName>
-  <Category>Integration Test Resources\PrimitiveTestWithJsonString</Category>
+  <Category>Acceptance Testing Resources\PrimitiveTestWithJsonString</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

@@ -1,7 +1,7 @@
 
 <Service ID="91935d25-ce80-4d95-83e5-ee13df8dc565" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MoveFolderOnFileSystemTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>MoveFolderOnFileSystemTest</DisplayName>
-  <Category>Integration Test Resources\MoveFolderOnFileSystemTest</Category>
+  <Category>Acceptance Testing Resources\MoveFolderOnFileSystemTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

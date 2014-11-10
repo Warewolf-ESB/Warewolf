@@ -104,7 +104,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Test workflow for copying a file from and to the local file system</Comment>
-  <Category>Integration Test Resources\CopyFileLocalToLocalTest</Category>
+  <Category>Acceptance Testing Resources\CopyFileLocalToLocalTest</Category>
   <Tags>
   </Tags>
   <HelpLink>a:/</HelpLink>

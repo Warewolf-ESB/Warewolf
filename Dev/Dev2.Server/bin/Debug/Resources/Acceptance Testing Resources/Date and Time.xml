@@ -1,7 +1,7 @@
 
 <Service ID="5406fe47-187e-4ffa-9a5f-c6cb1c164fa9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Date and Time" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Date and Time</DisplayName>
-  <Category>Integration Test Resources\Date and Time</Category>
+  <Category>Acceptance Testing Resources\Date and Time</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

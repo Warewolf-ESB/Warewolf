@@ -1,7 +1,7 @@
 
 <Service ID="d95f474c-581f-4560-b1d3-3160554d6032" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Format Number" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>Format Number</DisplayName>
-  <Category>Integration Test Resources\Format Number</Category>
+  <Category>Acceptance Testing Resources\Format Number</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

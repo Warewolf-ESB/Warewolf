@@ -1,7 +1,7 @@
 
 <Service ID="d43e31b3-7b79-4dd6-ad9a-b7c6b7486962" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Javascript Testing" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>Javascript Testing</DisplayName>
-  <Category>Integration Test Resources\Javascript Testing</Category>
+  <Category>Acceptance Testing Resources\Javascript Testing</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -36,7 +36,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>Emit Xml Service</DisplayName>
-  <Category>Integration Test Resources\Emit Xml Service</Category>
+  <Category>Acceptance Testing Resources\Emit Xml Service</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

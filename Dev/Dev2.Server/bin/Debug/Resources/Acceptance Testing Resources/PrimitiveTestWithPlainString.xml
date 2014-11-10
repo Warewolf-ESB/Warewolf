@@ -24,7 +24,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithPlainString</DisplayName>
-  <Category>Integration Test Resources\PrimitiveTestWithPlainString</Category>
+  <Category>Acceptance Testing Resources\PrimitiveTestWithPlainString</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

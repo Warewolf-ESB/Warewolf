@@ -1,7 +1,7 @@
 
 <Service ID="0441ec13-480c-4c72-82da-2a71e63dad00" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner CSV WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Inner CSV WF</DisplayName>
-  <Category>Integration Test Resources\Inner CSV WF</Category>
+  <Category>Acceptance Testing Resources\Inner CSV WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

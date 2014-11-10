@@ -103,7 +103,7 @@
   </Action>
   <AuthorRoles>Domain Users,All Users,Company Users,Business Design Studio Developers,Build Configuration Engineers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>cake</Comment>
-  <Category>Integration Test Resources\DateAndTimeWithComplexLiteral</Category>
+  <Category>Acceptance Testing Resources\DateAndTimeWithComplexLiteral</Category>
   <Tags>
   </Tags>
   <HelpLink>http://awesome</HelpLink>

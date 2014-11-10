@@ -3,7 +3,7 @@
   <AuthorRoles>Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,</AuthorRoles>
   <Comment>.NET Assembly Used as an entry point to the databrowser map functionality and to emit any given string data.</Comment>
   <HelpLink>http://d</HelpLink>
-  <Category>Integration Test Resources\Anything To Xml Hook Plugin</Category>
+  <Category>Acceptance Testing Resources\Anything To Xml Hook Plugin</Category>
   <Tags>
   </Tags>
   <UnitTestTargetWorkflowService>

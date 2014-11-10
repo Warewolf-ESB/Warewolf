@@ -1,7 +1,7 @@
 
 <Service ID="e0838235-3b01-4ac5-ae72-c4fbfe26bf32" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataMergeRecordsetsUsingStarAndCharMerge" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>DataMergeRecordsetsUsingStarAndCharMerge</DisplayName>
-  <Category>Integration Test Resources\DataMergeRecordsetsUsingStarAndCharMerge</Category>
+  <Category>Acceptance Testing Resources\DataMergeRecordsetsUsingStarAndCharMerge</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

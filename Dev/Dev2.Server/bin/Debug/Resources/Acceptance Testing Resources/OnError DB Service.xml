@@ -23,7 +23,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>OnError DB Service</DisplayName>
-  <Category>Integration Test Resources\OnError DB Service</Category>
+  <Category>Acceptance Testing Resources\OnError DB Service</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

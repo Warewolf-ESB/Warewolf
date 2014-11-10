@@ -1,7 +1,7 @@
 
 <Service ID="221b40e1-cc26-419d-ad8e-52db2711634e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ZipFolderOnFileSystemTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>ZipFolderOnFileSystemTest</DisplayName>
-  <Category>Integration Test Resources\ZipFolderOnFileSystemTest</Category>
+  <Category>Acceptance Testing Resources\ZipFolderOnFileSystemTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -1,7 +1,7 @@
 
 <Service ID="033cdf59-8f7e-45ea-b767-864ce4abfec8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="UnZipOnFileSystemTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>UnZipOnFileSystemTest</DisplayName>
-  <Category>Integration Test Resources\UnZipOnFileSystemTest</Category>
+  <Category>Acceptance Testing Resources\UnZipOnFileSystemTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

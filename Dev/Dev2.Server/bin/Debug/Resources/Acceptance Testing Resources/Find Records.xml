@@ -1,7 +1,7 @@
 
 <Service ID="26742926-d4c6-4cbf-97c1-4789320a0606" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Find Records" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Find Records</DisplayName>
-  <Category>Integration Test Resources\Find Records</Category>
+  <Category>Acceptance Testing Resources\Find Records</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

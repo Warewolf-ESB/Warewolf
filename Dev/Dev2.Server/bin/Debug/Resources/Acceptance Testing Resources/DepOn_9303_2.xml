@@ -1,7 +1,7 @@
 
 <Service ID="0fd33cd5-2f5f-4ce3-95bc-3c44f95f1dd6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DepOn_9303_2" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>DepOn_9303_2</DisplayName>
-  <Category>Integration Test Resources\DepOn_9303_2</Category>
+  <Category>Acceptance Testing Resources\DepOn_9303_2</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

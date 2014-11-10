@@ -1,7 +1,7 @@
 
 <Service ID="4efb6dbb-f27d-4ea1-bd30-7ddfc01fbe9a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="WebServiceTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>WebServiceTest</DisplayName>
-  <Category>Integration Test Resources\WebServiceTest</Category>
+  <Category>Acceptance Testing Resources\WebServiceTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

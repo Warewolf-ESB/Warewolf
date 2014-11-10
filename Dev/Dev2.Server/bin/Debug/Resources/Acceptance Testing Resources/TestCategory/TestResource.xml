@@ -1,7 +1,7 @@
 
 <Service ID="b54c607b-987d-4248-97c8-64c297603ff2" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="TestResource" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>TestResource</DisplayName>
-  <Category>Integration Test Resources\TestCategory\TestResource</Category>
+  <Category>Acceptance Testing Resources\TestCategory\TestResource</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

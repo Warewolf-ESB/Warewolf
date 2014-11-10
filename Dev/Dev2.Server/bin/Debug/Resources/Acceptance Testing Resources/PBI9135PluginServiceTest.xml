@@ -1,7 +1,7 @@
 
 <Service ID="02b86bbf-1e23-460f-9228-a1424d6248f6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PBI9135PluginServiceTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>PBI9135PluginServiceTest</DisplayName>
-  <Category>Integration Test Resources\PBI9135PluginServiceTest</Category>
+  <Category>Acceptance Testing Resources\PBI9135PluginServiceTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

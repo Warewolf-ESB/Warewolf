@@ -1,7 +1,7 @@
 
 <Service ID="a09d3216-a4c4-477e-b873-4180aa23f7ec" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileCopyToFTP" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>CreateFileCopyToFTP</DisplayName>
-  <Category>Integration Test Resources\CreateFileCopyToFTP</Category>
+  <Category>Acceptance Testing Resources\CreateFileCopyToFTP</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

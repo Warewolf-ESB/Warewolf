@@ -123,7 +123,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>Get Rows</DisplayName>
-  <Category>Integration Test Resources\Get Rows</Category>
+  <Category>Acceptance Testing Resources\Get Rows</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

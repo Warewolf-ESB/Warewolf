@@ -720,7 +720,7 @@
   </AuthorRoles>
   <Comment>
   </Comment>
-  <Category>Integration Test Resources\Base Conversion</Category>
+  <Category>Acceptance Testing Resources\Base Conversion</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>

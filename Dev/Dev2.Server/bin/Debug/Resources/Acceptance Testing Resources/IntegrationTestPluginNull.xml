@@ -39,7 +39,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>IntegrationTestPluginNull</DisplayName>
-  <Category>Integration Test Resources\IntegrationTestPluginNull</Category>
+  <Category>Acceptance Testing Resources\IntegrationTestPluginNull</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

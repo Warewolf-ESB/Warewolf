@@ -1,7 +1,7 @@
 
 <Service ID="1c453c6f-cd53-4756-9d60-de46f37a7add" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner Star WF" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Inner Star WF</DisplayName>
-  <Category>Integration Test Resources\Inner Star WF</Category>
+  <Category>Acceptance Testing Resources\Inner Star WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

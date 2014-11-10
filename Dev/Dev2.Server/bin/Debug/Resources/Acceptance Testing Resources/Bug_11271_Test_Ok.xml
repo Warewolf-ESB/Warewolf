@@ -1,7 +1,7 @@
 
 <Service ID="14829d8a-b854-4bc7-a7fd-760c55fff444" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug_11271_Test_Ok" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Bug_11271_Test_Ok</DisplayName>
-  <Category>Integration Test Resources\Bug_11271_Test_Ok</Category>
+  <Category>Acceptance Testing Resources\Bug_11271_Test_Ok</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -43,7 +43,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>Email Service</DisplayName>
-  <Category>Integration Test Resources\Email Service</Category>
+  <Category>Acceptance Testing Resources\Email Service</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

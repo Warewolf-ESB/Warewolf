@@ -20,7 +20,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>Fetch</DisplayName>
-  <Category>Integration Test Resources\TestCategory\Fetch</Category>
+  <Category>Acceptance Testing Resources\TestCategory\Fetch</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

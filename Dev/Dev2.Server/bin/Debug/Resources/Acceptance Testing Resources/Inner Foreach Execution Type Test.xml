@@ -1,7 +1,7 @@
 
 <Service ID="03a766bb-19b8-46f6-9010-1e160bbcf3de" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner Foreach Execution Type Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Inner Foreach Execution Type Test</DisplayName>
-  <Category>Integration Test Resources\Inner Foreach Execution Type Test</Category>
+  <Category>Acceptance Testing Resources\Inner Foreach Execution Type Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

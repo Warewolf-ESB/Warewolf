@@ -20,7 +20,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>ForEachInsertTiming</DisplayName>
-  <Category>Integration Test Resources\ForEachInsertTiming</Category>
+  <Category>Acceptance Testing Resources\ForEachInsertTiming</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

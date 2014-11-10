@@ -1,7 +1,7 @@
 
 <Service ID="ae5399f9-7fd4-4897-8ff2-f771244b75b6" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ExecuteWithWorkspaceId" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>ExecuteWithWorkspaceId</DisplayName>
-  <Category>Integration Test Resources\ExecuteWithWorkspaceId</Category>
+  <Category>Acceptance Testing Resources\ExecuteWithWorkspaceId</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

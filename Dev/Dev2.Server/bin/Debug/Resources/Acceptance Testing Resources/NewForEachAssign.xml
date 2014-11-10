@@ -1,7 +1,7 @@
 
 <Service ID="f7df6879-8021-40c1-947d-c21771f286ef" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="NewForEachAssign" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.20.1">
   <DisplayName>NewForEachAssign</DisplayName>
-  <Category>Integration Test Resources\NewForEachAssign</Category>
+  <Category>Acceptance Testing Resources\NewForEachAssign</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -1,7 +1,7 @@
 
 <Service ID="ee582f44-22f7-4d65-9969-e6d95794c8e2" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FileCopyFromFtp" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>FileCopyFromFtp</DisplayName>
-  <Category>Integration Test Resources\FileCopyFromFtp</Category>
+  <Category>Acceptance Testing Resources\FileCopyFromFtp</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

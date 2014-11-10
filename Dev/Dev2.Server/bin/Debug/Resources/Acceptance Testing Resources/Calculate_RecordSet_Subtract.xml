@@ -116,7 +116,7 @@
   </Action>
   <AuthorRoles>Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>An integration Test service to test record set operations</Comment>
-  <Category>Integration Test Resources\Calculate_RecordSet_Subtract</Category>
+  <Category>Acceptance Testing Resources\Calculate_RecordSet_Subtract</Category>
   <HelpLink>a:\</HelpLink>
   <DisplayName>Workflow</DisplayName>
   <DataList>

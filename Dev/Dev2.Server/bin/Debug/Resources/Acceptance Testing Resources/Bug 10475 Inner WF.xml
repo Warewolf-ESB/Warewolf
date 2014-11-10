@@ -1,7 +1,7 @@
 
 <Service ID="981c1463-f9e2-48db-899d-310bb9327792" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug 10475 Inner WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Bug 10475 Inner WF</DisplayName>
-  <Category>Integration Test Resources\Bug 10475 Inner WF</Category>
+  <Category>Acceptance Testing Resources\Bug 10475 Inner WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

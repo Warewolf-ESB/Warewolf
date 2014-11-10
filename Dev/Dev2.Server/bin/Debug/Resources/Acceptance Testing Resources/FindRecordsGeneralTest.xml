@@ -187,7 +187,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Workflow for testing the general use of the finf records tool</Comment>
-  <Category>Integration Test Resources\FindRecordsGeneralTest</Category>
+  <Category>Acceptance Testing Resources\FindRecordsGeneralTest</Category>
   <Tags>
   </Tags>
   <HelpLink>a:/</HelpLink>

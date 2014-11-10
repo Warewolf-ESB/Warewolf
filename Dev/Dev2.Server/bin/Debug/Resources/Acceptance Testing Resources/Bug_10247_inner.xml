@@ -1,7 +1,7 @@
 
 <Service ID="6859671e-ec3f-4d60-ae4c-92a8d37f5c66" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug_10247_inner" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Bug_10247_inner</DisplayName>
-  <Category>Integration Test Resources\Bug_10247_inner</Category>
+  <Category>Acceptance Testing Resources\Bug_10247_inner</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

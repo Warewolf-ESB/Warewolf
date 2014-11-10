@@ -40,7 +40,7 @@
   <DataList />
   <TypeOf>InvokeWebService</TypeOf>
   <DisplayName>newgooglemaps</DisplayName>
-  <Category>Integration Test Resources\newgooglemaps</Category>
+  <Category>Acceptance Testing Resources\newgooglemaps</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

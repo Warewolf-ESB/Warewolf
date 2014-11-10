@@ -1,7 +1,7 @@
 
 <Service ID="8184beae-2ff0-48d6-8deb-f2ef88c1bcf4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="9139Local" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>9139Local</DisplayName>
-  <Category>Integration Test Resources\9139Local</Category>
+  <Category>Acceptance Testing Resources\9139Local</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

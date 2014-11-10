@@ -22,7 +22,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>CaseSP</DisplayName>
-  <Category>Integration Test Resources\CaseSP</Category>
+  <Category>Acceptance Testing Resources\CaseSP</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

@@ -1,7 +1,7 @@
 
 <Service ID="e1c3864b-9687-411c-923c-9064254a2b3d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Find Index" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>Find Index</DisplayName>
-  <Category>Integration Test Resources\Find Index</Category>
+  <Category>Acceptance Testing Resources\Find Index</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

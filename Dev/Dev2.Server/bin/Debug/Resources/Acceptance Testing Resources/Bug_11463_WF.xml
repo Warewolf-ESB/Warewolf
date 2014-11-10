@@ -1,7 +1,7 @@
 
 <Service ID="76db0f0a-c3dc-46c8-b2f7-7078aabb6123" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug_11463_WF" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Bug_11463_WF</DisplayName>
-  <Category>Integration Test Resources\Bug_11463_WF</Category>
+  <Category>Acceptance Testing Resources\Bug_11463_WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -1,7 +1,7 @@
 
 <Service ID="c1e8583d-d3ed-4cb8-921f-a230722c68de" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="XPath Tool" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>XPath Tool</DisplayName>
-  <Category>Integration Test Resources\XPath Tool</Category>
+  <Category>Acceptance Testing Resources\XPath Tool</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

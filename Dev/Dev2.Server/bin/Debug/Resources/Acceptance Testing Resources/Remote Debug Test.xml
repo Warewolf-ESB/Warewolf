@@ -1,7 +1,7 @@
 
 <Service ID="f8f4d105-8a7b-43e8-80ae-83de53cc4a96" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Remote Debug Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Remote Debug Test</DisplayName>
-  <Category>Integration Test Resources\Remote Debug Test</Category>
+  <Category>Acceptance Testing Resources\Remote Debug Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

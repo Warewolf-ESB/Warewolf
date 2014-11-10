@@ -1,7 +1,7 @@
 
 <Service ID="2655f332-6a1b-468a-8402-fe45c73da1fa" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecordsetWithStarIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>DeleteRecordUsingRecordsetWithStarIndex</DisplayName>
-  <Category>Integration Test Resources\DeleteRecordUsingRecordsetWithStarIndex</Category>
+  <Category>Acceptance Testing Resources\DeleteRecordUsingRecordsetWithStarIndex</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

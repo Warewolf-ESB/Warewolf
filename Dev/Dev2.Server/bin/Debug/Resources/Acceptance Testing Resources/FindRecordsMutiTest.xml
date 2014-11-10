@@ -238,7 +238,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Workflow for testing a number of different searches.</Comment>
-  <Category>Integration Test Resources\FindRecordsMutiTest</Category>
+  <Category>Acceptance Testing Resources\FindRecordsMutiTest</Category>
   <Tags>
   </Tags>
   <HelpLink>a:/</HelpLink>

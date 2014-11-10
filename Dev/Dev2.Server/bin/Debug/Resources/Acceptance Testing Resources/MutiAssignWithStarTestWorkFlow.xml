@@ -132,7 +132,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Workflow for testing the multi assign activity using the star notation</Comment>
-  <Category>Integration Test Resources\MutiAssignWithStarTestWorkFlow</Category>
+  <Category>Acceptance Testing Resources\MutiAssignWithStarTestWorkFlow</Category>
   <HelpLink>a:/</HelpLink>
   <DisplayName>Workflow</DisplayName>
   <DataList>

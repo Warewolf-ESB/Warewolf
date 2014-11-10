@@ -23,7 +23,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>Bug9139Service</DisplayName>
-  <Category>Integration Test Resources\Bug9139Service</Category>
+  <Category>Acceptance Testing Resources\Bug9139Service</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

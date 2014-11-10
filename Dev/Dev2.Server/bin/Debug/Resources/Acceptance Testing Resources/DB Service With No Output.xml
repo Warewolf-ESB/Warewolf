@@ -1,7 +1,7 @@
 
 <Service ID="a6513454-2e41-415b-a64b-304320a577bb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DB Service With No Output" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>DB Service With No Output</DisplayName>
-  <Category>Integration Test Resources\DB Service With No Output</Category>
+  <Category>Acceptance Testing Resources\DB Service With No Output</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

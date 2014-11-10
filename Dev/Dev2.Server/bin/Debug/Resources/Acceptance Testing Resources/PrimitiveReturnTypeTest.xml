@@ -1,7 +1,7 @@
 
 <Service ID="9da6ff7b-7b63-4412-883f-0a6e9fb92254" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PrimitiveReturnTypeTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>PrimitiveReturnTypeTest</DisplayName>
-  <Category>Integration Test Resources\PrimitiveReturnTypeTest</Category>
+  <Category>Acceptance Testing Resources\PrimitiveReturnTypeTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -1,7 +1,7 @@
 
 <Service ID="b035222d-a307-4c13-aaad-e6232eb22ec8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteRecordUsingRecordsetWithNumericIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>DeleteRecordUsingRecordsetWithNumericIndex</DisplayName>
-  <Category>Integration Test Resources\DeleteRecordUsingRecordsetWithNumericIndex</Category>
+  <Category>Acceptance Testing Resources\DeleteRecordUsingRecordsetWithNumericIndex</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

@@ -24,7 +24,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithIntegerService</DisplayName>
-  <Category>Integration Test Resources\PrimitiveTestWithIntegerService</Category>
+  <Category>Acceptance Testing Resources\PrimitiveTestWithIntegerService</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

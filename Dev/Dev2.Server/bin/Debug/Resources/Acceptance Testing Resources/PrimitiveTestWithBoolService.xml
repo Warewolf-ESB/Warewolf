@@ -24,7 +24,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PrimitiveTestWithBoolService</DisplayName>
-  <Category>Integration Test Resources\PrimitiveTestWithBoolService</Category>
+  <Category>Acceptance Testing Resources\PrimitiveTestWithBoolService</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

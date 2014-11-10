@@ -35,7 +35,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>Emit Json Service</DisplayName>
-  <Category>Integration Test Resources\Emit Json Service</Category>
+  <Category>Acceptance Testing Resources\Emit Json Service</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

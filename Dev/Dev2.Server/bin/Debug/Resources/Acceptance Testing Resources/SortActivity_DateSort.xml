@@ -1,7 +1,7 @@
 
 <Service ID="55919c1b-662b-49bc-80f8-978ac1d63778" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="SortActivity_DateSort" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>SortActivity_DateSort</DisplayName>
-  <Category>Integration Test Resources\SortActivity_DateSort</Category>
+  <Category>Acceptance Testing Resources\SortActivity_DateSort</Category>
   <AuthorRoles>Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Testing the Sort Activity on date sorting</Comment>
   <Tags>

@@ -96,7 +96,7 @@
   </Action>
   <AuthorRoles>Domain Users,All Users,Company Users,Business Design Studio Developers,Build Configuration Engineers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>cake</Comment>
-  <Category>Integration Test Resources\DateAndTimeWithNotOutputFormat</Category>
+  <Category>Acceptance Testing Resources\DateAndTimeWithNotOutputFormat</Category>
   <Tags>
   </Tags>
   <HelpLink>http://eatcakes</HelpLink>

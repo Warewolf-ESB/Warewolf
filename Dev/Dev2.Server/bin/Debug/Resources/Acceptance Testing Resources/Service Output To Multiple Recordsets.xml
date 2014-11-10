@@ -1,7 +1,7 @@
 
 <Service ID="3f9e7c68-b7f8-415e-88a2-d71cc6e70232" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Service Output To Multiple Recordsets" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Service Output To Multiple Recordsets</DisplayName>
-  <Category>Integration Test Resources\Service Output To Multiple Recordsets</Category>
+  <Category>Acceptance Testing Resources\Service Output To Multiple Recordsets</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

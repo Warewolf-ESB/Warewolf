@@ -106,7 +106,7 @@
   </Action>
   <AuthorRoles>Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>asdasdasd</Comment>
-  <Category>Integration Test Resources\TestCategory\EndPointInterrogator</Category>
+  <Category>Acceptance Testing Resources\TestCategory\EndPointInterrogator</Category>
   <Tags>
   </Tags>
   <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>

@@ -1,7 +1,7 @@
 
 <Service ID="f443442d-82e1-4a0e-a954-ee7239dbfb70" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteFolderFromFileSystemTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>DeleteFolderFromFileSystemTest</DisplayName>
-  <Category>Integration Test Resources\DeleteFolderFromFileSystemTest</Category>
+  <Category>Acceptance Testing Resources\DeleteFolderFromFileSystemTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

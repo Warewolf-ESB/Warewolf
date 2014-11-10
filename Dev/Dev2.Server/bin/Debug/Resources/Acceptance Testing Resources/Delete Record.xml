@@ -1,7 +1,7 @@
 
 <Service ID="ed60df10-4698-4f57-bfcc-51b32de7dff4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Delete Record" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Delete Record</DisplayName>
-  <Category>Integration Test Resources\Delete Record</Category>
+  <Category>Acceptance Testing Resources\Delete Record</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

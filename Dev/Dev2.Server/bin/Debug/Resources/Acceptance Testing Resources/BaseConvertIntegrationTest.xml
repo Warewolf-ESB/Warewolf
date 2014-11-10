@@ -1,7 +1,7 @@
 
 <Service ID="6f2a453f-c5ee-48b0-b1a1-c86db0eb8376" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertIntegrationTest" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>BaseConvertIntegrationTest</DisplayName>
-  <Category>Integration Test Resources\BaseConvertIntegrationTest</Category>
+  <Category>Acceptance Testing Resources\BaseConvertIntegrationTest</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

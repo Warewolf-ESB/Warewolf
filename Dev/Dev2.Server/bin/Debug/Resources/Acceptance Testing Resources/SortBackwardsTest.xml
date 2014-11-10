@@ -1,7 +1,7 @@
 
 <Service ID="0ac7a76e-9c15-4312-a13e-055915f6da56" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="SortBackwardsTest" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>SortBackwardsTest</DisplayName>
-  <Category>Integration Test Resources\SortBackwardsTest</Category>
+  <Category>Acceptance Testing Resources\SortBackwardsTest</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

@@ -26,7 +26,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>Emit ComplexType Service</DisplayName>
-  <Category>Integration Test Resources\Emit ComplexType Service</Category>
+  <Category>Acceptance Testing Resources\Emit ComplexType Service</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

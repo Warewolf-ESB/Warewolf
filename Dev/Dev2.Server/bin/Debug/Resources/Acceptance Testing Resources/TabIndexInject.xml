@@ -1,7 +1,7 @@
 
 <Service ID="8516fa3d-d025-411e-ad2d-8dc3c51d5ca0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="TabIndexInject" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>TabIndexInject</DisplayName>
-  <Category>Integration Test Resources\TabIndexInject</Category>
+  <Category>Acceptance Testing Resources\TabIndexInject</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

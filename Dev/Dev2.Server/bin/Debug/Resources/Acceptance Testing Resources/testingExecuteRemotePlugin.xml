@@ -25,7 +25,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>testingExecuteRemotePlugin</DisplayName>
-  <Category>Integration Test Resources\testingExecuteRemotePlugin</Category>
+  <Category>Acceptance Testing Resources\testingExecuteRemotePlugin</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

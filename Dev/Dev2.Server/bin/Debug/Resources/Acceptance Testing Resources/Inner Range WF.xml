@@ -1,7 +1,7 @@
 
 <Service ID="6dc30d82-da56-4f6b-954a-900faa0265fc" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner Range WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Inner Range WF</DisplayName>
-  <Category>Integration Test Resources\Inner Range WF</Category>
+  <Category>Acceptance Testing Resources\Inner Range WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

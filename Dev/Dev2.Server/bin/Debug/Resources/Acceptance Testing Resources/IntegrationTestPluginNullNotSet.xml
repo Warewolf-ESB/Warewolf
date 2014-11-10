@@ -39,7 +39,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>IntegrationTestPluginNullNotSet</DisplayName>
-  <Category>Integration Test Resources\IntegrationTestPluginNullNotSet</Category>
+  <Category>Acceptance Testing Resources\IntegrationTestPluginNullNotSet</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

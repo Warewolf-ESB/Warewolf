@@ -1,7 +1,7 @@
 
 <Service ID="f4caadd6-0044-4f64-a4b8-3f231c3cdf3a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="RelativeUriResourceTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>RelativeUriResourceTest</DisplayName>
-  <Category>Integration Test Resources\RelativeUriResourceTest</Category>
+  <Category>Acceptance Testing Resources\RelativeUriResourceTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Business Design Studio Developers,Build Configuration Engineers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>asd</Comment>

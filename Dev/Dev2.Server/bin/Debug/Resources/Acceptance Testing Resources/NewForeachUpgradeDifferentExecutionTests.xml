@@ -1,7 +1,7 @@
 
 <Service ID="473d8088-8cb6-4430-8341-36626e66db94" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="NewForeachUpgradeDifferentExecutionTests" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>NewForeachUpgradeDifferentExecutionTests</DisplayName>
-  <Category>Integration Test Resources\NewForeachUpgradeDifferentExecutionTests</Category>
+  <Category>Acceptance Testing Resources\NewForeachUpgradeDifferentExecutionTests</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

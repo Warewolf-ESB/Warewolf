@@ -1,7 +1,7 @@
 
 <Service ID="8c574370-e61e-4e9f-b770-957118c84d00" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="WebGetRequest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>WebGetRequest</DisplayName>
-  <Category>Integration Test Resources\WebGetRequest</Category>
+  <Category>Acceptance Testing Resources\WebGetRequest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

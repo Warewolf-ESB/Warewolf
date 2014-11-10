@@ -1,7 +1,7 @@
 
 <Service ID="7176c57e-9f74-478a-8213-f42e844b57ae" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Sql Bulk Insert Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Sql Bulk Insert Test</DisplayName>
-  <Category>Integration Test Resources\Sql Bulk Insert Test</Category>
+  <Category>Acceptance Testing Resources\Sql Bulk Insert Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

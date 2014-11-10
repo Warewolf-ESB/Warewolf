@@ -1,7 +1,7 @@
 
 <Service ID="688f2415-e051-4cd7-bcf8-0c4515c2cb78" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="FormatNumber_Rounding" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>FormatNumber_Rounding</DisplayName>
-  <Category>Integration Test Resources\FormatNumber_Rounding</Category>
+  <Category>Acceptance Testing Resources\FormatNumber_Rounding</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

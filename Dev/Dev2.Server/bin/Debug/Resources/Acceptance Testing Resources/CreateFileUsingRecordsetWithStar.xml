@@ -1,7 +1,7 @@
 
 <Service ID="01445e61-c292-4a83-83f6-7e0ef90835a3" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="CreateFileUsingRecordsetWithStar" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>CreateFileUsingRecordsetWithStar</DisplayName>
-  <Category>Integration Test Resources\CreateFileUsingRecordsetWithStar</Category>
+  <Category>Acceptance Testing Resources\CreateFileUsingRecordsetWithStar</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

@@ -1,7 +1,7 @@
 
 <Service ID="a1c29df4-d6e3-49a0-bd09-006d3c4f0347" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="OnError Test" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.20.1">
   <DisplayName>OnError Test</DisplayName>
-  <Category>Integration Test Resources\OnError Test</Category>
+  <Category>Acceptance Testing Resources\OnError Test</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

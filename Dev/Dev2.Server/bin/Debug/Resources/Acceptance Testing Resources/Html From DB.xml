@@ -36,7 +36,7 @@ var $j = jQuery.noConflict();
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>Html From DB</DisplayName>
-  <Category>Integration Test Resources\Html From DB</Category>
+  <Category>Acceptance Testing Resources\Html From DB</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

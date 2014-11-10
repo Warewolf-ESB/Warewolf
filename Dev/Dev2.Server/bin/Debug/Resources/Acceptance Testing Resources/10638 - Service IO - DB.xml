@@ -23,7 +23,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>10638 - Service IO - DB</DisplayName>
-  <Category>Integration Test Resources\10638 - Service IO - DB</Category>
+  <Category>Acceptance Testing Resources\10638 - Service IO - DB</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

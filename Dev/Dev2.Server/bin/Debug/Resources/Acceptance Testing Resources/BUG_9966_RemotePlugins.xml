@@ -1,7 +1,7 @@
 
 <Service ID="fdc925ae-8cf5-4211-b23e-3fd7bfb5b3a9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BUG_9966_RemotePlugins" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>BUG_9966_RemotePlugins</DisplayName>
-  <Category>Integration Test Resources\BUG_9966_RemotePlugins</Category>
+  <Category>Acceptance Testing Resources\BUG_9966_RemotePlugins</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

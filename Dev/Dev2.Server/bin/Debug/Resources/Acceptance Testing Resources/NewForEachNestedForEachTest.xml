@@ -1,7 +1,7 @@
 
 <Service ID="8658e08a-0949-411f-b7b5-bc46cb38d3f3" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="NewForEachNestedForEachTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>NewForEachNestedForEachTest</DisplayName>
-  <Category>Integration Test Resources\NewForEachNestedForEachTest</Category>
+  <Category>Acceptance Testing Resources\NewForEachNestedForEachTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

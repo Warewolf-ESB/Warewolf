@@ -1,7 +1,7 @@
 
 <Service ID="e02527dd-92e0-4148-8b42-c6ef8ba0ea8f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Decision Testing" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Decision Testing</DisplayName>
-  <Category>Integration Test Resources\Decision Testing</Category>
+  <Category>Acceptance Testing Resources\Decision Testing</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

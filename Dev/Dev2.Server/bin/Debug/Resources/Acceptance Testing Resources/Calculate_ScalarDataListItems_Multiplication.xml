@@ -1,7 +1,7 @@
 
 <Service ID="cd78f3ba-281a-4a67-a863-1bf615ae7d71" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Calculate_ScalarDataListItems_Multiplication" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Calculate_ScalarDataListItems_Multiplication</DisplayName>
-  <Category>Integration Test Resources\Calculate_ScalarDataListItems_Multiplication</Category>
+  <Category>Acceptance Testing Resources\Calculate_ScalarDataListItems_Multiplication</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

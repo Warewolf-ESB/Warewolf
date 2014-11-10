@@ -1,7 +1,7 @@
 
 <Service ID="169e4a16-69d8-41ae-aeed-31586fd965ac" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="WebServerTestLargeString" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>WebServerTestLargeString</DisplayName>
-  <Category>Integration Test Resources\WebServerTestLargeString</Category>
+  <Category>Acceptance Testing Resources\WebServerTestLargeString</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

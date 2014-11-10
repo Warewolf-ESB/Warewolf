@@ -26,7 +26,7 @@
   <DataList />
   <TypeOf>Plugin</TypeOf>
   <DisplayName>PBI9153PluginService</DisplayName>
-  <Category>Integration Test Resources\PBI9153PluginService</Category>
+  <Category>Acceptance Testing Resources\PBI9153PluginService</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

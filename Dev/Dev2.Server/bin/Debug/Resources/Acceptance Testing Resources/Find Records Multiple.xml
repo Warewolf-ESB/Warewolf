@@ -1,7 +1,7 @@
 
 <Service ID="d1d644d8-aedd-4f1b-aa6c-7a7b22ba94ab" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Find Records Multiple" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Find Records Multiple</DisplayName>
-  <Category>Integration Test Resources\Find Records Multiple</Category>
+  <Category>Acceptance Testing Resources\Find Records Multiple</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

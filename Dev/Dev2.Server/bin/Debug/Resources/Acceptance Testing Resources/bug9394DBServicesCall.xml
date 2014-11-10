@@ -23,7 +23,7 @@
   <DataList />
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>bug9394DBServicesCall</DisplayName>
-  <Category>Integration Test Resources\bug9394DBServicesCall</Category>
+  <Category>Acceptance Testing Resources\bug9394DBServicesCall</Category>
   <AuthorRoles>
   </AuthorRoles>
   <ErrorMessages />

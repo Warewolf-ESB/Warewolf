@@ -1,7 +1,7 @@
 
 <Service ID="0b04a269-f746-4bbc-a226-88996232e642" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ReadFolderFromFileSystemTest" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>ReadFolderFromFileSystemTest</DisplayName>
-  <Category>Integration Test Resources\ReadFolderFromFileSystemTest</Category>
+  <Category>Acceptance Testing Resources\ReadFolderFromFileSystemTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

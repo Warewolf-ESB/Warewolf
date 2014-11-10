@@ -1,7 +1,7 @@
 
 <Service ID="4ba7c3f6-6856-4a59-96fb-243c1095b41c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertRecsetWithNoIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>BaseConvertRecsetWithNoIndex</DisplayName>
-  <Category>Integration Test Resources\BaseConvertRecsetWithNoIndex</Category>
+  <Category>Acceptance Testing Resources\BaseConvertRecsetWithNoIndex</Category>
   <AuthorRoles>
   </AuthorRoles>
   <Comment>

@@ -2,7 +2,7 @@
 <Source Name="Email Plugin" Type="Plugin" AssemblyName="Unlimited.Framework.Plugins.EmailPlugin" AssemblyLocation="Plugins/Unlimited.Email.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="2a7a78af-826f-4334-a402-b35e910295c9" Version="1.0" ResourceType="PluginSource" ServerVersion="0.4.2.2">
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
   <Comment>Plugin</Comment>
-  <Category>Integration Test Resources\Email Plugin</Category>
+  <Category>Acceptance Testing Resources\Email Plugin</Category>
   <HelpLink>http://dummyhelp.link</HelpLink>
   <Tags>
   </Tags>

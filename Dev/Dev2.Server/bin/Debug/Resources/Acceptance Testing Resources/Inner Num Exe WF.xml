@@ -1,7 +1,7 @@
 
 <Service ID="69b65e1f-229b-4809-ad27-c34a98517dcc" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Inner Num Exe WF" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Inner Num Exe WF</DisplayName>
-  <Category>Integration Test Resources\Inner Num Exe WF</Category>
+  <Category>Acceptance Testing Resources\Inner Num Exe WF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

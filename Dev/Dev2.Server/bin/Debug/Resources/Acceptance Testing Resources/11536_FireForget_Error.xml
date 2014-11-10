@@ -1,7 +1,7 @@
 
 <Service ID="b743e08f-6d2d-475d-a3ea-21bf22067825" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11536_FireForget_Error" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>11536_FireForget_Error</DisplayName>
-  <Category>Integration Test Resources\11536_FireForget_Error</Category>
+  <Category>Acceptance Testing Resources\11536_FireForget_Error</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

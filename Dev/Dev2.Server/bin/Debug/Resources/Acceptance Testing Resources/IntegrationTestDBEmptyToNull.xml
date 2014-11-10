@@ -1,7 +1,7 @@
 
 <Service ID="7c55d9ec-89e1-4d19-b91b-380378f208d8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="IntegrationTestDBEmptyToNull" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>IntegrationTestDBEmptyToNull</DisplayName>
-  <Category>Integration Test Resources\IntegrationTestDBEmptyToNull</Category>
+  <Category>Acceptance Testing Resources\IntegrationTestDBEmptyToNull</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>

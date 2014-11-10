@@ -65,7 +65,7 @@
   </Action>
   <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,</AuthorRoles>
   <Comment>testing</Comment>
-  <Category>Integration Test Resources\ServiceToBindFrom</Category>
+  <Category>Acceptance Testing Resources\ServiceToBindFrom</Category>
   <Tags>
   </Tags>
   <HelpLink>a:\</HelpLink>
