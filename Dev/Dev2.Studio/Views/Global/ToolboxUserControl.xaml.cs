@@ -165,6 +165,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                 category.Add(new ToolboxItemWrapper(typeof(DsfWorkflowActivity), "/Images/Workflow-32.png", "Workflow"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfServiceActivity), "/Images/ToolService-32.png", "Service"));
             }
+
+            category = GetToolboxCategoryByName("Connectors");
+            if (category != null)
+            {
+                category.Add(new ToolboxItemWrapper(typeof(DsfDropBoxWriteActivity), "/Images/dropbox-windows.png", "Upload"));
+               
+            }
         }
 
         public void AddActivity(DsfActivity activity)

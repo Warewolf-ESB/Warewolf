@@ -162,6 +162,13 @@ namespace Dev2.Studio.Core.Factories
                         resource.ServerResourceType = "WorkflowService";
                         resource.ResourceName = resourceName;
                         break;
+                    case "DropboxSource":
+                        resource.ResourceType = ResourceType.Source;
+                        resource.DisplayName = displayName;
+                        resource.ServerResourceType = "DropboxSource";
+                        resource.ResourceName = resourceName;
+                        resource.ID = Guid.Empty;
+                        break;
                 }
                 return resource;
             }

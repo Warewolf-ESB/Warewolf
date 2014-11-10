@@ -36,8 +36,11 @@ namespace Dev2.Webs
             var viewModel = new WebBrowserViewModel { RightTitle = rightTitle, LeftTitle = leftTitle };
             window.DataContext = viewModel;
 
-            callbackHandler.NavigateRequested += uri => window.Browser.LoadSafe(uri);
-            callbackHandler.Owner = window;
+            if (callbackHandler != null)
+            {
+                callbackHandler.NavigateRequested += uri => window.Browser.LoadSafe(uri);
+                callbackHandler.Owner = window;
+            }
 
             window.Browser.LoadSafe(absoluteUriString);
 

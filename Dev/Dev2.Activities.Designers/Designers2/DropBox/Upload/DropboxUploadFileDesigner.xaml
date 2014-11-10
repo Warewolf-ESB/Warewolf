@@ -1,0 +1,36 @@
+﻿<core:ActivityDesigner x:TypeArguments="upload:DropBoxUploadFileViewModel"
+                       x:Class="Dev2.Activities.Designers2.DropBox.Upload.DropboxUploadFileDesigner"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+                       xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+
+                       xmlns:upload="clr-namespace:Dev2.Activities.Designers2.DropBox.Upload"
+                       mc:Ignorable="d"
+                       d:DataContext="{d:DesignInstance upload:DropBoxUploadFileViewModel}"
+                       Style="{DynamicResource ContentViewStyle}">
+
+    <sap:ActivityDesigner.Icon>
+        <DrawingBrush Stretch="Uniform">
+            <DrawingBrush.Drawing>
+                <ImageDrawing Rect="0, 0, 16, 16"
+                              ImageSource="{StaticResource ToolCalculate-32}" />
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </sap:ActivityDesigner.Icon>
+
+    <sap:ActivityDesigner.Resources>
+        <upload:Small x:Key="Small"
+                     AutomationProperties.AutomationId="SmallViewContent" />
+
+        <Style x:Key="ContentViewStyle"
+               BasedOn="{StaticResource ActivityDesignerStyle}"
+               TargetType="{x:Type sap:ActivityDesigner}">
+            <Setter Property="Content"
+                    Value="{DynamicResource Small}" />
+        </Style>
+    </sap:ActivityDesigner.Resources>
+
+</core:ActivityDesigner>

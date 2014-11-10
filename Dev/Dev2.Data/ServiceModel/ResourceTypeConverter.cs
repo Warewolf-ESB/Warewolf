@@ -91,6 +91,7 @@ namespace Dev2.Data.ServiceModel
                 case ResourceType.EmailSource:
                 case ResourceType.WebSource:
                 case ResourceType.ServerSource:
+                case ResourceType.DropBoxSource:
                     return TypeSource;
 
                 case ResourceType.PluginService:
@@ -103,7 +104,6 @@ namespace Dev2.Data.ServiceModel
 
                 case ResourceType.ReservedService:
                     return TypeReservedService;
-
                 default:
                     return TypeWildcard;
             }
@@ -141,6 +141,9 @@ namespace Dev2.Data.ServiceModel
 
                 case enSourceType.WebService:
                     resourceType = ResourceType.WebService;
+                    break;
+                case enSourceType.DropboxSource:
+                    resourceType = ResourceType.DropBoxSource;
                     break;
             }
             return resourceType;

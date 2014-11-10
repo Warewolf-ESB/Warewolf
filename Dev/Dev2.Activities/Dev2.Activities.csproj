@@ -78,6 +78,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DropNet">
+      <HintPath>C:\Users\leon.rajindrapersadh\Downloads\DropNet-master\DropNet-master\DropNet.Samples\DropNet.Samples.WinForms\DropNet.Samples.WinForms\bin\Debug\DropNet.dll</HintPath>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
@@ -94,6 +97,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RestSharp">
+      <HintPath>C:\Users\leon.rajindrapersadh\Downloads\DropNet-master\DropNet-master\DropNet.Samples\DropNet.Samples.WinForms\DropNet.Samples.WinForms\bin\Debug\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
@@ -121,6 +127,8 @@
     </Compile>
     <Compile Include="Activities\DebugCopyException.cs" />
     <Compile Include="Activities\Debug\DebugTOParams.cs" />
+    <Compile Include="Activities\DsfBaseActivity.cs" />
+    <Compile Include="Activities\DsfDropBoxWriteActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
     <Compile Include="Activities\Debug\DebugItemVariableParams.cs" />

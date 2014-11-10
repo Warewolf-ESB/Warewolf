@@ -528,8 +528,7 @@
                 </DrawingGroup.Children>
             </DrawingGroup>
         </DrawingImage.Drawing>
-    </DrawingImage>
-
+    </DrawingImage> 
     <DrawingImage x:Key="HelpAskQuestion-32">
         <DrawingImage.Drawing>
             <DrawingGroup>

@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
@@ -25,7 +26,9 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
+using Dev2.CustomControls;
 using Dev2.CustomControls.Connections;
+using Dev2.Data.ServiceModel;
 using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -64,9 +67,12 @@ using Dev2.Studio.Views;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Threading;
 using Dev2.Utils;
+using Dev2.Views.DropBox;
 using Dev2.Webs;
+using Dev2.Webs.Callbacks;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
+using ServiceStack.Common;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels
@@ -707,6 +713,10 @@ namespace Dev2.Studio.ViewModels
                     View.ClearToolboxSearch();
                 }
             }
+            else if(resourceType=="DropboxSource")
+            {
+                CreateOAuthType(ActiveEnvironment, resourceType, resourcePath);
+            }
             else
             {
                 var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
@@ -716,9 +726,40 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        void CreateOAuthType(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath)
+        {
+            var resource =  ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
+            SaveDropBoxSource(activeEnvironment, resourceType, resourcePath, resource);
+        }
+
+        void SaveDropBoxSource(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, IContextualResourceModel resource)
+        {
+            DropBoxViewWindow drop = new DropBoxViewWindow();
+            DropBoxHelper helper = new DropBoxHelper(drop, activeEnvironment, resourceType, resourcePath);
+            DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper) { Resource = resource };
+            drop.DataContext = vm;
+            var showDialog = drop.ShowDialog();
+            if(showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
+            {
+                RootWebSite.ShowNewOAuthsourceSaveDialog(vm.Resource, activeEnvironment, vm.Key, vm.Secret);
+            }
+            else if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID != Guid.Empty)
+            {
+
+                var dropBoxSource = new DropBoxSource { Key = vm.Key, Secret = vm.Secret, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
+                ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, dropBoxSource, GlobalConstants.ServerWorkspaceID);
+ 
+            }
+        }
+
         private void ShowEditResourceWizard(object resourceModelToEdit)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
+            if(resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("dropboxsource"))
+            {
+                SaveDropBoxSource(ActiveEnvironment, "DropboxSource", resourceModel.Category, resourceModel);
+            }
+            else
             DisplayResourceWizard(resourceModel, true);
         }
 
@@ -729,6 +770,7 @@ namespace Dev2.Studio.ViewModels
 
         public virtual async void ShowStartPage()
         {
+
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if(workSurfaceContextViewModel != null)

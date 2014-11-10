@@ -166,6 +166,13 @@
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Core\CEventHelper.cs" />
+    <Compile Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml.cs">
+      <DependentUpon>DropboxUploadFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox\Upload\DropBoxUploadFileViewModel.cs" />
+    <Compile Include="Designers2\DropBox\Upload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
       <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
     </Compile>
@@ -709,6 +716,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Comment\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox\Upload\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

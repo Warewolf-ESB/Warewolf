@@ -107,6 +107,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
     </Reference>
+    <Reference Include="DropNet">
+      <HintPath>C:\Users\leon.rajindrapersadh\Downloads\DropNet-master\DropNet-master\DropNet.Samples\DropNet.Samples.WinForms\DropNet.Samples.WinForms\bin\Debug\DropNet.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.AvalonEdit, Version=4.2.0.8649, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
       <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
@@ -155,6 +158,9 @@
     <Reference Include="PresentationFramework.Classic" />
     <Reference Include="PresentationFramework.Luna" />
     <Reference Include="PresentationFramework.Royale" />
+    <Reference Include="RestSharp">
+      <HintPath>C:\Users\leon.rajindrapersadh\Downloads\DropNet-master\DropNet-master\DropNet.Samples\DropNet.Samples.WinForms\DropNet.Samples.WinForms\bin\Debug\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
     </Reference>
@@ -414,6 +420,12 @@
       <DependentUpon>ReportsViewerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\DropBox\DropBoxHelper.cs" />
+    <Compile Include="Views\DropBox\DropBoxSource.xaml.cs">
+      <DependentUpon>DropBoxSource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DropBox\DropBoxSourceViewModel.cs" />
+    <Compile Include="Views\DropBox\IDropBoxHelper.cs" />
     <Compile Include="Views\Explorer\DragDropExtension.cs" />
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
@@ -911,6 +923,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DropBox\DropBoxSource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ResourceManagement\RenameResourceDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1088,6 +1104,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\dropbox-windows.png" />
     <Resource Include="Images\SplashImage_New_2014.jpg" />
     <Resource Include="Images\EmailSource-32.png" />
     <Resource Include="Images\PluginSource-32.png" />

@@ -74,6 +74,9 @@ namespace Dev2.AppResources.Converters
                                        new Uri("pack://application:,,,/Warewolf Studio;component/Images/ExplorerFolder-32.png");
 
                     return new BitmapImage(uri);
+                case ResourceType.DropBoxSource :
+                     uri = new Uri("pack://application:,,,/Warewolf Studio;component/Images/dropbox-windows.png");
+                    return new BitmapImage(uri);
                 default:
                     uri = new Uri("pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png");
                     return new BitmapImage(uri);
