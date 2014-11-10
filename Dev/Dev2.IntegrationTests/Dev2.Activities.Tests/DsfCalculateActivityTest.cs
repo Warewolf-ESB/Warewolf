@@ -59,7 +59,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
             string actual = TestHelper.PostDataToWebserver(postData);
 
-            Assert.IsTrue(actual.Contains(Expected));
+            Assert.IsTrue(actual.Contains(Expected), "Expected " + Expected + " but got " + actual);
 
         }
 
