@@ -30,8 +30,8 @@ namespace Dev2.Studio.UI.Tests.Utils
         public const string ServerProcName = "Warewolf Server";
         public const string StudioProcName = "Warewolf Studio";
         private const string ServerExeName = ServerProcName + ".exe";
-        public const int ServerTimeOut = 3000;
-        public const int StudioTimeOut = 12000;
+        public const int ServerTimeOut = 10*1000;
+        public const int StudioTimeOut = 60*1000;
 
         public static string LogLocation = @"C:\UI_Test.log";
         public static TestContext testContext;
