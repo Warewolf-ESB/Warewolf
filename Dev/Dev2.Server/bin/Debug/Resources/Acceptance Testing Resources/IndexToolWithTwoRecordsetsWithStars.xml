@@ -1,0 +1,233 @@
+
+<Service Name="IndexToolWithTwoRecordsetsWithStars" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="4db3f406-ffab-49d5-8ca6-edb827cab32a" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="IndexToolWithTwoRecordsetsWithStars"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
+ xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;1196,676&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces for internal implementation&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart DisplayName="IndexToolWithTwoRecordsetsWithStars" sap:VirtualizedContainerService.HintSize="1156,636"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;580,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;610,77.5 610,104 618.5,104&lt;/av:PointCollection&gt;
+        &lt;x:Double x:Key="Width"&gt;1142.5&lt;/x:Double&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;FlowStep x:Name="__ReferenceID0"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;482,104&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;273,92&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;618.5,196 618.5,224&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (5)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="273,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="77bf6acf-fc52-4186-8bbc-a970c21b8043" UpdateAllOccurrences="False"&gt;
+          &lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;
+            &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+          &lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;
+          &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+            &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="8"&gt;
+              &lt;uaba:ActivityDTO FieldName="[[EmailResults(1).result]]" FieldValue="The email to Barney.buchan@dev2.co.za was successful" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[EmailResults(2).result]]" FieldValue="The email to Wallis.Buchan@dev2.co.za failed" IndexNumber="2" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable2]]"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[EmailResults(3).result]]" FieldValue="The email to Travis.Frisinger@dev2.co.za failed" IndexNumber="3" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[EmailResults(4).result]]" FieldValue="The email to Trevor.Williams-Ros@dev2.co.za was successful" IndexNumber="4" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[EmailResults(5).result]]" FieldValue="The email to Massimo.Guerrera@dev2.co.za was successful" IndexNumber="5" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="6" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+            &lt;/scg:List&gt;
+          &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+          &lt;sap:WorkflowViewStateService.ViewState&gt;
+            &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+              &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+            &lt;/scg:Dictionary&gt;
+          &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;/uaba:DsfMultiAssignActivity&gt;
+        &lt;FlowStep.Next&gt;
+          &lt;FlowStep x:Name="__ReferenceID1"&gt;
+            &lt;sap:WorkflowViewStateService.ViewState&gt;
+              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                &lt;av:Point x:Key="ShapeLocation"&gt;482,224&lt;/av:Point&gt;
+                &lt;av:Size x:Key="ShapeSize"&gt;273,92&lt;/av:Size&gt;
+                &lt;av:PointCollection x:Key="ConnectorLocation"&gt;618.5,316 618.5,346 620,346 620,359.5&lt;/av:PointCollection&gt;
+              &lt;/scg:Dictionary&gt;
+            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (2)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="273,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="2ac13bdd-5237-48fe-bb20-ef754ea40562" UpdateAllOccurrences="False"&gt;
+              &lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;
+                &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+              &lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;
+              &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+                &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="4"&gt;
+                  &lt;uaba:ActivityDTO FieldName="[[ResultsCollection(1).option]]" FieldValue="successful" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&gt;
+                    &lt;uaba:ActivityDTO.OutList&gt;
+                      &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                    &lt;/uaba:ActivityDTO.OutList&gt;
+                  &lt;/uaba:ActivityDTO&gt;
+                  &lt;uaba:ActivityDTO FieldName="[[ResultsCollection(2).option]]" FieldValue="failed" IndexNumber="2" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable2]]"&gt;
+                    &lt;uaba:ActivityDTO.OutList&gt;
+                      &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                    &lt;/uaba:ActivityDTO.OutList&gt;
+                  &lt;/uaba:ActivityDTO&gt;
+                  &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="3" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                    &lt;uaba:ActivityDTO.OutList&gt;
+                      &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                    &lt;/uaba:ActivityDTO.OutList&gt;
+                  &lt;/uaba:ActivityDTO&gt;
+                &lt;/scg:List&gt;
+              &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+              &lt;sap:WorkflowViewStateService.ViewState&gt;
+                &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                  &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                &lt;/scg:Dictionary&gt;
+              &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;/uaba:DsfMultiAssignActivity&gt;
+            &lt;FlowStep.Next&gt;
+              &lt;FlowStep x:Name="__ReferenceID2"&gt;
+                &lt;sap:WorkflowViewStateService.ViewState&gt;
+                  &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                    &lt;av:Point x:Key="ShapeLocation"&gt;507.5,359.5&lt;/av:Point&gt;
+                    &lt;av:Size x:Key="ShapeSize"&gt;225,161&lt;/av:Size&gt;
+                  &lt;/scg:Dictionary&gt;
+                &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;uaba:DsfIndexActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" Characters="[[ResultsCollection(*).option]]" DatabindRecursive="False" Direction="Left to Right" DisplayName="Index" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="225,161" InField="[[EmailResults(*).result]]" Index="First Occurance" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" MatchCase="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" Result="[[IndexResult(*).inres]]" SimulationMode="OnDemand" UniqueID="30896c38-a019-44e5-aae4-5f1318c61be2"&gt;
+                  &lt;uaba:DsfIndexActivity.AmbientDataList&gt;
+                    &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                  &lt;/uaba:DsfIndexActivity.AmbientDataList&gt;
+                  &lt;sap:WorkflowViewStateService.ViewState&gt;
+                    &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                      &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                    &lt;/scg:Dictionary&gt;
+                  &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;/uaba:DsfIndexActivity&gt;
+              &lt;/FlowStep&gt;
+            &lt;/FlowStep.Next&gt;
+          &lt;/FlowStep&gt;
+        &lt;/FlowStep.Next&gt;
+      &lt;/FlowStep&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;9,3&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;451,365&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Data" sap:VirtualizedContainerService.HintSize="451,365" Text="&amp;lt;EmailResults&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;result&amp;gt;The email to Barney.buchan@dev2.co.za was successful&amp;lt;/result&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/EmailResults&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;EmailResults&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;result&amp;gt;The email to Wallis.Buchan@dev2.co.za failed&amp;lt;/result&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/EmailResults&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;EmailResults&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;result&amp;gt;The email to Travis.Frisinger@dev2.co.za failed&amp;lt;/result&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/EmailResults&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;EmailResults&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;result&amp;gt;The email to Trevor.Williams-Ros@dev2.co.za was successful&amp;lt;/result&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/EmailResults&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;EmailResults&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;result&amp;gt;The email to Massimo.Guerrera@dev2.co.za was successful&amp;lt;/result&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/EmailResults&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;ResultsCollection&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;option&amp;gt;successful&amp;lt;/option&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/ResultsCollection&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;ResultsCollection&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;option&amp;gt;failed&amp;lt;/option&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/ResultsCollection&amp;gt;"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;/uaba:DsfCommentActivity&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;789,0&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;202,500&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Expected" sap:VirtualizedContainerService.HintSize="202,500" Text="&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;43&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;-1&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;-1&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;49&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;46&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;-1&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;39&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;42&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;-1&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;IndexResult&amp;gt;&amp;#xD;&amp;#xA; &amp;lt;inres&amp;gt;-1&amp;lt;/inres&amp;gt;&amp;#xD;&amp;#xA;&amp;lt;/IndexResult&amp;gt;"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;/uaba:DsfCommentActivity&gt;
+    &lt;/FlowStep&gt;
+    &lt;x:Reference&gt;__ReferenceID2&lt;/x:Reference&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <Category>Acceptance Testing Resources\IndexToolWithTwoRecordsetsWithStars</Category>
+  <Tags>
+  </Tags>
+  <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DisplayName>Workflow</DisplayName>
+  <DataList>
+    <EmailResults Description="" IsEditable="True">
+      <result Description="" IsEditable="True" />
+    </EmailResults>
+    <ResultsCollection Description="" IsEditable="True">
+      <option Description="" IsEditable="True" />
+    </ResultsCollection>
+    <IndexResult Description="" IsEditable="True">
+      <inres Description="" IsEditable="True" />
+    </IndexResult>
+  </DataList>
+  <HelpLink />
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>olCUL1qRChZM1IAHtkOQ6Uo/zok=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>Rn9l5ZhrN/IilZSYI+FC3c1SaeOTd/8gqv20j3xdtN7td7iKTZEh3VJ08oBI0bx+2El0pr2g2d9PXrMf/dwmmmFTi+RYCnwPcNloxx1MdPhH4+tK17oALOYWzUCyQb9ybhZ3O+glXj5VSLU5z9GVo+mE46LDBNVA3zhgMbdvGp8=</SignatureValue>
+  </Signature>
+</Service>

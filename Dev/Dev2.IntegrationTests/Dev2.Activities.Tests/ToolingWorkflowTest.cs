@@ -34,7 +34,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void AllToolsTestExpectPass()
         {
-            string postData = String.Format("{0}{1}", _webserverUri, "Integration Test Resources/Tool Testing");
+            string postData = String.Format("{0}{1}", _webserverUri, "Acceptance Testing Resources/Tool Testing");
 
             var responseData = string.Empty;
             try
@@ -59,7 +59,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ServiceExecutionTest()
         {
-            string postData = String.Format("{0}{1}", _webserverUri, "Integration Test Resources/ServiceExecutionTest");
+            string postData = String.Format("{0}{1}", _webserverUri, "Acceptance Testing Resources/ServiceExecutionTest");
 
             var responseData = string.Empty;
             try

@@ -133,7 +133,7 @@ namespace Dev2.Activities.Specs.Permissions
             }
             catch(UnauthorizedAccessException)
             {
-                Assert.Fail("Connection unauthorized as user who is part of '" + userGroup + "' user group.");
+                Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
             }
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
         }
