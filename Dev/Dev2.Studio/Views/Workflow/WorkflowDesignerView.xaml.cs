@@ -46,6 +46,10 @@ namespace Dev2.Studio.Views.Workflow
         void UIElement_OnKeyUp(object sender, KeyEventArgs e)
         {
             var workflowDesignerViewModel = DataContext as WorkflowDesignerViewModel;
+            if (e.Key == Key.Back || e.Key == Key.Delete || e.Key==Key.Up || e.Key==Key.Down || e.Key==Key.PageDown|| e.Key==Key.PageUp)
+            {
+                return;
+            }
             if (workflowDesignerViewModel != null)
             {
                 workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();

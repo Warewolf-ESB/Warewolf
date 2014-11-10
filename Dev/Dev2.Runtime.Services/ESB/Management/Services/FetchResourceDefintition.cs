@@ -41,82 +41,90 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-          
-            var res = new ExecuteMessage { HasError = false };
 
-            string serviceId = null;
-            StringBuilder tmp;
-            values.TryGetValue("ResourceID", out tmp);
+                var res = new ExecuteMessage { HasError = false };
 
-            if(tmp != null)
-            {
-                serviceId = tmp.ToString();
-            }
+                string serviceId = null;
+                StringBuilder tmp;
+                values.TryGetValue("ResourceID", out tmp);
 
-            Guid resourceId;
-            Guid.TryParse(serviceId, out resourceId);
-            Dev2Logger.Log.Info("Fetch Resource definition. ResourceId:"+resourceId);
-            var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
-            var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceId);
-
-            if(resource != null && resource.ResourceType == ResourceType.DbSource)
-            {
-                res.Message.Append(result);
-            }
-            else
-            {
-                var startIdx = result.IndexOf(PayloadStart, 0, false);
-
-                if(startIdx >= 0)
+                if (tmp != null)
                 {
-                    // remove beginning junk
-                    startIdx += PayloadStart.Length;
-                    result = result.Remove(0, startIdx);
-
-                    startIdx = result.IndexOf(PayloadEnd, 0, false);
-
-                    if(startIdx > 0)
-                    {
-                        var len = result.Length - startIdx;
-                        result = result.Remove(startIdx, len);
-
-                        res.Message.Append(result.Unescape());
-                    }
+                    serviceId = tmp.ToString();
                 }
-                else
+
+                Guid resourceId;
+                Guid.TryParse(serviceId, out resourceId);
+                Dev2Logger.Log.Info("Fetch Resource definition. ResourceId:" + resourceId);
+                try
                 {
-                    // handle services ;)
-                    startIdx = result.IndexOf(AltPayloadStart, 0, false);
-                    if(startIdx >= 0)
+                    var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
+                    var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceId);
+
+                    if (resource != null && resource.ResourceType == ResourceType.DbSource)
                     {
-                        // remove begging junk
-                        startIdx += AltPayloadStart.Length;
-                        result = result.Remove(0, startIdx);
-
-                        startIdx = result.IndexOf(AltPayloadEnd, 0, false);
-
-                        if(startIdx > 0)
-                        {
-                            var len = result.Length - startIdx;
-                            result = result.Remove(startIdx, len);
-
-                            res.Message.Append(result.Unescape());
-                        }
+                        res.Message.Append(result);
                     }
                     else
                     {
-                        // send the entire thing ;)
-                        res.Message.Append(result);
+                        var startIdx = result.IndexOf(PayloadStart, 0, false);
+
+                        if (startIdx >= 0)
+                        {
+                            // remove beginning junk
+                            startIdx += PayloadStart.Length;
+                            result = result.Remove(0, startIdx);
+
+                            startIdx = result.IndexOf(PayloadEnd, 0, false);
+
+                            if (startIdx > 0)
+                            {
+                                var len = result.Length - startIdx;
+                                result = result.Remove(startIdx, len);
+
+                                res.Message.Append(result.Unescape());
+                            }
+                        }
+                        else
+                        {
+                            // handle services ;)
+                            startIdx = result.IndexOf(AltPayloadStart, 0, false);
+                            if (startIdx >= 0)
+                            {
+                                // remove begging junk
+                                startIdx += AltPayloadStart.Length;
+                                result = result.Remove(0, startIdx);
+
+                                startIdx = result.IndexOf(AltPayloadEnd, 0, false);
+
+                                if (startIdx > 0)
+                                {
+                                    var len = result.Length - startIdx;
+                                    result = result.Remove(startIdx, len);
+
+                                    res.Message.Append(result.Unescape());
+                                }
+                            }
+                            else
+                            {
+                                // send the entire thing ;)
+                                res.Message.Append(result);
+                            }
+                        }
                     }
                 }
-            }
+                catch (Exception e)
+                {
+                    Dev2Logger.Log.Error(string.Format("Error getting resource definition for: {0}", resourceId), e);
+                }
 
-            // Finally, clean the definition as per execution hydration rules ;)
-            Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
-            res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(res);
+                // Finally, clean the definition as per execution hydration rules ;)
+                Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+                res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
+
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(res);
             }
             catch (Exception err)
             {
