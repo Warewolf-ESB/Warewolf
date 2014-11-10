@@ -4,7 +4,7 @@ using System.IO;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using DropNet;
-using Microsoft.VisualBasic.Logging;
+using DropNet.Models;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Dev2.Activities
@@ -41,13 +41,13 @@ namespace Dev2.Activities
             {
 
            
-                DropNetClient client = new DropNetClient(GlobalConstants.DropBoxApiKey,GlobalConstants.DropBoxAppSecret,SelectedSource.Key,SelectedSource.Secret);
+                DropNetClient client = new DropNetClient(GlobalConstants.DropBoxApiKey,GlobalConstants.DropBoxAppSecret) { UserLogin = new UserLogin { Secret = SelectedSource.Secret, Token = SelectedSource.Key } };
                 var destinationFileName = evaluatedValues["DestinationPath"];
                 var destinationPath = "//";
                 if(destinationFileName.Contains("/"))
                 {
-                    destinationPath = destinationFileName.Substring(0, DestinationPath.LastIndexOf("/", System.StringComparison.Ordinal));
-                    destinationFileName = destinationFileName.Substring(DestinationPath.LastIndexOf("/", System.StringComparison.Ordinal)+1);
+                    destinationPath = destinationFileName.Substring(0, DestinationPath.LastIndexOf("/", StringComparison.Ordinal));
+                    destinationFileName = destinationFileName.Substring(DestinationPath.LastIndexOf("/", StringComparison.Ordinal)+1);
                 }
                 var output = client.UploadFile(destinationPath, destinationFileName, File.ReadAllBytes(evaluatedValues["SourceFile"]));
                 if(output == null)

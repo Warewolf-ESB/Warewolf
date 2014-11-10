@@ -46,7 +46,7 @@ namespace Dev2.Data.ServiceModel
                     break;
 
                 case TypeSource:
-                    resourceTypes = new[] { ResourceType.Server, ResourceType.DbSource, ResourceType.PluginSource, ResourceType.WebSource, ResourceType.EmailSource, ResourceType.ServerSource };
+                    resourceTypes = new[] { ResourceType.Server, ResourceType.DbSource, ResourceType.PluginSource, ResourceType.WebSource, ResourceType.EmailSource, ResourceType.ServerSource ,ResourceType.OauthSource, };
                     break;
 
                 case TypeReservedService:
