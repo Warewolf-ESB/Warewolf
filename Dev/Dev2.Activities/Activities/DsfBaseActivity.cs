@@ -148,22 +148,31 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if(updates != null && updates.Count == 1)
+            if (updates != null)
             {
+                var itemUpdate = updates.FirstOrDefault(tuple => tuple.Item1 == Result);
+                if (itemUpdate != null)
+                {
+                    Result = itemUpdate.Item2;
+                }
             }
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return DsfForEachItem.EmptyList;
+            var result = new List<DsfForEachItem>();
+            foreach (var propertyInfo in GetType().GetProperties().Where(info => info.IsDefined(typeof(Inputs))))
+            {
+                var variableValue = propertyInfo.GetValue(this) as string;
+               result.AddRange(GetForEachItems(variableValue));
+
+            }
+            return result;
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            return new List<DsfForEachItem>
-                   {
-                       new DsfForEachItem()
-                   };
+            return GetForEachItems(Result);
         }
         private void AddDebugOutputItem(string expression, Guid executionId)
         {

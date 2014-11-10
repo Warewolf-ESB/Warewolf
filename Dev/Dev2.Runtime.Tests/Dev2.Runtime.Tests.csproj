@@ -193,6 +193,7 @@
     <Compile Include="Hosting\VersionStrategyTests.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
+    <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />

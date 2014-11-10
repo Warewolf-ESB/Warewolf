@@ -17,7 +17,7 @@ namespace Dev2.Activities
             DisplayName = "Upload";
         }
 
-         public DropBoxSource SelectedSource { get; set; }
+         public OauthSource SelectedSource { get; set; }
 
          [Inputs("SourceFile")]
          // ReSharper disable once UnusedMember.Global

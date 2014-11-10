@@ -43,15 +43,15 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
         {
         }
 
-        public IEnumerable<DropBoxSource> Sources
+        public IEnumerable<OauthSource> Sources
         {
-            get { return _environmentModel.ResourceRepository.FindSourcesByType<DropBoxSource>(_environmentModel, enSourceType.DropboxSource); }
+            get { return _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource); }
         }
 
 
-        public DropBoxSource SelectedSource
+        public OauthSource SelectedSource
         {
-            get { return GetProperty<DropBoxSource>(); }
+            get { return GetProperty<OauthSource>(); }
             // ReSharper restore ExplicitCallerInfoArgument
             set
             {

@@ -66,7 +66,7 @@ namespace Dev2.Webs.Callbacks
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
             // ReSharper disable once MaximumChainedReferences
-            var dropBoxSource = new DropBoxSource { Key = _token, Secret = _secret, ResourceName = jsonObj.resourceName, ResourcePath = jsonObj.resourcePath == "root" ? "" : jsonObj.resourcePath, IsNewResource = true, ResourceID = Guid.NewGuid() }.ToStringBuilder();
+            var dropBoxSource = new OauthSource { Key = _token, Secret = _secret, ResourceName = jsonObj.resourceName, ResourcePath = jsonObj.resourcePath == "root" ? "" : jsonObj.resourcePath, IsNewResource = true, ResourceID = Guid.NewGuid() }.ToStringBuilder();
             environmentModel.ResourceRepository.SaveResource(environmentModel,dropBoxSource , GlobalConstants.ServerWorkspaceID);
         }
 

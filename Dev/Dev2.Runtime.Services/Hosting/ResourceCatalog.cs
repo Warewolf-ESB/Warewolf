@@ -336,7 +336,7 @@ namespace Dev2.Runtime.Hosting
                 case enSourceType.WebSource:
                     result = BuildWebList(resources);
                     break;
-                case enSourceType.DropboxSource:
+                case enSourceType.OauthSource:
                     result = BuildDropboxList(resources);
                     break;
 
@@ -927,7 +927,7 @@ namespace Dev2.Runtime.Hosting
         }
         private IEnumerable BuildDropboxList(IEnumerable<IResource> resources)
         {
-            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new DropBoxSource(xe)).ToList();
+            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new OauthSource(xe)).ToList();
         }
         private IEnumerable BuildSqlServerList(IEnumerable<IResource> resources)
         {

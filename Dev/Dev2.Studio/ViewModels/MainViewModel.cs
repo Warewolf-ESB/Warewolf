@@ -736,7 +736,7 @@ namespace Dev2.Studio.ViewModels
         {
             DropBoxViewWindow drop = new DropBoxViewWindow();
             DropBoxHelper helper = new DropBoxHelper(drop, activeEnvironment, resourceType, resourcePath);
-            DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper) { Resource = resource };
+            DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper,new DropboxFactory()) { Resource = resource };
             drop.DataContext = vm;
             var showDialog = drop.ShowDialog();
             if(showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
@@ -746,7 +746,7 @@ namespace Dev2.Studio.ViewModels
             else if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID != Guid.Empty)
             {
 
-                var dropBoxSource = new DropBoxSource { Key = vm.Key, Secret = vm.Secret, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
+                var dropBoxSource = new OauthSource { Key = vm.Key, Secret = vm.Secret, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
                 ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, dropBoxSource, GlobalConstants.ServerWorkspaceID);
  
             }

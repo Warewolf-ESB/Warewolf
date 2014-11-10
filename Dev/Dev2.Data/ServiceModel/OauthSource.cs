@@ -7,7 +7,7 @@ using Dev2.Runtime.ServiceModel.Data;
 namespace Dev2.Data.ServiceModel
 {
     // ReSharper disable once UnusedMember.Global
-    public class DropBoxSource : Resource
+    public class OauthSource : Resource
     {
         #region Properties
 
@@ -21,16 +21,18 @@ namespace Dev2.Data.ServiceModel
 
         #region CTOR
 
-        public DropBoxSource()
+        public OauthSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = Common.Interfaces.Data.ResourceType.DropBoxSource;
+            ResourceType = Common.Interfaces.Data.ResourceType.OauthSource;
+            Secret = string.Empty;
+            Key = string.Empty;
         }
 
-        public DropBoxSource(XElement xml)
+        public OauthSource(XElement xml)
             : base(xml)
         {
-            ResourceType = Common.Interfaces.Data.ResourceType.DropBoxSource;
+            ResourceType = Common.Interfaces.Data.ResourceType.OauthSource;
 
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)

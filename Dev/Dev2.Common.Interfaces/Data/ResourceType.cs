@@ -26,7 +26,7 @@ namespace Dev2.Common.Interfaces.Data
         PluginSource = 32,
         WebSource = 64,
         EmailSource = 128,
-        DropBoxSource = 256,
+        OauthSource = 256,
         ServerSource = 512,
         Folder = 1024,
         Server = 2048,

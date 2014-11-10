@@ -112,6 +112,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
+    <Compile Include="ActivityTests\BaseActivityTests.cs" />
     <Compile Include="ActivityTests\CalculateActivityTest.cs" />
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\BaseConvertActivityTests.cs" />

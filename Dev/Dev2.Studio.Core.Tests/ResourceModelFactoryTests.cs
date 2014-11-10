@@ -46,7 +46,16 @@ namespace Dev2.Core.Tests
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "WorkflowService", "displayName"), ResourceType.WorkflowService, "displayName", "", "WorkflowService");
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "WorkflowService", "resourceName", "displayName"), ResourceType.WorkflowService, "displayName", "resourceName", "WorkflowService");
         }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceModelFactory_CreateResourceModel")]
+        public void ResourceModelFactory_CreateResourceModel_OauthSource()
+        {
+            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, ResourceType.Source, "iconPath", "displayName"), ResourceType.Source, "displayName", null, null);
+            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource"), ResourceType.Source, "DropboxSource", "", "DropboxSource");
+            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource", "OauthSource"), ResourceType.Source, "OauthSource", "", "DropboxSource");
 
+        }
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModelFactory_CreateResourceModel")]

@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.WebService, "Service" },
             { ResourceType.WorkflowService, "Service" },
             { ResourceType.ServerSource, "Source" },
-            { ResourceType.DropBoxSource, "Source" },
+            { ResourceType.OauthSource, "Source" },
         };
         IVersionInfo _versionInfo;
 

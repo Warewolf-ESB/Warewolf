@@ -141,7 +141,7 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
 
         EmailSource,
         WebSource,
-        DropboxSource
+        OauthSource
     }
 
     /// <summary>

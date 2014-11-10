@@ -12,8 +12,7 @@ namespace Dev2.Views.DropBox
 
         public DropBoxHelper(DropBoxViewWindow dropBoxViewWindow)
         {
-            CircularProgressBar = dropBoxViewWindow.CircularProgressBar;
-            WebBrowser = dropBoxViewWindow.WebBrowserHost;
+
             DropBoxViewWindow = dropBoxViewWindow;
 
         }
@@ -24,15 +23,13 @@ namespace Dev2.Views.DropBox
             _resourceType = resourceType;
             _resourcePath = resourcePath;
             DropBoxViewWindow = dropBoxViewWindow;
-            WebBrowser = dropBoxViewWindow.WebBrowserHost;
-            CircularProgressBar = dropBoxViewWindow.CircularProgressBar;
         }
 
         #region Implementation of IDropBoxHelper
 
         public DropBoxViewWindow DropBoxViewWindow { get; private set; }
-        public WebBrowser WebBrowser { get; private set; }
-        public CircularProgressBar CircularProgressBar { get; private set; }
+        public WebBrowser WebBrowser { get { return DropBoxViewWindow.WebBrowserHost; } }
+        public CircularProgressBar CircularProgressBar { get{  return DropBoxViewWindow.CircularProgressBar;  } }
 
         public IEnvironmentModel ActiveEnvironment
         {
