@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEachNestedWorkFlow()
         {
 
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/NewForEachNestedForEachTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/NewForEachNestedForEachTest");
             const string expected = @"<innerScalar>11</innerScalar>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -53,7 +53,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEachRecordsetIndexNotToBeReplacedWorkFlow()
         {
 
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/ForEachWithStarAndStaticIndex");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/ForEachWithStarAndStaticIndex");
             const string expected = "DataList><results index=\"1\"><res>50</res></results></DataList";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -67,7 +67,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ForEachNumber()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/NewForEachNumber");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/NewForEachNumber");
             const string expected = "<DataList><Rec index=\"1\"><Each>0</Each></Rec><Rec index=\"2\"><Each>1</Each></Rec><Rec index=\"3\"><Each>2</Each></Rec><Rec index=\"4\"><Each>4</Each></Rec><Rec index=\"5\"><Each>8</Each></Rec><Rec index=\"6\"><Each>16</Each></Rec></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -80,7 +80,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ForEachAssign_Expected_AssignWorksForEveryIteration()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/NewForEachAssign");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/NewForEachAssign");
             string expected = @"<Result> Dummy_String Dummy_String_Inner Dummy_String_Inner Dummy_String_Inner Dummy_String_Inner</Result>    <Input>Dummy_String_Inner</Input>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -101,7 +101,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         // TODO : Update WF in TFS
         public void ForEachInputOutputMappingTest()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/NewForEachScalarTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/NewForEachScalarTest");
             const string expected = "<DataList><var>5</var><recset index=\"1\"><rec1>1</rec1></recset><recset index=\"2\"><rec1>2</rec1></recset><recset index=\"3\"><rec1>3</rec1></recset><recset index=\"4\"><rec1>4</rec1></recset><recset index=\"5\"><rec1>5</rec1></recset><recset index=\"6\"><rec1>6</rec1></recset></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -115,7 +115,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ForEachAllToolsTest()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/ForEachUpgradeTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/ForEachUpgradeTest");
             const string expected = "PASS";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -135,7 +135,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             const string expected = @"<Result>PASS</Result>";
 
             //------------Execute Test---------------------------
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/Bug_11463_WF");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/Bug_11463_WF");
 
             //------------Assert Results-------------------------
             string ResponseData = TestHelper.PostDataToWebserver(PostData);

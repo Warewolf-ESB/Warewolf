@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         public void InvokeWorkflowViaBrowser_ViaBrowser_WhenInputIsName_ExpectValidResult()
         {
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/BUG_10995.xml?Name=Bob");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/BUG_10995.xml?Name=Bob");
 
             const string expected = "<DataList><Result>Mr Bob</Result></DataList>";
 
@@ -55,7 +55,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         public void InvokeWorkflow_ViaBrowser_HasWorkflowWithExecuteAsync_ShouldReturnImmediately()
         {
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/11536_FireForget.xml");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/11536_FireForget.xml");
             const string pathForFileWrittenForTest = "C:\\Testing\\FireForgetText.txt";
             if(File.Exists(pathForFileWrittenForTest))
             {
@@ -81,7 +81,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         public void InvokeWorkflow_ViaBrowser_HasWorkflowWithExecuteAsync_WithError_ShouldReturnErrorImmediately()
         {
             //------------Setup for test--------------------------
-            var PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/11536_FireForget_Error.xml");
+            var PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/11536_FireForget_Error.xml");
             //------------Execute Test---------------------------
             var responseData = TestHelper.PostDataToWebserver(PostData);
             //------------Assert Results-------------------------

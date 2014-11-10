@@ -36,7 +36,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void CreateFileUsingRecordsetWithNoIndex()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/CreateFileUsingRecordsetWithNoIndexTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/CreateFileUsingRecordsetWithNoIndexTest");
             const string expected = "<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -47,7 +47,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void CreateFileUsingRecordsetWithRecordsetWithIndex()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/CreateFileUsingRecordsetWithRecordsetWithIndex");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/CreateFileUsingRecordsetWithRecordsetWithIndex");
             string expected = @"<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><CreateFileErr></CreateFileErr><DeleteFileErr></DeleteFileErr><Recordset index=""1""><record>C:\Windows\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithRecordsetWithIndex\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recordset>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -58,7 +58,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void CreateFileUsingRecordsetWithStar()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/CreateFileUsingRecordsetWithStar");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/CreateFileUsingRecordsetWithStar");
 
             // Why is this using a specific IP Address?? Is this service only on this machine?
             //string PostData = String.Format("{0}{1}", "http://192.168.104.33:1234/services", "CreateFileUsingRecordsetWithStar");
@@ -73,7 +73,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void CreateFileUsingScalar()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/CreateFileUsingScalar");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/CreateFileUsingScalar");
             string expected = @"<Path>C:\Temp\PathOperationsTestFolder\CreateFileUsingScalar\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</Path><CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -88,7 +88,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void CreateFile()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/CreateFileOnFileSystemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/CreateFileOnFileSystemTest");
             string expected = @"<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -103,7 +103,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ReadFile()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/ReadFileOffFileSystemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/ReadFileOffFileSystemTest");
             string expected = @"<FileReadResult>ABC</FileReadResult><WriteFileRes>Success</WriteFileRes><DeleteFileRes>Success</DeleteFileRes>";
             // A deferred read is expected RE Travis's feedback rom The Unlimited
             //string expected = "Contents not visible because this value is a deferred read of";
@@ -119,7 +119,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void WriteToFile()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/WriteToFileOnFileSysytemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/WriteToFileOnFileSysytemTest");
             string expected = @"<WriteFileRes>Success</WriteFileRes><DeleteFileRes>Success</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -134,7 +134,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void CreateFolder()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/CreateFolderOnFileSystemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/CreateFolderOnFileSystemTest");
             string expected = @"<DataList><CreateFolderRes>Success</CreateFolderRes><DeleteFolderRes>Success</DeleteFolderRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -149,7 +149,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ReadFolder()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/ReadFolderFromFileSystemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/ReadFolderFromFileSystemTest");
             string expected = @"<CreateFileRes1>Success</CreateFileRes1><CreateFileRes2>Success</CreateFileRes2><DeleteFileRes>Success</DeleteFileRes><CreateFileErr1></CreateFileErr1><CreateFileErr2></CreateFileErr2><DeleteFileErr></DeleteFileErr><ReadFolderResult index=""1""><results>C:\Windows\Temp\PathOperationsTestFolder\ReadFolderFromFileSystemTest\OldFolder\OldFolderFirstInnerFolder\testfile1.txt</results></ReadFolderResult><ReadFolderResult index=""2""><results>C:\Windows\Temp\PathOperationsTestFolder\ReadFolderFromFileSystemTest\OldFolder\OldFolderFirstInnerFolder\testfile2.txt</results></ReadFolderResult><ReadFolderErrors index=""1""><errors></errors></ReadFolderErrors>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -160,7 +160,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ReadFolderInForEachLoop_Expected_NoNotImplementedError()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/FolderReadInForEachTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/FolderReadInForEachTest");
             const string notExpected = "<InnerError>The method or operation is not implemented.</InnerError>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -172,7 +172,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void FolderReadUsingScalar()
         {
-            string postData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/FolderReadUsingScalar");
+            string postData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/FolderReadUsingScalar");
             const string expected = ",";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
@@ -187,7 +187,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void CopyFile()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/CopyFileLocalToLocalTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/CopyFileLocalToLocalTest");
             const string expected = @"<CreateFileRes>Success</CreateFileRes><CopyFileRes>Success</CopyFileRes><DeleteFileRes>Success</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -198,7 +198,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void CopyFileToFTP()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/CreateFileCopyToFTP");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/CreateFileCopyToFTP");
             const string expected = @"<CopyRes>Success</CopyRes><CreateRes>Success</CreateRes><FTPDeleteRes>Success</FTPDeleteRes><CreateErr></CreateErr><CopyErr></CopyErr><FTPDeleteErr></FTPDeleteErr>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -213,7 +213,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void DeleteFolder()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/DeleteFolderFromFileSystemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/DeleteFolderFromFileSystemTest");
             string expected = @"<DeleteFolderRes>Success</DeleteFolderRes><CreateFolderRes>Success</CreateFolderRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -228,7 +228,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void MoveFolder()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/MoveFolderOnFileSystemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/MoveFolderOnFileSystemTest");
             string expected = @"<MoveFileRes>Success</MoveFileRes><CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><CreateFileErr></CreateFileErr><MoveFileErr></MoveFileErr><DeleteFileErr></DeleteFileErr>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -243,7 +243,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void RenameFolder()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/RenameFolderOnFileSystemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/RenameFolderOnFileSystemTest");
             string expected = @"<CreateFileRes>Success</CreateFileRes><RenameFileRes>Success</RenameFileRes><DeleteFileRes>Success</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -258,7 +258,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void UnZip()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/UnZipOnFileSystemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/UnZipOnFileSystemTest");
             string expected = @"<CreateFileRes>Success</CreateFileRes><ZipFileRes>Success</ZipFileRes><UnZipFileRes>Success</UnZipFileRes><DeleteFileRes1>Success</DeleteFileRes1><DeleteFileRes2>Success</DeleteFileRes2><CreateFileErr></CreateFileErr><ZipFileErr></ZipFileErr><DeleteFileErr1></DeleteFileErr1><UnZipFileErr></UnZipFileErr><DeleteFileErr2></DeleteFileErr2>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -273,7 +273,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ZipFolder()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/ZipFolderOnFileSystemTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/ZipFolderOnFileSystemTest");
             string expected = @"<DeleteFileRes>Success</DeleteFileRes><ZipFileRes>Success</ZipFileRes><CreateFileRes>Success</CreateFileRes><CreateFileErr></CreateFileErr><ZipFileErr></ZipFileErr><DeleteFileErr></DeleteFileErr>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
