@@ -1,6 +1,6 @@
 ![warewolf logo](http://www.warewolf.io/images/warewolf-logo.png)
 
-Warewolf-ESB
+Warewolf ESB
 ============
 
 Warewolf Easy Service Bus (ESB) is the easiest Service Bus available and can be deployed by anyone, into any system, anywhere, anytime… and it’s free.This is the main repository for Warewolf ESB which includes the code-base for the Warewolf Studio and Warewolf Server.  
