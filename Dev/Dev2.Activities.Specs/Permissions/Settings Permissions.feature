@@ -38,7 +38,7 @@ Scenario Outline: Setting Selected Resource Permissions for users
         Then '<Resource>' should have '<Permissions>'
 		And resources should not have '<Rights>' 
 Examples: 
-        | No | Group                   | Given rights              | Resource Name                               | Resource Rights           | User Group | Resources | Rights | Resource                                    | Permissions               |
+        | No | Group                   | Given rights              | Resource Name                                 | Resource Rights           | User Group | Resources | Rights | Resource                                      | Permissions               |
         | 1  | Warewolf Administrators | View                      | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
         | 2  | Warewolf Administrators | Execute                   | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
         | 3  | Warewolf Administrators | Contribute, View, Execute | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | None   | Acceptance Testing Resources\DECISION TESTING | View                      |
@@ -65,7 +65,7 @@ Scenario Outline: Setting Selected Resource Permissions for users overlapping gr
         Then '<Resource>' should have '<Permissions>'
 		And resources should have '<Rights>' 
 Examples: 
-        | No | Group  | Given rights                                                     | Resource Name                               | Resource Rights           | User Group | Resources | Rights                                                           | Resource                                    | Permissions               |
+        | No | Group  | Given rights                                                     | Resource Name                                 | Resource Rights           | User Group | Resources | Rights                                                           | Resource                                      | Permissions               |
         | 1  | Public | View                                                             | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | View                                                             | Acceptance Testing Resources\DECISION TESTING | View                      |
         | 2  | Public | Execute                                                          | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | Execute                                                          | Acceptance Testing Resources\DECISION TESTING | View                      |
         | 3  | Public | Contribute, View, Execute                                        | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | Contribute, View, Execute                                        | Acceptance Testing Resources\DECISION TESTING | View                      |
@@ -102,7 +102,7 @@ Examples:
 #        Then '<Resource>' should have '<Permissions>'
 #		And resources should have '<Rights>' 
 #Examples: 
-#        | No | Group | Given rights                                                     | Resource Name                               | Resource Rights           | User Group | Resources | Rights                                                           | Resource                                    | Permissions               |
+#        | No | Group | Given rights                                                     | Resource Name                                 | Resource Rights           | User Group | Resources | Rights                                                           | Resource                                    | Permissions               |
 #        | 1  | Users | Deploy To                                                        | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | Deploy To                                                        | Acceptance Testing Resources\DECISION TESTING | View                      |
 #        | 2  | Users | Deploy From                                                      | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | Deploy From                                                      | Acceptance Testing Resources\DECISION TESTING | View                      |
 #        | 3  | Users | View                                                             | Acceptance Testing Resources\DECISION TESTING | View                      | Users      | All       | View                                                             | Acceptance Testing Resources\DECISION TESTING | View                      |
