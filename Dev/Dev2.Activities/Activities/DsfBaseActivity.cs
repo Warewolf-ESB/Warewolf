@@ -123,7 +123,7 @@ namespace Dev2.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfCalculateActivity", allErrors);
+                    DisplayAndWriteError("DsfCustomActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     compiler.Upsert(executionId, Result, (string)null, out errors);
                 }

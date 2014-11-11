@@ -16,7 +16,6 @@ using System.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Hosting

@@ -5,7 +5,6 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -32,7 +31,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
+            // ReSharper disable InconsistentNaming
             const string dataList = "<ADL><OutVar1/><OutVar2/><ResultVar/></ADL>";
+            
             const string dataListWithData = "<ADL>" +
                                             "<OutVar1>TestVal</OutVar1><OutVar2>TestVal2</OutVar2></ADL>";
 
@@ -55,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfBaseActivity_UpdateForEachInputs_DoesNothing()
         {
             //------------Setup for test--------------------------
-            var act = new MySimpleActivity() { Input1 = "SomeText" };
+            var act = new MySimpleActivity { Input1 = "SomeText" };
             var tuple1 = new Tuple<string, string>("Test1", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
@@ -155,4 +156,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             return result;
         }
     }
+    // ReSharper restore InconsistentNaming
 }

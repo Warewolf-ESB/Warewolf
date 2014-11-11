@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
             : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment)
         {
           
-            AddTitleBarHelpToggle();
+
         }
 
         public override void Validate()
