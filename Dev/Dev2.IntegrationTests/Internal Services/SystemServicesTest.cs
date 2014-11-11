@@ -34,10 +34,10 @@ namespace Dev2.Integration.Tests.Internal_Services
         [TestMethod]
         public void DepenendcyViewerReturnsOnlyValidDependenciesExpectTwoDependencies()
         {
-            string postData = string.Format("{0}{1}?{2}", _webServerURI, "FindDependencyService", "ResourceName=Acceptance Testing Resources\\Bug6619");
+            string postData = string.Format("{0}{1}?{2}", _webServerURI, "FindDependencyService", "ResourceId=1736ca6e-b870-467f-8d25-262972d8c3e8");
 
             // The expected graph to be returned 
-            const string expected = @"<graph title=""Dependency Graph Of Acceptance Testing Resources\Bug6619""><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Acceptance Testing Resources\Bug6619Dep"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Acceptance Testing Resources\Bug6619Dep2"" /></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619Dep"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619"" x="""" y="""" broken=""false""></node></graph>";
+            const string expected = @"<graph title=""Dependency Graph Of Acceptance Testing Resources\Bug6619""><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Integration Test Resources\Bug6619Dep"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Integration Test Resources\Bug6619Dep2"" /></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619Dep"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619"" x="""" y="""" broken=""false""></node></graph>";
 
             string actual = TestHelper.PostDataToWebserver(postData);
 
@@ -47,10 +47,10 @@ namespace Dev2.Integration.Tests.Internal_Services
         [TestMethod]
         public void DepenendcyViewerReturnsOnlyValidDependenciesExpectTwoDependenciesWithTravsCrazyWorkflow()
         {
-            string postData = string.Format("{0}{1}?{2}", _webServerURI, "FindDependencyService", "ResourceName=Acceptance Testing Resources\\Bug9245");
+            string postData = string.Format("{0}{1}?{2}", _webServerURI, "FindDependencyService", "ResourceId=e59b7fe3-ad37-4363-8678-74601b9ea3cb");
 
             // The expected graph to be returned 
-            const string expected = @"<graph title=""Dependency Graph Of Acceptance Testing Resources\Bug9245""><node id=""Bug9245"" x="""" y="""" broken=""false""><dependency id=""Acceptance Testing Resources\Bug9245b"" /><dependency id=""Acceptance Testing Resources\Bug9245a"" /></node><node id=""Bug9245b"" x="""" y="""" broken=""false""><dependency id=""Acceptance Testing Resources\Bug9245c"" /></node><node id=""Bug9245c"" x="""" y="""" broken=""false""><dependency id=""Acceptance Testing Resources\Bug6619"" /><dependency id=""Acceptance Testing Resources\Bug8372"" /></node><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Acceptance Testing Resources\Bug6619Dep"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Acceptance Testing Resources\Bug6619Dep2"" /></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619Dep"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619"" x="""" y="""" broken=""false""></node><node id=""Bug8372"" x="""" y="""" broken=""false""><dependency id=""Acceptance Testing Resources\Bug8372Sub"" /></node><node id=""Bug8372Sub"" x="""" y="""" broken=""false""><dependency id=""Acceptance Testing Resources\Bug8372SubSub"" /></node><node id=""Bug8372SubSub"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug8372SubSub"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug8372Sub"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug8372"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug9245c"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug9245b"" x="""" y="""" broken=""false""></node><node id=""Bug9245a"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug9245a"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug9245"" x="""" y="""" broken=""false""></node></graph>";
+            const string expected = @"<graph title=""Dependency Graph Of Acceptance Testing Resources\Bug9245""><node id=""Bug9245"" x="""" y="""" broken=""false""><dependency id=""Integration Test Resources\Bug9245b"" /><dependency id=""Integration Test Resources\Bug9245a"" /></node><node id=""Bug9245b"" x="""" y="""" broken=""false""><dependency id=""Integration Test Resources\Bug9245c"" /></node><node id=""Bug9245c"" x="""" y="""" broken=""false""><dependency id=""Integration Test Resources\Bug6619"" /><dependency id=""Integration Test Resources\Bug8372"" /></node><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Integration Test Resources\Bug6619Dep"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Integration Test Resources\Bug6619Dep2"" /></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619Dep"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug6619"" x="""" y="""" broken=""false""></node><node id=""Bug8372"" x="""" y="""" broken=""false""><dependency id=""Integration Test Resources\Bug8372Sub"" /></node><node id=""Bug8372Sub"" x="""" y="""" broken=""false""><dependency id=""Integration Test Resources\Bug8372SubSub"" /></node><node id=""Bug8372SubSub"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug8372SubSub"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug8372Sub"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug8372"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug9245c"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug9245b"" x="""" y="""" broken=""false""></node><node id=""Bug9245a"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug9245a"" x="""" y="""" broken=""false""></node><node id=""Acceptance Testing Resources\Bug9245"" x="""" y="""" broken=""false""></node></graph>";
 
             string actual = TestHelper.PostDataToWebserver(postData);
 
@@ -60,7 +60,7 @@ namespace Dev2.Integration.Tests.Internal_Services
         [TestMethod]
         public void DepenendcyViewerReturnsValidDependentsWhenGetDependsOnMeTrueExpectOneDependantWithTravsCrazyWorkflow()
         {
-            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Acceptance Testing Resources\\Bug9245a", "GetDependsOnMe=True");
+            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceId=58c69c42-05fc-44ff-84a1-bef6de140937", "GetDependsOnMe=True");
 
             // The expected graph to be returned 
             const string expected = @"<graph title=""Local Dependants Graph: Acceptance Testing Resources\Bug9245a""><node id=""Bug9245"" x="""" y="""" broken=""false""><dependency id=""Bug9245a"" /></node><node id=""Acceptance Testing Resources\Bug9245a"" x="""" y="""" broken=""false""></node></graph>";
@@ -73,7 +73,7 @@ namespace Dev2.Integration.Tests.Internal_Services
         [TestMethod]
         public void DepenendcyViewerReturnsValidMultipleFirstLevelDependantsWhenGetDependsOnMeTrueExpectTwoDependendant()
         {
-            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Acceptance Testing Resources\\Bug_9303", "GetDependsOnMe=True");
+            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceId=b7b0f0ee-add1-437b-bd3b-c7882f64e353", "GetDependsOnMe=True");
 
             // The expected graph to be returned 
             const string expectedTitle = @"<graph title=""Local Dependants Graph: Acceptance Testing Resources\Bug_9303"">";

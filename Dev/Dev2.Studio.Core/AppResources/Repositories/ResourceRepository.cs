@@ -931,7 +931,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             var comsController = new CommunicationController { ServiceName = "FindDependencyService" };
-            comsController.AddPayloadArgument("ResourceName", resourceModel.Category);
+            comsController.AddPayloadArgument("ResourceId", resourceModel.ID.ToString());
             comsController.AddPayloadArgument("GetDependsOnMe", getDependsOnMe.ToString());
 
             var workspaceId = (resourceModel.Environment.Connection).WorkspaceID;

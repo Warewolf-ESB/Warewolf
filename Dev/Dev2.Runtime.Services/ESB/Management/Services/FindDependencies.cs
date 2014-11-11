@@ -41,24 +41,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2Logger.Log.Info("Find Dependencies");
             var result = new ExecuteMessage { HasError = false };
 
-            string resourceName = null;
+            string resourceId = null;
             string dependsOnMeString = null;
             bool dependsOnMe = false;
             StringBuilder tmp;
-            values.TryGetValue("ResourceName", out tmp);
+            values.TryGetValue("ResourceId", out tmp);
             if(tmp != null)
             {
-                resourceName = tmp.ToString();
+                resourceId = tmp.ToString();
             }
             values.TryGetValue("GetDependsOnMe", out tmp);
             if(tmp != null)
             {
                 dependsOnMeString = tmp.ToString();
             }
-            if(string.IsNullOrEmpty(resourceName))
+            if (string.IsNullOrEmpty(resourceId))
             {
                 throw new InvalidDataContractException("ResourceName is empty or null");
             }
+            var resource= ResourceCatalog.Instance.GetResource(theWorkspace.ID, Guid.Parse(resourceId));
+            var resourceName = resource.ResourcePath;
             if(!string.IsNullOrEmpty(dependsOnMeString))
             {
                 if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
@@ -70,13 +72,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(dependsOnMe)
             {
                 result.Message.Append(string.Format("<graph title=\"Local Dependants Graph: {0}\">", resourceName));
-                result.Message.Append(FindWhatDependsOnMe(resourceName, theWorkspace.ID));
+                result.Message.Append(FindWhatDependsOnMe(resource, theWorkspace.ID));
                 result.Message.Append("</graph>");
             }
             else
             {
                 result.Message.Append(string.Format("<graph title=\"Dependency Graph Of {0}\">", resourceName));
-                result.Message.Append(FindDependenciesRecursive(resourceName, theWorkspace.ID));
+                result.Message.Append(FindDependenciesRecursive(resource.ResourceID, theWorkspace.ID));
                 result.Message.Append("</graph>");
             }
 
@@ -90,11 +92,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        StringBuilder FindWhatDependsOnMe(string resourceName, Guid workspaceId)
-        {
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
-            return FindWhatDependsOnMe(resource, workspaceId);
-        }
 
         StringBuilder FindWhatDependsOnMe(IResource res, Guid workspaceId)
         {
@@ -137,7 +134,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = new StringBuilder(@"<DataList><ResourceName ColumnIODirection=""Input""/><GetDependsOnMe ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>")
+                DataListSpecification = new StringBuilder(@"<DataList><ResourceId ColumnIODirection=""Input""/><GetDependsOnMe ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var sa = new ServiceAction
@@ -155,11 +152,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #region Private Methods
 
-        private StringBuilder FindDependenciesRecursive(string resourceName, Guid workspaceId)
-        {
-            var resource = ResourceCatalog.Instance.GetResource(Guid.Empty, resourceName);
-            return FindDependenciesRecursive(resource.ResourceID, workspaceId);
-        }
+
         private StringBuilder FindDependenciesRecursive(Guid resourceGuid, Guid workspaceId)
         {
             var sb = new StringBuilder();

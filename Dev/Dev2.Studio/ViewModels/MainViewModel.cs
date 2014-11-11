@@ -478,6 +478,7 @@ namespace Dev2.Studio.ViewModels
                     actionToDoOnDelete();
                 }
             }
+            ExplorerViewModel.NavigationViewModel.UpdateSearchFilter();
         }
 
         public void Handle(SetActiveEnvironmentMessage message)
