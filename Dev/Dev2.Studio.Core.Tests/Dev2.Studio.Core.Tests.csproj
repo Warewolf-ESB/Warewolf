@@ -340,6 +340,7 @@
     <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
     <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
+    <Compile Include="ViewModelTests\DropboxHelperTests.cs" />
     <Compile Include="ViewModelTests\DropBoxSourceViewModelTests.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\TestUtils.cs" />

@@ -1791,6 +1791,38 @@ namespace Dev2.Tests.Runtime.Hosting
 
             Assert.IsNotNull(payload);
         }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceCatalog_GetModels")]
+        public void ResourceCatalog_GetModels_WhenEnumDropBoxSource_ExpectDropBoxSourceSourceObjects()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+
+
+            var sourcesPath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            Directory.CreateDirectory(sourcesPath);
+            SaveResources(sourcesPath, null, false, false, new[] { "mondayothersource3" }, new[] { Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+
+            Assert.AreEqual(1, result.Count);
+
+            //------------Execute Test---------------------------
+            var models = rc.GetModels(workspaceID, enSourceType.OauthSource);
+
+            //------------Assert Results-------------------------
+            foreach (var model in models)
+            {
+                Assert.AreEqual(typeof(OauthSource), model.GetType());
+            }
+
+            var payload = JsonConvert.SerializeObject(models);
+
+            Assert.IsNotNull(payload);
+        }
 
 
         [TestMethod]

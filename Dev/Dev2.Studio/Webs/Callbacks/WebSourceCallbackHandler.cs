@@ -12,8 +12,6 @@
 
 using System;
 using System.Diagnostics;
-using Dev2.Common;
-using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -44,36 +42,4 @@ namespace Dev2.Webs.Callbacks
             Process.Start(uri);
         }
     }
-
-    public class DropBoxSourceSourceCallbackHandler : SourceCallbackHandler
-    {
-        readonly string _token;
-        readonly string _secret;
-
-
-        public DropBoxSourceSourceCallbackHandler()
-            : this(EnvironmentRepository.Instance,"","")
-        {
-        }
-
-        public DropBoxSourceSourceCallbackHandler(IEnvironmentRepository environmentRepository, string token, string secret)
-            : base(environmentRepository)
-        {
-            _token = token;
-            _secret = secret;
-        }
-
-        protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
-        {
-            // ReSharper disable once MaximumChainedReferences
-            var dropBoxSource = new OauthSource { Key = _token, Secret = _secret, ResourceName = jsonObj.resourceName, ResourcePath = jsonObj.resourcePath == "root" ? "" : jsonObj.resourcePath, IsNewResource = true, ResourceID = Guid.NewGuid() }.ToStringBuilder();
-            environmentModel.ResourceRepository.SaveResource(environmentModel,dropBoxSource , GlobalConstants.ServerWorkspaceID);
-        }
-
-        protected virtual void StartUriProcess(string uri)
-        {
-            Process.Start(uri);
-        }
-    }
-
 }

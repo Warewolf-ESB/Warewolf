@@ -573,7 +573,9 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\10543.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="XML\mondayothersource3.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

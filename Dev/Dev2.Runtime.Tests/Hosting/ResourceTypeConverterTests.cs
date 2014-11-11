@@ -58,6 +58,17 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        public void ResourceTypeConverterToResourceTypesWithTypeSourceHasOAuthType()
+        {
+            var values = Enum.GetValues(typeof(ResourceType));
+            var expected = values.Cast<ResourceType>().Where(value => value.ToString().EndsWith("Source")).ToList();
+            expected.Insert(0, ResourceType.Server); // order matters!
+
+            var result = ResourceTypeConverter.ToResourceTypes(ResourceTypeConverter.TypeSource);
+            Assert.IsTrue(result.Contains(ResourceType.OauthSource));
+        }
+
+        [TestMethod]
         public void ResourceTypeConverterToResourceTypesWithTypeReservedServiceReturnsCorrectResourceTypes()
         {
             var result = ResourceTypeConverter.ToResourceTypes(ResourceTypeConverter.TypeReservedService);

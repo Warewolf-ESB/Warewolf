@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Core.Interfaces;
@@ -6,22 +8,20 @@ namespace Dev2.Views.DropBox
 {
     public class DropBoxHelper : IDropBoxHelper
     {
-        readonly IEnvironmentModel _activeEnvironment;
-        readonly string _resourceType;
-        readonly string _resourcePath;
-
         public DropBoxHelper(DropBoxViewWindow dropBoxViewWindow)
         {
-
+            VerifyArgument.IsNotNull("dropBoxViewWindow",dropBoxViewWindow);
             DropBoxViewWindow = dropBoxViewWindow;
 
         }
 
+        // ReSharper disable once TooManyDependencies
         public DropBoxHelper(DropBoxViewWindow dropBoxViewWindow, IEnvironmentModel activeEnvironment, string resourceType, string resourcePath)
         {
-            _activeEnvironment = activeEnvironment;
-            _resourceType = resourceType;
-            _resourcePath = resourcePath;
+            VerifyArgument.AreNotNull(new Dictionary<string, object>{{"dropBoxViewWindow",dropBoxViewWindow},{"activeEnvironment",activeEnvironment},{"resourceType",resourceType},{"resourcePath",resourcePath}});
+            ActiveEnvironment = activeEnvironment;
+            ResourceType = resourceType;
+            ResourcePath = resourcePath;
             DropBoxViewWindow = dropBoxViewWindow;
         }
 
@@ -31,42 +31,17 @@ namespace Dev2.Views.DropBox
         public WebBrowser WebBrowser { get { return DropBoxViewWindow.WebBrowserHost; } }
         public CircularProgressBar CircularProgressBar { get{  return DropBoxViewWindow.CircularProgressBar;  } }
 
-        public IEnvironmentModel ActiveEnvironment
-        {
-            get
-            {
-                return _activeEnvironment;
-            }
-            set
-            {
-            }
-        }
-        public string ResourceType
-        {
-            get
-            {
-                return _resourceType;
-            }
-            set
-            {
-            }
-        }
-        public string ResourcePath
-        {
-            get
-            {
-                return _resourcePath;
-            }
-            set
-            {
-            }
-        }
+        public IEnvironmentModel ActiveEnvironment { get; set; }
+        public string ResourceType { get; set; }
+        public string ResourcePath { get; set; }
 
+        [ExcludeFromCodeCoverage]
         public void Navigate(string uri)
         {
             DropBoxViewWindow.WebBrowserHost.Navigate(uri);
         }
 
+        [ExcludeFromCodeCoverage]
         public void CloseAndSave(DropBoxSourceViewModel dropBoxSourceViewModel)
         {
             DropBoxViewWindow.DialogResult = true;
