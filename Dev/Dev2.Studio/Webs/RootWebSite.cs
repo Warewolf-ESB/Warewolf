@@ -361,7 +361,7 @@ namespace Dev2.Webs
             if(environment == null)
             {
                 // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resourceModel");
+                throw new ArgumentNullException("environment");
             }
 
             EnvironmentRepository.Instance.ActiveEnvironment = environment;
@@ -406,7 +406,7 @@ namespace Dev2.Webs
             if (environment == null)
             {
                 // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("resourceModel");
+                throw new ArgumentNullException("environment");
             }
 
             EnvironmentRepository.Instance.ActiveEnvironment = environment;
