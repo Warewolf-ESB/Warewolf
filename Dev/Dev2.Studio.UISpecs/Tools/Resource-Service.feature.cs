@@ -98,7 +98,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I send \"Decision Testing\" to \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUser" +
                     "Control_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
- testRunner.And("\"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID\" is invisible within " +
+ testRunner.And("\"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID\" is invisible within " +
                     "\"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
     testRunner.And("I click \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_Dat" +
@@ -115,15 +115,15 @@ this.ScenarioSetup(scenarioInfo);
     testRunner.And("I send \"DBServices\" to \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUserContro" +
                     "l_AutoID,UI_DatalistFilterTextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
- testRunner.And("\"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_bug9394DBServicesC" +
+ testRunner.And("\"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_bug9394DBServicesC" +
                     "all_AutoID\" is visible within \"10\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
- testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_bug" +
+ testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_bug" +
                     "9394DBServicesCall_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
  testRunner.And("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
- testRunner.And("\"WORKSURFACE,Integration Test Resources\\bug9394DBServicesCall(ServiceDesigner)\" i" +
+ testRunner.And("\"WORKSURFACE,Acceptance Testing Resources\\bug9394DBServicesCall(ServiceDesigner)\" i" +
                     "s visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

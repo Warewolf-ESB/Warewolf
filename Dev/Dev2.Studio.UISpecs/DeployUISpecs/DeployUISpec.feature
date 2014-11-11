@@ -14,17 +14,17 @@ Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabl
 	   Given "DEPLOYBUTTON" is disabled
 	   ##Checking Deploy Button Disabled When Source and Destination Servers are Same
 	   Given I type "Decision Testing" in "DEPLOYSOURCEFILTER"
-	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
+	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
 	   Given "DEPLOYBUTTON" is disabled
 	  ##  And I click "DEPLOYSOURCEFILTERCLEAR"
-	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID,Expander"
+	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,Expander"
 	   ##Selecting Remote Server In Destination Connect Control Dropdown
-	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
+	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
 	   Given I create a new remote connection as "Deployrem" in Deploy Destination 
        | Address                  | AuthType | UserName      | Password |
        | http://TST7X64W:3142/dsf | User     | Administrator |          |
 	   ##Checking Deploy Button Enabled When Resource Selected in Source Server
-	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
+	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
        Given "DEPLOYBUTTON" is enabled
        ## Given "DEPLOYERROR" is not visible
 	  ##Cleanup (Deleting the created server)

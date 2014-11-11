@@ -38,15 +38,15 @@ Scenario: Testing Different Server Permissions For Public
 	   Given I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
-	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
-       Given "WORKFLOWDESIGNER,Integration Test Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,Acceptance Testing Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	  #Checking Explorer Icons
        Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID"   
-       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
 	   #Opening Resouurce from Explorer
-       Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"      
+       Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"      
        Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "3" seconds
 	   #Checking Ribbon Icons
        Then "RIBBONDEBUG" is visible
@@ -72,14 +72,14 @@ Scenario: Testing Different Server Permissions For Public
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   And I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
-	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
-       Given "WORKFLOWDESIGNER,Integration Test Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,Acceptance Testing Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Checking Explorer Icons
 	   Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
-       And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
-       And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
-       ##Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"	          
+       And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
+       And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+       ##Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"	          
 #	   #Checking Debug Window Buttons
 	   ###Given "WINDOWDEBUG" is visible within "25" seconds
        ###Then "WINDOWDEBUGBUTTON" is disabled
@@ -107,14 +107,14 @@ Scenario: Testing Different Server Permissions For Public
 	   And I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
-	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
-       Given "WORKFLOWDESIGNER,Integration Test Resources\Decision Testing(ServiceDesigner)" is visible within "3" seconds
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,Acceptance Testing Resources\Decision Testing(ServiceDesigner)" is visible within "3" seconds
        #Checking Explorer Icons
 	   Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
-	   Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"       
-       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
-       When I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+	   Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"       
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+       When I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
 	   #Ribbon Icons
        Then "RIBBONDEBUG" is visible
        Then "RIBBONNEWDATABASECONNECTOR" is visible
@@ -139,11 +139,11 @@ Scenario: Testing Different Server Permissions For Public
 	   And I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
-	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
-       Given "WORKFLOWDESIGNER,Integration Test Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,Acceptance Testing Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Checking Explorer Icons
-       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-       And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible      
+       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
+       And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible      
 	   #Ribbon Icons
        Then "RIBBONNEWENDPOINT" is disabled
        Then "RIBBONSETTINGS" is disabled
@@ -172,12 +172,12 @@ Scenario: Testing Different Server Permissions For Public
 	   And I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
-	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
-       Given "WORKFLOWDESIGNER,Integration Test Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,Acceptance Testing Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Exploer Icons
-       And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
-       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+       And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
+       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
        Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
 	   #Ribbon Icons
        Then "RIBBONNEWENDPOINT" is disabled
@@ -207,7 +207,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
        And I click "SETTINGSSERVERPERMISSIONSGRID,UI_ServerPermissionsGrid_Row_2_AutoID,UI__ViewPermissionCheckBox_AutoID"
 	   #SetUp Resource Permissions for "UI Testing Group" Specific Group
        Given I click "SETTINGSRESOURECESELECT"
-       And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+       And I double click "RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
 	   And I send "UI Testing Group" to ""
@@ -219,11 +219,11 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
        | http://localhost:3142 | User     | Integrationtester | I73573r0 |
 	   #Checking Remote Server Resource Icon in Explorer  
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
-	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-	   Given "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
+	   Given "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
 	  ##Opening Remote Server Resource in Explorer 
-	   Given I double click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"
+	   Given I double click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"
 	   Then "UI_DebugInputWindow_AutoID" is visible within "12" seconds
 	   And I click "UI_DebugInputWindow_AutoID,UI_Cancelbtn_AutoID"
 	   And "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "7" seconds
@@ -265,23 +265,23 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   Given I click "SETTINGSRESOURCEROW1,UI_AddRemovebtn_AutoID"
 	   And I click "SECURITYSAVE"
 	    Given I click "SETTINGSRESOURECESELECT"
-       And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+       And I double click "RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
 	   And I send "UI Testing Group" to ""
 	   And I click "SECURITYSAVE"
 	   #Checking Resource Icon in Explorer 
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
-	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
-	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
 	   Given I click "EXPLORERFILTERCLEARBUTTON"
 	   Given I send "Javascript Testing" to "EXPLORERFILTER"
-	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID,UI_NotAutherized_AutoID" is visible
-	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID"
-	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID,UI_CanEdit_AutoID" is not visible
-	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID,UI_NotAutherized_AutoID" is visible
-	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Javascript Testing_AutoID,UI_NotAutherized_AutoID" is visible
+	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Javascript Testing_AutoID"
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Javascript Testing_AutoID,UI_CanEdit_AutoID" is not visible
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Javascript Testing_AutoID,UI_NotAutherized_AutoID" is visible
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Javascript Testing_AutoID,UI_CanExecute_AutoID" is not visible
 	   #Checking Ribbon Icons
 	   Then "RIBBONNEWENDPOINT" is disabled
 	   Then "RIBBONSETTINGS" is disabled
@@ -312,7 +312,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   #SetUp Resource Permissions Contribute for "UI Testing Group" Specific Group
 	   Given I click "SETTINGSRESOURECESELECT"
 	   When I send "Decision Testing" to "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID"
-       And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+       And I double click "RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
 	   And I send "UI Testing Group" to ""
@@ -324,12 +324,12 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "EXPLORERCONNECTBUTTON"
 	   #Checking Resource Icon in Explorer 
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
-	   And "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" is visible within "15" seconds
-	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
-	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-	   Given I double click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"
-	   Given I double click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"
+	   And "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" is visible within "15" seconds
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
+	   Given I double click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"
+	   Given I double click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"
 	   Then "UI_DebugInputWindow_AutoID" is visible within "12" seconds
 	   And I click "UI_DebugInputWindow_AutoID,UI_Cancelbtn_AutoID"
 	   And "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "7" seconds
@@ -362,7 +362,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
        Given I click "SETTINGSRESOURECESELECT"
        And I send "{TAB}{TAB}" to ""
 	   And I send "Decision Testing" to ""
-	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I wait for "3" seconds
 	   And I send "{TAB}" to ""
@@ -372,7 +372,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_1_AutoID,UI__AddResourceButton_AutoID"
        And I send "{TAB}{TAB}" to ""
 	   And I send "Javascript Testing" to ""
-	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Javascript Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
 	   And I send "Testing" to ""
@@ -453,7 +453,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__AddResourceButton_AutoID"
 	   And I send "{TAB}{TAB}" to ""
 	   And I send "Decision Testing" to ""
-	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I wait for "3" seconds
 	   And I send "{TAB}" to ""
@@ -520,7 +520,7 @@ Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 #       | Address               | AuthType | UserName | Password |
 #       | http://localhost:3142 | Public   |          |          |
 #	   #Checking Explorer Can't See Any Resources Under Remote Server
-#       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" is not visible
+#       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" is not visible
 #	   Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Calculate_AutoID" is not visible
 #       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
 #	   #Ribbon Icons
@@ -545,7 +545,7 @@ Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 #       And "SECURITYPUBLICDEPLOYTO" is unchecked
 #       And I click "SECURITYSAVE" 
 #	   #Exploer Icons
-#       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" is not visible
+#       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" is not visible
 #	   Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Calculate_AutoID" is not visible
 #       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
 #	   #Ribbon Icons
@@ -571,7 +571,7 @@ Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 #       And "SECURITYPUBLICDEPLOYTO" is unchecked
 #	   #SetUp Resource Permissions Contribute for "Public" Specific Group
 #	   Given I click "SETTINGSRESOURECESELECT"
-#       And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+#       And I double click "RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
 #	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 #	   And I send "{TAB}" to ""
 #	   And I send "Public" to ""
@@ -579,13 +579,13 @@ Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 #       And I click "SECURITYSAVE"
 #	   #Checking Explorer Resources
 #	   And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Calculate_AutoID" is not visible
-#	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID" is not visible
-#	   And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" is visible
+#	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Javascript Testing_AutoID" is not visible
+#	   And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" is visible
 #	   #Checking Resource Icons
-#	   Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-#       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+#	   Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+#       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
 #       #Opening Resource
-#	   Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"      
+#	   Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"      
 #       Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "3" seconds
 #	   #Ribbon Icons
 #       Then "RIBBONNEWENDPOINT" is disabled
@@ -599,8 +599,8 @@ Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 #       Then I click "RIBBONDEPLOY"
 #       Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
 #       Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is not visible
-#	   Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" is visible
-#	   Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID" is visible
+#	   Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" is visible
+#	   Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Javascript Testing_AutoID" is visible
 #	   Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_REM"
 #       Then "DEPLOYDESTINATION,REM*,UI_Unautherized_DeployToText_AutoID" is visible
 
