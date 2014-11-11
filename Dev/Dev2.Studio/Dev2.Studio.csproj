@@ -422,6 +422,7 @@
       <DependentUpon>ReportsViewerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\DropBox\CookieHelper.cs" />
     <Compile Include="Views\DropBox\DropBoxHelper.cs" />
     <Compile Include="Views\DropBox\DropBoxSource.xaml.cs">
       <DependentUpon>DropBoxSource.xaml</DependentUpon>

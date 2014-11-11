@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 using Caliburn.Micro;
 using Dev2.Common;
@@ -31,7 +32,8 @@ namespace Dev2.Views.DropBox
             _network = network;
             _dropboxFactory = dropboxFactory;
             DropBoxHelper = dropboxHelper;
-            DropBoxHelper.WebBrowser.Navigated += WebBrowserNavigated;
+            CookieHelper.Clear();
+            
             Authorise();
         }
 
@@ -43,6 +45,10 @@ namespace Dev2.Views.DropBox
                Key = token.Token;
                Secret = token.Secret;
 
+            }
+            else if (!e.Uri.ToString().Contains("auth"))
+            {
+                LoadBrowserUri(AuthUri).RunSynchronously();
             }
 
         }
@@ -62,9 +68,7 @@ namespace Dev2.Views.DropBox
                     DropBoxHelper.WebBrowser.Visibility = Visibility.Visible;
                 });
           
-                    DropBoxHelper.Navigate(AuthUri);
-
-                    
+                DropBoxHelper.Navigate(AuthUri);
 
             }
         }

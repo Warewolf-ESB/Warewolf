@@ -23,6 +23,7 @@ namespace Dev2.Views.DropBox
             ResourceType = resourceType;
             ResourcePath = resourcePath;
             DropBoxViewWindow = dropBoxViewWindow;
+
         }
 
         #region Implementation of IDropBoxHelper

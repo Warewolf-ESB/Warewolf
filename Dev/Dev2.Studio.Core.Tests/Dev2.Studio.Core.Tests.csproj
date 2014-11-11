@@ -366,6 +366,7 @@
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WebActivityTests.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />
+    <Compile Include="Webs\DropboxSourceCallbackHandlerTests.cs" />
     <Compile Include="Webs\RootWebSiteTest.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerMock.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerTests.cs" />

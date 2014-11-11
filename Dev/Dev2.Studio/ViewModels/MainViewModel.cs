@@ -16,7 +16,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
@@ -26,7 +25,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
-using Dev2.CustomControls;
 using Dev2.CustomControls.Connections;
 using Dev2.Data.ServiceModel;
 using Dev2.Factory;
@@ -726,7 +724,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        void CreateOAuthType(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath)
+        public void CreateOAuthType(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath)
         {
             var resource =  ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
             SaveDropBoxSource(activeEnvironment, resourceType, resourcePath, resource);
@@ -738,20 +736,32 @@ namespace Dev2.Studio.ViewModels
             DropBoxHelper helper = new DropBoxHelper(drop, activeEnvironment, resourceType, resourcePath);
             DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper,new DropboxFactory()) { Resource = resource };
             drop.DataContext = vm;
-            var showDialog = drop.ShowDialog();
+            var showDialog = ShowDropboxAction(drop,vm);
             if(showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
             {
-                RootWebSite.ShowNewOAuthsourceSaveDialog(vm.Resource, activeEnvironment, vm.Key, vm.Secret);
+                ShowSaveDialog(vm.Resource, activeEnvironment, vm.Key, vm.Secret);
             }
             else if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID != Guid.Empty)
             {
 
+                // ReSharper disable once MaximumChainedReferences
                 var dropBoxSource = new OauthSource { Key = vm.Key, Secret = vm.Secret, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
                 ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, dropBoxSource, GlobalConstants.ServerWorkspaceID);
  
             }
         }
 
+        public System.Action<IResourceModel, IEnvironmentModel, string, string> ShowSaveDialog
+        {
+            get { return _showSaveDialog ?? RootWebSite.ShowNewOAuthsourceSaveDialog; }
+            set { _showSaveDialog = value; }
+        }
+        public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> ShowDropboxAction
+        {
+            get { return _showDropAction ?? ((drop,vm) => drop.ShowDialog()); }
+            set{_showDropAction = value;}
+       
+        }
         private void ShowEditResourceWizard(object resourceModelToEdit)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
@@ -1607,6 +1617,8 @@ namespace Dev2.Studio.ViewModels
         }
 
         public Func<bool> IsBusyDownloadingInstaller;
+        public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> _showDropAction;
+        Action<IResourceModel, IEnvironmentModel, string, string> _showSaveDialog;
 
         public bool IsDownloading()
         {

@@ -345,9 +345,9 @@ namespace Dev2.Webs
             ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager), "WorkflowService");
         }
 
-        public static void ShowNewOAuthsourceSaveDialog(IResourceModel resourceModel, IEnvironmentModel model, string token, string key, string resourceId = null, bool addToTabManager = false)
+        public static void ShowNewOAuthsourceSaveDialog(IResourceModel resourceModel, IEnvironmentModel model, string token, string key)
         {
-            ShowSaveDialog(resourceModel, "OauthSource", model, new DropBoxSourceSourceCallbackHandler(EnvironmentRepository.Instance,token,key));
+            ShowSaveDialog(resourceModel, "OauthSource", model, new DropBoxSourceSourceCallbackHandler(EnvironmentRepository.Instance,token??"",key??""));
         }
 
         static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string resourceId = null)
