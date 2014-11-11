@@ -12,7 +12,7 @@
   <NamingScheme baseName="UT" />
     <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
-  <Execution>
+  <Execution hostProcessPlatform="MSIL">
     <Timeouts testTimeout="180000" />
     <Buckets size="100" />
     <TestTypeSpecific>
