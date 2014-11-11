@@ -35,7 +35,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestCategory("OnError_OnError")]
         public void OnError_OnError_WhenInvokingDifferentServiceTypes_ExpectPASS()
         {
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/OnError Test");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/OnError Test");
             const string Expected = @"<Result>PASS</Result>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);

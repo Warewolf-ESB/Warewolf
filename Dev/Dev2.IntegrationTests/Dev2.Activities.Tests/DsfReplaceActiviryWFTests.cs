@@ -34,7 +34,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ReplaceToolUsingRecordsetWithStar()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/ReplaceToolUsingRecordsetWithStar");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/ReplaceToolUsingRecordsetWithStar");
             const string expected = @"<ReplacementCount>3</ReplacementCount><People index=""1""><Name>Wallis Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People index=""2""><Name>Barney Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People index=""3""><Name>Jurie Smit</Name><Province>GP</Province></People><People index=""4""><Name>Massimo Guerrera</Name><Province>Kwa-Zulu Natal</Province></People>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -46,7 +46,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ReplaceToolWithScalar()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/ReplaceToolWithScalar");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/ReplaceToolWithScalar");
 
             string expected = @"<Document>To whom it may concern
 I would like to inform you that the following document is for the purpose

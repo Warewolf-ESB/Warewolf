@@ -46,7 +46,7 @@ namespace Dev2.Integration.Tests
 
         string ReponseData()
         {
-            const string ServiceName = "Integration Test Resources/NowTimezoneChanges";
+            const string ServiceName = "Acceptance Testing Resources/NowTimezoneChanges";
 
             string reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", _webServerUri, ServiceName));
             return reponseData;

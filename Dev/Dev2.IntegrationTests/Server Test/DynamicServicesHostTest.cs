@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void TestPluginNull_Expected_AnonymousSend()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Integration Test Resources/IntegrationTestPluginEmptyToNull", "testType=nullActive");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Acceptance Testing Resources/IntegrationTestPluginEmptyToNull", "testType=nullActive");
             string result = TestHelper.PostDataToWebserver(postData);
 
             StringAssert.Contains(result, "Anonymous email sent");
@@ -47,7 +47,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void TestPluginNonNull_Expected_FromInResult()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Integration Test Resources/IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=test@domain.local");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Acceptance Testing Resources/IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=test@domain.local");
             string result = TestHelper.PostDataToWebserver(postData);
 
             StringAssert.Contains(result, "from test@domain.local");
@@ -59,7 +59,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         public void WorkflowWithPluginActivity_Integration_ExpectedReturnsPluginData()
         {
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Integration Test Resources/PBI9135PluginServiceTest", "");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Acceptance Testing Resources/PBI9135PluginServiceTest", "");
             //------------Execute Test---------------------------
             string result = TestHelper.PostDataToWebserver(postData);
             //------------Assert Results-------------------------

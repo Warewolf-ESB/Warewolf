@@ -28,7 +28,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         // TFS Migration Issue
         public void CanInvokeARemoteService()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/9139Local");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/9139Local");
             const string expected = @"<DataList><localResult>6</localResult><remoteResult>Success</remoteResult><localError></localError><remoteError></remoteError><dbo_spGetCountries index=""1""><CountryID>11</CountryID><Description>Bahrain</Description></dbo_spGetCountries><dbo_spGetCountries index=""2""><CountryID>12</CountryID><Description>Bangladesh</Description></dbo_spGetCountries><dbo_spGetCountries index=""3""><CountryID>13</CountryID><Description>Barbados</Description></dbo_spGetCountries><dbo_spGetCountries index=""4""><CountryID>14</CountryID><Description>Belarus</Description></dbo_spGetCountries><dbo_spGetCountries index=""5""><CountryID>15</CountryID><Description>Belgium</Description></dbo_spGetCountries><dbo_spGetCountries index=""6""><CountryID>16</CountryID><Description>Belize</Description></dbo_spGetCountries><dbo_spGetCountries index=""7""><CountryID>17</CountryID><Description>Benin</Description></dbo_spGetCountries><dbo_spGetCountries index=""8""><CountryID>18</CountryID><Description>Bhutan</Description></dbo_spGetCountries><dbo_spGetCountries index=""9""><CountryID>19</CountryID><Description>Bolivia</Description></dbo_spGetCountries><dbo_spGetCountries index=""10""><CountryID>20</CountryID><Description>Bosnia and Herzegovina</Description></dbo_spGetCountries><dbo_spGetCountries index=""11""><CountryID>21</CountryID><Description>Brazil</Description></dbo_spGetCountries><dbo_spGetCountries index=""12""><CountryID>22</CountryID><Description>Brunei</Description></dbo_spGetCountries><dbo_spGetCountries index=""13""><CountryID>23</CountryID><Description>Bulgaria</Description></dbo_spGetCountries></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -40,7 +40,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         // Here because it is easy to test via the remote invoke ;)
         public void DoesWorkflowWithNoStartNodeEmitCorrectDebugInfo()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/Bug9484");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/Bug9484");
 
             Guid id = Guid.NewGuid();
             TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
@@ -57,7 +57,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public void Webservice_Invoke_WhenDataReturnedIsDifferentThenTestedDataType_DataFormatErrorMessage()
         {
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/Bug_11271_Test_Bad");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/Bug_11271_Test_Bad");
 
             Guid id = Guid.NewGuid();
 
@@ -77,7 +77,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public void Webservice_Invoke_WhenDataReturnedIsSameAsTestedDataType_NoDataFormatErrorMessage()
         {
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/Bug_11271_Test_Ok");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/Bug_11271_Test_Ok");
 
             Guid id = Guid.NewGuid();
 
@@ -95,7 +95,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestCategory("RemoteInvoke_CanFetchDebugItems")]
         public void RemoteInvoke_CanFetchDebugItems_WhenRemoteInvokeWorkflow_ExpectAllDebugItems()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/Remote Debug Test");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/Remote Debug Test");
 
             Guid id = Guid.NewGuid();
             TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
@@ -110,7 +110,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestCategory("RemoteInvoke_CanExecuteRemoteNested")]
         public void RemoteInvoke_CanFetchResults_WhenRemoteNestedWF_ExpectCorrectMappings()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/11466_RemoteExecution");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/11466_RemoteExecution");
 
             Guid id = Guid.NewGuid();
             var output = TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
@@ -122,7 +122,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestCategory("RemoteInvoke_CanExecuteRemoteNested")]
         public void RemoteInvoke_CanFetchResults_WhenRemoteNestedWF_SameName_ExpectCorrectMappings()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/11466_RemoteExecution_SameName");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/11466_RemoteExecution_SameName");
 
             Guid id = Guid.NewGuid();
             var output = TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);

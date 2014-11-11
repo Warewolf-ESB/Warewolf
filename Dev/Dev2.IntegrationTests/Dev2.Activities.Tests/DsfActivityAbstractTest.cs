@@ -26,7 +26,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void LastRecordSetNotionUpdatesEntry_Expected_RecordsCreated()
         {
-            string PostData = String.Format("{0}{1}", _webserverUri, "Integration Test Resources/LastRecordSetNotationUpdatesEntry");
+            string PostData = String.Format("{0}{1}", _webserverUri, "Acceptance Testing Resources/LastRecordSetNotationUpdatesEntry");
             string expected = @"<nameSetindex=""1""><Name>Michael</Name><Surname>Cullen</Surname></nameSet>
                                 <nameSetindex=""2""><Name>Massimo</Name><Surname>Guerrera</Surname></nameSet>
                                 <nameSetindex=""3""><Name>MASSIMO</Name><Surname></Surname></nameSet>

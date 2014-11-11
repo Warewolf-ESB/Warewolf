@@ -23,20 +23,27 @@ REM ** Kill The Server **
 sc stop "Warewolf Server"
 taskkill /im "Warewolf Server.exe"
 
-REM  Wait 10 seconds ;)
-ping -n 10 127.0.0.1 > nul
+REM  Wait 5 seconds ;)
+ping -n 5 127.0.0.1 > nul
 
-IF EXIST "%DeploymentDirectory%\Server\ServerStarted" DEL "%DeploymentDirectory%\Server\ServerStarted"
+REM Init paths to Warewolf server under test
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Server\bin\Debug
+IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
+IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
 
 REM ** Start Warewolf server from deployed binaries **
-START "%DeploymentDirectory%\Server\Warewolf Server.exe" /D "%DeploymentDirectory%\Server" "Warewolf Server.exe"
+IF NOT EXIST %TestRunDirectory%\..\..\..\nircmd.exe GOTO RegularStartup
+%TestRunDirectory%\..\..\..\nircmd.exe elevate "%DeploymentDirectory%\Warewolf Server.exe"
+GOTO WaitForServerStart
+:RegularStartup
+START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
 
 rem ping server until it responds
 :WaitForServerStart
-IF EXIST "%DeploymentDirectory%\Server\ServerStarted" goto exit 
-rem wait for 10 seconds before trying again
-@echo Waiting 10 seconds...
-ping -n 10 127.0.0.1 > nul
+IF EXIST "%DeploymentDirectory%\ServerStarted" goto exit 
+rem wait for 5 seconds before trying again
+@echo Waiting 5 seconds...
+ping -n 5 127.0.0.1 > nul
 goto WaitForServerStart
 :exit
 exit 0

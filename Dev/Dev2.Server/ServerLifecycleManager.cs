@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.DirectoryServices.ActiveDirectory;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -309,7 +310,6 @@ namespace Dev2
 
             // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
 #if DEBUG
-
             try
             {
                 var miq = MoqInstallerActionFactory.CreateInstallerActions();
@@ -318,7 +318,7 @@ namespace Dev2
             catch(Exception e)
             {
                 // Throw new exception to make it easy for developer to understand issue
-                throw new Exception("Ensure no Warewolf service is running on this machine. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
+                throw new Exception("Ensure you are running as an Administrator. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
             }
 #endif
 
@@ -1876,7 +1876,9 @@ namespace Dev2
                 {
                     try
                     {
-                        _owinServer = WebServerStartup.Start(_endpoints);
+                        for(var a = 0; a < 10; a++)
+                            Thread.Sleep(1000);
+                            _owinServer = WebServerStartup.Start(_endpoints);
                         EnvironmentVariables.IsServerOnline = true; // flag server as active
                         WriteLine("\r\nWeb Server Started");
                         foreach(var endpoint in _endpoints)
@@ -1940,9 +1942,6 @@ namespace Dev2
         {
             try
             {
-
-
-
                 if (File.Exists(".\\ServerStarted"))
                 {
                     File.Delete(".\\ServerStarted");

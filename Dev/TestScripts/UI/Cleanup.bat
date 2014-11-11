@@ -20,7 +20,9 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 taskkill /im "Warewolf Studio.exe"
+IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Studio.exe"
 sc STOP "Warewolf Server"
 %DeploymentDirectory%\ServerbinDebug\Dev2.Server.exe -x
 taskkill /im "Warewolf Server.exe"
+IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe"
 exit 0
