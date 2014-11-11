@@ -75,7 +75,7 @@ namespace Dev2.Activities
                 var destinationPath = "/";
                 if(destinationFileName.Contains("/"))
                 {
-                    destinationPath = destinationFileName.Substring(0, DestinationPath.LastIndexOf("/", StringComparison.Ordinal));
+                    destinationPath = destinationFileName.Substring(0,1+ DestinationPath.LastIndexOf("/", StringComparison.Ordinal));
                     destinationFileName = destinationFileName.Substring(DestinationPath.LastIndexOf("/", StringComparison.Ordinal)+1);
                 }
                 var output = DropNetClient.UploadFile(destinationPath, destinationFileName, File.ReadAllBytes(evaluatedValues["SourceFile"]));

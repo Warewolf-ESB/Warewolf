@@ -84,7 +84,7 @@
                 </provider:FileSystemIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.SourceFile"
@@ -108,7 +108,7 @@
                                 IsInCalculateMode="False"
                                 VerticalContentAlignment="Top"
                                 FilterType="All"
-                                ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}"
+                                ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}"
                                 Text="{Binding Path=ModelItem.DestinationPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
