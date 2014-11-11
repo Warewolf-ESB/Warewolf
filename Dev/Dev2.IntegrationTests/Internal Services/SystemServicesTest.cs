@@ -25,12 +25,6 @@ namespace Dev2.Integration.Tests.Internal_Services
         // ReSharper disable InconsistentNaming
         private readonly string _webServerURI = ServerSettings.WebserverURI;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
         [TestMethod]
         public void DepenendcyViewerReturnsOnlyValidDependenciesExpectTwoDependencies()
         {
