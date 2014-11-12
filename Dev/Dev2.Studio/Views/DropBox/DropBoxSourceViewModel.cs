@@ -26,30 +26,26 @@ namespace Dev2.Views.DropBox
         readonly IDropboxFactory _dropboxFactory;
         IDropNetClient _client;
         public string Title { get { return "Dropbox Source"; } }
-        public DropBoxSourceViewModel(INetworkHelper network,IDropBoxHelper dropboxHelper,IDropboxFactory dropboxFactory)
+
+        public DropBoxSourceViewModel(INetworkHelper network, IDropBoxHelper dropboxHelper, IDropboxFactory dropboxFactory, bool shouldAuthorise)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "network", network }, { "dropboxHelper", dropboxHelper }, { "dropboxFactory",dropboxFactory } });
             _network = network;
             _dropboxFactory = dropboxFactory;
             DropBoxHelper = dropboxHelper;
             CookieHelper.Clear();
-            
+            if(shouldAuthorise)
             Authorise();
         }
 
         void WebBrowserNavigated(object sender, NavigationEventArgs e)
         {
-            if (e.Uri.ToString().StartsWith("https://www.google") && _client != null)
-            {
+
                var token =  _client.GetAccessToken();
                Key = token.Token;
                Secret = token.Secret;
 
-            }
-            else if (!e.Uri.ToString().Contains("auth"))
-            {
-                LoadBrowserUri(AuthUri).RunSynchronously();
-            }
+
 
         }
 

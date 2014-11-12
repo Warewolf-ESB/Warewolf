@@ -725,17 +725,22 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void CreateOAuthType(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath)
+        public void CreateOAuthType(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, bool shouldAuthorise = true)
         {
             var resource =  ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
-            SaveDropBoxSource(activeEnvironment, resourceType, resourcePath, resource);
+            SaveDropBoxSource(activeEnvironment, resourceType, resourcePath, resource,shouldAuthorise);
         }
 
-        void SaveDropBoxSource(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, IContextualResourceModel resource)
+        public IDropboxFactory DropboxFactory
+        {
+            get{return _dropboxFactory??new DropboxFactory();}
+            set{_dropboxFactory = value;}
+        }
+        void SaveDropBoxSource(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, IContextualResourceModel resource, bool shouldAuthorise)
         {
             DropBoxViewWindow drop = new DropBoxViewWindow();
             DropBoxHelper helper = new DropBoxHelper(drop, activeEnvironment, resourceType, resourcePath);
-            DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper,new DropboxFactory()) { Resource = resource };
+            DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper, DropboxFactory,shouldAuthorise) { Resource = resource };
             drop.DataContext = vm;
             var showDialog = ShowDropboxAction(drop,vm);
             if(showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
@@ -768,7 +773,7 @@ namespace Dev2.Studio.ViewModels
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
             if(resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("dropboxsource"))
             {
-                SaveDropBoxSource(ActiveEnvironment, "DropboxSource", resourceModel.Category, resourceModel);
+                SaveDropBoxSource(ActiveEnvironment, "DropboxSource", resourceModel.Category, resourceModel,true);
             }
             else
             DisplayResourceWizard(resourceModel, true);
@@ -1620,6 +1625,7 @@ namespace Dev2.Studio.ViewModels
         public Func<bool> IsBusyDownloadingInstaller;
         public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> _showDropAction;
         Action<IResourceModel, IEnvironmentModel, string, string> _showSaveDialog;
+        IDropboxFactory _dropboxFactory;
 
         public bool IsDownloading()
         {

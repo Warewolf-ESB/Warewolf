@@ -23,7 +23,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             // ReSharper disable once ObjectCreationAsStatement
-            new DropBoxSourceViewModel(null, new Mock<IDropBoxHelper>().Object,new DropboxFactory() );
+            new DropBoxSourceViewModel(null, new Mock<IDropBoxHelper>().Object,new DropboxFactory(),false );
 
             //------------Execute Test---------------------------
 
@@ -38,7 +38,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             // ReSharper disable once ObjectCreationAsStatement
-            new DropBoxSourceViewModel(new Mock<INetworkHelper>().Object, null, new DropboxFactory());
+            new DropBoxSourceViewModel(new Mock<INetworkHelper>().Object, null, new DropboxFactory(), false);
 
             //------------Execute Test---------------------------
 
@@ -53,7 +53,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             // ReSharper disable once ObjectCreationAsStatement
-            new DropBoxSourceViewModel(new Mock<INetworkHelper>().Object, new Mock<IDropBoxHelper>().Object, null);
+            new DropBoxSourceViewModel(new Mock<INetworkHelper>().Object, new Mock<IDropBoxHelper>().Object, null, false);
 
             //------------Execute Test---------------------------
 
@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var helpViewWrapper = new Mock<IDropBoxHelper>();
             helpViewWrapper.Setup(m => m.Navigate(It.IsAny<string>())).Verifiable();
             helpViewWrapper.Setup(a => a.WebBrowser).Returns(new WebBrowser());
-            var helpViewModel = new DropBoxSourceViewModel(networkHelper.Object, helpViewWrapper.Object, dropFactory.Object);
+            var helpViewModel = new DropBoxSourceViewModel(networkHelper.Object, helpViewWrapper.Object, dropFactory.Object,false);
             var helpView = new DropBoxViewWindow();
             helpViewWrapper.SetupGet(m => m.DropBoxViewWindow).Returns(helpView);
             //------------Execute Test---------------------------
@@ -90,7 +90,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadg")]
-        [TestCategory("HelpViewModel_OnViewLoaded")]
+        [TestCategory("DropSource_OnViewLoaded")]
         public async Task DropBoxSourceViewModel_LoadBrowserUri_HasNoInternetConnection_NavigatesNowhere()
         {
             //------------Setup for test--------------------------
@@ -105,7 +105,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var helpViewWrapper = new Mock<IDropBoxHelper>();
             helpViewWrapper.Setup(m => m.Navigate(It.IsAny<string>())).Verifiable();
             helpViewWrapper.Setup(a => a.WebBrowser).Returns(new WebBrowser());
-            var helpViewModel = new DropBoxSourceViewModel(networkHelper.Object, helpViewWrapper.Object, dropFactory.Object);
+            var helpViewModel = new DropBoxSourceViewModel(networkHelper.Object, helpViewWrapper.Object, dropFactory.Object,false);
             var helpView = new DropBoxViewWindow();
             helpViewWrapper.SetupGet(m => m.DropBoxViewWindow).Returns(helpView);
             //------------Execute Test---------------------------

@@ -47,7 +47,9 @@ using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.ViewModels.Deploy;
+using Dev2.Views.DropBox;
 using Dev2.Workspaces;
+using DropNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -2582,7 +2584,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(newEnvironment, viewModel.ActiveEnvironment);
         }
         [TestMethod]
-        [TestCategory("MainViewModel_SetActiveEnvironment")]
+        [TestCategory("MainViewModel_OauthDialog")]
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_ShowOAuthSave_ShowsDialog_AndCanclesOut()
         {
@@ -2606,17 +2608,20 @@ namespace Dev2.Core.Tests
             // ReSharper restore ConvertToConstant.Local
             var newEnvironment = new Mock<IEnvironmentModel>();
             viewModel.SetActiveEnvironment(newEnvironment.Object);
-            
+            var fact = new Mock<IDropboxFactory>();
+            fact.Setup(a => a.Create()).Returns(new Mock<IDropNetClient>().Object);
+            viewModel.DropboxFactory = fact.Object;
+
             viewModel.ShowSaveDialog = (a,b,c,d)=>save=true;
             viewModel.ShowDropboxAction = (window, vm) => { drop = true; return true; };
-            viewModel.CreateOAuthType(newEnvironment.Object,"dropBox","bob");
+            viewModel.CreateOAuthType(newEnvironment.Object,"dropBox","bob",false);
             //------------Assert Results-------------------------
             Assert.IsFalse(save);
             Assert.IsTrue(drop);
         }
 
         [TestMethod]
-        [TestCategory("MainViewModel_SetActiveEnvironment")]
+        [TestCategory("MainViewModel_OAuthDialog")]
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_ShowOAuthSave_ShowsDialog_HasResourceIdNoSaveDialog()
         {
@@ -2640,14 +2645,14 @@ namespace Dev2.Core.Tests
 
             viewModel.ShowSaveDialog = (a, b, c, d) => save = true;
             viewModel.ShowDropboxAction = (window, vm) => { drop = true; return true; };
-            viewModel.CreateOAuthType(newEnvironment.Object, "DropboxSource", "bob");
+            viewModel.CreateOAuthType(newEnvironment.Object, "DropboxSource", "bob",false);
             //------------Assert Results-------------------------
             Assert.IsFalse(save);
             Assert.IsTrue(drop);
         }
 
         [TestMethod]
-        [TestCategory("MainViewModel_SetActiveEnvironment")]
+        [TestCategory("MainViewModel_OAuthDialogt")]
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_ShowOAuthSave_ShowsDialog_AndSave()
         {
@@ -2672,7 +2677,7 @@ namespace Dev2.Core.Tests
             newEnvironment.Setup(a => a.ResourceRepository).Returns(resourceRep.Object);
             viewModel.ShowSaveDialog = (a, b, c, d) => save = true;
             viewModel.ShowDropboxAction = (window, vm) => { vm.HasAuthenticated = true; drop = true;  return true; };
-            viewModel.CreateOAuthType(newEnvironment.Object, "DropboxSource", "bob");
+            viewModel.CreateOAuthType(newEnvironment.Object, "DropboxSource", "bob",false);
             //------------Assert Results-------------------------
             Assert.IsTrue(save);
             Assert.IsTrue(drop);
