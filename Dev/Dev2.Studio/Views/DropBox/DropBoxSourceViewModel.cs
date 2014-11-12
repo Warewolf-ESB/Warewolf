@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Navigation;
 using Caliburn.Micro;
 using Dev2.Common;
@@ -27,7 +26,9 @@ namespace Dev2.Views.DropBox
         IDropNetClient _client;
         public string Title { get { return "Dropbox Source"; } }
 
+        // ReSharper disable TooManyDependencies
         public DropBoxSourceViewModel(INetworkHelper network, IDropBoxHelper dropboxHelper, IDropboxFactory dropboxFactory, bool shouldAuthorise)
+            // ReSharper restore TooManyDependencies
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "network", network }, { "dropboxHelper", dropboxHelper }, { "dropboxFactory",dropboxFactory } });
             _network = network;
@@ -38,6 +39,7 @@ namespace Dev2.Views.DropBox
             Authorise();
         }
 
+        // ReSharper disable once UnusedMember.Local
         void WebBrowserNavigated(object sender, NavigationEventArgs e)
         {
 
