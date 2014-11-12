@@ -2279,6 +2279,29 @@ namespace Dev2.Core.Tests
             PopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, null), Times.Once());
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_Handle_DeleteFolderMessage")]
+        public void MainViewModel_Handle_DeleteFolderMessage_RefreshFilters()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+            bool _actionCalled = false;
+            PopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, null)).Returns(MessageBoxResult.Yes);
+            //------------Execute Test---------------------------
+            var repo = MainViewModel.ExplorerViewModel.NavigationViewModel;
+            PrivateObject p = new PrivateObject(repo, new PrivateType(typeof(NavigationViewModelBase)));
+            p.SetField("_studioResourceRepository", MockStudioResourceRepository.Object);
+            p.SetField("_searchFilter", "bob");
+            MainViewModel.Handle(new DeleteFolderMessage("MyFolder", () =>
+            {
+                _actionCalled = true;
+            }));
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_actionCalled);
+            
+            MockStudioResourceRepository.Verify(a => a.Filter(It.IsAny<Func<IExplorerItemModel, bool>>()), Times.Once());
+        }
         public static ExecuteMessage MakeMsg(string msg)
         {
             var result = new ExecuteMessage { HasError = false };

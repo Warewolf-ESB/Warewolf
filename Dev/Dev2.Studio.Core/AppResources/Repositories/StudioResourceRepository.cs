@@ -253,16 +253,14 @@ namespace Dev2.AppResources.Repositories
                     }
                     catch(Exception)
                     {
-                        if(parentItem != null)
-                        {
+                        
                             parentItem.Children.Add(item);
-                        }
+                        
                         throw;
                     }
-                    if(parentItem != null)
-                    {
+                  
                         parentItem.OnChildrenChanged();
-                    }
+                    
                 }
         }
         }
