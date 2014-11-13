@@ -2061,6 +2061,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the operation that you wish to perform. Read or write is currently supplorted..
+        /// </summary>
+        public static string DropboxOperationToolTip {
+            get {
+                return ResourceManager.GetString("DropboxOperationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The result of the drop box operation will be assigned to this value.
         /// </summary>
         public static string DropboxResultHelpText {

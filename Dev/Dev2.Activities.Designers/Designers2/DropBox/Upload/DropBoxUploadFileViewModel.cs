@@ -9,31 +9,49 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Activities.Expressions;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Designers2.DropBox.Upload
 {
     public class DropBoxUploadFileViewModel : ActivityDesignerViewModel,INotifyPropertyChanged
     {
         IEnvironmentModel _environmentModel;
-
-        public DropBoxUploadFileViewModel(ModelItem modelItem, IEnvironmentModel environmentModel)
+        private readonly string[] _operations = { "Read File", "Write File" };
+        readonly IEventAggregator _eventPublisher;
+        public DropBoxUploadFileViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
         {
             _environmentModel = environmentModel;
-        
+            _eventPublisher = eventPublisher;
+            EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), o => IsDropboxSourceSelected);
         }
 
+        public bool IsDropboxSourceSelected
+        {
+            get
+            {
+                return SelectedSource!= null ;
+                
+            }
+            
+        }
 
         public DropBoxUploadFileViewModel(ModelItem modelItem)
-            : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment)
+            : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
           
 
@@ -49,6 +67,25 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
         }
 
 
+        public string[] Operations
+        {
+            get
+            {
+                return _operations;
+                
+            }
+        }
+
+        public string Operation
+        {
+            get {  return GetProperty<string>(); }
+            set
+            {
+                SetProperty(value);
+                OnPropertyChanged("Operation");
+            }
+        }
+
         public OauthSource SelectedSource
         {
             get { return GetProperty<OauthSource>(); }
@@ -56,12 +93,23 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
             set
             {
                 SetProperty(value);
+                OnPropertyChanged("IsDropboxSourceSelected");
                 OnPropertyChanged("SelectedSource");
+            }
+        }
+        public RelayCommand EditDropboxSourceCommand { get; private set; }
+        private void EditDropBoxSource()
+        {
+            var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ID == SelectedSource.ResourceID);
+            if (resourceModel != null)
+            {
+                _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
+                OnPropertyChanged("Sources");
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        [ExcludeFromCodeCoverage]
         protected void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;

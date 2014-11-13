@@ -740,6 +740,9 @@ The file path must use "/" to identify folders and not "\".</value>
   <data name="DropboxSourceToolTip" xml:space="preserve">
     <value>Select the Dropbox source that the file operation will be performed on.</value>
   </data>
+  <data name="DropboxOperationToolTip" xml:space="preserve">
+    <value>Select the operation that you wish to perform. Read or write is currently supplorted.</value>
+  </data>
   <data name="DropboxResultHelpText" xml:space="preserve">
     <value>The result of the drop box operation will be assigned to this value</value>
   </data>

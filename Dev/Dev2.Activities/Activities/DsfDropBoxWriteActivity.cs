@@ -37,6 +37,12 @@ namespace Dev2.Activities
          public string DestinationPath { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
 
+         [Inputs("SourceFile")]
+         // ReSharper disable once UnusedMember.Global
+         // ReSharper disable MemberCanBePrivate.Global
+         public string Operation { get; set; }
+         // ReSharper restore MemberCanBePrivate.Global
+
 
          [Outputs("Result")]
          // ReSharper disable once UnusedMember.Global
@@ -66,27 +72,38 @@ namespace Dev2.Activities
 
          protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
          {
+             if (evaluatedValues["Operation"] == "Write File")
+             {
+                 var destinationFileName = evaluatedValues["DestinationPath"];
+                 var destinationPath = "/";
+                 if (destinationFileName.Contains("/"))
+                 {
+                     destinationPath = destinationFileName.Substring(0, 1 + destinationFileName.LastIndexOf("/", StringComparison.Ordinal));
+                     destinationFileName = destinationFileName.Substring(destinationFileName.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                 }
+                 var output = DropNetClient.UploadFile(destinationPath, destinationFileName, File.ReadAllBytes(evaluatedValues["SourceFile"]));
+                 if (output == null)
+                 {
+                     Dev2Logger.Log.Error("Unable to upload. Result is null. This indicates that there is no internet connection");
+                     return "Failure";
+                 }
+                 Dev2Logger.Log.Debug(String.Format("File uploaded to dropbox {0}", output.Path));
+                 return "Success";
+             }
+                 // ReSharper disable RedundantIfElseBlock
+             else if(evaluatedValues["Operation"] == "Read File")
+                 // ReSharper restore RedundantIfElseBlock
+             {
+                 var destinationFileName = evaluatedValues["SourceFile"];
 
+                 File.WriteAllBytes(destinationFileName, DropNetClient.GetFile(evaluatedValues["DestinationPath"]));
 
-           
-                
-                var destinationFileName = evaluatedValues["DestinationPath"];
-                var destinationPath = "/";
-                if(destinationFileName.Contains("/"))
-                {
-                    destinationPath = destinationFileName.Substring(0,1+ DestinationPath.LastIndexOf("/", StringComparison.Ordinal));
-                    destinationFileName = destinationFileName.Substring(DestinationPath.LastIndexOf("/", StringComparison.Ordinal)+1);
-                }
-                var output = DropNetClient.UploadFile(destinationPath, destinationFileName, File.ReadAllBytes(evaluatedValues["SourceFile"]));
-                if(output == null)
-                {
-                    Dev2Logger.Log.Error("Unable to upload. Result is null. This indicates that there is no internet connection");
-                    return "Failure";
-                }
-                Dev2Logger.Log.Debug(String.Format("File uploaded to dropbox {0}",output.Path));
-                return "Success";
-
+                 Dev2Logger.Log.Debug(String.Format("File written to local file system {0}", destinationFileName));
+                 return "Success"; 
+             }
+             return "Failure";
          }
+    
 
         #endregion
     }
