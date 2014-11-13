@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-        Height="460" Width="550"
+        Height="500" Width="550"
         Title="{Binding Title}"
         Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
         >

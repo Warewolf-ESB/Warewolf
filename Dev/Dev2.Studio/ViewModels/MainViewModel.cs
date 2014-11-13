@@ -771,7 +771,7 @@ namespace Dev2.Studio.ViewModels
         private void ShowEditResourceWizard(object resourceModelToEdit)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
-            if(resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("dropboxsource"))
+            if (resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("OauthSource"))
             {
                 SaveDropBoxSource(ActiveEnvironment, "DropboxSource", resourceModel.Category, resourceModel,true);
             }

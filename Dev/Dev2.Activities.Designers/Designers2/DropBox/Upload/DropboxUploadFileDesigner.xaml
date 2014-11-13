@@ -16,7 +16,7 @@
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
                 <ImageDrawing Rect="0, 0, 16, 16"
-                              ImageSource="{StaticResource ToolCalculate-32}" />
+                              ImageSource="{StaticResource ToolDropBoxPng-32}" />
             </DrawingBrush.Drawing>
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>

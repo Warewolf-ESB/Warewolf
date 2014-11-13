@@ -66,8 +66,7 @@ namespace Dev2.Activities
 
          protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
          {
-            try
-            {
+
 
            
                 
@@ -86,12 +85,7 @@ namespace Dev2.Activities
                 }
                 Dev2Logger.Log.Debug(String.Format("File uploaded to dropbox {0}",output.Path));
                 return "Success";
-            }
-            catch (Exception)
-            {
 
-                return "Failure";
-            }
          }
 
         #endregion

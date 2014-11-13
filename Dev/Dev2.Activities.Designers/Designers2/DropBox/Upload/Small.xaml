@@ -38,9 +38,9 @@
 
         <Label Grid.Column="0"
                Grid.Row="0"
-               Content="Source File" 
+               Content="Dropbox Source" 
                FontWeight="Normal"
-               FontStyle="Italic" 
+Style="{StaticResource ActivityLabelStyle}"
                VerticalAlignment="Top"
                VerticalContentAlignment="Top"/>
         <ComboBox x:Name="InitialComboBox"
@@ -65,7 +65,7 @@
                Grid.Row="1"
                Content="Source File" 
                FontWeight="Normal"
-               FontStyle="Italic" 
+Style="{StaticResource ActivityLabelStyle}"
                VerticalAlignment="Top"
                VerticalContentAlignment="Top"/>
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
@@ -73,7 +73,7 @@
                                 Grid.Row="1"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
-                                VerticalContentAlignment="Top"
+            Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}"
                                 Text="{Binding Path=ModelItem.SourceFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -97,7 +97,7 @@
                Grid.Row="2"
                Content="Destination Path" 
                FontWeight="Normal"
-               FontStyle="Italic" 
+Style="{StaticResource ActivityLabelStyle}"
                VerticalAlignment="Top"
                VerticalContentAlignment="Top"/>
 
@@ -106,7 +106,7 @@
                                 Grid.Row="2"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
-                                VerticalContentAlignment="Top"
+            Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}"
                                 Text="{Binding Path=ModelItem.DestinationPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -128,16 +128,19 @@
 
         <Label Grid.Column="0"
                Grid.Row="3"
-               Style="{StaticResource ActivityLabelStyle}"
-               Content="Result" />
+               Content="Result" 
+               FontWeight="Normal"
+                Style="{StaticResource ActivityLabelStyle}"
+               VerticalAlignment="Top"
+               VerticalContentAlignment="Top"/>
 
         <ui:IntellisenseTextBox 
                                 Grid.Column="1"
                                 Grid.Row="3"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
-                                VerticalContentAlignment="Top"
-                                FilterType="All"
+            FilterType="All"
+            Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 ToolTip="{x:Static help:HelpTextResources.DropboxResultHelpText}"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"

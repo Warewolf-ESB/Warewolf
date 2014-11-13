@@ -66,7 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDropBoxWriteActivity_Execute")]
+        [TestCategory("DsfDropBoxWriteActivity_Execute"),ExpectedException(typeof(IOException))]
         public void DsfDropBoxWriteActivity_Execute_IOError()
         {
             //------------Setup for test--------------------------
@@ -83,7 +83,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             client.Verify(a => a.UploadFile("/", "meerkat", It.IsAny<byte[]>(), true, null),Times.Never());
-            Assert.AreEqual(result.ToString(), "Failure");
+           
         }
         // ReSharper restore InconsistentNaming
     }
