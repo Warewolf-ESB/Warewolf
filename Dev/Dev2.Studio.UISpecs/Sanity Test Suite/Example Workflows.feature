@@ -7,7 +7,8 @@
 Scenario: Testing Example Workflows
 	Given I have Warewolf running
 	And all tabs are closed	
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	# Utility - Tools
 	And I click "EXPLORERFILTERCLEARBUTTON"
 	And I send "Utility - Comment" to "EXPLORERFILTER"

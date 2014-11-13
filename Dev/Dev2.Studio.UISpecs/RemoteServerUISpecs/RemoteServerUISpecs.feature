@@ -5,8 +5,8 @@
 
 
 Background: 
-      Given I click "EXPLORERFILTERCLEARBUTTON"
-	  And I click "EXPLORER,UI_localhost_AutoID"
+	  Given I click "EXPLORERCONNECTCONTROL"
+	  Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	  When I click "RIBBONSETTINGS"   
 	  And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
 	  And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 

@@ -7,8 +7,8 @@
 Scenario: For Each containing calculate tool Exectuing 1k times within expected time
 	Given I have Warewolf running
     And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	#Opening New Design Surface
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
@@ -44,8 +44,8 @@ Scenario: For Each containing calculate tool Exectuing 1k times within expected 
 Scenario: For Each Exectuing Workflow in it and debug output is generating within expected time
     Given I have Warewolf running
     And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	#Opening New Design Surface
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"

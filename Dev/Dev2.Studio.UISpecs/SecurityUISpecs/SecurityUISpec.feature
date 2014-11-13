@@ -19,8 +19,9 @@ Background:
 
 Scenario: Testing Different Server Permissions For Public
        Given all tabs are closed
-       And I click "EXPLORER,UI_localhost_AutoID" 
-	    Given I click "EXPLORERFILTERCLEARBUTTON"
+	   Given I click "EXPLORERCONNECTCONTROL"
+	   Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	   Given I click "EXPLORERFILTERCLEARBUTTON"
 #Test -1 Setup Public Server Permissions View
        And I click "RIBBONSETTINGS"   
        And I click "SECURITYPUBLICADMINISTRATOR"  
@@ -70,7 +71,8 @@ Scenario: Testing Different Server Permissions For Public
        And I click "SECURITYSAVE"
 	   # Dragging remote server resource to local design surface when I have Execute only permission
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
-	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   Given I click "EXPLORERCONNECTCONTROL"
+	   Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
        Given "WORKFLOWDESIGNER,Acceptance Testing Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
@@ -104,7 +106,8 @@ Scenario: Testing Different Server Permissions For Public
        And I click "SECURITYPUBLICCONTRIBUTE"
        And I click "SECURITYSAVE"
 	   # Dragging Remote Resource to local design surface when I have Contribute only permission
-	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   Given I click "EXPLORERCONNECTCONTROL"
+	   Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
@@ -136,7 +139,8 @@ Scenario: Testing Different Server Permissions For Public
        And I click "SECURITYPUBLICDEPLOYTO"
        And I click "SECURITYSAVE"
 	   # Dragging remote server resource to local design surface when I have Deploy To only permission
-	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   Given I click "EXPLORERCONNECTCONTROL"
+	   Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
@@ -158,8 +162,8 @@ Scenario: Testing Different Server Permissions For Public
        Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
  #Test-5 Set server permission Deploy From
        Given all tabs are closed
-	   Given I click "EXPLORERFILTERCLEARBUTTON"
-       And I click "EXPLORER,UI_localhost_AutoID" 
+	   Given I click "EXPLORERCONNECTCONTROL"
+	   Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
        And I click "RIBBONSETTINGS"   
        And I click "SECURITYPUBLICADMINISTRATOR"  
        And "SECURITYPUBLICVIEW" is unchecked
@@ -169,7 +173,8 @@ Scenario: Testing Different Server Permissions For Public
        And I click "SECURITYPUBLICDEPLOYFROM"
        And I click "SECURITYSAVE" 
 	   # Dragging remote server resource to local design surface when I have Deploy From only permission
-	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   Given I click "EXPLORERCONNECTCONTROL"
+	   Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
@@ -537,7 +542,8 @@ Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 #       Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
 # #Test-2 Set server permission Deploy From
 #      Given all tabs are closed
-#       And I click "EXPLORER,UI_localhost_AutoID" 
+#      Given I click "EXPLORERCONNECTCONTROL"
+#      Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 #       And I click "RIBBONSETTINGS"   
 #       And I click "SECURITYPUBLICADMINISTRATOR"  
 #       And "SECURITYPUBLICVIEW" is unchecked
