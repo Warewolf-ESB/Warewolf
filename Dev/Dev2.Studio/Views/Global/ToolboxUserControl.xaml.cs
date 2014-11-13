@@ -169,7 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
             category = GetToolboxCategoryByName("Connectors");
             if (category != null)
             {
-                category.Add(new ToolboxItemWrapper(typeof(DsfDropBoxWriteActivity), "/Images/dropbox-windows.png", "Upload"));
+                category.Add(new ToolboxItemWrapper(typeof(DsfDropBoxWriteActivity), "/Images/dropbox-windows.png", "Dropbox-File"));
                
             }
         }

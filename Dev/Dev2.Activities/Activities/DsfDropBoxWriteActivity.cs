@@ -18,7 +18,7 @@ namespace Dev2.Activities
         public DsfDropBoxWriteActivity()
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            DisplayName = "Upload";
+            DisplayName = "Dropbox File Operation";
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
