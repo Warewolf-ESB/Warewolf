@@ -10,12 +10,12 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Dev2.Activities
 {
-    public class DsfDropBoxWriteActivity : DsfBaseActivity
+    public class DsfDropBoxFileActivity : DsfBaseActivity
     {
         IDropNetClient _dropnetClient;
         IFile _file;
 
-        public DsfDropBoxWriteActivity()
+        public DsfDropBoxFileActivity()
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             DisplayName = "Dropbox File Operation";
