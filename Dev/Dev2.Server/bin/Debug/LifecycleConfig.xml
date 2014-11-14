@@ -1,9 +1,9 @@
 <configuration>
 	<Logging>
-		<Debug Enabled="true" />
-		<Error Enabled="true" />
-		<Info Enabled="true" />
-		<Trace Enabled="false" />
+		<Debug Enabled="false" />
+		<Error Enabled="false" />
+		<Info Enabled="false" />
+		<Trace Enabled="true" />
 	</Logging>
 	<GCManager Enabled="false">
 		<MinWorkingSet>60</MinWorkingSet>
