@@ -60,7 +60,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                ExecuteService(theWorkspace, new LoggingSettingsWrite(), "LoggingSettings", settings.Logging);
+                if(settings.Logging != null)
+                {
+                    var executionResult = ExecuteService(theWorkspace, new LoggingSettingsWrite(), "LoggingSettings", settings.Logging);
+                    result.Message.AppendLine(executionResult);
+                }
             }
             catch(Exception ex)
             {
@@ -74,7 +78,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                ExecuteService(theWorkspace, new SecurityWrite(), "SecuritySettings", settings.Security);
+                if(settings.Security != null)
+                {
+                    var executionResult = ExecuteService(theWorkspace, new SecurityWrite(), "SecuritySettings", settings.Security);
+                    result.Message.AppendLine(executionResult);
+                }
             }
             catch(Exception ex)
             {
@@ -84,11 +92,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        static void ExecuteService(IWorkspace theWorkspace, IEsbManagementEndpoint service, string valuesKey, object valuesValue)
+        static string ExecuteService(IWorkspace theWorkspace, IEsbManagementEndpoint service, string valuesKey, object valuesValue)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var values = new Dictionary<string, StringBuilder> { { valuesKey, serializer.SerializeToBuilder(valuesValue) } };
-            service.Execute(values, theWorkspace);
+            return service.Execute(values, theWorkspace).ToString();
         }
 
         public DynamicService CreateServiceEntry()
