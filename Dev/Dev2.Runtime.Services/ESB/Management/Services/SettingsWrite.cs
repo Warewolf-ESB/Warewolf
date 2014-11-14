@@ -39,31 +39,56 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataException("Error: Unable to parse values.");
             }
-
             var serializer = new Dev2JsonSerializer();
-            ExecuteMessage result;
+            var result = new ExecuteMessage { HasError = false, Message = new StringBuilder() };
             try
             {
                 var settings = serializer.Deserialize<Settings>(settingsJson.ToString());
-
-                result = ExecuteService(theWorkspace, new SecurityWrite(), "SecuritySettings", settings.Security);
+                WriteSecuritySettings(theWorkspace, settings, result);
+                WriteLoggingSettings(theWorkspace, settings, result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Dev2Logger.Log.Error(ex);
-                result = new ExecuteMessage { HasError = true };
-                result.SetMessage("Error writing settings configuration.");
+                Dev2Logger.Log.Error("Error writing settings.", ex);
+                result.HasError = true;
+                result.Message.AppendLine("Error writing settings.");
             }
-
             return serializer.SerializeToBuilder(result);
         }
 
-        static ExecuteMessage ExecuteService(IWorkspace theWorkspace, IEsbManagementEndpoint service, string valuesKey, object valuesValue)
+        static void WriteLoggingSettings(IWorkspace theWorkspace, Settings settings, ExecuteMessage result)
+        {
+            try
+            {
+                ExecuteService(theWorkspace, new LoggingSettingsWrite(), "LoggingSettings", settings.Logging);
+            }
+            catch(Exception ex)
+            {
+                Dev2Logger.Log.Error("Error writing logging configuration.", ex);
+                result.HasError = true;
+                result.Message.AppendLine("Error writing logging configuration.");
+            }
+        }
+
+        static void WriteSecuritySettings(IWorkspace theWorkspace, Settings settings, ExecuteMessage result)
+        {
+            try
+            {
+                ExecuteService(theWorkspace, new SecurityWrite(), "SecuritySettings", settings.Security);
+            }
+            catch(Exception ex)
+            {
+                Dev2Logger.Log.Error("Error writing settings configuration.", ex);
+                result.HasError = true;
+                result.Message.AppendLine("Error writing settings configuration.");
+            }
+        }
+
+        static void ExecuteService(IWorkspace theWorkspace, IEsbManagementEndpoint service, string valuesKey, object valuesValue)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var values = new Dictionary<string, StringBuilder> { { valuesKey, serializer.SerializeToBuilder(valuesValue) } };
-            var result = service.Execute(values, theWorkspace).ToString();
-            return serializer.Deserialize<ExecuteMessage>(result);
+            service.Execute(values, theWorkspace);
         }
 
         public DynamicService CreateServiceEntry()

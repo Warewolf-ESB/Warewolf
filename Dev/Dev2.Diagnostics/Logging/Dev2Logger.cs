@@ -117,23 +117,23 @@ namespace Dev2.Common
         }
 
 
-        private static void UpdateLoggingConfig(string Level)
+        private static void UpdateLoggingConfig(string level)
         {
 
             log4net.Repository.ILoggerRepository repository = log4net.LogManager.GetAllRepositories().First();
-            repository.Threshold = repository.LevelMap[Level];
+            repository.Threshold = repository.LevelMap[level];
             log4net.Repository.Hierarchy.Hierarchy hier = (log4net.Repository.Hierarchy.Hierarchy)repository;
             var loggers = hier.GetCurrentLoggers();
             foreach (var logger in loggers)
             {
-                ((log4net.Repository.Hierarchy.Logger)logger).Level = hier.LevelMap[Level];
+                ((log4net.Repository.Hierarchy.Logger)logger).Level = hier.LevelMap[level];
             }
             
 
             //Configure the root logger.
             log4net.Repository.Hierarchy.Hierarchy h = (log4net.Repository.Hierarchy.Hierarchy)log4net.LogManager.GetRepository();
             log4net.Repository.Hierarchy.Logger rootLogger = h.Root;
-            rootLogger.Level = h.LevelMap[Level];
+            rootLogger.Level = h.LevelMap[level];
 
         }
 
