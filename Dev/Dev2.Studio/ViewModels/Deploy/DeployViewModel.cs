@@ -35,6 +35,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
+using System.Windows;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -318,9 +319,22 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 Target.ClearConflictingNodesNodes();
             }
-            DeployCommand.RaiseCanExecuteChanged();
+            RaiseDeployCommandCanExecuteChanged();
         }
 
+        void RaiseDeployCommandCanExecuteChanged()
+        {
+            if(Application.Current != null)
+            {
+                if(Application.Current.Dispatcher != null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        DeployCommand.RaiseCanExecuteChanged();
+                    });
+                }
+            }
+        }
 
         /// <summary>
         /// Used to indicate a successfull deploy has happened
@@ -465,7 +479,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 NotifyOfPropertyChange(() => SourceItemsSelected);
                 NotifyOfPropertyChange(() => CanDeploy);
                 NotifyOfPropertyChange(() => ServersAreNotTheSame);
-                DeployCommand.RaiseCanExecuteChanged();
+                RaiseDeployCommandCanExecuteChanged();
             }
 
         }
@@ -502,7 +516,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             NotifyOfPropertyChange(() => SelectedSourceServer);
             SourceServerHasDropped = !SelectedSourceServer.IsConnected;
-            DeployCommand.RaiseCanExecuteChanged();
+            RaiseDeployCommandCanExecuteChanged();
         }
 
         /// <summary>
@@ -535,7 +549,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 }
                 Target.Environment = _selectedDestinationServer;
                 CalculateStats();
-                DeployCommand.RaiseCanExecuteChanged();
+                RaiseDeployCommandCanExecuteChanged();
             }
         }
 
@@ -548,11 +562,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             NotifyOfPropertyChange(() => SelectedDestinationServer);
             DestinationServerHasDropped = !SelectedDestinationServer.IsConnected;
-            if(args.IsConnected && SelectedSourceServer.IsConnected)
-            {
-               
-            }
-            DeployCommand.RaiseCanExecuteChanged();
+            RaiseDeployCommandCanExecuteChanged();
         }
 
         #endregion
@@ -635,7 +645,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     
                     _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
                     _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
-                    DeployCommand.RaiseCanExecuteChanged();
+                    RaiseDeployCommandCanExecuteChanged();
                 }
             }
             NotifyOfPropertyChange(() => CanDeploy);
