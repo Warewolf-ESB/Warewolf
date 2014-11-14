@@ -162,7 +162,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
 
         static ModelItem CreateModelItem()
         {
-            return ModelItemUtils.CreateModelItem(new DsfDropBoxWriteActivity());
+            return ModelItemUtils.CreateModelItem(new DsfDropBoxFileActivity());
         }
     }
 }

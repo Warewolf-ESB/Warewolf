@@ -9,8 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities.Expressions;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -93,6 +91,7 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
             set
             {
                 SetProperty(value);
+                EditDropboxSourceCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged("IsDropboxSourceSelected");
                 OnPropertyChanged("SelectedSource");
             }

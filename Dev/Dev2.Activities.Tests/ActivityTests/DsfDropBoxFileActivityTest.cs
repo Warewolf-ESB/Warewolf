@@ -10,17 +10,17 @@ using Moq;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    public class DropBoxWriteTest
+    public class DsfDropBoxFileActivityTest
     {
         // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDropBoxWriteActivity_Execute")]
-        public void DsfDropBoxWriteActivity_Execute_Sucess()
+        [TestCategory("DsfDropBoxFileActivity_Execute")]
+        public void DsfDropBoxFileActivity_Execute_Sucess()
 
         {
             //------------Setup for test--------------------------
-            var dsfDropBoxWriteActivity = new DsfDropBoxWriteActivity();
+            var dsfDropBoxWriteActivity = new DsfDropBoxFileActivity();
             var client = new Mock<IDropNetClient>();
             var file = new Mock<IFile>();
             client.Setup(a => a.UploadFile("/", "meerkat", It.IsAny<byte[]>(), true, null)).Returns(new MetaData());
@@ -38,11 +38,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDropBoxWriteActivity_Execute")]
-        public void DsfDropBoxWriteActivity_Execute_WriteToFolder_Sucess()
+        [TestCategory("DsfDropBoxFileActivity_Execute")]
+        public void DsfDropBoxFileActivity_Execute_WriteToFolder_Sucess()
         {
             //------------Setup for test--------------------------
-            var dsfDropBoxWriteActivity = new DsfDropBoxWriteActivity();
+            var dsfDropBoxWriteActivity = new DsfDropBoxFileActivity();
             var client = new Mock<IDropNetClient>();
             var file = new Mock<IFile>();
             client.Setup(a => a.UploadFile("/bob/", "meerkat", It.IsAny<byte[]>(), true, null)).Returns(new MetaData());
@@ -61,13 +61,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDropBoxWriteActivity_Execute")]
+        [TestCategory("DsfDropBoxFileActivity_Execute")]
 
         // ReSharper disable InconsistentNaming
-        public void DsfDropBoxWriteActivity_ExecuteRead_Sucess()
+        public void DsfDropBoxFileActivity_ExecuteRead_Sucess()
         {
             //------------Setup for test--------------------------
-            var dsfDropBoxWriteActivity = new DsfDropBoxWriteActivity();
+            var dsfDropBoxWriteActivity = new DsfDropBoxFileActivity();
             var client = new Mock<IDropNetClient>();
             var file = new Mock<IFile>();
             var output = new byte[0];
@@ -91,12 +91,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDropBoxWriteActivity_Execute")]
+        [TestCategory("DsfDropBoxFileActivity_Execute")]
         // ReSharper disable InconsistentNaming
-        public void DsfDropBoxWriteActivity_NoOperation_Nothing_Happens()
+        public void DsfDropBoxFileActivity_NoOperation_Nothing_Happens()
         {
             //------------Setup for test--------------------------
-            var dsfDropBoxWriteActivity = new DsfDropBoxWriteActivity();
+            var dsfDropBoxWriteActivity = new DsfDropBoxFileActivity();
             var client = new Mock<IDropNetClient>();
             var file = new Mock<IFile>();
             var output = new byte[0];
@@ -117,13 +117,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDropBoxWriteActivity_Execute"),ExpectedException(typeof(IOException))]
+        [TestCategory("DsfDropBoxFileActivity_Execute"),ExpectedException(typeof(IOException))]
 
         // ReSharper disable InconsistentNaming
-        public void DsfDropBoxWriteActivity_ExecuteRead_IOError()
+        public void DsfDropBoxFileActivity_ExecuteRead_IOError()
         {
             //------------Setup for test--------------------------
-            var dsfDropBoxWriteActivity = new DsfDropBoxWriteActivity();
+            var dsfDropBoxWriteActivity = new DsfDropBoxFileActivity();
             var client = new Mock<IDropNetClient>();
             var file = new Mock<IFile>();
             var output = new byte[0];
@@ -143,11 +143,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDropBoxWriteActivity_Execute")]
-        public void DsfDropBoxWriteActivity_Execute_Failure()
+        [TestCategory("DsfDropBoxFileActivity_Execute")]
+        public void DsfDropBoxFileActivity_Execute_Failure()
         {
             //------------Setup for test--------------------------
-            var dsfDropBoxWriteActivity = new DsfDropBoxWriteActivity();
+            var dsfDropBoxWriteActivity = new DsfDropBoxFileActivity();
             var client = new Mock<IDropNetClient>();
             var file = new Mock<IFile>();
             client.Setup(a => a.UploadFile("/", "meerkat", It.IsAny<byte[]>(), true, null)).Returns((MetaData)null);
@@ -166,11 +166,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("DsfDropBoxWriteActivity_Execute"),ExpectedException(typeof(IOException))]
-        public void DsfDropBoxWriteActivity_Execute_IOError()
+        [TestCategory("DsfDropBoxFileActivity_Execute"),ExpectedException(typeof(IOException))]
+        public void DsfDropBoxFileActivity_Execute_IOError()
         {
             //------------Setup for test--------------------------
-            var dsfDropBoxWriteActivity = new DsfDropBoxWriteActivity();
+            var dsfDropBoxWriteActivity = new DsfDropBoxFileActivity();
             var client = new Mock<IDropNetClient>();
             var file = new Mock<IFile>();
             client.Setup(a => a.UploadFile("/", "meerkat", It.IsAny<byte[]>(), true, null)).Returns((MetaData)null);

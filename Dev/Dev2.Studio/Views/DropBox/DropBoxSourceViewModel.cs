@@ -81,6 +81,9 @@ namespace Dev2.Views.DropBox
         {
             if (args.Uri.ToString().StartsWith("https://www.google"))
             {
+                var token = _client.GetAccessToken();
+                Key = token.Token;
+                Secret = token.Secret;
                 HasAuthenticated = true;
                 DropBoxHelper.CloseAndSave(this);
             }
