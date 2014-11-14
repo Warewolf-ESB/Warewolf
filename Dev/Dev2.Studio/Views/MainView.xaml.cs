@@ -12,16 +12,24 @@
 
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 using Dev2.Studio.StartupResources;
 using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.Workflow;
+using Infragistics.Windows.Controls;
+using Infragistics.Windows.DockManager;
+using Infragistics.Windows.DockManager.Events;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views
 {
     public partial class MainView : System.Windows.Forms.IWin32Window
     {
+        ContentPane _contentPane;
+
         #region Constructor
 
         public MainView()
@@ -82,5 +90,96 @@ namespace Dev2.Studio.Views
                 }
             }
         }
+
+        public void DockManager_OnPaneDragEnded_(object sender, PaneDragEndedEventArgs e)
+        {
+            _contentPane = e.Panes[0];
+            UpdatePane(_contentPane);
+        }
+
+        public void UpdatePane(ContentPane contentPane)
+        {
+            if(contentPane == null)
+            {
+                throw new ArgumentNullException("contentPane");
+            }
+            contentPane.AllowDockingInTabGroup = true;
+            contentPane.AllowDockingFloating = true;
+            contentPane.AllowDockingBottom = false;
+            contentPane.AllowDockingLeft = false;
+            contentPane.AllowDockingRight = false;
+            contentPane.AllowDockingTop = false;
+            contentPane.AllowInDocumentHost = true;
+            contentPane.AllowClose = true;
+            contentPane.AllowDrop = true;
+
+            contentPane.AllowDocking = true;
+            contentPane.CloseButtonVisibility = Visibility.Visible;
+
+            var windows = Application.Current.Windows;
+            foreach(var window in windows)
+            {
+                var actuallWindow = window as Window;
+                if(actuallWindow != null)
+                {
+                    actuallWindow.Activated -=ActuallWindowOnActivated;                     
+                    actuallWindow.Activated +=ActuallWindowOnActivated;                     
+                }
+            }
+        }
+
+        void ActuallWindowOnActivated(object sender, EventArgs eventArgs)
+        {
+            MainViewModel mainViewModel = DataContext as MainViewModel;
+            if (mainViewModel != null)
+            {
+                if(_contentPane != null)
+                {
+                    WorkflowDesignerViewModel workflowDesignerViewModel = _contentPane.TabHeader as WorkflowDesignerViewModel;
+                    if (workflowDesignerViewModel != null)
+                    {
+                        mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
+                    }
+                }
+            }
+        }
+
+        void DockManager_OnToolWindowLoaded(object sender, PaneToolWindowEventArgs e)
+        {
+            Style style = new Style(typeof(TabGroupPane));
+            Setter setter = new Setter(TabControl.TabStripPlacementProperty, System.Windows.Controls.Dock.Top);
+            style.Setters.Add(setter);
+            setter = new Setter(TemplateProperty, Resources["NewButtonTabGroupPaneTemplate"]);
+            style.Setters.Add(setter);
+            var res = e.Window.Resources;
+            res.Add(typeof(TabGroupPane), style);
+            res.Add(typeof(PaneTabItem), Resources[typeof(PaneTabItem)]);
+            ControlTemplate ct2 = (ControlTemplate)Resources["MyDocumentTabItemTemplateKey"];
+            res.Add(PaneTabItem.DockableTabItemTemplateKey, ct2);
+        }
+
+
+        private void ContentControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+            
+//                MainViewModel mainViewModel = DataContext as MainViewModel;
+//                if (mainViewModel != null)
+//                {
+//                    var contentControl = sender as ContentControl;
+//                    if (contentControl != null && contentControl.Content != null)
+//                    {
+//                        WorkflowDesignerViewModel workflowDesignerViewModel = (contentControl.DataContext as WorkflowDesignerViewModel);
+//                        if (workflowDesignerViewModel != null)
+//                        {
+//                            mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
+//                        }
+//                    }
+//
+//
+//                }
+        }
+
+
     }
 }

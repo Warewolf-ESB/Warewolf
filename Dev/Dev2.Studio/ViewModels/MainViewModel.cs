@@ -69,6 +69,7 @@ using Dev2.Views.DropBox;
 using Dev2.Webs;
 using Dev2.Webs.Callbacks;
 using Dev2.Workspaces;
+using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using ServiceStack.Common;
 
@@ -812,8 +813,26 @@ namespace Dev2.Studio.ViewModels
 
         protected MainView View { get; set; }
 
+        public void UpdatePane(IContextualResourceModel model)
+        {
+            // workflows only
+            // Workflow that has this resource open
+            // 
+
+            if (model.ResourceType == ResourceType.WorkflowService)
+            {
+
+                var resourcename = model.ResourceName;
+                var resourceID = model.ID;
+                
+                
+
+            }
+        }
+
         public void ClearToolboxSelection()
         {
+            
             if(View != null)
             {
                 View.ClearToolboxSelection();
