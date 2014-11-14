@@ -22,10 +22,4 @@ REM ****************************************************************************
 REM Stop Server:
 taskkill /im "Warewolf Server.exe"
 IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe"
-
-REM Backup log:
-MOVE "%DeploymentDirectory%\Server\wareWolf-Server.log" "%DeploymentDirectory%\.."
-
-REM Cleanup:
-rmdir "%DeploymentDirectory%" /s /q
 exit 0
