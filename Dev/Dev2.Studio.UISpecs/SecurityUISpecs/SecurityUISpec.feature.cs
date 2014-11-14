@@ -156,7 +156,7 @@ this.FeatureBackground();
     testRunner.Given("I drag \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resou" +
                     "rces_AutoID,UI_Decision Testing_AutoID\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 42
-       testRunner.Given("\"WORKFLOWDESIGNER,Integration Test Resources\\Decision Testing(ServiceDesigner)\" i" +
+       testRunner.Given("\"WORKFLOWDESIGNER,Acceptance Testing Resources\\Decision Testing(ServiceDesigner)\" i" +
                     "s invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 44
        testRunner.Then("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -164,10 +164,10 @@ this.FeatureBackground();
        testRunner.Given("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Reso" +
                     "urces_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 46
-       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_Au" +
+       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_Au" +
                     "toID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 47
-       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_Au" +
+       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_Au" +
                     "toID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 49
        testRunner.Given("I double click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Te" +
@@ -221,7 +221,7 @@ this.FeatureBackground();
     testRunner.Given("I drag \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resou" +
                     "rces_AutoID,UI_Decision Testing_AutoID\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 76
-       testRunner.Given("\"WORKFLOWDESIGNER,Integration Test Resources\\Decision Testing(ServiceDesigner)\" i" +
+       testRunner.Given("\"WORKFLOWDESIGNER,Acceptance Testing Resources\\Decision Testing(ServiceDesigner)\" i" +
                     "s invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 78
     testRunner.Given("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -229,10 +229,10 @@ this.FeatureBackground();
        testRunner.And("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Reso" +
                     "urces_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 80
-       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_Au" +
+       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_Au" +
                     "toID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 81
-       testRunner.And("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_Au" +
+       testRunner.And("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_Au" +
                     "toID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
        testRunner.Then("\"RIBBONNEWDATABASECONNECTOR\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -276,7 +276,7 @@ this.FeatureBackground();
     testRunner.Given("I drag \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resou" +
                     "rces_AutoID,UI_Decision Testing_AutoID\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 111
-       testRunner.Given("\"WORKFLOWDESIGNER,Integration Test Resources\\Decision Testing(ServiceDesigner)\" i" +
+       testRunner.Given("\"WORKFLOWDESIGNER,Acceptance Testing Resources\\Decision Testing(ServiceDesigner)\" i" +
                     "s visible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 113
     testRunner.Given("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -284,10 +284,10 @@ this.FeatureBackground();
     testRunner.Then("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Reso" +
                     "urces_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 115
-       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_Au" +
+       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_Au" +
                     "toID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 116
-       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_Au" +
+       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_Au" +
                     "toID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 117
        testRunner.When("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Reso" +
@@ -338,13 +338,13 @@ this.FeatureBackground();
     testRunner.Given("I drag \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resou" +
                     "rces_AutoID,UI_Decision Testing_AutoID\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 143
-       testRunner.Given("\"WORKFLOWDESIGNER,Integration Test Resources\\Decision Testing(ServiceDesigner)\" i" +
+       testRunner.Given("\"WORKFLOWDESIGNER,Acceptance Testing Resources\\Decision Testing(ServiceDesigner)\" i" +
                     "s invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 145
        testRunner.Given("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Reso" +
                     "urces_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 146
-       testRunner.And("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_Au" +
+       testRunner.And("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_Au" +
                     "toID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
        testRunner.Then("\"RIBBONNEWENDPOINT\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -400,16 +400,16 @@ this.FeatureBackground();
     testRunner.Given("I drag \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resou" +
                     "rces_AutoID,UI_Decision Testing_AutoID\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 176
-       testRunner.Given("\"WORKFLOWDESIGNER,Integration Test Resources\\Decision Testing(ServiceDesigner)\" i" +
+       testRunner.Given("\"WORKFLOWDESIGNER,Acceptance Testing Resources\\Decision Testing(ServiceDesigner)\" i" +
                     "s invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 178
        testRunner.And("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Reso" +
                     "urces_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 179
-       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_Au" +
+       testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_Au" +
                     "toID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 180
-       testRunner.Given("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_Au" +
+       testRunner.Given("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_Au" +
                     "toID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 181
        testRunner.Given("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -465,7 +465,7 @@ this.FeatureBackground();
 #line 209
        testRunner.Given("I click \"SETTINGSRESOURECESELECT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 210
-       testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
+       testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Dec" +
                     "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 211
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -503,7 +503,7 @@ this.FeatureBackground();
                     "t Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 226
     testRunner.Given("I double click \"EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_" +
-                    "Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoI" +
+                    "Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoI" +
                     "D\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 227
     testRunner.Then("\"UI_DebugInputWindow_AutoID\" is visible within \"12\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -580,7 +580,7 @@ this.FeatureBackground();
 #line 267
      testRunner.Given("I click \"SETTINGSRESOURECESELECT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 268
-       testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
+       testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Dec" +
                     "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 269
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -677,7 +677,7 @@ this.FeatureBackground();
     testRunner.When("I send \"Decision Testing\" to \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUser" +
                     "Control_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 315
-       testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
+       testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Dec" +
                     "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 316
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -713,11 +713,11 @@ this.FeatureBackground();
                     "tion Test Resources_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 331
     testRunner.Given("I double click \"EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_" +
-                    "Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoI" +
+                    "Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoI" +
                     "D\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 332
     testRunner.Given("I double click \"EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_" +
-                    "Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoI" +
+                    "Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoI" +
                     "D\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 333
     testRunner.Then("\"UI_DebugInputWindow_AutoID\" is visible within \"12\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -782,7 +782,7 @@ this.FeatureBackground();
 #line 364
     testRunner.And("I send \"Decision Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 365
-    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
+    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Dec" +
                     "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 366
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -802,7 +802,7 @@ this.FeatureBackground();
 #line 374
     testRunner.And("I send \"Javascript Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 375
-    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Jav" +
+    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Jav" +
                     "ascript Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 376
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -973,7 +973,7 @@ this.FeatureBackground();
 #line 455
     testRunner.And("I send \"Decision Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 456
-    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
+    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Dec" +
                     "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 457
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");

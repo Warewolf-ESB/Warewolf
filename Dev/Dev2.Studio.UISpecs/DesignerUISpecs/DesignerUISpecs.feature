@@ -12,7 +12,7 @@ Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 	##Searching Workflow with the name "InnerWF" in explorer search
 	And I send "InnerWF" to "EXPLORERFILTER"
 	##Opening WF from explorer
-	And I double click "EXPLORERFOLDERS,UI_Integration Test Resources_AutoID,UI_InnerWF_AutoID"
+	And I double click "EXPLORERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_InnerWF_AutoID"
 	#Changing 'InnerWF' mappings and save, expected popup message as dependency workflows affected
 	And I click "VARIABLESCALAR,UI_Variable_result_AutoID,UI_IsInputCheckbox_AutoID"
 	When I click "RIBBONSAVE"

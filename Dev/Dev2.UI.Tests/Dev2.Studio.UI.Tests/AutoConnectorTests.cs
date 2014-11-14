@@ -51,7 +51,7 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragActivityOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             UITestControl theTab = CreateWorkflow();
-            ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, "Email Service", "Integration Test Resources");
+            ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, "Email Service", "Acceptance Testing Resources");
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
             List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked

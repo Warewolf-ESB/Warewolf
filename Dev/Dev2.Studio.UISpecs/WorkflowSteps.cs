@@ -908,6 +908,11 @@ namespace Dev2.Studio.UI.Specs
                 string message = string.Format("{0} - Was not visible within {1} seconds", itemToFindAutoIds, seconds);
                 Assert.Fail(message);
             }
+            if(itemToFindAutoIds == "WebBrowserWindow")
+            {
+                //Give the web browser window a second to fully render
+                Playback.Wait(1000);
+            }
         }
 
         [Given(@"""(.*)"" is visible ""(.*)"" time")]
