@@ -28,10 +28,4 @@ sc STOP "Warewolf Server"
 %DeploymentDirectory%\ServerbinDebug\Dev2.Server.exe -x
 taskkill /im "Warewolf Server.exe"
 IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe"
-
-REM Backup logs:
-MOVE "%DeploymentDirectory%\Server\wareWolf-Server.log" "%DeploymentDirectory%\.."
-MOVE "%localappdata%\Warewolf\Studio Logs\Warewolf Studio.log" "%DeploymentDirectory%\.."
-REM Cleanup:
-rmdir "%DeploymentDirectory%" /s /q
 exit 0
