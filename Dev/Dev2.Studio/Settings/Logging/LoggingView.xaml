@@ -3,14 +3,51 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Dev2.Settings.Logging"
+             xmlns:logging="clr-namespace:Dev2.Settings.Logging"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance local:LoggingViewModel}">
+             d:DataContext="{d:DesignInstance logging:ILogSettings}">
     <Grid>
-        <Grid VerticalAlignment="Top">
-            <TextBlock>Logging</TextBlock>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBlock>Server Settings</TextBlock>
+                <RadioButton GroupName="Server_Settings">FATAL</RadioButton>
+                <RadioButton GroupName="Server_Settings">ERROR</RadioButton>
+                <RadioButton GroupName="Server_Settings">WARN</RadioButton>
+                <RadioButton GroupName="Server_Settings">INFO</RadioButton>
+                <RadioButton GroupName="Server_Settings">DEBUG</RadioButton>
+                <RadioButton GroupName="Server_Settings">TRACE</RadioButton>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Maximum Size:</Label>
+                    <TextBox Text="{Binding ServerLogMaxSize}"></TextBox>
+                </StackPanel>
+                <TextBlock><Hyperlink Command="{Binding Path=GetServerLogFileCommand}">
+                                    <Run Text="Server Log File"></Run>
+                                </Hyperlink></TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Row="1"></StackPanel>
+            <StackPanel Grid.Row="2">
+                <TextBlock>Studio Settings</TextBlock>
+                <RadioButton GroupName="Studio_Settings" IsChecked="{Binding IsStudioLogFatal}">FATAL</RadioButton>
+                <RadioButton GroupName="Studio_Settings">ERROR</RadioButton>
+                <RadioButton GroupName="Studio_Settings">WARN</RadioButton>
+                <RadioButton GroupName="Studio_Settings">INFO</RadioButton>
+                <RadioButton GroupName="Studio_Settings">DEBUG</RadioButton>
+                <RadioButton GroupName="Studio_Settings">TRACE</RadioButton>
+                <StackPanel Orientation="Horizontal">
+                    <Label>Maximum Size:</Label>
+                    <TextBox Text="{Binding StudioLogMaxSize}"></TextBox>
+                </StackPanel>
+                <TextBlock><Hyperlink Command="{Binding Path=GetStudioLogFileCommand}">
+                                    <Run Text="Studio Log File"></Run>
+                                </Hyperlink></TextBlock>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

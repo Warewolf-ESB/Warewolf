@@ -588,7 +588,7 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.CurrentEnvironment);
             Assert.IsNotNull(viewModel.SecurityViewModel);
-            Assert.IsNotNull(viewModel.LoggingViewModel);
+            Assert.IsNotNull(viewModel.LogSettingsViewModel);
             Assert.IsFalse(viewModel.IsLoading);
             Assert.IsFalse(viewModel.IsDirty);
 
