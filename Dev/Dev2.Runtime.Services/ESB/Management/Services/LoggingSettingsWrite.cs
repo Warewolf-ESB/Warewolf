@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -31,7 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataException("Empty Logging Settings passed.");
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             try
             {
@@ -48,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataException(string.Format("The security settings are not valid. Error: {0}", e.Message));
             }
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage("Success");
 
             return serializer.SerializeToBuilder(msg);
@@ -57,6 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public static void Write(LoggingSettingsTo loggingSettingsTo)
         {
             VerifyArgument.IsNotNull("loggingSettingsTo", loggingSettingsTo);
+            Dev2Logger.UpdateLoggingConfig(loggingSettingsTo.LogLevel);
         }
 
         public DynamicService CreateServiceEntry()

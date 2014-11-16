@@ -116,7 +116,6 @@ namespace Dev2.Services.Security
         {
             if(oldPermissions != null && newPermissions != null)
             {
-               // var permissionsDiff = newPermissions.Except(oldPermissions, new WindowsGroupPermissionEqualityComparer());
                 RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions.ToList()));
             }
         }

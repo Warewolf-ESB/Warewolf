@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Configuration.Settings;
+using log4net.Appender;
 using log4net.Core;
 
 // ReSharper disable CheckNamespace
@@ -117,26 +118,43 @@ namespace Dev2.Common
         }
 
 
-        private static void UpdateLoggingConfig(string level)
+        public static void UpdateLoggingConfig(string level)
         {
 
-            log4net.Repository.ILoggerRepository repository = log4net.LogManager.GetAllRepositories().First();
+            var repository = log4net.LogManager.GetAllRepositories().First();
             repository.Threshold = repository.LevelMap[level];
-            log4net.Repository.Hierarchy.Hierarchy hier = (log4net.Repository.Hierarchy.Hierarchy)repository;
+            var hier = (log4net.Repository.Hierarchy.Hierarchy)repository;
             var loggers = hier.GetCurrentLoggers();
             foreach (var logger in loggers)
             {
                 ((log4net.Repository.Hierarchy.Logger)logger).Level = hier.LevelMap[level];
             }
-            
-
             //Configure the root logger.
-            log4net.Repository.Hierarchy.Hierarchy h = (log4net.Repository.Hierarchy.Hierarchy)log4net.LogManager.GetRepository();
-            log4net.Repository.Hierarchy.Logger rootLogger = h.Root;
+            var h = (log4net.Repository.Hierarchy.Hierarchy)log4net.LogManager.GetRepository();
+            var rootLogger = h.Root;
             rootLogger.Level = h.LevelMap[level];
-
         }
 
+        public static string GetLogLevel()
+        {
+            //Configure the root logger.
+            var h = (log4net.Repository.Hierarchy.Hierarchy)log4net.LogManager.GetRepository();
+            var rootLogger = h.Root;
+            return rootLogger.Level.Name;
+        }
+
+        public static int GetLogMaxSize()
+        {
+            //Configure the root logger.
+            var h = (log4net.Repository.Hierarchy.Hierarchy)log4net.LogManager.GetRepository();
+            var rootLogger = h.Root;
+            var appender = rootLogger.GetAppender("LogFileAppender") as RollingFileAppender;
+            if (appender != null)
+            {
+                return int.Parse(appender.MaximumFileSize);
+            }
+            return 0;
+        }
         public static void UpdateSettings(LoggingSettings loggingSettings)
         {
             Task.Run(() =>
