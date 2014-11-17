@@ -237,23 +237,32 @@ namespace Dev2.AppResources.Repositories
             Dev2Logger.Log.Info(String.Format("Delete Folder Resource: {0} Id:{1}", item.DisplayName, item.EnvironmentId));
             VerifyArgument.IsNotNull("item", item);
             IExplorerItemModel parentItem = item.Parent;
-            if(parentItem != null && parentItem.Children.Remove(item))
+            if(parentItem != null)
             {
-                try
+                var found = parentItem.Children.FirstOrDefault(a => a.ResourcePath == item.ResourcePath && a.ResourceType == ResourceType.Folder);
+                if (found != null) item = found;
+                if( parentItem.Children.Remove(item))
                 {
-                    var result = GetExplorerProxy(item.EnvironmentId).DeleteItem(MapData(item), Guid.Empty);
-                    if(result.Status != ExecStatus.Success)
+                    try
                     {
-                        throw new Exception(result.Message);
+                        var result = GetExplorerProxy(item.EnvironmentId).DeleteItem(MapData(item), Guid.Empty);
+                        if(result.Status != ExecStatus.Success)
+                        {
+                            throw new Exception(result.Message);
+                        }
                     }
+                    catch(Exception)
+                    {
+                        
+                            parentItem.Children.Add(item);
+                        
+                        throw;
+                    }
+                  
+                        parentItem.OnChildrenChanged();
+                    
                 }
-                catch(Exception)
-                {
-                    parentItem.Children.Add(item);
-                    throw;
-                }
-                parentItem.OnChildrenChanged();
-            }
+        }
         }
 
         public void UpdateRootAndFoldersPermissions(Permissions modifiedPermissions, Guid environmentGuid, bool updateRoot = true)

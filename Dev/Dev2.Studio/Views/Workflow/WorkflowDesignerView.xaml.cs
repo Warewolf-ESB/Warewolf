@@ -12,6 +12,7 @@
 
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 
 // ReSharper disable CheckNamespace
@@ -29,7 +30,18 @@ namespace Dev2.Studio.Views.Workflow
             InitializeComponent();
             PreviewDrop += DropPointOnDragEnter;
             PreviewDragOver += DropPointOnDragEnter;
+            PreviewMouseDown += WorkflowDesignerView_PreviewMouseDown;
             _dragDropHelpers = new DragDropHelpers(this);
+        }
+
+
+        void WorkflowDesignerView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var vm = (DataContext as WorkflowDesignerViewModel);
+            if(vm != null)
+            {
+                CustomContainer.Get<IMainViewModel>().AddWorkSurfaceContext(vm.ResourceModel);
+            }
         }
 
         //a return from here without settings handled to true and DragDropEffects.None implies that the item drop is allowed

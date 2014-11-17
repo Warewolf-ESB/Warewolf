@@ -26,6 +26,7 @@
             <sadt:ToolboxCategory CategoryName="Utility"></sadt:ToolboxCategory>
             <sadt:ToolboxCategory CategoryName="File and Folder"></sadt:ToolboxCategory>
             <sadt:ToolboxCategory CategoryName="Scripting"></sadt:ToolboxCategory>
+            <sadt:ToolboxCategory CategoryName="Connectors"></sadt:ToolboxCategory>
         </sadt:ToolboxControl> 
     </Grid>
 </UserControl>

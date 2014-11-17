@@ -217,6 +217,13 @@
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="EmailSource"
                                           AutomationProperties.AutomationId ="UI_NewEmailSourceContextMenuItem_AutoID" />
+                                <MenuItem Header="New Dropbox Source"
+                                          Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
+                                          Command="{Binding NewResourceCommand}"
+                                          CommandParameter="DropboxSource"
+                                          AutomationProperties.AutomationId ="UI_NewEmailSourceContextMenuItem_AutoID" />
+
+
                                 <Separator Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Build"
                                           Command="{Binding BuildCommand}"

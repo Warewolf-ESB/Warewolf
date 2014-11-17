@@ -597,7 +597,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == navigationItemViewModel.EnvironmentId);
                 if(environmentModel != null)
                                 {
-                                    var theResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
+                                    var theResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId,true) as IContextualResourceModel;
                                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                                     DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = navigationItemViewModel.ResourcePath;

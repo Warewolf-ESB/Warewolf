@@ -394,7 +394,7 @@ namespace Dev2.Runtime.ESB.Control
             var remoteContainer = executionContainer as RemoteWorkflowExecutionContainer;
             if(remoteContainer != null)
             {
-                var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ServiceName);
+                var fetchRemoteResource = remoteContainer.FetchRemoteResource(dataObject.ResourceID,dataObject.ServiceName);
                 if(fetchRemoteResource != null)
                 {
                     fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
