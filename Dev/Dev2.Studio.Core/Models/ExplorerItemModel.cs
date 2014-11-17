@@ -410,8 +410,8 @@ namespace Dev2.Models
             {
                 _isConnected = value;
                 OnPropertyChanged();
-                ConnectCommand.RaiseCanExecuteChanged();
-                DisconnectCommand.RaiseCanExecuteChanged();
+               // ConnectCommand.RaiseCanExecuteChanged();
+               // DisconnectCommand.RaiseCanExecuteChanged();
                 
             }
         }
