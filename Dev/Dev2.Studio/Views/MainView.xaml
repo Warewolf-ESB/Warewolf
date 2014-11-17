@@ -25,6 +25,7 @@
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"     
         >
 
+
     <Window.Resources>
         <Storyboard x:Key="OnLoaded">
             <DoubleAnimation 
@@ -48,7 +49,7 @@
             <DockPanel ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
                 <DockPanel x:Name="PART_HeaderArea" Panel.ZIndex="1" DockPanel.Dock="{TemplateBinding TabStripPlacement}">
                     <!-- Tabbed menu dock panel -->
-                    <DockPanel Background="{TemplateBinding Background}" >
+                    <DockPanel Background="{TemplateBinding Background}" IsEnabled="False" >
                         <!-- Right Tab menu buttons -->
                         <Button x:Name="closeBtn"
 								DockPanel.Dock="Right"
@@ -103,6 +104,7 @@
                     </Border>
                 </Border>
             </DockPanel>
+
             <ControlTemplate.Triggers>
 
                 <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Document">
@@ -143,6 +145,9 @@
 
                 </DataTrigger>
             </ControlTemplate.Triggers>
+
+
+
         </ControlTemplate>
 
 
@@ -226,7 +231,7 @@
 
                     <Border x:Name="Content" Grid.Column="1" BorderThickness="{TemplateBinding BorderThickness}" >
 
-                        <DockPanel x:Name="ContentDock" Margin="-8,1,6,0" VerticalAlignment="Bottom">
+                        <DockPanel x:Name="ContentDock"  Margin="-8,1,6,0" VerticalAlignment="Bottom">
                             <igWindows:AutoDisabledImage Visibility="{Binding Path=Pane.HasImage, Converter={StaticResource BoolToVisConverter}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                                 DockPanel.Dock="Left"
                                 Margin="0,0,5,0"
@@ -864,8 +869,8 @@
             </Border>
 
             <!-- Dockmanager for Side panels -->
-            <igDock:XamDockManager ToolWindowLoaded="DockManager_OnToolWindowLoaded" AllowMaximizeFloatingWindows="True"  AllowMinimizeFloatingWindows="True" 
-                                    PaneDragEnded="DockManager_OnPaneDragEnded_" x:Name="dockManager"
+            <igDock:XamDockManager  AllowMaximizeFloatingWindows="True"  AllowMinimizeFloatingWindows="True" 
+                                    PaneDragEnded="DockManager_OnPaneDragEnded_" PaneDragStarting="DockManager_OnPaneDragStarting"  x:Name="dockManager" PaneDragOver="DockManager_OnPaneDragOver"
                                    Grid.Row="1"
                                    AutomationProperties.AutomationId="UI_DocManager_AutoID">
                 <i:Interaction.Behaviors>
@@ -966,14 +971,8 @@
                                                     </DataTemplate>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="AllowDockingBottom"
-                                                    Value="False" />
-                                            <Setter Property="AllowDockingLeft"
-                                                    Value="False" />
-                                            <Setter Property="AllowDockingRight"
-                                                    Value="False" />
-                                            <Setter Property="AllowDockingTop"
-                                                    Value="False" />
+
+
                                             <Setter Property="AutomationProperties.AutomationId"
                                                     Value="{Binding DisplayName}" />
                                             <Setter Property="SaveInLayout"
