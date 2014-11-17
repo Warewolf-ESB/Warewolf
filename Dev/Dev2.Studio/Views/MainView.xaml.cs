@@ -138,7 +138,9 @@ namespace Dev2.Studio.Views
                     WorkflowDesignerViewModel workflowDesignerViewModel = _contentPane.TabHeader as WorkflowDesignerViewModel;
                     if (workflowDesignerViewModel != null)
                     {
-                        mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
+                        if (_contentPane.ContentVisibility == Visibility.Visible)
+                            mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
+                        
                     }
                 }
             }

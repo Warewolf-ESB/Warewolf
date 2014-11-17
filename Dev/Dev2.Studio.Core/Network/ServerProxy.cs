@@ -333,7 +333,7 @@ namespace Dev2.Network
             {
                 IsShuttingDown = true;
                 IsConnected = false;
-                Task.Run(() => HubConnection.Stop(new TimeSpan(0, 0, 1))).Wait(new TimeSpan(0,0,2));
+                HubConnection.Stop(new TimeSpan(0, 0, 0,5));
             }
             catch(AggregateException aex)
             {
