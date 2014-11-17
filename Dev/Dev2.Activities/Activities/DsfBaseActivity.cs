@@ -25,12 +25,6 @@ namespace Dev2.Activities
         
 
         #region Get Debug Inputs/Outputs
-
-        public List<DebugItem> GetDebugInputs()
-        {
-            return DebugItem.EmptyList;
-        }
-
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
@@ -38,6 +32,11 @@ namespace Dev2.Activities
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
+        }
+        
+        public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
+        {
+          return _debugInputs;
         }
 
         #endregion Get Inputs/Outputs
@@ -64,12 +63,7 @@ namespace Dev2.Activities
             try
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
-
-                if (dataObject.IsDebugMode())
-                {
-                    //AddDebugInputItem(executionId);
-                }
-                var itemToAdd = new DebugItem();
+                
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 var iteratorPropertyDictionary = new Dictionary<string, IDev2DataListEvaluateIterator>();
@@ -78,13 +72,15 @@ namespace Dev2.Activities
                     var attributes = (Inputs[]) propertyInfo.GetCustomAttributes(typeof(Inputs), false);
                     var variableValue = propertyInfo.GetValue(this) as string;
                     var binaryDataListEntry = compiler.Evaluate(executionId, enActionType.User, variableValue, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(variableValue, attributes[0].UserVisibleName, binaryDataListEntry, executionId),itemToAdd);
+                    if (dataObject.IsDebugMode())
+                    {
+                        AddDebugInputItem(new DebugItemVariableParams(variableValue, attributes[0].UserVisibleName, binaryDataListEntry, executionId));
+                    }
                     IDev2DataListEvaluateIterator dtItr = CreateDataListEvaluateIterator(variableValue, executionId, compiler, colItr, allErrors);
                     colItr.AddIterator(dtItr);
                     iteratorPropertyDictionary.Add(propertyInfo.Name,dtItr);
 
                 }
-                
                 while (colItr.HasMoreData())
                 {
                     var evaluatedValues = new Dictionary<string, string>();
@@ -114,7 +110,7 @@ namespace Dev2.Activities
             catch (Exception ex)
             {
 
-                Dev2Logger.Log.Error("Calculate Exception", ex);
+                Dev2Logger.Log.Error(string.Format("{0} Exception", DisplayName), ex);
                 allErrors.AddError(ex.Message);
             }
             finally
@@ -123,7 +119,7 @@ namespace Dev2.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfCustomActivity", allErrors);
+                    DisplayAndWriteError(DisplayName, allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
@@ -144,6 +140,14 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
+            foreach(var update in updates)
+            {
+                var propertyInfo = GetType().GetProperty(update.Item1);
+                if(propertyInfo != null)
+                {
+                    propertyInfo.SetValue(this, update.Item2);
+                }
+            }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)

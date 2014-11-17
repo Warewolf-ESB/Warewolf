@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Utils;
 
 namespace Dev2.Webs.Callbacks
 {
@@ -45,7 +46,9 @@ namespace Dev2.Webs.Callbacks
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
             // ReSharper disable once MaximumChainedReferences
-            var dropBoxSource = new OauthSource { Key = Token, Secret = Secret, ResourceName = jsonObj.resourceName, ResourcePath = jsonObj.resourcePath == "root" ? "" : jsonObj.resourcePath, IsNewResource = true, ResourceID = Guid.NewGuid() }.ToStringBuilder();
+            string resName = jsonObj.resourceName;
+            string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
+            var dropBoxSource = new OauthSource { Key = Token, Secret = Secret, ResourceName = resName, ResourcePath = resCat, IsNewResource = true, ResourceID = Guid.NewGuid() }.ToStringBuilder();
             environmentModel.ResourceRepository.SaveResource(environmentModel,dropBoxSource , GlobalConstants.ServerWorkspaceID);
         }
 

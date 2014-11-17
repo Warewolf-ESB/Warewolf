@@ -4,6 +4,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Hosting;
+using Dev2.Util;
 using DropNet;
 using DropNet.Models;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -27,25 +29,24 @@ namespace Dev2.Activities
          public OauthSource SelectedSource { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
 
-         [Inputs("SourceFile")]
+         [Inputs("Source File")]
+         [FindMissing]
          // ReSharper disable once UnusedMember.Global
          public string SourceFile { get; set; }
 
-         [Inputs("SourceFile")]
+         [Inputs("Destination Path")]
+         [FindMissing]
          // ReSharper disable once UnusedMember.Global
          // ReSharper disable MemberCanBePrivate.Global
          public string DestinationPath { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
 
-         [Inputs("SourceFile")]
+         [Inputs("Operation")]
          // ReSharper disable once UnusedMember.Global
          // ReSharper disable MemberCanBePrivate.Global
          public string Operation { get; set; }
          // ReSharper restore MemberCanBePrivate.Global
 
-
-         [Outputs("Result")]
-         // ReSharper disable once UnusedMember.Global
 
          #region Overrides of DsfBaseActivity
 
@@ -72,6 +73,15 @@ namespace Dev2.Activities
 
          protected override string PerformExecution(Dictionary<string, string> evaluatedValues)
          {
+             if (SelectedSource != null)
+             {
+                 var oauthSource = ResourceCatalog.Instance.GetResource<OauthSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID);
+                 if (oauthSource == null)
+                 {
+                     return "Failure: Source has been deleted.";
+                 }
+             }
+
              if (evaluatedValues["Operation"] == "Write File")
              {
                  var destinationFileName = evaluatedValues["DestinationPath"];
