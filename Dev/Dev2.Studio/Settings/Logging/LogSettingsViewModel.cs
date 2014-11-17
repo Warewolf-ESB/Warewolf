@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
@@ -7,33 +9,47 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Settings.Logging
 {
+    public enum LogLevel
+    {
+        Fatal,
+        Error,
+        Warn,
+        Info,
+        Debug,
+        Trace
+    }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings
     {
-        private readonly LoggingSettingsTo _logging;
-        private readonly IEnvironmentModel _currentEnvironment;
-        private bool _isServerLogFatal;
-        private bool _isServerLogError;
-        private bool _isServerLogWarn;
-        private bool _isServerLogInfo;
-        private bool _isServerLogDebug;
-        private bool _isServerLogTrace;
-        private bool _isStudioLogFatal;
-        private bool _isStudioLogError;
-        private bool _isStudioLogWarn;
-        private bool _isStudioLogInfo;
-        private bool _isStudioLogDebug;
-        private bool _isStudioLogTrace;
         private string _serverLogMaxSize;
         private string _studioLogMaxSize;
+        LogLevel _serverLogLevel;
+        LogLevel _studioLogLevel;
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
         {
             if (logging == null) throw new ArgumentNullException("logging");
             if (currentEnvironment == null) throw new ArgumentNullException("currentEnvironment");
-            _logging = logging;
-            _currentEnvironment = currentEnvironment;
             GetServerLogFileCommand = new DelegateCommand(o => {});
             GetStudioLogFileCommand = new DelegateCommand(o => {});
+            LogLevel serverLogLevel;
+            if (Enum.TryParse(logging.LogLevel,out serverLogLevel))
+            {
+                ServerLogLevel = serverLogLevel;
+            }
+            ServerLogMaxSize = logging.LogSize.ToString(CultureInfo.InvariantCulture);
+
+            LogLevel studioLogLevel;
+            if (Enum.TryParse(Dev2Logger.GetLogLevel(), out studioLogLevel))
+            {
+                StudioLogLevel = studioLogLevel;
+            }
+            StudioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
+        }
+
+        public virtual void Save(LoggingSettingsTo logSettings)
+        {
+            logSettings.LogLevel = ServerLogLevel.ToString();
+            logSettings.LogSize = int.Parse(ServerLogMaxSize);
         }
 
         protected override void CloseHelp()
@@ -43,123 +59,29 @@ namespace Dev2.Settings.Logging
 
         public ICommand GetServerLogFileCommand { get; private set; }
         public ICommand GetStudioLogFileCommand { get; private set; }
-
-        public bool IsServerLogFatal
+        public LogLevel ServerLogLevel
         {
-            get { return _isServerLogFatal; }
+            get
+            {
+                return _serverLogLevel;
+            }
             set
             {
-                _isServerLogFatal = value;
+                _serverLogLevel = value;
+                IsDirty = true;
                 OnPropertyChanged();
             }
         }
-
-        public bool IsServerLogError
+        public LogLevel StudioLogLevel
         {
-            get { return _isServerLogError; }
-            set
+            get
             {
-                _isServerLogError = value;
-                OnPropertyChanged();
+                return _studioLogLevel;
             }
-        }
-
-        public bool IsServerLogWarn
-        {
-            get { return _isServerLogWarn; }
             set
             {
-                _isServerLogWarn = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsServerLogInfo
-        {
-            get { return _isServerLogInfo; }
-            set
-            {
-                _isServerLogInfo = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsServerLogDebug
-        {
-            get { return _isServerLogDebug; }
-            set
-            {
-                _isServerLogDebug = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsServerLogTrace
-        {
-            get { return _isServerLogTrace; }
-            set
-            {
-                _isServerLogTrace = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsStudioLogFatal
-        {
-            get { return _isStudioLogFatal; }
-            set
-            {
-                _isStudioLogFatal = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsStudioLogError
-        {
-            get { return _isStudioLogError; }
-            set
-            {
-                _isStudioLogError = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsStudioLogWarn
-        {
-            get { return _isStudioLogWarn; }
-            set
-            {
-                _isStudioLogWarn = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsStudioLogInfo
-        {
-            get { return _isStudioLogInfo; }
-            set
-            {
-                _isStudioLogInfo = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsStudioLogDebug
-        {
-            get { return _isStudioLogDebug; }
-            set
-            {
-                _isStudioLogDebug = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsStudioLogTrace
-        {
-            get { return _isStudioLogTrace; }
-            set
-            {
-                _isStudioLogTrace = value;
+                _studioLogLevel = value;
+                IsDirty = true;
                 OnPropertyChanged();
             }
         }
@@ -169,8 +91,21 @@ namespace Dev2.Settings.Logging
             get { return _serverLogMaxSize; }
             set
             {
-                _serverLogMaxSize = value;
-                OnPropertyChanged();
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_serverLogMaxSize))
+                {
+                    _serverLogMaxSize = "0";
+                    IsDirty = true;
+                }
+                else
+                {
+                    int val;
+                    if (value.IsWholeNumber(out val))
+                    {
+                        IsDirty = true;
+                        _serverLogMaxSize = value;
+                        OnPropertyChanged();
+                    }
+                }
             }
         }
 
@@ -179,7 +114,7 @@ namespace Dev2.Settings.Logging
             get { return _studioLogMaxSize; }
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(_studioLogMaxSize))
                 {
                     _studioLogMaxSize = "0";
                     IsDirty = true;
@@ -190,10 +125,10 @@ namespace Dev2.Settings.Logging
                     if (value.IsWholeNumber(out val))
                     {
                         IsDirty = true;
+                        _studioLogMaxSize = value;
+                        OnPropertyChanged();
                     }
                 }
-                _studioLogMaxSize = value;
-                OnPropertyChanged();
             }
         }
     }
@@ -202,20 +137,9 @@ namespace Dev2.Settings.Logging
     {
         ICommand GetServerLogFileCommand { get; }
         ICommand GetStudioLogFileCommand { get; }
-        bool IsServerLogFatal { get; set; }
-        bool IsServerLogError { get; set; }
-        bool IsServerLogWarn { get; set; }
-        bool IsServerLogInfo { get; set; }
-        bool IsServerLogDebug { get; set; }
-        bool IsServerLogTrace { get; set; }
-        
-        bool IsStudioLogFatal { get; set; }
-        bool IsStudioLogError { get; set; }
-        bool IsStudioLogWarn { get; set; }
-        bool IsStudioLogInfo { get; set; }
-        bool IsStudioLogDebug { get; set; }
-        bool IsStudioLogTrace { get; set; }
-        string ServerLogMaxSize { get; set; }
-        string StudioLogMaxSize { get; set; }
+        LogLevel ServerLogLevel { get; set; }
+        LogLevel StudioLogLevel { get; set; }
+        string StudioLogMaxSize { get; }
+        string ServerLogMaxSize { get; }
     }
 }

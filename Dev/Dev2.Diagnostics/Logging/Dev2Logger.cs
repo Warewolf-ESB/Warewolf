@@ -50,7 +50,7 @@ namespace Dev2.Common
         {
             var h = (log4net.Repository.Hierarchy.Hierarchy)log4net.LogManager.GetRepository();
             var rootLogger = h.Root;
-            return rootLogger.Level.Name;
+            return rootLogger.Level.DisplayName;
         }
 
         public static int GetLogMaxSize()

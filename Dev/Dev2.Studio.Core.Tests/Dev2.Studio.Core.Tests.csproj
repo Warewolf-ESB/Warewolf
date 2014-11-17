@@ -101,6 +101,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
@@ -268,6 +272,7 @@
     <Compile Include="Settings\ClientScheduledResourceTests.cs" />
     <Compile Include="Settings\SchedulerViewModelTests.cs" />
     <Compile Include="ProviderExtensionsTest.cs" />
+    <Compile Include="Settings\LogSettingsViewModelTests.cs" />
     <Compile Include="ShareTests.cs" />
     <Compile Include="TestUtil.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
@@ -496,6 +501,10 @@
     <Folder Include="WizardTests\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Dev2.Studio\Settings.config">
+      <Link>Settings.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

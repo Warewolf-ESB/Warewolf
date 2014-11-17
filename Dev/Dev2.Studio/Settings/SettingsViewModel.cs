@@ -52,7 +52,7 @@ namespace Dev2.Settings
         readonly IWin32Window _parentWindow;
 
         SecurityViewModel _securityViewModel;
-        ILogSettings _logSettingsViewModel;
+        LogSettingsViewModel _logSettingsViewModel;
         IConnectControlViewModel _connectControlViewModel;
         private bool _showLog;
 
@@ -243,7 +243,7 @@ namespace Dev2.Settings
             }
         }
 
-        public ILogSettings LogSettingsViewModel
+        public LogSettingsViewModel LogSettingsViewModel
         {
             get { return _logSettingsViewModel; }
             private set
@@ -344,7 +344,7 @@ namespace Dev2.Settings
             return new SecurityViewModel(Settings.Security, _parentWindow, CurrentEnvironment);
         }
 
-        protected virtual ILogSettings CreateLoggingViewModel()
+        protected virtual LogSettingsViewModel CreateLoggingViewModel()
         {
             return new LogSettingsViewModel(Settings.Logging, CurrentEnvironment);
         }
@@ -355,7 +355,14 @@ namespace Dev2.Settings
             isDirtyProperty.AddValueChanged(LogSettingsViewModel, OnIsDirtyPropertyChanged);
             SecurityViewModel.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "IsDirty")
+                if (args.PropertyName == "IsDirty")
+                {
+                    OnIsDirtyPropertyChanged(null, new EventArgs());
+                }
+            };
+            LogSettingsViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "IsDirty")
                 {
                     OnIsDirtyPropertyChanged(null, new EventArgs());
                 }
@@ -365,7 +372,9 @@ namespace Dev2.Settings
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
             IsDirty = SecurityViewModel.IsDirty;
+            IsDirty = LogSettingsViewModel.IsDirty;
             NotifyOfPropertyChange(() => SecurityHeader);
+            NotifyOfPropertyChange(() => LogHeader);
             ClearErrors();
         }
 
@@ -375,6 +384,11 @@ namespace Dev2.Settings
             {
                 SecurityViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => SecurityHeader);
+            }
+            if (LogSettingsViewModel != null)
+            {
+                LogSettingsViewModel.IsDirty = false;
+                NotifyOfPropertyChange(() => LogHeader);
             }
         }
 
@@ -447,7 +461,7 @@ namespace Dev2.Settings
                         return false;
                     }
                     SecurityViewModel.Save(Settings.Security);
-
+                    
                     var isWritten = WriteSettings();
                     if(isWritten)
                     {
