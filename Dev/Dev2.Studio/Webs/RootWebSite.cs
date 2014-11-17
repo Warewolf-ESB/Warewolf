@@ -342,15 +342,15 @@ namespace Dev2.Webs
 
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId = null, bool addToTabManager = true)
         {
-            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager), "WorkflowService");
+            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager), "WorkflowService", HttpUtility.UrlEncode("New Workflow"));
         }
 
-        public static void ShowNewOAuthsourceSaveDialog(IResourceModel resourceModel, IEnvironmentModel model, string token, string key)
+        public static void ShowNewOAuthsourceSaveDialog(IContextualResourceModel resourceModel, IEnvironmentModel model, string token, string key)
         {
-            ShowSaveDialog(resourceModel, "OauthSource", model, new DropBoxSourceSourceCallbackHandler(EnvironmentRepository.Instance,token??"",key??""));
+            ShowSaveDialog(resourceModel, new DropBoxSourceSourceCallbackHandler(EnvironmentRepository.Instance,token??"",key??""), "OauthSource", HttpUtility.UrlEncode("New Dropbox source"));
         }
 
-        static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string resourceId = null)
+        static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string title, string resourceId = null)
         {
             if(resourceModel == null)
             {
@@ -373,6 +373,10 @@ namespace Dev2.Webs
             const string LeftTitle = "Save";
             string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
             var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
+            if (resourceModel.Category == null)
+            {
+                resourceModel.Category = "";
+            }
             var selectedPath = resourceModel.Category.Contains("Unassigned") || string.IsNullOrEmpty(resourceModel.Category) ? "" : resourceModel.Category;
             var lastIndexOf = selectedPath.LastIndexOf("\\", StringComparison.Ordinal);
             if(lastIndexOf != -1)
@@ -380,53 +384,8 @@ namespace Dev2.Webs
                 selectedPath = selectedPath.Substring(0, lastIndexOf);
             }
             selectedPath = selectedPath.Replace("\\", "\\\\");
-            var relativeUriString = string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}&category={6}", PageName, workspaceId, resourceId, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName, selectedPath);
+            var relativeUriString = string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}&category={6}", PageName, workspaceId, resourceId, type, title, envirDisplayName, selectedPath);
             if(!IsTestMode)
-            {
-                // this must be a property ;)
-                environment.ShowWebPageDialog(SiteName, relativeUriString, callbackHandler, Width, Height, LeftTitle, rightTitle);
-            }
-            else
-            {
-                // TODO : return the relativeUriString generated ;)
-                CallBackHandler = callbackHandler;
-                TestModeRelativeUri = relativeUriString;
-            }
-        }
-
-
-        public static void ShowSaveDialog(IResourceModel resourceModel, string type, IEnvironmentModel environment, WebsiteCallbackHandler callbackHandler, string resourceId = null)
-        {
-            if (resourceModel == null)
-            {
-                throw new ArgumentNullException("resourceModel");
-            }
- 
-
-            if (environment == null)
-            {
-                // ReSharper disable NotResolvedInText
-                throw new ArgumentNullException("environment");
-            }
-
-            EnvironmentRepository.Instance.ActiveEnvironment = environment;
-
-            const string PageName = "dialogs/savedialog";
-            const double Width = 604;
-            const double Height = 450;
-            var workspaceId = GlobalConstants.ServerWorkspaceID;
-            const string LeftTitle = "Save";
-            string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
-            var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
-            var selectedPath =  string.IsNullOrEmpty(resourceModel.Category) ||resourceModel.Category.Contains("Unassigned") ? "" : resourceModel.Category;
-            var lastIndexOf = selectedPath.LastIndexOf("\\", StringComparison.Ordinal);
-            if (lastIndexOf != -1)
-            {
-                selectedPath = selectedPath.Substring(0, lastIndexOf);
-            }
-            selectedPath = selectedPath.Replace("\\", "\\\\");
-            var relativeUriString = string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}&category={6}", PageName, workspaceId, resourceId, type, HttpUtility.UrlEncode("New Dropbox source"), envirDisplayName, selectedPath);
-            if (!IsTestMode)
             {
                 // this must be a property ;)
                 environment.ShowWebPageDialog(SiteName, relativeUriString, callbackHandler, Width, Height, LeftTitle, rightTitle);

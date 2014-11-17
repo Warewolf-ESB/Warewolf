@@ -11,12 +11,13 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
     xmlns:attachedProperties2="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
     xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
+                                xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
     xmlns:upload="clr-namespace:Dev2.Activities.Designers2.DropBox.Upload"
-    Width="250"
-                               MaxWidth="250"
+    Width="280"
+                               MaxWidth="280"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DesignWidth="250"
+                               d:DesignWidth="280"
                                d:DataContext="{d:DesignInstance upload:DropBoxUploadFileViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
@@ -42,7 +43,7 @@
                Grid.Row="0"
                Content="Dropbox Source" 
                FontWeight="Normal"
-Style="{StaticResource ActivityLabelStyle}"
+               Style="{StaticResource ActivityLabelStyle}"
                VerticalAlignment="Top"
                VerticalContentAlignment="Top"/>
         <Grid Grid.Column="1"
@@ -105,7 +106,7 @@ Style="{StaticResource ActivityLabelStyle}"
                Grid.Row="2"
                Content="Local File" 
                FontWeight="Normal"
-Style="{StaticResource ActivityLabelStyle}"
+                Style="{StaticResource ActivityLabelStyle}"
                VerticalAlignment="Top"
                VerticalContentAlignment="Top"/>
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
@@ -113,15 +114,18 @@ Style="{StaticResource ActivityLabelStyle}"
                                 Grid.Row="2"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
-            Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                DefaultText="File name or variable"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}"
                                 Text="{Binding Path=ModelItem.SourceFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
              <ui:IntellisenseTextBox.IntellisenseProvider>
-                <provider:FileSystemIntellisenseProvider>
-                </provider:FileSystemIntellisenseProvider>
+                <interfaceImplementors:CompositeIntellisenseProvider>
+                    <interfaceImplementors:DefaultIntellisenseProvider />
+                    <provider:FileSystemIntellisenseProvider />
+                </interfaceImplementors:CompositeIntellisenseProvider>
             </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalSource}"
@@ -146,16 +150,13 @@ Style="{StaticResource ActivityLabelStyle}"
                                 Grid.Row="3"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 IsInCalculateMode="False"
-            Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                DefaultText="Dropbox location"
                                 FilterType="All"
                                 ToolTip="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}"
                                 Text="{Binding Path=ModelItem.DestinationPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
-                                attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
-            <ui:IntellisenseTextBox.IntellisenseProvider>
-                <provider:FileSystemIntellisenseProvider>
-                </provider:FileSystemIntellisenseProvider>
-            </ui:IntellisenseTextBox.IntellisenseProvider>
+                                attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">           
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.DropBoxToolTipLocalDestination}"
                                  DataContext="{Binding}" />
@@ -182,6 +183,7 @@ Style="{StaticResource ActivityLabelStyle}"
             FilterType="All"
             Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 ToolTip="{x:Static help:HelpTextResources.DropboxResultHelpText}"
+                                DefaultText="[[Result]]"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">

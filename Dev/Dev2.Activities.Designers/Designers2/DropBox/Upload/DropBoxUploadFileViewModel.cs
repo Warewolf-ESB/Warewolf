@@ -9,12 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities.Presentation.Model;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -27,43 +30,82 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
 {
     public class DropBoxUploadFileViewModel : ActivityDesignerViewModel,INotifyPropertyChanged
     {
-        IEnvironmentModel _environmentModel;
+        readonly IEnvironmentModel _environmentModel;
         private readonly string[] _operations = { "Read File", "Write File" };
         readonly IEventAggregator _eventPublisher;
+        ObservableCollection<OauthSource> _sources;
+        static readonly OauthSource NewOAuthSource = new OauthSource
+        {
+            ResourceID = Guid.NewGuid(),
+            ResourceName = "New OAuth Source..."
+        };
+        static readonly OauthSource SelectOAuthSource = new OauthSource
+        {
+            ResourceID = Guid.NewGuid(),
+            ResourceName = "Select a OAuth Source..."
+        };
+        bool _isRefreshing;
+
         public DropBoxUploadFileViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem)
         {
             _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
             EditDropboxSourceCommand = new RelayCommand(o => EditDropBoxSource(), o => IsDropboxSourceSelected);
+            Sources = LoadOAuthSources();
+            SetSelectedOAuthSource(SelectedSource);
+        }
+
+        ObservableCollection<OauthSource> LoadOAuthSources()
+        {
+            var oauthSources = _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource);
+            oauthSources.Insert(0,NewOAuthSource);
+            return oauthSources.ToObservableCollection();
         }
 
         public bool IsDropboxSourceSelected
         {
             get
             {
-                return SelectedSource!= null ;
-                
+                return SelectedSource!= null && SelectedSource!=SelectOAuthSource && SelectedSource!=NewOAuthSource;
             }
-            
         }
 
         public DropBoxUploadFileViewModel(ModelItem modelItem)
             : this(modelItem, EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
         {
-          
-
         }
 
         public override void Validate()
         {
         }
 
-        public IEnumerable<OauthSource> Sources
+        public ObservableCollection<OauthSource> Sources
         {
-            get { return _environmentModel.ResourceRepository.FindSourcesByType<OauthSource>(_environmentModel, enSourceType.OauthSource); }
+            get
+            {
+                return _sources;
+            }
+            private set
+            {
+                _sources = value;
+                OnPropertyChanged("Sources");
+            }
         }
 
+        void SetSelectedOAuthSource(OauthSource oAuthSource)
+        {
+            var selectOAuthSource = oAuthSource == null ? null : Sources.FirstOrDefault(d => d.ResourceID == oAuthSource.ResourceID);
+            if (selectOAuthSource == null)
+            {
+                if (Sources.FirstOrDefault(d => d.Equals(SelectOAuthSource)) == null)
+                {
+                    Sources.Insert(0, SelectOAuthSource);
+                }
+                selectOAuthSource = SelectOAuthSource;
+            }
+            SelectedSource = selectOAuthSource;
+        }
 
         public string[] Operations
         {
@@ -90,12 +132,28 @@ namespace Dev2.Activities.Designers2.DropBox.Upload
             // ReSharper restore ExplicitCallerInfoArgument
             set
             {
+                if (value == NewOAuthSource && !_isRefreshing)
+                {
+                    CreateOAuthSource();
+                    return;
+                }
                 SetProperty(value);
                 EditDropboxSourceCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged("IsDropboxSourceSelected");
                 OnPropertyChanged("SelectedSource");
             }
         }
+
+        void CreateOAuthSource()
+        {
+            _eventPublisher.Publish(new ShowNewResourceWizard("DropboxSource"));
+            _isRefreshing = true;
+            Sources = LoadOAuthSources();
+            var newOAuthSource = Sources.FirstOrDefault(source => source.IsNewResource);
+            SetSelectedOAuthSource(newOAuthSource);
+            _isRefreshing = false;
+        }
+
         public RelayCommand EditDropboxSourceCommand { get; private set; }
         private void EditDropBoxSource()
         {
