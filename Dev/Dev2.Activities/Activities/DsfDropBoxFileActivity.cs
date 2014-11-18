@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
@@ -75,8 +76,8 @@ namespace Dev2.Activities
          {
              if (SelectedSource != null)
              {
-                 var oauthSource = ResourceCatalog.Instance.GetResource<OauthSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID);
-                 if (oauthSource == null)
+                 var oauthSource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID);
+                 if (oauthSource == null || oauthSource.ResourceType!=ResourceType.OauthSource)
                  {
                      return "Failure: Source has been deleted.";
                  }
