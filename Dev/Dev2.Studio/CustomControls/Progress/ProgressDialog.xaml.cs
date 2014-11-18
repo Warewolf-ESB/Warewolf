@@ -24,5 +24,10 @@ namespace Dev2.CustomControls.Progress
             Owner = owner;
             InitializeComponent();
         }
+        
+        public ProgressDialog()
+        {
+            InitializeComponent();
+        }
     }
 }

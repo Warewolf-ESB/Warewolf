@@ -57,9 +57,9 @@ namespace Dev2.Core.Tests.Settings
             };
 
             //------------Execute Test---------------------------
-            logSettingsViewModel.ServerLogLevel = LogLevel.Fatal;
+            logSettingsViewModel.ServerLogLevel = LogLevel.FATAL;
             //------------Assert Results-------------------------
-            Assert.AreEqual(LogLevel.Fatal,logSettingsViewModel.ServerLogLevel);
+            Assert.AreEqual(LogLevel.FATAL,logSettingsViewModel.ServerLogLevel);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
@@ -81,9 +81,9 @@ namespace Dev2.Core.Tests.Settings
             };
 
             //------------Execute Test---------------------------
-            logSettingsViewModel.StudioLogLevel = LogLevel.Info;
+            logSettingsViewModel.StudioLogLevel = LogLevel.INFO;
             //------------Assert Results-------------------------
-            Assert.AreEqual(LogLevel.Info,logSettingsViewModel.StudioLogLevel);
+            Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.StudioLogLevel);
             Assert.IsTrue(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
@@ -131,7 +131,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
             logSettingsViewModel.ServerLogMaxSize = "aa";
             //------------Assert Results-------------------------
-            Assert.AreEqual("0", logSettingsViewModel.ServerLogMaxSize);
+            Assert.AreEqual("50", logSettingsViewModel.ServerLogMaxSize);
             Assert.IsFalse(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
@@ -179,7 +179,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
             logSettingsViewModel.StudioLogMaxSize = "aa";
             //------------Assert Results-------------------------
-            Assert.AreEqual("0", logSettingsViewModel.StudioLogMaxSize);
+            Assert.AreEqual("200", logSettingsViewModel.StudioLogMaxSize);
             Assert.IsFalse(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }
@@ -187,9 +187,7 @@ namespace Dev2.Core.Tests.Settings
         static LogSettingsViewModel CreateLogSettingViewModel()
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
-            var loggingSettingsTo = new LoggingSettingsTo();
-            loggingSettingsTo.LogSize = 50;
-            loggingSettingsTo.LogLevel = "Trace";
+            var loggingSettingsTo = new LoggingSettingsTo { LogSize = 50, LogLevel = "TRACE" };
             var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, new Mock<IEnvironmentModel>().Object);
             return logSettingsViewModel;
         }

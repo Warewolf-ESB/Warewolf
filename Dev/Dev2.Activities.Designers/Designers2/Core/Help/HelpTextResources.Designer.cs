@@ -2061,7 +2061,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the operation that you wish to perform. Read or write is currently supplorted..
+        ///   Looks up a localized string similar to Select the operation that you wish to perform. Read or Write is currently supported..
         /// </summary>
         public static string DropboxOperationToolTip {
             get {
@@ -2089,8 +2089,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To Move a file , put the full path and file to move in here.
-        ///The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
+        ///     Read: This is the name of the file that will be read from DropBox.
+        ///     Write: This is the name of the file that will be written to DropBox.
+        ///     NOTE: The file path must use &quot;/&quot; to identify folders and not &quot;\&quot;..
         /// </summary>
         public static string DropBoxToolTipLocalDestination {
             get {
@@ -2100,8 +2101,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To Move a file , put the full path and file to move in here.
-        ///The file muist be available on the local file system..
+        ///The file must be available on the local file system..
         /// </summary>
         public static string DropBoxToolTipLocalSource {
             get {

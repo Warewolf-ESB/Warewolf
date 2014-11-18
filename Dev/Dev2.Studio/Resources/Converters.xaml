@@ -88,19 +88,6 @@
             </converters:EnumCollection>
         </converters:EnumToBoolConverter.TrueEnumValues>
     </converters:EnumToBoolConverter>
-
-    <converters:EnumToBoolConverter x:Key="EnumToBoolConverterLogLevel">
-        <converters:EnumToBoolConverter.TrueEnumValues>
-            <converters:EnumCollection>
-                <x:Static Member="logging:LogLevel.Fatal" />
-                <x:Static Member="logging:LogLevel.Error" />
-                <x:Static Member="logging:LogLevel.Warn" />
-                <x:Static Member="logging:LogLevel.Info" />
-                <x:Static Member="logging:LogLevel.Debug" />
-                <x:Static Member="logging:LogLevel.Trace" />
-            </converters:EnumCollection>
-        </converters:EnumToBoolConverter.TrueEnumValues>
-    </converters:EnumToBoolConverter>
     
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverterActivityTypeWorkflow">
         <converters:EnumToVisibilityConverter.VisibleEnumValues>

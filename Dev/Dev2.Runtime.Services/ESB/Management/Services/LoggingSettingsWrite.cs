@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using Dev2.Common;
@@ -58,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public static void Write(LoggingSettingsTo loggingSettingsTo)
         {
             VerifyArgument.IsNotNull("loggingSettingsTo", loggingSettingsTo);
-            Dev2Logger.UpdateLoggingConfig(loggingSettingsTo.LogLevel);
+            Dev2Logger.WriteLogSettings(loggingSettingsTo.LogSize.ToString(CultureInfo.InvariantCulture), loggingSettingsTo.LogLevel);
         }
 
         public DynamicService CreateServiceEntry()

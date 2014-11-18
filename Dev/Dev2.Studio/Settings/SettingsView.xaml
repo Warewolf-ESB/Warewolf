@@ -31,7 +31,7 @@
                                    Value="False" />
                         <Condition Binding="{Binding Path=ShowSecurity, Mode=TwoWay}"
                                    Value="True" />
-                        <Condition Binding="{Binding Path=ShowLog, Mode=TwoWay}"
+                        <Condition Binding="{Binding Path=ShowLogging, Mode=TwoWay}"
                                    Value="False" />
                     </MultiDataTrigger.Conditions>
                     <Setter Property="Content"
@@ -43,7 +43,7 @@
                                    Value="False" />
                         <Condition Binding="{Binding Path=ShowSecurity, Mode=TwoWay}"
                                    Value="False" />
-                        <Condition Binding="{Binding Path=ShowLog, Mode=TwoWay}"
+                        <Condition Binding="{Binding Path=ShowLogging, Mode=TwoWay}"
                                    Value="True" />
                     </MultiDataTrigger.Conditions>
                     <Setter Property="Content"

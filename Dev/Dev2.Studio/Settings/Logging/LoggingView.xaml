@@ -4,50 +4,53 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:logging="clr-namespace:Dev2.Settings.Logging"
-    d:DesignHeight="300"
+             xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
+             d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance logging:ILogSettings}">
     <Grid>
         <Grid.Resources>
-            
+            <converters:SimpleEnumToBoolConverter x:Key="EnumBooleanConverter" />
         </Grid.Resources>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*" MinHeight="100"></RowDefinition>
+                <RowDefinition Height="*" MinHeight="100"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
-                <TextBlock>Server Settings</TextBlock>
-                <RadioButton GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Fatal</RadioButton>
-                <RadioButton GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Error</RadioButton>
-                <RadioButton GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Warn</RadioButton>
-                <RadioButton GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Info</RadioButton>
-                <RadioButton GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Debug</RadioButton>
-                <RadioButton GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Trace</RadioButton>
-                <StackPanel Orientation="Horizontal">
-                    <Label>Maximum Size:</Label>
-                    <TextBox Text="{Binding ServerLogMaxSize}"></TextBox>
+                <TextBlock Margin="30,20,0,0" FontSize="24" FontWeight="Bold">Server System Logs</TextBlock>
+                <RadioButton Margin="50,0,0,0" GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">None: No logging</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.FATAL}}">Fatal: Only log events that are fatal</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.ERROR}}">Error: Log fatal and error events</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.WARN}}">Warn: Log error, fatal and warnings</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.INFO}}">Info: Log system info including pulse data, fatal, error and warning events</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.DEBUG}}">Debug: Log all system activity including executions. Also logs fatal, error, warning and info events</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">Trace: Log detailed system information. Includes events from all the levels above</RadioButton>
+                <StackPanel Margin="50,0,0,0" Orientation="Horizontal">
+                    <Label>Max Log File Size:</Label>
+                    <TextBox Width="50" MaxWidth="50" Text="{Binding ServerLogMaxSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <Label>MB</Label>
                 </StackPanel>
-                <TextBlock><Hyperlink Command="{Binding Path=GetServerLogFileCommand}">
+                <TextBlock Margin="50,0,0,0"><Hyperlink Command="{Binding Path=GetServerLogFileCommand}">
                                     <Run Text="Server Log File"></Run>
                                 </Hyperlink></TextBlock>
             </StackPanel>
-            <StackPanel Grid.Row="1"></StackPanel>
-            <StackPanel Grid.Row="2">
-                <TextBlock>Studio Settings</TextBlock>
-                <RadioButton GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Fatal</RadioButton>
-                <RadioButton GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Error</RadioButton>
-                <RadioButton GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Warn</RadioButton>
-                <RadioButton GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Info</RadioButton>
-                <RadioButton GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Debug</RadioButton>
-                <RadioButton GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumToBoolConverterLogLevel}}">Trace</RadioButton>
-                <StackPanel Orientation="Horizontal">
-                    <Label>Maximum Size:</Label>
-                    <TextBox Text="{Binding StudioLogMaxSize}"></TextBox>
+            <StackPanel Grid.Row="1">
+                <TextBlock Margin="30,0,0,0" FontSize="24" FontWeight="Bold">Studio Logs</TextBlock>
+                <RadioButton Margin="50,0,0,0" GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">None: No logging</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.FATAL}}">Fatal: Only log events that are fatal</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.ERROR}}">Error: Log fatal and error events</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.WARN}}">Warn: Log error, fatal and warnings</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.INFO}}">Info: Log system info including pulse data, fatal, error and warning events</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.DEBUG}}">Debug: Log all system activity including executions. Also logs fatal, error, warning and info events</RadioButton>
+                <RadioButton Margin="50,0,0,0" GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">Trace: Log detailed system information. Includes events from all the levels above</RadioButton>
+                <StackPanel Margin="50,0,0,0" Orientation="Horizontal">
+                    <Label>Max Log File Size:</Label>
+                    <TextBox Width="50" MaxWidth="50" Text="{Binding StudioLogMaxSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <Label>MB</Label>
                 </StackPanel>
-                <TextBlock><Hyperlink Command="{Binding Path=GetStudioLogFileCommand}">
+                <TextBlock Margin="50,0,0,0"><Hyperlink Command="{Binding Path=GetStudioLogFileCommand}">
                                     <Run Text="Studio Log File"></Run>
                                 </Hyperlink></TextBlock>
             </StackPanel>

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -22,7 +21,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
 using Dev2.Interfaces;
-using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -260,14 +258,14 @@ namespace Dev2.Settings
         {
             get
             {
-                return IsDirty ? "Security *" : "Security";
+                return SecurityViewModel != null && SecurityViewModel.IsDirty ? "Security *" : "Security";
             }
         }
         public string LogHeader
         {
             get
             {
-                return IsDirty ? "Logging *" : "Logging";
+                return LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? "Logging *" : "Logging";
             }
         }
 
@@ -281,12 +279,14 @@ namespace Dev2.Settings
             _selectionChanging = true;
             switch(propertyName)
             {
-                case "ShowLog":
-                    ShowSecurity = !ShowLog;
+                case "ShowLogging":
+                    ShowLogging = true;
+                    ShowSecurity = !ShowLogging;
                     break;
 
                 case "ShowSecurity":
-                    ShowLog = !ShowSecurity;
+                    ShowSecurity = true;
+                    ShowLogging = !ShowSecurity;
                     break;
             }
             _selectionChanging = false;
@@ -371,8 +371,7 @@ namespace Dev2.Settings
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            IsDirty = SecurityViewModel.IsDirty;
-            IsDirty = LogSettingsViewModel.IsDirty;
+            IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty;
             NotifyOfPropertyChange(() => SecurityHeader);
             NotifyOfPropertyChange(() => LogHeader);
             ClearErrors();
@@ -461,7 +460,7 @@ namespace Dev2.Settings
                         return false;
                     }
                     SecurityViewModel.Save(Settings.Security);
-                    
+                    LogSettingsViewModel.Save(Settings.Logging);
                     var isWritten = WriteSettings();
                     if(isWritten)
                     {

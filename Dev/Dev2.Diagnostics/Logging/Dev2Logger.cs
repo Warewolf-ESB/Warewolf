@@ -13,6 +13,7 @@
 using System.Linq;
 using System.Reflection;
 using log4net.Appender;
+using System.Xml.Linq;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
@@ -66,10 +67,42 @@ namespace Dev2.Common
             return 0;
         }
 
-//        public static bool WriteLogSettings()
-//        {
-//            System.Xml.Linq.XDocument.Load("Settings.config");
-//        }
+        public static void WriteLogSettings(string maxLogSize,string logLevel)
+        {
+            var settingsDocument = XDocument.Load("Settings.config");
+            var log4netElement = settingsDocument.Element("log4net");
+            if (log4netElement != null)
+            {
+                var appenderElement = log4netElement.Element("appender");
+                if (appenderElement != null)
+                {
+                    var maxFileSizeElement = appenderElement.Element("maximumFileSize");
+                    if (maxFileSizeElement != null)
+                    {
+                        var maxFileSizeElementValueAttrib = maxFileSizeElement.Attribute("value");
+                        if (maxFileSizeElementValueAttrib != null)
+                        {
+                            maxFileSizeElementValueAttrib.Value = maxLogSize + "MB";
+                        }
+                    }
+                }
+
+                var rootElement = log4netElement.Element("root");
+                if (rootElement != null)
+                {
+                    var levelElement = rootElement.Element("level");
+                    if (levelElement != null)
+                    {
+                        var levelElementValueAttrib = levelElement.Attribute("value");
+                        if (levelElementValueAttrib != null)
+                        {
+                            levelElementValueAttrib.Value = logLevel;
+                        }
+                    }
+                }
+                settingsDocument.Save("Settings.config");
+            }
+        }
     }
 
 

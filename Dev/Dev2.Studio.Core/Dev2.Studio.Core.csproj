@@ -206,6 +206,7 @@
     <Compile Include="AppResources\Converters\DataGridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\DeployViewConnectedToVisiblityConverter.cs" />
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverter.cs" />
+    <Compile Include="AppResources\Converters\SimpleEnumToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\StringToResourceConverter.cs" />
     <Compile Include="AppResources\Converters\IntEnsureMinConverter.cs" />
     <Compile Include="AppResources\Converters\IntInRangeToVisibilityConverter.cs" />
