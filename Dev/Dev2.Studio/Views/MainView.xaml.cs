@@ -12,15 +12,14 @@
 
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using Dev2.Studio.StartupResources;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Workflow;
-using Infragistics.Windows.Controls;
 using Infragistics.Windows.DockManager;
+using Infragistics.Windows.DockManager.Dragging;
 using Infragistics.Windows.DockManager.Events;
 
 // ReSharper disable CheckNamespace
@@ -47,7 +46,7 @@ namespace Dev2.Studio.Views
 
         public void ClearToolboxSelection()
         {
-            if(Toolboxcontrol != null)
+            if (Toolboxcontrol != null)
             {
                 Toolboxcontrol.ClearSelection();
             }
@@ -55,7 +54,7 @@ namespace Dev2.Studio.Views
 
         public void ClearToolboxSearch()
         {
-            if(Toolboxcontrol != null)
+            if (Toolboxcontrol != null)
             {
                 Toolboxcontrol.ClearSearch();
             }
@@ -77,111 +76,127 @@ namespace Dev2.Studio.Views
         void MainView_OnClosing(object sender, CancelEventArgs e)
         {
             MainViewModel mainViewModel = DataContext as MainViewModel;
-            if(mainViewModel != null)
+            if (mainViewModel != null)
             {
-                if(!mainViewModel.OnStudioClosing())
+                if (!mainViewModel.OnStudioClosing())
                 {
                     e.Cancel = true;
                 }
 
-                if(mainViewModel.IsDownloading())
+                if (mainViewModel.IsDownloading())
                 {
                     e.Cancel = true;
                 }
             }
         }
+
+
 
         public void DockManager_OnPaneDragEnded_(object sender, PaneDragEndedEventArgs e)
         {
-            _contentPane = e.Panes[0];
-            UpdatePane(_contentPane);
-        }
-
-        public void UpdatePane(ContentPane contentPane)
-        {
-            if(contentPane == null)
-            {
-                throw new ArgumentNullException("contentPane");
-            }
-            contentPane.AllowDockingInTabGroup = true;
-            contentPane.AllowDockingFloating = true;
-            contentPane.AllowDockingBottom = false;
-            contentPane.AllowDockingLeft = false;
-            contentPane.AllowDockingRight = false;
-            contentPane.AllowDockingTop = false;
-            contentPane.AllowInDocumentHost = true;
-            contentPane.AllowClose = true;
-            contentPane.AllowDrop = true;
-
-            contentPane.AllowDocking = true;
-            contentPane.CloseButtonVisibility = Visibility.Visible;
-
+            var contentPane = e.Panes[0];
+            _contentPane = contentPane;
+            UpdatePane(contentPane);
             var windows = Application.Current.Windows;
-            foreach(var window in windows)
+            foreach (var window in windows)
             {
                 var actuallWindow = window as Window;
-                if(actuallWindow != null)
+                if (actuallWindow != null)
                 {
-                    actuallWindow.Activated -=ActuallWindowOnActivated;                     
-                    actuallWindow.Activated +=ActuallWindowOnActivated;                     
-                }
-            }
-        }
-
-        void ActuallWindowOnActivated(object sender, EventArgs eventArgs)
-        {
-            MainViewModel mainViewModel = DataContext as MainViewModel;
-            if (mainViewModel != null)
-            {
-                if(_contentPane != null)
-                {
-                    WorkflowDesignerViewModel workflowDesignerViewModel = _contentPane.TabHeader as WorkflowDesignerViewModel;
-                    if (workflowDesignerViewModel != null)
+                    var windowType = actuallWindow.GetType();
+                    if (windowType.FullName == "Infragistics.Windows.Controls.ToolWindowHostWindow")
                     {
-                        if (_contentPane.ContentVisibility == Visibility.Visible)
-                            mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
-                        
+                       actuallWindow.Activated -= ActuallWindowOnActivated;
+                       actuallWindow.Activated += ActuallWindowOnActivated;
                     }
                 }
             }
         }
 
-        void DockManager_OnToolWindowLoaded(object sender, PaneToolWindowEventArgs e)
+        public void UpdatePane(ContentPane contentPane)
         {
-            Style style = new Style(typeof(TabGroupPane));
-            Setter setter = new Setter(TabControl.TabStripPlacementProperty, System.Windows.Controls.Dock.Top);
-            style.Setters.Add(setter);
-            setter = new Setter(TemplateProperty, Resources["NewButtonTabGroupPaneTemplate"]);
-            style.Setters.Add(setter);
-            var res = e.Window.Resources;
-            res.Add(typeof(TabGroupPane), style);
-            res.Add(typeof(PaneTabItem), Resources[typeof(PaneTabItem)]);
-            ControlTemplate ct2 = (ControlTemplate)Resources["MyDocumentTabItemTemplateKey"];
-            res.Add(PaneTabItem.DockableTabItemTemplateKey, ct2);
+            if(contentPane == null)
+                throw new ArgumentNullException("contentPane");
+
+
+            WorkflowDesignerViewModel workflowDesignerViewModel = contentPane.TabHeader as WorkflowDesignerViewModel;
+            if (workflowDesignerViewModel != null && contentPane.ContentVisibility == Visibility.Visible)
+                        {
+
+                            contentPane.CloseButtonVisibility = Visibility.Visible;
+                        }
+
+
+            
         }
 
+        void ContentPaneOnPreviewDragEnter(object sender, DragEventArgs dragEventArgs)
+        {
+            dragEventArgs.Handled = true;
+        }
+
+        void ActuallWindowOnActivated(object sender, EventArgs eventArgs)
+        {
+            MainViewModel mainViewModel = DataContext as MainViewModel;
+            if (mainViewModel != null && _contentPane != null)
+            {
+                WorkflowDesignerViewModel workflowDesignerViewModel = _contentPane.TabHeader as WorkflowDesignerViewModel;
+                if (workflowDesignerViewModel != null && _contentPane.ContentVisibility == Visibility.Visible)
+                {
+                    mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
+                }
+
+            }
+
+        }
+
+
+
+        void DockManager_OnPaneDragOver(object sender, PaneDragOverEventArgs e)
+        {
+            if (e.DragAction.GetType() != typeof(MoveWindowAction))
+            {
+                var contentPane = e.Panes[0];
+                MainViewModel mainViewModel = DataContext as MainViewModel;
+                if (mainViewModel != null && contentPane != null)
+                {
+                    var windows = Application.Current.Windows;
+                    foreach (var window in windows)
+                    {
+                        var actuallWindow = window as Window;
+                        if (actuallWindow != null)
+                        {
+                            var windowType = actuallWindow.GetType();
+                            if (windowType.FullName == "Infragistics.Windows.Controls.ToolWindowHostWindow")
+                            {
+                                WorkflowDesignerViewModel workflowDesignerViewModel = contentPane.TabHeader as WorkflowDesignerViewModel;
+                                if (workflowDesignerViewModel != null && contentPane.ContentVisibility == Visibility.Visible)
+                                {
+
+
+                                    PaneDragAction paneDragAction = e.DragAction;
+                                    if (paneDragAction is AddToGroupAction || paneDragAction is NewSplitPaneAction || paneDragAction is NewTabGroupAction)
+                                    {
+                                        e.IsValidDragAction = false;
+                                        e.Cursor = Cursors.No;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         private void ContentControl_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
 
-            
-//                MainViewModel mainViewModel = DataContext as MainViewModel;
-//                if (mainViewModel != null)
-//                {
-//                    var contentControl = sender as ContentControl;
-//                    if (contentControl != null && contentControl.Content != null)
-//                    {
-//                        WorkflowDesignerViewModel workflowDesignerViewModel = (contentControl.DataContext as WorkflowDesignerViewModel);
-//                        if (workflowDesignerViewModel != null)
-//                        {
-//                            mainViewModel.AddWorkSurfaceContext(workflowDesignerViewModel.ResourceModel);
-//                        }
-//                    }
-//
-//
-//                }
         }
 
-
+        void DockManager_OnPaneDragStarting(object sender, PaneDragStartingEventArgs e)
+        {
+            _contentPane = e.Panes[0];
+        }
     }
 }
