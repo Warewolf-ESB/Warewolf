@@ -28,7 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -88,6 +88,10 @@
     <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.0.5058.16094, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
+    </Reference>
+    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\DropNet.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -336,6 +340,8 @@
     <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
     <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
+    <Compile Include="ViewModelTests\DropboxHelperTests.cs" />
+    <Compile Include="ViewModelTests\DropBoxSourceViewModelTests.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\TestUtils.cs" />
     <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
@@ -360,6 +366,7 @@
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WebActivityTests.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />
+    <Compile Include="Webs\DropboxSourceCallbackHandlerTests.cs" />
     <Compile Include="Webs\RootWebSiteTest.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerMock.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerTests.cs" />

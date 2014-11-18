@@ -108,7 +108,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 21
  testRunner.Given("\"RESOURCEPICKERFOLDERS\" is invisible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
- testRunner.Given("I click point \"324,11\" on \"UI_SelectServiceWindow_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("I send \"{ESC}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
  testRunner.And("I drag \"TOOLWORKFLOW\" onto \"ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,sc" +
                     "rollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -116,13 +116,13 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I send \"Decision Testing\" to \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUser" +
                     "Control_AutoID,UI_DatalistFilterTextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
- testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
-                    "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_D" +
+                    "ecision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
  testRunner.And("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
- testRunner.And("\"WORKSURFACE,Integration Test Resources\\Decision Testing(ServiceDesigner)\" is vis" +
-                    "ible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WORKSURFACE,Acceptance Testing Resources\\Decision Testing(ServiceDesigner)\" is v" +
+                    "isible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

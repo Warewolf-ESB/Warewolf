@@ -50,6 +50,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.WebService, "Service" },
             { ResourceType.WorkflowService, "Service" },
             { ResourceType.ServerSource, "Source" },
+            { ResourceType.OauthSource, "Source" },
         };
         IVersionInfo _versionInfo;
 
@@ -92,6 +93,10 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceName = xml.AttributeSafe("Name");
             ResourcePath = xml.ElementSafe("Category");
             ResourcePath = ResourcePath.Replace("\\\\", "\\");
+            if (String.IsNullOrEmpty(ResourcePath))
+            {
+                ResourcePath = ResourceName;
+            }
             VersionInfo = String.IsNullOrEmpty( xml.ElementStringSafe("VersionInfo"))?null: new VersionInfo(xml.ElementStringSafe("VersionInfo"), ResourceID);
             AuthorRoles = xml.ElementSafe("AuthorRoles");
 

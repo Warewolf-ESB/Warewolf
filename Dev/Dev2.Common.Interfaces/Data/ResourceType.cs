@@ -26,10 +26,12 @@ namespace Dev2.Common.Interfaces.Data
         PluginSource = 32,
         WebSource = 64,
         EmailSource = 128,
-        ServerSource = 256,
-        Folder = 512,
-        Server = 1024,
-        ReservedService = 2048,
+        OauthSource = 256,
+        ServerSource = 512,
+        Folder = 1024,
+        Server = 2048,
+        ReservedService = 4096,
         Message = 3069,
+        
     }
 }

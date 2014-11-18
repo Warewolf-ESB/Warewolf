@@ -166,6 +166,13 @@
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Core\CEventHelper.cs" />
+    <Compile Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml.cs">
+      <DependentUpon>DropboxUploadFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox\Upload\DropBoxUploadFileViewModel.cs" />
+    <Compile Include="Designers2\DropBox\Upload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
       <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
     </Compile>
@@ -712,6 +719,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\DropBox\Upload\DropboxUploadFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox\Upload\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1169,7 +1184,16 @@
   <ItemGroup>
     <Resource Include="Images\ServicePropertyEdit-32.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\dropbox-windows.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Designers2\DropBox\Upload\dropbox-windows.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

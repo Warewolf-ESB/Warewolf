@@ -193,12 +193,14 @@
     <Compile Include="Hosting\VersionStrategyTests.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
+    <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
     <Compile Include="Services\DeleteVersionTest.cs" />
     <Compile Include="Services\FetchExplorerItemsTest.cs" />
+    <Compile Include="Services\FindDependenciesTest.cs" />
     <Compile Include="Services\GetServerVersionTest.cs" />
     <Compile Include="Services\GetVersionTest.cs" />
     <Compile Include="Services\GetDirectoriesRelativeToServerTests.cs" />
@@ -572,7 +574,9 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\10543.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="XML\mondayothersource3.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
