@@ -76,11 +76,12 @@ namespace Dev2.Activities
          {
              if (SelectedSource != null)
              {
-                 var oauthSource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID);
+                 var oauthSource = ResourceCatalog.Instance.GetResource<OauthSource>(GlobalConstants.ServerWorkspaceID, SelectedSource.ResourceID);
                  if (oauthSource == null || oauthSource.ResourceType!=ResourceType.OauthSource)
                  {
                      return "Failure: Source has been deleted.";
                  }
+                 SelectedSource = oauthSource;
              }
 
              if (evaluatedValues["Operation"] == "Write File")
