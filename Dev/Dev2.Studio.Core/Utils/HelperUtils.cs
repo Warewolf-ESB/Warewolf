@@ -31,5 +31,33 @@ namespace Dev2.Utils
                                 popup.Show();
             }
         }
+
+        public static string SanitizePath(string path, string resourceName = "")
+        {
+            if (String.IsNullOrEmpty(path))
+            {
+                return "";
+            }
+
+            if (path.ToLower().StartsWith("root\\\\"))
+            {
+                path = path.Remove(0, 6);
+            }
+
+            if (path.ToLower().Equals("root"))
+            {
+                path = path.Remove(0, 4);
+            }
+
+            if (path.StartsWith("\\"))
+            {
+                path = path.Remove(0, 1);
+            }
+
+            path = String.IsNullOrEmpty(path) ? resourceName : path + "\\" + resourceName;
+
+            return path.Replace("\\\\", "\\")
+                .Replace("\\\\", "\\");
+        }
     }
 }
