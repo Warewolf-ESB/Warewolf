@@ -31,5 +31,6 @@ IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nirc
 
 REM Run Dev2's internal cleanup workflow
 SET /P URL=<%TestRunDirectory%\..\..\..\URL.txt
-%TestRunDirectory%\..\..\..\curl.exe -u DEV2\IntegrationTester:I73573r0 --ntlm "%URL%" -v
+SET /P CREDS=<%TestRunDirectory%\..\..\..\CREDS.txt
+%TestRunDirectory%\..\..\..\curl.exe -u %CREDS% --ntlm "%URL%?LocalPath=%TestRunDirectory%&AgentName=%AgentName%" -v
 exit 0
