@@ -179,7 +179,6 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
             logSettingsViewModel.StudioLogMaxSize = "aa";
             //------------Assert Results-------------------------
-            Assert.AreEqual("200", logSettingsViewModel.StudioLogMaxSize);
             Assert.IsFalse(hasPropertyChanged);
             Assert.IsTrue(logSettingsViewModel.IsDirty);
         }

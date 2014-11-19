@@ -684,7 +684,7 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsTrue(viewModel.IsDirty);
             viewModel.LogSettingsViewModel.IsDirty = false;
             //------------Assert Results-------------------------
-            Assert.AreEqual("Logging", viewModel.SecurityHeader);
+            Assert.AreEqual("Logging", viewModel.LogHeader);
         }
 
         [TestMethod]
@@ -699,7 +699,7 @@ You need Administrator permission.", viewModel.Errors);
             viewModel.LogSettingsViewModel.ServerLogMaxSize = "10";
             Assert.IsTrue(viewModel.IsDirty);
             //------------Assert Results-------------------------
-            Assert.AreEqual("Logging *", viewModel.SecurityHeader);
+            Assert.AreEqual("Logging *", viewModel.LogHeader);
         }
 
         [TestMethod]
