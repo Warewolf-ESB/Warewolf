@@ -20,7 +20,7 @@ namespace Dev2.Views.DropBox
         // ReSharper restore UnusedAutoPropertyAccessor.Local
         IDropBoxHelper DropBoxHelper { get; set; }
         public bool HasAuthenticated { get; set; }
-        public IResourceModel Resource { get; set; }
+        public IContextualResourceModel Resource { get; set; }
         readonly INetworkHelper _network;
         readonly IDropboxFactory _dropboxFactory;
         IDropNetClient _client;
