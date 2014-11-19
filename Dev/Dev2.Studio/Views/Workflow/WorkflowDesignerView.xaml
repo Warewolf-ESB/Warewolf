@@ -26,7 +26,7 @@
                     <ContentControl Grid.Row="1"
                                     Content="{Binding Path=DesignerView}"
                                     AutomationProperties.AutomationId="{Binding Path=DesignerText}"
-                                    KeyUp="UIElement_OnKeyUp"
+                                    KeyUp="UIElement_OnKeyUp" 
                                     cal:Message.Attach="[Event LostKeyboardFocus] = [Action DoWorkspaceSave]">
                         <i:Interaction.Behaviors>
                             <local:WorkflowDesignerLinkBehaviours CollapseAllCommand="{Binding CollapseAllCommand}"

@@ -86,6 +86,10 @@
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.JScript" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.configuration" />
@@ -133,6 +137,7 @@
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\GAC.cs" />
+    <Compile Include="Serialization\ResourceTypeConvertor.cs" />
     <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
     <Compile Include="StringTokenizer\Errors\TokenizeError.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
@@ -152,6 +157,9 @@
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

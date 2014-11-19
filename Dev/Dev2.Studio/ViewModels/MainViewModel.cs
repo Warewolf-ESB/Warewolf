@@ -69,7 +69,6 @@ using Dev2.Views.DropBox;
 using Dev2.Webs;
 using Dev2.Webs.Callbacks;
 using Dev2.Workspaces;
-using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using ServiceStack.Common;
 

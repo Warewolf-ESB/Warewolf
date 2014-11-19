@@ -365,10 +365,10 @@
     <Compile Include="Settings\Logging\LoggingView.xaml.cs">
       <DependentUpon>LoggingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Logging\LoggingViewModel.cs" />
     <Compile Include="Dialogs\IResourcePickerDialog.cs" />
     <Compile Include="Dialogs\ResourcePickerDialog.cs" />
     <Compile Include="Help\IHelpAdorner.cs" />
+    <Compile Include="Settings\Logging\LogSettingsViewModel.cs" />
     <Compile Include="Settings\Scheduler\SchedulerView.xaml.cs">
       <DependentUpon>SchedulerView.xaml</DependentUpon>
     </Compile>
@@ -1087,6 +1087,9 @@
     <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
+    <None Include="Settings.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Warewolf Studio.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
