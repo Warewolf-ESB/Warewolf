@@ -5,7 +5,8 @@
   xmlns:local="clr-namespace:CircularDependencyTool"
   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
   xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
-  xmlns:dependencyVisualization="clr-namespace:Dev2.Views.DependencyVisualization">
+  xmlns:dependencyVisualization="clr-namespace:Dev2.Views.DependencyVisualization"
+    AutomationProperties.AutomationId="UI_DependencyView_AutoID">
     <i:Interaction.Behaviors>
         <behavior:ActualSizeBindingBehavior 
                 ActualWidth="{Binding AvailableWidth, Mode=OneWayToSource}" 
@@ -27,6 +28,7 @@
     </UserControl.Resources>
 
     <ScrollViewer x:Name="myScrollViewer" 
+                  AutomationProperties.AutomationId="UI_TopScrollView_AutoID"
                   HorizontalScrollBarVisibility="Visible" 
                   Padding="17">
         <!-- List of Graphs -->
@@ -38,7 +40,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>                
               <DataTemplate>
-                <dependencyVisualization:GraphView   />
+                    <dependencyVisualization:GraphView  AutomationProperties.AutomationId="UI_DependencyGraph_AutoID" />
                     </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>

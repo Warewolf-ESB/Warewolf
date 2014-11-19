@@ -16,6 +16,8 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Common.Serialization;
+using Newtonsoft.Json;
 
 namespace Dev2.Explorer
 {
@@ -39,6 +41,7 @@ namespace Dev2.Explorer
         public Guid ResourceId { get; set; }
         public Guid ServerId { get; set; }
         public string WebserverUri { get; set; }
+        [JsonConverter(typeof(ResourceTypeConvertor))]
         public ResourceType ResourceType { get; set; }
 
         public IList<IExplorerItem> Children { get; set; }

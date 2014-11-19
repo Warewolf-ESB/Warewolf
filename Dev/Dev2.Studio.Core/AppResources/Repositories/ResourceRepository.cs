@@ -338,7 +338,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 AddResourceToStudioResourceRepository(instanceObj, executeMessage);
             }
-
+            if (ItemAdded != null)
+            {
+                ItemAdded(instanceObj, null);
+            }
             return executeMessage;
         }
 

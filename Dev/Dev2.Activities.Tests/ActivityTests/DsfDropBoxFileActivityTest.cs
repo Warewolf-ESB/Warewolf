@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Hosting;
 using DropNet;
 using DropNet.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,7 +20,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfDropBoxFileActivity_Execute")]
         public void DsfDropBoxFileActivity_Execute_Sucess()
-
         {
             //------------Setup for test--------------------------
             var dsfDropBoxWriteActivity = new DsfDropBoxFileActivity();
@@ -28,14 +30,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfDropBoxWriteActivity.DropNetClient = client.Object;
             dsfDropBoxWriteActivity.File = file.Object;
             dsfDropBoxWriteActivity.Operation = "Write File";
+            dsfDropBoxWriteActivity.SelectedSource = CreateOAuthSource();
             //------------Execute Test---------------------------
             PrivateObject p = new PrivateObject(dsfDropBoxWriteActivity);
-            var result = p.Invoke("PerformExecution", new object[] { new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Write File" } } });
+            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Write File" } });
 
             //------------Assert Results-------------------------
             client.Verify(a => a.UploadFile("/", "meerkat", It.IsAny<byte[]>(), true, null));
             Assert.AreEqual(result.ToString(),"Success");
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfDropBoxFileActivity_Execute")]
@@ -50,9 +54,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfDropBoxWriteActivity.DropNetClient = client.Object;
             dsfDropBoxWriteActivity.File = file.Object;
             dsfDropBoxWriteActivity.Operation = "Write File";
+            dsfDropBoxWriteActivity.SelectedSource = CreateOAuthSource();
             //------------Execute Test---------------------------
             PrivateObject p = new PrivateObject(dsfDropBoxWriteActivity);
-            var result = p.Invoke("PerformExecution", new object[] { new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "/bob/meerkat" }, { "Operation", "Write File" } } });
+            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "/bob/meerkat" }, { "Operation", "Write File" } });
 
             //------------Assert Results-------------------------
             client.Verify(a => a.UploadFile("/bob/", "meerkat", It.IsAny<byte[]>(), true, null));
@@ -62,7 +67,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfDropBoxFileActivity_Execute")]
-
         // ReSharper disable InconsistentNaming
         public void DsfDropBoxFileActivity_ExecuteRead_Sucess()
         {
@@ -76,9 +80,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfDropBoxWriteActivity.DropNetClient = client.Object;
             dsfDropBoxWriteActivity.File = file.Object;
             dsfDropBoxWriteActivity.Operation = "Write File";
+            dsfDropBoxWriteActivity.SelectedSource = CreateOAuthSource();
             //------------Execute Test---------------------------
             PrivateObject p = new PrivateObject(dsfDropBoxWriteActivity);
-            var result = p.Invoke("PerformExecution", new object[] { new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Read File" } } });
+            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Read File" } });
 
             //------------Assert Results-------------------------
             client.Verify(a => a.GetFile( "meerkat"));
@@ -86,8 +91,29 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(result.ToString(), "Success");
         }
 
-
-
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDropBoxFileActivity_Execute")]
+        // ReSharper disable InconsistentNaming
+        public void DsfDropBoxFileActivity_ExecuteSourceNotFound_Failure()
+        {
+            //------------Setup for test--------------------------
+            var dsfDropBoxWriteActivity = new DsfDropBoxFileActivity();
+            var client = new Mock<IDropNetClient>();
+            var file = new Mock<IFile>();
+            var output = new byte[0];
+            client.Setup(a => a.GetFile( "meerkat")).Returns(output);
+            file.Setup(a => a.ReadAllBytes("monkey")).Returns(new byte[0]);
+            dsfDropBoxWriteActivity.DropNetClient = client.Object;
+            dsfDropBoxWriteActivity.File = file.Object;
+            dsfDropBoxWriteActivity.Operation = "Write File";
+            dsfDropBoxWriteActivity.SelectedSource = new OauthSource();
+            //------------Execute Test---------------------------
+            PrivateObject p = new PrivateObject(dsfDropBoxWriteActivity);
+            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Read File" } });
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result.ToString(), "Failure: Source has been deleted.");
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -104,10 +130,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             file.Setup(a => a.ReadAllBytes("monkey")).Returns(new byte[0]);
             dsfDropBoxWriteActivity.DropNetClient = client.Object;
             dsfDropBoxWriteActivity.File = file.Object;
-
+            dsfDropBoxWriteActivity.SelectedSource = CreateOAuthSource();
             //------------Execute Test---------------------------
             PrivateObject p = new PrivateObject(dsfDropBoxWriteActivity);
-            var result = p.Invoke("PerformExecution", new object[] { new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "" } } });
+            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "" } });
 
             //------------Assert Results-------------------------
             client.Verify(a => a.GetFile("meerkat"),Times.Never());
@@ -132,9 +158,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfDropBoxWriteActivity.DropNetClient = client.Object;
             dsfDropBoxWriteActivity.File = file.Object;
             dsfDropBoxWriteActivity.Operation = "Write File";
+            dsfDropBoxWriteActivity.SelectedSource = CreateOAuthSource();
             //------------Execute Test---------------------------
             PrivateObject p = new PrivateObject(dsfDropBoxWriteActivity);
-            p.Invoke("PerformExecution", new object[] { new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Read File" } } });
+            p.Invoke("PerformExecution", new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Read File" } });
 
         }
 
@@ -155,9 +182,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfDropBoxWriteActivity.DropNetClient = client.Object;
             dsfDropBoxWriteActivity.File = file.Object;
             dsfDropBoxWriteActivity.Operation = "Write File";
+            dsfDropBoxWriteActivity.SelectedSource = CreateOAuthSource();
             //------------Execute Test---------------------------
             PrivateObject p = new PrivateObject(dsfDropBoxWriteActivity);
-            var result = p.Invoke("PerformExecution", new object[] { new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Write File" } } });
+            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Write File" } });
 
             //------------Assert Results-------------------------
             client.Verify(a => a.UploadFile("/", "meerkat", It.IsAny<byte[]>(), true, null));
@@ -178,15 +206,22 @@ namespace Dev2.Tests.Activities.ActivityTests
             dsfDropBoxWriteActivity.DropNetClient = client.Object;
             dsfDropBoxWriteActivity.File = file.Object;
             dsfDropBoxWriteActivity.Operation = "Write File";
+            dsfDropBoxWriteActivity.SelectedSource = CreateOAuthSource();
             //------------Execute Test---------------------------
             PrivateObject p = new PrivateObject(dsfDropBoxWriteActivity);
-            p.Invoke("PerformExecution", new object[] { new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Write File" } } });
+            p.Invoke("PerformExecution", new Dictionary<string, string> { { "SourceFile", "monkey" }, { "DestinationPath", "meerkat" }, { "Operation", "Write File" } });
 
             //------------Assert Results-------------------------
             client.Verify(a => a.UploadFile("/", "meerkat", It.IsAny<byte[]>(), true, null),Times.Never());
            
         }
         // ReSharper restore InconsistentNaming
-
+        static OauthSource CreateOAuthSource()
+        {
+            var resourceID = Guid.NewGuid();
+            var oauthSource = new OauthSource { ResourcePath = "OAuth Tests\\" + resourceID, ResourceName = resourceID.ToString(), ResourceID = resourceID };
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, oauthSource);
+            return oauthSource;
+        }
     }
 }
