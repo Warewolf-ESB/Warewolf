@@ -21,15 +21,15 @@ REM ****************************************************************************
 
 REM Stop Studio:
 taskkill /im "Warewolf Studio.exe"
-IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Studio.exe"
 
 REM Stop Server:
 sc STOP "Warewolf Server"
 %DeploymentDirectory%\Server\Dev2.Server.exe -x
 taskkill /im "Warewolf Server.exe"
-IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe"
 
 REM Run Dev2's internal cleanup workflow
+IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Studio.exe"
+IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe"
 SET /P URL=<%TestRunDirectory%\..\..\..\URL.txt
 SET /P CREDS=<%TestRunDirectory%\..\..\..\CREDS.txt
 %TestRunDirectory%\..\..\..\curl.exe -u %CREDS% --ntlm "%URL%?LocalPath=%TestRunDirectory%&AgentName=%AgentName%" -v
