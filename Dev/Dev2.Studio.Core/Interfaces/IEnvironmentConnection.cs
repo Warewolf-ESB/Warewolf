@@ -69,5 +69,6 @@ namespace Dev2.Studio.Core.Interfaces
         IPrincipal Principal { get; }
         event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
         Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
+        HubConnection HubConnection { get; }
     }
 }

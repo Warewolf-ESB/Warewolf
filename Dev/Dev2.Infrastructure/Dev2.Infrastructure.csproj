@@ -182,6 +182,7 @@
     <Compile Include="Services\Security\AuthorizationHelpers.cs" />
     <Compile Include="Services\Security\AuthorizationServiceBase.cs" />
     <Compile Include="Services\Security\IAuthorizationRequest.cs" />
+    <Compile Include="Services\Security\LoggingSettingsTO.cs" />
     <Compile Include="Services\Security\MoqInstallerActions\InstallerActionsForDevelopment.cs" />
     <Compile Include="Services\Security\MoqInstallerActions\MoqInstallerActionFactory.cs" />
     <Compile Include="Services\Security\MoqInstallerActions\MoqInstallerActions.cs" />

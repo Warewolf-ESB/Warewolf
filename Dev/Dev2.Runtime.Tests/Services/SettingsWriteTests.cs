@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -18,7 +17,6 @@ using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Data.Settings;
-using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -85,7 +83,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var execute = settingsWrite.Execute(new Dictionary<string, StringBuilder> { { "Settings", new StringBuilder("Something") } }, null);
             //------------Assert Results-------------------------
-            StringAssert.Contains(execute.ToString(), "Error writing settings configuration.");
+            StringAssert.Contains(execute.ToString(), "Error writing settings.");
 
         }
 
@@ -109,7 +107,7 @@ namespace Dev2.Tests.Runtime.Services
 
             var msg = ToMsg(execute);
 
-            Assert.AreEqual("Success", msg.Message.ToString());
+            StringAssert.Contains(msg.Message.ToString(), "Success");
         }
 
         #endregion Exeute

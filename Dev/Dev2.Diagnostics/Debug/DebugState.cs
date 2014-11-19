@@ -19,9 +19,9 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Diagnostics.Logging;
 
 #endregion
 
@@ -550,7 +550,7 @@ namespace Dev2.Diagnostics.Debug
             }
             //-----------------------------
 
-            var settings = Dev2Logger.LoggingSettings;
+            var settings = WorkflowLoggger.LoggingSettings;
 
             //Version
             if(settings.IsVersionLogged && !string.IsNullOrWhiteSpace(Version))
