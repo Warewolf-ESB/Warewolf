@@ -1740,9 +1740,7 @@ namespace Dev2
                 {
                     try
                     {
-                        for(var a = 0; a < 10; a++)
-                            Thread.Sleep(1000);
-                            _owinServer = WebServerStartup.Start(_endpoints);
+                        _owinServer = WebServerStartup.Start(_endpoints);
                         EnvironmentVariables.IsServerOnline = true; // flag server as active
                         WriteLine("\r\nWeb Server Started");
                         foreach(var endpoint in _endpoints)

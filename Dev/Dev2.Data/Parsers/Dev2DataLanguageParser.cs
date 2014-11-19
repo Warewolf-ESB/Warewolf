@@ -578,7 +578,7 @@ namespace Dev2.Data.Parsers
                             }
                             foreach (IDev2DataLanguageIntellisensePart t1 in t.Children)
                             {
-                                if (t1.Name.Contains(search))
+                                if (t1.Name.ToLower().Contains(search))
                                 {
                                     part = IntellisenseFactory.CreateDataListValidationRecordsetPart(t.Name, t1.Name, ((!string.IsNullOrEmpty(t1.Description)) ? t1.Description : " Input: Use last row, Result: Append new record"));
                                     result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
