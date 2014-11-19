@@ -227,12 +227,12 @@ namespace Dev2.Core.Tests
             string header = string.Empty;
             MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
             MessageBoxImage imageType = MessageBoxImage.Error;
-            var expectedDesc = "Security settings have not been saved." + Environment.NewLine
+            var expectedDesc = "Settings have not been saved." + Environment.NewLine
                               + "Would you like to save the settings? " + Environment.NewLine +
                               "-------------------------------------------------------------------" +
-                              "Yes - Save the security settings." + Environment.NewLine +
+                              "Yes - Save the settings." + Environment.NewLine +
                               "No - Discard your changes." + Environment.NewLine +
-                              "Cancel - Returns you to security settings.";
+                              "Cancel - Returns you to settings.";
 
             var popupController = new PopupController
             {
@@ -252,7 +252,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.YesNoCancel, buttons);
-            Assert.AreEqual("Security Settings have changed", header);
+            Assert.AreEqual("Settings have changed", header);
             Assert.AreEqual(expectedDesc, description);
             Assert.AreEqual(MessageBoxImage.Information, imageType);
         }

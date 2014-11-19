@@ -427,11 +427,11 @@ namespace Dev2.Settings
 
         MessageBoxResult GetSaveResult()
         {
-            if(_popupController != null && SecurityViewModel.IsDirty)
+            if(_popupController != null && IsDirty)
             {
                 return _popupController.ShowSettingsCloseConfirmation();
             }
-            return !SecurityViewModel.IsDirty ? MessageBoxResult.No : MessageBoxResult.None;
+            return !IsDirty ? MessageBoxResult.No : MessageBoxResult.None;
         }
 
         #endregion

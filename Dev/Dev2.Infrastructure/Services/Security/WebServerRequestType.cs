@@ -30,6 +30,7 @@ namespace Dev2.Services.Security
         WebGetView,
         WebInvokeService,
         WebExecuteWorkflow,
+        WebExecuteGetLogFile,
         WebBookmarkWorkflow,
 
         // See Hubs
