@@ -231,14 +231,6 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
             viewModel.IsDirty = true;
             viewModel.SecurityViewModel.IsDirty = true;
-#pragma warning disable 168
-            var description = "Security settings have not been saved." + Environment.NewLine
-#pragma warning restore 168
- + "Would you like to save the settings? " + Environment.NewLine +
-                                 "-------------------------------------------------------------------" +
-                                 "Yes - Save the security settings." + Environment.NewLine +
-                                 "No - Discard your changes." + Environment.NewLine +
-                                 "Cancel - Returns you to security settings.";
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
             //------------Assert Results-------------------------

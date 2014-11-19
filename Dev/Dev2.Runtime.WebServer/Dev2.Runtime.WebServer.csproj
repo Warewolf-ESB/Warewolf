@@ -149,6 +149,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="Controllers\AbstractController.cs" />
+    <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
     <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
     <Compile Include="Handlers\WebsiteResourceHandler.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Handlers\IRequestHandler.cs" />
     <Compile Include="Handlers\WebPostRequestHandler.cs" />
     <Compile Include="Responses\ContentTypes.cs" />
+    <Compile Include="Responses\FileResponseWriter.cs" />
     <Compile Include="Responses\Streams\HttpPushContentStream.cs" />
     <Compile Include="ICommunicationContext.cs" />
     <Compile Include="ICommunicationRequest.cs" />

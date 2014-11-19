@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -35,6 +36,7 @@ namespace Dev2.Settings.Logging
         LogLevel _serverLogLevel;
         LogLevel _studioLogLevel;
         ProgressDialogViewModel _progressDialogViewModel;
+        string _serverLogFile;
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
         {
@@ -69,30 +71,29 @@ namespace Dev2.Settings.Logging
             {
                 dialog.Close();
             });
+            _progressDialogViewModel.StatusChanged("Server Log File", 0, 0);
+            _progressDialogViewModel.SubLabel = "Preparing to download Warewolf Server log file.";
+            dialog.DataContext = _progressDialogViewModel;
             _progressDialogViewModel.Show();
             client.DownloadProgressChanged += DownloadProgressChanged;
-            client.DownloadDataCompleted += DownloadFileCompleted;
-            var managementServiceUri = WebServer.GetManagementServiceUri("FetchCurrentServerLogService", CurrentEnvironment.Connection);
-            client.DownloadDataAsync(managementServiceUri);
-            // Starts the download
-            
-            
+            client.DownloadFileCompleted += DownloadFileCompleted;
+            var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
+            var tempPath = Path.GetTempPath();
+            _serverLogFile = Path.Combine(tempPath, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
+            client.DownloadFileAsync(managementServiceUri, _serverLogFile);
            
         }
 
-        void DownloadFileCompleted(object sender, DownloadDataCompletedEventArgs e)
+        void DownloadFileCompleted(object sender, AsyncCompletedEventArgs asyncCompletedEventArgs)
         {
             _progressDialogViewModel.Close();
-            string result = System.Text.Encoding.UTF8.GetString(e.Result);
-            var tempPath = Path.GetTempPath();
-            var serverLogFile = Path.Combine(tempPath, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
-            File.WriteAllText(serverLogFile,result);
-            Process.Start(serverLogFile);
+            Process.Start(_serverLogFile);
         }
 
         void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            _progressDialogViewModel.StatusChanged("Server Log File",e.ProgressPercentage,e.TotalBytesToReceive);
+            _progressDialogViewModel.SubLabel = "";
+            _progressDialogViewModel.StatusChanged("Server Log File", e.ProgressPercentage, e.TotalBytesToReceive);
         }
 
         void OpenStudioLogFile(object o)
@@ -115,8 +116,6 @@ namespace Dev2.Settings.Logging
             logSettings.LogSize = int.Parse(ServerLogMaxSize);
             Dev2Logger.WriteLogSettings(StudioLogMaxSize,StudioLogLevel.ToString());
         }
-
-        
 
         protected override void CloseHelp()
         {

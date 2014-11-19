@@ -167,5 +167,13 @@ namespace Dev2.Runtime.WebServer.Controllers
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables)
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
+        
+        [HttpGet]
+        [HttpPost]
+        [Route("internal/getlogfile")]
+        public HttpResponseMessage ExecuteGetLogFile()
+        {
+            return ProcessRequest<GetLogFileServiceHandler>();
+        }
     }
 }

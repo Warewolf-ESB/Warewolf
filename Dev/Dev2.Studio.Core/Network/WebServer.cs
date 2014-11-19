@@ -118,14 +118,14 @@ namespace Dev2.Studio.Core.Network
             return url;
         }
         
-        public static Uri GetManagementServiceUri(string managementService,IEnvironmentConnection connection)
+        public static Uri GetInternalServiceUri(string serviceName,IEnvironmentConnection connection)
         {
             if (connection == null || !connection.IsConnected)
             {
                 return null;
             }
-            
-            var relativeUrl = string.Format("/services/{0}.json", managementService);
+
+            var relativeUrl = string.Format("/internal/{0}", serviceName);
             Uri url;
             Uri.TryCreate(connection.WebServerUri, relativeUrl, out url);
             return url;
