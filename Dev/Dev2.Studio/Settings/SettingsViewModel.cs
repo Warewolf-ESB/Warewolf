@@ -280,8 +280,16 @@ namespace Dev2.Settings
             switch(propertyName)
             {
                 case "ShowLogging":
-                    ShowLogging = true;
-                    ShowSecurity = !ShowLogging;
+                    if (Settings == null || Settings.Logging == null)
+                    {
+                        ShowLogging = false;
+                        ShowSecurity = true;
+                    }
+                    else
+                    {
+                        ShowLogging = true;
+                        ShowSecurity = !ShowLogging;
+                    }
                     break;
 
                 case "ShowSecurity":
@@ -336,7 +344,7 @@ namespace Dev2.Settings
                 {
                     ShowError("Load Error", Settings.Error);
                 }
-            });
+            });            
         }
 
         protected virtual SecurityViewModel CreateSecurityViewModel()
@@ -353,6 +361,7 @@ namespace Dev2.Settings
         {
             var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(SettingsItemViewModel.IsDirtyProperty, typeof(SettingsItemViewModel));
             isDirtyProperty.AddValueChanged(LogSettingsViewModel, OnIsDirtyPropertyChanged);
+            isDirtyProperty.AddValueChanged(SecurityViewModel, OnIsDirtyPropertyChanged);
             SecurityViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsDirty")

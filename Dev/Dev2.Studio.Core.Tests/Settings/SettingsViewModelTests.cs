@@ -111,7 +111,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(settingsViewModel.ShowSecurity);
+            Assert.IsTrue(settingsViewModel.ShowSecurity);
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace Dev2.Core.Tests.Settings
             settingsViewModel.ShowLogging = true;
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(propertyChanged);
+            Assert.IsTrue(propertyChanged);
         }
 
         [TestMethod]
@@ -147,7 +147,7 @@ namespace Dev2.Core.Tests.Settings
             settingsViewModel.ShowLogging = false;
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(propertyChanged);
+            Assert.IsFalse(propertyChanged);
         }
 
         [TestMethod]

@@ -133,7 +133,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual("50", logSettingsViewModel.ServerLogMaxSize);
             Assert.IsFalse(hasPropertyChanged);
-            Assert.IsTrue(logSettingsViewModel.IsDirty);
+            Assert.IsFalse(logSettingsViewModel.IsDirty);
         }
 
         [TestMethod]
@@ -180,7 +180,7 @@ namespace Dev2.Core.Tests.Settings
             logSettingsViewModel.StudioLogMaxSize = "aa";
             //------------Assert Results-------------------------
             Assert.IsFalse(hasPropertyChanged);
-            Assert.IsTrue(logSettingsViewModel.IsDirty);
+            Assert.IsFalse(logSettingsViewModel.IsDirty);
         }
 
         static LogSettingsViewModel CreateLogSettingViewModel()

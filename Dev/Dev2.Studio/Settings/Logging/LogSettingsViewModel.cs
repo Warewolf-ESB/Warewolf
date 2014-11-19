@@ -46,16 +46,16 @@ namespace Dev2.Settings.Logging
             LogLevel serverLogLevel;
             if (Enum.TryParse(logging.LogLevel,out serverLogLevel))
             {
-                ServerLogLevel = serverLogLevel;
+                _serverLogLevel = serverLogLevel;
             }
-            ServerLogMaxSize = logging.LogSize.ToString(CultureInfo.InvariantCulture);
+            _serverLogMaxSize = logging.LogSize.ToString(CultureInfo.InvariantCulture);
 
             LogLevel studioLogLevel;
             if (Enum.TryParse(Dev2Logger.GetLogLevel(), out studioLogLevel))
             {
-                StudioLogLevel = studioLogLevel;
+                _studioLogLevel = studioLogLevel;
             }
-            StudioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
+            _studioLogMaxSize = Dev2Logger.GetLogMaxSize().ToString(CultureInfo.InvariantCulture);
         }
 
         void OpenServerLogFile(object o)
