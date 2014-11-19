@@ -21,5 +21,10 @@ REM ****************************************************************************
 
 REM Stop Server:
 taskkill /im "Warewolf Server.exe"
+
+REM Run Dev2's internal cleanup workflow
 IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe"
+SET /P URL=<%TestRunDirectory%\..\..\..\URL.txt
+SET /P CREDS=<%TestRunDirectory%\..\..\..\CREDS.txt
+IF EXIST %TestRunDirectory%\..\..\..\curl.exe %TestRunDirectory%\..\..\..\curl.exe -u %CREDS% --ntlm "%URL%?LocalPath=%TestRunDirectory%&AgentName=%AgentName%" -v
 exit 0

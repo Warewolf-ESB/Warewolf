@@ -25,7 +25,11 @@ IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nirc
 
 REM Stop Server:
 sc STOP "Warewolf Server"
-%DeploymentDirectory%\ServerbinDebug\Dev2.Server.exe -x
+%DeploymentDirectory%\Server\Dev2.Server.exe -x
 taskkill /im "Warewolf Server.exe"
 IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe"
+
+REM Run Dev2's internal cleanup workflow
+SET /P URL=<%TestRunDirectory%\..\..\..\URL.txt
+%TestRunDirectory%\..\..\..\curl.exe -u DEV2\IntegrationTester:I73573r0 --ntlm "%URL%" -v
 exit 0
