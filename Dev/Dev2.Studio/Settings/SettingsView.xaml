@@ -139,8 +139,7 @@
                            Text="{Binding Errors}"
                            VerticalAlignment="Center"
                            Visibility="{Binding IsErrorsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                           AutomationProperties.AutomationId="UI_Errors_AutoID">
-                </TextBlock>
+                           AutomationProperties.AutomationId="UI_Errors_AutoID" />
 
                 <Button Content="Save"
                         Command="{Binding SaveCommand}"

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -154,7 +153,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         private static string GetUniqueOutputPath(string extension)
         {
-            return Path.Combine(_tempTestFolder, Guid.NewGuid().ToString() + extension);
+            return Path.Combine(_tempTestFolder, Guid.NewGuid() + extension);
         }
     }
 }

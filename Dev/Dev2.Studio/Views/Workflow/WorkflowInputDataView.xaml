@@ -17,7 +17,7 @@
         AutomationProperties.AutomationId="UI_DebugInputWindow_AutoID">
     
     <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png" ></BitmapImage>
+        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png" />
     </Window.Icon>
     <Window.InputBindings>
         <KeyBinding Key="F6" Command="{Binding Path=OkCommand}"/>
@@ -37,8 +37,8 @@
         <TabControl x:Name="TabItems" SelectionChanged="TabControlSelectionChanged">
             <TabItem AutomationProperties.AutomationId="UI_InputDataTab_AutoID" Header="Input Data" IsSelected="True">
                 <Grid>
-                <TextBlock HorizontalAlignment="Center" Text="Mark the Input checkbox in the variable window to set workflow inputs."></TextBlock>
-                <DataGrid SelectionMode="Single" 
+                <TextBlock HorizontalAlignment="Center" Text="Mark the Input checkbox in the variable window to set workflow inputs." />
+                    <DataGrid SelectionMode="Single" 
                           AutoGenerateColumns="False" 
                           EnableRowVirtualization="True" 
                           ItemsSource="{Binding WorkflowInputs}" 

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -18,9 +17,6 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Common.Interfaces.Enums.Enums;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
@@ -66,9 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             }
             else
             {
-                Assert.Fail(
-                    string.Format("The following errors occurred while retrieving datalist items\r\nerrors:{0}",
-                                    error));
+                Assert.Fail("The following errors occurred while retrieving datalist items\r\nerrors:{0}", error);
             }
             
         }

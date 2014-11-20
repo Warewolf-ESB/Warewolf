@@ -9,11 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.TOTests
@@ -49,7 +45,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var caseConvertTO = new CaseConvertTO() { StringToConvert = string.Empty };
+            var caseConvertTO = new CaseConvertTO { StringToConvert = string.Empty };
             //------------Assert Results-------------------------
             Assert.IsFalse(caseConvertTO.CanAdd());
         }
@@ -61,7 +57,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var caseConvertTO = new CaseConvertTO() { StringToConvert = "Value" };
+            var caseConvertTO = new CaseConvertTO { StringToConvert = "Value" };
             //------------Assert Results-------------------------
             Assert.IsTrue(caseConvertTO.CanAdd());
         }
@@ -77,7 +73,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var caseConvertTO = new CaseConvertTO() { StringToConvert = string.Empty };
+            var caseConvertTO = new CaseConvertTO { StringToConvert = string.Empty };
             //------------Assert Results-------------------------
             Assert.IsTrue(caseConvertTO.CanRemove());
         }
@@ -89,7 +85,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var caseConvertTO = new CaseConvertTO() { StringToConvert = "Value" };
+            var caseConvertTO = new CaseConvertTO { StringToConvert = "Value" };
             //------------Assert Results-------------------------
             Assert.IsFalse(caseConvertTO.CanRemove());
         }

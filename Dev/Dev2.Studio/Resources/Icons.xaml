@@ -1983,9 +1983,7 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
-    <BitmapImage x:Key="ToolDropBoxPng-32" UriSource="../Images/dropbox-windows.png">
-      
-    </BitmapImage>
+    <BitmapImage x:Key="ToolDropBoxPng-32" UriSource="../Images/dropbox-windows.png" />
     <DrawingImage x:Key="ToolDropBox-32">
         <DrawingImage.Drawing>
             <DrawingGroup>

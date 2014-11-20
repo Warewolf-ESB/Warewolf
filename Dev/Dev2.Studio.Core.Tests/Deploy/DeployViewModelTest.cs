@@ -9,7 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -32,11 +36,6 @@ using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -799,10 +798,10 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DeployViewModel_CanDeploy_IsAuthorizedToDeployToFrom_Correct()
         {
-            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: false, isAuthorizedDeployFrom: false, isAuthorizedDeployTo: false);
-            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: false, isAuthorizedDeployFrom: false, isAuthorizedDeployTo: true);
-            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: false, isAuthorizedDeployFrom: true, isAuthorizedDeployTo: false);
-            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: true, isAuthorizedDeployFrom: true, isAuthorizedDeployTo: true);
+            Verify_CanDeploy_IsAuthorized(false, false, false);
+            Verify_CanDeploy_IsAuthorized(false, false, true);
+            Verify_CanDeploy_IsAuthorized(false, true, false);
+            Verify_CanDeploy_IsAuthorized(true, true, true);
         }
 
 
@@ -813,8 +812,8 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DeployViewModel_CanSelectAllDependencies_IsAuthorizedToDeployFrom_Correct()
         {
-            Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: false, isAuthorizedDeployFrom: false);
-            Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: true, isAuthorizedDeployFrom: true);
+            Verify_CanSelectAllDependencies_IsAuthorized(false, false);
+            Verify_CanSelectAllDependencies_IsAuthorized(true, true);
         }
 
         void Verify_CanSelectAllDependencies_IsAuthorized(bool expectedCanSelect, bool isAuthorizedDeployFrom)

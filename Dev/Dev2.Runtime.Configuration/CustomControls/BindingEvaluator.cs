@@ -24,7 +24,7 @@ namespace System.Windows.Controls
     /// context leaf node.
     /// </summary>
     /// <typeparam name="T">The type of dynamic binding to return.</typeparam>
-    internal partial class BindingEvaluator<T> : FrameworkElement
+    internal class BindingEvaluator<T> : FrameworkElement
     {
         /// <summary>
         /// Gets or sets the string value binding used by the control.

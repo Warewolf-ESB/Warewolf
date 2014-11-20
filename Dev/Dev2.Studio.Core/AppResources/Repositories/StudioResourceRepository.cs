@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -195,7 +194,7 @@ namespace Dev2.AppResources.Repositories
 
             if(environment == null)
             {
-                throw new Exception(string.Format("Environment Id : [{0}] was not found", environmentId.ToString()));
+                throw new Exception(string.Format("Environment Id : [{0}] was not found", environmentId));
             }
 
             var explorerItemModel = LoadEnvironment(environmentId);

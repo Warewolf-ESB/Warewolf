@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
@@ -23,12 +22,9 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Communication;
-using Dev2.Core.Tests.Environments;
-using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
@@ -113,23 +109,23 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         public void ServiceDesignerViewModel_Constructor_ImageSource_InitializedCorrectlyForType()
         {
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "RemoteService", expectedImageSource: "RemoteWarewolf-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "DbService", expectedImageSource: "DatabaseService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "WebService", expectedImageSource: "WebService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "PluginService", expectedImageSource: "PluginService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "Workflow-32", serviceUri: "");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "RemoteWarewolf-32", serviceUri: "x");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("RemoteService", "RemoteWarewolf-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("DbService", "DatabaseService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("WebService", "WebService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("PluginService", "PluginService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("Workflow", "Workflow-32", "");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("Workflow", "RemoteWarewolf-32", "x");
 
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "BizRule", expectedImageSource: "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeDynamicService", expectedImageSource: "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeManagementDynamicService", expectedImageSource: "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeServiceMethod", expectedImageSource: "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Switch", expectedImageSource: "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Unknown", expectedImageSource: "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("BizRule", "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("InvokeDynamicService", "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("InvokeManagementDynamicService", "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("InvokeServiceMethod", "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("Switch", "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("Unknown", "ToolService-32");
 
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "xxx", expectedImageSource: "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "", expectedImageSource: "ToolService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: null, expectedImageSource: "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("xxx", "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType("", "ToolService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(null, "ToolService-32");
         }
 
         void Verify_Constructor_ImageSource_InitializedCorrectlyForType(string type, string expectedImageSource, string serviceUri = null)

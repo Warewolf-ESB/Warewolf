@@ -9,12 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Dev2.Common.Common;
-using Dev2.PathOperations;
-using Dev2.Tests;
-using Ionic.Zip;
-using Microsoft.Win32.SafeHandles;
 using System;
 using System.IO;
 using System.Net;
@@ -22,6 +16,11 @@ using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
+using Dev2.Common.Common;
+using Dev2.PathOperations;
+using Dev2.Tests;
+using Ionic.Zip;
+using Microsoft.Win32.SafeHandles;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.UnitTest.Framework.PathOperationTests
@@ -152,7 +151,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
             try
             {
-                request = (FtpWebRequest)FtpWebRequest.Create(path);
+                request = (FtpWebRequest)WebRequest.Create(path);
                 request.Method = WebRequestMethods.Ftp.UploadFile;
                 request.UseBinary = true;
                 request.KeepAlive = false;
@@ -202,7 +201,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
             try
             {
-                request = (FtpWebRequest)FtpWebRequest.Create(ConvertSSLToPlain(path));
+                request = (FtpWebRequest)WebRequest.Create(ConvertSSLToPlain(path));
                 if(string.IsNullOrEmpty(Path.GetFileName(path)))
                 {
                     request.Method = WebRequestMethods.Ftp.RemoveDirectory;
@@ -214,7 +213,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
                 if(ftps)
                 {
-                    ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+                    ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
                 }
                 request.UseBinary = true;
                 request.KeepAlive = false;
@@ -245,7 +244,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
             Stream ftpStream = Stream.Null;
             try
             {
-                request = (FtpWebRequest)FtpWebRequest.Create(path);
+                request = (FtpWebRequest)WebRequest.Create(path);
                 request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 request.UseBinary = true;
                 request.KeepAlive = false;
@@ -331,10 +330,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
             {
                 return safeTokenHandle;
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
 

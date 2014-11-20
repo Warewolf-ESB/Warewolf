@@ -9,16 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
-using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 // ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.TO
 {

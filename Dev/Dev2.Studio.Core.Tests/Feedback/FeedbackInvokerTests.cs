@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
@@ -71,8 +70,8 @@ namespace Dev2.Core.Tests.Feedback
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            CustomContainer.Register<IPopupController>(popup.Object);
-            CustomContainer.Register<IFeedbackAction>(feedbackAction.Object);
+            CustomContainer.Register(popup.Object);
+            CustomContainer.Register(feedbackAction.Object);
 
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
 
@@ -88,7 +87,7 @@ namespace Dev2.Core.Tests.Feedback
         public void InvokeFeedback_Where_ActionIsNull_Expected_ArgumentNullException()
         {
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
 
             feedbackInvoker.InvokeFeedback(null);
@@ -108,7 +107,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, feedbackAction2.Object);
@@ -133,7 +132,7 @@ namespace Dev2.Core.Tests.Feedback
             Mock<IPopupController> yesPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
             Mock<IPopupController> noPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
 
-            CustomContainer.Register<IPopupController>(yesPopup.Object);
+            CustomContainer.Register(yesPopup.Object);
             FeedbackInvoker theInvoker = new FeedbackInvoker { CurrentAction = feedbackAction.Object };
             // If it's already recording, display a box to confirm if the user wants to stop the recording, and click Yes
             theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
@@ -168,7 +167,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, feedbackAction2.Object);
@@ -193,7 +192,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, feedbackAction2.Object);
@@ -214,7 +213,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
 
             feedbackInvoker.InvokeFeedback(null, feedbackAction2.Object);
@@ -230,7 +229,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction1.Setup(f => f.StartFeedback()).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, null);
@@ -267,7 +266,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction1.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
@@ -288,7 +287,7 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);

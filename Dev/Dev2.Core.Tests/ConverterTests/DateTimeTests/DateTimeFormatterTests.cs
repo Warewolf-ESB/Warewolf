@@ -9,12 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
-using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Converters.DateAndTime;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
 {
@@ -50,7 +49,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         // You can use the following additional attributes as you write your tests:
         //
         // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
             formatter = DateTimeConverterFactory.CreateFormatter();

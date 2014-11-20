@@ -727,7 +727,7 @@ Allowed:
 To perform a calculation, put the calculation in here in BODMAS format.
 There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.</value>
   </data>
-    <data name="DropBoxToolTipLocalSource" xml:space="preserve">
+  <data name="DropBoxToolTipLocalSource" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 The file must be available on the local file system.</value>
   </data>
@@ -1323,7 +1323,7 @@ na</value>
   </data>
   <data name="ZipHelpDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-Put the full path of the destination you are unzipping to here.
+Put the full path of the destination you are zipping to here.
 You can use File System, URI, SFTP, FTP or FTPS format.
 
 Allowed:
@@ -1359,7 +1359,7 @@ Allowed:
   </data>
   <data name="ZipToolTipDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-Put the full path of the destination you are unzipping to here.
+Put the full path of the destination you are zipping to here.
 You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ZipToolTipFileFolder" xml:space="preserve">
