@@ -22,7 +22,12 @@ namespace Dev2.Utils
         public static string GetStudioLogSettingsConfigFile()
         {
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var settingsConfigFile = Path.Combine(localAppDataFolder, "Warewolf", "Studio", "Settings.config");
+            var studioFolder = Path.Combine(localAppDataFolder, "Warewolf", "Studio");
+            if (!Directory.Exists(studioFolder))
+            {
+                Directory.CreateDirectory(studioFolder);
+            }
+            var settingsConfigFile = Path.Combine(studioFolder, "Settings.config");
             return settingsConfigFile;
         }
         public static void ShowTrustRelationshipError(SystemException exception)
