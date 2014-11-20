@@ -15,6 +15,7 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -31,6 +32,8 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
+using Dev2.Workspaces;
+using log4net.Config;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -52,6 +55,12 @@ namespace ActivityUnitTests
         public BaseActivityUnitTest()
         {
             CallBackData = "Default Data";
+            const string settingsConfigFile = "Settings.config";
+            if (!File.Exists(settingsConfigFile))
+            {
+                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
+            }
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             TestStartNode = new FlowStep
             {
                 Action = new DsfCommentActivity()
@@ -139,78 +148,84 @@ namespace ActivityUnitTests
         public dynamic ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
 
-            var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
-            svc.SetActivity(FlowchartProcess);
-            Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
-
-            if(CurrentDl == null)
+            try
             {
-                CurrentDl = TestData;
-            }
+                var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
+                svc.SetActivity(FlowchartProcess);
+                Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
 
-            var errors = new ErrorResultTO();
-            if(ExecutionId == Guid.Empty)
-            {
-                Compiler = DataListFactory.CreateDataListCompiler();
-
-                ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
-                if(dataObject != null)
+                if(CurrentDl == null)
                 {
-                    dataObject.DataListID = ExecutionId;
-                    dataObject.ExecutingUser = User;
-                    dataObject.DataList = new StringBuilder(CurrentDl);
+                    CurrentDl = TestData;
                 }
 
-            }
-
-            if(errors.HasErrors())
-            {
-                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
-
-                if(throwException)
+                var errors = new ErrorResultTO();
+                if(ExecutionId == Guid.Empty)
                 {
-                    throw new Exception(errorString);
+                    Compiler = DataListFactory.CreateDataListCompiler();
+
+                    ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
+                    if(dataObject != null)
+                    {
+                        dataObject.DataListID = ExecutionId;
+                        dataObject.ExecutingUser = User;
+                        dataObject.DataList = new StringBuilder(CurrentDl);
+                    }
+
                 }
-            }
 
-            if(dataObject == null)
-            {
-
-                dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+                if(errors.HasErrors())
                 {
-                    // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
-                    //       if this is NOT provided which will cause the tests to fail!
-                    ServerID = Guid.NewGuid(),
-                    ExecutingUser = User,
-                    IsDebug = isDebugMode,
-                    EnvironmentID = currentEnvironmentId,
-                    IsRemoteInvokeOverridden = overrideRemote,
-                    DataList = new StringBuilder(CurrentDl)
-                };
+                    string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
+
+                    if(throwException)
+                    {
+                        throw new Exception(errorString);
+                    }
+                }
+
+                if(dataObject == null)
+                {
+
+                    dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+                    {
+                        // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                        //       if this is NOT provided which will cause the tests to fail!
+                        ServerID = Guid.NewGuid(),
+                        ExecutingUser = User,
+                        IsDebug = isDebugMode,
+                        EnvironmentID = currentEnvironmentId,
+                        IsRemoteInvokeOverridden = overrideRemote,
+                        DataList = new StringBuilder(CurrentDl)
+                    };
+
+                }
+                dataObject.IsDebug = isDebug;
+
+                // we now need to set a thread ID ;)
+                dataObject.ParentThreadID = 1;
+
+                if(isRemoteInvoke)
+                {
+                    dataObject.RemoteInvoke = true;
+                    dataObject.RemoteInvokerID = Guid.NewGuid().ToString();
+                }
+
+                var esbChannel = mockChannel.Object;
+                if(channel != null)
+                {
+                    esbChannel = channel;
+                }
+                WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+
+                errors.ClearErrors();
+                dataObject.DataListID = wfec.Execute(out errors);
 
             }
-            dataObject.IsDebug = isDebug;
-
-            // we now need to set a thread ID ;)
-            dataObject.ParentThreadID = 1;
-
-            if(isRemoteInvoke)
+            catch(Exception e)
             {
-                dataObject.RemoteInvoke = true;
-                dataObject.RemoteInvokerID = Guid.NewGuid().ToString();
+                Dev2Logger.Log.Error("Execution Error",e);
             }
-
-            var esbChannel = mockChannel.Object;
-            if(channel != null)
-            {
-                esbChannel = channel;
-            }
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
-
-            errors.ClearErrors();
-            dataObject.DataListID = wfec.Execute(out errors);
-
-
             return dataObject;
         }
 
