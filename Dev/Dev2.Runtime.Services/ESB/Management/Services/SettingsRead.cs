@@ -36,8 +36,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var securityRead = CreateSecurityReadEndPoint();
+                var loggingSettingsRead = CreateLoggingSettingsReadEndPoint();
                 var jsonPermissions = securityRead.Execute(values, theWorkspace);
+                var jsonLoggingSettings = loggingSettingsRead.Execute(values, theWorkspace);
                 settings.Security = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
+                settings.Logging = JsonConvert.DeserializeObject<LoggingSettingsTo>(jsonLoggingSettings.ToString());
             }
             catch(Exception ex)
             {
@@ -47,13 +50,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                 settings.Security = new SecuritySettingsTO(SecurityRead.DefaultPermissions);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(settings);
         }
 
         protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint()
         {
             return new SecurityRead();
+        }
+        
+        protected virtual IEsbManagementEndpoint CreateLoggingSettingsReadEndPoint()
+        {
+            return new LoggingSettingsRead();
         }
 
         public DynamicService CreateServiceEntry()

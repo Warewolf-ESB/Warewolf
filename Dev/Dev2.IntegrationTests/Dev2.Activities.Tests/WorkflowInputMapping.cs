@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void WorkflowsViaWeb_EnsureInputsAreRespected_ExpectFail()
         {
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/Bug_10685.xml?val=10");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/Bug_10685.xml?val=10");
             const string expected = @"<result>PASS</result>";
             //------------Execute Test---------------------------
 

@@ -35,6 +35,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
+using System.Windows;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -79,12 +80,29 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Constructor
 
+        /// <summary>
+        /// Default cTor
+        /// </summary>
         public DeployViewModel()
             : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, Dev2.AppResources.Repositories.StudioResourceRepository.Instance, null, null)
         {
         }
 
         // ReSharper disable TooManyDependencies
+        /// <summary>
+        /// DI constructor
+        /// </summary>
+        /// <param name="asyncWorker"> async worker</param>
+        /// <param name="serverProvider">server provider</param>
+        /// <param name="environmentRepository"> environments </param>
+        /// <param name="eventAggregator"> caliburn event handlers</param>
+        /// <param name="studioResourceRepository"> studio repository </param>
+        /// <param name="sourceConnectControlVm"> source server connect control</param>
+        /// <param name="destinationConnectControlVm"> destination server connect control</param>
+        /// <param name="deployStatsCalculator"> calculator for new overwritten totla resources</param>
+        /// <param name="resourceID"> resource id</param>
+        /// <param name="environmentID">environment id</param>
+        /// <param name="connectControlSingleton">connect control</param>
         public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IConnectControlViewModel sourceConnectControlVm, IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null,IConnectControlSingleton connectControlSingleton = null)
             // ReSharper restore TooManyDependencies
             : base(eventAggregator)
@@ -105,6 +123,11 @@ namespace Dev2.Studio.ViewModels.Deploy
             TargetConnectControlViewModel.SetTargetEnvironment();
         }
 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="resourceID"> resource</param>
+        /// <param name="environmentID">environment</param>
         public DeployViewModel(Guid resourceID, Guid environmentID)
             : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, Dev2.AppResources.Repositories.StudioResourceRepository.Instance, null, null, null, resourceID, environmentID)
         {
@@ -142,6 +165,9 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Properties
 
+        /// <summary>
+        /// source connection
+        /// </summary>
         public IConnectControlViewModel SourceConnectControlViewModel
         {
             get
@@ -159,6 +185,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        /// <summary>
+        /// target connection
+        /// </summary>
         public IConnectControlViewModel TargetConnectControlViewModel
         {
             get
@@ -176,6 +205,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        /// <summary>
+        /// Source context
+        /// </summary>
         public Guid? SourceContext
         {
             get
@@ -184,6 +216,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        /// <summary>
+        /// destination context
+        /// </summary>
         public Guid? DestinationContext
         {
             get
@@ -191,11 +226,19 @@ namespace Dev2.Studio.ViewModels.Deploy
                 return _destinationContext ?? (_destinationContext = Guid.NewGuid());
             }
         }
-
+        /// <summary>
+        /// Caliburn windows manager
+        /// </summary>
         public IWindowManager WindowManager { get; set; }
 
+        /// <summary>
+        /// Environments
+        /// </summary>
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
+        /// <summary>
+        /// Can Deploy test to enable button
+        /// </summary>
         public bool CanDeploy
         {
             get
@@ -204,36 +247,59 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        /// <summary>
+        /// can select all. Enables butto.
+        /// </summary>
         public bool CanSelectAllDependencies { get { return SelectedSourceServerIsValid(); } }
 
+
+        /// <summary>
+        /// check is source and destination are the same
+        /// </summary>
         public bool ServersAreNotTheSame
         {
             get
             {
+
                 return (SelectedDestinationServer == null || SelectedSourceServer == null) || (SelectedDestinationServer.Connection.AppServerUri != SelectedSourceServer.Connection.AppServerUri);
             }
         }
 
         public Func<int, int, bool> HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => (sourceDeployItemCount > 0 && destinationDeployItemCount > 0);
 
+        /// <summary>
+        /// destination is valid.
+        /// </summary>
+        /// <returns></returns>
         bool SelectedDestinationServerIsValid()
         {
             if(SelectedDestinationServer != null && SelectedDestinationServer.IsConnected)
             {
+                
                return SelectedDestinationServer.IsAuthorizedDeployTo;
             }
+           
             return false;
         }
 
+        /// <summary>
+        /// source server is valid
+        /// </summary>
+        /// <returns></returns>
         bool SelectedSourceServerIsValid()
         {
             if(SelectedSourceServer != null && SelectedSourceServer.IsConnected)
             {
+
                 return SelectedSourceServer.IsAuthorizedDeployFrom;
             }
+    
             return false;
         }
 
+        /// <summary>
+        /// Are anyt items selected
+        /// </summary>
         public bool SourceItemsSelected
         {
             get
@@ -242,15 +308,33 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
-
+        /// <summary>
+        /// Handle source server changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SourceEnvironmentConnectedChanged(object sender, ConnectedEventArgs e)
         {
             if(null != SelectedDestinationServer && null != Target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
             {
                 Target.ClearConflictingNodesNodes();
             }
+            RaiseDeployCommandCanExecuteChanged();
         }
 
+        void RaiseDeployCommandCanExecuteChanged()
+        {
+            if(Application.Current != null)
+            {
+                if(Application.Current.Dispatcher != null)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        DeployCommand.RaiseCanExecuteChanged();
+                    });
+                }
+            }
+        }
 
         /// <summary>
         /// Used to indicate a successfull deploy has happened
@@ -285,6 +369,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        /// <summary>
+        /// Available servers
+        /// </summary>
         public ObservableCollection<IEnvironmentModel> Servers
         {
             get
@@ -293,6 +380,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        /// <summary>
+        /// Deploy TO Target
+        /// </summary>
         public ObservableCollection<DeployStatsTO> TargetStats
         {
             get
@@ -301,6 +391,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        /// <summary>
+        /// Deploy TO Source
+        /// </summary>
         public ObservableCollection<DeployStatsTO> SourceStats
         {
             get
@@ -309,7 +402,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
-
+        /// <summary>
+        /// Treeview for Source
+        /// </summary>
         public DeployNavigationViewModel Source
         {
             get
@@ -329,7 +424,9 @@ namespace Dev2.Studio.ViewModels.Deploy
                 NotifyOfPropertyChange(() => Source);
             }
         }
-
+        /// <summary>
+        /// Treeview for destination
+        /// </summary>
         public DeployNavigationViewModel Target
         {
             get
@@ -344,6 +441,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        /// <summary>
+        /// Source Connection
+        /// </summary>
         public IEnvironmentModel SelectedSourceServer
         {
             get
@@ -379,10 +479,14 @@ namespace Dev2.Studio.ViewModels.Deploy
                 NotifyOfPropertyChange(() => SourceItemsSelected);
                 NotifyOfPropertyChange(() => CanDeploy);
                 NotifyOfPropertyChange(() => ServersAreNotTheSame);
+                RaiseDeployCommandCanExecuteChanged();
             }
 
         }
 
+        /// <summary>
+        /// Message for disconnect
+        /// </summary>
         public string ServerDisconnectedMessage
         {
             get
@@ -403,12 +507,21 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+        /// <summary>
+        /// Handle connection change
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void SelectedSourceServerIsConnectedChanged(object sender, ConnectedEventArgs e)
         {
             NotifyOfPropertyChange(() => SelectedSourceServer);
             SourceServerHasDropped = !SelectedSourceServer.IsConnected;
+            RaiseDeployCommandCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Destination environment that is selected
+        /// </summary>
         public IEnvironmentModel SelectedDestinationServer
         {
             get
@@ -436,24 +549,34 @@ namespace Dev2.Studio.ViewModels.Deploy
                 }
                 Target.Environment = _selectedDestinationServer;
                 CalculateStats();
+                RaiseDeployCommandCanExecuteChanged();
             }
         }
 
+        /// <summary>
+        /// Selected destination has changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         void SelectedDestinationServerIsConnectedChanged(object sender, ConnectedEventArgs args)
         {
             NotifyOfPropertyChange(() => SelectedDestinationServer);
             DestinationServerHasDropped = !SelectedDestinationServer.IsConnected;
-            if(args.IsConnected && SelectedSourceServer.IsConnected)
-            {
-               
-            }
-            
+            RaiseDeployCommandCanExecuteChanged();
         }
 
         #endregion
 
         #region Private Methods
-
+        /// <summary>
+        /// Shared Ctor initialisation
+        /// </summary>
+        /// <param name="asyncWorker"></param>
+        /// <param name="serverProvider"></param>
+        /// <param name="environmentRepository"></param>
+        /// <param name="eventAggregator"></param>
+        /// <param name="connectControl"></param>
+        /// <param name="deployStatsCalculator"></param>
         private void Initialize(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IConnectControlSingleton connectControl, IDeployStatsCalculator deployStatsCalculator = null)
         {
             EnvironmentRepository = environmentRepository;
@@ -473,6 +596,10 @@ namespace Dev2.Studio.ViewModels.Deploy
             ExplorerItemModel.OnCheckedStateChangedAction += OnCheckedStateChangedAction;
         }
 
+        /// <summary>
+        /// handle resource checked
+        /// </summary>
+        /// <param name="checkStateChangedArgs"></param>
         void OnCheckedStateChangedAction(CheckStateChangedArgs checkStateChangedArgs)
         {
             if(checkStateChangedArgs != null && checkStateChangedArgs.PreviousState && checkStateChangedArgs.NewState == false)
@@ -515,8 +642,10 @@ namespace Dev2.Studio.ViewModels.Deploy
                 {
                     var items = explorerItemModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)).ToList();
                     _deployStatsCalculator.ConflictingResources = new ObservableCollection<DeployDialogTO>();
+                    
                     _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
                     _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
+                    RaiseDeployCommandCanExecuteChanged();
                 }
             }
             NotifyOfPropertyChange(() => CanDeploy);
@@ -709,16 +838,27 @@ namespace Dev2.Studio.ViewModels.Deploy
             CalculateStats(false);
         }
 
+        /// <summary>
+        /// Update active env
+        /// </summary>
+        /// <param name="env"></param>
         static void SetActiveEnvironment(IEnvironmentModel env)
         {
             Core.EnvironmentRepository.Instance.ActiveEnvironment = env;
         }
 
+        /// <summary>
+        /// Get active environment
+        /// </summary>
+        /// <returns></returns>
         static IEnvironmentModel GetActiveEnvironment()
         {
             return Core.EnvironmentRepository.Instance.ActiveEnvironment;
         }
 
+        /// <summary>
+        /// Destination server is no longer available on network
+        /// </summary>
         public bool DestinationServerHasDropped
         {
             get
@@ -733,6 +873,10 @@ namespace Dev2.Studio.ViewModels.Deploy
                 OnPropertyChanged("ShowServerDisconnectedMessage");
             }
         }
+
+        /// <summary>
+        /// Source server is no longer available on network
+        /// </summary>
         public bool SourceServerHasDropped
         {
             get
@@ -747,7 +891,9 @@ namespace Dev2.Studio.ViewModels.Deploy
                 OnPropertyChanged("ShowServerDisconnectedMessage");
             }
         }
-
+        /// <summary>
+        /// Is disconnected message visible
+        /// </summary>
         public bool ShowServerDisconnectedMessage
         {
             get
@@ -879,7 +1025,10 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion Dispose Handling
 
         #region IHandle
-
+        /// <summary>
+        /// Handle deploy from main explorer
+        /// </summary>
+        /// <param name="message"></param>
         public void Handle(SelectItemInDeployMessage message)
         {
             Dev2Logger.Log.Info(message.GetType().Name);
@@ -899,7 +1048,10 @@ namespace Dev2.Studio.ViewModels.Deploy
                 }
             }
         }
-
+        /// <summary>
+        /// handle environment deleted
+        /// </summary>
+        /// <param name="message"></param>
         public void Handle(EnvironmentDeletedMessage message)
         {
             IEnvironmentModel sourceEnvironmentModel = Source.Environment;
@@ -924,7 +1076,10 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion
 
         #region Public Methods
-
+        /// <summary>
+        /// Select dependencies. Calls server
+        /// </summary>
+        /// <param name="explorerItemModels"></param>
         public void SelectDependencies(List<IExplorerItemModel> explorerItemModels)
         {
             if(explorerItemModels != null)

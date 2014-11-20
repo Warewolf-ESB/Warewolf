@@ -111,6 +111,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Logging\EnvironmentVariables.cs" />
     <Compile Include="Logging\Dev2Logger.cs" />
+    <Compile Include="Logging\WorkflowLoggger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -37,6 +37,20 @@ namespace Dev2.Runtime.WebServer
             InitializeContentLength();
             InitializeContentType();
             InitializeQueryString();
+        } 
+        
+        public WebServerRequest(HttpRequestMessage request)
+        {
+            VerifyArgument.IsNotNull("request", request);
+            _request = request;
+
+            Method = _request.Method.ToString();
+            Uri = _request.RequestUri;
+            ContentEncoding = _request.Content.GetContentEncoding();
+
+            InitializeContentLength();
+            InitializeContentType();
+            InitializeQueryString();
         }
 
         public string Method { get; private set; }

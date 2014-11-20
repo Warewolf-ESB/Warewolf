@@ -21,6 +21,9 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Moq;
 using System.Windows.Forms;
+using Dev2.Runtime.Configuration.ViewModels;
+using Dev2.Services.Security;
+using Dev2.Settings.Logging;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -43,9 +46,15 @@ namespace Dev2.Core.Tests.Settings
         }
 
         public SecurityViewModel TheSecurityViewModel { get; set; }
+        public LogSettingsViewModel TheLogSettingsViewModel { get; set; }
         protected override SecurityViewModel CreateSecurityViewModel()
         {
             return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+        }
+
+        protected override LogSettingsViewModel CreateLoggingViewModel()
+        {
+            return TheLogSettingsViewModel ?? new LogSettingsViewModel(new LoggingSettingsTo(), new Mock<IEnvironmentModel>().Object);
         }
 
         public void CallDeactivate()

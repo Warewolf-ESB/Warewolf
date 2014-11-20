@@ -1714,6 +1714,10 @@ namespace Dev2.Core.Tests.Workflows
         {
             #region Setup view model constructor parameters
 
+            if(Application.Current != null)
+            {
+                Application.Current.MainWindow = null;
+            }
             var repo = new Mock<IResourceRepository>();
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(Guid.NewGuid());

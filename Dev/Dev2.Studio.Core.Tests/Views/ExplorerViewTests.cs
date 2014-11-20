@@ -130,7 +130,7 @@ namespace Dev2.Core.Tests.Views
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerView_ShouldNotMoveItem")]
-        public void ExplorerView_ShouldNotMoveItem_SourceDestinationHasDupicateChild_ReturnsTrue()
+        public void ExplorerView_ShouldNotMoveItem_SourceDestinationHasDupicateChild_ReturnsTrue_NoMessagebox()
         {
             //------------Setup for test--------------------------
             var sourceItem = new Mock<IExplorerItemModel>();
@@ -151,8 +151,39 @@ namespace Dev2.Core.Tests.Views
 
             var shouldNotMove = ExplorerView.ShouldNotMove(sourceItem.Object, destination.Object);
             //------------Assert Results-------------------------
+            Assert.IsFalse(shouldNotMove);
+            _controller.Verify(a => a.Show("Conflicting resources found in the destination", "Conflicting Resources", MessageBoxButton.OK, MessageBoxImage.Error, ""),Times.Never());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerView_ShouldNotMoveItem")]
+        public void ExplorerView_ShouldNotMoveItem_SourceDestinationHasDupicateChild_ReturnsTrue_MessageBox()
+        {
+            //------------Setup for test--------------------------
+            var sourceItem = new Mock<IExplorerItemModel>();
+            sourceItem.Setup(model => model.IsVersion).Returns(false);
+            sourceItem.Setup(model => model.ResourcePath).Returns("mypath1");
+            sourceItem.Setup(model => model.DisplayName).Returns("bob");
+            sourceItem.Setup(a => a.ResourcePathWithoutName).Returns("abc");
+            var destination = new Mock<IExplorerItemModel>();
+            destination.Setup(model => model.IsVersion).Returns(false);
+            destination.Setup(model => model.ResourcePath).Returns("mypath");
+
+            var child = new Mock<IExplorerItemModel>();
+            child.Setup(model => model.IsVersion).Returns(false);
+            child.Setup(model => model.ResourcePath).Returns("mypath2");
+            child.Setup(model => model.DisplayName).Returns("bob");
+            child.Setup(a => a.ResourcePathWithoutName).Returns("def");
+            destination.Setup(a => a.Children).Returns(new ObservableCollection<IExplorerItemModel>(new[] { child.Object }));
+            destination.Setup(a => a.Parent).Returns(destination.Object);
+            destination.Setup(a => a.ResourcePathWithoutName).Returns("ghi");
+            //------------Execute Test---------------------------
+
+            var shouldNotMove = ExplorerView.ShouldNotMove(sourceItem.Object, destination.Object);
+            //------------Assert Results-------------------------
             Assert.IsTrue(shouldNotMove);
-            _controller.Verify(a => a.Show("Conflicting resources found in the destination", "Conflicting Resources", MessageBoxButton.OK, MessageBoxImage.Error, ""));
+            _controller.Verify(a => a.Show("Conflicting resources found in the destination", "Conflicting Resources", MessageBoxButton.OK, MessageBoxImage.Error, ""), Times.Once());
         }
 
         [TestMethod]

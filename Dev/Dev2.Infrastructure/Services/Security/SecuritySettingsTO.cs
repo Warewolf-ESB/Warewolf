@@ -15,7 +15,9 @@ using System.Collections.Generic;
 
 namespace Dev2.Services.Security
 {
+    // ReSharper disable InconsistentNaming
     public class SecuritySettingsTO
+        // ReSharper restore InconsistentNaming
     {
         public SecuritySettingsTO()
         {

@@ -37,7 +37,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
 
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/WebServiceTest");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/WebServiceTest");
 
             const string expected = @"<result>PASS</result>";
 
@@ -54,7 +54,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
             var id = Guid.NewGuid();
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/11365_WebService");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/11365_WebService");
 
             //------------Execute Test---------------------------
             TestHelper.PostDataToWebserverAsRemoteAgent(postData, id);
@@ -75,15 +75,15 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
             var id = Guid.NewGuid();
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/11365AltSyntax");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/11365AltSyntax");
 
             //------------Execute Test---------------------------
             TestHelper.PostDataToWebserverAsRemoteAgent(postData, id);
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
             ////------------Assert Results-------------------------
 
-            Assert.AreEqual(debugItems.Count, 1);
-            Assert.AreEqual(debugItems[0].ErrorMessage.Trim(), @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 4.");
+            Assert.AreEqual(debugItems.Count, 2);
+            Assert.AreEqual(debugItems[1].ErrorMessage.Trim(), @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 4.");
         }
     }
     // ReSharper restore InconsistentNaming

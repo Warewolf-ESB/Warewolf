@@ -34,7 +34,7 @@ namespace Dev2.Studio.Core.Network
     public enum UrlType
     {
         XML,
-        JSON
+        JSON,
     }
 
     public static class WebServer
@@ -109,12 +109,25 @@ namespace Dev2.Studio.Core.Network
                 default:
                     throw new ArgumentOutOfRangeException("urlType");
             }
-
+            
             var relativeUrl = string.Format("/services/{0}.{1}?", resourceModel.Category, urlExtension);
             relativeUrl += xmlData;
             relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
             Uri url;
             Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out url);
+            return url;
+        }
+        
+        public static Uri GetInternalServiceUri(string serviceName,IEnvironmentConnection connection)
+        {
+            if (connection == null || !connection.IsConnected)
+            {
+                return null;
+            }
+
+            var relativeUrl = string.Format("/internal/{0}", serviceName);
+            Uri url;
+            Uri.TryCreate(connection.WebServerUri, relativeUrl, out url);
             return url;
         }
     }

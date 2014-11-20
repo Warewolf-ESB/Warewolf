@@ -131,26 +131,26 @@ this.FeatureBackground();
 #line 29
     testRunner.Given("I send \"Decision Testing\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 30
-    testRunner.Given("I click \"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Integration Test Res" +
-                    "ources_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I click \"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Acceptance Testing R" +
+                    "esources_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 31
-       testRunner.Then("\"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Integration Test Resources_A" +
-                    "utoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.Then("\"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources" +
+                    "_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 32
-       testRunner.Then("\"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Integration Test Resources_A" +
-                    "utoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.Then("\"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources" +
+                    "_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 34
-    testRunner.Given("I double click \"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Integration T" +
-                    "est Resources_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I double click \"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Acceptance Te" +
+                    "sting Resources_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
     testRunner.Given("\"WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)\" is visible within \"5\" seco" +
                     "nds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 37
-    testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID,UI_Integration Test Resources_AutoID,UI_Dec" +
-                    "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID,UI_Acceptance Testing Resources_AutoID,UI_D" +
+                    "ecision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 38
-    testRunner.Given("I double click \"EXPLORER,UI_localhost_AutoID,UI_Integration Test Resources_AutoID" +
-                    ",UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I double click \"EXPLORER,UI_localhost_AutoID,UI_Acceptance Testing Resources_Auto" +
+                    "ID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 39
     testRunner.Given("\"WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)\" is visible within \"5\" seco" +
                     "nds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");

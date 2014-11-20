@@ -45,7 +45,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             //------------Setup for test--------------------------
             var expectedXML = XmlResource.Fetch("Bug_10528_Result.xml");
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/Bug_10528");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/Bug_10528");
             string expected = expectedXML.ToString(SaveOptions.None);
             //------------Execute Test---------------------------
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -59,7 +59,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public void WorkflowService_Invoke_WithNestedWorkflowNestedForEachAllSameRecordset_ShouldStillMapCorrectly()
         {
             //------------Setup for test--------------------------
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/Inner Foreach Execution Type Test");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/Inner Foreach Execution Type Test");
             string expected = "<Result>PASS</Result>";
             //------------Execute Test---------------------------
             string responseData = TestHelper.PostDataToWebserver(PostData);

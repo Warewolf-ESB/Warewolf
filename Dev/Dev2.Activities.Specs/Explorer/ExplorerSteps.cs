@@ -215,35 +215,38 @@ namespace Dev2.Activities.Specs.Explorer
                 var resourcePath = ScenarioContext.Current.Get<string>("path");
                 var displayName = resourcePath.Split("\\".ToArray()).Last();
                 var parent = repository.FindItem(i => i.DisplayName == displayName);
-                var child = parent.Children.FirstOrDefault(c => c.DisplayName == oldResourceName);
-                var hasError = false;
-
-                if(child == null)
+                if(parent.Children != null)
                 {
-                    child = new ExplorerItemModel
+                    var child = parent.Children.FirstOrDefault(c => c.DisplayName == oldResourceName);
+                    var hasError = false;
+
+                    if(child == null)
                     {
-                        Parent = parent,
-                        DisplayName = oldResourceName,
-                        ResourcePath = resourcePath + "\\" + displayName,
-                        Permissions = SecPermissions.Contribute
-                    };
-                    parent.Children.Add(child);
-                }
+                        child = new ExplorerItemModel
+                        {
+                            Parent = parent,
+                            DisplayName = oldResourceName,
+                            ResourcePath = resourcePath + "\\" + displayName,
+                            Permissions = SecPermissions.Contribute
+                        };
+                        parent.Children.Add(child);
+                    }
 
-                string errorMessage = "";
+                    string errorMessage = "";
 
-                try
-                {
-                    repository.RenameItem(child, resourcePath + "\\" + newResourceName);
-                }
-                catch(Exception exception)
-                {
-                    errorMessage = exception.Message;
-                    hasError = true;
-                }
+                    try
+                    {
+                        repository.RenameItem(child, resourcePath + "\\" + newResourceName);
+                    }
+                    catch(Exception exception)
+                    {
+                        errorMessage = exception.Message;
+                        hasError = true;
+                    }
 
-                ScenarioContext.Current.Add("errorMessage", errorMessage);
-                ScenarioContext.Current.Add("hasError", hasError);
+                    ScenarioContext.Current.Add("errorMessage", errorMessage);
+                    ScenarioContext.Current.Add("hasError", hasError);
+                }
             });
         }
 

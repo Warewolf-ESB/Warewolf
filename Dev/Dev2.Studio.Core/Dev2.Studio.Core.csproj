@@ -26,7 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -206,6 +206,7 @@
     <Compile Include="AppResources\Converters\DataGridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\DeployViewConnectedToVisiblityConverter.cs" />
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverter.cs" />
+    <Compile Include="AppResources\Converters\SimpleEnumToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\StringToResourceConverter.cs" />
     <Compile Include="AppResources\Converters\IntEnsureMinConverter.cs" />
     <Compile Include="AppResources\Converters\IntInRangeToVisibilityConverter.cs" />

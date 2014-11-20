@@ -92,16 +92,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
     testRunner.Given("I type \"Decision Testing\" in \"DEPLOYSOURCEFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 17
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID" +
+    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID" +
                     ",UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_A" +
                     "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
     testRunner.Given("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 20
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID" +
+    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID" +
                     ",Expander\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID" +
+    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID" +
                     ",UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_A" +
                     "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -118,7 +118,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 23
     testRunner.Given("I create a new remote connection as \"Deployrem\" in Deploy Destination", ((string)(null)), table1, "Given ");
 #line 27
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID" +
+    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID" +
                     ",UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_A" +
                     "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28

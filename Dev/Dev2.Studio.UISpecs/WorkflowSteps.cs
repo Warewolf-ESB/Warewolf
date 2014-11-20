@@ -230,9 +230,6 @@ namespace Dev2.Studio.UI.Specs
         {
             try
             {
-                //Playback.Initialize();
-                //Playback.PlaybackError += PlaybackPlaybackError;
-
                 Playback.PlaybackSettings.ContinueOnError = false;
                 Playback.PlaybackSettings.ShouldSearchFailFast = true;
                 Playback.PlaybackSettings.SearchTimeout = 1000;
@@ -245,7 +242,6 @@ namespace Dev2.Studio.UI.Specs
                 // make the mouse quick ;)
                 Mouse.MouseMoveSpeed = 20000;
                 Mouse.MouseDragSpeed = 20000;
-               
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch
@@ -264,7 +260,7 @@ namespace Dev2.Studio.UI.Specs
             {
                 Bootstrap.Teardown(true);
                 Playback.Cleanup();
-                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation);
+                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation, Bootstrap.StudioTimeOut);
                 Playback.Initialize();
             }
         }
@@ -756,7 +752,7 @@ namespace Dev2.Studio.UI.Specs
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown();
             Playback.Cleanup();
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.ServerLocation);
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.ServerLocation, Bootstrap.ServerTimeOut);
             Playback.Initialize();
         }
 
@@ -768,11 +764,11 @@ namespace Dev2.Studio.UI.Specs
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown(true);
             Playback.Cleanup();
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation);
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation, Bootstrap.StudioTimeOut);
             Playback.Initialize();
         }
 
-        static void RunSpecifiedFileWithUserNameAndPassword(string userName, string password, string fileLocation)
+        static void RunSpecifiedFileWithUserNameAndPassword(string userName, string password, string fileLocation, int timeOut)
         {
             var sspw = new SecureString();
 
@@ -808,7 +804,7 @@ namespace Dev2.Studio.UI.Specs
             //proc.StartInfo.Arguments = "";
 
             proc.Start();
-            Playback.Wait(Bootstrap.WaitMs);
+            Playback.Wait(timeOut);
         }
 
         [When(@"I drag ""(.*)"" onto ""(.*)""")]
@@ -911,6 +907,11 @@ namespace Dev2.Studio.UI.Specs
             {
                 string message = string.Format("{0} - Was not visible within {1} seconds", itemToFindAutoIds, seconds);
                 Assert.Fail(message);
+            }
+            if(itemToFindAutoIds == "WebBrowserWindow")
+            {
+                //Give the web browser window a second to fully render
+                Playback.Wait(1000);
             }
         }
 

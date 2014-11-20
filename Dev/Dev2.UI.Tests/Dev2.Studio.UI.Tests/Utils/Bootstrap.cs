@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+// ReSharper disable once InconsistentNaming
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -17,7 +17,6 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Utils
@@ -28,28 +27,19 @@ namespace Dev2.Studio.UI.Tests.Utils
     [TestClass]
     public class Bootstrap
     {
-        private const bool EnableLocalRestart = false;
-
         public const string ServerProcName = "Warewolf Server";
         public const string StudioProcName = "Warewolf Studio";
         private const string ServerExeName = ServerProcName + ".exe";
-        private const int ServerTimeOut = 3000;
-        private const int StudioTimeOut = 12000;
+        public const int ServerTimeOut = 10*1000;
+        public const int StudioTimeOut = 60*1000;
 
         public static string LogLocation = @"C:\UI_Test.log";
-        public static string BuildDirectory = @"C:\Builds\UITestRunWorkspace";//If UI tests are going to be run with no deploy by a build agent (copy this straight out of the build agent config)
+        public static TestContext testContext;
 
         public static string ServerLocation;
         public static string StudioLocation;
         private static string _resourceLocation;
         private static string _serverWorkspaceLocation;
-        public TestContext TestContext
-        {
-            get;
-            set;
-        }
-
-        public static int WaitMs = 5000;
 
         public static bool IsLocal = false;
 
@@ -60,7 +50,8 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext testCtx)
         {
-            IsLocal = testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901";
+            testContext = testCtx;
+            IsLocal = testContext.Properties["ControllerName"] == null || testContext.Properties["ControllerName"].ToString().StartsWith("localhost");
             ResolvePathsToTestAgainst();
         }
 
@@ -69,27 +60,15 @@ namespace Dev2.Studio.UI.Tests.Utils
             var serverProcess = TryGetProcess(ServerProcName);
             if(serverProcess == null)
             {
-                LogTestRunMessage("No server running.", true);
                 throw new Exception("No server running.");
             }
             var studioProcess = TryGetProcess(StudioProcName);
             if(studioProcess == null)
             {
-                LogTestRunMessage("No studio running.", true);
                 throw new Exception("No studio running.");
             }
             ServerLocation = GetProcessPath(serverProcess);
-            if(!File.Exists(ServerLocation))
-            {
-                LogTestRunMessage("Could not locate server to test against.", true);
-                throw new FileNotFoundException("Server not found at " + ServerLocation);
-            }
             StudioLocation = GetProcessPath(studioProcess);
-            if(!File.Exists(StudioLocation))
-            {
-                LogTestRunMessage("Could not locate studio to test against.", true);
-                throw new FileNotFoundException("Studio not found at " + StudioLocation);
-            }
             //Set resource location
             _resourceLocation = StudioLocation.Replace(ServerExeName, @"Resources\");
             //Set workspace location
@@ -117,28 +96,21 @@ namespace Dev2.Studio.UI.Tests.Utils
             var studioProc = TryGetProcess(StudioProcName);
             var serverProc = TryGetProcess(ServerProcName);
 
-            //Don't touch the server or studio for local runs on a developers desk he might be debugging!
-            if(serverProc != null && studioProc != null)
+            //Don't touch the studio if running
+            if(studioProc != null)
             {
                 return;
             }
-
-            if(!EnableLocalRestart && (Environment.CurrentDirectory.Contains(BuildDirectory) && IsLocal))
-            {
-                return;
-            }
-            // term any existing studio processes ;)
-            KillProcess(studioProc);
-            // term any existing server processes ;)
-            KillProcess(serverProc);
-
-            // remove workspaces to avoid mutation issues
-            RemoveWorkspaces();
-
-            StartServer(ServerLocation);
             StartStudio(StudioLocation);
 
-            Thread.Sleep(WaitMs);
+            //Don't touch the server if running
+            if(serverProc != null)
+            {
+                return;
+            }
+            // remove workspaces to avoid mutation issues
+            RemoveWorkspaces();
+            StartServer(ServerLocation);
         }
 
         /// <summary>
@@ -146,11 +118,6 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// </summary>
         public static void Teardown(bool studioOnly = false)
         {
-            if(!EnableLocalRestart && (Environment.CurrentDirectory.Contains(BuildDirectory) && IsLocal))
-            {
-                return;
-            }
-
             if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
             {
                 if (!studioOnly)
@@ -161,10 +128,6 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                 //Studio was deployed and started, stop it now.
                 KillStudio();
-            }
-            else
-            {
-                LogTestRunMessage("Could not locate CodedUI Binaries", true);
             }
 
             if(!IsLocal)
@@ -249,9 +212,9 @@ namespace Dev2.Studio.UI.Tests.Utils
                     Directory.Delete(_serverWorkspaceLocation, true);
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                LogTestRunMessage(e.Message, true);
+                //Do nothing
             }
         }
 
@@ -273,20 +236,17 @@ namespace Dev2.Studio.UI.Tests.Utils
                     if(StudioProc != null && !StudioProc.HasExited)
                     {
                         started = true;
-                        LogTestRunMessage("Started Studio");
                     }
                 }
                 catch
                 {
                     // most likely a studio is already running, kill it and try again ;)
-                    LogTestRunMessage("Could not locate Start Studio [ " + StudioLocation + " ] Attempt Count [ " + startCnt + " ]", true);
                     startCnt++;
                 }
                 finally
                 {
                     if(!started)
                     {
-                        LogTestRunMessage("Failed To Start Studio.... Aborting", true);
                         // term any existing server processes ;)
                         KillProcess(TryGetProcess(StudioProcName));
                         throw new Exception("Failed to start Studio at " + location);
@@ -315,20 +275,17 @@ namespace Dev2.Studio.UI.Tests.Utils
                     if(ServerProc != null && !ServerProc.HasExited)
                     {
                         started = true;
-                        LogTestRunMessage("Started Server");
                     }
                 }
                 catch(Exception)
                 {
                     // most likely a server is already running, kill it and try again ;)
-                    LogTestRunMessage("Could not locate Start Server [ " + ServerLocation + " ] Attempt Count [ " + startCnt + " ]", true);
                     startCnt++;
                 }
                 finally
                 {
                     if(!started)
                     {
-                        LogTestRunMessage("Failed To Start Server.... Aborting", true);
                         // term any existing server processes ;)
                         KillProcess(TryGetProcess(ServerProcName));
                         throw new Exception("Failed to start server at " + location);
@@ -372,29 +329,11 @@ namespace Dev2.Studio.UI.Tests.Utils
                     proc.Kill();
                 }
                 // ReSharper disable EmptyGeneralCatchClause
-                catch(Exception e)
+                catch(Exception)
                 // ReSharper restore EmptyGeneralCatchClause
                 {
                     // Do nothing
-                    LogTestRunMessage(e.Message, true);
                 }
-            }
-        }
-
-        public static void LogTestRunMessage(string msg, bool isError = false)
-        {
-            if(Directory.Exists(Path.GetDirectoryName(LogLocation)))
-            {
-                if(isError)
-                {
-                    File.AppendAllText(LogLocation, "ERROR :: " + msg);
-                }
-                else
-                {
-                    File.AppendAllText(LogLocation, "INFO :: " + msg);
-                }
-
-                File.AppendAllText(LogLocation, Environment.NewLine);
             }
         }
     }

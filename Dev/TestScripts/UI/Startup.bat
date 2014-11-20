@@ -24,19 +24,37 @@ sc stop "Warewolf Server"
 taskkill /im "Warewolf Server.exe"
 taskkill /im "Warewolf Studio.exe"
 
-REM  Wait 10 seconds ;)
-ping -n 10 127.0.0.1 > nul
+REM  Wait 5 seconds ;)
+ping -n 5 127.0.0.1 > nul
+
+REM Init paths to Warewolf server under test
+IF "%DeploymentDirectory%"=="" IF EXIST "%~dp0..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Server\bin\Debug
+IF EXIST "%DeploymentDirectory%\Server\Warewolf Server.exe" SET DeploymentDirectory=%DeploymentDirectory%\Server
 
 REM ** Start Warewolf server from deployed binaries **
-START "%DeploymentDirectory%\Server\Warewolf Server.exe" /D "%DeploymentDirectory%\Server" "Warewolf Server.exe"
+IF EXIST "%DeploymentDirectory%\ServerStarted" DEL "%DeploymentDirectory%\ServerStarted"
+IF NOT EXIST %TestRunDirectory%\..\..\..\nircmd.exe GOTO RegularStartup
+%TestRunDirectory%\..\..\..\nircmd.exe elevate "%DeploymentDirectory%\Warewolf Server.exe"
+GOTO WaitForServerStart
+:RegularStartup
+START "%DeploymentDirectory%\Warewolf Server.exe" /D "%DeploymentDirectory%" "Warewolf Server.exe"
 
-REM  Wait 10 seconds ;)
-ping -n 10 127.0.0.1 > nul
+rem ping server until it responds
+:WaitForServerStart
+IF EXIST "%DeploymentDirectory%\ServerStarted" goto StartStudio 
+rem wait for 5 seconds before trying again
+@echo Waiting 5 seconds...
+ping -n 5 127.0.0.1 > nul
+goto WaitForServerStart 
 
+:StartStudio
+REM Init paths to Warewolf studio under test
+IF NOT EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" IF EXIST "%~dp0..\..\Dev2.Studio\bin\Debug\Warewolf Studio.exe" SET DeploymentDirectory=%~dp0..\..\Dev2.Studio\bin\Debug
+IF EXIST "%DeploymentDirectory%\..\Studio\Warewolf Studio.exe" SET DeploymentDirectory=%DeploymentDirectory%\..\Studio
 REM ** Start Warewolf studio from deployed binaries **
-START "%DeploymentDirectory%\Studio\Warewolf Studio.exe" /D "%DeploymentDirectory%\Studio" "Warewolf Studio.exe"
+START "%DeploymentDirectory%\Warewolf Studio.exe" /D "%DeploymentDirectory%" "Warewolf Studio.exe"
 
-REM  Wait 30 seconds ;)
-ping -n 30 127.0.0.1 > nul
+REM  Wait 1 minute ;)
+ping -n 60 127.0.0.1 > nul
 
 exit 0

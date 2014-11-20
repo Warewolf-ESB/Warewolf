@@ -27,15 +27,15 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	   #Checking Explorer Icons
        Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID"   
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
-	   Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-       Then "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-       Then "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+	   Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+       Then "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
 	   #Opening Remote Resouurce from Explorer
-	   Given I double click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+	   Given I double click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "5" seconds
 	   # 12490 Opening and Debug A Remote Workflow When LocalWorkflow With SameName IsOpen Workflow is Executed
-	   Given I click "EXPLORER,UI_localhost_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-	   Given I double click "EXPLORER,UI_localhost_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+	   Given I click "EXPLORER,UI_localhost_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
+	   Given I double click "EXPLORER,UI_localhost_AutoID,UI_Acceptance Testing Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "5" seconds
 	   And I send "{F6}" to ""
 	   #Given "DEBUGOUTPUT,Assign[1]" is visible within "25" seconds	

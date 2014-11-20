@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
@@ -41,7 +42,7 @@ namespace Dev2.AppResources.Repositories
     public class StudioResourceRepository : IStudioResourceRepository
     {
         private readonly Dispatcher _currentDispatcher;
-        private readonly Action<Action, DispatcherPriority> _invoke;
+        private readonly Action<System.Action, DispatcherPriority> _invoke;
 
         static StudioResourceRepository()
         {
@@ -64,7 +65,7 @@ namespace Dev2.AppResources.Repositories
             }
         }
 
-        internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<Action, DispatcherPriority> invoke)
+        internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<System.Action, DispatcherPriority> invoke)
         {
             ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
@@ -80,7 +81,7 @@ namespace Dev2.AppResources.Repositories
         }
 
         //This is for testing only need better way of putting this together
-        internal StudioResourceRepository(ExplorerItemModel explorerItem, Action<Action, DispatcherPriority> invoke)
+        internal StudioResourceRepository(ExplorerItemModel explorerItem, Action<System.Action, DispatcherPriority> invoke)
         {
             ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
@@ -153,7 +154,8 @@ namespace Dev2.AppResources.Repositories
                 }
                 else
                 {
-                    LoadEnvironmentTree(environmentId, onCompletion, environmentModel);
+                    asyncWorker.Start(()=>{}, () => LoadEnvironmentTree(environmentId, onCompletion, environmentModel), e => onCompletion(environmentId));
+                    //LoadEnvironmentTree(environmentId, onCompletion, environmentModel);
                 }
             }
         }
@@ -237,23 +239,32 @@ namespace Dev2.AppResources.Repositories
             Dev2Logger.Log.Info(String.Format("Delete Folder Resource: {0} Id:{1}", item.DisplayName, item.EnvironmentId));
             VerifyArgument.IsNotNull("item", item);
             IExplorerItemModel parentItem = item.Parent;
-            if(parentItem != null && parentItem.Children.Remove(item))
+            if(parentItem != null)
             {
-                try
+                var found = parentItem.Children.FirstOrDefault(a => a.ResourcePath == item.ResourcePath && a.ResourceType == ResourceType.Folder);
+                if (found != null) item = found;
+                if( parentItem.Children.Remove(item))
                 {
-                    var result = GetExplorerProxy(item.EnvironmentId).DeleteItem(MapData(item), Guid.Empty);
-                    if(result.Status != ExecStatus.Success)
+                    try
                     {
-                        throw new Exception(result.Message);
+                        var result = GetExplorerProxy(item.EnvironmentId).DeleteItem(MapData(item), Guid.Empty);
+                        if(result.Status != ExecStatus.Success)
+                        {
+                            throw new Exception(result.Message);
+                        }
                     }
+                    catch(Exception)
+                    {
+                        
+                            parentItem.Children.Add(item);
+                        
+                        throw;
+                    }
+                  
+                        parentItem.OnChildrenChanged();
+                    
                 }
-                catch(Exception)
-                {
-                    parentItem.Children.Add(item);
-                    throw;
-                }
-                parentItem.OnChildrenChanged();
-            }
+        }
         }
 
         public void UpdateRootAndFoldersPermissions(Permissions modifiedPermissions, Guid environmentGuid, bool updateRoot = true)
@@ -435,7 +446,7 @@ namespace Dev2.AppResources.Repositories
             }
             model.Parent.RemoveChild(model);
             model.ResourcePath = newPath;
-            ItemAddedMessageHandler(new ServerExplorerItem(model.DisplayName,model.ResourceId,model.ResourceType,null,model.Permissions,newPath+"\\"+model.DisplayName));
+            ItemAddedMessageHandler(new ServerExplorerItem(model.DisplayName,model.ResourceId,model.ResourceType,null,model.Permissions,newPath+"\\"+model.DisplayName){ServerId = model.EnvironmentId});
 
             RefreshVersionHistory(model.EnvironmentId, model.ResourceId);
         }
@@ -550,7 +561,7 @@ namespace Dev2.AppResources.Repositories
             }
         }
 
-        public void PerformUpdateOnDispatcher(Action action)
+        public void PerformUpdateOnDispatcher(System.Action action)
         {
             _invoke(action, DispatcherPriority.Send);
         }
@@ -695,11 +706,10 @@ namespace Dev2.AppResources.Repositories
                 if(ExplorerItemModels.Any(a => a.EnvironmentId == environmentId))
                 {
                     var index = ExplorerItemModels.IndexOf(ExplorerItemModels.FirstOrDefault(a => a.EnvironmentId == environmentId));
-                    if(index >= 0)
+                    if (index >= 0)
                     {
                         explorerItemModel.IsRefreshing = ExplorerItemModels[index].IsRefreshing;
-                        ExplorerItemModels.RemoveAt(index);
-                        ExplorerItemModels.Insert(index, explorerItemModel);
+                        UpdateExplorerItemModelOnUiThread(explorerItemModel, index);
                     }
                 }
                 else
@@ -708,15 +718,26 @@ namespace Dev2.AppResources.Repositories
                     if(index >= 0)
                     {
                         explorerItemModel.IsRefreshing = ExplorerItemModels[index].IsRefreshing;
-                        ExplorerItemModels.RemoveAt(index);
-                        ExplorerItemModels.Insert(index, explorerItemModel);
+                        UpdateExplorerItemModelOnUiThread(explorerItemModel, index);
                     }
                     else
                     {
-                        ExplorerItemModels.Add(explorerItemModel);
+                        Execute.OnUIThread(() =>
+           {
+               ExplorerItemModels.Add(explorerItemModel);
+           });
                     }
                 }
             }
+        }
+
+        void UpdateExplorerItemModelOnUiThread(IExplorerItemModel explorerItemModel, int index)
+        {
+            Execute.OnUIThread(() =>
+            {
+                ExplorerItemModels.RemoveAt(index);
+                ExplorerItemModels.Insert(index, explorerItemModel);
+            });
         }
 
         private void LoadItemsToTree(Guid environmentId, IExplorerItemModel explorerItemModel, int indexToReplace)
