@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Statements;
@@ -31,6 +30,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
+using Dev2.Workspaces;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -139,77 +139,77 @@ namespace ActivityUnitTests
         public dynamic ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
 
-            var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
-            svc.SetActivity(FlowchartProcess);
-            Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
+            
+                var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
+                svc.SetActivity(FlowchartProcess);
+                Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
 
-            if(CurrentDl == null)
-            {
-                CurrentDl = TestData;
-            }
-
-            var errors = new ErrorResultTO();
-            if(ExecutionId == Guid.Empty)
-            {
-                Compiler = DataListFactory.CreateDataListCompiler();
-
-                ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
-                if(dataObject != null)
+                if(CurrentDl == null)
                 {
-                    dataObject.DataListID = ExecutionId;
-                    dataObject.ExecutingUser = User;
-                    dataObject.DataList = new StringBuilder(CurrentDl);
+                    CurrentDl = TestData;
                 }
 
-            }
-
-            if(errors.HasErrors())
-            {
-                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
-
-                if(throwException)
+                var errors = new ErrorResultTO();
+                if(ExecutionId == Guid.Empty)
                 {
-                    throw new Exception(errorString);
+                    Compiler = DataListFactory.CreateDataListCompiler();
+
+                    ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
+                    if(dataObject != null)
+                    {
+                        dataObject.DataListID = ExecutionId;
+                        dataObject.ExecutingUser = User;
+                        dataObject.DataList = new StringBuilder(CurrentDl);
+                    }
+
                 }
-            }
 
-            if(dataObject == null)
-            {
-
-                dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+                if(errors.HasErrors())
                 {
-                    // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
-                    //       if this is NOT provided which will cause the tests to fail!
-                    ServerID = Guid.NewGuid(),
-                    ExecutingUser = User,
-                    IsDebug = isDebugMode,
-                    EnvironmentID = currentEnvironmentId,
-                    IsRemoteInvokeOverridden = overrideRemote,
-                    DataList = new StringBuilder(CurrentDl)
-                };
+                    string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
 
-            }
-            dataObject.IsDebug = isDebug;
+                    if(throwException)
+                    {
+                        throw new Exception(errorString);
+                    }
+                }
 
-            // we now need to set a thread ID ;)
-            dataObject.ParentThreadID = 1;
+                if(dataObject == null)
+                {
 
-            if(isRemoteInvoke)
-            {
-                dataObject.RemoteInvoke = true;
-                dataObject.RemoteInvokerID = Guid.NewGuid().ToString();
-            }
+                    dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+                    {
+                        // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                        //       if this is NOT provided which will cause the tests to fail!
+                        ServerID = Guid.NewGuid(),
+                        ExecutingUser = User,
+                        IsDebug = isDebugMode,
+                        EnvironmentID = currentEnvironmentId,
+                        IsRemoteInvokeOverridden = overrideRemote,
+                        DataList = new StringBuilder(CurrentDl)
+                    };
 
-            var esbChannel = mockChannel.Object;
-            if(channel != null)
-            {
-                esbChannel = channel;
-            }
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+                }
+                dataObject.IsDebug = isDebug;
 
-            errors.ClearErrors();
-            dataObject.DataListID = wfec.Execute(out errors);
+                // we now need to set a thread ID ;)
+                dataObject.ParentThreadID = 1;
 
+                if(isRemoteInvoke)
+                {
+                    dataObject.RemoteInvoke = true;
+                    dataObject.RemoteInvokerID = Guid.NewGuid().ToString();
+                }
+
+                var esbChannel = mockChannel.Object;
+                if(channel != null)
+                {
+                    esbChannel = channel;
+                }
+                WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+
+                errors.ClearErrors();
+                dataObject.DataListID = wfec.Execute(out errors);
 
             return dataObject;
         }
@@ -259,7 +259,7 @@ namespace ActivityUnitTests
 
             mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors)).Verifiable();
 
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
             errors.ClearErrors();
             dataObject.DataListID = wfec.Execute(out errors);
@@ -306,7 +306,7 @@ namespace ActivityUnitTests
 
 
             // we need to set this now ;)
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, channel);
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, channel);
 
             errors.ClearErrors();
             dataObject.DataListID = wfec.Execute(out errors);

@@ -124,9 +124,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/11466_RemoteExecution_SameName");
 
-            Guid id = Guid.NewGuid();
-            var output = TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
-            Assert.AreEqual(@"<DataList><Output>PASS</Output><RemoteWorkflowErrors></RemoteWorkflowErrors><hero index=""1""><pushups>All of them</pushups><name>Chuck Norris</name></hero></DataList>", output);
+            var output = TestHelper.PostDataToWebserver(PostData);
+            StringAssert.Contains(output, "<Output>PASS</Output>");
         }
     }
 }

@@ -14,6 +14,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
+using Dev2.Utils;
 
 namespace Dev2.Settings.Logging
 {
@@ -30,13 +31,26 @@ namespace Dev2.Settings.Logging
     }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings
     {
-        public IEnvironmentModel CurrentEnvironment { get; set; }
+        public IEnvironmentModel CurrentEnvironment
+        {
+            get
+            {
+                return _currentEnvironment;
+            }
+            set
+            {
+                _currentEnvironment = value;
+                OnPropertyChanged("CanEditStudioLogSettings");
+                OnPropertyChanged("CanEditLogSettings");
+            }
+        }
         private string _serverLogMaxSize;
         private string _studioLogMaxSize;
         LogLevel _serverLogLevel;
         LogLevel _studioLogLevel;
         ProgressDialogViewModel _progressDialogViewModel;
         string _serverLogFile;
+        IEnvironmentModel _currentEnvironment;
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
         {
@@ -110,11 +124,22 @@ namespace Dev2.Settings.Logging
             }
         }
 
+        public bool CanEditLogSettings
+        {
+            get { return CurrentEnvironment.IsConnected; }
+        }
+
+        public bool CanEditStudioLogSettings
+        {
+            get { return CurrentEnvironment.IsLocalHost; }
+        }
+
         public virtual void Save(LoggingSettingsTo logSettings)
         {
             logSettings.LogLevel = ServerLogLevel.ToString();
             logSettings.LogSize = int.Parse(ServerLogMaxSize);
-            Dev2Logger.WriteLogSettings(StudioLogMaxSize,StudioLogLevel.ToString());
+            var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
+            Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioLogLevel.ToString(), settingsConfigFile);
         }
 
         protected override void CloseHelp()
@@ -206,5 +231,7 @@ namespace Dev2.Settings.Logging
         LogLevel StudioLogLevel { get; set; }
         string StudioLogMaxSize { get; }
         string ServerLogMaxSize { get; }
+        bool CanEditStudioLogSettings { get; }
+        bool CanEditLogSettings { get; }
     }
 }

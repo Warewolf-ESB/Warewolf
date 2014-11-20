@@ -252,6 +252,7 @@ namespace Dev2.Settings
                 }
                 _logSettingsViewModel = value;
                 NotifyOfPropertyChange(() => LogSettingsViewModel);
+                NotifyOfPropertyChange(() => HasLogSettings);
             }
         }
         public string SecurityHeader
@@ -266,6 +267,18 @@ namespace Dev2.Settings
             get
             {
                 return LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? "Logging *" : "Logging";
+            }
+        }
+        public bool HasLogSettings
+        {
+            get
+            {
+                var hasLogSettings = LogSettingsViewModel!=null && CurrentEnvironment.IsConnected;
+                if (!hasLogSettings)
+                {
+                    ShowSecurity = true;
+                }
+                return hasLogSettings;
             }
         }
 
@@ -354,7 +367,11 @@ namespace Dev2.Settings
 
         protected virtual LogSettingsViewModel CreateLoggingViewModel()
         {
-            return new LogSettingsViewModel(Settings.Logging, CurrentEnvironment);
+            if(Settings.Logging != null)
+            {
+                return new LogSettingsViewModel(Settings.Logging, CurrentEnvironment);
+            }
+            return null;
         }
 
         void AddPropertyChangedHandlers()
@@ -469,7 +486,10 @@ namespace Dev2.Settings
                         return false;
                     }
                     SecurityViewModel.Save(Settings.Security);
-                    LogSettingsViewModel.Save(Settings.Logging);
+                    if (LogSettingsViewModel.IsDirty)
+                    {
+                        LogSettingsViewModel.Save(Settings.Logging);
+                    }
                     var isWritten = WriteSettings();
                     if(isWritten)
                     {

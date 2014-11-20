@@ -2,6 +2,7 @@
 
 
 
+using Dev2.Utils;
 using log4net.Config;
 /*
 *  Warewolf - The Easy Service Bus
@@ -112,7 +113,12 @@ namespace Dev2.Studio
             new Bootstrapper().Start();
 
             base.OnStartup(e);
-            XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
+            var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
+            if (!File.Exists(settingsConfigFile))
+            {
+                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
+            }
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             _mainViewModel = MainWindow.DataContext as MainViewModel;
             //2013.07.01: Ashley Lewis for bug 9817 - setup exception handler on 'this', with main window data context as the popup dialog controller
             _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);

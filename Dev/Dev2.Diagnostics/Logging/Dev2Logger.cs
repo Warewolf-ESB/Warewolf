@@ -14,7 +14,6 @@ using System.Linq;
 using System.Reflection;
 using log4net.Appender;
 using System.Xml.Linq;
-
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
 namespace Dev2.Common
@@ -67,9 +66,9 @@ namespace Dev2.Common
             return 0;
         }
 
-        public static void WriteLogSettings(string maxLogSize,string logLevel)
+        public static void WriteLogSettings(string maxLogSize,string logLevel, string settingsConfigFile)
         {
-            var settingsDocument = XDocument.Load("Settings.config");
+            var settingsDocument = XDocument.Load(settingsConfigFile);
             var log4netElement = settingsDocument.Element("log4net");
             if (log4netElement != null)
             {
@@ -100,7 +99,7 @@ namespace Dev2.Common
                         }
                     }
                 }
-                settingsDocument.Save("Settings.config");
+                settingsDocument.Save(settingsConfigFile);
             }
         }
     }

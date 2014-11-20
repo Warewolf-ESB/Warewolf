@@ -90,7 +90,12 @@ namespace Dev2
                 {
                     return 80;
                 }
-                XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
+                const string settingsConfigFile = "Settings.config";
+                if (!File.Exists(settingsConfigFile))
+                {
+                    File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
+                }
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 bool commandLineParameterProcessed = false;
                 if(options.Install)
                 {
@@ -169,7 +174,10 @@ namespace Dev2
                     Dev2Logger.Log.Info("Command line processed. Returning");
                     return result;
                 }
-
+                AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                {
+                    Dev2Logger.Log.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
+                };
                 if(Environment.UserInteractive || options.IntegrationTestMode)
                 {
                     Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");

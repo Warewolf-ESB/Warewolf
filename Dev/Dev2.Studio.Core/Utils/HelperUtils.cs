@@ -11,6 +11,7 @@
 
 
 using System;
+using System.IO;
 using System.Windows;
 using Dev2.Common.Interfaces.Studio.Controller;
 
@@ -18,6 +19,17 @@ namespace Dev2.Utils
 {
     public static class HelperUtils
     {
+        public static string GetStudioLogSettingsConfigFile()
+        {
+            var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var studioFolder = Path.Combine(localAppDataFolder, "Warewolf", "Studio");
+            if (!Directory.Exists(studioFolder))
+            {
+                Directory.CreateDirectory(studioFolder);
+            }
+            var settingsConfigFile = Path.Combine(studioFolder, "Settings.config");
+            return settingsConfigFile;
+        }
         public static void ShowTrustRelationshipError(SystemException exception)
         {
             if(exception.Message.Contains("The trust relationship between this workstation and the primary domain failed"))

@@ -93,11 +93,11 @@ namespace Dev2.Activities.Specs.Permissions
             while(!environmentModel.IsConnected)
             {
                 environmentModel.Connect();
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
                 i++;
-                if (i == 100)
+                if (i == 30)
                 {
-                    Assert.Fail("Server {0} did not start within 10 secs", environmentModel.DisplayName);
+                    Assert.Fail("Server {0} did not start within 30 secs", environmentModel.DisplayName);
                 }
             }
         }

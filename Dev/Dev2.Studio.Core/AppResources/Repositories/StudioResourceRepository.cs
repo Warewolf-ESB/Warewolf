@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
@@ -41,7 +42,7 @@ namespace Dev2.AppResources.Repositories
     public class StudioResourceRepository : IStudioResourceRepository
     {
         private readonly Dispatcher _currentDispatcher;
-        private readonly Action<Action, DispatcherPriority> _invoke;
+        private readonly Action<System.Action, DispatcherPriority> _invoke;
 
         static StudioResourceRepository()
         {
@@ -64,7 +65,7 @@ namespace Dev2.AppResources.Repositories
             }
         }
 
-        internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<Action, DispatcherPriority> invoke)
+        internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<System.Action, DispatcherPriority> invoke)
         {
             ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
@@ -80,7 +81,7 @@ namespace Dev2.AppResources.Repositories
         }
 
         //This is for testing only need better way of putting this together
-        internal StudioResourceRepository(ExplorerItemModel explorerItem, Action<Action, DispatcherPriority> invoke)
+        internal StudioResourceRepository(ExplorerItemModel explorerItem, Action<System.Action, DispatcherPriority> invoke)
         {
             ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
@@ -153,7 +154,7 @@ namespace Dev2.AppResources.Repositories
                 }
                 else
                 {
-                    LoadEnvironmentTree(environmentId, onCompletion, environmentModel);
+                    asyncWorker.Start(()=>{}, () => LoadEnvironmentTree(environmentId, onCompletion, environmentModel), e => onCompletion(environmentId));
                 }
             }
         }
@@ -559,7 +560,7 @@ namespace Dev2.AppResources.Repositories
             }
         }
 
-        public void PerformUpdateOnDispatcher(Action action)
+        public void PerformUpdateOnDispatcher(System.Action action)
         {
             _invoke(action, DispatcherPriority.Send);
         }
@@ -704,11 +705,10 @@ namespace Dev2.AppResources.Repositories
                 if(ExplorerItemModels.Any(a => a.EnvironmentId == environmentId))
                 {
                     var index = ExplorerItemModels.IndexOf(ExplorerItemModels.FirstOrDefault(a => a.EnvironmentId == environmentId));
-                    if(index >= 0)
+                    if (index >= 0)
                     {
                         explorerItemModel.IsRefreshing = ExplorerItemModels[index].IsRefreshing;
-                        ExplorerItemModels.RemoveAt(index);
-                        ExplorerItemModels.Insert(index, explorerItemModel);
+                        UpdateExplorerItemModelOnUiThread(explorerItemModel, index);
                     }
                 }
                 else
@@ -717,15 +717,26 @@ namespace Dev2.AppResources.Repositories
                     if(index >= 0)
                     {
                         explorerItemModel.IsRefreshing = ExplorerItemModels[index].IsRefreshing;
-                        ExplorerItemModels.RemoveAt(index);
-                        ExplorerItemModels.Insert(index, explorerItemModel);
+                        UpdateExplorerItemModelOnUiThread(explorerItemModel, index);
                     }
                     else
                     {
-                        ExplorerItemModels.Add(explorerItemModel);
+                        Execute.OnUIThread(() =>
+           {
+               ExplorerItemModels.Add(explorerItemModel);
+           });
                     }
                 }
             }
+        }
+
+        void UpdateExplorerItemModelOnUiThread(IExplorerItemModel explorerItemModel, int index)
+        {
+            Execute.OnUIThread(() =>
+            {
+                ExplorerItemModels.RemoveAt(index);
+                ExplorerItemModels.Insert(index, explorerItemModel);
+            });
         }
 
         private void LoadItemsToTree(Guid environmentId, IExplorerItemModel explorerItemModel, int indexToReplace)

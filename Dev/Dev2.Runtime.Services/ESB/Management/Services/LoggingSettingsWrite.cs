@@ -59,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public static void Write(LoggingSettingsTo loggingSettingsTo)
         {
             VerifyArgument.IsNotNull("loggingSettingsTo", loggingSettingsTo);
-            Dev2Logger.WriteLogSettings(loggingSettingsTo.LogSize.ToString(CultureInfo.InvariantCulture), loggingSettingsTo.LogLevel);
+            Dev2Logger.WriteLogSettings(loggingSettingsTo.LogSize.ToString(CultureInfo.InvariantCulture), loggingSettingsTo.LogLevel, "Settings.config");
         }
 
         public DynamicService CreateServiceEntry()
