@@ -20,10 +20,10 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM Stop Server:
-taskkill /im "Warewolf Server.exe"
+taskkill /im "Warewolf*" /T /F
 
 REM Run Dev2's internal cleanup workflow
-IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf Server.exe"
+IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf*" /T /F
 SET /P URL=<%TestRunDirectory%\..\..\..\URL.txt
 SET /P CREDS=<%TestRunDirectory%\..\..\..\CREDS.txt
 IF EXIST %TestRunDirectory%\..\..\..\curl.exe %TestRunDirectory%\..\..\..\curl.exe -u %CREDS% --ntlm "%URL%?LocalPath=%TestRunDirectory%&AgentName=%AgentName%" -v
