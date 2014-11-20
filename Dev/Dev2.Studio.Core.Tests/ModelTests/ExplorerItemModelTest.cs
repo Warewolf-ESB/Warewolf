@@ -47,7 +47,6 @@ namespace Dev2.Core.Tests.ModelTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    [Ignore]
     public class ExplorerItemModelTest
     {
         [TestInitialize]
