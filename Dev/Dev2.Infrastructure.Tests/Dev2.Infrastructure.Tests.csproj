@@ -150,7 +150,6 @@
     <Compile Include="Communication\DesignValidationMemoTests.cs" />
     <Compile Include="Communication\ExecuteMessageTest.cs" />
     <Compile Include="Communication\PermissionsModifiedMemoTests.cs" />
-    <Compile Include="Logs\LoggerTests.cs" />
     <Compile Include="Logs\CustomTraceListnerTests.cs" />
     <Compile Include="Logs\PulseLoggerTests.cs" />
     <Compile Include="MoqInstallerActions\IntallerActionsForDevelopmentTest.cs" />

@@ -16,6 +16,7 @@ using Dev2.Common;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Utils;
 
 namespace Dev2.Webs.Callbacks
 {
@@ -43,7 +44,7 @@ namespace Dev2.Webs.Callbacks
             try
             {
                 string resName = jsonObj.resourceName;
-                string resCat = SanitizePath((string)jsonObj.resourcePath, resName);
+                string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
                 if(_resourceModel != null)
                 {
                     EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager));
@@ -61,33 +62,5 @@ namespace Dev2.Webs.Callbacks
             }
         }
         #endregion
-
-        public string SanitizePath(string path, string resourceName = "")
-        {
-            if(string.IsNullOrEmpty(path))
-            {
-                return "";
-            }
-
-            if(path.ToLower().StartsWith("root\\\\"))
-            {
-                path = path.Remove(0, 6);
-            }
-
-            if(path.ToLower().Equals("root"))
-            {
-                path = path.Remove(0, 4);
-            }
-
-            if(path.StartsWith("\\"))
-            {
-                path = path.Remove(0, 1);
-            }
-
-            path = string.IsNullOrEmpty(path) ? resourceName : path + "\\" + resourceName;
-
-            return path.Replace("\\\\", "\\")
-                .Replace("\\\\", "\\");
-        }
     }
 }

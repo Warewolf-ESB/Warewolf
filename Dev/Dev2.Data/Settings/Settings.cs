@@ -18,6 +18,7 @@ namespace Dev2.Data.Settings
     public class Settings
     {
         public SecuritySettingsTO Security { get; set; }
+        public LoggingSettingsTo Logging { get; set; }
 
         public bool HasError { get; set; }
         public string Error { get; set; }

@@ -410,8 +410,8 @@ namespace Dev2.Models
             {
                 _isConnected = value;
                 OnPropertyChanged();
-                ConnectCommand.RaiseCanExecuteChanged();
-                DisconnectCommand.RaiseCanExecuteChanged();
+               // ConnectCommand.RaiseCanExecuteChanged();
+               // DisconnectCommand.RaiseCanExecuteChanged();
                 
             }
         }
@@ -1189,7 +1189,8 @@ namespace Dev2.Models
                     {
                         for(int i = folderList.Count - 1; i >= 0; i--)
                         {
-                            if(folderList[i].ResourceType == ResourceType.Folder && (folderList[i].Children.Count == 0 || folderList[i].Children.All(c => c.ResourceType == ResourceType.Folder)))
+                            var folder = _studioResourceRepository.FindItem(a => a.ResourcePath == folderList[i].ResourcePath && a.ResourceType == ResourceType.Folder);
+                            if (folder != null && (folder.Children.Count == 0 || folder.Children.All(c => c.ResourceType == ResourceType.Folder)))
                             {
                                 _studioResourceRepository.DeleteFolder(folderList[i]);
                             }
@@ -1293,6 +1294,21 @@ namespace Dev2.Models
                     resource.Category = category;
                     
                 }
+            }
+        }
+
+        public string ResourcePathWithoutName {
+            get
+            {
+                if (ResourcePath != null)
+                {
+                    if (ResourcePath.Contains("\\"))
+                    {
+                        return ResourcePath.Substring(0, ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
+                    }
+                    return "";
+                }
+                return null;
             }
         }
 

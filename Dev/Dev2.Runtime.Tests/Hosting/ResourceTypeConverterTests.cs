@@ -16,7 +16,6 @@ using System.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Hosting
@@ -55,6 +54,17 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var result = ResourceTypeConverter.ToResourceTypes(ResourceTypeConverter.TypeSource);
             Assert.IsTrue(expected.SequenceEqual(result));
+        }
+
+        [TestMethod]
+        public void ResourceTypeConverterToResourceTypesWithTypeSourceHasOAuthType()
+        {
+            var values = Enum.GetValues(typeof(ResourceType));
+            var expected = values.Cast<ResourceType>().Where(value => value.ToString().EndsWith("Source")).ToList();
+            expected.Insert(0, ResourceType.Server); // order matters!
+
+            var result = ResourceTypeConverter.ToResourceTypes(ResourceTypeConverter.TypeSource);
+            Assert.IsTrue(result.Contains(ResourceType.OauthSource));
         }
 
         [TestMethod]

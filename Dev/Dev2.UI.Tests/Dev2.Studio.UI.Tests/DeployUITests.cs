@@ -32,8 +32,9 @@ namespace Dev2.Studio.UI.Tests
         [TestCleanup]
         public void MyTestCleanup()
         {
-            ExplorerUIMap.ClickServerInServerDDL(LocalServerName);
+            RestartStudioOnFailure();
             TabManagerUIMap.CloseAllTabs();
+            ExplorerUIMap.ClickServerInServerDDL(LocalServerName);
             
         }
         #endregion

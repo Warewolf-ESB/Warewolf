@@ -643,6 +643,7 @@ namespace Dev2.PathOperations
             {
                 result = PerformTransfer(src, dst, args, origDstPath, p, result);
             }
+            Dev2Logger.Log.Debug(string.Format("Transfered: {0}", src.IOPath.Path));
             return result;
         }
 
@@ -973,6 +974,13 @@ namespace Dev2.PathOperations
             TransferDirectoryContents(src, tmpEndPoint, new Dev2CRUDOperationTO(true));
             using(var zip = new ZipFile())
             {
+                zip.SaveProgress += (sender, eventArgs) =>
+                {
+                    if(eventArgs.CurrentEntry != null)
+                    {
+                        Dev2Logger.Log.Debug(string.Format("Event Type: {0} Total Entries: {1} Entries Saved: {2} Current Entry: {3}", eventArgs.EventType, eventArgs.EntriesTotal, eventArgs.EntriesSaved,  eventArgs.CurrentEntry.FileName));
+                    }
+                };
                 // set password if exist
                 if(args.ArchivePassword != string.Empty)
                 {

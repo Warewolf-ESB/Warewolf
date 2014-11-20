@@ -98,13 +98,13 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowSettingsCloseConfirmation()
         {
 
-            Header = "Security Settings have changed";
-            var description = "Security settings have not been saved." + Environment.NewLine
+            Header = "Settings have changed";
+            var description = "Settings have not been saved." + Environment.NewLine
                               + "Would you like to save the settings? " + Environment.NewLine +
                               "-------------------------------------------------------------------" +
-                              "Yes - Save the security settings." + Environment.NewLine +
+                              "Yes - Save the settings." + Environment.NewLine +
                               "No - Discard your changes." + Environment.NewLine +
-                              "Cancel - Returns you to security settings.";
+                              "Cancel - Returns you to settings.";
             Description = description;
             Buttons = MessageBoxButton.YesNoCancel;
             ImageType = MessageBoxImage.Information;

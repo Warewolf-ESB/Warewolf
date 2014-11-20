@@ -597,7 +597,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == navigationItemViewModel.EnvironmentId);
                 if(environmentModel != null)
                                 {
-                                    var theResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
+                                    var theResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId,true) as IContextualResourceModel;
                                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                                     DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = navigationItemViewModel.ResourcePath;
@@ -621,15 +621,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
 
         void InitialiseWithoutServiceName(ModelProperty modelProperty1, DsfActivity droppedActivity)
-                        {
+        {
             DsfActivity activity = droppedActivity;
             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                 c => c.Category == activity.ServiceName) as IContextualResourceModel;
-                                    droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == droppedActivity.ServiceServer);
-            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, environmentModel);
-                                    modelProperty1.SetValue(droppedActivity);
-                                }
+            IEnvironmentRepository environmentRepository = EnvironmentRepository.Instance;
+            droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, environmentRepository, _resourceModel.Environment.IsLocalHostCheck());
+            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, environmentRepository.ActiveEnvironment);
+            modelProperty1.SetValue(droppedActivity);
+        }
 
         void InitialiseIsDSFWebPage(ModelProperty modelProperty)
         {
@@ -890,13 +890,24 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 catch (Exception)
                 {
-                    IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
+
+                    if (!DataListUtil.IsValueRecordset((decisionValue)))
+                    {
+                        IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
+
+
+                        decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                    }
+                else
+                    {
+                          IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
                         DataListSingleton
                             .ActiveDataList
                             .WriteToResourceModel
                             (), true);
-
-                    decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                        decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                    }
+                    
                 }
             }
             return decisionFields;
@@ -1491,6 +1502,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // THIS MUST NEVER BE DELETED ;)
                 WatermarkSential.IsWatermarkBeingApplied = false;
             }
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         bool CheckDataList()
@@ -1532,6 +1544,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 });
             }
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         public static bool ValidatResourceModel(string dataList)

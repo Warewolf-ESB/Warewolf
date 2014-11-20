@@ -21,7 +21,7 @@ namespace Dev2.Integration.Tests.Sql
         [TestMethod]
         public void RunWorkflowIntegration()
         {
-            string reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/SampleEmployeesWorkflow?ResultType=Managers"));
+            string reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", ServerSettings.WebserverURI, "Acceptance Testing Resources/SampleEmployeesWorkflow?ResultType=Managers"));
             Assert.IsNotNull(reponseData);
         }
 

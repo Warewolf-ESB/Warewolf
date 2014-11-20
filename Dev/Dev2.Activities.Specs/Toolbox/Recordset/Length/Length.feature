@@ -60,7 +60,7 @@ Scenario: Length of a recordset with 0 rows
 	And get length on record "[[rs()]]"	
 	When the length tool is executed
 	Then the length result should be 0
-	And the execution has "NO" error
+	And the execution has "AN" error
 	And the debug inputs as  
 	| Recordset  |
 	| [[rs()]] = |

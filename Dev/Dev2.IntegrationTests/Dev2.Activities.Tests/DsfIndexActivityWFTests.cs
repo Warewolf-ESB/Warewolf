@@ -34,7 +34,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void IndexToolWithTwoRecordsetsWithStars()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/IndexToolWithTwoRecordsetsWithStars");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/IndexToolWithTwoRecordsetsWithStars");
             const string expected = @"<EmailResults index=""1""><result>The email to Barney.buchan@dev2.co.za was successful</result></EmailResults><EmailResults index=""2""><result>The email to Wallis.Buchan@dev2.co.za failed</result></EmailResults><EmailResults index=""3""><result>The email to Travis.Frisinger@dev2.co.za failed</result></EmailResults><EmailResults index=""4""><result>The email to Trevor.Williams-Ros@dev2.co.za was successful</result></EmailResults><EmailResults index=""5""><result>The email to Massimo.Guerrera@dev2.co.za was successful</result></EmailResults><ResultsCollection index=""1""><option>successful</option></ResultsCollection><ResultsCollection index=""2""><option>failed</option></ResultsCollection><IndexResult index=""1""><inres>43</inres></IndexResult><IndexResult index=""2""><inres>-1</inres></IndexResult><IndexResult index=""3""><inres>-1</inres></IndexResult><IndexResult index=""4""><inres>49</inres></IndexResult><IndexResult index=""5""><inres>46</inres></IndexResult><IndexResult index=""6""><inres>-1</inres></IndexResult><IndexResult index=""7""><inres>39</inres></IndexResult><IndexResult index=""8""><inres>42</inres></IndexResult><IndexResult index=""9""><inres>-1</inres></IndexResult><IndexResult index=""10""><inres>-1</inres></IndexResult>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -46,7 +46,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void IndexToolWithScalarAndAllOccurances()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/IndexToolWithScalarAndAllOccurances");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/IndexToolWithScalarAndAllOccurances");
             const string expected = @"<DataList><Scalar>Massimo Guerrera</Scalar><result>2,16</result>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);

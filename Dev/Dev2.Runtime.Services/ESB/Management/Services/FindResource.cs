@@ -11,6 +11,7 @@
 
 
 using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -39,7 +41,7 @@ namespace Dev2.Runtime.ESB.Management.Services
    
             string resourceName = null;
             string type = null;
-
+            string resourceId=null;
             StringBuilder tmp;
             values.TryGetValue("ResourceName", out tmp);
             if(tmp != null)
@@ -51,10 +53,23 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 type = tmp.ToString();
             }
-            Dev2Logger.Log.Info("Find Resource. ResourceName: "+resourceName);
-            var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, string.Empty);
+            values.TryGetValue("ResourceId", out tmp);
+            if (tmp != null)
+            {
+                resourceId = tmp.ToString();
+            }
 
-            IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
+            IList<Resource> resources;
+            if(resourceId ==null || resourceId == "*" )
+                resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, string.Empty);
+            else
+            {
+                resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceId, type);
+            }
+            Dev2Logger.Log.Info("Find Resource. ResourceName: "+resourceName);
+          
+               
+                IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
 
             var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(resourceList);

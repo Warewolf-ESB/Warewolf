@@ -114,6 +114,7 @@ namespace Dev2.Runtime.Security
                 case WebServerRequestType.HubConnect:
                     result = IsAuthorizedToConnect(request.User);
                     break;
+                case WebServerRequestType.WebExecuteGetLogFile:
                 case WebServerRequestType.EsbSendMemo:
                 case WebServerRequestType.EsbAddDebugWriter:
                 case WebServerRequestType.EsbExecuteCommand:

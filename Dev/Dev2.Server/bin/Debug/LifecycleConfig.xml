@@ -1,0 +1,19 @@
+<configuration>
+	<Logging>
+		<Debug Enabled="false" />
+		<Error Enabled="false" />
+		<Info Enabled="false" />
+		<Trace Enabled="true" />
+	</Logging>
+	<GCManager Enabled="false">
+		<MinWorkingSet>60</MinWorkingSet>
+		<MaxWorkingSet>6144</MaxWorkingSet>
+	</GCManager>
+	<PreloadAssemblies>true</PreloadAssemblies>
+	<AssemblyReferenceGroup>
+	</AssemblyReferenceGroup>
+	<WorkflowGroup Name="Initialization">
+	</WorkflowGroup>
+	<WorkflowGroup Name="Cleanup">
+	</WorkflowGroup>
+</configuration>

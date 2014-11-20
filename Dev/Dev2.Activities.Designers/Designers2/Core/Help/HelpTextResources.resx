@@ -727,6 +727,25 @@ Allowed:
 To perform a calculation, put the calculation in here in BODMAS format.
 There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.</value>
   </data>
+    <data name="DropBoxToolTipLocalSource" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+The file must be available on the local file system.</value>
+  </data>
+  <data name="DropBoxToolTipLocalDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+     Read: This is the name of the file that will be read from DropBox.
+     Write: This is the name of the file that will be written to DropBox.
+     NOTE: The file path must use "/" to identify folders and not "\".</value>
+  </data>
+  <data name="DropboxSourceToolTip" xml:space="preserve">
+    <value>Select the Dropbox source that the file operation will be performed on.</value>
+  </data>
+  <data name="DropboxOperationToolTip" xml:space="preserve">
+    <value>Select the operation that you wish to perform. Read or Write is currently supported.</value>
+  </data>
+  <data name="DropboxResultHelpText" xml:space="preserve">
+    <value>The result of the drop box operation will be assigned to this value</value>
+  </data>
   <data name="CalculateToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the formatted number.

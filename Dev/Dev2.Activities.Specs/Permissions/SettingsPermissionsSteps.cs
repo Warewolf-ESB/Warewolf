@@ -127,6 +127,14 @@ namespace Dev2.Activities.Specs.Permissions
                 CreateLocalWindowsAccount("SpecsUser", "T35t3r!@#", userGroup);
             }
             var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#")) { Name = "Other Connection" };
+            try
+            {
+                reconnectModel.Connect();
+            }
+            catch(UnauthorizedAccessException)
+            {
+                Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
+            }
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
         }
 

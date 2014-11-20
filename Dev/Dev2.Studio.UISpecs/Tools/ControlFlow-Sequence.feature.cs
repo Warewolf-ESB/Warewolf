@@ -109,7 +109,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
  testRunner.And("I type \"decision\" in \"RESOURCEPICKERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
- testRunner.And("I click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision T" +
+ testRunner.And("I click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Decision T" +
                     "esting_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
  testRunner.And("I click \"RESOURCEPICKEROKBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -120,7 +120,7 @@ this.ScenarioSetup(scenarioInfo);
                     "AutoID,Count Records(CountRecordsDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 25
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
-                    "AutoID,BARNEY\\Decision Testing(ServiceDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "AutoID,Acceptance Testing Resources\\Decision Testing(ServiceDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,FlowDecisionDesigner\" is invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -142,7 +142,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
  testRunner.And("I type \"javascript\" in \"RESOURCEPICKERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.And("I click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Javascript" +
+ testRunner.And("I click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Javascript" +
                     " Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
  testRunner.And("I click \"RESOURCEPICKEROKBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -151,7 +151,8 @@ this.ScenarioSetup(scenarioInfo);
                     "AutoID,Length(RecordsLengthDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
-                    "AutoID,BARNEY\\Javascript Testing(ServiceDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "AutoID,Acceptance Testing Resources\\Javascript Testing(ServiceDesigner)\" is visibl" +
+                    "e", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,FlowDecisionDesigner\" is invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

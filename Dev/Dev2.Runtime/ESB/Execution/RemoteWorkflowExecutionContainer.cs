@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -54,7 +53,7 @@ namespace Dev2.Runtime.ESB.Execution
         public RemoteWorkflowExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel, IResourceCatalog resourceCatalog)
             : base(sa, dataObj, workspace, esbChannel)
         {
-            if(resourceCatalog == null)
+            if (resourceCatalog == null)
             {
                 throw new ArgumentNullException("resourceCatalog");
             }
@@ -67,16 +66,17 @@ namespace Dev2.Runtime.ESB.Execution
             ErrorResultTO errors;
             var expressionsEntry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, logUri, false, out errors);
             var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-            while(itr.HasMoreRecords())
+            while (itr.HasMoreRecords())
             {
                 var cols = itr.FetchNextRowData();
-                foreach(var c in cols)
+                foreach (var c in cols)
                 {
                     var buildGetWebRequest = BuildSimpleGetWebRequest(c.TheValue);
-                    if(buildGetWebRequest == null)
+                    if (buildGetWebRequest == null)
                     {
                         throw new Exception("Invalid Url to execute for logging");
                     }
+                    buildGetWebRequest.UseDefaultCredentials = true;
                     ExecuteWebRequestAsync(buildGetWebRequest);
                 }
             }
@@ -84,7 +84,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected virtual void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
         {
-            if(buildGetWebRequest == null)
+            if (buildGetWebRequest == null)
             {
                 return;
             }
@@ -107,7 +107,7 @@ namespace Dev2.Runtime.ESB.Execution
             string result = string.Empty;
 
             var connection = GetConnection(DataObject.EnvironmentID);
-            if(connection == null)
+            if (connection == null)
             {
                 errors.AddError("Server source not found.");
                 return DataObject.DataListID;
@@ -120,7 +120,7 @@ namespace Dev2.Runtime.ESB.Execution
                 IList<IDebugState> msg = FetchRemoteDebugItems(connection);
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 errors.AddError(e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message);
                 Dev2Logger.Log.Error(e);
@@ -134,7 +134,7 @@ namespace Dev2.Runtime.ESB.Execution
             Guid mergeOp = dataListCompiler.Merge(DataObject.DataListID, tmpId, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            if(mergeOp == DataObject.DataListID)
+            if (mergeOp == DataObject.DataListID)
             {
                 return mergeOp;
             }
@@ -147,7 +147,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
 
-            if(data != null)
+            if (data != null)
             {
                 IList<IDebugState> fetchRemoteDebugItems = RemoteDebugItemParser.ParseItems(data);
                 fetchRemoteDebugItems.ForEach(state => state.SessionID = DataObject.DebugSessionID);
@@ -160,22 +160,22 @@ namespace Dev2.Runtime.ESB.Execution
         public virtual bool ServerIsUp()
         {
             var connection = GetConnection(DataObject.EnvironmentID);
-            if(connection == null)
+            if (connection == null)
             {
                 return false;
             }
             try
             {
                 var returnData = ExecuteGetRequest(connection, "ping", "<DataList></DataList>");
-                if(!string.IsNullOrEmpty(returnData))
+                if (!string.IsNullOrEmpty(returnData))
                 {
-                    if(returnData.Contains("Pong"))
+                    if (returnData.Contains("Pong"))
                     {
                         return true;
                     }
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
@@ -189,12 +189,12 @@ namespace Dev2.Runtime.ESB.Execution
             var requestUri = connection.WebAddress + "Services/" + serviceName + "?" + payload;
             var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password);
 
-            using(var response = req.GetResponse() as HttpWebResponse)
+            using (var response = req.GetResponse() as HttpWebResponse)
             {
-                if(response != null)
+                if (response != null)
                 {
                     // ReSharper disable AssignNullToNotNullAttribute
-                    using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                     // ReSharper restore AssignNullToNotNullAttribute
                     {
                         result = reader.ReadToEnd();
@@ -210,7 +210,7 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 var req = BuildSimpleGetWebRequest(requestUri);
-                if(authenticationType == AuthenticationType.Windows)
+                if (authenticationType == AuthenticationType.Windows)
                 {
                     req.UseDefaultCredentials = true;
                 }
@@ -219,7 +219,7 @@ namespace Dev2.Runtime.ESB.Execution
                     req.UseDefaultCredentials = false;
 
                     // we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                    if(authenticationType == AuthenticationType.Public)
+                    if (authenticationType == AuthenticationType.Public)
                     {
                         userName = GlobalConstants.PublicUsername;
                         password = string.Empty;
@@ -231,7 +231,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                 // set header for server to know this is a remote invoke ;)
                 var remoteInvokerId = DataObject.RemoteInvokerID;
-                if(remoteInvokerId == Guid.Empty.ToString())
+                if (remoteInvokerId == Guid.Empty.ToString())
                 {
                     throw new Exception("Remote Server ID Empty");
                 }
@@ -239,7 +239,7 @@ namespace Dev2.Runtime.ESB.Execution
                 req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
                 return req;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return null;
             }
@@ -249,12 +249,12 @@ namespace Dev2.Runtime.ESB.Execution
         {
             try
             {
-                var req = WebRequest.Create(requestUri);
+                var escapeUriString = Uri.EscapeUriString(requestUri);
+                var req = WebRequest.Create(escapeUriString);
                 req.Method = "GET";
-                // set header for server to know this is a remote invoke ;)                
                 return req;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return null;
             }
@@ -262,18 +262,18 @@ namespace Dev2.Runtime.ESB.Execution
 
         Connection GetConnection(Guid environmentId)
         {
-            if(environmentId == Guid.Empty)
+            if (environmentId == Guid.Empty)
             {
                 var localhostConnection = new Connection
-                    {
-                        Address = EnvironmentVariables.WebServerUri,
-                        AuthenticationType = AuthenticationType.Windows
-                    };
+                {
+                    Address = EnvironmentVariables.WebServerUri,
+                    AuthenticationType = AuthenticationType.Windows
+                };
                 return localhostConnection;
             }
             var xml = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, environmentId);
 
-            if(xml == null || xml.Length == 0)
+            if (xml == null || xml.Length == 0)
             {
                 return null;
             }
@@ -282,24 +282,24 @@ namespace Dev2.Runtime.ESB.Execution
             return new Connection(xe);
         }
 
-        public SerializableResource FetchRemoteResource(string serviceName)
+        public SerializableResource FetchRemoteResource(Guid serviceId, string serviceName)
         {
             var connection = GetConnection(DataObject.EnvironmentID);
-            if(connection == null)
+            if (connection == null)
             {
                 return null;
             }
             try
             {
-                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}", "TypeWorkflowService", serviceName));
-                if(!string.IsNullOrEmpty(returnData))
+                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}&ResourceId={2}", "TypeWorkflowService", serviceName, serviceId));
+                if (!string.IsNullOrEmpty(returnData))
                 {
                     Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                     var serializableResources = serializer.Deserialize<IList<SerializableResource>>(returnData);
                     return serializableResources.FirstOrDefault(resource => resource.ResourceType == ResourceType.WorkflowService);
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return null;
             }

@@ -38,19 +38,18 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
-using Dev2.Studio.Feedback;
-using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Help;
-using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.ViewModels.Deploy;
+using Dev2.Views.DropBox;
 using Dev2.Workspaces;
+using DropNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -105,7 +104,9 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             ActiveEnvironment.Setup(e => e.IsConnected).Returns(isConnected);
             ActiveEnvironment.Setup(e => e.CanStudioExecute).Returns(canStudioExecute);
+            // ReSharper disable MaximumChainedReferences
             AuthorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, It.IsAny<string>())).Returns(isAuthorized);
+            
 
             var actual = MainViewModel.SettingsCommand.CanExecute(null);
             Assert.AreEqual(expected, actual);
@@ -2280,6 +2281,29 @@ namespace Dev2.Core.Tests
             PopupController.Verify(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, null), Times.Once());
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_Handle_DeleteFolderMessage")]
+        public void MainViewModel_Handle_DeleteFolderMessage_RefreshFilters()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+            bool _actionCalled = false;
+            PopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, null)).Returns(MessageBoxResult.Yes);
+            //------------Execute Test---------------------------
+            var repo = MainViewModel.ExplorerViewModel.NavigationViewModel;
+            PrivateObject p = new PrivateObject(repo, new PrivateType(typeof(NavigationViewModelBase)));
+            p.SetField("_studioResourceRepository", MockStudioResourceRepository.Object);
+            p.SetField("_searchFilter", "bob");
+            MainViewModel.Handle(new DeleteFolderMessage("MyFolder", () =>
+            {
+                _actionCalled = true;
+            }));
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_actionCalled);
+            
+            MockStudioResourceRepository.Verify(a => a.Filter(It.IsAny<Func<IExplorerItemModel, bool>>()), Times.Once());
+        }
         public static ExecuteMessage MakeMsg(string msg)
         {
             var result = new ExecuteMessage { HasError = false };
@@ -2559,6 +2583,107 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual(newEnvironment, viewModel.ActiveEnvironment);
         }
+        [TestMethod]
+        [TestCategory("MainViewModel_OauthDialog")]
+        [Owner("Leon Rajindrapersadh")]
+        public void MainViewModel_ShowOAuthSave_ShowsDialog_AndCanclesOut()
+        {
+            //------------Setup for test--------------------------
+            var localhost = new Mock<IEnvironmentModel>();
+            localhost.Setup(e => e.ID).Returns(Guid.Empty);
+            localhost.Setup(e => e.IsConnected).Returns(true);
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
+            environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
+            var eventPublisher = new Mock<IEventAggregator>();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var versionChecker = new Mock<IVersionChecker>();
+            var browserPopupController = new Mock<IBrowserPopupController>();
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
+            //------------Execute Test---------------------------
+            // ReSharper disable ConvertToConstant.Local
+            bool save = false;
+          
+            bool drop = false;
+            // ReSharper restore ConvertToConstant.Local
+            var newEnvironment = new Mock<IEnvironmentModel>();
+            viewModel.SetActiveEnvironment(newEnvironment.Object);
+            var fact = new Mock<IDropboxFactory>();
+            fact.Setup(a => a.Create()).Returns(new Mock<IDropNetClient>().Object);
+            viewModel.DropboxFactory = fact.Object;
+
+            viewModel.ShowSaveDialog = (a,b,c,d)=>save=true;
+            viewModel.ShowDropboxAction = (window, vm) => { drop = true; return true; };
+            viewModel.CreateOAuthType(newEnvironment.Object,"dropBox","bob",false);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(save);
+            Assert.IsTrue(drop);
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_OAuthDialog")]
+        [Owner("Leon Rajindrapersadh")]
+        public void MainViewModel_ShowOAuthSave_ShowsDialog_HasResourceIdNoSaveDialog()
+        {
+            //------------Setup for test--------------------------
+            var localhost = new Mock<IEnvironmentModel>();
+            localhost.Setup(e => e.ID).Returns(Guid.Empty);
+            localhost.Setup(e => e.IsConnected).Returns(true);
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
+            environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
+            var eventPublisher = new Mock<IEventAggregator>();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var versionChecker = new Mock<IVersionChecker>();
+            var browserPopupController = new Mock<IBrowserPopupController>();
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
+            //------------Execute Test---------------------------
+            bool save = false;
+            bool drop = false;
+            var newEnvironment = new Mock<IEnvironmentModel>();
+            viewModel.SetActiveEnvironment(newEnvironment.Object);
+
+            viewModel.ShowSaveDialog = (a, b, c, d) => save = true;
+            viewModel.ShowDropboxAction = (window, vm) => { drop = true; return true; };
+            viewModel.CreateOAuthType(newEnvironment.Object, "DropboxSource", "bob",false);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(save);
+            Assert.IsTrue(drop);
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_OAuthDialogt")]
+        [Owner("Leon Rajindrapersadh")]
+        public void MainViewModel_ShowOAuthSave_ShowsDialog_AndSave()
+        {
+            //------------Setup for test--------------------------
+            var localhost = new Mock<IEnvironmentModel>();
+            localhost.Setup(e => e.ID).Returns(Guid.Empty);
+            localhost.Setup(e => e.IsConnected).Returns(true);
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
+            environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
+            var eventPublisher = new Mock<IEventAggregator>();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var resourceRep = new Mock<IResourceRepository>();
+            var versionChecker = new Mock<IVersionChecker>();
+            var browserPopupController = new Mock<IBrowserPopupController>();
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
+            //------------Execute Test---------------------------
+            bool save = false;
+            bool drop = false;
+            var newEnvironment = new Mock<IEnvironmentModel>();
+            viewModel.SetActiveEnvironment(newEnvironment.Object);
+            newEnvironment.Setup(a => a.ResourceRepository).Returns(resourceRep.Object);
+            viewModel.ShowSaveDialog = (a, b, c, d) => save = true;
+            viewModel.ShowDropboxAction = (window, vm) => { vm.HasAuthenticated = true; drop = true;  return true; };
+            viewModel.CreateOAuthType(newEnvironment.Object, "DropboxSource", "bob",false);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(save);
+            Assert.IsTrue(drop);
+         }
+
+
     }
 
     public class SchedulerViewModelForTesting : SchedulerViewModel
@@ -2567,7 +2692,9 @@ namespace Dev2.Core.Tests
         {
 
         }
+        // ReSharper disable TooManyDependencies
         public SchedulerViewModelForTesting(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
+            // ReSharper restore TooManyDependencies
             : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IConnectControlViewModel>().Object)
         {
 
@@ -2589,7 +2716,9 @@ namespace Dev2.Core.Tests
 
         }
 
+        // ReSharper disable TooManyDependencies
         public SettingsViewModelForTest(IEventAggregator eventPublisher, IPopupController popupController,
+            // ReSharper restore TooManyDependencies
                                        IAsyncWorker asyncWorker, IWin32Window parentWindow)
             : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IConnectControlViewModel>().Object)
         {
@@ -2603,4 +2732,5 @@ namespace Dev2.Core.Tests
 
         public bool RetValue { get; set; }
     }
+    // ReSharper restore MaximumChainedReferences
 }
