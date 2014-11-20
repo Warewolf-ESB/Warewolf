@@ -9,13 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -33,7 +31,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
-using log4net.Config;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -55,12 +52,6 @@ namespace ActivityUnitTests
         public BaseActivityUnitTest()
         {
             CallBackData = "Default Data";
-            const string settingsConfigFile = "Settings.config";
-            if (!File.Exists(settingsConfigFile))
-            {
-                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
-            }
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             TestStartNode = new FlowStep
             {
                 Action = new DsfCommentActivity()
@@ -148,8 +139,7 @@ namespace ActivityUnitTests
         public dynamic ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
 
-            try
-            {
+            
                 var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
                 svc.SetActivity(FlowchartProcess);
                 Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
@@ -221,11 +211,6 @@ namespace ActivityUnitTests
                 errors.ClearErrors();
                 dataObject.DataListID = wfec.Execute(out errors);
 
-            }
-            catch(Exception e)
-            {
-                Dev2Logger.Log.Error("Execution Error",e);
-            }
             return dataObject;
         }
 
@@ -274,7 +259,7 @@ namespace ActivityUnitTests
 
             mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors)).Verifiable();
 
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
             errors.ClearErrors();
             dataObject.DataListID = wfec.Execute(out errors);
@@ -321,7 +306,7 @@ namespace ActivityUnitTests
 
 
             // we need to set this now ;)
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, Dev2.Workspaces.WorkspaceRepository.Instance.ServerWorkspace, channel);
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, channel);
 
             errors.ClearErrors();
             dataObject.DataListID = wfec.Execute(out errors);
