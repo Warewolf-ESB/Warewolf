@@ -155,7 +155,6 @@ namespace Dev2.AppResources.Repositories
                 else
                 {
                     asyncWorker.Start(()=>{}, () => LoadEnvironmentTree(environmentId, onCompletion, environmentModel), e => onCompletion(environmentId));
-                    //LoadEnvironmentTree(environmentId, onCompletion, environmentModel);
                 }
             }
         }

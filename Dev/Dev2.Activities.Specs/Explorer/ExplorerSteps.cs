@@ -262,6 +262,7 @@ namespace Dev2.Activities.Specs.Explorer
                 var resourcePath = ScenarioContext.Current.Get<string>("path");
                 var displayName = resourcePath.Split("\\".ToArray()).Last();
                 var parent = repository.FindItem(i => i.DisplayName == displayName);
+                Assert.IsNotNull(parent,string.Format("Did not find {0}", displayName));
                 var child = parent.Children.FirstOrDefault(c => c.DisplayName == resourceToDelete);
 
                 if(child == null)
