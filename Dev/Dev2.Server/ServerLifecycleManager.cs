@@ -174,7 +174,10 @@ namespace Dev2
                     Dev2Logger.Log.Info("Command line processed. Returning");
                     return result;
                 }
-
+                AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                {
+                    Dev2Logger.Log.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
+                };
                 if(Environment.UserInteractive || options.IntegrationTestMode)
                 {
                     Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
