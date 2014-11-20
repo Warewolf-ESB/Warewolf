@@ -154,12 +154,20 @@ namespace Dev2.Activities.Specs.BaseTypes
                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
                 if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
                 {
-                    broker.PutRaw(sourceEndPoint, ops);
+                    var result =  broker.PutRaw(sourceEndPoint, ops);
+                    if (result != "Success")
+                    {
+                        result = broker.PutRaw(sourceEndPoint, ops);
+                        if (result != "Success")
+                        {
+                            Dev2Logger.Log.Debug("Create Source File for file op test error");
+                        }
+                    }
                 }
             }
             catch(Exception e)
             {
-                Dev2Logger.Log.Debug("Create Source File for file op test error",e);                
+                Dev2Logger.Log.Debug("Create Source File for file op test error",e);               
             }
 
         }
