@@ -9,7 +9,7 @@
              d:DesignWidth="300"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance logging:ILogSettings}">
-     <Grid>
+    <Grid IsEnabled="{Binding CanEditLogSettings, Mode=OneWay}">
         <Grid.Resources>
             <converters:SimpleEnumToBoolConverter x:Key="EnumBooleanConverter" />
         </Grid.Resources>
@@ -37,7 +37,7 @@
                                 </Hyperlink></TextBlock>
             </StackPanel>
             </ScrollViewer>
-          <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer IsEnabled="{Binding CanEditStudioLogSettings, Mode=OneWay}" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True" >
                 <TextBlock Margin="30,0,0,0" Style="{StaticResource Dev2HeadingTextBlockStyle}">Studio Logs</TextBlock>
                 <RadioButton Margin="50,0,0,-5" GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.OFF}}">None: No logging</RadioButton>

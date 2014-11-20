@@ -502,10 +502,6 @@
     <Folder Include="WizardTests\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Dev2.Studio\Settings.config">
-      <Link>Settings.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

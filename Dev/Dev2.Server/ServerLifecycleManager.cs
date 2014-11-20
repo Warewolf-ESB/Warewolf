@@ -90,7 +90,12 @@ namespace Dev2
                 {
                     return 80;
                 }
-                XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
+                const string settingsConfigFile = "Settings.config";
+                if (!File.Exists(settingsConfigFile))
+                {
+                    File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
+                }
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 bool commandLineParameterProcessed = false;
                 if(options.Install)
                 {

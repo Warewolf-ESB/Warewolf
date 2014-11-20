@@ -106,6 +106,7 @@
                               AutomationProperties.AutomationId="UI_SecuritySettings_AutoID"/>
 
                 <ToggleButton Content="{Binding LogHeader}"
+                              Visibility="{Binding HasLogSettings, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                               IsChecked="{Binding ShowLogging, Mode=TwoWay}"
                               Style="{StaticResource SettingsToggleButtonStyle}" />
 

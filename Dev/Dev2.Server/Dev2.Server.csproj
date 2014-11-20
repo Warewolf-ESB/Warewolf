@@ -287,9 +287,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Settings.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Warewolf Server.exe.secureconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

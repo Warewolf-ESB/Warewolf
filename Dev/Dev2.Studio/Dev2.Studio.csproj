@@ -1087,9 +1087,6 @@
     <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
-    <None Include="Settings.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Warewolf Studio.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
