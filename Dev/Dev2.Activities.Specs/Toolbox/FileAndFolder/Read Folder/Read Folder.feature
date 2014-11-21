@@ -6,11 +6,6 @@ Feature: Read Folder
 
 
 Scenario Outline: Read Folder file at location	
-    Given I have a variable "[[a]]" with a value '<Val1>'
-	Given I have a variable "[[b]]" with a value '<Val2>'
-	Given I have a variable "[[rec(1).a]]" with a value '<Val1>'
-	Given I have a variable "[[rec(2).a]]" with a value '<Val2>'
-	Given I have a variable "[[index]]" with a value "1"
 	Given I have a source path '<source>' with value '<sourceLocation>'
 	And source credentials as '<username>' and '<password>'
 	And Read is '<read>'   

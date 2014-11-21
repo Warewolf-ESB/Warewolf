@@ -37,7 +37,14 @@ namespace Dev2.Threading
         /// <param name="onError"></param>
         public Task Start(Action backgroundAction, Action uiAction, Action<Exception> onError)
         {
-            return null;
+            var task = new Task(() =>
+            {
+                backgroundAction.Invoke();
+                uiAction.Invoke();
+                onError.Invoke(null);
+            });
+            task.RunSynchronously();
+            return task;
         }
 
         /// <summary>
@@ -50,7 +57,9 @@ namespace Dev2.Threading
         /// <date>2013/08/08</date>
         public Task Start(Action backgroundAction)
         {
-            return null;
+            var task = new Task(backgroundAction.Invoke);
+            task.RunSynchronously();
+            return task;
         }
 
         public Task Start<TBackgroundResult>(Func<TBackgroundResult> backgroundFunc, Action<TBackgroundResult> uiAction)
