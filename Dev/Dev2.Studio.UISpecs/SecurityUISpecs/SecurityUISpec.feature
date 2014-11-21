@@ -618,8 +618,8 @@ Scenario: Connected To Remote Server As Administrator And Expected Admin Rights
 	##Connecting to Remote Server as Admin
     Given I create a new remote connection "RemAdmin" as
       | Address                  | AuthType | UserName      | Password |
-      | http://TST7X64W:3142/dsf | User     | Administrator |          |
-	Given I click "EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID"
+      | http://TST-CI-REMOTE:3140/dsf | User     | Administrator |          |
+	Given I click "EXPLORER,UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID"
 	#Checking Remote Server Ribbon Icons When Connected as Admin 
     Then "RIBBONNEWENDPOINT" is visible
 	Then "RIBBONSAVE" is disabled
@@ -631,18 +631,18 @@ Scenario: Connected To Remote Server As Administrator And Expected Admin Rights
 	Then "RIBBONSCHEDULE" is visible      
 	##Checking Explorer Icons When Connecte as Admin    
 	Given I send "Utility - Assign" to "EXPLORERFILTER"  
-	Given "EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID,UI_CanEdit_AutoID" is visible
-	Given "EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID,UI_CanExecute_AutoID" is visible
+	Given "EXPLORER,UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID,UI_CanEdit_AutoID" is visible
+	Given "EXPLORER,UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID,UI_CanExecute_AutoID" is visible
 	#Checking when connected as Admin Expected Deploy shouldn't have UnAuthorized validation message
 	Then I click "RIBBONDEPLOY"
 	Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_RemAdmin"
 	Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_RemAdmin"
-	Then "DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is not visible
+	Then "DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is not visible
 	Given I send "Utility - Assign" to "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,SourceNavigationView,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID"  
-	Then I click "DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_AutoID,UI_SourceServer_UI_Examples_AutoID_AutoID,Expander"
-	Then "DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_AutoID,UI_SourceServer_UI_Examples_AutoID_AutoID,UI_SourceServer_UI_Utility - Assign_AutoID_AutoID" is visible
+	Then I click "DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID_AutoID,UI_SourceServer_UI_Examples_AutoID_AutoID,Expander"
+	Then "DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID_AutoID,UI_SourceServer_UI_Examples_AutoID_AutoID,UI_SourceServer_UI_Utility - Assign_AutoID_AutoID" is visible
 	Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_RemAdmin"
-    Then "DEPLOYDESTINATION,UI_DestinationServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_AutoID,UI_Unautherized_DeployToText_AutoID" is not visible
+    Then "DEPLOYDESTINATION,UI_DestinationServer_UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID_AutoID,UI_Unautherized_DeployToText_AutoID" is not visible
 
 	
 

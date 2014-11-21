@@ -1121,14 +1121,14 @@ this.FeatureBackground();
                         "UserName",
                         "Password"});
             table4.AddRow(new string[] {
-                        "http://TST7X64W:3142/dsf",
+                        "http://TST-CI-REMOTE:3140/dsf",
                         "User",
                         "Administrator",
                         ""});
 #line 619
     testRunner.Given("I create a new remote connection \"RemAdmin\" as", ((string)(null)), table4, "Given ");
 #line 622
- testRunner.Given("I click \"EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I click \"EXPLORER,UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 624
     testRunner.Then("\"RIBBONNEWENDPOINT\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 625
@@ -1148,10 +1148,10 @@ this.FeatureBackground();
 #line 633
  testRunner.Given("I send \"Utility - Assign\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 634
- testRunner.Given("\"EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,UI_Utilit" +
+ testRunner.Given("\"EXPLORER,UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID,UI_Examples_AutoID,UI_Utilit" +
                     "y - Assign_AutoID,UI_CanEdit_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 635
- testRunner.Given("\"EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,UI_Utilit" +
+ testRunner.Given("\"EXPLORER,UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID,UI_Examples_AutoID,UI_Utilit" +
                     "y - Assign_AutoID,UI_CanExecute_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 637
  testRunner.Then("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1162,24 +1162,24 @@ this.FeatureBackground();
  testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServerc" +
                     "bx_AutoID_RemAdmin\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 640
- testRunner.Then("\"DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_AutoID,U" +
+ testRunner.Then("\"DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID_AutoID,U" +
                     "I_Unautherized_DeployFrom_AutoID\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 641
  testRunner.Given("I send \"Utility - Assign\" to \"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabMana" +
                     "ger_AutoID,DeployUserControl,SourceNavigationView,UI_DatalistFilterTextBox_AutoI" +
                     "D,UI_TextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 642
- testRunner.Then("I click \"DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_" +
+ testRunner.Then("I click \"DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID_" +
                     "AutoID,UI_SourceServer_UI_Examples_AutoID_AutoID,Expander\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 643
- testRunner.Then("\"DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_AutoID,U" +
+ testRunner.Then("\"DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoID_AutoID,U" +
                     "I_SourceServer_UI_Examples_AutoID_AutoID,UI_SourceServer_UI_Utility - Assign_Aut" +
                     "oID_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 644
  testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_Destinat" +
                     "ionServercbx_AutoID_RemAdmin\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 645
-    testRunner.Then("\"DEPLOYDESTINATION,UI_DestinationServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoI" +
+    testRunner.Then("\"DEPLOYDESTINATION,UI_DestinationServer_UI_RemAdmin (http://TST-CI-REMOTE:3140/)_AutoI" +
                     "D_AutoID,UI_Unautherized_DeployToText_AutoID\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
