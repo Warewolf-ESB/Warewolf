@@ -31,6 +31,11 @@ namespace Dev2.Common
                  // ReSharper disable once ConvertToLambdaExpression
                  CultureInfo.CurrentCulture.ClearCachedData();
              };
+             SystemEvents.UserPreferenceChanged += (sender, args) =>
+             {
+                 // ReSharper disable once ConvertToLambdaExpression
+                 CultureInfo.CurrentCulture.ClearCachedData();
+             };
             
          }
         // ReSharper disable InconsistentNaming
