@@ -3,8 +3,8 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@ignore @Examples
-Scenario: Testing Example Workflows
+@Examples
+Scenario: Testing First Batch of Example Workflows
 	Given I have Warewolf running
 	And all tabs are closed	
 	Given I click "EXPLORERCONNECTCONTROL"
@@ -65,7 +65,7 @@ Scenario: Testing Example Workflows
 	Then "WORKFLOWDESIGNER,Utility - System Information(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
-   #
+   
 	And I click "EXPLORERFILTERCLEARBUTTON"
 	And I send "Utility - Web Request" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Web Request_AutoID"
@@ -73,7 +73,7 @@ Scenario: Testing Example Workflows
 	Then "WORKFLOWDESIGNER,Utility - Web Request(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
-   #
+   
 	And I click "EXPLORERFILTERCLEARBUTTON"
 	And I send "Utility - XPath" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - XPath_AutoID"
@@ -152,7 +152,6 @@ Scenario: Testing Example Workflows
 	Then "WORKFLOWDESIGNER,Data - Data Merge(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
-	
 	And I click "EXPLORERFILTERCLEARBUTTON"
 	And I send "Utility - Replace" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Replace_AutoID"
@@ -160,7 +159,9 @@ Scenario: Testing Example Workflows
 	Then "WORKFLOWDESIGNER,Utility - Replace(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
-	
+		
+#Ashley: Splitting this senario in half because it runs for too long
+Scenario: Testing Second Batch of Example Workflows	
 	## Recordset - Tools
 	And I click "EXPLORERFILTERCLEARBUTTON"
 	And I send "Recordset" to "EXPLORERFILTER"
