@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Win32;
 
 namespace Dev2.Integration.Tests
 {
@@ -63,11 +61,6 @@ namespace Dev2.Integration.Tests
                 process.WaitForExit();
             }
 
-            RegistryKey rkey = Registry.CurrentUser.OpenSubKey(@"
-       Control Panel\International", true);
-            rkey.SetValue("sShortDate", "dd-MM-yyyy");
-            rkey.SetValue("sLongDate", "dd-MM-yyyy");
-            Console.Write(DateTime.Now + "");
         }
     }
 }
