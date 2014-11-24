@@ -9,7 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -20,10 +23,6 @@ using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Security;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace Dev2.Runtime.Hosting
 {

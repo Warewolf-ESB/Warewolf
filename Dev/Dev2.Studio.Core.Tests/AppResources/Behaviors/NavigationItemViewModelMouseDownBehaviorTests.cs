@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -234,7 +233,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         [TestCategory("NavigationItemViewModelMouseDownBehavior_OnMouseDown")]
         public void NavigationItemViewModelMouseDownBehavior_OnMouseDown_UserIsNotAuthorized_DoesNothing()
         {
-            Verify_OnMouseDown_UserIsNotAuthorized(editHitCount: 0, isAuthorized: false);
+            Verify_OnMouseDown_UserIsNotAuthorized(0, false);
         }
 
         [TestMethod]
@@ -242,7 +241,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         [TestCategory("NavigationItemViewModelMouseDownBehavior_OnMouseDown")]
         public void NavigationItemViewModelMouseDownBehavior_OnMouseDown_UserIsAuthorized_InvokesLogic()
         {
-            Verify_OnMouseDown_UserIsNotAuthorized(editHitCount: 1, isAuthorized: true);
+            Verify_OnMouseDown_UserIsNotAuthorized(1, true);
         }
 
         void Verify_OnMouseDown_UserIsNotAuthorized(int editHitCount, bool isAuthorized)

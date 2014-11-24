@@ -9,11 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using Moq;
 
 namespace Dev2.Core.Tests
@@ -24,7 +23,7 @@ namespace Dev2.Core.Tests
     ///This is a test class for ResourceHelperTest and is intended
     ///to contain all ResourceHelperTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     public class ResourceHelperTest
     {
 
@@ -81,7 +80,7 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for GetWebPageElementNames were the XmlConfig is malformed
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void GetWebPageElementNames_Malformed_XmlConfig()
         {
             string xmlConfig = StringResourcesTest.Webpage_Malformed_XmlConfig;
@@ -93,7 +92,7 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for GetWebPageElementNames were the XmlConfig is normal
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void GetWebPageElementNames_PositiveTest()
         {
             string xmlConfig = StringResourcesTest.WebPartWizards_DuplicateNameCheck;
@@ -105,7 +104,7 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for GetWebPageElementNames were the XmlConfig is blank
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void GetWebPageElementNames_BlankXmlConfig()
         {
             string actual;
@@ -118,7 +117,7 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for MergeXmlConfig were the XmlConfig is normal
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void MergeXmlConfig_PositiveTest()
         {
             string xmlConfig = StringResourcesTest.NameRegion_xmlCofig;
@@ -132,7 +131,7 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for MergeXmlConfig were the XmlConfig is blank
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void MergeXmlConfig_BlankXmlConfig()
         {
             string xmlConfig = StringResourcesTest.NameRegion_xmlCofig;
@@ -145,7 +144,7 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for MergeXmlConfig were the XmlConfig has no Dev2XmlResult tag
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void MergeXmlConfig_NoRootTag()
         {
             string xmlConfig = StringResourcesTest.NameRegion_xmlCofig;
@@ -165,7 +164,7 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for MergeXmlConfig were the XmlConfig has two Dev2XmlResult tag
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void MergeXmlConfig_DoubleRootTag()
         {
             string xmlConfig = StringResourcesTest.NameRegion_xmlCofig;

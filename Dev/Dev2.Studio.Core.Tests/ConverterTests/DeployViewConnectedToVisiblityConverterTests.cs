@@ -9,14 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
-using Dev2.Providers.Events;
 using Dev2.Studio.Core.AppResources.Converters;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;

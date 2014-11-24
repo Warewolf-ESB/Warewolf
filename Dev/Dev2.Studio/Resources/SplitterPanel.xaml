@@ -23,48 +23,48 @@
                             <Grid.Resources>
                                 <Storyboard x:Key="TheContentLeftFadeOut">
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheContentLeftControl" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheExpandedHeader" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheCollapsedHeader" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheExpandedToolTip" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheCollapsedToolTip" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheExpandedButtonBackground" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheCollapsedButtonBackground" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
                                     </ObjectAnimationUsingKeyFrames>
                                 </Storyboard>
                                 <Storyboard x:Key="TheContentLeftFadeIn">
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheContentLeftControl" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheExpandedHeader" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheCollapsedHeader" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheExpandedToolTip" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheCollapsedToolTip" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheExpandedButtonBackground" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
                                     </ObjectAnimationUsingKeyFrames>
                                     <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Duration="0" Storyboard.TargetName="TheCollapsedButtonBackground" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}"></DiscreteObjectKeyFrame>
+                                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" />
                                     </ObjectAnimationUsingKeyFrames>
                                 </Storyboard>
                             </Grid.Resources>                          
@@ -92,11 +92,10 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <TextBlock x:Name="ExpandedHearderText" Margin="0,4,0,4" Foreground="{TemplateBinding HeaderForeground}" 
-                                                   Text="{TemplateBinding Header}" VerticalAlignment="Top" HorizontalAlignment="Center" >
-                                        </TextBlock>
+                                                   Text="{TemplateBinding Header}" VerticalAlignment="Top" HorizontalAlignment="Center" />
                                         <Border BorderThickness="0" Grid.Row="1" Background="{TemplateBinding HeaderCollapsedBackground}">
                                             <ContentPresenter x:Name="TheContentLeftControl" 
-                                                  Content="{TemplateBinding ContentLeft}"></ContentPresenter>
+                                                  Content="{TemplateBinding ContentLeft}" />
                                         </Border>
                                     </Grid>                                  
                                 </Border>
@@ -122,7 +121,7 @@
                                 </customControls:SplitterExpansionButton>
                             </Grid>
                             <GridSplitter Grid.Column="1" x:Name="TheSplitter" Background="{TemplateBinding SplitterBackground}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Height="Auto" />
-                            <ContentPresenter Grid.Column="1" Margin="3,0,0,0" Content="{TemplateBinding ContentRight}"></ContentPresenter>
+                            <ContentPresenter Grid.Column="1" Margin="3,0,0,0" Content="{TemplateBinding ContentRight}" />
                         </Grid>
                     </Border>
                 </ControlTemplate>

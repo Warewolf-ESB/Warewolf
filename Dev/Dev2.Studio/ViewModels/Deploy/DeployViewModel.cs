@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
@@ -35,7 +36,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
-using System.Windows;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace

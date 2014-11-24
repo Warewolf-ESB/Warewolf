@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Dev2.UI">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Dev2.Intellisense;component/Themes/IntellisenseStyles.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/Dev2.Intellisense;component/Themes/IntellisenseStyles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type local:IntellisenseTextBox}">

@@ -9,7 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Forms;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
@@ -26,10 +29,6 @@ using Dev2.Studio.Core.Models;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Forms;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Settings

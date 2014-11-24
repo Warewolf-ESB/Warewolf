@@ -9,18 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
@@ -691,7 +690,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix: "rs(*).", tokenSuffix: "a", removeEmptyEntries: false);
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "rs(*).", "a", false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(TokenCount, target.Count);
@@ -729,7 +728,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix: "rs(*).", tokenSuffix: "a");
+            DataListUtil.UpsertTokens(target, tokenizer.Object, "rs(*).", "a");
 
             //------------Assert Results-------------------------
             const int ExpectedCount = TokenCount - 2;
@@ -881,7 +880,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Execute Test---------------------------
             ErrorResultTO invokeErrors;
-            DataListUtil.ShapeDefinitionsToDataList(null, enDev2ArgumentType.DB_ForEach, out invokeErrors, flipGeneration: false, isDbService: true);
+            DataListUtil.ShapeDefinitionsToDataList(null, enDev2ArgumentType.DB_ForEach, out invokeErrors, false, true);
             //------------Assert Results-------------------------
             Assert.IsNotNull(invokeErrors);
             var errors = invokeErrors.FetchErrors();

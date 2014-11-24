@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -43,7 +42,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         public void QuickVariableInputViewModel_PreviewRequested_ValidationErrorsCountNotZero_DoesNotGetPreviewOutput()
         {
             var qviViewModel = new QuickVariableInputViewModelMock();
-            qviViewModel.Errors = new List<IActionableErrorInfo>() { new ActionableErrorInfo() };
+            qviViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() };
 
             qviViewModel.PreviewViewModel.PreviewCommand.Execute(null);
 
@@ -154,13 +153,13 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_SplitTypeWithNewLine_CorrectResultsReturned()
         {
-            VerifySplitTypeWithNewLine("\r\n", doesVariableListContainNewLine: true, doPreview: true);
-            VerifySplitTypeWithNewLine("\n", doesVariableListContainNewLine: true, doPreview: true);
-            VerifySplitTypeWithNewLine("\r", doesVariableListContainNewLine: true, doPreview: true);
+            VerifySplitTypeWithNewLine("\r\n", true, true);
+            VerifySplitTypeWithNewLine("\n", true, true);
+            VerifySplitTypeWithNewLine("\r", true, true);
 
-            VerifySplitTypeWithNewLine("\r\n", doesVariableListContainNewLine: false, doPreview: true);
-            VerifySplitTypeWithNewLine("\n", doesVariableListContainNewLine: false, doPreview: true);
-            VerifySplitTypeWithNewLine("\r", doesVariableListContainNewLine: false, doPreview: true);
+            VerifySplitTypeWithNewLine("\r\n", false, true);
+            VerifySplitTypeWithNewLine("\n", false, true);
+            VerifySplitTypeWithNewLine("\r", false, true);
         }
 
 
