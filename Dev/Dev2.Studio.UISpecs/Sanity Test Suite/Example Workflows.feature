@@ -3,7 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@Examples
+@ignore @Examples
 Scenario: Testing Example Workflows
 	Given I have Warewolf running
 	And all tabs are closed	

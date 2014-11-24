@@ -72,10 +72,12 @@ namespace Dev2.Studio.UI.Specs.SanityTestSuite
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Testing Example Workflows")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SpecFloUI_File and Folder - Delete_AutoIDeature1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Examples")]
         public virtual void TestingExampleWorkflows()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testing Example Workflows", new string[] {
+                        "ignore",
                         "Examples"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
