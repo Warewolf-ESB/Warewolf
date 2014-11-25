@@ -24,7 +24,7 @@ Everyone! But it really helps if you’re a C# developer, or a WPF pack leader.
 
 **Why should you get your paws dirty?**
 
-Pounce on the opportunity to put your name on it! Those who make it could be famous!
+Pounce on the opportunity to put your name on it - those who make it could be famous!
 
 
 
