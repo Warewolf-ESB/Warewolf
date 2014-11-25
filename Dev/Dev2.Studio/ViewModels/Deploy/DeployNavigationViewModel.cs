@@ -113,6 +113,7 @@ namespace Dev2.ViewModels.Deploy
         }
         public void Update()
         {
+            
             StudioResourceRepository.Load(_environment.ID, AsyncWorker);
             FilterEnvironments(Environment, false);
 

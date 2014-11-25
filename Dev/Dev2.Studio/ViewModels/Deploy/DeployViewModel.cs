@@ -1096,7 +1096,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                             foreach(var dependant in dependancyNames)
                             {
                                 string dependant1 = dependant;
-                                var treeNode = StudioResourceRepository.FindItem(model => model.ResourceId.ToString() == dependant1);
+                                var treeNode = StudioResourceRepository.FindItem(model => model.ResourceId.ToString() == dependant1 && model.EnvironmentId == SelectedSourceServer.ID);
                                 if(treeNode != null)
                                 {
                                     treeNode.IsChecked = true;

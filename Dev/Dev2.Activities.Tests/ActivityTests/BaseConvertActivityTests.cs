@@ -196,7 +196,6 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
-        [Ignore] // See Bug 12497
         public void Scalar_To_Base64_Back_To_Text_Expect_Original()
         {
 
