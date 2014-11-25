@@ -1217,6 +1217,45 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_SelectDependencies")]
+        public void DeployViewModel_SelectDependencies_DependencyFound_Selected_ServerNotLocalHost()
+        {
+            //------------Setup for test--------------------------
+            IExplorerItemModel explorerItemModel;
+            IEnvironmentModel environmentModel;
+            StudioResourceRepository studioResourceRepository = CreateModels(false, out environmentModel, out explorerItemModel);
+     
+            explorerItemModel.IsChecked = true;
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
+            mockResource.Setup(model => model.ResourceName).Returns("resource");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
+            mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            var sourceID = Guid.NewGuid();
+            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
+            
+            explorerItemModel.EnvironmentId = sourceID;
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.Source.ExplorerItemModels = studioResourceRepository.ExplorerItemModels;
+            //------------Execute Test---------------------------
+            deployViewModel.SelectDependencies(new List<IExplorerItemModel> { explorerItemModel });
+            //------------Assert Results-------------------------
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].Children[0].IsChecked.GetValueOrDefault(false));
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("DeployViewModel_SelectAllDependencies")]
         public void DeployViewModel_SelectAllDependenciesCommand_SourceNull_NothingHappens()
         {

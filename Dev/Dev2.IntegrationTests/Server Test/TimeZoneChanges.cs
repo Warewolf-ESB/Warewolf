@@ -60,6 +60,7 @@ namespace Dev2.Integration.Tests
             {
                 process.WaitForExit();
             }
+
         }
     }
 }

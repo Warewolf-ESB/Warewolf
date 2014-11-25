@@ -90,12 +90,7 @@ namespace Dev2
                 {
                     return 80;
                 }
-                const string settingsConfigFile = "Settings.config";
-                if (!File.Exists(settingsConfigFile))
-                {
-                    File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
-                }
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+                
                 bool commandLineParameterProcessed = false;
                 if(options.Install)
                 {
@@ -298,7 +293,12 @@ namespace Dev2
             _configFile = DefaultConfigFileName;
             _externalDependencies = AssemblyReference.EmptyReferences;
             _workflowGroups = new Dictionary<string, WorkflowEntry[]>(StringComparer.OrdinalIgnoreCase);
-
+            const string settingsConfigFile = "Settings.config";
+            if (!File.Exists(settingsConfigFile))
+            {
+                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
+            }
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             InitializeCommandLineArguments();
         }
 
