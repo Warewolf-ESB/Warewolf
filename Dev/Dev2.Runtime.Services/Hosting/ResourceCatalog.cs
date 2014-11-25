@@ -76,11 +76,11 @@ namespace Dev2.Runtime.Hosting
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
-                    lock(SyncRoot)
+                    lock (SyncRoot)
                     {
-                        if(_instance == null)
+                        if (_instance == null)
                         {
                             _instance = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
                             CompileMessageRepo.Instance.Ping();
@@ -109,9 +109,9 @@ namespace Dev2.Runtime.Hosting
         {
             // MUST load management services BEFORE server workspace!!
             _versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
-            if(managementServices != null)
+            if (managementServices != null)
             {
-                foreach(var service in managementServices)
+                foreach (var service in managementServices)
                 {
                     var resource = new ManagementServiceResource(service);
                     _managementServices.TryAdd(resource.ResourceID, resource);
@@ -123,9 +123,9 @@ namespace Dev2.Runtime.Hosting
         {
             // MUST load management services BEFORE server workspace!!
             _versioningRepository = serverVersionRepository;
-            if(managementServices != null)
+            if (managementServices != null)
             {
-                foreach(var service in managementServices)
+                foreach (var service in managementServices)
                 {
                     var resource = new ManagementServiceResource(service);
                     _managementServices.TryAdd(resource.ResourceID, resource);
@@ -161,14 +161,14 @@ namespace Dev2.Runtime.Hosting
         public void RemoveWorkspace(Guid workspaceID)
         {
             object workspaceLock;
-            lock(_loadLock)
+            lock (_loadLock)
             {
-                if(!_workspaceLocks.TryRemove(workspaceID, out workspaceLock))
+                if (!_workspaceLocks.TryRemove(workspaceID, out workspaceLock))
                 {
                     workspaceLock = new object();
                 }
             }
-            lock(workspaceLock)
+            lock (workspaceLock)
             {
                 List<IResource> resources;
                 _workspaceResources.TryRemove(workspaceID, out resources);
@@ -181,22 +181,22 @@ namespace Dev2.Runtime.Hosting
 
         public IResource GetResource(Guid workspaceID, string resourceName, ResourceType resourceType = ResourceType.Unknown, string version = null)
         {
-            while(true)
+            while (true)
             {
-                if(string.IsNullOrEmpty(resourceName))
+                if (string.IsNullOrEmpty(resourceName))
                 {
                     throw new ArgumentNullException("resourceName");
                 }
                 var resourceNameToSearchFor = resourceName.Replace("/", "\\");
                 var resourcePath = resourceNameToSearchFor;
                 var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
-                if(endOfResourcePath >= 0)
+                if (endOfResourcePath >= 0)
                 {
                     resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
                 }
                 var resources = GetResources(workspaceID);
                 var foundResource = resources.FirstOrDefault(r => string.Equals(r.ResourcePath ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == ResourceType.Unknown || r.ResourceType == resourceType));
-                if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
                     workspaceID = GlobalConstants.ServerWorkspaceID;
                     continue;
@@ -231,21 +231,21 @@ namespace Dev2.Runtime.Hosting
         {
             StringBuilder contents = new StringBuilder();
 
-            if(resource == null || string.IsNullOrEmpty(resource.FilePath) || !File.Exists(resource.FilePath))
+            if (resource == null || string.IsNullOrEmpty(resource.FilePath) || !File.Exists(resource.FilePath))
             {
                 return contents;
             }
 
             // Open the file with the file share option of read. This will ensure that if the file is opened for write while this read operation
             // is happening the wite will fail.
-            using(FileStream fs = new FileStream(resource.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream fs = new FileStream(resource.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                using(StreamReader sr = new StreamReader(fs))
+                using (StreamReader sr = new StreamReader(fs))
                 {
-                    while(!sr.EndOfStream)
+                    while (!sr.EndOfStream)
                     {
                         var readLine = sr.ReadLine();
-                        if(!string.IsNullOrEmpty(readLine))
+                        if (!string.IsNullOrEmpty(readLine))
                         {
                             contents.Append(readLine);
                             contents.Append(Environment.NewLine);
@@ -271,21 +271,21 @@ namespace Dev2.Runtime.Hosting
         /// <exception cref="System.ArgumentNullException">type</exception>
         public StringBuilder GetPayload(Guid workspaceID, string guidCsv, string type)
         {
-            if(type == null)
+            if (type == null)
             {
                 throw new ArgumentNullException("type");
             }
 
-            if(guidCsv == null)
+            if (guidCsv == null)
             {
                 guidCsv = string.Empty;
             }
 
             var guids = new List<Guid>();
-            foreach(var guidStr in guidCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var guidStr in guidCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 Guid guid;
-                if(Guid.TryParse(guidStr, out guid))
+                if (Guid.TryParse(guidStr, out guid))
                 {
                     guids.Add(guid);
                 }
@@ -315,7 +315,7 @@ namespace Dev2.Runtime.Hosting
 
             IEnumerable result;
 
-            switch(sourceType)
+            switch (sourceType)
             {
                 case enSourceType.Dev2Server:
                     result = BuildServerList(resources);
@@ -335,9 +335,6 @@ namespace Dev2.Runtime.Hosting
 
                 case enSourceType.WebSource:
                     result = BuildWebList(resources);
-                    break;
-                case enSourceType.OauthSource:
-                    result = BuildDropboxList(resources);
                     break;
 
                 default:
@@ -377,12 +374,12 @@ namespace Dev2.Runtime.Hosting
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">ResourceName and Type are missing from the request</exception>
         public StringBuilder GetPayload(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true)
         {
-            if(string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
+            if (string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
             {
                 throw new InvalidDataContractException("ResourceName and Type are missing from the request");
             }
 
-            if(string.IsNullOrEmpty(resourceName) || resourceName == "*")
+            if (string.IsNullOrEmpty(resourceName) || resourceName == "*")
             {
                 resourceName = string.Empty;
             }
@@ -401,21 +398,21 @@ namespace Dev2.Runtime.Hosting
 
         public IList<Resource> GetResourceList(Guid workspaceId, string guidCsv, string type)
         {
-            if(type == null)
+            if (type == null)
             {
                 throw new ArgumentNullException("type");
             }
 
-            if(guidCsv == null)
+            if (guidCsv == null)
             {
                 guidCsv = string.Empty;
             }
 
             var guids = new List<Guid>();
-            foreach(var guidStr in guidCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var guidStr in guidCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 Guid guid;
-                if(Guid.TryParse(guidStr, out guid))
+                if (Guid.TryParse(guidStr, out guid))
                 {
                     guids.Add(guid);
                 }
@@ -431,12 +428,12 @@ namespace Dev2.Runtime.Hosting
 
         public IList<Resource> GetResourceList(Guid workspaceId, string resourceName, string type, string userRoles, bool useContains = true)
         {
-            if(string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
+            if (string.IsNullOrEmpty(resourceName) && string.IsNullOrEmpty(type))
             {
                 throw new InvalidDataContractException("ResourceName and Type are missing from the request");
             }
 
-            if(string.IsNullOrEmpty(resourceName) || resourceName == "*")
+            if (string.IsNullOrEmpty(resourceName) || resourceName == "*")
             {
                 resourceName = string.Empty;
             }
@@ -459,7 +456,7 @@ namespace Dev2.Runtime.Hosting
         public void LoadWorkspace(Guid workspaceID)
         {
             var workspaceLock = GetWorkspaceLock(workspaceID);
-            lock(workspaceLock)
+            lock (workspaceLock)
             {
                 _workspaceResources.AddOrUpdate(workspaceID,
                     id => LoadWorkspaceImpl(workspaceID),
@@ -475,7 +472,7 @@ namespace Dev2.Runtime.Hosting
         {
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
             IList<IResource> userServices = new List<IResource>();
-            if(Directory.Exists(workspacePath))
+            if (Directory.Exists(workspacePath))
             {
                 var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
                 var allFolders = folders.ToList();
@@ -524,11 +521,11 @@ namespace Dev2.Runtime.Hosting
 
         public bool CopyResource(IResource resource, Guid targetWorkspaceID, string userRoles = null)
         {
-            if(resource != null)
+            if (resource != null)
             {
                 var copy = new Resource(resource);
                 var globalResource = GetResource(Guid.Empty, resource.ResourceID);
-                if(globalResource != null)
+                if (globalResource != null)
                 {
 
                     copy.VersionInfo = globalResource.VersionInfo;
@@ -551,13 +548,13 @@ namespace Dev2.Runtime.Hosting
             {
 
 
-                if(resourceXml == null || resourceXml.Length == 0)
+                if (resourceXml == null || resourceXml.Length == 0)
                 {
                     throw new ArgumentNullException("resourceXml");
                 }
 
                 var workspaceLock = GetWorkspaceLock(workspaceID);
-                lock(workspaceLock)
+                lock (workspaceLock)
                 {
                     var xml = resourceXml.ToXElement();
 
@@ -572,7 +569,7 @@ namespace Dev2.Runtime.Hosting
                     return CompileAndSave(workspaceID, resource, result);
                 }
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Dev2Logger.Log.Error("Save Error", err);
                 throw;
@@ -584,15 +581,15 @@ namespace Dev2.Runtime.Hosting
 
             _versioningRepository.StoreVersion(resource, user, reason, workspaceID);
 
-            if(resource == null)
+            if (resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
 
             var workspaceLock = GetWorkspaceLock(workspaceID);
-            lock(workspaceLock)
+            lock (workspaceLock)
             {
-                if(resource.ResourceID == Guid.Empty)
+                if (resource.ResourceID == Guid.Empty)
                 {
                     resource.ResourceID = Guid.NewGuid();
                 }
@@ -604,22 +601,22 @@ namespace Dev2.Runtime.Hosting
 
         public string SanitizePath(string path)
         {
-            if(string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
             {
                 return "";
             }
 
-            if(path.ToLower().StartsWith("root\\"))
+            if (path.ToLower().StartsWith("root\\"))
             {
                 path = path.Remove(0, 5);
             }
 
-            if(path.ToLower().Equals("root"))
+            if (path.ToLower().Equals("root"))
             {
                 path = path.Remove(0, 4);
             }
 
-            if(path.StartsWith("\\"))
+            if (path.StartsWith("\\"))
             {
                 path = path.Remove(0, 1);
             }
@@ -635,9 +632,9 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, string userRoles = null, bool deleteVersions = true)
         {
             var workspaceLock = GetWorkspaceLock(workspaceID);
-            lock(workspaceLock)
+            lock (workspaceLock)
             {
-                if(resourceName == "*")
+                if (resourceName == "*")
                 {
                     return new ResourceCatalogResult
                     {
@@ -646,7 +643,7 @@ namespace Dev2.Runtime.Hosting
                     };
                 }
 
-                if(string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(type))
+                if (string.IsNullOrEmpty(resourceName) || string.IsNullOrEmpty(type))
                 {
                     throw new InvalidDataContractException("ResourceName or Type is missing from the request");
                 }
@@ -658,7 +655,7 @@ namespace Dev2.Runtime.Hosting
                     string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase)
                     && resourceTypes.Contains(r.ResourceType));
 
-                switch(resources.Count)
+                switch (resources.Count)
                 {
                     case 0:
                         return new ResourceCatalogResult
@@ -687,9 +684,9 @@ namespace Dev2.Runtime.Hosting
 
 
                 var workspaceLock = GetWorkspaceLock(workspaceID);
-                lock(workspaceLock)
+                lock (workspaceLock)
                 {
-                    if(resourceID == Guid.Empty || string.IsNullOrEmpty(type))
+                    if (resourceID == Guid.Empty || string.IsNullOrEmpty(type))
                     {
                         throw new InvalidDataContractException("ResourceID or Type is missing from the request");
                     }
@@ -701,7 +698,7 @@ namespace Dev2.Runtime.Hosting
                         Equals(r.ResourceID, resourceID)
                         && resourceTypes.Contains(r.ResourceType));
 
-                    switch(resources.Count)
+                    switch (resources.Count)
                     {
                         case 0:
                             return new ResourceCatalogResult
@@ -722,7 +719,7 @@ namespace Dev2.Runtime.Hosting
                     }
                 }
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Dev2Logger.Log.Error("Delete Error", err);
                 throw;
@@ -733,11 +730,11 @@ namespace Dev2.Runtime.Hosting
         {
             var resource = resources[0];
 
-            if(workspaceID == Guid.Empty && deleteVersions)
+            if (workspaceID == Guid.Empty && deleteVersions)
                 _versioningRepository.GetVersions(resource.ResourceID).ForEach(a => _versioningRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber));
 
             workspaceResources.Remove(resource);
-            if(File.Exists(resource.FilePath))
+            if (File.Exists(resource.FilePath))
             {
                 File.Delete(resource.FilePath);
             }
@@ -753,15 +750,15 @@ namespace Dev2.Runtime.Hosting
                         }
                 };
             UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
-            if(workspaceID == GlobalConstants.ServerWorkspaceID)
+            if (workspaceID == GlobalConstants.ServerWorkspaceID)
             {
                 ServerAuthorizationService.Instance.Remove(resource.ResourceID);
             }
             return new ResourceCatalogResult
-                {
-                    Status = ExecStatus.Success,
-                    Message = "Success"
-                };
+            {
+                Status = ExecStatus.Success,
+                Message = "Success"
+            };
         }
 
         #endregion
@@ -772,19 +769,19 @@ namespace Dev2.Runtime.Hosting
 
         public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null)
         {
-            if(filesToIgnore == null)
+            if (filesToIgnore == null)
             {
                 filesToIgnore = new List<string>();
             }
             var source = new DirectoryInfo(sourceWorkspacePath);
             var destination = new DirectoryInfo(targetWorkspacePath);
 
-            if(!source.Exists)
+            if (!source.Exists)
             {
                 return;
             }
 
-            if(!destination.Exists)
+            if (!destination.Exists)
             {
                 destination.Create();
             }
@@ -801,7 +798,7 @@ namespace Dev2.Runtime.Hosting
 
             var filesToCopyFromSource = new List<FileInfo>();
 
-            if(overwrite)
+            if (overwrite)
             {
                 filesToCopyFromSource.AddRange(sourceFiles);
             }
@@ -817,7 +814,7 @@ namespace Dev2.Runtime.Hosting
             // Calculate the files which are to be deleted from the destination, this respects the delete parameter
             //
             var filesToDeleteFromDestination = new List<FileInfo>();
-            if(delete)
+            if (delete)
             {
                 filesToDeleteFromDestination.AddRange(destinationFiles
                     // ReSharper disable SimplifyLinqExpression
@@ -828,7 +825,7 @@ namespace Dev2.Runtime.Hosting
             //
             // Copy files from source to desination
             //
-            foreach(var file in filesToCopyFromSource)
+            foreach (var file in filesToCopyFromSource)
             {
                 file.CopyTo(Path.Combine(destination.FullName, file.Name), true);
             }
@@ -842,14 +839,14 @@ namespace Dev2.Runtime.Hosting
         public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, string resourceName, bool useContains = false)
             where TServiceType : DynamicServiceObjectBase
         {
-            if(string.IsNullOrEmpty(resourceName))
+            if (string.IsNullOrEmpty(resourceName))
             {
                 throw new ArgumentNullException("resourceName");
             }
 
             List<DynamicServiceObjectBase> results;
 
-            if(useContains)
+            if (useContains)
             {
                 var resources = GetResources(workspaceID);
                 results = GetDynamicObjects(resources.Where(r => r.ResourceName.Contains(resourceName)));
@@ -865,7 +862,7 @@ namespace Dev2.Runtime.Hosting
         public List<TServiceType> GetDynamicObjects<TServiceType>(Guid workspaceID, Guid resourceID)
             where TServiceType : DynamicServiceObjectBase
         {
-            if(resourceID == Guid.Empty)
+            if (resourceID == Guid.Empty)
             {
                 throw new ArgumentNullException("resourceID");
             }
@@ -877,7 +874,7 @@ namespace Dev2.Runtime.Hosting
 
         public List<DynamicServiceObjectBase> GetDynamicObjects(IResource resource)
         {
-            if(resource == null)
+            if (resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
@@ -895,13 +892,13 @@ namespace Dev2.Runtime.Hosting
 
         public List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources)
         {
-            if(resources == null)
+            if (resources == null)
             {
                 throw new ArgumentNullException("resources");
             }
 
             var result = new List<DynamicServiceObjectBase>();
-            foreach(var resource in resources)
+            foreach (var resource in resources)
             {
                 AddResourceAsDynamicServiceObject(result, resource);
             }
@@ -925,10 +922,7 @@ namespace Dev2.Runtime.Hosting
         {
             return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new EmailSource(xe)).ToList();
         }
-        private IEnumerable BuildDropboxList(IEnumerable<IResource> resources)
-        {
-            return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new OauthSource(xe)).ToList();
-        }
+
         private IEnumerable BuildSqlServerList(IEnumerable<IResource> resources)
         {
             return resources.Select(ToPayload).Select(payload => payload.ToXElement()).Select(xe => new DbSource(xe)).ToList();
@@ -950,48 +944,32 @@ namespace Dev2.Runtime.Hosting
 
         public List<IResource> GetResources(Guid workspaceID)
         {
-            try
+            var workspaceLock = GetWorkspaceLock(workspaceID);
+            lock (workspaceLock)
             {
-                var workspaceLock = GetWorkspaceLock(workspaceID);
-                lock(workspaceLock)
-                {
-                    return _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl);
-                }
+                return _workspaceResources.GetOrAdd(workspaceID, LoadWorkspaceImpl);
             }
-            catch(Exception e)
-            {
-                Dev2Logger.Log.Error("Error getting resources",e);
-            }
-            return null;
         }
 
         public virtual IResource GetResource(Guid workspaceID, Guid serviceID)
         {
-            try
+            while (true)
             {
-                while(true)
+                var resources = GetResources(workspaceID);
+                var foundResource = resources.FirstOrDefault(resource => resource.ResourceID == serviceID);
+                if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
-                    var resources = GetResources(workspaceID);
-                    var foundResource = resources.FirstOrDefault(resource => resource.ResourceID == serviceID);
-                    if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
-                    {
-                        workspaceID = GlobalConstants.ServerWorkspaceID;
-                        continue;
-                    }
-                    return foundResource;
+                    workspaceID = GlobalConstants.ServerWorkspaceID;
+                    continue;
                 }
+                return foundResource;
             }
-            catch(Exception e)
-            {
-                Dev2Logger.Log.Error("Error getting resource",e);
-            }
-            return null;
         }
 
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new()
         {
             var resourceContents = ResourceContents<T>(workspaceID, serviceID);
-            if(resourceContents == null || resourceContents.Length == 0) return null;
+            if (resourceContents == null || resourceContents.Length == 0) return null;
             return GetResource<T>(resourceContents);
         }
 
@@ -1005,7 +983,7 @@ namespace Dev2.Runtime.Hosting
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new()
         {
             var resourceContents = ResourceContents<T>(workspaceID, resourceName);
-            if(resourceContents == null || resourceContents.Length == 0) return null;
+            if (resourceContents == null || resourceContents.Length == 0) return null;
             return GetResource<T>(resourceContents);
         }
 
@@ -1013,7 +991,7 @@ namespace Dev2.Runtime.Hosting
         {
             var resource = GetResource(workspaceID, resourceName);
             var resourceContents = GetResourceContents(resource);
-            if(CheckType<T>(resource)) return null;
+            if (CheckType<T>(resource)) return null;
             return resourceContents;
         }
 
@@ -1021,39 +999,39 @@ namespace Dev2.Runtime.Hosting
         {
             var resource = GetResource(workspaceID, resourceID);
             var resourceContents = GetResourceContents(resource);
-            if(CheckType<T>(resource)) return null;
+            if (CheckType<T>(resource)) return null;
             return resourceContents;
         }
 
         static bool CheckType<T>(IResource resource) where T : Resource, new()
         {
-            if(resource != null)
+            if (resource != null)
             {
-                if(typeof(T) == typeof(Workflow) && resource.ResourceType != ResourceType.WorkflowService)
+                if (typeof(T) == typeof(Workflow) && resource.ResourceType != ResourceType.WorkflowService)
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(DbService) && resource.ResourceType != ResourceType.DbService)
+                if (typeof(T) == typeof(DbService) && resource.ResourceType != ResourceType.DbService)
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(DbSource) && resource.ResourceType != ResourceType.DbSource)
+                if (typeof(T) == typeof(DbSource) && resource.ResourceType != ResourceType.DbSource)
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(PluginService) && resource.ResourceType != ResourceType.PluginService)
+                if (typeof(T) == typeof(PluginService) && resource.ResourceType != ResourceType.PluginService)
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(PluginSource) && resource.ResourceType != ResourceType.PluginSource)
+                if (typeof(T) == typeof(PluginSource) && resource.ResourceType != ResourceType.PluginSource)
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(WebService) && resource.ResourceType != ResourceType.WebService)
+                if (typeof(T) == typeof(WebService) && resource.ResourceType != ResourceType.WebService)
                 {
                     return true;
                 }
-                if(typeof(T) == typeof(WebSource) && resource.ResourceType != ResourceType.WebSource)
+                if (typeof(T) == typeof(WebSource) && resource.ResourceType != ResourceType.WebSource)
                 {
                     return true;
                 }
@@ -1067,7 +1045,7 @@ namespace Dev2.Runtime.Hosting
 
         object GetWorkspaceLock(Guid workspaceID)
         {
-            lock(_loadLock)
+            lock (_loadLock)
             {
                 return _workspaceLocks.GetOrAdd(workspaceID, guid => new object());
             }
@@ -1094,18 +1072,18 @@ namespace Dev2.Runtime.Hosting
             DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceID).FirstOrDefault();
 
             ServiceAction beforeAction = null;
-            if(beforeService != null)
+            if (beforeService != null)
             {
                 beforeAction = beforeService.Actions.FirstOrDefault();
             }
 
             var result = SaveImpl(workspaceID, resource, contents);
 
-            if(result.Status == ExecStatus.Success)
+            if (result.Status == ExecStatus.Success)
             {
-                if(ResourceSaved != null)
+                if (ResourceSaved != null)
                 {
-                    if(workspaceID == GlobalConstants.ServerWorkspaceID)
+                    if (workspaceID == GlobalConstants.ServerWorkspaceID)
                     {
                         ResourceSaved(resource);
                     }
@@ -1128,7 +1106,7 @@ namespace Dev2.Runtime.Hosting
         {
             var resources = GetResources(workspaceID);
             var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && (r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase)));
-            if((conflicting != null && !conflicting.IsNewResource) || ((conflicting != null && !overwriteExisting)))
+            if ((conflicting != null && !conflicting.IsNewResource) || ((conflicting != null && !overwriteExisting)))
             {
                 return new ResourceCatalogResult
                 {
@@ -1141,7 +1119,7 @@ namespace Dev2.Runtime.Hosting
             var originalRes = resource.ResourcePath ?? "";
             int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
             var resPath = resource.ResourcePath;
-            if(indexOfName >= 0)
+            if (indexOfName >= 0)
                 resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
             var directoryName = Path.Combine(workspacePath, resPath ?? string.Empty);
 
@@ -1149,18 +1127,18 @@ namespace Dev2.Runtime.Hosting
 
             #region Save to disk
 
-            if(!Directory.Exists(directoryName))
+            if (!Directory.Exists(directoryName))
             {
                 Directory.CreateDirectory(directoryName);
             }
 
 
 
-            if(File.Exists(resource.FilePath))
+            if (File.Exists(resource.FilePath))
             {
                 // Remove readonly attribute if it is set
                 var attributes = File.GetAttributes(resource.FilePath);
-                if((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                 {
                     File.SetAttributes(resource.FilePath, attributes ^ FileAttributes.ReadOnly);
                 }
@@ -1168,7 +1146,7 @@ namespace Dev2.Runtime.Hosting
 
             XElement xml = contents.ToXElement();
             xml = resource.UpgradeXml(xml, resource);
-            if(resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
+            if (resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
             {
                 var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
                 resource.ResourcePath = resourcePath;
@@ -1179,7 +1157,7 @@ namespace Dev2.Runtime.Hosting
 
             var signedXml = HostSecurityProvider.Instance.SignXml(result);
 
-            lock(GetFileLock(resource.FilePath))
+            lock (GetFileLock(resource.FilePath))
             {
                 signedXml.WriteToFile(resource.FilePath, Encoding.UTF8);
             }
@@ -1190,7 +1168,7 @@ namespace Dev2.Runtime.Hosting
 
             var index = resources.IndexOf(resource);
             var updated = false;
-            if(index != -1)
+            if (index != -1)
             {
                 resources.RemoveAt(index);
                 updated = true;
@@ -1219,7 +1197,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     ErrorType = ErrorType.None,
                     MessageID = Guid.NewGuid(),
-                    MessagePayload = saveMessage,                    
+                    MessagePayload = saveMessage,
                     ServiceID = resource.ResourceID,
                     ServiceName = resource.ResourceName,
                     MessageType = CompileMessageType.ResourceSaved,
@@ -1232,21 +1210,21 @@ namespace Dev2.Runtime.Hosting
 
         public void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, StringBuilder contents, ServiceAction beforeAction)
         {
-            if(beforeAction != null)
+            if (beforeAction != null)
             {
                 // Compile the service 
                 ServiceModelCompiler smc = new ServiceModelCompiler();
 
                 var messages = GetCompileMessages(resource, contents, beforeAction, smc);
-                if(messages != null)
+                if (messages != null)
                 {
                     var keys = _workspaceResources.Keys.ToList();
                     CompileMessageRepo.Instance.AddMessage(workspaceID, messages); //Sends the message for the resource being saved
-                    
+
                     var dependsMessageList = new List<ICompileMessageTO>();
                     keys.ForEach(workspace =>
                     {
-                        dependsMessageList.AddRange(UpdateDependantResourceWithCompileMessages(workspace, resource, messages));       
+                        dependsMessageList.AddRange(UpdateDependantResourceWithCompileMessages(workspace, resource, messages));
                     });
                     SendResourceMessages(resource.ResourceID, dependsMessageList);
                 }
@@ -1256,7 +1234,7 @@ namespace Dev2.Runtime.Hosting
         static IList<ICompileMessageTO> GetCompileMessages(IResource resource, StringBuilder contents, ServiceAction beforeAction, ServiceModelCompiler smc)
         {
             List<ICompileMessageTO> messages = new List<ICompileMessageTO>();
-            switch(beforeAction.ActionType)
+            switch (beforeAction.ActionType)
             {
                 case enActionType.InvokeStoredProc:
                     messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.DbMappingChangeRule, beforeAction.ResourceDefinition, contents));
@@ -1285,21 +1263,21 @@ namespace Dev2.Runtime.Hosting
             var resourceId = resource.ResourceID;
             var dependants = Instance.GetDependentsAsResourceForTrees(workspaceID, resourceId);
             var dependsMessageList = new List<ICompileMessageTO>();
-            foreach(var dependant in dependants)
+            foreach (var dependant in dependants)
             {
                 var affectedResource = GetResource(workspaceID, dependant.ResourceID);
-                foreach(var compileMessageTO in messages)
+                foreach (var compileMessageTO in messages)
                 {
                     compileMessageTO.WorkspaceID = workspaceID;
                     compileMessageTO.UniqueID = dependant.UniqueID;
-                    if(affectedResource != null)
+                    if (affectedResource != null)
                     {
                         compileMessageTO.ServiceName = affectedResource.ResourceName;
                         compileMessageTO.ServiceID = affectedResource.ResourceID;
                     }
                     dependsMessageList.Add(compileMessageTO.Clone());
                 }
-                if(affectedResource != null)
+                if (affectedResource != null)
                 {
                     UpdateResourceXml(workspaceID, affectedResource, messages);
                 }
@@ -1313,7 +1291,7 @@ namespace Dev2.Runtime.Hosting
             var resourceContents = GetResourceContents(workspaceID, effectedResource.ResourceID);
             UpdateXmlToDisk(effectedResource, compileMessagesTO, resourceContents);
             var serverResource = GetResource(Guid.Empty, effectedResource.ResourceName);
-            if(serverResource != null)
+            if (serverResource != null)
             {
                 resourceContents = GetResourceContents(Guid.Empty, serverResource.ResourceID);
                 UpdateXmlToDisk(serverResource, compileMessagesTO, resourceContents);
@@ -1324,7 +1302,7 @@ namespace Dev2.Runtime.Hosting
         {
 
             var resourceElement = resourceContents.ToXElement();
-            if(compileMessagesTO.Count > 0)
+            if (compileMessagesTO.Count > 0)
             {
                 SetErrors(resourceElement, compileMessagesTO);
                 UpdateIsValid(resourceElement);
@@ -1341,12 +1319,12 @@ namespace Dev2.Runtime.Hosting
 
         void SetErrors(XElement resourceElement, IList<ICompileMessageTO> compileMessagesTO)
         {
-            if(compileMessagesTO == null || compileMessagesTO.Count == 0)
+            if (compileMessagesTO == null || compileMessagesTO.Count == 0)
             {
                 return;
             }
             var errorMessagesElement = GetErrorMessagesElement(resourceElement);
-            if(errorMessagesElement == null)
+            if (errorMessagesElement == null)
             {
                 errorMessagesElement = new XElement("ErrorMessages");
                 resourceElement.Add(errorMessagesElement);
@@ -1359,13 +1337,13 @@ namespace Dev2.Runtime.Hosting
                     XElement firstOrDefault = xElements.FirstOrDefault(element =>
                     {
                         XAttribute xAttribute = element.Attribute("InstanceID");
-                        if(xAttribute != null)
+                        if (xAttribute != null)
                         {
                             return xAttribute.Value == to.UniqueID.ToString();
                         }
                         return false;
                     });
-                    if(firstOrDefault != null)
+                    if (firstOrDefault != null)
                     {
                         firstOrDefault.Remove();
                     }
@@ -1373,7 +1351,7 @@ namespace Dev2.Runtime.Hosting
 
             }
 
-            foreach(var compileMessageTO in compileMessagesTO)
+            foreach (var compileMessageTO in compileMessagesTO)
             {
                 var errorMessageElement = new XElement("ErrorMessage");
                 errorMessagesElement.Add(errorMessageElement);
@@ -1398,11 +1376,11 @@ namespace Dev2.Runtime.Hosting
             bool isValid = false;
             var isValidAttrib = resourceElement.Attribute("IsValid");
             var errorMessagesElement = resourceElement.Element("ErrorMessages");
-            if(errorMessagesElement == null || !errorMessagesElement.HasElements)
+            if (errorMessagesElement == null || !errorMessagesElement.HasElements)
             {
                 isValid = true;
             }
-            if(isValidAttrib == null)
+            if (isValidAttrib == null)
             {
                 resourceElement.Add(new XAttribute("IsValid", isValid));
             }
@@ -1420,14 +1398,14 @@ namespace Dev2.Runtime.Hosting
         {
             var result = new StringBuilder();
 
-            if(resource.ResourceType == ResourceType.ReservedService)
+            if (resource.ResourceType == ResourceType.ReservedService)
             {
                 result.AppendFormat("<Service Name=\"{0}\" ResourceType=\"{1}\" />", resource.ResourceName, resource.ResourceType);
             }
             else
             {
                 var contents = GetResourceContents(resource);
-                if(contents != null)
+                if (contents != null)
                 {
                     contents = contents.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
                     result.Append(contents);
@@ -1440,16 +1418,16 @@ namespace Dev2.Runtime.Hosting
         StringBuilder ToPayload(IEnumerable<IResource> resources)
         {
             var result = new StringBuilder();
-            foreach(var resource in resources)
+            foreach (var resource in resources)
             {
-                if(resource.ResourceType == ResourceType.ReservedService)
+                if (resource.ResourceType == ResourceType.ReservedService)
                 {
                     result.AppendFormat("<Service Name=\"{0}\" ResourceType=\"{1}\" />", resource.ResourceName, resource.ResourceType);
                 }
                 else
                 {
                     var contents = GetResourceContents(resource);
-                    if(contents != null)
+                    if (contents != null)
                     {
                         contents = contents.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
                         result.Append(contents);
@@ -1466,10 +1444,10 @@ namespace Dev2.Runtime.Hosting
 
         void AddResourceAsDynamicServiceObject(List<DynamicServiceObjectBase> result, IResource resource)
         {
-            if(resource.ResourceType == ResourceType.ReservedService)
+            if (resource.ResourceType == ResourceType.ReservedService)
             {
                 var managementResource = resource as ManagementServiceResource;
-                if(managementResource != null)
+                if (managementResource != null)
                 {
                     result.Add(managementResource.Service);
                 }
@@ -1477,7 +1455,7 @@ namespace Dev2.Runtime.Hosting
             else
             {
                 List<DynamicServiceObjectBase> objects;
-                if(!_frequentlyUsedServices.TryGetValue(resource.ResourceName, out objects))
+                if (!_frequentlyUsedServices.TryGetValue(resource.ResourceName, out objects))
                 {
                     objects = GenerateObjectGraph(resource);
                 }
@@ -1485,7 +1463,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     Dev2Logger.Log.Debug(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
                 }
-                if(objects != null)
+                if (objects != null)
                 {
                     result.AddRange(objects);
                 }
@@ -1495,7 +1473,7 @@ namespace Dev2.Runtime.Hosting
         List<DynamicServiceObjectBase> GenerateObjectGraph(IResource resource)
         {
             var xml = GetResourceContents(resource);
-            if(xml == null || xml.Length > 0)
+            if (xml == null || xml.Length > 0)
             {
                 return new ServiceDefinitionLoader().GenerateServiceGraph(xml);
             }
@@ -1514,7 +1492,7 @@ namespace Dev2.Runtime.Hosting
                 "XXX"
             };
 
-            foreach(var serviceName in serviceNames)
+            foreach (var serviceName in serviceNames)
             {
                 var resourceName = serviceName;
 
@@ -1531,20 +1509,20 @@ namespace Dev2.Runtime.Hosting
 
         }
 
-        public List<Guid> GetDependants(Guid workspaceID, Guid resourceId)
+        public List<Guid> GetDependants(Guid workspaceID, Guid? resourceId)
         {
             // ReSharper disable LocalizableElement
-            if(resourceId == null) throw new ArgumentNullException("resourceId", "No resource name given.");
+            if (resourceId == null) throw new ArgumentNullException("resourceId", "No resource name given.");
             // ReSharper restore LocalizableElement
 
             var resources = GetResources(workspaceID);
             var dependants = new List<Guid>();
             resources.ForEach(resource =>
             {
-                if(resource.Dependencies == null) return;
+                if (resource.Dependencies == null) return;
                 resource.Dependencies.ForEach(tree =>
                 {
-                    if(tree.ResourceID == resourceId)
+                    if (tree.ResourceID == resourceId)
                     {
                         dependants.Add(resource.ResourceID);
                     }
@@ -1553,20 +1531,20 @@ namespace Dev2.Runtime.Hosting
             return dependants.ToList();
         }
 
-        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid resourceID, string newName)
+        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName)
         {
-            if(resourceID == null)
+            if (resourceID == null)
             {
                 throw new ArgumentNullException("resourceID", @"No value provided for resourceID");
             }
-            if(string.IsNullOrEmpty(newName))
+            if (string.IsNullOrEmpty(newName))
             {
                 throw new ArgumentNullException("newName", @"No value provided for newName");
             }
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourceID == resourceID).ToArray();
             try
             {
-                if(!resourcesToUpdate.Any())
+                if (!resourcesToUpdate.Any())
                 {
                     return new ResourceCatalogResult
                     {
@@ -1574,10 +1552,10 @@ namespace Dev2.Runtime.Hosting
                         Message = string.Format("{0} '{1}' to '{2}'", "Failed to Find Resource", resourceID, newName)
                     };
                 }
-                _versioningRepository.StoreVersion(GetResource(Guid.Empty, resourceID), "unknown", "Rename", workspaceID);
+                _versioningRepository.StoreVersion(GetResource(Guid.Empty, resourceID.ToString()), "unknown", "Rename", workspaceID);
                 //rename and save to workspace
                 var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName);
-                if(renameResult.Status != ExecStatus.Success)
+                if (renameResult.Status != ExecStatus.Success)
                 {
                     return new ResourceCatalogResult
                     {
@@ -1588,7 +1566,7 @@ namespace Dev2.Runtime.Hosting
                     };
                 }
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Dev2Logger.Log.Error(err);
                 return new ResourceCatalogResult
@@ -1610,7 +1588,7 @@ namespace Dev2.Runtime.Hosting
             var oldCategory = resource.ResourcePath;
             string newCategory = "";
             var indexOfCategory = resource.ResourcePath.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
-            if(indexOfCategory > 0)
+            if (indexOfCategory > 0)
             {
                 newCategory = oldCategory.Substring(0, indexOfCategory) + newName;
             }
@@ -1623,7 +1601,7 @@ namespace Dev2.Runtime.Hosting
             //xml name attibute
             var nameAttrib = resourceElement.Attribute("Name");
             string oldName = null;
-            if(nameAttrib == null)
+            if (nameAttrib == null)
             {
                 resourceElement.Add(new XAttribute("Name", newName));
             }
@@ -1634,10 +1612,10 @@ namespace Dev2.Runtime.Hosting
             }
             //xaml
             var actionElement = resourceElement.Element("Action");
-            if(actionElement != null)
+            if (actionElement != null)
             {
                 var xaml = actionElement.Element("XamlDefinition");
-                if(xaml != null)
+                if (xaml != null)
                 {
                     xaml.SetValue(xaml.Value
                         .Replace("x:Class=\"" + oldName, "x:Class=\"" + newName)
@@ -1649,12 +1627,12 @@ namespace Dev2.Runtime.Hosting
             }
             //xml display name element
             var displayNameElement = resourceElement.Element("DisplayName");
-            if(displayNameElement != null)
+            if (displayNameElement != null)
             {
                 displayNameElement.SetValue(newName);
             }
             var categoryElement = resourceElement.Element("Category");
-            if(categoryElement != null)
+            if (categoryElement != null)
             {
                 categoryElement.SetValue(newCategory);
             }
@@ -1663,15 +1641,15 @@ namespace Dev2.Runtime.Hosting
             resource.ResourceName = newName;
 
             //delete old resource in local workspace without updating dependants with compile messages
-            if(File.Exists(resource.FilePath))
+            if (File.Exists(resource.FilePath))
             {
-                lock(GetFileLock(resource.FilePath))
+                lock (GetFileLock(resource.FilePath))
                 {
                     File.Delete(resource.FilePath);
                 }
             }
             //update file path
-            if(oldName != null)
+            if (oldName != null)
             {
                 resource.FilePath = resource.FilePath.Replace(oldName, newName);
             }
@@ -1687,7 +1665,7 @@ namespace Dev2.Runtime.Hosting
             var originalRes = resource.ResourcePath ?? "";
             int indexOfName = originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
             var resPath = resource.ResourcePath;
-            if(indexOfName >= 0)
+            if (indexOfName >= 0)
             {
                 resPath = originalRes.Substring(0, originalRes.LastIndexOf(resource.ResourceName, StringComparison.Ordinal));
             }
@@ -1696,7 +1674,7 @@ namespace Dev2.Runtime.Hosting
 
         private void RenameWhereUsed(IEnumerable<ResourceForTree> dependants, Guid workspaceID, string oldName, string newName)
         {
-            foreach(var dependant in dependants)
+            foreach (var dependant in dependants)
             {
                 var dependantResource = GetResource(workspaceID, dependant.ResourceID);
                 //rename where used
@@ -1705,13 +1683,13 @@ namespace Dev2.Runtime.Hosting
                 var resourceElement = resourceContents.ToXElement();
                 //in the xaml only
                 var actionElement = resourceElement.Element("Action");
-                if(actionElement != null)
+                if (actionElement != null)
                 {
                     var xaml = actionElement.Element("XamlDefinition");
                     var newNameWithPath = newName;
-                    if(oldName.IndexOf('\\') > 0)
+                    if (oldName.IndexOf('\\') > 0)
                         newNameWithPath = oldName.Substring(0, 1 + oldName.LastIndexOf("\\", StringComparison.Ordinal)) + newName;
-                    if(xaml != null)
+                    if (xaml != null)
                     {
                         xaml.SetValue(xaml.Value
                             .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newNameWithPath)
@@ -1720,16 +1698,16 @@ namespace Dev2.Runtime.Hosting
                     }
                 }
                 //delete old resource
-                if(File.Exists(dependantResource.FilePath))
+                if (File.Exists(dependantResource.FilePath))
                 {
-                    lock(GetFileLock(dependantResource.FilePath))
+                    lock (GetFileLock(dependantResource.FilePath))
                     {
                         File.Delete(dependantResource.FilePath);
                     }
                 }
                 //update dependancies
                 var renameDependent = dependantResource.Dependencies.FirstOrDefault(dep => dep.ResourceName == oldName);
-                if(renameDependent != null)
+                if (renameDependent != null)
                 {
                     renameDependent.ResourceName = newName;
                 }
@@ -1749,7 +1727,7 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, List<IResource> resourcesToUpdate)
         {
-            if(resourcesToUpdate.Count == 0)
+            if (resourcesToUpdate.Count == 0)
             {
                 return new ResourceCatalogResult
                 {
@@ -1765,10 +1743,10 @@ namespace Dev2.Runtime.Hosting
             try
             {
                 var hasError = false;
-                foreach(var resource in resourcesToUpdate)
+                foreach (var resource in resourcesToUpdate)
                 {
                     var resourceCatalogResult = UpdateResourcePath(workspaceID, resource, oldCategory, newCategory);
-                    if(resourceCatalogResult.Status != ExecStatus.Success)
+                    if (resourceCatalogResult.Status != ExecStatus.Success)
                     {
                         hasError = true;
                     }
@@ -1785,7 +1763,7 @@ namespace Dev2.Runtime.Hosting
                 };
                 return hasError ? failureResult : successResult;
             }
-            catch(Exception err)
+            catch (Exception err)
             {
                 Dev2Logger.Log.Error("Rename Category error", err);
                 return new ResourceCatalogResult
@@ -1798,11 +1776,11 @@ namespace Dev2.Runtime.Hosting
 
         static void VerifyArguments(string oldCategory, string newCategory)
         {
-            if(oldCategory == null)
+            if (oldCategory == null)
             {
                 throw new ArgumentNullException("oldCategory", @"No value provided for oldCategory");
             }
-            if(string.IsNullOrEmpty(newCategory))
+            if (string.IsNullOrEmpty(newCategory))
             {
                 throw new ArgumentNullException("newCategory", @"No value provided for oldCategory");
             }
@@ -1816,7 +1794,7 @@ namespace Dev2.Runtime.Hosting
             resource.ResourcePath = newPath;
             var resourceElement = resourceContents.ToXElement();
             var categoryElement = resourceElement.Element("Category");
-            if(categoryElement == null)
+            if (categoryElement == null)
             {
                 resourceElement.Add(new XElement("Category", newPath));
             }
@@ -1826,7 +1804,7 @@ namespace Dev2.Runtime.Hosting
             }
             var contents = resourceElement.ToStringBuilder();
             var resourceCatalogResult = SaveImpl(workspaceID, resource, contents, false);
-            if(resourceCatalogResult.Status != ExecStatus.Success)
+            if (resourceCatalogResult.Status != ExecStatus.Success)
             {
                 resource.ResourcePath = oldPath;
             }
@@ -1846,10 +1824,10 @@ namespace Dev2.Runtime.Hosting
             var dependants = new List<ResourceForTree>();
             resources.ForEach(resource =>
             {
-                if(resource.Dependencies == null) return;
+                if (resource.Dependencies == null) return;
                 resource.Dependencies.ForEach(tree =>
                 {
-                    if(tree.ResourceID == resourceId)
+                    if (tree.ResourceID == resourceId)
                     {
                         dependants.Add(CreateResourceForTree(resource, tree));
                     }
@@ -1880,7 +1858,7 @@ namespace Dev2.Runtime.Hosting
 
         public void Dispose()
         {
-            lock(_loadLock)
+            lock (_loadLock)
             {
                 _workspaceLocks.Clear();
             }
@@ -1888,6 +1866,16 @@ namespace Dev2.Runtime.Hosting
             {
                 _workspaceResources.Clear();
             }
+        }
+
+        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid resourceID, string newName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Guid> GetDependants(Guid workspaceID, Guid resourceId)
+        {
+            throw new NotImplementedException();
         }
     }
 
