@@ -1,6 +1,6 @@
 ![warewolf logo](http://www.warewolf.io/images/warewolf-logo.png)
 
-**What is Warewolf ESB?**
+**What is Warewolf ESB all about?**
 
 Tired of complicated ESBs? Join the pack! 
 
