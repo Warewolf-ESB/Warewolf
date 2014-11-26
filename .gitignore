@@ -3,6 +3,7 @@
 ####################################################################################
 # File Extensions
 ####################################################################################
+*.secureconfig
 *.force
 *.usi
 *.uws
@@ -10,10 +11,14 @@
 *.user
 *.ide
 
+####################################################################################
+# Build working directories
+####################################################################################
 /Dev/packages
 /Dev/TestResults
 /bin
 /TestResults
+
 ####################################################################################
 # Server Build Output Folders
 ####################################################################################
@@ -32,6 +37,7 @@
 /Dev/Dev2.Server/bin/Debug/*.pdb
 /Dev/Dev2.Server/bin/Debug/*.exe
 /Dev/Dev2.Server/bin/Debug/*.xml
+!/Dev/Dev2.Server/bin/Debug/LifecycleConfig.xml
 /Dev/Dev2.Server/bin/Debug/*.config
 /Dev/Dev2.Server/bin/Debug/*.manifest
 /Dev/Dev2.Server/bin/Debug/*.log
