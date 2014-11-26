@@ -86,6 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary>       
         // ReSharper disable MethodTooLong
+        // ReSharper disable FunctionComplexityOverflow
         protected override void OnExecute(NativeActivityContext context)
             // ReSharper restore MethodTooLong
         {
