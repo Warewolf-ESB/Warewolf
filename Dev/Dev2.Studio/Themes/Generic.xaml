@@ -11,8 +11,8 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="customControls:Dev2StatusBar">
-        <Setter Property="StatusBarLabelText" Value=""></Setter>
-        <Setter Property="ProgressBarVisiblity" Value="Visible"></Setter>
+        <Setter Property="StatusBarLabelText" Value="" />
+        <Setter Property="ProgressBarVisiblity" Value="Visible" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="Template">
@@ -27,13 +27,12 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <customControls2:CircularProgressBar Height="15" Grid.Column="1" Width="15" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}"></customControls2:CircularProgressBar>                                
-                                <Label Content="{Binding StatusBarLabelText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"></Label>
+                                <customControls2:CircularProgressBar Height="15" Grid.Column="1" Width="15" Visibility="{Binding ProgressBarVisiblity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Label Content="{Binding StatusBarLabelText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                             </Grid>
                         </StatusBarItem>
-                        <Separator Width="1" Background="{StaticResource ButtonBorderBrush}"></Separator>
-                        <StatusBarItem>                          
-                        </StatusBarItem>
+                        <Separator Width="1" Background="{StaticResource ButtonBorderBrush}" />
+                        <StatusBarItem />
                     </StatusBar>
                 </ControlTemplate>
             </Setter.Value>

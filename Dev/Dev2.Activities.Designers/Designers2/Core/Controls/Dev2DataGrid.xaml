@@ -4,7 +4,7 @@
              HorizontalAlignment="Stretch">
     <DataGrid.RowStyle>
         <Style TargetType="DataGridRow">
-            <EventSetter Event="Loaded" Handler="OnDataGridRowLoaded"></EventSetter>
+            <EventSetter Event="Loaded" Handler="OnDataGridRowLoaded" />
         </Style>
     </DataGrid.RowStyle>
 </DataGrid>

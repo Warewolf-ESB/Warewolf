@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -106,7 +105,7 @@ namespace Dev2.DynamicServices
         #region Relative Path Handling
         public string GetRelativePath(string relativePath, SpecialFolder folder)
         {
-            return GetRelativePath(folder.ToString() + "\\" + relativePath);
+            return GetRelativePath(folder + "\\" + relativePath);
         }
 
         public string GetRelativePath(string relativePath)
@@ -152,7 +151,7 @@ namespace Dev2.DynamicServices
         #region Ensured Path Handling
         public string GetEnsuredPath(string path, SpecialFolder folder)
         {
-            return GetEnsuredPath(folder.ToString() + "\\" + path, false);
+            return GetEnsuredPath(folder + "\\" + path, false);
         }
 
         public string GetEnsuredPath(string path)

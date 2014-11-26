@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
@@ -46,7 +45,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [Owner("Tshepo Ntlhokoa")]
         public void ActivityDesignerButton_Execute_IsValidatedBeforeIsSetToFalse_ValidationErrorsIsNotCalled()
         {
-            VerifyExecution(isValidatedBefore: false, isClosedAfter: false, isValid: true, validationErrorCount: 0, customCommand: null);
+            VerifyExecution(false, false, true, 0, null);
         }
 
         [TestMethod]
@@ -54,7 +53,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [Owner("Tshepo Ntlhokoa")]
         public void ActivityDesignerButton_Execute_IsClosedAfterIsSetToFalse_HideContentIsNotCalled()
         {
-            VerifyExecution(isValidatedBefore: false, isClosedAfter: false, isValid: true, validationErrorCount: 0, customCommand: null);
+            VerifyExecution(false, false, true, 0, null);
         }
 
         [TestMethod]
@@ -62,7 +61,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [Owner("Tshepo Ntlhokoa")]
         public void ActivityDesignerButton_Execute_IsClosedAfterIsSetToTrue_HideContentIsCalledOnce()
         {
-            VerifyExecution(isValidatedBefore: false, isClosedAfter: true, isValid: true, validationErrorCount: 0, customCommand: null);
+            VerifyExecution(false, true, true, 0, null);
         }
 
         [TestMethod]
@@ -70,7 +69,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [Owner("Tshepo Ntlhokoa")]
         public void ActivityDesignerButton_Execute_IsValidatedBeforeAndIsClosedAfterAreSetToTrueAndThereAreNoValidationErrors_ValidationErrorsAndHideContentAreCalledOnce()
         {
-            VerifyExecution(isValidatedBefore: true, isClosedAfter: true, isValid: true, validationErrorCount: 0, customCommand: null);
+            VerifyExecution(true, true, true, 0, null);
         }
 
         [TestMethod]
@@ -78,7 +77,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [Owner("Tshepo Ntlhokoa")]
         public void ActivityDesignerButton_Execute_IsValidatedBeforIsSetToTrueAndIsClosedAfterAreSetToFalseAndThereAreNoValidationErrors_ValidationErrorsIsCalledOnceAndHideContentIsNotCalled()
         {
-            VerifyExecution(isValidatedBefore: true, isClosedAfter: false, isValid: true, validationErrorCount: 0, customCommand: null);
+            VerifyExecution(true, false, true, 0, null);
         }
 
         [TestMethod]
@@ -119,7 +118,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [Owner("Tshepo Ntlhokoa")]
         public void ActivityDesignerButton_Execute_IsClosedAfterIsSetToTrueAndCustomCommandIsNotSet_HideContentIsCalled()
         {
-            VerifyExecution(isValidatedBefore: false, isClosedAfter: true, isValid: true, validationErrorCount: 0, customCommand: null);
+            VerifyExecution(false, true, true, 0, null);
         }
 
         #endregion

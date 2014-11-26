@@ -3,8 +3,8 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="CommonMetro.xaml"></ResourceDictionary>
-        <ResourceDictionary Source="WindowMetroBrushes.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="CommonMetro.xaml" />
+        <ResourceDictionary Source="WindowMetroBrushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- *********************************  Borderless Window Style  ********************************* -->

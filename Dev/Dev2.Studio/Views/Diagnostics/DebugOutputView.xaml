@@ -325,7 +325,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Popup x:Name="OptionsPopup"
@@ -372,9 +372,9 @@
 
         <Grid Margin="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>                
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             
             <customControls2:FilterTextBox Grid.Column="0"
@@ -382,8 +382,8 @@
                                            Margin="0,0,-2,0"
                                            SearchText="{Binding Path=SearchText,Mode=TwoWay}" 
                                            HorizontalContentAlignment="Stretch"
-                                           VerticalAlignment="Stretch"></customControls2:FilterTextBox>
-                        
+                                           VerticalAlignment="Stretch" />
+
             <Button Grid.Column="1"
                     x:Name="OptionsButton"
                     Content="Options"
@@ -408,8 +408,8 @@
                 Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TreeView Grid.Row="0" 
                       ItemsSource="{Binding RootItems, NotifyOnSourceUpdated=True}" 
@@ -691,9 +691,8 @@
                                 <TextBlock Grid.Row="8"
                                            Grid.Column="2"
                                            Text="{Binding Content.Origin}"
-                                       Style="{StaticResource OriginVisibility}">
-                                </TextBlock>
-                            
+                                       Style="{StaticResource OriginVisibility}" />
+
                                 <TextBlock Grid.Row="9"
                                            Grid.Column="1"
                                            Style="{StaticResource UserVisibility}">
@@ -703,8 +702,7 @@
                                 <TextBlock Grid.Row="9"
                                            Grid.Column="2"
                                            Text="{Binding Content.ExecutingUser}"
-                                       Style="{StaticResource UserVisibility}">
-                                </TextBlock>
+                                       Style="{StaticResource UserVisibility}" />
 
                                 <TextBlock Grid.Row="10"
                                            Grid.Column="1"
@@ -715,8 +713,7 @@
                                 <TextBlock Grid.Row="10"
                                            Grid.Column="2"
                                            Text="{Binding Content.NumberOfSteps}"
-                                       Style="{StaticResource StepsVisibility}">
-                                </TextBlock>
+                                       Style="{StaticResource StepsVisibility}" />
 
                                 <TextBlock Grid.Row="11"
                                            Grid.Column="1"

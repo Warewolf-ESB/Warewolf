@@ -9,14 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core;
 using Dev2.Validation;
@@ -57,7 +54,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if (IsInputPathFocusedProperty != null)
                 {
-                    SetValue(dp: IsInputPathFocusedProperty, value: value);
+                    SetValue(IsInputPathFocusedProperty, value);
                 }
             }
         }
@@ -72,7 +69,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if (IsOutputPathFocusedProperty != null)
                 {
-                    SetValue(dp: IsOutputPathFocusedProperty, value: value);
+                    SetValue(IsOutputPathFocusedProperty, value);
                 }
             }
         }

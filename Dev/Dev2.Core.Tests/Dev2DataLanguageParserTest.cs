@@ -11,16 +11,15 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-
 
 namespace Dev2.Tests
 {

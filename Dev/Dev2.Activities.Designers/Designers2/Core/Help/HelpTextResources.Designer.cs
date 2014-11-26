@@ -5778,7 +5778,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are unzipping to here.
+        ///Put the full path of the destination you are zipping to here.
         ///You can use File System, URI, SFTP, FTP or FTPS format.
         ///
         ///Allowed:
@@ -5899,7 +5899,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///Put the full path of the destination you are unzipping to here.
+        ///Put the full path of the destination you are zipping to here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
         /// </summary>
         public static string ZipToolTipDestination {

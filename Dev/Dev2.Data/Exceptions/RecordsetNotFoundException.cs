@@ -9,14 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 
 namespace Dev2.DataList.Contract
 {
     public class RecordsetNotFoundException : Exception
     {
-        public RecordsetNotFoundException() : base()
+        public RecordsetNotFoundException()
         {
         }
 

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Studio.Core.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,7 +44,7 @@ namespace Dev2.Core.Tests.Helpers
         public void TypeSwitch_Do_WhenNullCases_ExpectException()
         {
             //------------Setup for test--------------------------
-            TypeSwitch.CaseInfo case1 = new TypeSwitch.CaseInfo() {IsDefault = false, Action = null, Target = typeof(object)};
+            TypeSwitch.CaseInfo case1 = new TypeSwitch.CaseInfo {IsDefault = false, Action = null, Target = typeof(object)};
 
             //------------Execute Test---------------------------
 
@@ -59,7 +58,7 @@ namespace Dev2.Core.Tests.Helpers
         public void TypeSwitch_Do_WhenCaseActionNull_ExpectActionSet()
         {
             //------------Setup for test--------------------------
-            TypeSwitch.CaseInfo case1 = new TypeSwitch.CaseInfo() { IsDefault = false, Action = null, Target = typeof(object) };
+            TypeSwitch.CaseInfo case1 = new TypeSwitch.CaseInfo { IsDefault = false, Action = null, Target = typeof(object) };
             var obj = new object();
 
             //------------Execute Test---------------------------
@@ -73,8 +72,8 @@ namespace Dev2.Core.Tests.Helpers
         public void TypeSwitch_Do_WhenSourceNullAndNoDefaultAction_ExpectException()
         {
             //------------Setup for test--------------------------
-            var act = new Action<object>(delegate(object o) { });
-            TypeSwitch.CaseInfo case1 = new TypeSwitch.CaseInfo() { IsDefault = false, Action = act, Target = typeof(object) };
+            var act = new Action<object>(delegate { });
+            TypeSwitch.CaseInfo case1 = new TypeSwitch.CaseInfo { IsDefault = false, Action = act, Target = typeof(object) };
 
             //------------Execute Test---------------------------
             TypeSwitch.Do(null, case1);
@@ -87,8 +86,8 @@ namespace Dev2.Core.Tests.Helpers
         public void TypeSwitch_Do_WhenSourceNullAndDefaultActionSent_ExpectNullActionValue()
         {
             //------------Setup for test--------------------------
-            var act = new Action<object>(delegate(object o) { });
-            TypeSwitch.CaseInfo case1 = new TypeSwitch.CaseInfo() { IsDefault = true, Action = act, Target = typeof(object) };
+            var act = new Action<object>(delegate { });
+            TypeSwitch.CaseInfo case1 = new TypeSwitch.CaseInfo { IsDefault = true, Action = act, Target = typeof(object) };
 
             //------------Execute Test---------------------------
             TypeSwitch.Do(null, case1);
@@ -104,7 +103,7 @@ namespace Dev2.Core.Tests.Helpers
         public void TypeSwitch_Do_WhenCaseGeneric_ExpectNotDefaultAndTargetEqualsObject()
         {
             //------------Execute Test---------------------------
-            var result = TypeSwitch.Case<object>(delegate(object o) { });
+            var result = TypeSwitch.Case(delegate(object o) { });
 
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(object), result.Target);
@@ -118,7 +117,7 @@ namespace Dev2.Core.Tests.Helpers
         public void TypeSwitch_Do_WhenDefault_ExpectDefaultAndTargetNull()
         {
             //------------Execute Test---------------------------
-            var result = TypeSwitch.Default(delegate() { });
+            var result = TypeSwitch.Default(delegate { });
 
             //------------Assert Results-------------------------
             Assert.AreEqual(null, result.Target);

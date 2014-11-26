@@ -244,7 +244,7 @@ namespace Dev2.Activities.Designers.Tests.Dropbox
 
         List<OauthSource> GetSources()
         {
-            return  new List<OauthSource>{new OauthSource{ResourceName = "bob"} , new OauthSource(){ResourceName = "dave"}};
+            return  new List<OauthSource>{new OauthSource{ResourceName = "bob"} , new OauthSource {ResourceName = "dave"}};
         }
 
         static ModelItem CreateModelItem()

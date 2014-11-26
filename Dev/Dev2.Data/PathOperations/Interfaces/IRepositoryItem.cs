@@ -9,8 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-
 using System.Runtime.Serialization;
 
 namespace Dev2.PathOperations.Interfaces
