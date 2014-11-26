@@ -411,6 +411,24 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are allowed to drag remote workflows onto a remote service designer..
+        /// </summary>
+        public static string DragRemoteNotSupported {
+            get {
+                return ResourceManager.GetString("DragRemoteNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Designer Operation.
+        /// </summary>
+        public static string DragRemoteNotSupportedHeader {
+            get {
+                return ResourceManager.GetString("DragRemoteNotSupportedHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Development Environment.
         /// </summary>
         public static string DsfChannelName_Development_Environment {

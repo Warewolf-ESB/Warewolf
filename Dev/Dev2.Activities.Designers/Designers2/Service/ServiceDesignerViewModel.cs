@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -46,7 +47,7 @@ using Dev2.Threading;
 
 namespace Dev2.Activities.Designers2.Service
 {
-    public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>
+    public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
     {
         const string SourceNotFoundMessage = "Source was not found. This service will not execute.";
         public static readonly ErrorInfo NoError = new ErrorInfo
@@ -104,7 +105,7 @@ namespace Dev2.Activities.Designers2.Service
             DoneCompletedCommand = new DelegateCommand(o => DoneCompleted());
 
             InitializeDisplayName();
-            InitializeProperties();
+
             InitializeImageSource();
 
             IsAsyncVisible = ActivityTypeToActionTypeConverter.ConvertToActionType(Type) == Common.Interfaces.Core.DynamicServices.enActionType.Workflow;
@@ -129,7 +130,7 @@ namespace Dev2.Activities.Designers2.Service
                 }
                 _environment = environment;
             }
-
+  
 
             InitializeValidationService(_environment);
             if (!InitializeResourceModel(_environment))
@@ -150,10 +151,23 @@ namespace Dev2.Activities.Designers2.Service
             }
             if (_environment != null)
             {
+                var source = _environment.ResourceRepository.FindSingle(a => a.ID == SourceId);
+                if (source != null)
+                {
+                    FriendlySourceName = source.DisplayName;
+                   
+                }
+
+
+            }
+   
+            InitializeProperties();
+            if (_environment != null)
+            {
                 _environment.AuthorizationServiceSet += OnEnvironmentOnAuthorizationServiceSet;
                 AuthorizationServiceOnPermissionsChanged(null, null);
             }
-
+      
         }
 
         void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
@@ -381,7 +395,19 @@ namespace Dev2.Activities.Designers2.Service
         string ServiceUri { get { return GetProperty<string>(); } }
         string ServiceName { get { return GetProperty<string>(); } }
         string ActionName { get { return GetProperty<string>(); } }
-        string FriendlySourceName { get { return GetProperty<string>(); } }
+        string FriendlySourceName
+        {
+            get
+            {
+                return GetProperty<string>();
+            }
+            set
+            {
+                SetProperty(value);
+                OnPropertyChanged("FriendlySourceName");
+                
+            }
+        }
         string Type { get { return GetProperty<string>(); } }
         // ReSharper disable InconsistentNaming
         Guid EnvironmentID { get { return GetProperty<Guid>(); } }
@@ -1278,6 +1304,20 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
+        #endregion
+
+        #region Implementation of INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        [ExcludeFromCodeCoverage]
+        protected void OnPropertyChanged(string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
         #endregion
     }
 }

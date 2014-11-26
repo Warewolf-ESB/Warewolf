@@ -23,12 +23,9 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Communication;
-using Dev2.Core.Tests.Environments;
-using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
@@ -1220,7 +1217,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
 
             var modelItem = CreateModelItem(activity);
-
+            var resRepo = new Mock<IResourceRepository>();
+            var srcRes = new Mock<IResourceModel>();
+            srcRes.Setup(a => a.ResourceName).Returns("bob");
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(srcRes.Object);
+            environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
             //------------Execute Test---------------------------
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
@@ -1231,7 +1232,74 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>", outputMapping);
 
         }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
+        public void ServiceDesignerViewModel_WhenResourceHasSource_ShouldGetSourceName()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
 
+            var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
+
+            var environmentID = Guid.NewGuid();
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.IsConnected).Returns(true);
+            environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
+
+            var errors = new ObservableReadOnlyList<IErrorInfo>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceName).Returns("TestResource");
+            resourceModel.Setup(r => r.ServerID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
+            resourceModel.Setup(m => m.Errors).Returns(errors);
+            resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.Environment).Returns(environment.Object);
+            resourceModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
+            resourceModel.Setup(m => m.HasErrors).Returns(() => false);
+            resourceModel.SetupProperty(m => m.IsValid);
+            resourceModel.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
+
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new DataListItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(resourceID);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
+
+
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
+            };
+
+            var modelItem = CreateModelItem(activity);
+            var resRepo = new Mock<IResourceRepository>();
+            var srcRes = new Mock<IResourceModel>();
+            srcRes.Setup(a => a.DisplayName).Returns("bob");
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(srcRes.Object);
+            environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("bob", viewModel.Properties.FirstOrDefault(a => a.Key == "Source :").Value);
+
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -1271,9 +1339,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
+            // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
+            // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1298,7 +1368,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
+            // ReSharper disable MaximumChainedReferences
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
+            // ReSharper restore MaximumChainedReferences
             //------------Execute Test---------------------------
             // ReSharper disable UnusedVariable
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
@@ -1347,9 +1419,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
+            // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
+            // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1374,7 +1448,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
+            // ReSharper disable MaximumChainedReferences
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+                // ReSharper restore MaximumChainedReferences
                 (
                     System.Action a, System.Action b) =>
                 {
@@ -1390,8 +1466,10 @@ namespace Dev2.Activities.Designers.Tests.Service
             var mappingF = new Mock<IDataMappingViewModelFactory>();
             var mapping = new Mock<IDataMappingViewModel>();
             mapping.Setup(a => a.GetInputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
+            // ReSharper disable MaximumChainedReferences
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
+            // ReSharper restore MaximumChainedReferences
             viewModel.MappingFactory = mappingF.Object;
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
@@ -1441,9 +1519,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
+            // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
+            // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1468,7 +1548,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
+            // ReSharper disable MaximumChainedReferences
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+                // ReSharper restore MaximumChainedReferences
                 (
                     System.Action a, System.Action b) =>
                 {
@@ -1484,8 +1566,10 @@ namespace Dev2.Activities.Designers.Tests.Service
             var mappingF = new Mock<IDataMappingViewModelFactory>();
             var mapping = new Mock<IDataMappingViewModel>();
             mapping.Setup(a => a.GetInputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
+            // ReSharper disable MaximumChainedReferences
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
+            // ReSharper restore MaximumChainedReferences
             viewModel.MappingFactory = mappingF.Object;
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
@@ -1536,9 +1620,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
+            // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
+            // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1563,7 +1649,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
+            // ReSharper disable MaximumChainedReferences
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+                // ReSharper restore MaximumChainedReferences
                 (
                     System.Action a, System.Action b) =>
                 {
@@ -1579,8 +1667,10 @@ namespace Dev2.Activities.Designers.Tests.Service
             var mappingF = new Mock<IDataMappingViewModelFactory>();
             var mapping = new Mock<IDataMappingViewModel>();
             mapping.Setup(a => a.GetOutputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
+            // ReSharper disable MaximumChainedReferences
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
+            // ReSharper restore MaximumChainedReferences
             viewModel.MappingFactory = mappingF.Object;
             // ReSharper restore UnusedVariable
             environment.Setup(a => a.IsConnected).Returns(true);
@@ -1629,9 +1719,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
+            // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
+            // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1656,7 +1748,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
+            // ReSharper disable MaximumChainedReferences
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
+                // ReSharper restore MaximumChainedReferences
                 (
                     System.Action a, System.Action b) =>
                 {
@@ -1741,8 +1835,10 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
+            // ReSharper disable MaximumChainedReferences
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()))
                 .Callback((System.Action a, System.Action b) =>
+                    // ReSharper restore MaximumChainedReferences
                 {
                     a.Invoke();
                     b.Invoke();
@@ -1755,22 +1851,29 @@ namespace Dev2.Activities.Designers.Tests.Service
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
             var webFact = new Mock<IWebActivityFactory>();
             var wa = new Mock<IWebActivity>();
+            // ReSharper disable MaximumChainedReferences
             webFact.Setup(
                 a => a.CreateWebActivity(It.IsAny<Object>(), It.IsAny<IContextualResourceModel>(), It.IsAny<string>())).Returns(wa.Object).Verifiable();
+            // ReSharper restore MaximumChainedReferences
             viewModel.ActivityFactory = webFact.Object;
 
             var mappingF = new Mock<IDataMappingViewModelFactory>();
             var mapping = new Mock<IDataMappingViewModel>();
             mapping.Setup(a => a.GetOutputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
+            // ReSharper disable once MaximumChainedReferences
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
             viewModel.MappingFactory = mappingF.Object;
 
             // ReSharper restore UnusedVariable
+            // ReSharper disable MaximumChainedReferences
+            // ReSharper disable MaximumChainedReferences
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true))
                 .Returns(resourceModel.Object)
                 .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ResourceName == ")))
+
                 .Verifiable();
+            // ReSharper restore MaximumChainedReferences
             environment.Setup(a => a.IsConnected).Returns(true);
 
             environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
@@ -2085,7 +2188,9 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceRepository = new Mock<IResourceRepository>();
             var mockEnvironmentRepository = new Mock<IEnvironmentRepository>();
             mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IEnvironmentModel>(), null)).Returns(new List<IEnvironmentModel> { environmentModel });
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(mockEnvironmentRepository.Object);
+            // ReSharper restore ObjectCreationAsStatement
             environment.Setup(e => e.ResourceRepository).Returns(resourceRepository.Object);
             return model;
         }

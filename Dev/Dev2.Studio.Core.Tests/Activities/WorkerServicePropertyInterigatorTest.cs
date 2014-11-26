@@ -12,6 +12,7 @@
 
 using System;
 using System.Activities.Expressions;
+using System.Linq.Expressions;
 using System.Text;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
@@ -44,7 +45,7 @@ namespace Dev2.Core.Tests.Activities
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
 
             //------------Execute Test---------------------------
-            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity,null);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
@@ -68,7 +69,7 @@ namespace Dev2.Core.Tests.Activities
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
 
             //------------Execute Test---------------------------
-            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity,null);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
@@ -76,7 +77,64 @@ namespace Dev2.Core.Tests.Activities
             Assert.AreEqual("TheSource", activity.FriendlySourceName.Expression.ToString());
             Assert.AreEqual("SourceMethod", activity.ActionName.Expression.ToString());
         }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WorkerServicePropertyInterigator_SetActivityProperties")]
+        public void WorkerServicePropertyInterigator_SetActivityProperties_GetSourceNameFromResourceRepo()
+        {
+            //------------Setup for test--------------------------
+            IEventAggregator evtAg = new EventAggregator();
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IStudioResourceRepository> exp = new Mock<IStudioResourceRepository>();
+            var resRepo = new Mock<IResourceRepository>();
+            var srcRes = new Mock<IResourceModel>();
+            srcRes.Setup(a => a.DisplayName).Returns("bob");
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(srcRes.Object);
 
+            env.Setup(e => e.Name).Returns("My Env");
+            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<Action SourceName=\"TheSource\" Type=\"TheType\" SourceMethod=\"SourceMethod\" SourceID=\"123456\"></Action>") };
+            resource.ServerResourceType = "TheType";
+            var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
+
+            //------------Execute Test---------------------------
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity, resRepo.Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(activity.IsWorkflow);
+            Assert.AreEqual("TheType", ((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.AreEqual("bob", activity.FriendlySourceName.Expression.ToString());
+            Assert.AreEqual("SourceMethod", activity.ActionName.Expression.ToString());
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WorkerServicePropertyInterigator_SetActivityProperties")]
+        public void WorkerServicePropertyInterigator_SetActivityProperties_NoSourceNameFromResourceRepo_NoSourceIdOnXML()
+        {
+            //------------Setup for test--------------------------
+            IEventAggregator evtAg = new EventAggregator();
+            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IStudioResourceRepository> exp = new Mock<IStudioResourceRepository>();
+            var resRepo = new Mock<IResourceRepository>();
+            var srcRes = new Mock<IResourceModel>();
+            srcRes.Setup(a => a.DisplayName).Returns("bob");
+            resRepo.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(srcRes.Object);
+
+            env.Setup(e => e.Name).Returns("My Env");
+            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<Action SourceName=\"TheSource\" Type=\"TheType\" SourceMethod=\"SourceMethod\"></Action>") };
+            resource.ServerResourceType = "TheType";
+            var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
+
+            //------------Execute Test---------------------------
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity, resRepo.Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(activity.IsWorkflow);
+            Assert.AreEqual("TheType", ((Literal<string>)(activity.Type.Expression)).Value);
+            Assert.AreEqual("TheSource", activity.FriendlySourceName.Expression.ToString());
+            Assert.AreEqual("SourceMethod", activity.ActionName.Expression.ToString());
+        }
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WorkerServicePropertyInterigator_SetActivityProperties")]
@@ -92,7 +150,7 @@ namespace Dev2.Core.Tests.Activities
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
 
             //------------Execute Test---------------------------
-            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
+            WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity,null);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
