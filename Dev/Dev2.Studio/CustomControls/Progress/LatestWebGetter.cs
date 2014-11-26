@@ -9,13 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.IO;
 using System.Net;
 using Dev2.Common;
 using Dev2.Helpers;
-using Dev2.Providers.Logs;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Helpers

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -66,7 +65,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
-            CustomContainer.Register<ISystemInfoService>(mockSysInfo.Object);
+            CustomContainer.Register(mockSysInfo.Object);
             var feedbackViewModel = new FeedbackViewModel();
             string versionNumber = VersionInfo.FetchVersionInfo();
             StringAssert.Contains(feedbackViewModel.Comment, @"Comments : 

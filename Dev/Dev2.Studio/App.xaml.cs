@@ -1,9 +1,3 @@
-
-
-
-
-using Dev2.Utils;
-using log4net.Config;
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,7 +6,8 @@ using log4net.Config;
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/using System;
+*/
+using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
@@ -27,7 +22,8 @@ using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
-
+using Dev2.Utils;
+using log4net.Config;
 // ReSharper disable RedundantUsingDirective
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;

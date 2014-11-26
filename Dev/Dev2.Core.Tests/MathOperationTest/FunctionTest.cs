@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -27,13 +26,6 @@ namespace Dev2.Tests.MathOperationTest
     [ExcludeFromCodeCoverage]
     public class FunctionTest
     {
-        public FunctionTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -122,8 +114,8 @@ namespace Dev2.Tests.MathOperationTest
         public void Function_NullDescription_Expected_EmptyDescription()
         {
             string functionName = "Test Function";
-            List<string> arguments = new List<string>() { "arg1" };
-            List<string> argumentDescriptions = new List<string>() { "the first argument" };
+            List<string> arguments = new List<string> { "arg1" };
+            List<string> argumentDescriptions = new List<string> { "the first argument" };
             string description = null;
 
             IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
@@ -151,13 +143,13 @@ namespace Dev2.Tests.MathOperationTest
         public void CreateCustomFunction_AllValidValues_Expected_CustomFunctionCreatedAndRegisteredWithCalcManager()
         {
             string functionName = "TestFunction";
-            List<string> arguments = new List<string>() { "x", "y" };
-            List<string> argumentDescriptions = new List<string>() { "the first argument", "the second argument" };
+            List<string> arguments = new List<string> { "x", "y" };
+            List<string> argumentDescriptions = new List<string> { "the first argument", "the second argument" };
             string description = "My TestFunction";
 
             IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             IDev2CalculationManager manager = new Dev2CalculationManager();
-            Func<double[], double> function = new Func<double[], double>(AddAbs);
+            Func<double[], double> function = AddAbs;
 
             func.CreateCustomFunction(functionName, arguments, argumentDescriptions, description, function, manager);
             CalculationValue value = manager.CalculateFormula("TestFunction(1)");
@@ -168,13 +160,13 @@ namespace Dev2.Tests.MathOperationTest
         public void CreateCustomFunction_NullXamCalculationManager_Expected_ExceptionReturned()
         {
             string functionName = "TestFunction";
-            List<string> arguments = new List<string>() { "x", "y" };
-            List<string> argumentDescriptions = new List<string>() { "the first argument", "the second argument" };
+            List<string> arguments = new List<string> { "x", "y" };
+            List<string> argumentDescriptions = new List<string> { "the first argument", "the second argument" };
             string description = "My TestFunction";
 
             IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             IDev2CalculationManager manager = null;
-            Func<double[], double> function = new Func<double[], double>(AddAbs);
+            Func<double[], double> function = AddAbs;
             try
             {
                 func.CreateCustomFunction(functionName, arguments, argumentDescriptions, description, function, manager);
@@ -190,8 +182,8 @@ namespace Dev2.Tests.MathOperationTest
         public void CreateCustomFunction_NullFunc_Expected_ExceptionReturned()
         {
             string functionName = "TestFunction";
-            List<string> arguments = new List<string>() { "x", "y" };
-            List<string> argumentDescriptions = new List<string>() { "the first argument", "the second argument" };
+            List<string> arguments = new List<string> { "x", "y" };
+            List<string> argumentDescriptions = new List<string> { "the first argument", "the second argument" };
             string description = "My TestFunction";
 
             IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
@@ -208,7 +200,7 @@ namespace Dev2.Tests.MathOperationTest
         public void CreateCustomFunction_NullArgumentDescription_Expected_ExceptionReturned()
         {
             string functionName = "TestFunction";
-            List<string> arguments = new List<string>() { "x", "y" };
+            List<string> arguments = new List<string> { "x", "y" };
             List<string> argumentDescriptions = null;
             string description = "My TestFunction";
 

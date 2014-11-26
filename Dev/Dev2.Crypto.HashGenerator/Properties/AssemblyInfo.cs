@@ -9,9 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Reflection;
-
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 

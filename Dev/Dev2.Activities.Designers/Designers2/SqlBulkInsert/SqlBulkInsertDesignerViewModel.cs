@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -35,8 +34,8 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.TO;
 using Dev2.Threading;
+using Dev2.TO;
 using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.SqlBulkInsert

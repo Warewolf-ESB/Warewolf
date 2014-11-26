@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
@@ -45,12 +44,12 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             string serializedData = outputDescriptionSerializationService.Serialize(testOutputDescription);
             IOutputDescription deserializedOutputDescription = outputDescriptionSerializationService.Deserialize(serializedData);
 
-            string expected = testOutputDescription.Format.ToString() + "^" +
+            string expected = testOutputDescription.Format + "^" +
                 string.Join("|", testOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.ActualPath)) + "^" +
                 string.Join("|", testOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.DisplayPath)) + "^" +
                 string.Join("|", testOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.OutputExpression));
 
-            string actual = deserializedOutputDescription.Format.ToString() + "^" +
+            string actual = deserializedOutputDescription.Format + "^" +
                 string.Join("|", deserializedOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.ActualPath)) + "^" +
                 string.Join("|", deserializedOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.DisplayPath)) + "^" +
                 string.Join("|", deserializedOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.OutputExpression));
@@ -80,12 +79,12 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             string serializedData = outputDescriptionSerializationService.Serialize(testOutputDescription);
             IOutputDescription deserializedOutputDescription = outputDescriptionSerializationService.Deserialize(serializedData);
 
-            string expected = testOutputDescription.Format.ToString() + "^" +
+            string expected = testOutputDescription.Format + "^" +
                 string.Join("|", testOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.ActualPath)) + "^" +
                 string.Join("|", testOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.DisplayPath)) + "^" +
                 string.Join("|", testOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.OutputExpression));
 
-            string actual = deserializedOutputDescription.Format.ToString() + "^" +
+            string actual = deserializedOutputDescription.Format + "^" +
                 string.Join("|", deserializedOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.ActualPath)) + "^" +
                 string.Join("|", deserializedOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.DisplayPath)) + "^" +
                 string.Join("|", deserializedOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.OutputExpression));
@@ -114,12 +113,12 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
             string serializedData = outputDescriptionSerializationService.Serialize(testOutputDescription);
             IOutputDescription deserializedOutputDescription = outputDescriptionSerializationService.Deserialize(serializedData);
 
-            string expected = testOutputDescription.Format.ToString() + "^" +
+            string expected = testOutputDescription.Format + "^" +
                 string.Join("|", testOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.ActualPath)) + "^" +
                 string.Join("|", testOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.DisplayPath)) + "^" +
                 string.Join("|", testOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.OutputExpression));
 
-            string actual = deserializedOutputDescription.Format.ToString() + "^" +
+            string actual = deserializedOutputDescription.Format + "^" +
                 string.Join("|", deserializedOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.ActualPath)) + "^" +
                 string.Join("|", deserializedOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.DisplayPath)) + "^" +
                 string.Join("|", deserializedOutputDescription.DataSourceShapes.SelectMany(d => d.Paths).Select(p => p.OutputExpression));

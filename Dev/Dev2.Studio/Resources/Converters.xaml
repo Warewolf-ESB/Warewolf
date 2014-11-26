@@ -15,8 +15,8 @@
     xmlns:logging="clr-namespace:Dev2.Settings.Logging">
 
     <Activities:ImagePathConverter x:Key="ImagePathConverter" />
-    <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter"></converters2:FilterStringToBoolConverter>
-    <converters2:BoolToStringConvert x:Key="BoolToStringConvert"></converters2:BoolToStringConvert>
+    <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter" />
+    <converters2:BoolToStringConvert x:Key="BoolToStringConvert" />
 
     <!-- ========== Converter for XamDock ========== -->
 

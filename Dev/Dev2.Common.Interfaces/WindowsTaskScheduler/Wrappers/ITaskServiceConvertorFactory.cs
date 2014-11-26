@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Microsoft.Win32.TaskScheduler;
-using Action = Microsoft.Win32.TaskScheduler.Action;
 
 namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 {
@@ -40,7 +38,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 
         IRepetitionPattern CreateRepetitionPattern(RepetitionPattern repetitionPattern);
 
-        IAction CreateAction(Action action);
+        IAction CreateAction(Microsoft.Win32.TaskScheduler.Action action);
 
         IDev2TaskService CreateTaskService(string targetServer, string userName, string accountDomain, string password,
             bool forceV1);

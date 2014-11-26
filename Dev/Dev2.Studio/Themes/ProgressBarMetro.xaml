@@ -50,8 +50,7 @@
                             <Setter Property="Visibility" TargetName="Indicator" Value="Collapsed" />
                             <Setter Property="Visibility" TargetName="IndeterminateRoot" Value="Visible" />
                         </Trigger>
-                        <Trigger Property="IsIndeterminate" Value="false">
-                        </Trigger>
+                        <Trigger Property="IsIndeterminate" Value="false" />
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

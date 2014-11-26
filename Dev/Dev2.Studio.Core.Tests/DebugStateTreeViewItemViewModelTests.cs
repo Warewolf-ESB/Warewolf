@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -179,7 +178,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugStateTreeViewItemViewModel_Constructor")]
         public void DebugStateTreeViewItemViewModel_Constructor_ContentServerIsRemote_AssignsUnknownNameToContentServer()
         {
-            Verify_Constructor_AssignsNameToContentServer(StateType.Append, contentServerIsSource: true);
+            Verify_Constructor_AssignsNameToContentServer(StateType.Append, true);
         }
 
         [TestMethod]
@@ -208,7 +207,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugStateTreeViewItemViewModel_Constructor_ActivityTypeIsNotWorkflow_PublishesSelectionEventWithActivitySelectionTypeAdd()
         {
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Step, ActivitySelectionType.Add, expectedCount: 2);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Step, ActivitySelectionType.Add, 2);
         }
 
         [TestMethod]
@@ -216,7 +215,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugStateTreeViewItemViewModel_Constructor_ActivityTypeIsWorkflow_DoesNotPublishSelectionEventWithActivitySelectionTypeAdd()
         {
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Workflow, ActivitySelectionType.Add, expectedCount: 0);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Workflow, ActivitySelectionType.Add, 0);
         }
 
         [TestMethod]
@@ -224,7 +223,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugStateTreeViewItemViewModel_AppendError")]
         public void DebugStateTreeViewItemViewModel_AppendError_ContentHasError_AppendsErrorToContentError()
         {
-            Verify_AppendError(contentHasError: true);
+            Verify_AppendError(true);
         }
 
         [TestMethod]
@@ -232,7 +231,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugStateTreeViewItemViewModel_AppendError")]
         public void DebugStateTreeViewItemViewModel_AppendError_ContentHasNoError_AppendsErrorToContentError()
         {
-            Verify_AppendError(contentHasError: false);
+            Verify_AppendError(false);
         }
 
         [TestMethod]
@@ -257,10 +256,10 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugStateTreeViewItemViewModel_IsSelected_PublishesSelectionEventWithSameActivitySelectionType()
         {
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.None, expectedCount: 2, setIsSelected: true);
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.Single, expectedCount: 2, setIsSelected: true);
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.Add, expectedCount: 2, setIsSelected: true);
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.Remove, expectedCount: 2);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.None, 2, true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.Single, 2, true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.Add, 2, true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.Remove, 2);
         }
 
         static void Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType activityType, ActivitySelectionType expectedSelectionType, int expectedCount, bool setIsSelected = false)

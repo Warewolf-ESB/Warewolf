@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -90,17 +88,17 @@ namespace Dev2.TaskScheduler.Wrappers
 // ReSharper restore InconsistentNaming
 // ReSharper restore ParameterHidesMember
 // ReSharper disable InconsistentNaming
-                                                string UserId,
+            string UserId,
 // ReSharper restore InconsistentNaming
 // ReSharper disable InconsistentNaming
-                                                string password = null, TaskLogonType LogonType = TaskLogonType.S4U,
+            string password = null, TaskLogonType LogonType = TaskLogonType.S4U,
 // ReSharper restore InconsistentNaming
-                                                string sddl = null)
+            string sddl = null)
         {
             return
                 _taskServiceConvertorFactory.CreateTask(Instance.RegisterTaskDefinition(Path, definition.Instance,
-                                                                                        createType, UserId, password,
-                                                                                        LogonType, sddl));
+                    createType, UserId, password,
+                    LogonType, sddl));
         }
 
         public TaskFolder Instance

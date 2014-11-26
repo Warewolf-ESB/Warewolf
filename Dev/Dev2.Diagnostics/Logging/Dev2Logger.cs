@@ -9,11 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Linq;
 using System.Reflection;
-using log4net.Appender;
 using System.Xml.Linq;
+using log4net.Appender;
+
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
 namespace Dev2.Common

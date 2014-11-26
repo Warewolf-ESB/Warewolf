@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.Core.Controls;

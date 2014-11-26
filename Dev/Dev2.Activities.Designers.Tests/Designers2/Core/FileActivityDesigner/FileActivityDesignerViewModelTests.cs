@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core;
@@ -144,7 +143,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             var path = string.Empty;
             const string ExpectedMessageFormat = "{0} cannot be empty or only white space";
             const string LabelText = "Label";
-            var viewModel = VerifyValidatePath(path: path, pathIsRequired: true, expectedResult: path, expectedMessageFormat: ExpectedMessageFormat);
+            var viewModel = VerifyValidatePath(path, true, path, ExpectedMessageFormat);
             if (string.IsNullOrEmpty(ExpectedMessageFormat))
             {
                 Assert.IsNull(viewModel.Errors);
@@ -174,7 +173,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             var path = Guid.NewGuid().ToString();
             const string ExpectedMessageFormat = "Please supply a valid {0}";
             const string LabelText = "Label";
-            var viewModel = VerifyValidatePath(path: path, pathIsRequired: true, expectedResult: path, expectedMessageFormat: ExpectedMessageFormat);
+            var viewModel = VerifyValidatePath(path, true, path, ExpectedMessageFormat);
             if (string.IsNullOrEmpty(ExpectedMessageFormat))
             {
                 Assert.IsNull(viewModel.Errors);
@@ -203,7 +202,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         {
             const string Path = "C:\\";
             const string ExpectedMessageFormat = null;
-            var viewModel = VerifyValidatePath(path: Path, pathIsRequired: true, expectedResult: Path, expectedMessageFormat: ExpectedMessageFormat);
+            var viewModel = VerifyValidatePath(Path, true, Path, ExpectedMessageFormat);
             if (string.IsNullOrEmpty(ExpectedMessageFormat))
             {
                 Assert.IsNull(viewModel.Errors);
@@ -233,7 +232,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             const string Path = "http://";
             const string ExpectedMessageFormat = "Please supply a valid {0}";
             const string LabelText = "Label";
-            var viewModel = VerifyValidatePath(path: Path, pathIsRequired: true, expectedResult: Path, expectedMessageFormat: ExpectedMessageFormat);
+            var viewModel = VerifyValidatePath(Path, true, Path, ExpectedMessageFormat);
             if (string.IsNullOrEmpty(ExpectedMessageFormat))
             {
                 Assert.IsNull(viewModel.Errors);
@@ -264,7 +263,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             {
                 var path = scheme + "://tmp.txt";
                 const string ExpectedMessageFormat = null;
-                var viewModel = VerifyValidatePath(path: scheme + "://tmp.txt", pathIsRequired: true, expectedResult: path, expectedMessageFormat: ExpectedMessageFormat);
+                var viewModel = VerifyValidatePath(scheme + "://tmp.txt", true, path, ExpectedMessageFormat);
                 if (string.IsNullOrEmpty(ExpectedMessageFormat))
                 {
                     Assert.IsNull(viewModel.Errors);
@@ -294,7 +293,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         {
             const string Path = "a]]";
             const string ExpectedMessageFormat = "Label - Invalid expression: opening and closing brackets don't match.";
-            var viewModel = VerifyValidatePath(path: Path, pathIsRequired: true, expectedResult: Path, expectedMessageFormat: ExpectedMessageFormat);
+            var viewModel = VerifyValidatePath(Path, true, Path, ExpectedMessageFormat);
             if (string.IsNullOrEmpty(ExpectedMessageFormat))
             {
                 Assert.IsNull(viewModel.Errors);
@@ -326,7 +325,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             const string Path = "htp://www.cowbell.co.za";
             const string ExpectedMessageFormat = "Please supply a valid Label";
 
-            var viewModel = VerifyValidatePath(path: Path, pathIsRequired: true, expectedResult: Path, expectedMessageFormat: ExpectedMessageFormat);
+            var viewModel = VerifyValidatePath(Path, true, Path, ExpectedMessageFormat);
 
             if (string.IsNullOrEmpty(ExpectedMessageFormat))
             {
@@ -558,7 +557,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             var viewModel = CreateViewModel();
 
             //------------Execute Test---------------------------
-            var result = viewModel.TestValidateFileContent(content: content, label: LabelText, onError: () => { _onErrorAssigned = true; }, contentIsRequired: true);
+            var result = viewModel.TestValidateFileContent(content, LabelText, () => { _onErrorAssigned = true; }, true);
             Assert.AreEqual(expectedResult, result);
             return viewModel;
 
@@ -578,7 +577,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             var viewModel = CreateViewModel();
 
             //------------Execute Test---------------------------
-            var result = viewModel.TestValidateArchivePassword(password: password, label: LabelText, onError: () => { _onErrorAssigned = true; }, contentIsRequired: true);
+            var result = viewModel.TestValidateArchivePassword(password, LabelText, () => { _onErrorAssigned = true; }, true);
             Assert.AreEqual(expectedResult, result);
             return viewModel;
 

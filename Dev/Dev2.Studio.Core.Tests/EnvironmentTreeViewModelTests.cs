@@ -9,13 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.ConnectionHelpers;
 using Dev2.Models;
-using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -37,8 +37,7 @@
                                      IsClosedAfter="{Binding IsFixed}"                  
                                      CustomCommand ="{Binding DoneCommand}"
                                      PostCommand ="{Binding DoneCompletedCommand}"
-                                     Style="{StaticResource ActivityDesignerButtonStyle}">            
-        </core:ActivityDesignerButton>
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
     <Grid>

@@ -18,7 +18,7 @@
         <GroupBox.Header>
             <TextBlock Text="Preview"
                        Margin="1"
-                       Padding="1"></TextBlock>
+                       Padding="1" />
         </GroupBox.Header>
         <Grid>
             <Grid.RowDefinitions>
@@ -127,7 +127,7 @@
                         Margin="0,4">
                 <Button Command="{Binding PreviewCommand}"
                         Content="Preview"
-                        Style="{StaticResource ActivityDesignerButtonStyle}"></Button>
+                        Style="{StaticResource ActivityDesignerButtonStyle}" />
             </StackPanel>
 
             <TextBox Text="{Binding Output}"

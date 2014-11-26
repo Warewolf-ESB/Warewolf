@@ -9,8 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.ConnectionHelpers;

@@ -9,10 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using ActivityUnitTests;
-using Dev2.Activities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -21,6 +17,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using ActivityUnitTests;
+using Dev2.Activities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests

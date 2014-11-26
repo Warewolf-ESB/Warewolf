@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -383,8 +382,8 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestCategory("EmailDesignerViewModel_TestEmailAccount")]
         public void EmailDesignerViewModel_TestEmailAccount_TestIsValid_InvokesEmailSourcesTestAndNoErrors()
         {
-            Verify_TestEmailAccount(isTestResultValid: true, hasFromAccount: true);
-            Verify_TestEmailAccount(isTestResultValid: true, hasFromAccount: false);
+            Verify_TestEmailAccount(true, true);
+            Verify_TestEmailAccount(true, false);
         }
 
         [TestMethod]
@@ -392,8 +391,8 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestCategory("EmailDesignerViewModel_TestEmailAccount")]
         public void EmailDesignerViewModel_TestEmailAccount_TestIsNotValid_InvokesEmailSourcesTestAndSetsErrors()
         {
-            Verify_TestEmailAccount(isTestResultValid: false, hasFromAccount: true);
-            Verify_TestEmailAccount(isTestResultValid: false, hasFromAccount: false);
+            Verify_TestEmailAccount(false, true);
+            Verify_TestEmailAccount(false, false);
         }
 
         void Verify_TestEmailAccount(bool isTestResultValid, bool hasFromAccount)

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -28,8 +27,8 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.TO;
 using Dev2.Threading;
+using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -731,19 +730,19 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Execute Test---------------------------
             viewModel.ModelItem.SetProperty("BatchSize", "");
             viewModel.ModelItem.SetProperty("Timeout", "");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, false, false);
 
             viewModel.ModelItem.SetProperty("BatchSize", (string)null);
             viewModel.ModelItem.SetProperty("Timeout", (string)null);
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, false, false);
 
             viewModel.ModelItem.SetProperty("BatchSize", "a");
             viewModel.ModelItem.SetProperty("Timeout", "a");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, false, false);
 
             viewModel.ModelItem.SetProperty("BatchSize", "-1");
             viewModel.ModelItem.SetProperty("Timeout", "-1");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: false, isTimeoutValid: false);
+            Verify_Validate_Values_SetsErrors(viewModel, false, false);
         }
 
         [TestMethod]
@@ -759,11 +758,11 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Execute Test---------------------------
             viewModel.ModelItem.SetProperty("BatchSize", "0");
             viewModel.ModelItem.SetProperty("Timeout", "0");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
+            Verify_Validate_Values_SetsErrors(viewModel, true, true);
 
             viewModel.ModelItem.SetProperty("BatchSize", "20");
             viewModel.ModelItem.SetProperty("Timeout", "20");
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
+            Verify_Validate_Values_SetsErrors(viewModel, true, true);
 
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
@@ -771,7 +770,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             viewModel.SelectedDatabase = selectedDatabase;
             viewModel.SelectedTable = selectedTable;
-            Verify_Validate_Values_SetsErrors(viewModel, isBatchSizeValid: true, isTimeoutValid: true);
+            Verify_Validate_Values_SetsErrors(viewModel, true, true);
         }
 
         void Verify_Validate_Values_SetsErrors(TestSqlBulkInsertDesignerViewModel viewModel, bool isBatchSizeValid, bool isTimeoutValid)
@@ -887,17 +886,17 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             modelItem.SetProperty("BatchSize", "a]]");
             modelItem.SetProperty("Timeout", "");
             modelItem.SetProperty("Result", "");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: false, isTimeoutValid: true, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, false, true, true);
 
             modelItem.SetProperty("BatchSize", "");
             modelItem.SetProperty("Timeout", "a]]");
             modelItem.SetProperty("Result", "");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: false, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, false, true);
 
             modelItem.SetProperty("BatchSize", "");
             modelItem.SetProperty("Timeout", "");
             modelItem.SetProperty("Result", "a]]");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: false);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, false);
         }
 
         [TestMethod]
@@ -930,17 +929,17 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             modelItem.SetProperty("BatchSize", "[[a]]");
             modelItem.SetProperty("Timeout", "");
             modelItem.SetProperty("Result", "");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, true);
 
             modelItem.SetProperty("BatchSize", "");
             modelItem.SetProperty("Timeout", "[[a]]");
             modelItem.SetProperty("Result", "");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, true);
 
             modelItem.SetProperty("BatchSize", "");
             modelItem.SetProperty("Timeout", "");
             modelItem.SetProperty("Result", "[[a]]");
-            Verify_Validate_Variables_SetsErrors(viewModel, isInputMappingsValid: true, isBatchSizeValid: true, isTimeoutValid: true, isResultValid: true);
+            Verify_Validate_Variables_SetsErrors(viewModel, true, true, true, true);
         }
 
         void Verify_Validate_Variables_SetsErrors(TestSqlBulkInsertDesignerViewModel viewModel, bool isInputMappingsValid, bool isBatchSizeValid, bool isTimeoutValid, bool isResultValid, string toField = "")
@@ -962,8 +961,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         [TestCategory("SqlBulkInsertDesignerViewModel_AddToCollection")]
         public void SqlBulkInsertDesignerViewModel_AddToCollection_AlwaysUpdatesInputMappings()
         {
-            Verify_AddToCollection_AlwaysUpdatesInputMappings(overwrite: true);
-            Verify_AddToCollection_AlwaysUpdatesInputMappings(overwrite: false);
+            Verify_AddToCollection_AlwaysUpdatesInputMappings(true);
+            Verify_AddToCollection_AlwaysUpdatesInputMappings(false);
         }
 
         void Verify_AddToCollection_AlwaysUpdatesInputMappings(bool overwrite)

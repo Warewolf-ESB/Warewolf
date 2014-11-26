@@ -46,8 +46,7 @@
                                      Margin="3"
                                      ConnectButtonAutomationID="UI_SourceConnectServerbtn_AutoID"
                                      EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
-                                     ServerComboBoxAutomationID="UI_SourceServercbx_AutoID">
-                </connections:ConnectControl>
+                                     ServerComboBoxAutomationID="UI_SourceServercbx_AutoID" />
 
                 <nv:NavigationView Grid.Row="1"
                                    DataContext="{Binding Source}"
@@ -71,9 +70,9 @@
                                 <DataTrigger Binding="{Binding IsOverwrite}"
                                              Value="true">
                                     <Setter Property="Background"
-                                            Value="#F3700D"></Setter>
+                                            Value="#F3700D" />
                                     <Setter Property="Foreground"
-                                            Value="White"></Setter>
+                                            Value="White" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsConnected}"
                                              Value="False">
@@ -101,8 +100,7 @@
                                         <ContextMenu Visibility="{Binding CanSelectDependencies, Converter={StaticResource BoolToVisConverter}}">
                                             <MenuItem Header="Select All Dependencies"
                                                       Click="MenuItem_OnClick"
-                                                      Visibility="{Binding CanSelectDependencies,Converter={StaticResource BoolToVisConverter}}">
-                                            </MenuItem>
+                                                      Visibility="{Binding CanSelectDependencies,Converter={StaticResource BoolToVisConverter}}" />
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
                                     <!--TODO i:Interaction.Behaviors>
@@ -132,7 +130,7 @@
                                                    AutomationProperties.AutomationId="UI_Unautherized_DeployFromImage_AutoID" />
                                         <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
                                                    Text="{x:Static help:HelpTextResources.DeploySecurityFromUnauthorized}"
-                                                   AutomationProperties.AutomationId="UI_Unautherized_DeployFrom_AutoID"></TextBlock>
+                                                   AutomationProperties.AutomationId="UI_Unautherized_DeployFrom_AutoID" />
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
@@ -156,8 +154,7 @@
                                      Margin="3"
                                      ConnectButtonAutomationID="UI_DestinationServerConnectbtn_AutoID"
                                      EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
-                                     ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID">
-                </connections:ConnectControl>
+                                     ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID" />
 
                 <nv:NavigationView Grid.Row="2"
                                    DataContext="{Binding Target}"
@@ -183,9 +180,9 @@
                                 <DataTrigger Binding="{Binding IsOverwrite}"
                                              Value="true">
                                     <Setter Property="Background"
-                                            Value="#F3700D"></Setter>
+                                            Value="#F3700D" />
                                     <Setter Property="Foreground"
-                                            Value="White"></Setter>
+                                            Value="White" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsConnected}"
                                              Value="False">
@@ -229,7 +226,7 @@
                                                    AutomationProperties.AutomationId="UI_Unautherized_DeployToImage_AutoID" />
                                         <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
                                                    Text="{x:Static help:HelpTextResources.DeploySecurityToUnauthorized}"
-                                                   AutomationProperties.AutomationId="UI_Unautherized_DeployToText_AutoID"></TextBlock>
+                                                   AutomationProperties.AutomationId="UI_Unautherized_DeployToText_AutoID" />
                                     </StackPanel>
                                 </Border>
                             </StackPanel>

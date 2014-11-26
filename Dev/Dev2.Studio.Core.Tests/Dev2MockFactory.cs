@@ -9,9 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
@@ -26,8 +24,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
-using Dev2.Data.Interfaces;
-using Dev2.DataList.Contract;
 using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Network.Execution;

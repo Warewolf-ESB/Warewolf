@@ -9,13 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using Dev2.Activities;
-using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -23,6 +16,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Dev2.Activities;
+using Dev2.Common.Interfaces.DataList.Contract;
+using Dev2.Enums;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace

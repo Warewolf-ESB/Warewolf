@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
@@ -35,7 +34,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_ClearCommand")]
         public void QuickVariableInputViewModel_ClearCommand_ClearsFields()
         {
-            var qviViewModel = new QuickVariableInputViewModelMock()
+            var qviViewModel = new QuickVariableInputViewModelMock
             {
                 Suffix = "xxx",
                 Prefix = "xxx",

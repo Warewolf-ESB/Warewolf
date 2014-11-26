@@ -15,9 +15,9 @@
         cal:Message.Attach="[Event Closed] = [Action ViewClosed]"
         FocusManager.FocusedElement="{Binding ElementName=DataListInputs}"
         AutomationProperties.AutomationId="UI_DebugInputWindow_AutoID">
-    
+
     <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png" ></BitmapImage>
+        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png" />
     </Window.Icon>
     <Window.InputBindings>
         <KeyBinding Key="F6" Command="{Binding Path=OkCommand}"/>
@@ -37,8 +37,8 @@
         <TabControl x:Name="TabItems" SelectionChanged="TabControlSelectionChanged">
             <TabItem AutomationProperties.AutomationId="UI_InputDataTab_AutoID" Header="Input Data" IsSelected="True">
                 <Grid>
-                <TextBlock HorizontalAlignment="Center" Text="Mark the Input checkbox in the variable window to set workflow inputs."></TextBlock>
-                <DataGrid SelectionMode="Single" 
+                    <TextBlock HorizontalAlignment="Center" Text="Mark the Input checkbox in the variable window to set workflow inputs." />
+                    <DataGrid SelectionMode="Single" 
                           AutoGenerateColumns="False" 
                           EnableRowVirtualization="True" 
                           ItemsSource="{Binding WorkflowInputs}" 
@@ -48,67 +48,67 @@
                           x:Name="DataListInputs" 
                           SelectionChanged="DataListInputsSelectionChanged"
                           LoadingRow="DataListInputs_OnLoadingRow">
-                    <DataGrid.RowStyle>
-                        <Style TargetType="DataGridRow">
-                            <Setter Property="AutomationProperties.AutomationId">
-                                <Setter.Value>
-                                    <MultiBinding StringFormat="UI_InputData_Row_{0}_AutoID">
-                                        <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
-                                    </MultiBinding>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DataGrid.RowStyle>
-                    <DataGrid.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Focusable" Value="False"/>
-                        </Style>
-                    </DataGrid.CellStyle>
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn Width="1*"  IsReadOnly="False">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Label ToolTip="{Binding Path=Description}" Content="{Binding Path=DisplayValue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsTabStop="False">
-                                        <Label.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Delete Last Recordset Row (Shift+Delete)" Click="MenuItemDeleteRow"/>
-                                                <MenuItem Header="Add Blank Row To Recordset (Shift+Enter)" Click="MenuItemAddRow"/>
-                                            </ContextMenu>
-                                        </Label.ContextMenu>
-                                    </Label>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Width="1*"  IsReadOnly="False">
-                            <DataGridTemplateColumn.CellStyle>
-                                <Style TargetType="DataGridCell">
-                                    <Setter Property="AutomationProperties.AutomationId">
-                                        <Setter.Value>
-                                            <MultiBinding StringFormat="UI_InputData_Row_{0}_Cell_AutoID">
-                                                <Binding Path="(DataGridRow.Tag)" RelativeSource="{RelativeSource AncestorType=DataGridRow}" />
-                                            </MultiBinding>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </DataGridTemplateColumn.CellStyle>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ui:IntellisenseTextBox x:Name="txtValue" FilterType="All" WrapInBrackets="False" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="Auto" PreviewKeyDown="IntellisenseTextBoxPreviewKeyDown" GotFocus="TextBoxGotFocus" TextChanged="TextBoxTextChanged" MaxHeight="39">
-                                        <AutomationProperties.AutomationId>
-                                            <MultiBinding StringFormat="UI_{0}txt_AutoID">
-                                                <Binding Path="DisplayValue"/>
-                                            </MultiBinding>
-                                        </AutomationProperties.AutomationId>
-                                        <ui:IntellisenseTextBox.IntellisenseProvider>
-                                            <interfaceImplementors:CompositeIntellisenseProvider>
-                                                <InterfaceImplementors:BlankIntellisenseProvider />
-                                            </interfaceImplementors:CompositeIntellisenseProvider>
-                                        </ui:IntellisenseTextBox.IntellisenseProvider>
-                                    </ui:IntellisenseTextBox>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="AutomationProperties.AutomationId">
+                                    <Setter.Value>
+                                        <MultiBinding StringFormat="UI_InputData_Row_{0}_AutoID">
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Focusable" Value="False"/>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="1*"  IsReadOnly="False">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label ToolTip="{Binding Path=Description}" Content="{Binding Path=DisplayValue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsTabStop="False">
+                                            <Label.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Delete Last Recordset Row (Shift+Delete)" Click="MenuItemDeleteRow"/>
+                                                    <MenuItem Header="Add Blank Row To Recordset (Shift+Enter)" Click="MenuItemAddRow"/>
+                                                </ContextMenu>
+                                            </Label.ContextMenu>
+                                        </Label>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="1*"  IsReadOnly="False">
+                                <DataGridTemplateColumn.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="AutomationProperties.AutomationId">
+                                            <Setter.Value>
+                                                <MultiBinding StringFormat="UI_InputData_Row_{0}_Cell_AutoID">
+                                                    <Binding Path="(DataGridRow.Tag)" RelativeSource="{RelativeSource AncestorType=DataGridRow}" />
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTemplateColumn.CellStyle>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ui:IntellisenseTextBox x:Name="txtValue" FilterType="All" WrapInBrackets="False" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="Auto" PreviewKeyDown="IntellisenseTextBoxPreviewKeyDown" GotFocus="TextBoxGotFocus" TextChanged="TextBoxTextChanged" MaxHeight="39">
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}txt_AutoID">
+                                                    <Binding Path="DisplayValue"/>
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                            <ui:IntellisenseTextBox.IntellisenseProvider>
+                                                <interfaceImplementors:CompositeIntellisenseProvider>
+                                                    <InterfaceImplementors:BlankIntellisenseProvider />
+                                                </interfaceImplementors:CompositeIntellisenseProvider>
+                                            </ui:IntellisenseTextBox.IntellisenseProvider>
+                                        </ui:IntellisenseTextBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </TabItem>
@@ -132,9 +132,8 @@
                 <ColumnDefinition Width="110" />
             </Grid.ColumnDefinitions>
             <Button Content="Cancel" AutomationProperties.AutomationId="UI_Cancelbtn_AutoID" Click="CancelClicked" Command="{Binding Path=CancelCommand}" Grid.Row="0" Grid.Column="0" MaxHeight="25" MinWidth="100" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,5,0" />
-            <Button Content="Step Through" AutomationProperties.AutomationId="UI_StepThroughbtn_AutoID" IsEnabled="False" Grid.Column="1" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,0,5,0" />
-            <Button Content="Debug" AutomationProperties.AutomationId="UI_Executebtn_AutoID" Click="ExecuteClicked" Command="{Binding Path=OkCommand}" Grid.Row="0" Grid.Column="2" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,0,5,0"/>
-            <Button Content="View In Browser" AutomationProperties.AutomationId="UI_Browserbtn_AutoID" Click="ExecuteClicked" Command="{Binding Path=ViewInBrowserCommand}" Grid.Row="0" Grid.Column="3" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,0,5,0"/>
+            <Button Content="Debug (F6)" AutomationProperties.AutomationId="UI_Executebtn_AutoID" Click="ExecuteClicked" Command="{Binding Path=OkCommand}" Grid.Row="0" Grid.Column="1" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,25,0" Grid.ColumnSpan="2" Width="115"/>
+            <Button Content="View In Browser (F7)" AutomationProperties.AutomationId="UI_Browserbtn_AutoID" Click="ExecuteClicked" Command="{Binding Path=ViewInBrowserCommand}" Grid.Row="0" Grid.Column="2" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,5,0" Grid.ColumnSpan="2" Width="121"/>
         </Grid>
     </Grid>
 </Window>

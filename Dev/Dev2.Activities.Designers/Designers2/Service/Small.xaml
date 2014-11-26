@@ -55,8 +55,7 @@
                        Height="16"
                        Width="16"
                        Margin="0,0,4,4"
-                       AutomationProperties.AutomationId="UI_ErrorsAdorner_AutoID">
-                </Image>
+                       AutomationProperties.AutomationId="UI_ErrorsAdorner_AutoID" />
                 <Button Command="{Binding Path=FixErrorsCommand}"
                         Visibility="{Binding Path=IsWorstErrorReadOnly, Converter={StaticResource BoolToVisibilityConverterInverse}}"
                         Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
@@ -68,8 +67,7 @@
                     <Image Source="{Binding Path=WorstError, Converter={StaticResource ErrorTypeToImageConverter}}"
                            Height="16"
                            Width="16"
-                           AutomationProperties.AutomationId="UI_ErrorsAdorner_AutoID">
-                    </Image>
+                           AutomationProperties.AutomationId="UI_ErrorsAdorner_AutoID" />
                 </Button>
                 <AutomationProperties.AutomationId>
                     <MultiBinding StringFormat="[UI_{0}_FixBtn_AutoID]">

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -34,7 +33,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_Equal_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "=", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("=", true, false);
         }
 
         [TestMethod]
@@ -42,7 +41,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_NotContains_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Doesn't Contain", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Doesn't Contain", true, false);
         }
 
         [TestMethod]
@@ -50,7 +49,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_Contains_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Contains", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Contains", true, false);
         }
 
         [TestMethod]
@@ -58,7 +57,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_NotEqual_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("<> (Not Equal)", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("<> (Not Equal)", true, false);
 
         }
         [TestMethod]
@@ -66,7 +65,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_EndsWith_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Ends With", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Ends With", true, false);
         }
 
         [TestMethod]
@@ -74,7 +73,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_StartsWith_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Starts With", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Starts With", true, false);
         }
 
         [TestMethod]
@@ -82,7 +81,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_Regex_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Is Regex", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Is Regex", true, false);
         }
 
         [TestMethod]
@@ -90,7 +89,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_GreaterThan_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: ">", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(">", true, false);
         }
 
         [TestMethod]
@@ -98,7 +97,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_LessThan_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "<", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("<", true, false);
         }
 
         [TestMethod]
@@ -106,7 +105,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_LessThanEqual_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("<=", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("<=", true, false);
         }
 
         [TestMethod]
@@ -114,7 +113,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_GreaterThanEqual_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(">=", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(">=", true, false);
         }
 
         [TestMethod]
@@ -122,7 +121,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_NotInRequiresCriteriaInputList_IsCriteriaEnabledFalseSearchCriteriaEmptyString()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Is Numeric", isSearchCriteriaEnabled: false, isSearchCriteriaBlank: true);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Is Numeric", false, true);
         }
 
         [TestMethod]
@@ -130,7 +129,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_IndexObjectIsnotZero()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Is Numeric", isSearchCriteriaEnabled: false, isSearchCriteriaBlank: true, indexObject: -1);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Is Numeric", false, true, -1);
         }
 
         [TestMethod]
@@ -138,7 +137,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_InRequiresCriteriaInputList_IsCriteriaEnabledFalseSearchCriteriaInBetween()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Is Between", isSearchCriteriaEnabled: false, isSearchCriteriaBlank: true);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Is Between", false, true);
         }
 
         [TestMethod]
@@ -146,7 +145,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_InRequiresCriteriaInputList_IsCriteriaEnabledFalseSearchCriteriaNotBetween()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Not Between", isSearchCriteriaEnabled: false, isSearchCriteriaBlank: true);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled("Not Between", false, true);
         }
 
         void Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(string searchType, bool isSearchCriteriaEnabled, bool isSearchCriteriaBlank, int indexObject = 0)

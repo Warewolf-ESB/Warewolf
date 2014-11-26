@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -57,12 +56,12 @@ namespace Dev2.Core.Tests.Feedback.Actions
         {
             Mock<IFeedBackRecorder> feedbackRecorder = new Mock<IFeedBackRecorder>();
             feedbackRecorder.Setup(r => r.StartRecording(It.IsAny<string>())).Verifiable();
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
 
@@ -77,12 +76,12 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedBackRecorder> feedbackRecorder = new Mock<IFeedBackRecorder>();
             feedbackRecorder.Setup(r => r.StartRecording(It.IsAny<string>())).Verifiable();
 
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.None);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
 
@@ -113,12 +112,12 @@ namespace Dev2.Core.Tests.Feedback.Actions
             ).Verifiable();
             feedbackRecorder.Setup(r => r.KillAllRecordingTasks()).Verifiable();
 
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
 
@@ -153,10 +152,10 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
 
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
 
@@ -190,10 +189,10 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
 
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
 
@@ -212,10 +211,10 @@ namespace Dev2.Core.Tests.Feedback.Actions
             feedbackInvoker.Setup(r => r.InvokeFeedback(It.IsAny<IFeedbackAction>())).Verifiable();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
             Mock<IEnvironmentModel> mockEnvironment = Dev2MockFactory.SetupEnvironmentModel();
@@ -241,10 +240,10 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
 
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
 
@@ -266,10 +265,10 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
 
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
 
@@ -288,10 +287,10 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
 
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
 
@@ -312,10 +311,10 @@ namespace Dev2.Core.Tests.Feedback.Actions
             Mock<IFeedbackInvoker> feedbackInvoker = new Mock<IFeedbackInvoker>();
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
 
-            CustomContainer.Register<IFeedBackRecorder>(feedbackRecorder.Object);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
-            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register(feedbackRecorder.Object);
+            CustomContainer.Register(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(popup.Object);
 
             RecorderFeedbackAction recorderFeedbackAction = new RecorderFeedbackAction();
 

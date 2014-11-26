@@ -301,13 +301,12 @@
                                         </Image.Source>
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="PreviewMouseDown">
-                                                <i:InvokeCommandAction Command="{Binding RefreshCommand}"></i:InvokeCommandAction>
+                                                <i:InvokeCommandAction Command="{Binding RefreshCommand}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Image>
                                     <Button Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}"
-                                            Style="{StaticResource AuthButtonStyle}">
-                                    </Button>
+                                            Style="{StaticResource AuthButtonStyle}" />
                                     <Button Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}"
                                             ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipView}"
                                             Style="{StaticResource AuthButtonStyle}"
@@ -346,7 +345,7 @@
                                 <StackPanel Style="{StaticResource UnauthorizedTreeViewStackPanelStyle}">
                                     <Image Style="{StaticResource AuthNoneIconRibbonStyle}" />
                                     <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
-                                               Text="{x:Static help:HelpTextResources.ExplorerSecurityServerUnauthorized}"></TextBlock>
+                                               Text="{x:Static help:HelpTextResources.ExplorerSecurityServerUnauthorized}" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>

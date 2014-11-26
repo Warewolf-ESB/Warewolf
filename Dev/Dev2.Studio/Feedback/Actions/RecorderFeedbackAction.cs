@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -237,7 +236,7 @@ namespace Dev2.Studio.Feedback.Actions
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 StringResources.App_Data_Directory,
                 StringResources.Feedback_Recordings_Directory,
-                Guid.NewGuid().ToString() + ".zip"
+                Guid.NewGuid() + ".zip"
             });
             return path;
         }

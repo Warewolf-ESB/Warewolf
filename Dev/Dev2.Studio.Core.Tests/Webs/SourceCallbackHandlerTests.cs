@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -36,7 +35,7 @@ namespace Dev2.Core.Tests.Webs
         public static void ClassInitialize(TestContext testContext)
         {
             var workspace = new Mock<IWorkspaceItemRepository>();
-            CustomContainer.Register<IWorkspaceItemRepository>(workspace.Object);
+            CustomContainer.Register(workspace.Object);
         }
 
         [TestInitialize]

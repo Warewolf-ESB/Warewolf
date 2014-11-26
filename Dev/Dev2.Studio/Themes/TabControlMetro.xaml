@@ -21,8 +21,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">                               
-                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CommonStates" />
                         </VisualStateManager.VisualStateGroups>
                         <TabPanel x:Name="HeaderPanel"
                                   Grid.Row="0"

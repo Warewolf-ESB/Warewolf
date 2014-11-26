@@ -9,8 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
+using System.Threading;
+using System.Xml.Linq;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Core.Tests.Utils;
@@ -19,21 +26,13 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Xml.Linq;
-using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Environments

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Dev2.MathOperations;
 
 namespace Dev2.Data.MathOperations {

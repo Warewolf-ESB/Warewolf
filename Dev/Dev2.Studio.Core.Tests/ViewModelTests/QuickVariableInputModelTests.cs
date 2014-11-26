@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -29,13 +28,6 @@ namespace Dev2.Core.Tests.ViewModelTests
     [ExcludeFromCodeCoverage]
     public class QuickVariableInputModelTests
     {
-        public QuickVariableInputModelTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
         private TestContext testContextInstance;
 
         /// <summary>

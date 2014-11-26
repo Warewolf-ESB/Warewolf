@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
@@ -27,8 +25,8 @@ namespace Dev2.TaskScheduler.Wrappers
         }
 
         public Dev2TaskService(ITaskServiceConvertorFactory taskServiceConvertorFactory, string targetServer,
-                               string userName = null, string accountDomain = null, string password = null,
-                               bool forceV1 = false)
+            string userName = null, string accountDomain = null, string password = null,
+            bool forceV1 = false)
         {
             _taskServiceConvertorFactory = taskServiceConvertorFactory;
             _taskServiceConvertorFactory.CreateTaskService(targetServer, userName, accountDomain, password, forceV1);

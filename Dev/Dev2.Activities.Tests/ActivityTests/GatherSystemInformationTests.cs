@@ -9,8 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Security.Principal;
+using System.Threading;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Data.Enums;
@@ -18,12 +23,6 @@ using Dev2.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {

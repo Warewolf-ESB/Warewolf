@@ -201,10 +201,10 @@
                             <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value ="true">
-                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"></Setter>
+                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value ="true">
-                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}"></Setter>
+                            <Setter Property="Foreground" Value="{StaticResource LightForegroundBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -225,7 +225,7 @@
 
     <!-- *********************************  TreeView Style  ********************************* -->
     <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
-        <Setter Property="AllowDrop" Value="True"></Setter>
+        <Setter Property="AllowDrop" Value="True" />
         <Setter Property="Background" Value="{StaticResource TreeViewBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource TreeViewBorderBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />

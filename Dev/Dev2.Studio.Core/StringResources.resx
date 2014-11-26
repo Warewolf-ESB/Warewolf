@@ -408,7 +408,6 @@ Sofware development by: www.dev2.co.za
 Sofware development by: www.dev2.co.za
 </value>
   </data>
-  
   <data name="About_Header_Text" xml:space="preserve">
     <value>About</value>
   </data>
@@ -489,7 +488,9 @@ Would you like to start the setup now?</value>
     <value>Workflow not saved...</value>
   </data>
   <data name="DialogBody_ConfirmDelete" xml:space="preserve">
-    <value>Are you sure you wish to delete the {0} {1}?</value>
+    <value>Are you sure you wish to delete the {0} {1}?
+
+Version History will also be deleted.</value>
   </data>
   <data name="DialogBody_ConfirmFolderDelete" xml:space="preserve">
     <value>Are you sure you wish to delete {0} folder and all its contents?</value>

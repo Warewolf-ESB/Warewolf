@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -21,6 +20,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
@@ -34,7 +34,6 @@ using Dev2.Simulation;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming

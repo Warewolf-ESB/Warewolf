@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -151,7 +150,7 @@ namespace ActivityUnitTests.ActivityTests
         {
             var fileNames = new List<string>();
             Guid randomFileName = Guid.NewGuid();
-            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "Dev2.txt"));
+            fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName + "Dev2.txt"));
 
 
             foreach(string fileName in fileNames)

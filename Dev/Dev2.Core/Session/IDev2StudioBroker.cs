@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Data.Translators;
 using Dev2.DataList.Contract.Binary_Objects;

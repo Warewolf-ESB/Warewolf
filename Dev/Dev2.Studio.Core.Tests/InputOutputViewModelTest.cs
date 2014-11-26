@@ -9,11 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Dev2.Common.Interfaces.Data;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -283,7 +281,7 @@ namespace Dev2.Core.Tests
         public void InputOutputMappingViewModel_MapsTo_ChangedToNonEmptyAndRequiredIsFalse_RequireMissingFalse()
         {
             //------------Setup for test--------------------------
-            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name: "testName", value: "testValue", mapsTo: "", defaultValue: "", required: false, recordSetName: "");
+            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel("testName", "testValue", "", "", false, "");
 
             Assert.IsFalse(viewModel.Required);
             Assert.IsFalse(viewModel.RequiredMissing);
@@ -302,7 +300,7 @@ namespace Dev2.Core.Tests
         public void InputOutputMappingViewModel_MapsTo_ChangedToNonEmptyAndRequiredIsTrue_RequireMissingFalse()
         {
             //------------Setup for test--------------------------
-            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name: "testName", value: "testValue", mapsTo: "", defaultValue: "", required: true, recordSetName: "");
+            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel("testName", "testValue", "", "", true, "");
 
             Assert.IsTrue(viewModel.Required);
             Assert.IsFalse(viewModel.RequiredMissing);
@@ -321,7 +319,7 @@ namespace Dev2.Core.Tests
         public void InputOutputMappingViewModel_MapsTo_ChangedToEmptyAndRequiredIsFalse_RequireMissingFalse()
         {
             //------------Setup for test--------------------------
-            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name: "testName", value: "testValue", mapsTo: "newValue", defaultValue: "", required: false, recordSetName: "");
+            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel("testName", "testValue", "newValue", "", false, "");
 
             Assert.IsFalse(viewModel.Required);
             Assert.IsFalse(viewModel.RequiredMissing);
@@ -340,7 +338,7 @@ namespace Dev2.Core.Tests
         public void InputOutputMappingViewModel_MapsTo_ChangedToEmptyAndRequiredIsTrue_RequireMissingTrue()
         {
             //------------Setup for test--------------------------
-            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name: "testName", value: "testValue", mapsTo: "newValue", defaultValue: "", required: true, recordSetName: "");
+            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel("testName", "testValue", "newValue", "", true, "");
 
             Assert.IsTrue(viewModel.Required);
             Assert.IsFalse(viewModel.RequiredMissing);

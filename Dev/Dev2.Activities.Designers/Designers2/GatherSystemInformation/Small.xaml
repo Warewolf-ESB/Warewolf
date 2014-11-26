@@ -94,8 +94,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
 
-                            <Label Content="=">
-                            </Label>
+                            <Label Content="=" />
 
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

@@ -1066,8 +1066,8 @@
                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
                             <TextBox x:Name="TheTextBox"
@@ -1098,7 +1098,7 @@
                                     VerticalAlignment="Center"
                                     IsEnabled="{Binding ElementName=TheTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}"
                                     AutomationProperties.AutomationId="UI_FilterButton_AutoID">
-                                <Image Source="{StaticResource ClearFilter-32}" Height="15" Width="15"></Image>                         
+                                <Image Source="{StaticResource ClearFilter-32}" Height="15" Width="15" />
                             </Button>
                         </Grid>
                     </Border>

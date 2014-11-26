@@ -9,6 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
@@ -33,13 +39,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Diagnostics.CodeAnalysis;
 
 // ReSharper disable UnusedVariable
 // ReSharper disable InconsistentNaming

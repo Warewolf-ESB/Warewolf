@@ -9,7 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading;
+using System.Windows;
+using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.AppResources.Repositories;
@@ -52,16 +59,6 @@ using Dev2.Workspaces;
 using DropNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
-using System.Windows;
-using System.Windows.Forms;
-using Action = System.Action;
-using FileHelper = Dev2.Studio.Core.Helpers.FileHelper;
 
 //using System.Windows.Media.Imaging;
 // ReSharper disable InconsistentNaming
@@ -2002,7 +1999,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
-            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
             var connected1 = new Mock<IEnvironmentModel>();
             var connected2 = new Mock<IEnvironmentModel>();
             var notConnected = new Mock<IEnvironmentModel>();
@@ -2048,7 +2045,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(repo => repo.All()).Returns(lst);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
-            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
@@ -2080,7 +2077,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
-            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
             var connected1 = new Mock<IEnvironmentModel>();
             var connected2 = new Mock<IEnvironmentModel>();
             var notConnected = new Mock<IEnvironmentModel>();
@@ -2116,7 +2113,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
-            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
             var connected1 = new Mock<IEnvironmentModel>();
             var connected2 = new Mock<IEnvironmentModel>();
             var notConnected = new Mock<IEnvironmentModel>();
@@ -2151,7 +2148,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
-            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            asyncWorker.Setup(w => w.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
             var connected1 = new Mock<IEnvironmentModel>();
             var connected2 = new Mock<IEnvironmentModel>();
             var notConnected = new Mock<IEnvironmentModel>();

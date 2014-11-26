@@ -9,11 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Network.Execution;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Unlimited.UnitTest.Framework
 {
@@ -39,7 +38,7 @@ namespace Unlimited.UnitTest.Framework
             ExecutionStatusCallbackDispatcher _executionStatusCallbackDispatcher = new ExecutionStatusCallbackDispatcher();
 
             Guid guid = Guid.NewGuid();
-            Action<ExecutionStatusCallbackMessage> callback = new Action<ExecutionStatusCallbackMessage>(m => { });
+            Action<ExecutionStatusCallbackMessage> callback = m => { };
             
             bool expected = true;
             bool actual = _executionStatusCallbackDispatcher.Add(guid, callback);
@@ -53,7 +52,7 @@ namespace Unlimited.UnitTest.Framework
             ExecutionStatusCallbackDispatcher _executionStatusCallbackDispatcher = new ExecutionStatusCallbackDispatcher();
 
             Guid guid = Guid.NewGuid();
-            Action<ExecutionStatusCallbackMessage> callback = new Action<ExecutionStatusCallbackMessage>(m => { });
+            Action<ExecutionStatusCallbackMessage> callback = m => { };
             _executionStatusCallbackDispatcher.Add(guid, callback);
 
             bool expected = false;
@@ -81,7 +80,7 @@ namespace Unlimited.UnitTest.Framework
             ExecutionStatusCallbackDispatcher _executionStatusCallbackDispatcher = new ExecutionStatusCallbackDispatcher();
 
             Guid guid = Guid.NewGuid();
-            Action<ExecutionStatusCallbackMessage> callback = new Action<ExecutionStatusCallbackMessage>(m => { });
+            Action<ExecutionStatusCallbackMessage> callback = m => { };
             _executionStatusCallbackDispatcher.Add(guid, callback);
 
             bool expected = true;
@@ -99,7 +98,7 @@ namespace Unlimited.UnitTest.Framework
             bool actual = false;
 
             Guid guid = Guid.NewGuid();
-            Action<ExecutionStatusCallbackMessage> callback = new Action<ExecutionStatusCallbackMessage>(m => { actual = true; });
+            Action<ExecutionStatusCallbackMessage> callback = m => { actual = true; };
             ExecutionStatusCallbackMessage message = new ExecutionStatusCallbackMessage(Guid.NewGuid(), ExecutionStatusCallbackMessageType.Unknown);
 
             _executionStatusCallbackDispatcher.Add(guid, callback);

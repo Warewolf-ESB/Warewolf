@@ -9,11 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {

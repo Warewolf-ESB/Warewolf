@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -135,7 +134,7 @@ namespace Dev2.Core.Tests.Feedback
 
         private static string GetUniqueOutputPath(string extension)
         {
-            return Path.Combine(_tempTestFolder, Guid.NewGuid().ToString() + extension);
+            return Path.Combine(_tempTestFolder, Guid.NewGuid() + extension);
         }
 
         private static bool CheckIfProcessIsRunning()

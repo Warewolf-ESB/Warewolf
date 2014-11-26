@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -154,8 +153,8 @@ namespace Dev2.Tests.MathOperationTest
         {
             IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
             string functionName = "TestFunction";
-            List<string> arguments = new List<string>() { "args" };
-            List<string> argumentDescriptions = new List<string>() { "the first argument" };
+            List<string> arguments = new List<string> { "args" };
+            List<string> argumentDescriptions = new List<string> { "the first argument" };
             string description = "Test Description";
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
@@ -204,8 +203,8 @@ namespace Dev2.Tests.MathOperationTest
         {
             IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
             string functionName = "TestFunction";
-            List<string> arguments = new List<string>() { "args" };
-            List<string> argumentDescriptions = new List<string>() { "the first argument" };
+            List<string> arguments = new List<string> { "args" };
+            List<string> argumentDescriptions = new List<string> { "the first argument" };
             string description = "Test Description";
 
             string function2Name = "TestFunction2";
@@ -216,7 +215,7 @@ namespace Dev2.Tests.MathOperationTest
 
             IFunction myfirstFunction = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             IFunction mySecondFunction = MathOpsFactory.CreateFunction(function2Name, arguments, argumentDescriptions, description);
-            ICollection<IFunction> functionList = new List<IFunction>() { myfirstFunction, mySecondFunction };
+            ICollection<IFunction> functionList = new List<IFunction> { myfirstFunction, mySecondFunction };
 
             functionRepo.Save(functionList);
 
@@ -273,8 +272,8 @@ namespace Dev2.Tests.MathOperationTest
         {
             IFrameworkRepository<IFunction> functionRepo = MathOpsFactory.FunctionRepository();
             string functionName = "TestFunction";
-            List<string> arguments = new List<string>() { "args" };
-            List<string> argumentDescriptions = new List<string>() { "the first argument" };
+            List<string> arguments = new List<string> { "args" };
+            List<string> argumentDescriptions = new List<string> { "the first argument" };
             string description = "Test Description";
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();

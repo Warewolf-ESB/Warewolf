@@ -14,9 +14,9 @@
             <converters:SimpleEnumToBoolConverter x:Key="EnumBooleanConverter" />
         </Grid.Resources>
         <Grid.RowDefinitions>
-                <RowDefinition MaxHeight="275"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
+                <RowDefinition MaxHeight="275" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <StackPanel CanHorizontallyScroll="True" CanVerticallyScroll="True" Grid.Row="0">
                 <TextBlock Margin="30,20,0,0" Style="{StaticResource Dev2HeadingTextBlockStyle}">Server System Logs</TextBlock>
@@ -29,12 +29,12 @@
                 <RadioButton Margin="50,0,0,-5" GroupName="Server_Settings" IsChecked="{Binding ServerLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">Trace: Log detailed system information. Includes events from all the levels above</RadioButton>
                 <StackPanel Margin="50,0,0,-3" Orientation="Horizontal">
                     <Label>Max Log File Size:</Label>
-                    <TextBox Width="50" MaxWidth="50" Text="{Binding ServerLogMaxSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="50" MaxWidth="50" Text="{Binding ServerLogMaxSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Label>MB</Label>
                 </StackPanel>
                 <TextBlock Margin="50,0,0,-3"><Hyperlink Command="{Binding Path=GetServerLogFileCommand}">
-                                    <Run Text="Server Log File"></Run>
-                                </Hyperlink></TextBlock>
+                                    <Run Text="Server Log File" />
+                </Hyperlink></TextBlock>
             </StackPanel>
             </ScrollViewer>
         <ScrollViewer IsEnabled="{Binding CanEditStudioLogSettings, Mode=OneWay}" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
@@ -49,12 +49,12 @@
                 <RadioButton Margin="50,0,0,-5" GroupName="Studio_Settings" IsChecked="{Binding StudioLogLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter={x:Static logging:LogLevel.TRACE}}">Trace: Log detailed system information. Includes events from all the levels above</RadioButton>
                 <StackPanel Margin="50,0,0,-3" Orientation="Horizontal">
                     <Label>Max Log File Size:</Label>
-                    <TextBox Width="50" MaxWidth="50" Text="{Binding StudioLogMaxSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Width="50" MaxWidth="50" Text="{Binding StudioLogMaxSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Label>MB</Label>
                 </StackPanel>
                 <TextBlock Margin="50,0,0,-3"><Hyperlink Command="{Binding Path=GetStudioLogFileCommand}">
-                                    <Run Text="Studio Log File"></Run>
-                                </Hyperlink></TextBlock>
+                                    <Run Text="Studio Log File" />
+                </Hyperlink></TextBlock>
             </StackPanel>
         </ScrollViewer>
     </Grid>
