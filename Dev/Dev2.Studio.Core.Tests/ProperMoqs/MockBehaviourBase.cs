@@ -9,11 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
 using Dev2.Core.Tests.Enums;
 
@@ -35,10 +31,8 @@ namespace Dev2.Core.Tests.ProperMoqs {
                     PropertyInfo myPropertyInfo = myType.GetProperty(name);
                     return myPropertyInfo.GetValue(this, null);
                 }
-                else {
-                    MethodInfo methodInfo = myType.GetMethod(name);
-                    return methodInfo.Name;
-                }
+                MethodInfo methodInfo = myType.GetMethod(name);
+                return methodInfo.Name;
             }
             set {
                 Type myType = this.GetType();

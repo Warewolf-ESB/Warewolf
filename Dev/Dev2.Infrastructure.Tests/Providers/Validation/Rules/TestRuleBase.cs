@@ -9,10 +9,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 
 namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules

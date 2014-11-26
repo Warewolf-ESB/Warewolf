@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -354,7 +353,7 @@ namespace Dev2.Tests.MathOperationTest
             List<int> values = new List<int> { 10, 20, 30 };
             string result = string.Empty;
             string error = string.Empty;
-            bool hasSucceeded = _eval.TryEvaluateFunction<int>(values, expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(values, expression, out result, out error);
 
             if(hasSucceeded)
             {
@@ -377,7 +376,7 @@ namespace Dev2.Tests.MathOperationTest
             List<int> values = new List<int> { 10, 20, 30 };
             string result = string.Empty;
             string error = string.Empty;
-            bool hasSucceeded = _eval.TryEvaluateFunction<int>(values, expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(values, expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error) && !hasSucceeded);
 
@@ -393,7 +392,7 @@ namespace Dev2.Tests.MathOperationTest
             List<int> values = new List<int> { 10, 20, 30 };
             string result = string.Empty;
             string error = string.Empty;
-            bool hasSucceeded = _eval.TryEvaluateFunction<int>(values, expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(values, expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error) && !hasSucceeded);
 
@@ -409,7 +408,7 @@ namespace Dev2.Tests.MathOperationTest
             List<int> values = new List<int>();
             string result = string.Empty;
             string error = string.Empty;
-            bool hasSucceeded = _eval.TryEvaluateFunction<int>(values, expression, out result, out error);
+            bool hasSucceeded = _eval.TryEvaluateFunction(values, expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error) & !hasSucceeded);
 

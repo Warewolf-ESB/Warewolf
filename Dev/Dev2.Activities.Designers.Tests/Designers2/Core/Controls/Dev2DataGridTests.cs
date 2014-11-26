@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Activities.Presentation.Model;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
@@ -118,9 +117,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
 
             //------------Assert Results-------------------------
             Assert.AreEqual(3, dataGrid.Items.Count);
-            VerifyItem(dataGrid.Items[0], oldIndexNumber: 2, newIndexNumber: 1);
-            VerifyItem(dataGrid.Items[1], oldIndexNumber: 3, newIndexNumber: 2, isBlank: true);
-            VerifyItem(dataGrid.Items[2], oldIndexNumber: 4, newIndexNumber: 3, isBlank: true);
+            VerifyItem(dataGrid.Items[0], 2, 1);
+            VerifyItem(dataGrid.Items[1], 3, 2, true);
+            VerifyItem(dataGrid.Items[2], 4, 3, true);
         }
 
 
@@ -179,9 +178,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             Assert.AreSame(oldItem3, dataGrid.Items[1]);
             Assert.AreSame(oldItem4, dataGrid.Items[2]);
 
-            VerifyItem(dataGrid.Items[0], oldIndexNumber: 1, newIndexNumber: 1);
-            VerifyItem(dataGrid.Items[1], oldIndexNumber: 3, newIndexNumber: 2);
-            VerifyItem(dataGrid.Items[2], oldIndexNumber: 4, newIndexNumber: 3);
+            VerifyItem(dataGrid.Items[0], 1, 1);
+            VerifyItem(dataGrid.Items[1], 3, 2);
+            VerifyItem(dataGrid.Items[2], 4, 3);
         }
 
         [TestMethod]
@@ -225,7 +224,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             Assert.AreSame(oldItem2, dataGrid.Items[1]);
             Assert.AreSame(oldItem3, dataGrid.Items[2]);
 
-            VerifyItem(dataGrid.Items[3], oldIndexNumber: 4, newIndexNumber: 4, isBlank: true);
+            VerifyItem(dataGrid.Items[3], 4, 4, true);
         }
 
         [TestMethod]
@@ -251,10 +250,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             Assert.AreSame(oldItem2, dataGrid.Items[2]);
             Assert.AreSame(oldItem3, dataGrid.Items[3]);
 
-            VerifyItem(dataGrid.Items[0], oldIndexNumber: 1, newIndexNumber: 1);
-            VerifyItem(dataGrid.Items[1], oldIndexNumber: 2, newIndexNumber: 2, isBlank: true);
-            VerifyItem(dataGrid.Items[2], oldIndexNumber: 2, newIndexNumber: 3);
-            VerifyItem(dataGrid.Items[3], oldIndexNumber: 3, newIndexNumber: 4);
+            VerifyItem(dataGrid.Items[0], 1, 1);
+            VerifyItem(dataGrid.Items[1], 2, 2, true);
+            VerifyItem(dataGrid.Items[2], 2, 3);
+            VerifyItem(dataGrid.Items[3], 3, 4);
 
             Assert.AreEqual(InsertIndex, dataGrid.SelectedIndex);
         }

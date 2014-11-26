@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -20,7 +18,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Dev2.TaskScheduler.Wrappers")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
