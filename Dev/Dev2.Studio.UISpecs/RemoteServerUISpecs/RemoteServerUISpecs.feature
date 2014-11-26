@@ -5,8 +5,8 @@
 
 
 Background: 
-      Given I click "EXPLORERFILTERCLEARBUTTON"
-	  And I click "EXPLORER,UI_localhost_AutoID"
+	  Given I click "EXPLORERCONNECTCONTROL"
+	  Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	  When I click "RIBBONSETTINGS"   
 	  And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
 	  And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
@@ -20,7 +20,8 @@ Background:
 Scenario: Testing Remote Server Connection Creating Remote Workflow and Executing
 	   Given I have Warewolf running
 	   And all tabs are closed
-	   Given I click "EXPLORER,UI_localhost_AutoID"
+	   Given I click "EXPLORERCONNECTCONTROL"
+	   Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
        Given I create a new remote connection "Test" as
           | Address               | AuthType | UserName | Password |
           | http://localhost:3142 | Public   |          |          |

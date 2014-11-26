@@ -7,7 +7,8 @@
 Scenario: Correcting errors on sql bulk insert clicking Done shows small view (using ids)
 	Given I have Warewolf running
 	And all tabs are closed	
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	Given I double click "TOOLBOX,PART_SearchBox"
     Given I send "{Delete}" to ""
@@ -26,6 +27,8 @@ Scenario: Correcting errors on sql bulk insert clicking Done shows small view (u
 	And I send "testingDBSrc{ENTER}" to ""
 	Given I click point "148,75" on "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner)"
 	And I send "dbo.City{ENTER}" to ""
+	#This database happens to have alot of mappings to load
+	And I wait for "10" seconds
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner),DoneButton"
 	Given "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner),SmallViewContent,UI__Database_AutoID" is visible within "5" seconds
 	

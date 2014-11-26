@@ -7,7 +7,8 @@
 Scenario: DataMerge Large View Invalid Variables Expected Error On done Button
     Given I have Warewolf running
 	And all tabs are closed	
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging DataMerge Tool From Tool Box
 	Given I send "Data" to "TOOLBOX,PART_SearchBox"

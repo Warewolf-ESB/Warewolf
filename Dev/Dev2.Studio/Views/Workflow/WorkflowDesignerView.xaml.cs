@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Reactive;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Interfaces;
@@ -33,17 +32,9 @@ namespace Dev2.Studio.Views.Workflow
             PreviewDragOver += DropPointOnDragEnter;
             PreviewMouseDown += WorkflowDesignerView_PreviewMouseDown;
             _dragDropHelpers = new DragDropHelpers(this);
-//            var pattern = Observable.FromEventPattern<KeyEventArgs>(this,"KeyUp");
-//            pattern.Throttle(TimeSpan.FromMilliseconds(50000))
-//                .ObserveOn(SynchronizationContext.Current);
-//
-//            pattern.Subscribe(PerformOnDispatcher);
+
         }
 
-        void PerformOnDispatcher(EventPattern<KeyEventArgs> eventPattern)
-        {
-            //Dispatcher.BeginInvoke(DispatcherPriority.Background,new Action(()=>PerfromAction(eventPattern.EventArgs)));
-        }
 
         void WorkflowDesignerView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -65,24 +56,7 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        void UIElement_OnKeyUp(object sender, KeyEventArgs e)
-        {
-            //PerfromAction(e);
-        }
-
-        void PerfromAction(KeyEventArgs e)
-        {
-            
-            if(e.Key == Key.Back || e.Key == Key.Delete || e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.PageDown || e.Key == Key.PageUp || e.Key==Key.Left || e.Key==Key.Right)
-            {
-                return;
-            }
-            var workflowDesignerViewModel = DataContext as WorkflowDesignerViewModel;
-            if (workflowDesignerViewModel != null)
-            {
-                workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-            }
-        }
+       
     }
 
     public interface IWorkflowDesignerView
