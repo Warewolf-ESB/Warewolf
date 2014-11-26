@@ -33,6 +33,7 @@
 /Dev/Dev2.Server/bin/Debug/*.exe
 /Dev/Dev2.Server/bin/Debug/*.xml
 !/Dev/Dev2.Server/bin/Debug/LifecycleConfig.xml
+!/Dev/Dev2.Server/Warewolf Server.exe.secureconfig
 /Dev/Dev2.Server/bin/Debug/*.config
 /Dev/Dev2.Server/bin/Debug/*.manifest
 /Dev/Dev2.Server/bin/Debug/*.log
