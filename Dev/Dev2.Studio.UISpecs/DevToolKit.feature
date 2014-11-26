@@ -19,7 +19,8 @@
 #
 #Scenario: TshepoPermissionsExample
 #	  # Given all tabs are closed
-#   #    And I click "EXPLORER,UI_localhost_AutoID" 
+#   #    Given I click "EXPLORERCONNECTCONTROL"
+#   #    Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 #   #    And I click "RIBBONSETTINGS"   
 #   #    And I click "SECURITYPUBLICADMINISTRATOR"  
 #   #    And "SECURITYPUBLICVIEW" is unchecked
@@ -118,7 +119,8 @@
 #   #    Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_SWR41"
 #   #    Then "DEPLOYSOURCE,SWR41*,UI_Unautherized_DeployFrom_AutoID" is visible						  
 #   #    #Set server permission Deploy From
-#   #    And I click "EXPLORER,UI_localhost_AutoID" 
+#	#    Given I click "EXPLORERCONNECTCONTROL"
+#	#    Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 #   #    And I click "RIBBONSETTINGS"   
 #   #    And I click "SECURITYPUBLICADMINISTRATOR"  
 #   #    And "SECURITYPUBLICVIEW" is unchecked

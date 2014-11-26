@@ -7,8 +7,8 @@
 Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDeleteANDConfirmReadOnlyANDHide
 	Given I have Warewolf running
 	And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
 	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length1(RecordsLengthDesigner)" is visible within "2" seconds
@@ -71,8 +71,8 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Expected
 	Given I have Warewolf running
 	And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	#Saving a workflow 1
 	And I click "RIBBONSAVE"

@@ -31,7 +31,6 @@ namespace Dev2.Core.Tests
             string description = string.Empty;
             string header = string.Empty;
             MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
-            MessageBoxImage imageType = MessageBoxImage.Error;
 
             var popupController = new PopupController
                 {
@@ -40,7 +39,6 @@ namespace Dev2.Core.Tests
                             description = desc;
                             header = hdr;
                             buttons = btn;
-                            imageType = img;
                             popupWasCalled = true;
                             return MessageBoxResult.OK;
                         }
@@ -54,7 +52,6 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(MessageBoxButton.YesNo, buttons);
             Assert.AreEqual("Are you sure?", header);
             Assert.AreEqual("Are you sure you want to delete " + NameOfItemBeingDeleted + "?", description);
-            Assert.AreEqual(MessageBoxImage.Information, imageType);
         }
 
         [TestMethod]
