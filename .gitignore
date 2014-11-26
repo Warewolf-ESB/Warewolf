@@ -8,6 +8,7 @@
 *.uws
 *.suo
 *.user
+*.ide
 
 /Dev/packages
 /Dev/TestResults
@@ -228,4 +229,3 @@
 /Dev/Dev2.Server/bin/Debug/Resources/Sample Project/WarewolfShoppingCartDB.xml
 /Dev/Dev2.Server/bin/Debug/Resources/SqlServers/DemoDB.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Hello World.xml
-/Dev/Dev2.AcceptanceTesting.sln.ide
