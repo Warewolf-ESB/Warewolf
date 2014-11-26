@@ -1,19 +1,47 @@
 ![warewolf logo](http://www.warewolf.io/images/warewolf-logo.png)
 
-Warewolf ESB
-============
+**What is Warewolf ESB all about?**
 
-Warewolf ESB is the easiest Service Bus available and can be deployed by anyone, into any system, anywhere, anytime… and it’s free. You are at the main repository for Warewolf Easy Service Bus (ESB). The repository includes the code-base for the Warewolf Studio and Warewolf Server. 
+Tired of complicated ESBs? Join the pack! 
 
-Go to the community site: http://community.warewolf.io for :
+We’re making integration into a simple, seamless process. With the easiest service bus available, you can now design, orchestrate and implement communication between software applications. Easily manage messaging, routing, and service co-ordination in a SOA framework. 
+
+
+
+**Why Warewolf ESB?**
+
+1.	Easiest service bus to learn and use
+2.	Simple, secure business and systems integration
+3.	Easy maintenance and management
+
+
+
+**Who can join the pack?**
+
+Everyone! But it really helps if you’re a C# developer, or a WPF pack leader.
+
+
+
+**Why should you get your paws dirty?**
+
+Pounce on the opportunity to put your name on it - those who make it could be famous!
+
+
+
+**Need more info?**
+
+Use the [Community](http://community.warewolf.io) site for: 
 * [Technical Documentation](http://community.warewolf.io/list/35540-knowledge-base/?category=13827)
 * [Getting started quickly](http://community.warewolf.io/topic/517526-getting-started-how-do-i-build-warewolf-from-source/) - Branching, building etc.
-* [Contributing](http://community.warewolf.io/list/35540-knowledge-base/?category=13910)
+* [Contributing, Pull Requests and more](http://community.warewolf.io/list/35540-knowledge-base/?category=13910)
 * [Roadmap](http://community.warewolf.io/topic/517581-roadmap/)
 * [Help, Support and Info](http://community.warewolf.io)
 
-You can download the latest compiled release from http://warewolf.io
+
 
 Release notes are available at http://warewolf.io/release-notes.php
 
-**LICENCE:** Licensed under GNU Affero General Public License 3.0 or later
+You can download the latest compiled release from http://warewolf.io
+
+
+**LICENCE:** Licensed under [GNU Affero General Public License 3.0](http://www.gnu.org/licenses/agpl-3.0.html) or later
