@@ -22,14 +22,14 @@ Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabl
 	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
 	   Given I create a new remote connection as "Deployrem" in Deploy Destination 
        | Address                  | AuthType | UserName      | Password |
-       | http://TST7X64W:3142/dsf | User     | Administrator |          |
+       | http://TST-CI-REMOTE:3140/dsf | User     | Administrator |          |
 	   ##Checking Deploy Button Enabled When Resource Selected in Source Server
 	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
        Given "DEPLOYBUTTON" is enabled
        ## Given "DEPLOYERROR" is not visible
 	  ##Cleanup (Deleting the created server)
 	   Given I click "EXPLORER,UI_localhost_AutoID" 
-	   Given I click "EXPLORER,UI_Deployrem (http://tst7x64w:3142/)_AutoID" 
+	   Given I click "EXPLORER,UI_Deployrem (http://TST-CI-REMOTE:3140/)_AutoID" 
 	   Given I click "EXPLORERCONNECTBUTTON"
 	   Given I click "EXPLORER,UI_SourceServerRefreshbtn_AutoID"
        Given I send "Deployrem" to "EXPLORERFILTER"

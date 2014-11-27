@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,6 +26,19 @@ namespace Dev2.Common
          static GlobalConstants()
          {
              SystemEvents.TimeChanged += (sender, args) =>
+             {
+                 // ReSharper disable once ConvertToLambdaExpression
+                 CultureInfo.CurrentCulture.ClearCachedData();
+             };
+
+             /**********************************************************
+              * Hear ye Hear ye
+              * The event below allows warewolf to react to changes in regional settings by clearing the Culture cache.
+              * The method below is not tested using integration tests because it is difficult to change regional settings without restarting explorer.exe
+              * If a good way is found to do this, then please add integration tests. 
+              * Dont delete this method
+              */
+             SystemEvents.UserPreferenceChanged += (sender, args) =>
              {
                  // ReSharper disable once ConvertToLambdaExpression
                  CultureInfo.CurrentCulture.ClearCachedData();

@@ -24,7 +24,7 @@ namespace System.Windows.Controls
     /// utilities in a small enough number to not warrant a dedicated extension
     /// methods class.
     /// </summary>
-    internal static partial class Extensions
+    internal static class Extensions
     {
         /// <summary>
         /// Inverts a Matrix. The Invert functionality on the Matrix type is 

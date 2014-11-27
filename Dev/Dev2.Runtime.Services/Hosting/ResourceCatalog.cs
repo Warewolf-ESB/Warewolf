@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -1531,7 +1530,7 @@ namespace Dev2.Runtime.Hosting
 
         }
 
-        public List<Guid> GetDependants(Guid workspaceID, Guid resourceId)
+        public List<Guid> GetDependants(Guid workspaceID, Guid? resourceId)
         {
             // ReSharper disable LocalizableElement
             if(resourceId == null) throw new ArgumentNullException("resourceId", "No resource name given.");
@@ -1553,7 +1552,7 @@ namespace Dev2.Runtime.Hosting
             return dependants.ToList();
         }
 
-        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid resourceID, string newName)
+        public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName)
         {
             if(resourceID == null)
             {
@@ -1574,7 +1573,7 @@ namespace Dev2.Runtime.Hosting
                         Message = string.Format("{0} '{1}' to '{2}'", "Failed to Find Resource", resourceID, newName)
                     };
                 }
-                _versioningRepository.StoreVersion(GetResource(Guid.Empty, resourceID), "unknown", "Rename", workspaceID);
+                _versioningRepository.StoreVersion(GetResource(Guid.Empty, resourceID.ToString()), "unknown", "Rename", workspaceID);
                 //rename and save to workspace
                 var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName);
                 if(renameResult.Status != ExecStatus.Success)

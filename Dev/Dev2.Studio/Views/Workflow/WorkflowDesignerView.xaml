@@ -10,8 +10,8 @@
     <Grid cal:Bind.Model="{Binding .}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0"
                                TextWrapping="Wrap"
@@ -20,13 +20,12 @@
                                HorizontalAlignment="Center">
                                 <Hyperlink Command="{Binding Path=OpenWorkflowLinkCommand}"
                                            CommandParameter="{Binding}">
-                                    <Run Text="{Binding Path=DisplayWorkflowLink,Mode=OneWay}"></Run>
+                                    <Run Text="{Binding Path=DisplayWorkflowLink,Mode=OneWay}" />
                                 </Hyperlink>
                     </TextBlock>
                     <ContentControl Grid.Row="1"
                                     Content="{Binding Path=DesignerView}"
                                     AutomationProperties.AutomationId="{Binding Path=DesignerText}"
-                                    KeyUp="UIElement_OnKeyUp" 
                                     cal:Message.Attach="[Event LostKeyboardFocus] = [Action DoWorkspaceSave]">
                         <i:Interaction.Behaviors>
                             <local:WorkflowDesignerLinkBehaviours CollapseAllCommand="{Binding CollapseAllCommand}"

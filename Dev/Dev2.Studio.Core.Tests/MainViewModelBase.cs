@@ -9,7 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Security;
@@ -35,13 +41,6 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Windows;
 
 namespace Dev2.Core.Tests
 {
@@ -318,10 +317,10 @@ namespace Dev2.Core.Tests
 
         protected static void SetupDefaultMef(Mock<IFeedbackInvoker> feedbackInvoker)
         {
-            CustomContainer.Register<IPopupController>(new Mock<IPopupController>().Object);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
+            CustomContainer.Register(new Mock<IPopupController>().Object);
+            CustomContainer.Register(feedbackInvoker.Object);
             CustomContainer.Register<IFeedBackRecorder>(new FeedbackRecorder());
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
         }
 
         #endregion Methods used by tests

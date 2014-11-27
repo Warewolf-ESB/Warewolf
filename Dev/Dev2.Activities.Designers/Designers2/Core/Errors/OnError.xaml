@@ -22,7 +22,7 @@
         <GroupBox.Header>
             <TextBlock Text="On Error"
                        Margin="1"
-                       Padding="1"></TextBlock>
+                       Padding="1" />
         </GroupBox.Header>
 
         <Grid>

@@ -9,18 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -197,7 +196,6 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
-        [Ignore] // See Bug 12497
         public void Scalar_To_Base64_Back_To_Text_Expect_Original()
         {
 

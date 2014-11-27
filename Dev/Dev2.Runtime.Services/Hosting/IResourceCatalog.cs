@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -120,13 +119,13 @@ namespace Dev2.Runtime.Hosting
 
         List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources);
 
-        List<Guid> GetDependants(Guid workspaceID, Guid resourceId);
+        List<Guid> GetDependants(Guid workspaceID, Guid? resourceId);
 
         List<ResourceForTree> GetDependentsAsResourceForTrees(Guid workspaceID, Guid resourceId);
 
         IList<IResource> GetResourceList(Guid workspaceId);
 
-        ResourceCatalogResult RenameResource(Guid workspaceID, Guid resourceID, string newName);
+        ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName);
 
         ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory);
 

@@ -9,9 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
 using Caliburn.Micro;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Parsers;
@@ -28,10 +31,6 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Collections.Concurrent;
 
 namespace Dev2.Core.Tests.IntellisenseProvider
 {

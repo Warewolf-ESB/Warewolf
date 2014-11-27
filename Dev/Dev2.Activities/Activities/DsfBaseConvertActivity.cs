@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
@@ -85,7 +84,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary>       
+        // ReSharper disable MethodTooLong
+        // ReSharper disable FunctionComplexityOverflow
         protected override void OnExecute(NativeActivityContext context)
+            // ReSharper restore MethodTooLong
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
@@ -186,6 +188,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                             }
                         }
+
+                        if (toUpsert != null && toUpsert.HasLiveFlushing)
+                        {
+                            try
+                            {
+                                toUpsert.FlushIterationFrame();
+                            }
+                            catch (Exception e)
+                            {
+                                Dev2Logger.Log.Error("DSFBaseConvert", e);
+                                allErrors.AddError(e.Message);
+                            }
+                        }
+                        else
+                        {
+                            compiler.Upsert(executionId, toUpsert, out errors);
+                            allErrors.MergeErrors(errors);
+                        }
+
+                        if (!allErrors.HasErrors() && toUpsert != null)
+                        {
+                            var outIndex = 1;
+                            foreach (var debugOutputTo in toUpsert.DebugOutputs)
+                            {
+                                var debugItem = new DebugItem();
+                                AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                                AddDebugItem(new DebugItemVariableParams(debugOutputTo), debugItem);
+                                _debugOutputs.Add(debugItem);
+                                outIndex++;
+                            }
+                        }
+                        toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+                        toUpsert.IsDebug = dataObject.IsDebugMode();
                     }
                     catch(Exception e)
                     {
@@ -202,36 +237,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                if(toUpsert != null && toUpsert.HasLiveFlushing)
-                {
-                    try
-                    {
-                        toUpsert.FlushIterationFrame();
-                    }
-                    catch(Exception e)
-                    {
-                        Dev2Logger.Log.Error("DSFBaseConvert", e);
-                        allErrors.AddError(e.Message);
-                    }
-                }
-                else
-                {
-                    compiler.Upsert(executionId, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
-                }
-
-                if(!allErrors.HasErrors() && toUpsert != null)
-                {
-                    var outIndex = 1;
-                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
-                    {
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugItemVariableParams(debugOutputTo), debugItem);
-                        _debugOutputs.Add(debugItem);
-                        outIndex++;
-                    }
-                }
+       
             }
             catch(Exception e)
             {

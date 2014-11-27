@@ -7,8 +7,8 @@
 Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 	Given I have Warewolf running
 	And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	##Searching Workflow with the name "InnerWF" in explorer search
 	And I send "InnerWF" to "EXPLORERFILTER"
 	##Opening WF from explorer
@@ -66,9 +66,8 @@ Scenario: DeleteFirstDatagridRow_Expected_RowIsNotDeleted12
 Scenario: Drag resource multiple times from explorer and expected mappings are not changing
 	Given I have Warewolf running
 	And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And "EXPLORER,UI_localhost_AutoID" is visible within "5" seconds
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click new "Workflow"
 	And I send "Utility - Assign" to "EXPLORERFILTER"
 	Given I drag "EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID" onto "WORKSURFACE,StartSymbol"
@@ -93,8 +92,8 @@ Scenario: Drag resource multiple times from explorer and expected mappings are n
 #	Given I have Warewolf running
 #	And all tabs are closed	
 #	And restarted the Studio and Server
-#	And "EXPLORER,UI_localhost_AutoID" is visible within "20" seconds
-#	And I click "EXPLORER,UI_localhost_AutoID"
+#	Given I click "EXPLORERCONNECTCONTROL"
+#	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 #	And I click new "Workflow"
 #	#Opening StartPage
 #	And I double click point "968,51" on "MouseOverBorder"

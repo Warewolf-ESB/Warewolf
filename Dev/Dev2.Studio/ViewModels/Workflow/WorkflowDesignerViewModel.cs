@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
@@ -235,7 +234,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public override bool CanSave { get { return ResourceModel.IsAuthorized(AuthorizationContext.Contribute); } }
 
-        protected virtual bool IsDesignerViewVisible { get { return DesignerView.IsVisible; } }
+        protected virtual bool IsDesignerViewVisible { get { return DesignerView != null && DesignerView.IsVisible; } }
 
         public override string DisplayName
         {
@@ -330,7 +329,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (_wd != null)
                 {
-                    return _wd.Context.Items.GetValue<Selection>().SelectedObjects.FirstOrDefault();
+                    if(_wd.Context != null)
+                    {
+                        return _wd.Context.Items.GetValue<Selection>().SelectedObjects.FirstOrDefault();
+                    }
                 }
                 return null;
             }
@@ -350,8 +352,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-
-                return _wd.View;
+                if(_wd != null)
+                {
+                    return _wd.View;
+                }
+                return null;
             }
         }
 
@@ -1433,34 +1438,52 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SelectedItemChanged(Selection item)
         {
-            ContextItemManager contextItemManager = _wd.Context.Items;
-            var selection = contextItemManager.GetValue<Selection>();
-            if (selection.SelectedObjects.Count() > 1)
+            if(_wd != null)
             {
-                DeselectFlowchart();
+                if(_wd.Context != null)
+                {
+                    ContextItemManager contextItemManager = _wd.Context.Items;
+                    var selection = contextItemManager.GetValue<Selection>();
+                    if (selection.SelectedObjects.Count() > 1)
+                    {
+                        DeselectFlowchart();
+                    }
+                }
             }
         }
 
         void DeselectFlowchart()
         {
-            EditingContext editingContext = _wd.Context;
-            var selection = editingContext.Items.GetValue<Selection>();
-            foreach (var item in selection.SelectedObjects.Where(item => item.ItemType == typeof(Flowchart)))
+            if(_wd != null)
             {
-                Selection.Toggle(editingContext, item);
-                break;
+                if(_wd.Context != null)
+                {
+                    EditingContext editingContext = _wd.Context;
+                    var selection = editingContext.Items.GetValue<Selection>();
+                    foreach (var item in selection.SelectedObjects.Where(item => item.ItemType == typeof(Flowchart)))
+                    {
+                        Selection.Toggle(editingContext, item);
+                        break;
+                    }
+                }
             }
         }
 
         public void FocusActivityBuilder()
         {
-            var findActivityBuilderModel = _wd.Context.Services.GetService<ModelService>();
-            if (findActivityBuilderModel != null)
+            if(_wd != null)
             {
-                var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
-                if (activityBuilderModel.Count > 0)
+                if(_wd.Context != null)
                 {
-                    activityBuilderModel[0].Focus();
+                    var findActivityBuilderModel = _wd.Context.Services.GetService<ModelService>();
+                    if (findActivityBuilderModel != null)
+                    {
+                        var activityBuilderModel = findActivityBuilderModel.Find(findActivityBuilderModel.Root, typeof(ActivityBuilder)).ToList();
+                        if (activityBuilderModel.Count > 0)
+                        {
+                            activityBuilderModel[0].Focus();
+                        }
+                    }
                 }
             }
         }
@@ -1541,7 +1564,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     BindToModel();
                     ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
                     _workspaceSave = true;
-
+                    
                 });
             }
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
@@ -1982,7 +2005,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (e.Command == ApplicationCommands.Delete)
             {
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
-                _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                if(_wd != null)
+                {
+                    if(_wd.View != null)
+                    {
+                        _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                    }
+                }
             }
             if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
             {
@@ -2002,7 +2031,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         #endregion
 
         #region OnDispose
-
         protected override void OnDispose()
         {
             if (_wd != null)
@@ -2076,6 +2104,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             base.OnDispose();
             GC.SuppressFinalize(this);
         }
+
 
         #endregion
 

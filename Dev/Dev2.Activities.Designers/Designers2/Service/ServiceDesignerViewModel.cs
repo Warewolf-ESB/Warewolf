@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -788,12 +787,7 @@ namespace Dev2.Activities.Designers2.Service
         void AddTitleBarEditToggle()
         {
             // ReSharper disable RedundantArgumentName
-            var toggle = ActivityDesignerToggle.Create(
-                collapseImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServicePropertyEdit-32.png",
-                collapseToolTip: "Edit",
-                expandImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServicePropertyEdit-32.png",
-                expandToolTip: "Edit",
-                automationID: "ShowParentToggle",
+            var toggle = ActivityDesignerToggle.Create("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServicePropertyEdit-32.png", "Edit", "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServicePropertyEdit-32.png", "Edit", "ShowParentToggle",
                 autoReset: true,
                 target: this,
                 dp: ShowParentProperty

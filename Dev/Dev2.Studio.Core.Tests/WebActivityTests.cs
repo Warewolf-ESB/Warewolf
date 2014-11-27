@@ -9,11 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Activities.Presentation.Model;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Core.Tests.Utils;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;

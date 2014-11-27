@@ -9,16 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2.Calculate;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Dev2.Core.Tests.IntellisenseProvider
 {

@@ -35,8 +35,7 @@
                                      Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
-                                     Style="{StaticResource ActivityDesignerButtonStyle}">
-        </core:ActivityDesignerButton>
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
     <Grid x:Name="ContentGrid">
@@ -83,8 +82,8 @@
                         <DataTemplate>
                             <Label Content="{Binding ModelItem, 
                                               NotifyOnTargetUpdated=True, 
-                                              Converter={local:RowToIndexConverter}}"></Label>
-                            </DataTemplate>
+                                              Converter={local:RowToIndexConverter}}" />
+                        </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 

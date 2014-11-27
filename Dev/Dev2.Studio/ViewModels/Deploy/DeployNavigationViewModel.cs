@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -114,6 +113,7 @@ namespace Dev2.ViewModels.Deploy
         }
         public void Update()
         {
+            
             StudioResourceRepository.Load(_environment.ID, AsyncWorker);
             FilterEnvironments(Environment, false);
 

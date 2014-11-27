@@ -9,11 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Tests.EnumTests
 {
@@ -24,13 +23,6 @@ namespace Dev2.Data.Tests.EnumTests
     [ExcludeFromCodeCoverage]
     public class enTypeOfSystemInformationTests
     {
-        public enTypeOfSystemInformationTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
         private TestContext testContextInstance;
 
         /// <summary>
