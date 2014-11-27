@@ -20,12 +20,12 @@ Scenario:CopyTool Large View And Invalid Variables Expected Error On Done Button
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
 	Given "WORKSURFACE,UI_Error1_AutoID" is visible
-	Given "WORKSURFACE,UI_Error2_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error2_AutoID" is visible
 	#Correcting Bad Variable
 	Given I type "[[rec(1).a]]" in "WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__FileOrFoldertxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible 
-	Given "WORKSURFACE,UI_Error1_AutoID" is visible 
+	#Given "WORKSURFACE,UI_Error1_AutoID" is visible 
 	#Testing validation message for empty password
 	Given I type "[[rec(1).a]]" in "WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Destinationtxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneButton"
