@@ -31,7 +31,11 @@ namespace Dev2.Studio.Views.Diagnostics
 
         void DebugOutputGrid_OnLoaded(object sender, RoutedEventArgs e)
         {
-            (sender as Grid).Parent.SetValue(AutomationProperties.AutomationIdProperty, "UI_DebugOutputGrid_AutoID");
+            var grid = sender as Grid;
+            if(grid != null)
+            {
+                grid.Parent.SetValue(AutomationProperties.AutomationIdProperty, "UI_DebugOutputGrid_AutoID");
+            }
         }
     }
 }
