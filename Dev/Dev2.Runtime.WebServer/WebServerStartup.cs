@@ -103,7 +103,7 @@ namespace Dev2.Runtime.WebServer
 ////                var resp = (OwinResponse)state;
 ////
 ////                if (resp.StatusCode == 401)
-////                    resp.SetHeader("WWW-Authenticate", "Basic");
+////                    resp.SetHeader("WWW-Authenticate", "Basic ");
 ////            }, response);
 //
 //            var header = request.Headers["Authorization"];
