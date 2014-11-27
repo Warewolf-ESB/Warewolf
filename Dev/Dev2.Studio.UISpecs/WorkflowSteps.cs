@@ -651,6 +651,7 @@ namespace Dev2.Studio.UI.Specs
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
             var newServerAutoId = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...";
+            GivenIClick("EXPLORERCONNECTCONTROL");
             GivenIClick(newServerAutoId);
             ThenIsVisibleWithinSeconds("WebBrowserWindow", 10);
             var window = GetAControlStrict("WebBrowserWindow");
