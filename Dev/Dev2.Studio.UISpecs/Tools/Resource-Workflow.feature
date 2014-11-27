@@ -6,7 +6,8 @@
 Scenario: Drag Workflow to design surface and checking services are not showing in workflow resource picker
     Given I have Warewolf running
 	Given all tabs are closed
-    And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	##Opening New Workflow
 	Given I click new "Workflow"
 	##Dragging Tool Workflow to design surface

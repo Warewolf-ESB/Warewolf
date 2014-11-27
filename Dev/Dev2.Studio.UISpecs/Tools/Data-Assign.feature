@@ -7,8 +7,8 @@
 Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDrillDownInForEach
 	Given I have Warewolf running
 	And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
 	And I send "Assign" to ""
@@ -53,8 +53,8 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 Scenario: Testing Assign Tool large view Validation Messages for Incorrect Variable
 	Given I have Warewolf running
 	And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
 	And I send "Assign" to ""

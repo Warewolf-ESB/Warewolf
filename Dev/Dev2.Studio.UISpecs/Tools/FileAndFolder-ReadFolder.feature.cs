@@ -84,64 +84,66 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.And("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I click \"EXPLORERCONNECTCONTROL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
+ testRunner.Given("I click \"U_UI_ExplorerServerCbx_AutoID_localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 12
  testRunner.And("I click \"RIBBONNEWENDPOINT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
- testRunner.Given("I send \"Read\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
+ testRunner.Given("I send \"Read\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 15
     testRunner.Given("I drag \"TOOLREADFOLDER\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 16
+#line 17
  testRunner.Given("I double click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFol" +
                     "derDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 18
+#line 19
  testRunner.Given("I type \"[[rec@(1).a]]\" in \"WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewC" +
                     "ontent,UI__Directorytxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 19
+#line 20
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesi" +
                     "gner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 20
- testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
+ testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 22
  testRunner.Given("I type \"[[Var#]]\" in \"WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewConten" +
                     "t,UI__Directorytxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 22
+#line 23
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesi" +
                     "gner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 24
  testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 25
+#line 26
  testRunner.Given("I type \"[[rec(1).a]]\" in \"WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewCo" +
                     "ntent,UI__Directorytxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 26
+#line 27
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesi" +
                     "gner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
- testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28
- testRunner.Given("\"WORKSURFACE,Read Folder(ReadFolderDesigner),SmallViewContent\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
+ testRunner.Given("\"WORKSURFACE,Read Folder(ReadFolderDesigner),SmallViewContent\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 30
  testRunner.Given("I double click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFol" +
                     "derDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 31
+#line 32
  testRunner.Given("I type \"TestingDelete\" in \"WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewC" +
                     "ontent,UI__UserNametxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 32
+#line 33
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesi" +
                     "gner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
- testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
+ testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 35
  testRunner.Given("I send \"{TAB}\" to \"WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewContent,U" +
                     "I__UserNametxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 35
+#line 36
  testRunner.Given("I send \"Password\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 37
+#line 38
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesi" +
                     "gner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
- testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 39
+ testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 40
  testRunner.Given("\"WORKSURFACE,Read Folder(ReadFolderDesigner),SmallViewContent\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();

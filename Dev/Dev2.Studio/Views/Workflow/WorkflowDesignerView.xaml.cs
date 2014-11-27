@@ -23,6 +23,7 @@ namespace Dev2.Studio.Views.Workflow
     public partial class WorkflowDesignerView : IWorkflowDesignerView
     {
         readonly DragDropHelpers _dragDropHelpers;
+        //IDisposable _subscription;
 
         public WorkflowDesignerView()
         {
@@ -31,6 +32,7 @@ namespace Dev2.Studio.Views.Workflow
             PreviewDragOver += DropPointOnDragEnter;
             PreviewMouseDown += WorkflowDesignerView_PreviewMouseDown;
             _dragDropHelpers = new DragDropHelpers(this);
+
         }
 
 
@@ -54,18 +56,7 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        void UIElement_OnKeyUp(object sender, KeyEventArgs e)
-        {
-            var workflowDesignerViewModel = DataContext as WorkflowDesignerViewModel;
-            if (e.Key == Key.Back || e.Key == Key.Delete || e.Key==Key.Up || e.Key==Key.Down || e.Key==Key.PageDown|| e.Key==Key.PageUp)
-            {
-                return;
-            }
-            if (workflowDesignerViewModel != null)
-            {
-                workflowDesignerViewModel.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-            }
-        }
+       
     }
 
     public interface IWorkflowDesignerView

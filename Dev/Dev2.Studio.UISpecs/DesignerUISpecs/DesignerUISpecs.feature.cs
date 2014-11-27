@@ -84,14 +84,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.And("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I click \"EXPLORERCONNECTCONTROL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
- testRunner.And("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I click \"U_UI_ExplorerServerCbx_AutoID_localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 13
  testRunner.And("I send \"InnerWF\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.And("I double click \"EXPLORERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_InnerWF_A" +
-                    "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I double click \"EXPLORERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_InnerWF" +
+                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
  testRunner.And("I click \"VARIABLESCALAR,UI_Variable_result_AutoID,UI_IsInputCheckbox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
@@ -189,48 +189,46 @@ this.ScenarioSetup(scenarioInfo);
 #line 68
  testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
- testRunner.And("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I click \"EXPLORERCONNECTCONTROL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 70
- testRunner.And("\"EXPLORER,UI_localhost_AutoID\" is visible within \"5\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I click \"U_UI_ExplorerServerCbx_AutoID_localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 71
- testRunner.And("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
  testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 72
  testRunner.And("I send \"Utility - Assign\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 73
  testRunner.Given("I drag \"EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoI" +
                     "D\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 75
+#line 74
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner),LargeViewContent\" is visi" +
                     "ble", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 77
+#line 76
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsD" +
                     "ataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1]\" contains text \"[[" +
                     "rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 79
+#line 78
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsD" +
                     "ataGrid,UI_ActivityGridRow_1_AutoID,UI_DataGridCell_AutoID[1]\" contains text \"[[" +
                     "hero().pushups]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 81
+#line 80
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsD" +
                     "ataGrid,UI_ActivityGridRow_2_AutoID,UI_DataGridCell_AutoID[1]\" contains text \"[[" +
                     "hero().name]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 81
  testRunner.Given("I drag \"EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoI" +
                     "D\" onto \"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 83
+#line 82
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)[1],LargeViewContent\" is v" +
                     "isible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 85
+#line 84
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)[1],LargeViewContent,Outpu" +
                     "tsDataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1]\" contains text " +
                     "\"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 87
+#line 86
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)[1],LargeViewContent,Outpu" +
                     "tsDataGrid,UI_ActivityGridRow_1_AutoID,UI_DataGridCell_AutoID[1]\" contains text " +
                     "\"[[hero().pushups]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 89
+#line 88
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)[1],LargeViewContent,Outpu" +
                     "tsDataGrid,UI_ActivityGridRow_2_AutoID,UI_DataGridCell_AutoID[1]\" contains text " +
                     "\"[[hero().name]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
