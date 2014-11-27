@@ -343,7 +343,6 @@ copy /Y "$(SolutionDir)Binaries\Vestris.ResourceLib.dll" "$(TargetDir)"
 xcopy /Y /E /F /D "$(SolutionDir)Binaries\CefSharp" "$(TargetDir)CefSharp\"
 xcopy /Y /E /F /D "$(SolutionDir)Binaries\ActiveDirectory" "$(TargetDir)ActiveDirectory\"
 
-set SolutionDir=D:\Warewolf Open Source\Dev\
 REM Save commit ID:
 for /f "delims=" %25%25a in ('git rev-parse head') do @set ChangesetID=%25%25a
 REM Stop tracking AssemblyInfo:
