@@ -150,27 +150,6 @@ namespace Dev2.InstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
-        public void WarewolfSecurityOperations_AddDomainUserToWarewolfGroup_WhenUserNotPresent_ExpectUserAdded()
-        {
-            //------------Setup for test--------------------------
-            var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
-            warewolfGroupOps.DeleteWarewolfGroup();
-            warewolfGroupOps.AddWarewolfGroup();
-            var myPc = Environment.MachineName;
-
-            var userStr = warewolfGroupOps.FormatUserForInsert("Dev2\\IntegrationTester", myPc);
-
-            //------------Execute Test---------------------------
-            warewolfGroupOps.AddUserToWarewolf(userStr);
-            var result = warewolfGroupOps.IsUserInGroup("Dev2\\IntegrationTester");
-
-            //------------Assert Results-------------------------
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("WarewolfSecurityOperations_DeleteGroup")]
         public void WarewolfSecurityOperations_IsUserInGroup_WhenUserNotPresent_ExpectFalse()
         {
             //------------Setup for test--------------------------
