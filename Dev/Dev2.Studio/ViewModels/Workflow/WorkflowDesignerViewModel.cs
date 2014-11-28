@@ -207,12 +207,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             OutlineViewTitle = "Navigation Pane";
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
+            
             if(setupUnknownVariableTimer)
             SetupTimer();
+            _firstWorkflowChange = true;
         }
 
         private void SetupTimer()
         {
+           
             _changeIsPossible = true;
             _timer = new System.Timers.Timer();
             _timer.Elapsed += t_Elapsed;
@@ -1550,7 +1553,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 WatermarkSential.IsWatermarkBeingApplied = false;
             }
             _changeIsPossible = true;
-           
+            if (_firstWorkflowChange)
+            {
+                AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+                _firstWorkflowChange = false;
+            }
         }
 
         bool CheckDataList()
@@ -1861,6 +1868,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             set { _changeIsPossible = value; }
         }
         private Action<IList<IDataListVerifyPart>> _dispatcherAction;
+        bool _firstWorkflowChange;
 
         /// <summary>
         /// Models the service model changed.
