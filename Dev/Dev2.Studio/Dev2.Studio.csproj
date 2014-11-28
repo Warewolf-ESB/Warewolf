@@ -1407,15 +1407,8 @@
     <PreBuildEvent>REM Save commit ID:
 for /f "delims=" %25%25a in ('git rev-parse head') do @set ChangesetID=%25%25a
 REM Stop tracking AssemblyInfo:
-git -C "$(SolutionDir)" update-index --assume-unchanged AssemblyCommonInfo.cs
-REM Override AssemblyInfo:
-echo using System.Reflection;&gt;$(SolutionDir)AssemblyCommonInfo.cs
-echo [assembly: AssemblyCompany("Warewolf")]&gt;&gt;$(SolutionDir)AssemblyCommonInfo.cs
-echo [assembly: AssemblyProduct("Warewolf ESB")]&gt;&gt;$(SolutionDir)AssemblyCommonInfo.cs
-echo [assembly: AssemblyCopyright("Copyright Warewolf 2013")]&gt;&gt;$(SolutionDir)AssemblyCommonInfo.cs
-echo [assembly: AssemblyVersion("0.4.*")]&gt;&gt;$(SolutionDir)AssemblyCommonInfo.cs
-REM Stamp with commit ID:
-echo [assembly: AssemblyInformationalVersion("%25ChangesetID%25")]&gt;&gt;$(SolutionDir)AssemblyCommonInfo.cs</PreBuildEvent>
+cd "$(SolutionDir)"
+git update-index --assume-unchanged AssemblyCommonInfo.cs</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>ROBOCOPY "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S

@@ -346,7 +346,8 @@ xcopy /Y /E /F /D "$(SolutionDir)Binaries\ActiveDirectory" "$(TargetDir)ActiveDi
 REM Save commit ID:
 for /f "delims=" %25%25a in ('git rev-parse head') do @set ChangesetID=%25%25a
 REM Stop tracking AssemblyInfo:
-git -C "$(SolutionDir)" update-index --assume-unchanged AssemblyCommonInfo.cs
+cd "$(SolutionDir)"
+git update-index --assume-unchanged AssemblyCommonInfo.cs
 REM Override AssemblyInfo:
 echo using System.Reflection;&gt;$(SolutionDir)AssemblyCommonInfo.cs
 echo [assembly: AssemblyCompany("Warewolf")]&gt;&gt;$(SolutionDir)AssemblyCommonInfo.cs
