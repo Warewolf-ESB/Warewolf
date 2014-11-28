@@ -55,11 +55,11 @@ namespace Dev2.Studio.Core.Factories
             {
                 var idToUse = resource.Environment.ID;
 
-                // when we have an active remote environment that we are designing against, set it as local to that environment ;)
-                if(activeEnvironment.ID == resource.Environment.ID && idToUse != Guid.Empty && !isDesignerLocalhost)
-                {
-                    idToUse = Guid.Empty;
-                }
+                //// when we have an active remote environment that we are designing against, set it as local to that environment ;)
+                //if(activeEnvironment.ID == resource.Environment.ID && idToUse != Guid.Empty && !isDesignerLocalhost)
+                //{
+                //    idToUse = Guid.Empty;
+                //}
 
                 activity.EnvironmentID = idToUse;
             }
@@ -67,13 +67,14 @@ namespace Dev2.Studio.Core.Factories
 
         static DsfActivity SetActivityProperties(IContextualResourceModel resource, DsfActivity activity)
         {
+            
             switch(resource.ResourceType)
             {
                 case ResourceType.WorkflowService:
                     WorkflowPropertyInterigator.SetActivityProperties(resource, ref activity);
                     break;
                 case ResourceType.Service:
-                    WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
+                    WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity,resource.Environment.ResourceRepository);
                     break;
             }
             return activity;

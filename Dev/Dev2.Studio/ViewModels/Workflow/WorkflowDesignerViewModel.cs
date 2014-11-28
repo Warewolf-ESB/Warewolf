@@ -656,6 +656,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, environmentRepository, _resourceModel.Environment.IsLocalHostCheck());
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, environmentRepository.ActiveEnvironment);
             modelProperty1.SetValue(droppedActivity);
+
+                               
         }
 
         void InitialiseIsDSFWebPage(ModelProperty modelProperty)
