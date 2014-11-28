@@ -2,9 +2,9 @@
 	In order to avoid silly mistakes
 	As a math idiot
 	I want to be told the sum of two numbers
-
+	
 @Examples
-Scenario: Testing First Batch of Example Workflows
+Scenario: Testing Example Workflows
 	Given I have Warewolf running
 	And all tabs are closed	
 	Given I click "EXPLORERCONNECTCONTROL"
@@ -160,8 +160,6 @@ Scenario: Testing First Batch of Example Workflows
 	And I send "{F6}" to ""
 	And all tabs are closed
 		
-#Ashley: Splitting this senario in half because it runs for too long
-Scenario: Testing Second Batch of Example Workflows	
 	## Recordset - Tools
 	And I click "EXPLORERFILTERCLEARBUTTON"
 	And I send "Recordset" to "EXPLORERFILTER"

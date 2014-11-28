@@ -158,6 +158,8 @@
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
 /Dev/SFTPServer/bin
 /Dev/SFTPServer/obj
+/Dev/Studio.UI.Load.Specs/bin
+/Dev/Studio.UI.Load.Specs/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
