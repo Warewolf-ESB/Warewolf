@@ -56,10 +56,10 @@ namespace Dev2.Studio.Core.Factories
                 var idToUse = resource.Environment.ID;
 
                 //// when we have an active remote environment that we are designing against, set it as local to that environment ;)
-                //if(activeEnvironment.ID == resource.Environment.ID && idToUse != Guid.Empty && !isDesignerLocalhost)
-                //{
-                //    idToUse = Guid.Empty;
-                //}
+                if(activeEnvironment.ID == resource.Environment.ID && idToUse != Guid.Empty && !isDesignerLocalhost)
+                {
+                    idToUse = Guid.Empty;
+                }
 
                 activity.EnvironmentID = idToUse;
             }
