@@ -4057,7 +4057,7 @@ namespace Dev2.Core.Tests.Workflows
                 workflowHelper = wh.Object;
             }
 
-            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, popupController.Object, createDesigner, _isDesignerInited);
+            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, popupController.Object, createDesigner, _isDesignerInited,false);
 
             _isDesignerInited = true;
 

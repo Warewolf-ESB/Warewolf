@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests.Workflows
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object,
-                createDesigner)
+                createDesigner,false,false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IPopupController>().Object, createDesigner)
+                new Mock<IPopupController>().Object, createDesigner, false, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -59,7 +59,7 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
-                popupController, createDesigner)
+                popupController, createDesigner, false, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;

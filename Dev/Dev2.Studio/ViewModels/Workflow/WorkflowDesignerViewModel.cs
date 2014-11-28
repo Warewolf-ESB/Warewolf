@@ -1555,7 +1555,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _changeIsPossible = true;
             if (_firstWorkflowChange)
             {
-                AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+                AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false,false);
                 _firstWorkflowChange = false;
             }
         }
@@ -1584,7 +1584,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void ProcessDataListOnLoad()
         {
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true);
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true,false);
         }
 
         public void DoWorkspaceSave()
@@ -1600,7 +1600,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 });
             }
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false,false);
         }
 
         public static bool ValidatResourceModel(string dataList)
@@ -1633,14 +1633,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                 OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
             }
 
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false,false);
         }
 
         /// <summary>
         /// Adds the missing with no pop up and find unused data list items implementation.
         /// </summary>
         /// <param name="isLoadEvent">if set to <c>true</c> [is load event].</param>
-        private void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent)
+        /// <param name="updateOnDispatcher"></param>
+        private void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent,bool updateOnDispatcher=true)
         {
             if (DataListSingleton.ActiveDataList != null)
             {
@@ -1652,7 +1653,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
 
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
+                if (updateOnDispatcher)
                 DispatcherUpdateAction(workflowFields);
+                else
+                {
+                      DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+                }
             }
         }
 
