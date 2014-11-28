@@ -181,7 +181,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
         // ReSharper disable TooManyDependencies
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = true, bool liteInit = false)
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = true, bool liteInit = false, bool setupUnknownVariableTimer=true)
             // ReSharper restore TooManyDependencies
             : base(eventPublisher)
         {
@@ -207,6 +207,28 @@ namespace Dev2.Studio.ViewModels.Workflow
             OutlineViewTitle = "Navigation Pane";
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
+            if(setupUnknownVariableTimer)
+            SetupTimer();
+        }
+
+        private void SetupTimer()
+        {
+            _changeIsPossible = true;
+            _timer = new System.Timers.Timer();
+            _timer.Elapsed += t_Elapsed;
+            _timer.Interval = GlobalConstants.AddPopupTimeDelay;
+            _timer.Start();
+        }
+
+        void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+
+                if (_changeIsPossible)
+                {
+                    AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+                    _changeIsPossible = false;
+                }
+
         }
 
         void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
@@ -1525,7 +1547,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // THIS MUST NEVER BE DELETED ;)
                 WatermarkSential.IsWatermarkBeingApplied = false;
             }
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+            _changeIsPossible = true;
+           
         }
 
         bool CheckDataList()
@@ -1543,7 +1566,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             // This method was flawed with sb1 == sb2, that is object comparison. 
             // I needed to change the equality comparison to ensure my assignment works as expected ;)
-            return ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
+            return true;// ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
         }
 
         /// <summary>
@@ -1619,8 +1642,19 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
 
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+                DispatcherUpdateAction(workflowFields);
             }
+        }
+
+        public Action<IList<IDataListVerifyPart>> DispatcherUpdateAction
+        {
+            get{return _dispatcherAction??RunUpdateOnDispatcher; }
+            set{_dispatcherAction=value;}
+        }
+        private void RunUpdateOnDispatcher(IList<IDataListVerifyPart> workflowFields)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields));
         }
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
@@ -1815,6 +1849,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         WorkflowInputDataViewModel _workflowInputDataViewModel;
         string _workflowLink;
         ICommand _openWorkflowLinkCommand;
+        private System.Timers.Timer _timer;
+        private bool _changeIsPossible;
+
+        public bool ChangeIsPossible
+        {
+            get { return _changeIsPossible; }
+            set { _changeIsPossible = value; }
+        }
+        private Action<IList<IDataListVerifyPart>> _dispatcherAction;
 
         /// <summary>
         /// Models the service model changed.
@@ -2033,8 +2076,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         #region OnDispose
         protected override void OnDispose()
         {
+            if(_timer != null)
+                _timer.Stop();
             if (_wd != null)
             {
+               
                 _wd.Context.Items.Unsubscribe<Selection>(OnItemSelected);
                 _wd.ModelChanged -= WdOnModelChanged;
                 _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);

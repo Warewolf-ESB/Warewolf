@@ -416,7 +416,7 @@ or type_desc LIKE '%Procedure%'";
         public static string DropBoxAppSecret = "tqtil4c1ibja8dn";
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
-
+        public static int AddPopupTimeDelay = 2000;
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

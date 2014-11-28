@@ -115,6 +115,7 @@ namespace Dev2.Core.Tests.Workflows
             dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             dataListViewModel.RecsetCollection.Clear();
             WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
+            workflowDesigner.DispatcherUpdateAction = (a => DataListSingleton.ActiveDataList.UpdateDataListItems(workflowDesigner.ResourceModel, a));
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             dataListViewModel.RemoveUnusedDataListItems();
             workflowDesigner.Dispose();
@@ -122,6 +123,77 @@ namespace Dev2.Core.Tests.Workflows
 
         }
 
+
+   
+        
+        /// <summary>
+        /// Tests Remove All UnusedDataListItems is able remove all the unused data list items from the data list
+        /// </summary>
+        [TestMethod]
+        public void SetModelToDirtyAndExpectThatItemsWillBeAdded()
+        {
+            var eventAggregator = new EventAggregator();
+
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
+
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
+            var dataListItems = new OptomizedObservableCollection<IDataListItemModel>();
+            IDataListItemModel dataListItem = new DataListItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
+            IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+
+            dataListItems.Add(dataListItem);
+            dataListItems.Add(secondDataListItem);
+
+
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListViewModel.RecsetCollection.Clear();
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
+            workflowDesigner.DispatcherUpdateAction = (a => DataListSingleton.ActiveDataList.UpdateDataListItems(workflowDesigner.ResourceModel, a));
+            IDataListItemModel dataListItem3 = new DataListItemModel("scalar8", enDev2ColumnArgumentDirection.Input, string.Empty);
+            workflowDesigner.ChangeIsPossible = true;
+     
+            dataListItems.Add(dataListItem3);
+            Thread.Sleep(3000);
+            workflowDesigner.Dispose();
+            Assert.AreEqual(5, dataListViewModel.ScalarCollection.Count);
+
+        }
+        [TestMethod]
+        public void SetModelToCleanAndExpectThatNoItemsWillBeAdded()
+        {
+            var eventAggregator = new EventAggregator();
+
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
+
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
+            var dataListItems = new OptomizedObservableCollection<IDataListItemModel>();
+            IDataListItemModel dataListItem = new DataListItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
+            IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            IDataListItemModel dataListItem3 = new DataListItemModel("scalar8", enDev2ColumnArgumentDirection.Input, string.Empty);
+           
+            dataListItems.Add(dataListItem);
+            dataListItems.Add(secondDataListItem);
+
+
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListViewModel.RecsetCollection.Clear();
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
+            workflowDesigner.DispatcherUpdateAction = (a => DataListSingleton.ActiveDataList.UpdateDataListItems(workflowDesigner.ResourceModel, a));
+
+            workflowDesigner.ChangeIsPossible = false;
+            dataListItems.Add(dataListItem3);
+            Thread.Sleep(3000);
+
+            workflowDesigner.Dispose();
+            Assert.AreEqual(5, dataListViewModel.ScalarCollection.Count);
+
+        }
         [TestMethod]
         public void MissingPartsMessageOnlySentWhenThereWorkToDoExpect1Call()
         {
