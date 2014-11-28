@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="Local Acceptance Run" id="3264dd0f-6fc1-4cb9-b44f-c649fef29609" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>These are default test settings for a local acceptance test run.</Description>
+<TestSettings name="Nightly Load" id="DAD41F55-1191-47C3-B112-2C93C916C52A" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>These are default test settings for a remote load test run in a workgroup.</Description>
     <Deployment>
 		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
 		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
@@ -8,13 +8,11 @@
             <!--For Build Agents-->
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
         <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
-    </Deployment>
-  <NamingScheme baseName="UT" />
-    <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
+	</Deployment>
+  <Scripts setupScript="..\Dev\TestScripts\UI\Startup.bat" cleanupScript="..\Dev\TestScripts\UI\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
-  <Execution hostProcessPlatform="MSIL">
-    <Timeouts testTimeout="180000" />
-    <Buckets size="100" />
+  <Execution location="Remote">
+    <Buckets size="10000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
@@ -32,7 +30,14 @@
         </Browser>
       </WebTestRunConfiguration>
     </TestTypeSpecific>
-    <AgentRule name="LocalMachineDefaultRole">
+    <AgentRule name="Run in Win 7 Workgroup Testing Environment Pool">
+        <SelectionCriteria>
+            <AgentProperty name="Pool" value="Win7 Workgroup" />
+        </SelectionCriteria>
+      <DataCollectors>
+        <DataCollector uri="datacollector://microsoft/SystemInfo/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo.SystemInfoDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="System Information">
+        </DataCollector>
+      </DataCollectors>
     </AgentRule>
   </Execution>
 </TestSettings>
