@@ -29,6 +29,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Studio.UI.Load.Specs", "Studio.UI.Load.Specs\Studio.UI.Load.Specs.csproj", "{3FEE8045-8EF6-4A13-9CE1-6566AC150F06}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Load", "Load", "{5D2C5FAE-47AF-4917-91BF-027A606EE6DD}"
+	ProjectSection(SolutionItems) = preProject
+		TestSettings\Load\High Spec Test Rig.testsettings = TestSettings\Load\High Spec Test Rig.testsettings
+		TestSettings\Load\Long Running Warewolf Test Rig.testsettings = TestSettings\Load\Long Running Warewolf Test Rig.testsettings
+		TestSettings\Load\Low Spec Test Rig.testsettings = TestSettings\Load\Low Spec Test Rig.testsettings
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +154,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
+		{5D2C5FAE-47AF-4917-91BF-027A606EE6DD} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Dev2.UI.Tests.vsmdi

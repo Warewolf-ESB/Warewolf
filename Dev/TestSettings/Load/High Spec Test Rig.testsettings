@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="Nightly Acceptance" id="8E25BCC7-CA34-434F-8C9F-9F9382FFB370" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>These are default test settings for a remote acceptance test run.</Description>
+  <Description>These are default test settings for a remote load test run in a well spec'd environment.</Description>
 	<Deployment>
 		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
         
             <!--For Build Agents-->
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
 	</Deployment>
   <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
@@ -28,9 +30,9 @@
         </Browser>
       </WebTestRunConfiguration>
     </TestTypeSpecific>
-    <AgentRule name="Run in Win 2k8 Testing Environment Pool">
+    <AgentRule name="Run in High Spec Testing Environment Pool">
       <SelectionCriteria>
-        <AgentProperty name="Pool" value="Load" />
+        <AgentProperty name="Pool" value="HighSpec" />
       </SelectionCriteria>
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/SystemInfo/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo.SystemInfoDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="System Information">
