@@ -1404,11 +1404,7 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>REM Save commit ID:
-for /f "delims=" %25%25a in ('git rev-parse head') do @set ChangesetID=%25%25a
-REM Stop tracking AssemblyInfo:
-cd "$(SolutionDir)"
-git update-index --assume-unchanged AssemblyCommonInfo.cs</PreBuildEvent>
+    <PreBuildEvent>AssemblyVersionInfo.bat</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>ROBOCOPY "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
