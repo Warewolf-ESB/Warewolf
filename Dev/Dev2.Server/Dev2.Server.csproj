@@ -335,14 +335,11 @@ xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\wwwroot" "$(TargetDi
 :exit</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)AssemblyVersionInfo.bat"
-cd "$(TargetDir)"
+    <PreBuildEvent>cd "$(TargetDir)"
 attrib -R /S
 copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
-copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"
-copy /Y "$(SolutionDir)Binaries\Vestris.ResourceLib.dll" "$(TargetDir)"
-xcopy /Y /E /F /D "$(SolutionDir)Binaries\CefSharp" "$(TargetDir)CefSharp\"
-xcopy /Y /E /F /D "$(SolutionDir)Binaries\ActiveDirectory" "$(TargetDir)ActiveDirectory\"</PreBuildEvent>
+copy /Y "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"  
+ "$(SolutionDir)AssemblyVersionInfo.bat"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
