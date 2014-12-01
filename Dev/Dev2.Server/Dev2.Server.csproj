@@ -335,7 +335,7 @@ xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\wwwroot" "$(TargetDi
 :exit</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>AssemblyVersionInfo.bat
+    <PreBuildEvent>"$(SolutionDir)AssemblyVersionInfo.bat"
 cd "$(TargetDir)"
 attrib -R /S
 copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"

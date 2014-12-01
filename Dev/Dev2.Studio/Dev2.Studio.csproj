@@ -1404,7 +1404,7 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>AssemblyVersionInfo.bat</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)AssemblyVersionInfo.bat"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>ROBOCOPY "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
