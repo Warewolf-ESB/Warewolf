@@ -260,7 +260,8 @@ namespace Dev2.Studio.UI.Specs
             {
                 Bootstrap.Teardown(true);
                 Playback.Cleanup();
-                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation, Bootstrap.StudioTimeOut);
+                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation, 0);
+                WaitForUIControlExistance(typeof(UIStudioWindow), Bootstrap.StudioTimeOut);
                 Playback.Initialize();
             }
         }
@@ -765,8 +766,28 @@ namespace Dev2.Studio.UI.Specs
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown(true);
             Playback.Cleanup();
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation, Bootstrap.StudioTimeOut);
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation, 0);
+            WaitForUIControlExistance(typeof(UIStudioWindow), Bootstrap.StudioTimeOut);
             Playback.Initialize();
+        }
+
+        static void WaitForUIControlExistance(Type T, int timeout)
+        {
+            var count = 0;
+            const int resolution = 1000;
+            while(count < timeout)
+            {
+                var newControl = Activator.CreateInstance(T);
+                if(newControl == null)
+                {
+                    count = count + resolution;
+                    Playback.Wait(resolution);
+                }
+                else
+                {
+                    count = timeout;
+                }
+            }
         }
 
         static void RunSpecifiedFileWithUserNameAndPassword(string userName, string password, string fileLocation, int timeOut)
