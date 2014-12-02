@@ -27,7 +27,7 @@
 /Dev/Dev2.Server/bin/x64
 /Dev/Dev2.Server/bin/Release
 
-####### Server bin/Debug is used to manage resources for CI to test against ########
+####### /Dev/Dev2.Server/bin/Debug is used to manage resources for CI to test against ########
 /Dev/Dev2.Server/bin/Debug/Workspaces
 /Dev/Dev2.Server/bin/Debug/ActiveDirectory
 /Dev/Dev2.Server/bin/Debug/CefSharp
