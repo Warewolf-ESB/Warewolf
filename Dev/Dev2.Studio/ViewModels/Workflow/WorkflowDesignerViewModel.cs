@@ -151,7 +151,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
 
-        // ReSharper disable once TooManyDependencies
         /// <summary>
         /// Constructor
         /// </summary>
@@ -163,14 +162,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
             // ReSharper restore TooManyDependencies
             : this(eventPublisher, resource, workflowHelper,
-                CustomContainer.Get<IPopupController>(), createDesigner)
+                CustomContainer.Get<IPopupController>(), new AsyncWorker(), createDesigner)
         {
         }
 
-        // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
-        // TODO Can we please not overload constructors for testing purposes. Need to systematically get rid of singletons.
-
-        // ReSharper disable once TooManyDependencies
         /// <summary>
         /// Unit Testing Constructor
         /// </summary>
@@ -181,17 +176,18 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
         // ReSharper disable TooManyDependencies
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = true, bool liteInit = false, bool setupUnknownVariableTimer=true)
-            // ReSharper restore TooManyDependencies
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false, bool setupUnknownVariableTimer=true)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
             VerifyArgument.IsNotNull("popupController", popupController);
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
 
             _workflowHelper = workflowHelper;
             _resourceModel = resource;
             _resourceModel.OnDataListChanged += FireWdChanged;
             _resourceModel.OnResourceSaved += UpdateOriginalDataList;
+            _asyncWorker = asyncWorker;
 
             PopUp = popupController;
 
@@ -1574,9 +1570,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         bool CheckServiceDefinition()
         {
-            // This method was flawed with sb1 == sb2, that is object comparison. 
-            // I needed to change the equality comparison to ensure my assignment works as expected ;)
-            return true;// ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
+            return ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
         }
 
         /// <summary>
@@ -1591,8 +1585,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave && ResourceModel.Environment.IsConnected)
             {
-                AsyncWorker asyncWorker = new AsyncWorker();
-                asyncWorker.Start(() =>
+                _asyncWorker.Start(() =>
                 {
                     BindToModel();
                     ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
@@ -1875,6 +1868,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
         private Action<IList<IDataListVerifyPart>> _dispatcherAction;
         bool _firstWorkflowChange;
+        IAsyncWorker _asyncWorker;
 
         /// <summary>
         /// Models the service model changed.

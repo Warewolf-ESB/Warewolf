@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
@@ -39,6 +40,7 @@ namespace Dev2.Core.Tests.Workflows
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object,
+                AsyncWorkerTests.CreateSynchronousAsyncWorker().Object,
                 createDesigner,false,false)
         {
             _moq.SetupAllProperties();
@@ -49,7 +51,7 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IPopupController>().Object, createDesigner, false, false)
+                new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, createDesigner, false, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -59,7 +61,7 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
-                popupController, createDesigner, false, false)
+                popupController, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, createDesigner, false, false)
         {
             _moq.SetupAllProperties();
             _wd = _moq.Object;
