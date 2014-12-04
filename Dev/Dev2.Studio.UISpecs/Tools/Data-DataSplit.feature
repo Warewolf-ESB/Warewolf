@@ -44,3 +44,31 @@ Scenario: Data Split Large view Invalid Variables Expected Validation on Done Bu
 	And "VARIABLESCALAR,UI_Variable_a_AutoID" is visible within "2" seconds
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Split (1)(DataSplitDesigner),DoneButton"
 	Given "TOOLDATASPLITSMALLVIEW" is visible
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
