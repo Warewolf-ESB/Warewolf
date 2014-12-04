@@ -1787,7 +1787,14 @@ namespace Dev2.Core.Tests.Workflows
 
             if(Application.Current != null)
             {
-                Application.Current.MainWindow = null;
+                try
+                {
+                    Application.Current.MainWindow = null;
+                }
+                catch(InvalidOperationException)
+                {
+                    
+                }
             }
             var repo = new Mock<IResourceRepository>();
             var mockResourceModel = new Mock<IContextualResourceModel>();
