@@ -134,30 +134,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(properties.Count() == 1);
         }
 
-        [TestMethod]
-        public void DsfWebSiteActivity_Property_Check_Expected_No_Change_To_Properties()
-        {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfWebSiteActivity");
-            if(type == null)
-            {
-                Assert.Fail("Could not find DsfWebSiteActivity.");
-            }
-            PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 2);
-        }
-
-        [TestMethod]
-        public void DsfWebPageActivity_Property_Check_Expected_No_Change_To_Properties()
-        {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfWebPageActivity");
-            if(type == null)
-            {
-                Assert.Fail("Could not find DsfWebPageActivity.");
-            }
-            PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 6);
-        }
-
+        
         [TestMethod]
         public void DsfSortRecordsActivity_Property_Check_Expected_No_Change_To_Properties()
         {
@@ -471,45 +448,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           && SelectedSort != null & SortField.Length == 1, "This will fail on designer binding, please update this before proceeding");
         }
 
-        [TestMethod]
-        public void DsfWebPageActivity_Property_Name_Check_Expected_No_Change_To_Properties()
-        {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfWebPageActivity");
-            if(type == null)
-            {
-                Assert.Fail("Could not find DsfWebPageActivity.");
-            }
-
-            MemberInfo[] XMLConfiguration = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "XMLConfiguration");
-            MemberInfo[] WebsiteServiceName = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "WebsiteServiceName");
-            MemberInfo[] WebsiteRegionName = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "WebsiteRegionName");
-            MemberInfo[] IsPreview = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "IsPreview");
-
-
-            Assert.IsTrue(XMLConfiguration != null && XMLConfiguration.Length == 1
-                          && WebsiteServiceName != null & WebsiteServiceName.Length == 1
-                          && WebsiteRegionName != null && WebsiteRegionName.Length == 1
-                          && IsPreview != null && IsPreview.Length == 1, "This will fail on designer binding, please update this before proceeding");
-        }
-
-        [TestMethod]
-        public void DsfWebsiteActivity_Property_Name_Check_Expected_No_Change_To_Properties()
-        {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfWebSiteActivity");
-            if(type == null)
-            {
-                Assert.Fail("Could not find DsfWebSiteActivity.");
-            }
-
-            MemberInfo[] XMLConfiguration = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "XMLConfiguration");
-            MemberInfo[] Html = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "Html");
-
-            Assert.IsTrue(XMLConfiguration != null && XMLConfiguration.Length == 1
-                          && Html != null & Html.Length == 1, "This will fail on designer binding, please update this before proceeding");
-        }
-
-
-
+        
         #endregion Check Property Names
 
         #region Private Methods

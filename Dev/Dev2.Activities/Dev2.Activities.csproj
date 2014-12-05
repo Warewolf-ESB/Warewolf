@@ -301,9 +301,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\website.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Rename.png" />
     <Resource Include="Images\viewinbrowser.png" />
     <Resource Include="Images\transform.png" />

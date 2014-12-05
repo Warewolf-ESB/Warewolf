@@ -240,7 +240,6 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\EnvironmentModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ServerEqualityComparer.cs" />
-    <Compile Include="AppResources\DependencyInjection\EqualityComparers\WebsiteLayoutObjectViewModelEqualityComparer.cs" />
     <Compile Include="AppResources\Enums\NavigationViewContextType.cs" />
     <Compile Include="AppResources\Enums\ReportType.cs" />
     <Compile Include="AppResources\Enums\ResourceType.cs" />

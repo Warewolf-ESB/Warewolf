@@ -336,9 +336,7 @@ namespace Dev2.Data.Util
                     }
                 }
 
-                // Finally remove the Webpart Tag
-                // Dev2WebpartConfig
-                result = result.Replace("<Dev2WebpartConfig>", "").Replace("</Dev2WebpartConfig>", "");
+
             }
 
             return result;

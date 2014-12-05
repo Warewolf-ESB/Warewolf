@@ -29,8 +29,6 @@ namespace Dev2.Interfaces {
         /// </summary>
         string XmlConfiguration { get; set; }        
         string DisplayName { get; set; }
-        string WebpartServiceDisplayName { get; set; }
-        string WebpartServiceName { get; set; }
         string IconPath { get; set; }
         int GridColumn { get; set; }
         int GridRow { get; set; }

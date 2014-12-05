@@ -346,9 +346,6 @@
   <data name="Error_Website_Resource_Exists" xml:space="preserve">
     <value>The website resource selected already exists!</value>
   </data>
-  <data name="Website_BootStrap_Service" xml:space="preserve">
-    <value>BootStrapWebsite</value>
-  </data>
   <data name="Navigation_Folder_Icon_Pack_Uri" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolder-32.png</value>
   </data>

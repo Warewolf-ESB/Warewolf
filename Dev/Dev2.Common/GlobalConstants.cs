@@ -151,9 +151,6 @@ namespace Dev2.Common
         public const string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
 
         // Website constants
-        public const string MetaTagsHolder = @"<Dev2HTML Type=""Meta""/>";
-        public const string WebpageCellContainer = "Webpart";
-        public const string WebpartRenderError = "<Fragement>Error executing webpart's service</Fragment>";
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 
         // JSON constants
