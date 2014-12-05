@@ -405,7 +405,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\DependenciesGraphUniqueTest.xml" />
-    <EmbeddedResource Include="Assets\Dev2Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">

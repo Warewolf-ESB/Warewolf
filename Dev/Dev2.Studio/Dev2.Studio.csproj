@@ -1133,16 +1133,7 @@
     <Resource Include="Images\AuthNone-16.png" />
     <Resource Include="Images\AuthView-12.png" />
     <Resource Include="Images\HelpShortcutKeys-32.png" />
-    <Resource Include="Resources\HelpCommunity-32_files\image0.png" />
     <Resource Include="Images\PluginService-32.png" />
-    <Resource Include="Resources\RemoteWarewolf-32_files\image0.png" />
-    <Resource Include="Resources\RemoteWarewolf-32_files\image1.png" />
-    <Resource Include="Resources\ExplorerWarewolfConnection-32_files\image0.png" />
-    <Resource Include="Resources\ExplorerWarewolfConnection-32_files\image1.png" />
-    <Resource Include="Resources\Deploy-32_files\image0.png" />
-    <Resource Include="Resources\Deploy-32_files\image1.png" />
-    <Resource Include="Resources\Deploy-32_files\image2.png" />
-    <Resource Include="Resources\Deploy-32_files\image3.png" />
     <Resource Include="Images\ToolSqlBulkInsert-32.png" />
     <Resource Include="Images\StartNode.png" />
     <Resource Include="Images\ToolGetWebRequest-32.png" />
@@ -1282,7 +1273,6 @@
     <Content Include="Help\StudioShortCutKeys.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Images\Close_Box_Red.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
