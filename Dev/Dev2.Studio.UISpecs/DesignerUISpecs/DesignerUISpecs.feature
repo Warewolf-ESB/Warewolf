@@ -31,10 +31,8 @@ Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 
 
 
-##Test will be Open once Ashley Setup an Automation ID's for Grid Rows
 Scenario: DeleteFirstDatagridRow_Expected_RowIsNotDeleted12
 	Given I have Warewolf running
-	Then restart the Studio and Server
 	And all tabs are closed
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
