@@ -1573,7 +1573,8 @@ namespace Dev2.Runtime.Hosting
                         Message = string.Format("{0} '{1}' to '{2}'", "Failed to Find Resource", resourceID, newName)
                     };
                 }
-                _versioningRepository.StoreVersion(GetResource(Guid.Empty, resourceID.ToString()), "unknown", "Rename", workspaceID);
+             
+                _versioningRepository.StoreVersion(GetResource(Guid.Empty, resourceID.Value), "unknown", "Rename", workspaceID);
                 //rename and save to workspace
                 var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName);
                 if(renameResult.Status != ExecStatus.Success)

@@ -257,8 +257,7 @@ namespace Dev2.Studio.UI.Tests
         private SchedulerUiMap _schedulerUiMap;
 
         #endregion Security UI Map
-
-
+        
         #region Dock Manager UI Map
 
         public DocManagerUIMap DockManagerUIMap
@@ -700,10 +699,8 @@ namespace Dev2.Studio.UI.Tests
         private WorkflowWizardUIMap _workflowWizardUIMap;
 
         #endregion Workflow Wizard UI Map
-
-        #endregion All UI Maps
-
-        #region CodedUiUtilMethods
+        
+        #region Tool Large View
 
         public LargeViewUtilMethods LargeViewUtilMethods
         {
@@ -717,51 +714,10 @@ namespace Dev2.Studio.UI.Tests
 
         private LargeViewUtilMethods _largeViewUtilMethods;
 
-        public void TypeText(string textToType)
-        {
-            Keyboard.SendKeys(textToType);
-        }
-
-        public void PressCtrlC()
-        {
-            Keyboard.SendKeys("{CTRL}c");
-        }
-
-        public void WaitForDependencyTab()
-        {
-            Playback.Wait(2000);
-        }
-
-        public void WaitForResourcesToLoad()
-        {
-            //wait for resource tree to load
-            Playback.Wait(5000);
-        }
-
-        public void EnterTextIntoWizardTextBox(int numTabs, string textToEnter, int waitAftertextEntered = 0)
-        {
-            KeyboardCommands.SendTabs(numTabs, 250);
-            Keyboard.SendKeys(textToEnter);
-            Playback.Wait(waitAftertextEntered);
-        }
-
-        public void PressButtonOnWizard(int numberOfTabsToGetToButton, int waitAfterButtonPress = 0)
-        {
-            KeyboardCommands.SendTabs(numberOfTabsToGetToButton, 250);
-            Keyboard.SendKeys("{ENTER}");
-            Playback.Wait(waitAfterButtonPress);
-        }
-
-        public void SendTabsForWizard(int numberOfTabs)
-        {
-            for(int i = 0; i < numberOfTabs; i++)
-            {
-                Keyboard.SendKeys("{TAB}");
-            }
-        }
-
         #endregion
 
+        #endregion All UI Maps
+        
         #region Init
 
         protected static void Init()

@@ -151,7 +151,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
 
-        // ReSharper disable once TooManyDependencies
         /// <summary>
         /// Constructor
         /// </summary>
@@ -163,14 +162,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
             // ReSharper restore TooManyDependencies
             : this(eventPublisher, resource, workflowHelper,
-                CustomContainer.Get<IPopupController>(), createDesigner)
+                CustomContainer.Get<IPopupController>(), new AsyncWorker(), createDesigner)
         {
         }
 
-        // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
-        // TODO Can we please not overload constructors for testing purposes. Need to systematically get rid of singletons.
-
-        // ReSharper disable once TooManyDependencies
         /// <summary>
         /// Unit Testing Constructor
         /// </summary>
@@ -181,17 +176,18 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
         // ReSharper disable TooManyDependencies
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = true, bool liteInit = false)
-            // ReSharper restore TooManyDependencies
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false, bool setupUnknownVariableTimer=true)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
             VerifyArgument.IsNotNull("popupController", popupController);
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
 
             _workflowHelper = workflowHelper;
             _resourceModel = resource;
             _resourceModel.OnDataListChanged += FireWdChanged;
             _resourceModel.OnResourceSaved += UpdateOriginalDataList;
+            _asyncWorker = asyncWorker;
 
             PopUp = popupController;
 
@@ -207,6 +203,31 @@ namespace Dev2.Studio.ViewModels.Workflow
             OutlineViewTitle = "Navigation Pane";
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
+            
+            if(setupUnknownVariableTimer)
+            SetupTimer();
+            _firstWorkflowChange = true;
+        }
+
+        private void SetupTimer()
+        {
+           
+            _changeIsPossible = true;
+            _timer = new System.Timers.Timer();
+            _timer.Elapsed += t_Elapsed;
+            _timer.Interval = GlobalConstants.AddPopupTimeDelay;
+            _timer.Start();
+        }
+
+        void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+
+                if (_changeIsPossible)
+                {
+                    AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+                    _changeIsPossible = false;
+                }
+
         }
 
         void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
@@ -634,6 +655,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, environmentRepository, _resourceModel.Environment.IsLocalHostCheck());
             WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, environmentRepository.ActiveEnvironment);
             modelProperty1.SetValue(droppedActivity);
+
+                               
         }
 
         void InitialiseIsDSFWebPage(ModelProperty modelProperty)
@@ -1525,7 +1548,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 // THIS MUST NEVER BE DELETED ;)
                 WatermarkSential.IsWatermarkBeingApplied = false;
             }
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+            _changeIsPossible = true;
+            if (_firstWorkflowChange)
+            {
+                AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false,false);
+                _firstWorkflowChange = false;
+            }
         }
 
         bool CheckDataList()
@@ -1542,8 +1570,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         bool CheckServiceDefinition()
         {
-            // This method was flawed with sb1 == sb2, that is object comparison. 
-            // I needed to change the equality comparison to ensure my assignment works as expected ;)
             return ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
         }
 
@@ -1552,15 +1578,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void ProcessDataListOnLoad()
         {
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true);
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true,false);
         }
 
         public void DoWorkspaceSave()
         {
             if (ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave && ResourceModel.Environment.IsConnected)
             {
-                AsyncWorker asyncWorker = new AsyncWorker();
-                asyncWorker.Start(() =>
+                _asyncWorker.Start(() =>
                 {
                     BindToModel();
                     ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
@@ -1568,7 +1593,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 });
             }
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false,false);
         }
 
         public static bool ValidatResourceModel(string dataList)
@@ -1601,14 +1626,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                 OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
             }
 
-            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+            AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false,false);
         }
 
         /// <summary>
         /// Adds the missing with no pop up and find unused data list items implementation.
         /// </summary>
         /// <param name="isLoadEvent">if set to <c>true</c> [is load event].</param>
-        private void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent)
+        /// <param name="updateOnDispatcher"></param>
+        private void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent,bool updateOnDispatcher=true)
         {
             if (DataListSingleton.ActiveDataList != null)
             {
@@ -1620,8 +1646,24 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
 
                 IList<IDataListVerifyPart> workflowFields = BuildWorkflowFields();
-                DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+                if (updateOnDispatcher)
+                DispatcherUpdateAction(workflowFields);
+                else
+                {
+                      DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields);
+                }
             }
+        }
+
+        public Action<IList<IDataListVerifyPart>> DispatcherUpdateAction
+        {
+            get{return _dispatcherAction??RunUpdateOnDispatcher; }
+            set{_dispatcherAction=value;}
+        }
+        private void RunUpdateOnDispatcher(IList<IDataListVerifyPart> workflowFields)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            DataListSingleton.ActiveDataList.UpdateDataListItems(ResourceModel, workflowFields));
         }
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
@@ -1816,6 +1858,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         WorkflowInputDataViewModel _workflowInputDataViewModel;
         string _workflowLink;
         ICommand _openWorkflowLinkCommand;
+        private System.Timers.Timer _timer;
+        private bool _changeIsPossible;
+
+        public bool ChangeIsPossible
+        {
+            get { return _changeIsPossible; }
+            set { _changeIsPossible = value; }
+        }
+        private Action<IList<IDataListVerifyPart>> _dispatcherAction;
+        bool _firstWorkflowChange;
+        IAsyncWorker _asyncWorker;
 
         /// <summary>
         /// Models the service model changed.
@@ -2034,8 +2087,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         #region OnDispose
         protected override void OnDispose()
         {
+            if(_timer != null)
+                _timer.Stop();
             if (_wd != null)
             {
+               
                 _wd.Context.Items.Unsubscribe<Selection>(OnItemSelected);
                 _wd.ModelChanged -= WdOnModelChanged;
                 _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);

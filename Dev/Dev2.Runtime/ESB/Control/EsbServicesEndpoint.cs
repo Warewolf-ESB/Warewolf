@@ -400,6 +400,7 @@ namespace Dev2.Runtime.ESB.Control
                     fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
                     var remoteDataList = fetchRemoteResource.DataList;
                     dataObject.RemoteInvokeResultShape = new StringBuilder(remoteDataList);
+                    dataObject.ServiceName = fetchRemoteResource.ResourceCategory;
                 }
                 else
                 {

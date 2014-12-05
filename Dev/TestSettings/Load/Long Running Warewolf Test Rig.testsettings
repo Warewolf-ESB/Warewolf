@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="Sandbox Acceptance Run" id="3264dd0f-6fc1-4cb9-b44f-c649fef29605" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>These are default test settings for a remote acceptance test run.</Description>
+<TestSettings name="Nightly Acceptance" id="08F67509-DA18-43D0-8B39-D26A1242F657" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>These are default test settings for a remote load test run agaist a Warewolf studio that stays running.</Description>
 	<Deployment>
 		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
 		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
@@ -9,11 +9,9 @@
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
         <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
 	</Deployment>
-  <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
-  <Execution location="Remote" hostProcessPlatform="MSIL">
-    <Buckets size="1" />
-    <Timeouts testTimeout="180000" />
+  <Execution location="Remote">
+    <Buckets size="10000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
@@ -31,9 +29,9 @@
         </Browser>
       </WebTestRunConfiguration>
     </TestTypeSpecific>
-    <AgentRule name="Run in Sandbox">
+    <AgentRule name="Run in Win 2k8 Testing Environment Pool">
       <SelectionCriteria>
-        <AgentProperty name="Pool" value="Sandbox" />
+        <AgentProperty name="Pool" value="LongRunning" />
       </SelectionCriteria>
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/SystemInfo/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo.SystemInfoDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="System Information">
