@@ -422,20 +422,6 @@ namespace Dev2.Core.Tests.Workflows
 
         #endregion
 
-        #region NotifyItemSelected Tests
-
-        [TestMethod]
-        public void NotifyItemSelected_WebpagePreviewNullReferenceBugFix()
-        {
-            Mock<IContextualResourceModel> resource = Dev2MockFactory.SetupResourceModelMock(); //new Mock<IContextualResourceModel>();
-            WorkflowDesignerViewModel wf = CreateWorkflowDesignerViewModel(resource.Object, null, false);
-            var page = new DsfWebPageActivity();
-            Assert.IsTrue(wf.NotifyItemSelected(page) == false);
-            wf.Dispose();
-        }
-
-        #endregion NotifyItemSelected Tests
-
         #region Internal Test Methods
 
         StringBuilder WorkflowXAMLForTest()

@@ -169,7 +169,6 @@
     <Compile Include="Activities\DsfSqlBulkInsertActivity.cs" />
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
-    <Compile Include="Activities\DsfWebPageActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
     <Compile Include="Activities\DsfWebserviceActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
@@ -186,7 +185,6 @@
     <Compile Include="Activities\PathOperations\DsfAbstractMultipleFilesActivity.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingActivity.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingJavaScriptActivity.cs" />
-    <Compile Include="Activities\DsfWebSiteActivity.cs" />
     <Compile Include="Activities\DsfActivityAbstract.cs" />
     <Compile Include="Activities\PathOperations\DsfAbstractFileActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfPathCreate.cs" />

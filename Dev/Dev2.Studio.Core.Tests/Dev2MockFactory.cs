@@ -16,7 +16,6 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Activities;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
@@ -649,8 +648,6 @@ namespace Dev2.Core.Tests
 
             _mockDataListViewModel.Setup(dlvm => dlvm.Resource).Returns(_mockresource.Object);
 
-
-            _mockWebActivity.Setup(activity => activity.UnderlyingWebActivityObjectType).Returns(typeof(DsfWebPageActivity));
             _mockDataMappingViewModel.Setup(dmvm => dmvm.Activity).Returns(_mockWebActivity.Object);
 
             _mockDataMappingViewModel.Setup(dmvm => dmvm.Inputs).Returns(inputInOutList.ToObservableCollection());

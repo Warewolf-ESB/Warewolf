@@ -354,32 +354,6 @@ namespace Dev2.Studio.Core
             return isWebpage;
         }
 
-        public static Type GetUserInterfaceType(IContextualResourceModel resource)
-        {
-            Type userInterfaceType = null;
-
-            if(resource.Category.Equals("Webpage", StringComparison.InvariantCultureIgnoreCase)
-                || resource.Category.Equals("Human Interface Workflow", StringComparison.InvariantCultureIgnoreCase))
-            {
-                userInterfaceType = typeof(DsfWebPageActivity);
-            }
-
-            if(resource.Category.Equals("Website", StringComparison.InvariantCultureIgnoreCase))
-            {
-                userInterfaceType = typeof(DsfWebSiteActivity);
-            }
-
-            return userInterfaceType;
-        }
-
-        public static string GetWizardName(IContextualResourceModel resource)
-        {
-            if(resource == null) return string.Empty;
-            if(string.IsNullOrWhiteSpace(resource.ResourceName)) return string.Empty;
-
-            return resource.ResourceName + ".wiz";
-        }
-
         /// <summary>
         /// Gets the display name associated with a specific resource and environment - used for tab headers
         /// </summary>

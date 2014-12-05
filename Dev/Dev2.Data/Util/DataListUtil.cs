@@ -43,14 +43,12 @@ namespace Dev2.Data.Util
         const string CdataStart = "<![CDATA[";
         const string CdataEnd = "]]>";
         const string AdlRoot = "ADL";
-        // "<DataList>", "</DataList>",
+      
         private static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
         private static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>", 
                                                          "<Dev2XMLResult>", "</Dev2XMLResult>", 
                                                          "<WebXMLConfiguration>", "</WebXMLConfiguration>", 
-                                                         "<Dev2WebpartBindingData>", "</Dev2WebpartBindingData>", 
                                                          "<ActivityInput>", "</ActivityInput>", 
-                                                         "<WebPart>", "</WebPart>",
                                                          "<ADL>","</ADL>",
                                                          "<DL>","</DL>"
                                                        };
@@ -1272,19 +1270,6 @@ namespace Dev2.Data.Util
         public static bool IsEvaluated(string payload)
         {
             bool result = payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;
-
-            return result;
-        }
-
-        /// <summary>
-        /// Used to calculate design time support requirements, mainly webpart wizards
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <param name="parentServiceName">Name of the parent service.</param>
-        /// <returns></returns>
-        public static bool RequiresDesignTimeBindingSupport(string serviceName, string parentServiceName)
-        {
-            bool result = serviceName.ToLower().EndsWith(".wiz") || parentServiceName.ToLower().EndsWith(".wiz");
 
             return result;
         }
