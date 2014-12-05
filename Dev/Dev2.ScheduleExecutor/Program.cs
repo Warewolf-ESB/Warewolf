@@ -25,6 +25,7 @@ using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.TaskScheduler.Wrappers;
+using Dev2.TaskScheduler.Wrappers.Interfaces;
 
 namespace Dev2.ScheduleExecutor
 {
@@ -204,7 +205,7 @@ namespace Dev2.ScheduleExecutor
         {
             string user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
             string getDebugItemsUrl = "http://localhost:3142/services/FetchRemoteDebugMessagesService?InvokerID=" +
-                                      id;
+                                      id.ToString();
             WebRequest req = WebRequest.Create(getDebugItemsUrl);
             req.Credentials = CredentialCache.DefaultCredentials;
             req.Method = "GET";
