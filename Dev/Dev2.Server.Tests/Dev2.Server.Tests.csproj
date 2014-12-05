@@ -100,6 +100,10 @@
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Server\Dev2.Server.csproj">
+      <Project>{87aefd04-29f3-45b6-a7c6-4161f9190876}</Project>
+      <Name>Dev2.Server</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

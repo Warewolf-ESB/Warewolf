@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Dev2.Common.Interfaces.Services.Sql;
+using Dev2.Services.Sql;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 {
