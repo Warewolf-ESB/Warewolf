@@ -50,3 +50,4 @@ Scenario: SequenceSmallViewControlFlowNotAllowedWorkflowOtherAllowedLargeViewCon
 #	#Dragging DataSplit Tool From Tool Box
 #	Given I send "Sequence" to "TOOLBOX,PART_SearchBox"
 #   Given I drag "TOOLSEQUENCE" onto "WORKSURFACE,StartSymbol"
+	

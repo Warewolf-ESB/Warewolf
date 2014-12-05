@@ -87,35 +87,47 @@ Scenario: Drag resource multiple times from explorer and expected mappings are n
 
 #Bug 18272
 #Scenario: Draging out the TAB is expected not to shutdown the studio 
-#	Given I have Warewolf running
-#	And all tabs are closed	
-#	And restarted the Studio and Server
-#	Given I click "EXPLORERCONNECTCONTROL"
-#	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
-#	And I click new "Workflow"
-#	#Opening StartPage
-#	And I double click point "968,51" on "MouseOverBorder"
-#	#Opening Hello World workflow
-#	Given I send "Hello World" to "EXPLORERFILTER"
-#	And I double click "EXPLORERFOLDERS,UI_Hello World_AutoID" 
-#	#Dragging hello World tab 
-#	#Given I drag click point "60,2" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID" to "WORKSURFACE"
-#    #And I drag "ACTIVETAB" onto "WORKSURFACE"
-#	Then "RIBBONNEWENDPOINT" is visible
+	#Given I have Warewolf running
+	#And all tabs are closed	
+	#Given I click "EXPLORERCONNECTCONTROL"
+	#Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	#And I click new "Workflow"
+	##Opening StartPage
+	#And I double click point "968,51" on "MouseOverBorder"
+	##Opening Hello World workflow
+	#Given I send "Hello World" to "EXPLORERFILTER"
+	#And I double click "EXPLORERFOLDERS,UI_Hello World_AutoID" 
+	##Dragging hello World tab 
+	##And I drag click point "60,2" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID" to "WORKSURFACE"
+	##And I drag "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID" to point "60,2" on "WORKSURFACE"
+    #And I drag "ACTIVETAB" onto "60,200"
+	#Then "RIBBONNEWENDPOINT" is visible
 
 
+Scenario: Testing NewWorkflow ShortcutKey Works as Expected
+	###NewWorkflowShortcutKeyExpectedWorkflowOpens
+	Given I have Warewolf running
+	And all tabs are closed	
+	And I click new "Workflow"
+    Given I send "{CTRL}W" to "WORKSURFACE"
+	Then "WORKFLOWDESIGNER,Unsaved 2(FlowchartDesigner)" is visible within "2" seconds
+    Given I send "{CTRL}{SHIFT}W" to "WORKFLOWDESIGNER"
+	Then "WebBrowserWindow" is visible within "2" seconds
+	Given I send "{ESC}" to "WebBrowserWindow"
+    Given I send "{CTRL}{SHIFT}D" to "WORKFLOWDESIGNER"
+	Then "WebBrowserWindow" is visible within "2" seconds
+	Given I send "{ESC}" to "WebBrowserWindow"
+	Given I send "{CTRL}{SHIFT}P" to "WORKFLOWDESIGNER"
+	Then "WebBrowserWindow" is visible within "2" seconds
+	Given I send "{ESC}" to "WebBrowserWindow"
+	Given I send "{CTRL}S" to ""
+	Then "WebBrowserWindow" is visible within "2" seconds
+	Given I send "{ESC}" to "WebBrowserWindow"
+	Given I send "{CTRL}D" to ""
+	Then "DEPLOYSOURCE" is visible within "2" seconds
 
 
-
-
-
-
-
-
-
-
-
-
+	
 	
 
 	
