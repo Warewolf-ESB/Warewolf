@@ -255,12 +255,6 @@
     <Compile Include="ActivityDesigners\DsfTransformActivityDesigner.xaml.cs">
       <DependentUpon>DsfTransformActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfWebPageActivityDesigner.xaml.cs">
-      <DependentUpon>DsfWebPageActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfWebSiteActivityDesigner.xaml.cs">
-      <DependentUpon>DsfWebSiteActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\TreeViewItemScrollBehaviour.cs" />
@@ -652,14 +646,6 @@
     <Page Include="ActivityDesigners\DsfTransformActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfWebPageActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfWebSiteActivityDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\Connections\ConnectControl.xaml">
       <SubType>Designer</SubType>

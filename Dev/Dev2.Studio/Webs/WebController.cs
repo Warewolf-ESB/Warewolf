@@ -41,21 +41,12 @@ namespace Dev2.Webs
 
         #region IHandle
 
-        public void Handle(ShowWebpartWizardMessage message)
-        {
-            Dev2Logger.Log.Info(message.GetType().Name);
-        }
-
         public void Handle(CloseWizardMessage message)
         {
             Dev2Logger.Log.Info(message.GetType().Name);
             CloseWizard();
         }
 
-        public void Handle(SetActivePageMessage message)
-        {
-            Dev2Logger.Log.Info(message.GetType().Name);
-        }
         #endregion IHandle
 
     }

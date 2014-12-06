@@ -170,7 +170,6 @@ namespace Dev2.Tests
             dataObject.IsDebug = true;
             dataObject.IsFromWebServer = true;
             dataObject.IsOnDemandSimulation = true;
-            dataObject.IsWebpage = false;
             dataObject.NumberOfSteps = 2;
             dataObject.OriginalInstanceID = Guid.NewGuid();
             dataObject.ParentInstanceID = "1211";
@@ -235,7 +234,6 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsOnDemandSimulation, clonedObject.IsOnDemandSimulation);
             Assert.AreEqual(dataObject.IsRemoteInvoke, clonedObject.IsRemoteInvoke);
             Assert.AreEqual(dataObject.IsRemoteInvokeOverridden, clonedObject.IsRemoteInvokeOverridden);
-            Assert.AreEqual(dataObject.IsWebpage, clonedObject.IsWebpage);
             Assert.AreEqual(dataObject.NumberOfSteps, clonedObject.NumberOfSteps);
             Assert.AreEqual(dataObject.OriginalInstanceID, clonedObject.OriginalInstanceID);
             Assert.AreEqual(dataObject.ParentInstanceID, clonedObject.ParentInstanceID);
