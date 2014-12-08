@@ -38,3 +38,16 @@ Scenario: SequenceSmallViewControlFlowNotAllowedWorkflowOtherAllowedLargeViewCon
 	And "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,BARNEY\Javascript Testing(ServiceDesigner)" is visible
 	And "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,FlowDecisionDesigner" is invisible within "3" seconds	
 	
+	
+
+
+#Scenario: Sequence
+#	Given I have Warewolf running
+#	And all tabs are closed	
+#	Given I click "EXPLORERCONNECTCONTROL"
+#	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+#	And I click "RIBBONNEWENDPOINT"
+#	#Dragging DataSplit Tool From Tool Box
+#	Given I send "Sequence" to "TOOLBOX,PART_SearchBox"
+#   Given I drag "TOOLSEQUENCE" onto "WORKSURFACE,StartSymbol"
+	

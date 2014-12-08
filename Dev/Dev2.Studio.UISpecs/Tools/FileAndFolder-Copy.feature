@@ -51,3 +51,56 @@ Scenario:CopyTool Large View And Invalid Variables Expected Error On Done Button
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is invisible within "1" seconds
 	Given "WORKSURFACE,Copy(CopyDesigner),SmallViewContent" is visible
+	
+
+Scenario:CopyTool Testing Tab Order and UiRepondingFine as expected
+	Given I have Warewolf running
+	And all tabs are closed	
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "RIBBONNEWENDPOINT"
+	#Dragging Copy Tool From Tool Box
+	Given I send "Copy" to "TOOLBOX,PART_SearchBox"
+    Given I drag "TOOLCOPY" onto "WORKSURFACE,StartSymbol"
+	##Opening Copy Large View
+	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner)"
+	##Passing Data Into the tool by using Tabs
+    And I send "[[rec(1).a]]{TAB}" to "WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__FileOrFoldertxt_AutoID"
+	And I send "Source@Username{TAB}" to ""
+    And I send "Password{TAB}" to ""
+	And I send "[[rec(2).a]]{TAB}" to ""
+	And I send "Destination{TAB}" to ""
+    And I send "Password{TAB}{SPACE}{TAB}" to ""
+	And I send "[[Result]]" to ""
+	Given "WORKSURFACE,Copy(CopyDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
+
+
+
+
+
+
+
+
+#Given I type "Warewolf@dev2.co.za" in ""
+#And I send "{TAB}" to ""
+#And I type "dev2" in ""
+#
+#And I send "{TAB}" to ""
+#And I type "[[Destination]]" in ""
+#
+#And I send "{TAB}" to ""
+#And I type "Warewolf@dev2.co.za" in ""
+#
+#
+#And I send "{TAB}" to ""
+#And I type "dev2" in ""
+#
+#And I send "{TAB}" to ""
+#And I type "[[Result]]" in ""
+#
+#
+#And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Copy(CopyDesigner),DoneButton"
+#
+#	Given "WORKSURFACE,UI_Error0_AutoID" is invisible within "1" seconds
+
+

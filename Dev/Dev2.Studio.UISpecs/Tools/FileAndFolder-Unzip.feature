@@ -7,7 +7,8 @@
 Scenario:Unzip Tool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging Unzip Tool From Tool Box
 	Given I send "Unzip" to "TOOLBOX,PART_SearchBox"
@@ -53,3 +54,93 @@ Scenario:Unzip Tool Large View And Invalid Variables Expected Error On Done Butt
 	And I send "Password2" to ""
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Unzip(UnzipDesigner),DoneButton"
 	Given "WORKSURFACE,Unzip(UnzipDesigner),SmallViewContent" is visible
+
+
+
+
+Scenario:Unzip Tool Testing Tab Order and UiRepondingFine as expected
+	Given I have Warewolf running
+	And all tabs are closed	
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "RIBBONNEWENDPOINT"
+	#Dragging UNZIP Tool From Tool Box
+	Given I send "Unzip" to "TOOLBOX,PART_SearchBox"
+    Given I drag "TOOLUNZIP" onto "WORKSURFACE,StartSymbol"
+	##Opening UNZIP Large View
+	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Unzip(UnzipDesigner)"
+	##Passing Data Into the tool by using Tabs
+    And I send "[[rec(1).a]]{TAB}" to "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__ZipNametxt_AutoID"
+	And I send "Source@Username{TAB}" to ""
+    And I send "Password{TAB}" to ""
+	And I send "[[rec(2).a]]{TAB}" to ""
+	And I send "Destination{TAB}" to ""
+    And I send "Password{TAB}{SPACE}{TAB}" to ""
+	And I send "[[Archieve]]{TAB}" to ""
+	And I send "[[Result]]" to ""
+	Given "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
+
+	
+Scenario:Unzip Tool Testing Tab Order and UiRepondingFine as expected
+	Given I have Warewolf running
+	And all tabs are closed	
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "RIBBONNEWENDPOINT"
+	#Dragging UNZIP Tool From Tool Box
+	Given I send "Unzip" to "TOOLBOX,PART_SearchBox"
+    Given I drag "TOOLUNZIP" onto "WORKSURFACE,StartSymbol"
+	##Opening UNZIP Large View
+	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Unzip(UnzipDesigner)"
+	##Passing Data Into the tool by using Tabs
+    And I send "[[rec(1).a]]{TAB}" to "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__ZipNametxt_AutoID"
+	And I send "Source@Username{TAB}" to ""
+    And I send "Password{TAB}" to ""
+	And I send "[[rec(2).a]]{TAB}" to ""
+	And I send "Destination{TAB}" to ""
+    And I send "Password{TAB}{SPACE}{TAB}" to ""
+	And I send "[[Archieve]]{TAB}" to ""
+	And I send "[[Result]]" to ""
+	Given "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
