@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>InfragisticsWPF4.Math.v12.1</name>
+        <name>InfragisticsWPF4.Math.v14.2</name>
     </assembly>
     <members>
         <member name="T:Infragistics.Math.BooleanMatrix">

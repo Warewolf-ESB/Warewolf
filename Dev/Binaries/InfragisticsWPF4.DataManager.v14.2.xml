@@ -1,0 +1,3531 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.DataManager.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Collections.BindableItemCollection`1">
+            <summary>
+            A Collection that contains items that are bound to a DataSource. 
+            Note: all items might not exist in the collection at a given time, as it only pulls down items as they're requested.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.#ctor(Infragistics.IProvideDataItems{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Collections.BindableItemCollection`1"/> class.
+            </summary>
+            <param name="owner">The object that will actually be providing the items of the collection.</param>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.GetCount">
+            <summary>
+            Retrieves the amount of items in the collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.GetItem(System.Int32)">
+            <summary>
+            Gets the item at the specified index.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.AddBoundItem(System.Int32,`0)">
+            <summary>
+            Adds the item at the specified index. 
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.AddItem(System.Int32,`0)">
+            <summary>
+            Adds the unbound item at the specified index. 
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.InsertItem(System.Int32,`0)">
+            <summary>
+            Adds an item to the collection at a given index.
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.RemoveItem(System.Int32)">
+            <summary>
+            Removes the item at the specified index
+            </summary>
+            <param name="index"></param>
+            <returns>True if the item was removed.</returns>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.CreateItem">
+            <summary>
+            Creates a new object with a default underlying data object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.CreateItem(System.Object)">
+            <summary>
+            Creates a new object using the inputted data object.
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Collections.BindableItemCollection`1.RemoveRange(System.Collections.Generic.IList{`0})">
+            <summary>
+            Removes the specified list of items.
+            </summary>
+            <param name="itemsToRemove"></param>
+        </member>
+        <member name="T:Infragistics.FormattingRuleCollection`1">
+            <summary>
+            A collection of IRule objects which need a chance to gather data during the databinding process.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Infragistics.FormattingRuleCollection`1.GetRulesForStage(Infragistics.EvaluationStage)">
+            <summary>
+            Returns a collection of rules which need to be processed at the given stage.
+            </summary>
+            <param name="stage"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.FilterContext">
+            <summary>
+            A nongeneric abstract class representing a filter on an object.
+            Cast up to CustomFilter<![CDATA[<T>]]> to get an expression representing the filter.
+            </summary>
+        </member>
+        <member name="M:Infragistics.FilterContext.CreateGenericFilter(Infragistics.CachedTypedInfo,System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Creates a FilterContext instanced typed to the object type of the data being processed.
+            </summary>
+            <param name="cachedTypeInfo">The data object type that will be processed over.</param>
+            <param name="fieldDataType">The field data type that will be processed on.</param>
+            <param name="caseSensitive">True if case sensitivity should be applied.  Only used for string fieldDataTypes.</param>
+            <param name="fromDateColumn">True if this filter was created by a DateColumn and will perform some extra actions to filter out time aspect.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext.CreateExpression(System.String,Infragistics.ComparisonOperator,System.Object,System.Boolean)">
+            <summary>
+            Creates a new <see cref="T:System.Linq.Expressions.Expression"/>
+            </summary>
+            <param name="fieldName"></param>
+            <param name="op"></param>
+            <param name="value"></param>
+            <param name="caseSensitive"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext.CreateExpression(System.String,Infragistics.ComparisonOperator,System.Object)">
+            <summary>
+            Creates a new <see cref="T:System.Linq.Expressions.Expression"/>
+            </summary>
+            <param name="fieldName"></param>
+            <param name="op"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext.CreateExpression(Infragistics.ConditionCollection)">
+            <summary>
+            Creates a new <see cref="T:System.Linq.Expressions.Expression"/>
+            </summary>
+            <param name="conditionGroup"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext.CreateExpression(Infragistics.RecordFilterCollection)">
+            <summary>
+            Creates a new <see cref="T:System.Linq.Expressions.Expression"/>
+            </summary>
+            <param name="conditionGroup"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.FilterContext.CaseSensitive">
+            <summary>
+            Gets if the filters being built will be case sensitive or not.
+            </summary>
+        </member>
+        <member name="P:Infragistics.FilterContext.FieldDataType">
+            <summary>
+            The <see cref="T:System.Type"/> of the field being filtered on.
+            </summary>
+        </member>
+        <member name="P:Infragistics.FilterContext.FromDateColumn">
+            <summary>
+            Gets if the filter being build is for the Date Column.  If so then we will use some ranging logic when
+            building filters since the Date column does not support time.
+            </summary>
+        </member>
+        <member name="P:Infragistics.FilterContext.CachedTypedInfo">
+            <summary>
+            The CachedTypedInfo for the opeartion
+            </summary>
+        </member>
+        <member name="T:Infragistics.FilterContext`1">
+            <summary>
+            A <see cref="T:Infragistics.FilterContext"/> object typed to a particular object.
+            </summary>
+            <typeparam name="TDataObject">The type of the object that will be processed against.</typeparam>
+        </member>
+        <member name="F:Infragistics.FilterContext`1.EqualsMethod">
+            <summary>
+            Gets the info describing the Object.Equals method.
+            </summary>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.#ctor(System.Type,System.Boolean,System.Boolean,Infragistics.CachedTypedInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.FilterContext"/> class.
+            </summary>
+            <param name="fieldDataType"></param>
+            <param name="caseSensitive"></param>
+            <param name="fromDateColumn"></param>
+            <param name="cti"></param>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.OrElseExpression``1(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Combines two <see cref="T:System.Linq.Expressions.Expression"/> objects with a OR Expression.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which is the combination of the two inputs.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.AndAlsoExpression``1(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Combines two <see cref="T:System.Linq.Expressions.Expression"/> objects with a AND Expression.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which is the combination of the two inputs.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.ExclusiveOrExpression``1(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Combines two <see cref="T:System.Linq.Expressions.Expression"/> objects with a XOR Expression.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which is the combination of the two inputs.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateDateTimeTimeExcludedEqualsExpression``1(System.String,System.Object)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for equality.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateEqualsExpression``1(System.String,System.Object)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for equality.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateNotEqualsExpression``1(System.String,System.Object)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for inequality.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateGreaterThanExpression``1(System.String,System.Object)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for greater than the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateGreaterThanOrEqualsExpression``1(System.String,System.Object)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for greater than or equal the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateLessThanExpression``1(System.String,System.Object)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for less than the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateLessThanOrEqualsExpression``1(System.String,System.Object)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for less than or equal the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringExpression``1(System.String,System.Linq.Expressions.Expression{System.Func{System.String,System.Boolean}})">
+            <summary>
+            Builds an expression for analyzing string
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="booleanStringExpression">A <![CDATA[Expression<Func<string, bool>>]]> which will analyze a string.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateEqualsCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive equals against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateNotEqualsCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive inequality against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStartsWithExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive starts with against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStartsWithCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive starts with against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateEndsWithExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive ends with against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateEndsWithCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive ends with against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateContainsExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive contains against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateContainsCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive contains against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateDoesNotContainExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive does not contain against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateDoesNotContainCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive does not contain against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringGreaterThanExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive greater than against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringGreaterThanCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive greater than against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringGreaterThanOrEqualExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive greater than or equal against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringGreaterThanOrEqualCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive greater than or equal against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringLessThanExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive less than against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringLessThanCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive less than against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringLessThanOrEqualExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive less than or equal against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringLessThanOrEqualCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive less than or equal against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringEmptyExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for empty strings values.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringNotEmptyExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for nonempty strings values.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateDoesNotStartWithExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive does not starts with against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateDoesNotStartWithCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive does not starts with against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateDoesNotEndWithExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case sensitive does not ends with against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateDoesNotEndWithCaseInsensitiveExpression``1(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive does not ends with against the inputted value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The value that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateExpression(Infragistics.ConditionCollection)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> based on all the terms in the <see cref="T:Infragistics.ConditionCollection"/>.
+            </summary>
+            <param name="conditionGroup"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateExpression(Infragistics.RecordFilterCollection)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> from the <see cref="T:Infragistics.RecordFilterCollection"/>
+            </summary>
+            <param name="conditionGroup"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateExpression(System.String,Infragistics.ComparisonOperator,System.Object)">
+            <summary>
+            Creates an expression based on the <see cref="T:Infragistics.ComparisonOperator"/>.
+            </summary>
+            <param name="fieldName"></param>
+            <param name="op"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateExpression(System.String,Infragistics.ComparisonOperator,System.Object,System.Boolean)">
+            <summary>
+            Creates a new <see cref="T:System.Linq.Expressions.Expression"/>
+            </summary>
+            <param name="fieldName"></param>
+            <param name="op"></param>
+            <param name="value"></param>
+            <param name="caseSensitive"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateCaseInsensitiveStringExpression(System.String,Infragistics.ComparisonOperator,System.Object)">
+            <summary>
+            Returns an <see cref="T:System.Linq.Expressions.Expression"/> for a case insensitive string operation.
+            </summary>
+            <param name="fieldName"></param>
+            <param name="op"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateStringInOperandCaseInsensitiveExpression``1(System.String,System.Collections.IList)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive inequality against a list of values.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="value">The IList of values that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateInOperandExpression``1(System.String,System.Collections.IList)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for case insensitive inequality against a list of values.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="values">The IList of values that will be analyzed against.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateCaseSensitiveStringExpression(System.String,Infragistics.ComparisonOperator,System.Object)">
+            <summary>
+            Returns an <see cref="T:System.Linq.Expressions.Expression"/> for a case sensitive string operation.
+            </summary>
+            <param name="fieldName"></param>
+            <param name="op"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateObjectExpression(System.String,Infragistics.ComparisonOperator,System.Object)">
+            <summary>
+            Returns an <see cref="T:System.Linq.Expressions.Expression"/> for a object operation.
+            </summary>
+            <param name="fieldName"></param>
+            <param name="op"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateThisWeekExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for this week.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateNextWeekExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for next week.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateLastWeekExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for last week.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateThisMonthExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for this Month.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateNextMonthExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for next Month.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateLastMonthExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for last Month.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateThisYearExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for this Year.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateNextYearExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for next Year.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateLastYearExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for last Year.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateThisQuarterExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for this Quarter.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateNextQuarterExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for next Quarter.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateLastQuarterExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for last Quarter.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateYearToDateExpression``1(System.String)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for year to date.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateDateRangeExpression``1(System.String,System.DateTime,System.DateTime)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that evaluates for date ranges.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="includeStartDate"></param>
+            <param name="excludedEndDate"></param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateMonthExpression``1(System.String,System.Int32)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that will evaluate an object's DateTime field for a particular month value.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName">The property that will be evaluated on.</param>
+            <param name="month">The int month value which will be filterd for.</param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="M:Infragistics.FilterContext`1.CreateQuarterYearIndependentExpression``1(System.String,System.Int32)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> that will evaluate an object's DateTime field for a particular quarter.
+            </summary>
+            <typeparam name="TDataObjectType">The object type that the <see cref="T:System.Linq.Expressions.Expression"/> will be applied over.</typeparam>
+            <param name="fieldName"></param>
+            <param name="quarter"></param>
+            <returns>An <see cref="T:System.Linq.Expressions.Expression"/> which will evaluate for the condition.</returns>
+        </member>
+        <member name="T:Infragistics.GroupByContext">
+            <summary>
+            An object that encapsulates the GroupBy functionality used by the <see cref="T:Infragistics.DataManagerBase"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.GroupByContext.CreateGenericCustomGroup(Infragistics.CachedTypedInfo,System.String,System.Object)">
+            <summary>
+            Creates a Generic instance of the <see cref="T:Infragistics.GroupByContext"/>.
+            </summary>
+            <param name="cti">The type of data to create the GroupByContext from.</param>
+            <param name="propertyName">The name of the property, that the data should be grouped by.</param>
+            <param name="comparer">The IEqualityComparer that will be used to perform the grouping</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.GroupByContext.CreateGenericCustomGroup(Infragistics.CachedTypedInfo,System.Object,System.Windows.Data.IValueConverter,System.Object)">
+            <summary>
+            Creates a Generic instance of the <see cref="T:Infragistics.GroupByContext"/>.
+            </summary>
+            <param name="cti">The type of data to create the GroupByContext from.</param>
+            <param name="comparer"></param>
+            <param name="converter"></param>
+            <param name="converterParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.GroupByContext.Group``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Groups the specified <see cref="T:System.Linq.IQueryable"/> by the property this data represents.
+            </summary>
+            <typeparam name="T">The typeof data that needs to be grouped.</typeparam>
+            <param name="query">A colleciton of data to group by.</param>
+            <returns>Collection of <see cref="T:Infragistics.GroupByDataContext"/> objects.</returns>
+        </member>
+        <member name="P:Infragistics.GroupByContext.PropertyName">
+            <summary>
+            Gets the name of the property that data should be grouped by.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByContext.Summaries">
+            <summary>
+            Gets a list of the summaries that should be applied to Children.
+            </summary>
+        </member>
+        <member name="T:Infragistics.GroupByContext`1">
+            <summary>
+            An object that encapsulates the GroupBy functionality used by the <see cref="T:Infragistics.DataManagerBase"/>
+            </summary>
+            <typeparam name="TColumnType">The type of data that should be grouped by.</typeparam>
+        </member>
+        <member name="M:Infragistics.GroupByContext`1.#ctor(System.String,System.Object,Infragistics.CachedTypedInfo)">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.GroupByContext"/>.
+            </summary>
+            <param name="propertyName"></param>
+            <param name="comparer"></param>
+            <param name="cti"></param>
+        </member>
+        <member name="M:Infragistics.GroupByContext`1.#ctor(System.Object,System.Windows.Data.IValueConverter,System.Object,Infragistics.CachedTypedInfo)">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.GroupByContext"/>.
+            </summary>
+            <param name="comparer"></param>
+            <param name="converter"></param>
+            <param name="converterParam"></param>
+            <param name="cti"></param>
+        </member>
+        <member name="M:Infragistics.GroupByContext`1.Group``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Groups the specified <see cref="T:System.Linq.IQueryable"/> by the property this data represents.
+            </summary>
+            <typeparam name="T">Type typeof data that needs to be grouped.</typeparam>
+            <param name="query">A colleciton of data to group by.</param>
+            <returns>Collection of <see cref="T:Infragistics.GroupByDataContext"/> objects.</returns>
+        </member>
+        <member name="P:Infragistics.GroupByContext`1.Comparer">
+            <summary>
+            Gets the Comparer that will be used to perform the grouping.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByContext`1.Converter">
+            <summary>
+            Gets the <see cref="T:System.Windows.Data.IValueConverter"/> which will be used to evaluate the GroupBy.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByContext`1.ConverterParameter">
+            <summary>
+            The parameter applied to the <see cref="P:Infragistics.GroupByContext`1.Converter"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByContext`1.CachedTypedInfo">
+            <summary>
+            The CachedTypedInfo for the operation.
+            </summary>
+        </member>
+        <member name="T:Infragistics.GroupByDataContext">
+            <summary>
+            An object that contains the informaton of data that has been grouped by the <see cref="T:Infragistics.GroupByContext"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.Value">
+            <summary>
+            Gets the value of the that the data has been grouped by.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.Records">
+            <summary>
+            Gets a collection of data that belongs to this particular grouping.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.Count">
+            <summary>
+            Gets the total amount of records in this particular grouping.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.DisplayValue">
+            <summary>
+            Gets the string representation of the value, with the Count appended to it. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.SummaryLookupResults">
+            <summary>
+            Gets a lookup table of the SummaryResults based on a column key.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.SummaryResults">
+            <summary>
+            Summary results for that were specified for all fields.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.GroupBySummaryLookupResults">
+            <summary>
+            Gets a lookup table of the GroupBySummaryResults based on a column key.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.GroupBySummaryResults">
+            <summary>
+            Summary Results specific to the particular field that this GroupByContext represents.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.Summaries">
+            <summary>
+            Gets a list of the summaries that should be applied to Children.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.GroupBySummaries">
+            <summary>
+            Gets a list of the summaries that should be applied specifically for GroupBy.
+            </summary>
+        </member>
+        <member name="P:Infragistics.GroupByDataContext.TypedInfo">
+            <summary>
+            Gets/Sets the TypedInfo for the object.
+            </summary>
+        </member>
+        <member name="T:Infragistics.InformationContext">
+            <summary>
+            A context object used to get data from the data for secondary features.
+            </summary>
+        </member>
+        <member name="F:Infragistics.InformationContext.IsNullOrEmptyMethod">
+            <summary>
+            A <see cref="T:System.Reflection.MethodInfo"/> object containing a method that will validate if an inputted string is null or empty. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.InformationContext.CreateGenericInformationContext(Infragistics.CachedTypedInfo,System.String,System.Boolean,System.Boolean,System.Object,System.Boolean)">
+            <summary>
+            Creates a typed <see cref="T:Infragistics.InformationContext"/> object.
+            </summary>
+            <param name="cti"></param>
+            <param name="propertyName"></param>
+            <param name="sortAscending"></param>
+            <param name="caseSensitive"></param>
+            <param name="comparer"></param>
+            <param name="fromDateColumn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext.GetDistinctValues(System.Collections.IEnumerable)">
+            <summary>
+            Gets an <see cref="T:System.Collections.IList"/> of distinct values from the inputted <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext.GetDistinctValuesAsync(System.Collections.IEnumerable,System.Threading.CancellationToken,System.Boolean)">
+            <summary>
+            Gets an <see cref="T:System.Collections.IList"/> of distinct values from the inputted <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="list"></param>
+            <param name="token"></param>
+            <param name="runAsync"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext.GetCompleteValuesList(System.Collections.IEnumerable)">
+            <summary>
+            Returns an <see cref="T:System.Collections.IList"/> of objects from this <see cref="T:Infragistics.InformationContext"/>.
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.InformationContext.PropertyName">
+            <summary>
+            Gets the name of the property that will be processed for information.
+            </summary>
+        </member>
+        <member name="P:Infragistics.InformationContext.DataType">
+            <summary>
+            Gets the Type of the data object being processed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.InformationContext.PropertyType">
+            <summary>
+            Gets the Type of the objects provided by the property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.InformationContext.CaseSensitive">
+            <summary>
+            Gets if case sensitivity should be used when generating the list.
+            </summary>
+        </member>
+        <member name="P:Infragistics.InformationContext.SortAscending">
+            <summary>
+            Gets if the generated list should be sorted.
+            </summary>
+        </member>
+        <member name="P:Infragistics.InformationContext.Comparer">
+            <summary>
+            Gets the Comparer that should be used for sorting.
+            </summary>
+        </member>
+        <member name="P:Infragistics.InformationContext.Lambda">
+            <summary>
+            Gets the <see cref="T:System.Linq.Expressions.LambdaExpression"/> which is used to generate the list.
+            </summary>
+        </member>
+        <member name="P:Infragistics.InformationContext.FromDateColumn">
+            <summary>
+            Gets if the unique list being build is for the Date Column.  If so then we will use some ranging logic when
+            building unique list since the Date column does not support time.
+            </summary>
+        </member>
+        <member name="T:Infragistics.InformationContext`2">
+            <summary>
+            A class of <see cref="T:Infragistics.InformationContext"/> objects generically typed.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TColumnType"></typeparam>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.#ctor(System.String,System.Boolean,System.Boolean,System.Object,System.Boolean,Infragistics.CachedTypedInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.InformationContext"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.GetDistinctValues(System.Collections.IEnumerable)">
+            <summary>
+            Gets an <see cref="T:System.Collections.IList"/> of distinct values from the inputted <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.GetDistinctValuesAsync(System.Collections.IEnumerable,System.Threading.CancellationToken,System.Boolean)">
+            <summary>
+            Gets an <see cref="T:System.Collections.IList"/> of distinct values from the inputted <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="list"></param>
+            <param name="token"></param>
+            <param name="runAsync"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.GetDistinctValues(System.Linq.IQueryable{`0})">
+            <summary>
+            Gets an <see cref="T:System.Collections.IList"/> of distinct values from the inputted <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.GetDistinctValuesAsync(System.Linq.IQueryable{`0},System.Threading.CancellationToken,System.Boolean)">
+            <summary>
+            Gets an <see cref="T:System.Collections.IList"/> of distinct values from the inputted <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="list"></param>
+            <param name="token"></param>
+            <param name="runAsync"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.GetDistinctValuesImpl(System.Linq.IQueryable{`0},System.Threading.CancellationToken,System.Boolean)">
+            <summary>
+            Gets an <see cref="T:System.Collections.IList"/> of distinct values from the inputted <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="list"></param>
+            <param name="token"></param>
+            <param name="runAsync"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.GetDistinctValues(System.Linq.IQueryable)">
+            <summary>
+            Gets an <see cref="T:System.Collections.IList"/> of distinct values from the inputted <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.GetCompleteValuesList(System.Collections.IEnumerable)">
+            <summary>
+            Returns an <see cref="T:System.Collections.IList"/> of objects from this <see cref="T:Infragistics.InformationContext"/>.
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.GetCompleteValuesList(System.Linq.IQueryable)">
+            <summary>
+            Returns an <see cref="T:System.Collections.IList"/> of objects from this <see cref="T:Infragistics.InformationContext"/>.
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.InformationContext`2.GetCompleteValuesList(System.Linq.IQueryable{`0})">
+            <summary>
+            Returns an <see cref="T:System.Collections.IList"/> of objects from this <see cref="T:Infragistics.InformationContext"/>.
+            </summary>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.MergedDataContext">
+            <summary>
+            An object that encapsulates the Merged Data functionality used by the <see cref="T:Infragistics.DataManagerBase"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.MergedDataContext.CreateGenericCustomMerge(Infragistics.CachedTypedInfo,System.String,System.Object)">
+            <summary>
+            Creates a Generic instance of the <see cref="T:Infragistics.MergedDataContext"/>.
+            </summary>
+            <param name="cti">The type of data to create the MergedDataContext from.</param>
+            <param name="propertyName">The name of the property, that the data should be merged by.</param>
+            <param name="comparer">The IEqualityComparer that will be used to perform the mergin</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.MergedDataContext.CreateGenericCustomMerge(Infragistics.CachedTypedInfo,System.Object,System.Windows.Data.IValueConverter,System.Object)">
+            <summary>
+            Creates a Generic instance of the <see cref="T:Infragistics.MergedDataContext"/>.
+            </summary>
+            <param name="cti">The type of data to create the MergedDataContext from.</param>
+            <param name="comparer"></param>
+            <param name="converter"></param>
+            <param name="converterParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.MergedDataContext.Merge(System.Linq.IQueryable,System.Collections.Generic.List{Infragistics.MergedDataContext},Infragistics.SummaryDefinitionCollection)">
+            <summary>
+            Merges the specified <see cref="T:System.Linq.IQueryable"/> by the property this data represents.
+            </summary>
+            <param name="query"></param>
+            <param name="mdcs"></param>
+            <param name="summaries"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.MergedDataContext.Merge(System.Linq.IQueryable,System.Collections.Generic.List{Infragistics.MergedDataContext},Infragistics.MergeDelegate{System.Object,System.Collections.IEnumerable,Infragistics.MergedDataContext,System.Object,Infragistics.MergedColumnInfo,System.Object},Infragistics.MergedColumnInfo)">
+            <summary>
+            Merges the specified <see cref="T:System.Linq.IQueryable"/> by the property this data represents.
+            </summary>
+            <param name="q"></param>
+            <param name="mdcs"></param>
+            <param name="method"></param>
+            <param name="parentMCI"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.MergedDataContext.PropertyName">
+            <summary>
+            Gets the name of the property that data should be merged by.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedDataContext.SortContext">
+            <summary>
+            Gets/Sets the CurrentSort that will be applied when the data is merged by a particular field.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedDataContext.SortAscending">
+            <summary>
+            Gets/Sets the sort direction that should be applied to the field that the underlying data has been merged by.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedDataContext.MergedObject">
+            <summary>
+            The Object the merged operation is performed on.
+            </summary>
+        </member>
+        <member name="T:Infragistics.MergedDataContext`2">
+            <summary>
+            An object that encapsulates the Merging functionality used by the <see cref="T:Infragistics.DataManagerBase"/>
+            </summary>
+            <typeparam name="T">The data object that the field belongs to.</typeparam>
+            <typeparam name="TColumnType">The type of data that should be merged by.</typeparam>
+        </member>
+        <member name="M:Infragistics.MergedDataContext`2.#ctor(System.String,System.Object,Infragistics.CachedTypedInfo)">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.MergedDataContext"/>.
+            </summary>
+            <param name="propertyName"></param>
+            <param name="comparer"></param>
+            <param name="typedInfo"></param>
+        </member>
+        <member name="M:Infragistics.MergedDataContext`2.#ctor(System.Object,System.Windows.Data.IValueConverter,System.Object,Infragistics.CachedTypedInfo)">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.MergedDataContext"/>.
+            </summary>
+            <param name="comparer"></param>
+            <param name="converter"></param>
+            <param name="converterParam"></param>
+            <param name="typedInfo"></param>
+        </member>
+        <member name="M:Infragistics.MergedDataContext`2.Merge(System.Linq.IQueryable,System.Collections.Generic.List{Infragistics.MergedDataContext},Infragistics.SummaryDefinitionCollection)">
+            <summary>
+            Merges the specified <see cref="T:System.Linq.IQueryable"/> by the property this data represents.
+            </summary>
+            <param name="query"></param>
+            <param name="mdcs"></param>
+            <param name="summaries"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.MergedDataContext`2.Merge(System.Linq.IQueryable,System.Collections.Generic.List{Infragistics.MergedDataContext},Infragistics.MergeDelegate{System.Object,System.Collections.IEnumerable,Infragistics.MergedDataContext,System.Object,Infragistics.MergedColumnInfo,System.Object},Infragistics.MergedColumnInfo)">
+            <summary>
+            Merges the specified <see cref="T:System.Linq.IQueryable"/> by the property this data represents.
+            </summary>
+            <param name="iquery"></param>
+            <param name="mdcs"></param>
+            <param name="method"></param>
+            <param name="parentMCI"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.MergedDataContext`2.OnGrouping(System.Object,System.Collections.IEnumerable,Infragistics.MergedDataContext,System.Object,Infragistics.MergedColumnInfo)">
+            <summary>
+            Invoked by the GroupBy query, this will recurse through all MergeDataContexts and Invoke their merge method.
+            </summary>
+            <param name="key"></param>
+            <param name="list"></param>
+            <param name="nextMergeDataContext"></param>
+            <param name="mergedObject"></param>
+            <param name="parentMCI"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.MergedDataContext`2.AppendColumnInfoToRowInfo(`0,Infragistics.MergedColumnInfo,System.Int32,System.Int32,System.Object)">
+            <summary>
+            Takes the given MergedColumnInfo, and determines if needs to create a new MergedRowInfo or use and existing one, then appends itself to that RowInfo
+            </summary>
+            <param name="data"></param>
+            <param name="mci"></param>
+            <param name="index"></param>
+            <param name="lastIndex"></param>
+            <param name="mergedObject"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.MergedDataContext`2.Comparer">
+            <summary>
+            Gets the Comparer that will be used to perform the merging.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedDataContext`2.Converter">
+            <summary>
+            Gets the <see cref="T:System.Windows.Data.IValueConverter"/> which will be used to evaluate the merge.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedDataContext`2.ConverterParameter">
+            <summary>
+            The parameter applied to the <see cref="P:Infragistics.MergedDataContext`2.Converter"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedDataContext`2.Summaries">
+            <summary>
+            A collection of summaries that should be applied to each subset of merged groupings.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedDataContext`2.TypedInfo">
+            <summary>
+            Gets/Sets the TypedInfo for the object.
+            </summary>
+        </member>
+        <member name="T:Infragistics.MergedRowInfo">
+            <summary>
+            An object that stores the merge information for a particualr data row from an items source.
+            </summary>
+        </member>
+        <member name="M:Infragistics.MergedRowInfo.Equals(System.Object)">
+            <summary>
+            Does an equals comparison on the underlying data, not the MergedRowInfo object.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.MergedRowInfo.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="P:Infragistics.MergedRowInfo.MergedGroups">
+            <summary>
+            A collection of MergeColumnInfo that this row has been merged by.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedRowInfo.Data">
+            <summary>
+            The underlying data object that this row object represents
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedRowInfo.IsLastRowInGroup">
+            <summary>
+            A lookup table for whether a specific key of a MergedColumnInfo, that this row is the last one in its grouping.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedRowInfo.IsFirstRowInGroup">
+            <summary>
+            A lookup table for whether a specific key of a MergedColumnInfo, that this row is the first one in its grouping.
+            </summary>
+        </member>
+        <member name="T:Infragistics.MergedColumnInfo">
+            <summary>
+            An object that represents a particular field that the data has been merged by. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedColumnInfo.Key">
+            <summary>
+            Gets the unique key that this particualr field grouping represents.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedColumnInfo.Children">
+            <summary>
+            Gets the collection of child rows that belong to this grouping, who all share the same value for the field as the Key
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedColumnInfo.ParentMergedColumnInfo">
+            <summary>
+            The MergedColumnInfo who this grouping falls under, null if its the root. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedColumnInfo.DataType">
+            <summary>
+            Gets the Type of the underling data row.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedColumnInfo.Summaries">
+            <summary>
+            Gets a list of the summaries that should be applied to Children.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedColumnInfo.SummaryResultCollection">
+            <summary>
+            When this collection is acccessed it will lazily perform the summaries for this particular MergedColumnInfo based on the children.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedColumnInfo.MergingObject">
+            <summary>
+            The object used to create this merging.
+            </summary>
+        </member>
+        <member name="P:Infragistics.MergedColumnInfo.TypedInfo">
+            <summary>
+            Gets/Sets the TypedInfo for the object.
+            </summary>
+        </member>
+        <member name="T:Infragistics.MergeDelegate`6">
+            <summary>
+            Custom deletage used to pass information in the MergedDataContext.
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <typeparam name="T3"></typeparam>
+            <typeparam name="T4"></typeparam>
+            <typeparam name="T5"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="in1"></param>
+            <param name="in2"></param>
+            <param name="in3"></param>
+            <param name="in4"></param>
+            <param name="in5"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.SortContext">
+            <summary>
+            A nongeneric abstract class representing a sort on a property.
+            Cast up to CurrentSort<![CDATA[<T>]]> to get an expression representing the sort.
+            </summary>
+        </member>
+        <member name="M:Infragistics.SortContext.CreateGenericSort(Infragistics.CachedTypedInfo,System.String,System.Boolean,System.Boolean,System.Object)">
+            <summary>
+            Initalizes a new CurrentSort<![CDATA[<T>]]> and returns it as type CurrentSort.
+            </summary>
+            <param name="cachedTypeInfo">The type of the CurrentSort<![CDATA[<T>]]> to create.</param>
+            <param name="propertyName">The name of the property that the created sort should be sorting.</param>
+            <param name="sortAscending">True if the sort should sort the property in ascending order.</param>
+            <param name="isCaseSensitiveSort">True if the sort should be considered case sensitive.  Only used for string fields.</param>
+            <param name="comparer">An IComparer<![CDATA[<T>]]> which will be used instead of the default sorting.</param>
+            <returns>A new CustomFilter which is also of type CurrentSort<![CDATA[<T>]]>.</returns>
+        </member>
+        <member name="M:Infragistics.SortContext.CreateGenericSort(Infragistics.CachedTypedInfo,System.Boolean,System.Object,System.Windows.Data.IValueConverter,System.Object)">
+            <summary>
+            Initalizes a new CurrentSort<![CDATA[<T>]]> and returns it as type CurrentSort.
+            </summary>
+            <param name="cachedTypeInfo">The type of the CurrentSort<![CDATA[<T>]]> to create.</param>
+            <param name="sortAscending">True if the sort should sort the property in ascending order.</param>
+            <param name="comparer">An IComparer<![CDATA[<T>]]> which will be used instead of the default sorting.</param>
+            <param name="converter"></param>
+            <param name="converterParam"></param>
+            <returns>A new CustomFilter which is also of type CurrentSort<![CDATA[<T>]]>.</returns>
+        </member>
+        <member name="M:Infragistics.SortContext.Sort``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Sorts a given IQueryable based on the currently sorted column.
+            </summary>
+            <param name="query">The IQueryable that should be sorted.</param>		
+            <returns>A sorted IOrderedQueryable, sorted on the currently sorted property.</returns>
+        </member>
+        <member name="M:Infragistics.SortContext.AppendSort``1(System.Linq.IOrderedQueryable{``0})">
+            <summary>
+            Appends to this sort to the IOrderedQueryable sort
+            </summary>
+            <param name="query">The existing query that already has a sort on it.</param>		
+            <returns>A sorted IOrderedQueryable, sorted on the currently sorted property.</returns>
+        </member>
+        <member name="P:Infragistics.SortContext.SortPropertyName">
+            <summary>
+            Gets a string describing the column which is sorted.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SortContext.SortAscending">
+            <summary>
+            Gets if the current sort is sorted ascending or descending.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SortContext.PropertyType">
+            <summary>
+            Gets the type of the property that is being sorted on.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SortContext.DataType">
+            <summary>
+            Gets the type of the object that is being sorted.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SortContext.CaseSensitiveSort">
+            <summary>
+            Gets if the sort will be case sensitive.  Only applies to string columns.
+            </summary>
+        </member>
+        <member name="T:Infragistics.SortContext`2">
+            <summary>
+            A generic class to describe a custom sort on a property given the type of object and column type.
+            </summary>
+            <typeparam name="T">The type of object that is sorted by this sort.</typeparam>
+            <typeparam name="TColumnType">The column type that is sorted by this sort.</typeparam>
+        </member>
+        <member name="M:Infragistics.SortContext`2.#ctor(System.String,System.Boolean,System.Boolean,System.Object,Infragistics.CachedTypedInfo)">
+            <summary>
+            Initalizes a new instance of the CurrentSort class.
+            </summary>
+            <param name="propertyName">The name of the property to be sorted.</param>
+            <param name="sortAscending">True if the property should be sorted ascending.</param>
+            <param name="caseSensitiveSort">True if the sort should be case sensitive.  Only applies to string columns.</param>
+            <param name="comparer">A custom IComparer<![CDATA[<T>]]> object, generic typed to the data type of the data in the column.  If non null this will take precedence over case sensitivity.</param>
+            <param name="cachedTypeInfo"/>
+        </member>
+        <member name="M:Infragistics.SortContext`2.#ctor(System.String,System.Boolean,System.Boolean,Infragistics.CachedTypedInfo)">
+            <summary>
+            Initalizes a new instance of the CurrentSort class.
+            </summary>
+            <param name="propertyName">The name of the property to be sorted.</param>
+            <param name="sortAscending">True if the property should be sorted ascending.</param>
+            <param name="caseSensitiveSort">True if the sort should be case sensitive.  Only applies to string columns.</param>
+            <param name="cachedTypeInfo"/>
+        </member>
+        <member name="M:Infragistics.SortContext`2.#ctor(System.Boolean,System.Object,System.Windows.Data.IValueConverter,System.Object,Infragistics.CachedTypedInfo)">
+            <summary>
+            Initalizes a new instance of the CurrentSort class.
+            </summary>
+            <param name="sortAscending">True if the property should be sorted ascending.</param>
+            <param name="comparer"></param>
+            <param name="converter"></param>
+            <param name="converterParam"></param>
+            <param name="cachedTypeInfo"></param>
+        </member>
+        <member name="M:Infragistics.SortContext`2.Sort``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Sorts a given IQueryable based on the currently sorted column.
+            </summary>
+            <param name="query">The IQueryable that should be sorted.</param>		
+            <returns>A sorted IQueryable, sorted on the currently sorted property.</returns>
+        </member>
+        <member name="M:Infragistics.SortContext`2.AppendSort``1(System.Linq.IOrderedQueryable{``0})">
+            <summary>
+            Appends to this sort to the IOrderedQueryable sort
+            </summary>
+            <param name="query">The existing query that already has a sort on it.</param>		
+            <returns>A sorted IOrderedQueryable, sorted on the currently sorted property.</returns>
+        </member>
+        <member name="P:Infragistics.SortContext`2.Lambda">
+            <summary>
+            Gets the current LambdaExpression describing this sort.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SortContext`2.Comparer">
+            <summary>
+            A IComparer<![CDATA[<T>]]> object with the generic type set to the DataType of the field being sorted on.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SortContext`2.Converter">
+            <summary>
+            A IValueConverter<![CDATA[<T>]]> object which can be used to derive values from the data.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SortContext`2.ConverterParameter">
+            <summary>
+            The object to be used as the ConverterParameter for the <see cref="P:Infragistics.SortContext`2.Converter"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ValObj.ValueProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.ValObj.Value"/> dependency property. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.MultiSortComparer`1">
+            <summary>
+            Compares items based on list of <see cref="T:Infragistics.SortContext"/>s. Read remarks.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <remarks>
+            This comparer is used for binary searching. It doesn't always return a preciese result.
+            First the items will be compared based on SortContext.(SortProperty and SortAscending).
+            Then if the items have the same properties they will be compared for equality,
+            and if they are not equal -1 will be returned.
+            
+            Intended for use with <see cref="M:System.Collections.Generic.List`1.BinarySearch(`0,System.Collections.Generic.IComparer{`0})"/>.
+            </remarks>
+        </member>
+        <member name="M:Infragistics.MultiSortComparer`1.#ctor(System.Collections.Generic.IList{Infragistics.SortContext},Infragistics.CachedTypedInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.MultiSortComparer`1"/> class.
+            </summary>
+            <param name="sortContexts">The sort contexts.</param>
+        </member>
+        <member name="M:Infragistics.MultiSortComparer`1.BuildCompareExpression(System.Collections.Generic.IList{Infragistics.SortContext},System.Linq.Expressions.Expression,System.Linq.Expressions.ParameterExpression,System.Linq.Expressions.ParameterExpression)">
+            <summary>
+            Builds compare expression.
+            </summary>
+            <param name="sortContexts">The sort contexts.</param>
+            <param name="resultVar">The result var.</param>
+            <param name="p1">The p1.</param>
+            <param name="p2">The p2.</param>
+            <returns></returns>
+            <remarks>
+            resultVar will contain the result of the comparsion.
+            -1 if the position of p1 is before p2 in the sorted list.
+            0 if p1 and p2 are equal
+            +1 if the position of p1 is after p2 in the sorted list.
+            </remarks>
+        </member>
+        <member name="T:Infragistics.SummaryContext">
+            <summary>
+            A nongeneric abstract class representing a summary on an object.
+            </summary>
+        </member>
+        <member name="M:Infragistics.SummaryContext.CreateGenericSummary(Infragistics.CachedTypedInfo,System.String,Infragistics.LinqSummaryOperator)">
+            <summary>
+            Creates a SummaryContext instanced typed to the object type of the data being processed.
+            </summary>
+            <param name="cachedTypeInfo">The <see cref="T:Infragistics.CachedTypedInfo"/> object which has the type info for this method.</param>
+            <param name="propertyName">The field data type that will be processed on.</param>
+            <param name="linqSummary">The LINQ statement which will be used.</param>
+            <returns></returns>		
+        </member>
+        <member name="M:Infragistics.SummaryContext.Execute(System.Linq.IQueryable)">
+            <summary>
+            Performs a LINQ based summary on the inputted query.
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.SummaryContext.Maximum(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Maximum summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="M:Infragistics.SummaryContext.Minimum(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Minimum summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="M:Infragistics.SummaryContext.Sum(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Sum summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="M:Infragistics.SummaryContext.Count(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Count summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="M:Infragistics.SummaryContext.Average(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Average summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="P:Infragistics.SummaryContext.FieldName">
+            <summary>
+            Gets the name of the property on the data object that will be summed on.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryContext.LinqSummary">
+            <summary>
+            Gets the LinqSummaryOperator associated with this <see cref="T:Infragistics.SummaryContext"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.SummaryContext`2">
+            <summary>
+            A generic class representing a summary on an object.
+            </summary>
+            <typeparam name="TObjectType">The type of the object which will be summed on.</typeparam>
+            <typeparam name="TColumnType">The type of the field that will be summed on.</typeparam>
+        </member>
+        <member name="M:Infragistics.SummaryContext`2.#ctor(System.String,Infragistics.LinqSummaryOperator,Infragistics.CachedTypedInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.SummaryContext"/>
+            </summary>
+            <param name="propertyName"></param>
+            <param name="linqSummary"></param>
+            <param name="cti"></param>
+        </member>
+        <member name="M:Infragistics.SummaryContext`2.Maximum(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Maximum summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="M:Infragistics.SummaryContext`2.Minimum(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Minimum summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="M:Infragistics.SummaryContext`2.Sum(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Sum summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="M:Infragistics.SummaryContext`2.Average(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Average summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="M:Infragistics.SummaryContext`2.Count(System.Linq.IQueryable)">
+            <summary>
+            Executes a LINQ based Count summary.
+            </summary>
+            <param name="query">The IQueryable to execute the summary against.</param>
+            <returns>The value of the summation.</returns>
+        </member>
+        <member name="P:Infragistics.SummaryContext`2.CachedTypedInfo">
+            <summary>
+            The CachedTypedInfo for the opeartion
+            </summary>
+        </member>
+        <member name="T:Infragistics.DataField">
+            <summary>
+            Represents a given field of an object.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataField.#ctor(System.String,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DataField"/> class.
+            </summary>
+            <param name="name">Name of the field.</param>
+            <param name="type">Type of the field</param>        
+        </member>
+        <member name="P:Infragistics.DataField.Name">
+            <summary>
+            Gets or sets the name of the field.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.FieldType">
+            <summary>
+            Gets or sets the type of the field.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.AutoGenerate">
+            <summary>
+            Gets/sets whether this field should be automatically generated.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.DisplayName">
+            <summary>
+            Gets/Sets the text that should be used to display the field.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.GroupName">
+            <summary>
+            Gets/Sets the text that should be displayed for a field when its grouped.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.Order">
+            <summary>
+            Gets/Sets the order in which the AutoGenerated field should be displayed
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.FormatString">
+            <summary>
+            For fields that display text, this gets/sets the format string that should be used for them.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.ApplyFormatStringInEditMode">
+            <summary>
+            If a FormatString is set, this Gets/Sets whether to apply this formatstring in edit mode.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.NullDisplayText">
+            <summary>
+            If the value for a field is null, this gets/Sets the text that should be displayed instead.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.ConvertEmptyStringToNull">
+            <summary>
+             If the value of a string is empty, this gets/sets whether to display that string as null
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.AllowEdit">
+            <summary>
+            Gets/Sets whether a field is editable in edit mode.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataField.AllowEditingForAddNew">
+            <summary>
+            Gets/sets if a field is editable in the AddNewRow.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DataFieldComparer">
+            <summary>
+            Used to sort the DataFields in the order of their Order property.
+            </summary>
+        </member>
+        <member name="T:Infragistics.CachedTypedInfo">
+            <summary>
+            Object used to store the Type, and in WPF the PropertyDescriptors for a Type.
+            </summary>
+        </member>
+        <member name="P:Infragistics.CachedTypedInfo.CachedType">
+            <summary>
+            The type of the object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.CachedTypedInfo.PropertyDescriptors">
+            <summary>
+            The PropertyDescriptors for the specified type.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DataManagerBase">
+            <summary>
+            Wraps an IEnumerable to get items while using IList or IQueryable to improve performance if available.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.CreateDataManager(System.Collections.IEnumerable)">
+            <summary>
+            Creates a generic data manager of the type of the first object in the source.
+            </summary>
+            <param name="dataSource">The source that the created manager should manage.</param>
+            <returns>A new DataManagerBase.</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.CreateDataManager(System.Collections.IEnumerable,Infragistics.DataManagerProvider)">
+            <returns></returns>
+            <summary>
+            Creates a generic data manager of the type of the first object in the source.
+            </summary>
+            <param name="dataSource">The source that the created manager should manage.</param>
+            <param name="provider">The <see cref="T:Infragistics.DataManagerProvider"/> that will be used to Generate a DataManager.</param>
+            <returns>A new DataManagerBase.</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolveCollectionType(System.Collections.IEnumerable)">
+            <summary>
+            Resolves the underlying type of the item that the specified collection contains.
+            </summary>
+            <param name="dataSource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolveItemType(System.Collections.IEnumerable)">
+            <summary>
+            Resolves the underlying type of the item that the specified collection contains.
+            </summary>
+            <param name="dataSource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.BuildPropertyExpressionFromPropertyName(System.String,System.Linq.Expressions.ParameterExpression)">
+            <summary>
+            Builds a <see cref="T:System.Linq.Expressions.Expression"/> for complex property names such as Address.Street1 or Items[FirstName]
+            </summary>
+            <param name="propertyName"></param>
+            <param name="paramExpression"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.BuildPropertyExpressionFromPropertyName(System.String,System.Linq.Expressions.ParameterExpression,Infragistics.CachedTypedInfo,System.Type,System.Object)">
+            <summary>
+            Builds a <see cref="T:System.Linq.Expressions.Expression"/> for complex property names such as Address.Street1 or Items[FirstName]
+            </summary>
+            <param name="propertyName"></param>
+            <param name="paramExpression"></param>
+            <param name="cachedTypedInfo"/>
+            <param name="propertyType"/>
+            <param name="defaultValue"/>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolvePropertyTypeFromPropertyName(System.String,Infragistics.CachedTypedInfo)">
+            <summary>
+            Resolves the type of a property for complex properties such as Address.Stree1.
+            </summary>
+            <param name="propertyName"></param>
+            <param name="rootType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolveValueFromPropertyPath(System.String,System.Object)">
+            <summary>
+            Walks the property tree of an object to resolve properties such as Address.Street1 or Items[FirstName] 
+            </summary>
+            <param name="propertyPath"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolvePropertyInfoFromPropertyPath(System.String,System.Object)">
+            <summary>
+            Walks through the property tree of an object to resolve the propretyInfo 
+            </summary>
+            <param name="propertyPath"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.FilterItems(System.Collections.IList)">
+            <summary>
+            Filters a list of items using the filter operands applied on the <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+            <param name="items">The items.</param>
+            <returns>Filtered list or null if filtering cannot be applied.</returns>
+            <remarks>
+            This method is added solely for the purpose of fast adding of an item in sorted/filtered list.
+            </remarks>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.FilterItems(System.Collections.IEnumerable,Infragistics.RecordFilterCollection)">
+            <summary>
+            Filters an IEnumerable using provided filter items.
+            </summary>
+            <param name="items">Items to filter.</param>
+            <param name="filtersToUse">Filters to use during fitlering.</param>
+            <returns>Filtered list or null if filtering cannot be applied.</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.UpdateCachedDataManipulations(System.Object,System.Boolean)">
+            <summary>
+            Updates the cached data manipulations.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="isAdding">if set to <c>true</c> the item will be added to the cached lists, otherwise removed.</param>
+            <returns><c>true</c> if the cache was updated, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolveIndexForInsertOrDelete(System.Object,System.Boolean)">
+            <summary>
+            Resolves the index for insert or delete or return null if the Filtered DataSource is not supproeted.
+            </summary>
+            <param name="data">The data.</param>
+            <param name="isAdding"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Infragistics.DataManagerBase._updateDataSource">
+            <summary>
+            Controls whether the DataSource will be updated when calling ApplyClientDataManipulations
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.DetachWeekReferences">
+            <summary>
+            Clears the collection changed handlers used by the DataManager
+            </summary>        
+        </member>
+        <member name="M:Infragistics.DataManagerBase.GenerateNewObject">
+            <summary>
+            Creates a new object with of <see cref="P:Infragistics.DataManagerBase.DataType"/> type.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.GetRecord(System.Int32)">
+            <summary>
+            Returns an object in the data source at a given index, after applying the sort and filter.
+            </summary>
+            <param name="recordIndex">The index of the item to find.</param>
+            <returns>The object at that index.</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolveIndexForRecord(System.Object)">
+            <summary>
+            Looks through the filtered DataSource for the index of the item specified. 
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.InsertRecord(System.Int32,System.Object)">
+            <summary>
+            Adds inputted object to the datasource at the given index
+            </summary>
+            <param name="index"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.AddRecord(System.Object)">
+            <summary>
+            Adds inputted object to the datasource
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.RemoveRecord(System.Object)">
+            <summary>
+            Removes a record from the datasource.
+            </summary>
+            <param name="value"></param>
+            <returns>True if the record was removed, false otherwise.</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.GetDataProperties">
+            <summary>
+            Returns an IEnumerable of <see cref="T:Infragistics.DataField"/>'s that describe the different fields in this object.
+            </summary>
+            <returns>An IEnumerable of the DataField's for all the properties of the object.</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.Reset">
+            <summary>
+            Clears out any stored information on the previous DataSource.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.UpdateData">
+            <summary>
+            Clears the underlying cached data, and triggeres all data operations to be applied again.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.CancelEdit">
+            <summary>
+            Wraps the IEditableCollectionVie.CancelEdit method
+            </summary>
+            <returns>Returns true if it's an IEditableCollectionView</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.CommitEdit">
+            <summary>
+            Wraps the IEditableCollectionVie.CommitEdit method
+            </summary>
+            <returns>Returns true if it's an IEditableCollectionView</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.EditItem(System.Object)">
+            <summary>
+            Wraps the IEditableCollectionVie.EditItem method
+            </summary>
+            <param name="item"></param>
+            <returns>Returns true if it's an IEditableCollectionView</returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.RefreshSummaries">
+            <summary>
+            Reevaluates the summaries for the ItemsSource bound to this <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.UpdateCurrentItem(System.Object)">
+            <summary>
+            Moves the <see cref="T:System.ComponentModel.ICollectionView"/> current item pointer to the inputted item.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.GenerateDataField(System.Reflection.PropertyInfo)">
+            <summary>
+            Creates a <see cref="T:Infragistics.DataField"/> object, which contains information about a specific property.
+            </summary>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.SetDataSource(System.Collections.IEnumerable)">
+            <summary>
+            Sets the <see cref="P:Infragistics.DataManagerBase.DataSource"/> while registering for change notification.
+            </summary>
+            <param name="source">The IEnumerable to set the DataSource to.</param>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.GetDataSource">
+            <summary>
+            Gets the <see cref="P:Infragistics.DataManagerBase.DataSource"/> associated with this <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolveCount">
+            <summary>
+            Determines the size of the collection by walking through the DataSource.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolveRecord(System.Int32)">
+            <summary>
+            Resolve the specified record at a given index. 
+            </summary>
+            <param name="recordIndex"></param>
+            <returns></returns>
+            <remarks> This method only gets called, if the data source isn't of type IList.</remarks>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ResolveFilteredSortedPagedDataSource">
+            <summary>
+            Uses the existing paging, sorting, and filtering information to build a cached object for the
+            DataManagerBase to use.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.ClearCachedDataSource(System.Boolean)">
+            <summary>
+            Clears any cached information that the manager keeps.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.OnDataSourceCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Triggered when the underlying data source's data is changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.SetSortedFilteredDataSource(System.Collections.IList)">
+            <summary>
+            Used to update the sorted, filtered, paged, and grouped data source.
+            </summary>
+            <param name="source"></param>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Raises the CollectionChanged event.
+            </summary>
+            <param name="e">Data about the collection being changed.</param>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.OnResolvingData(Infragistics.DataAcquisitionEventArgs)">
+            <summary>
+            Raises the <see cref="E:Infragistics.DataManagerBase.ResolvingData"/> event.
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.OnNewObjectGeneration">
+            <summary>
+            Raises the <see cref="E:Infragistics.DataManagerBase.NewObjectGeneration"/> event.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.OnDataUpdated">
+            <summary>
+            Raises the <see cref="E:Infragistics.DataManagerBase.DataUpdated"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerBase.OnCurrentItemChanged(System.Object)">
+            <summary>
+            Raises the <see cref="E:Infragistics.DataManagerBase.CurrentItemChanged"/> event.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.Sort">
+            <summary>
+            Gets an observable collection of sorts, from primary sort to final sort.
+            Sorts after the first are only applied if all the previous sorts were equal.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.ConditionalFormattingRules">
+            <summary>
+            Gets / sets the collection of conditional formatting rules which will be requesting data.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.Filters">
+            <summary>
+            Gets / sets the <see cref="T:Infragistics.RecordFilterCollection"/> which will be applied to the records during the databinding.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.Summaries">
+            <summary>
+            Gets / sets the <see cref="T:Infragistics.SummaryDefinitionCollection"/> which will be applied to the records during the databinding.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.SummaryResultCollection">
+            <summary>
+            The collection of <see cref="T:Infragistics.SummaryResult"/> objects that will be populated by the <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.SummaryExecution">
+            <summary>
+            Gets / sets the <see cref="P:Infragistics.DataManagerBase.SummaryExecution"/> which will determine where the summaries should be calculated by default.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.GroupByObject">
+            <summary>
+            Gets/Sets the object in which the data that this <see cref="T:Infragistics.DataManagerBase"/> represents, should be grouped by.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.GroupBySortContext">
+            <summary>
+            Gets/Sets the CurrentSort that will be applied when the data is Grouped by a particular field.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.GroupBySortAscending">
+            <summary>
+            Gets/Sets the sort direction that should be applied to the field that the underlying data has been grouped by.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.CurrentPage">
+            <summary>
+            Gets / sets the index of the page of data which should be retrieved from the manager.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.PageSize">
+            <summary>
+            Gets / sets how many records constitute a page of data
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.EnablePaging">
+            <summary>
+            Gets / sets whether paging should be used by the manager.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.DataSource">
+            <summary>
+            Gets or sets the IEnumerable that this <see cref="T:Infragistics.DataManagerBase"/> manages.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.OriginalDataSource">
+            <summary>
+            Gets or sets the IEnumerable that this <see cref="T:Infragistics.DataManagerBase"/> manages without converting types.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.PageCount">
+            <summary>
+            Gets the total number of pages available in the data source based on page size.  If 
+            <see cref="P:Infragistics.DataManagerBase.EnablePaging"/> is false, this will report 1. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.CollectionType">
+            <summary>
+            The <see cref="T:System.Type"/> that the collection is designed to hold.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.CachedCollectionType">
+            <summary>
+            A cached version of CollectionType.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.DataType">
+            <summary>
+            Returns type of data that this IEnumerable represents. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.CachedType">
+            <summary>
+            Gets/Sets a cached version of the <see cref="P:Infragistics.DataManagerBase.DataType"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.CachedTypedInfo">
+            <summary>
+            Gets/Sets a cached version of the <see cref="P:Infragistics.DataManagerBase.DataType"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.TotalRecordCount">
+            <summary>
+            Gets the total number of records available from the datasource.
+            </summary>
+            <remarks>
+            This excludes filtering, paging and grouping. 
+            </remarks>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.RecordCount">
+            <summary>
+            Gets the number of records that can be currently displayed.
+            </summary>
+            <remarks>
+            This takes into account filtering, paging and grouping. 
+            </remarks>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.ICollectionViewData">
+            <summary>
+            Gets the underlying data source as an <see cref="T:System.ComponentModel.ICollectionView"/>. If the datasource isn't an ICollectionView, null is returned.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.IFilteredCollectionViewData">
+            <summary>
+            Gets the underlying data source as an <see cref="T:Infragistics.IFilteredCollectionView"/>. If the datasource isn't an IFilteredCollectionView, null is returned.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.IPagedCollectionViewData">
+            <summary>
+            Gets the underlying data source as an <see cref="T:Infragistics.IPagedCollectionView"/>. If the datasource isn't an IPagedCollectionView, null is returned.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.IListData">
+            <summary>
+            Gets the underlying data source as an <see cref="T:System.Collections.IList"/>. If the datasource isn't an IList, null is returned.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.IEditableCollectionViewData">
+            <summary>
+            Gets the underlying data source as an <see cref="T:System.ComponentModel.IEditableCollectionView"/>. If the datasource isn't an IEditableCollectionView, null is returned.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.SupportsDataManipulations">
+            <summary>
+            Gets/ sets whether data manipulations such as Sorting are supported on this particular data manager.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.SuspendInvalidateDataSource">
+            <summary>
+            Gets / sets if the DataManager should be prevented from invaliating it's cached data stores, so that 
+            multiple actions can be built up and executed at one time.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.AllowCollectionViewOverrides">
+            <summary>
+            Gets/Sets whether this <see cref="T:Infragistics.DataManagerBase"/> is allowed to set properties for sorting and grouping if DataSource is an ICollectionView
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.MergeDataContexts">
+            <summary>
+            Gets the list of <see cref="T:Infragistics.MergedDataContext"/> objects, that the manager should be displaying the data as. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.SupportsEditing">
+            <summary>
+            Gets whether editing is supported by the collection.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.SortedFilteredDataSource">
+            <summary>
+            Gets/sets a cached list of sorted items.
+            </summary>		
+        </member>
+        <member name="P:Infragistics.DataManagerBase.IsSortedFilteredDataSourceCalculated">
+            <summary>
+            Gets/ sets whether the the SortedFilteredDataSource needs to be recalculated.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.Defer">
+            <summary>
+            Prevents operations from happening when the control is in an inconsistant state.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.IBindingListData">
+            <summary>
+            Gets the underlying data source as an <see cref="T:System.ComponentModel.IBindingList"/>. If the datasource isn't an IBindingList, null is returned.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.IBindingLisViewtData">
+            <summary>
+            Gets the underlying data source as an <see cref="T:System.ComponentModel.IBindingListView"/>. If the datasource isn't an IBindingListView, null is returned.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.ITypedListData">
+            <summary>
+            Gets the underlying data source as an <see cref="T:System.ComponentModel.ITypedList"/>. If the datasource isn't an ITypedList, null is returned.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManagerBase.SupportsChangeNotification">
+            <summary>
+            Gets a value indicating whether the <see cref="P:Infragistics.DataManagerBase.DataSource"/> raises change notification events.
+            </summary>
+            <value>
+            	<c>true</c> if the DataSource supports change notification; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="E:Infragistics.DataManagerBase.CollectionChanged">
+            <summary>
+            Occurs when the data source has changed and it implements <see cref="T:System.Collections.Specialized.INotifyCollectionChanged"/>.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DataManagerBase.ResolvingData">
+            <summary>
+            Event raised when paging, filtering, sorting, or groupby actions are changed.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DataManagerBase.NewObjectGeneration">
+            <summary>
+            Event raised when the <see cref="T:Infragistics.DataManagerBase"/> is attempting to create a new instance of the <see cref="P:Infragistics.DataManagerBase.CachedType"/> object.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DataManagerBase.DataUpdated">
+            <summary>
+            Event raised when the underlying data changes.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DataManagerBase.CurrentItemChanged">
+            <summary>
+            Event raised when the currentItem changes.
+            </summary>
+        </member>
+        <member name="T:Infragistics.TypelessDataManager">
+            <summary>
+            Wraps an IEnumerable to get items while using IList or IQueryable to improve performance if available.
+            This particular DataManager doesn't support Sorting, Filtering, or Paging.
+            </summary>
+            <remarks>
+            Currently this DataManager is only used if the underlying data is an Anonymous type.
+            </remarks>
+        </member>
+        <member name="M:Infragistics.TypelessDataManager.SetDataSource(System.Collections.IEnumerable)">
+            <summary>
+            Sets the <see cref="P:Infragistics.DataManagerBase.DataSource"/> while registering for change notification.
+            </summary>
+            <param name="source">The IEnumerable to set the DataSource to.</param>
+        </member>
+        <member name="T:Infragistics.DataManager`1">
+            <summary>
+            Wraps an IEnumerable to get items while using IList or IQueryable to improve performance if available.
+            </summary>
+            <typeparam name="T">The type of the IEnumerable<![CDATA[<T>]]> that this data manager manages.</typeparam>
+        </member>
+        <member name="M:Infragistics.DataManager`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DataManagerBase"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManager`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DataManagerBase"/> class and sets the <see cref="P:Infragistics.DataManagerBase.DataSource"/>.
+            </summary>
+            <param name="dataSource">The datasource that this datamanager should manage.</param>
+        </member>
+        <member name="M:Infragistics.DataManager`1.RefreshSummaries">
+            <summary>
+            Reevaluates the summaries for the ItemsSource bound to this <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManager`1.SetDataSource(System.Collections.IEnumerable)">
+            <summary>
+            Sets the <see cref="P:Infragistics.DataManagerBase.DataSource"/> while registering for change notification.
+            </summary>
+            <param name="source">The IEnumerable to set the DataSource to.</param>
+        </member>
+        <member name="M:Infragistics.DataManager`1.GetDataSource">
+            <summary>
+            Gets the <see cref="P:Infragistics.DataManagerBase.DataSource"/> associated with this <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManager`1.ResolveRecord(System.Int32)">
+            <summary>
+            Resolve the specified record at a given index. 
+            </summary>
+            <param name="recordIndex"></param>
+            <returns></returns>
+            <remarks> This method only gets called, if the data source isn't of type IList.</remarks>
+        </member>
+        <member name="M:Infragistics.DataManager`1.ResolveCount">
+            <summary>
+            Determines the size of the collection by walking through the DataSource.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManager`1.OnResolvingData(Infragistics.DataAcquisitionEventArgs)">
+            <summary>
+            Raises the ResolvingData event.
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Infragistics.DataManager`1.ClearCachedDataSource(System.Boolean)">
+            <summary>
+            Clears any cached information that the manager keeps.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManager`1.OnDataSourceCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Triggered when the underlying data source's data is changed.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Infragistics.DataManager`1.ResolveFilteredSortedPagedDataSource">
+            <summary>
+            Uses the existing paging, sorting, and filtering information to build a cached object for the
+            DataManagerBase to use.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManager`1.ResolveIndexForInsertOrDelete(System.Object,System.Boolean)">
+            <summary>
+            Looks through the filtered DataSource for the index of the item specified. 
+            </summary>
+            <param name="data"></param>
+            <param name="isAdding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.DataManager`1.UpdateCachedDataManipulations(System.Object,System.Boolean)">
+            <summary>
+            Updates the cached data manipulations.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="isAdding">if set to <c>true</c> the item will be added to the cached lists, otherwise removed.</param>
+            <returns><c>true</c> if the cache was updated, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Infragistics.DataManager`1.FilterItems(System.Collections.IList)">
+            <summary>
+            Filters a list of items using the filter operands applied on the <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+            <param name="items">The items.</param>
+            <returns>Filtered list or null if filtering cannot be applied.</returns>
+            <remarks>
+            This method is added solely for the purpose of fast adding of an item in sorted/filtered list.
+            </remarks>
+        </member>
+        <member name="M:Infragistics.DataManager`1.FilterItems(System.Collections.IEnumerable,Infragistics.RecordFilterCollection)">
+            <summary>
+            FIlters an IEnumerable using provided filter items.
+            </summary>
+            <param name="items">Items to filter.</param>
+            <param name="filtersToUse">Filters to use during fitlering.</param>
+            <returns>Filtered list or null if filtering cannot be applied.</returns>
+        </member>
+        <member name="M:Infragistics.DataManager`1.ApplyClientDataManipulations">
+            <summary>
+            Applies all Clientside related data manipulations, such as sorting, paging, groupBy and filtering.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManager`1.ApplyClientDataManipulations(System.Boolean)">
+            <summary>
+            Applies all Clientside related data manipulations, such as sorting, paging, groupBy and filtering.
+            </summary>
+            <param name="setSortedFilteredDataSource">True if the internal filtered datasource should be set.</param>
+        </member>
+        <member name="M:Infragistics.DataManager`1.BuildMergedGroupings(System.Collections.Generic.List{Infragistics.MergedRowInfo},System.Collections.ObjectModel.ReadOnlyObservableCollection{System.Object},System.Collections.Generic.List{Infragistics.MergedColumnInfo},Infragistics.MergedDataContext,System.Collections.Generic.Dictionary{Infragistics.MergedColumnInfo,System.Boolean})">
+            <summary>
+            Goes through each grouping returned by an ICollectionView, and flattens it out for merged information.
+            </summary>
+            <param name="mris"></param>
+            <param name="groups"></param>
+            <param name="mcis"></param>
+            <param name="mdc"></param>
+            <param name="lastMciLookup"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.LogicalOperator">
+            <summary>
+            And enumeration of available operators.
+            </summary>
+        </member>
+        <member name="F:Infragistics.LogicalOperator.And">
+            <summary>
+            Performs a logical AND operation.
+            </summary>
+        </member>
+        <member name="F:Infragistics.LogicalOperator.Or">
+            <summary>
+            Performs a logical OR operation.
+            </summary>
+        </member>
+        <member name="T:Infragistics.ComparisonOperator">
+            <summary>
+            Enum describing operators which can be used for filtering.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.Equals">
+            <summary>
+            An equality compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.NotEquals">
+            <summary>
+            An non equality compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.GreaterThan">
+            <summary>
+            A GreaterThan compare is executed. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.GreaterThanOrEqual">
+            <summary>
+            A greater than or equal compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.LessThan">
+            <summary>
+            A less than compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.LessThanOrEqual">
+            <summary>
+            A less than or equal compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.StartsWith">
+            <summary>
+            Evaluates if a string begins with a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DoesNotStartWith">
+            <summary>
+            Evaluates if a string does not begin with a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.EndsWith">
+            <summary>
+            Evaluates if a string ends with a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DoesNotEndWith">
+            <summary>
+            Evaluates if a string does not end with a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.Contains">
+            <summary>
+            Evaluates if a string contains a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DoesNotContain">
+            <summary>
+            Evaluates if a string does not contain a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeAfter">
+            <summary>
+            Evaluates if a DateTime object comes after a given input.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeBefore">
+            <summary>
+            Evaluates if a DateTime object comes prior to a given input.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeToday">
+            <summary>
+            Evaluates if a DateTime value is today.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeTomorrow">
+            <summary>
+            Evaluates if a DateTime value is tomorrow.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeYesterday">
+            <summary>
+            Evaluates if a DateTime value is yesterday.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeThisWeek">
+            <summary>
+            Evaluates if a DateTime value is in this week.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeNextWeek">
+            <summary>
+            Evaluates if a DateTime value is in next week.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeLastWeek">
+            <summary>
+            Evaluates if a DateTime value is in last week.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeThisMonth">
+            <summary>
+            Evaluates if a DateTime value is in this month.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeLastMonth">
+            <summary>
+            Evaluates if a DateTime value is in last month.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeNextMonth">
+            <summary>
+            Evaluates if a DateTime value is in next month.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeThisYear">
+            <summary>
+            Evaluates if a DateTime value is in this year.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeLastYear">
+            <summary>
+            Evaluates if a DateTime value is in last year.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeNextYear">
+            <summary>
+            Evaluates if a DateTime value is in next year.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeYearToDate">
+            <summary>
+            Evaluates if a DateTime value is in the current year up to today's date.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeLastQuarter">
+            <summary>
+            Evaluates if a DateTime value is in the last quarter.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeThisQuarter">
+            <summary>
+            Evaluates if a DateTime value is in this quarter.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeNextQuarter">
+            <summary>
+            Evaluates if a DateTime value is in the next quarter.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeJanuary">
+            <summary>
+            Evaluates that a DateTime is in January.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeFebruary">
+            <summary>
+            Evaluates that a DateTime is in February.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeMarch">
+            <summary>
+            Evaluates that a DateTime is in March.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeApril">
+            <summary>
+            Evaluates that a DateTime is in April.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeMay">
+            <summary>
+            Evaluates that a DateTime is in May.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeJune">
+            <summary>
+            Evaluates that a DateTime is in June.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeJuly">
+            <summary>
+            Evaluates that a DateTime is in July.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeAugust">
+            <summary>
+            Evaluates that a DateTime is in August.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeSeptember">
+            <summary>
+            Evaluates that a DateTime is in Sepember.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeOctober">
+            <summary>
+            Evaluates that a DateTime is in October.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeNovember">
+            <summary>
+            Evaluates that a DateTime is in November.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeDecember">
+            <summary>
+            Evaluates that a DateTime is in December.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeQuarter1">
+            <summary>
+            Evaluates that a DateTime is in the first quarter.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeQuarter2">
+            <summary>
+            Evaluates that a DateTime is in the second quarter.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeQuarter3">
+            <summary>
+            Evaluates that a DateTime is in the third quarter.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.DateTimeQuarter4">
+            <summary>
+            Evaluates that a DateTime is in the forth quarter.
+            </summary>
+        </member>
+        <member name="F:Infragistics.ComparisonOperator.InOperand">
+            <summary>
+            Evaluates that a value is in the list provided as FilterValue.
+            </summary>
+        </member>
+        <member name="T:Infragistics.LinqSummaryOperator">
+            <summary>
+            An enum used by summary to designate that a LINQ summary should be use.
+            </summary>
+        </member>
+        <member name="F:Infragistics.LinqSummaryOperator.Count">
+            <summary>
+            Use the LINQ Count summary
+            </summary>
+        </member>
+        <member name="F:Infragistics.LinqSummaryOperator.Minimum">
+            <summary>
+            Use the LINQ Minimum summary.
+            </summary>
+        </member>
+        <member name="F:Infragistics.LinqSummaryOperator.Maximum">
+            <summary>
+            Use the LINQ Maximum summary.
+            </summary>
+        </member>
+        <member name="F:Infragistics.LinqSummaryOperator.Sum">
+            <summary>
+            Use the LINQ Sum summary.
+            </summary>
+        </member>
+        <member name="F:Infragistics.LinqSummaryOperator.Average">
+            <summary>
+            Use the LINQ Average summary.
+            </summary>
+        </member>
+        <member name="T:Infragistics.SummaryExecution">
+            <summary>
+            Enum that is used to determine when a summary should be calculated.
+            </summary>
+        </member>
+        <member name="F:Infragistics.SummaryExecution.PriorToFilteringAndPaging">
+            <summary>
+            Summary is executed prior to paging and filtering.
+            </summary>
+        </member>
+        <member name="F:Infragistics.SummaryExecution.AfterFilteringBeforePaging">
+            <summary>
+            Summary is executed prior to paging but after filtering.
+            </summary>
+        </member>
+        <member name="F:Infragistics.SummaryExecution.AfterFilteringAndPaging">
+            <summary>
+            Summary is executed after paging and filtering.
+            </summary>
+        </member>
+        <member name="T:Infragistics.EvaluationStage">
+            <summary>
+            Enumeration which lists when conditional formatting data will be gathered.
+            </summary>
+        </member>
+        <member name="F:Infragistics.EvaluationStage.None">
+            <summary>
+            GatherData will not be called.
+            </summary>
+        </member>
+        <member name="F:Infragistics.EvaluationStage.PriorToFilteringAndPaging">
+            <summary>
+            GatherData will be called prior to filtering and paging.
+            </summary>
+        </member>
+        <member name="F:Infragistics.EvaluationStage.AfterFilteringBeforePaging">
+            <summary>
+            GatherData will be called after filtering and before paging.
+            </summary>
+        </member>
+        <member name="F:Infragistics.EvaluationStage.AfterFilteringAndPaging">
+            <summary>
+            GatherData will be called after filtering and after paging.
+            </summary>
+        </member>
+        <member name="T:Infragistics.HandleableEventArgs">
+            <summary>
+            Event argument for events in which the user wants to mark the event handled.
+            </summary>
+        </member>
+        <member name="P:Infragistics.HandleableEventArgs.Handled">
+            <summary>
+            Gets / sets if the event is to be considered handled.
+            </summary>
+        </member>
+        <member name="T:Infragistics.HandleableObjectGenerationEventArgs">
+            <summary>
+            Event argument used when the DataManager has a request for a new data object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.HandleableObjectGenerationEventArgs.NewObject">
+            <summary>
+            Gets / sets the instance of the object that will be used by the DataManager rather then attempting to create a new instance of the object using the default constructor.
+            </summary>
+        </member>
+        <member name="P:Infragistics.HandleableObjectGenerationEventArgs.ObjectType">
+            <summary>
+            Gets the <see cref="T:System.Type"/> of object that the DataManager is handling. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.HandleableObjectGenerationEventArgs.CollectionType">
+            <summary>
+            Gets the <see cref="T:System.Type"/> which is contained in the underlying collection.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DataAcquisitionEventArgs">
+            <summary>
+            Event argument used when the DataManager is processing its data 
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataAcquisitionEventArgs.DataSource">
+            <summary>
+            Gets / sets the IList that will be applied to the data manager.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataAcquisitionEventArgs.EnablePaging">
+            <summary>
+            Gets if the DataManager expects paged data.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataAcquisitionEventArgs.PageSize">
+            <summary>
+            Gets the maximum number of rows expected by the DataManager.  		
+            </summary>
+            <remarks>
+            Used primarily when EnablePaging is true.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.DataAcquisitionEventArgs.CurrentPage">
+            <summary>
+            Gets the current page index
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataAcquisitionEventArgs.CurrentSort">
+            <summary>
+            Gets a collection <see cref="T:Infragistics.SortContext"/> which will be applied.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataAcquisitionEventArgs.GroupByContext">
+            <summary>
+            Gets the GroupBy that will be applied to the data.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataAcquisitionEventArgs.Filters">
+            <summary>
+            Gets a collection that lists what filters will be applied.
+            </summary>
+        </member>
+        <member name="T:Infragistics.InvalidEnumeratorException">
+            <summary>
+            An <see cref="T:System.Exception"/> that is thrown when the GetEnumerator method of the IEnumerable returns null for the <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.InvalidEnumeratorException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.InvalidEnumeratorException"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.InvalidEnumeratorException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.InvalidEnumeratorException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+        </member>
+        <member name="M:Infragistics.InvalidEnumeratorException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.InvalidEnumeratorException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+            <param name="innerException">An inner exception.</param>
+        </member>
+        <member name="T:Infragistics.DataSourceDoesNotSupportIListException">
+            <summary>
+            An <see cref="T:System.Exception"/> that is thrown when the GetEnumerator method of the IEnumerable returns null for the <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataSourceDoesNotSupportIListException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DataSourceDoesNotSupportIListException"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataSourceDoesNotSupportIListException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DataSourceDoesNotSupportIListException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+        </member>
+        <member name="M:Infragistics.DataSourceDoesNotSupportIListException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DataSourceDoesNotSupportIListException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+            <param name="innerException">An inner exception.</param>
+        </member>
+        <member name="T:Infragistics.DataObjectTypeMismatchException">
+            <summary>
+            An <see cref="T:System.Exception"/> that is thrown when the GetEnumerator method of the IEnumerable returns null for the <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataObjectTypeMismatchException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DataObjectTypeMismatchException"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataObjectTypeMismatchException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DataObjectTypeMismatchException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+        </member>
+        <member name="M:Infragistics.DataObjectTypeMismatchException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DataObjectTypeMismatchException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+            <param name="innerException">An inner exception.</param>
+        </member>
+        <member name="T:Infragistics.RequireEmptyConstructorException">
+            <summary>
+            An <see cref="T:System.Exception"/> that is thrown when the GetEnumerator method of the IEnumerable returns null for the <see cref="T:Infragistics.DataManagerBase"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.RequireEmptyConstructorException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.RequireEmptyConstructorException"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.RequireEmptyConstructorException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.RequireEmptyConstructorException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+        </member>
+        <member name="M:Infragistics.RequireEmptyConstructorException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.RequireEmptyConstructorException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+            <param name="innerException">An inner exception.</param>
+        </member>
+        <member name="T:Infragistics.DataManagerProvider">
+            <summary>
+            An abstract class, that provides information to create a custom DataManager.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DataManagerProvider.ResolveDataManagerType">
+            <summary>
+            Returns the type of the DataManager that it represents, so that it can be created indirectly.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.ComparisonCondition">
+            <summary>
+            Represents a <see cref="T:Infragistics.ComparisonConditionBase"/> object that is based on a <see cref="T:Infragistics.ComparisonOperator"/> operator.
+            </summary>
+        </member>
+        <member name="T:Infragistics.ComparisonConditionBase">
+            <summary>
+            A base class for ComparisonConditions for filtering.
+            </summary>
+        </member>
+        <member name="T:Infragistics.IFilterCondition">
+            <summary>
+            Interface that defines an object that can participate in filtering.
+            </summary>
+        </member>
+        <member name="T:Infragistics.IExpressConditions">
+            <summary>
+            An interface which will be used by filtering to generate the expression to be applied.
+            </summary>
+        </member>
+        <member name="M:Infragistics.IExpressConditions.GetCurrentExpression(Infragistics.FilterContext)">
+            <summary>
+            Creates an expression based on a given <see cref="T:Infragistics.FilterContext"/>
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.IExpressConditions.GetCurrentExpression">
+            <summary>
+            Creates an expression. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.IFilterCondition.Parent">
+            <summary>
+            The <see cref="T:Infragistics.IRecordFilter"/> object that ultimately is the parent of this object.
+            </summary>
+        </member>
+        <member name="M:Infragistics.ComparisonConditionBase.GetCurrentExpression(Infragistics.FilterContext)">
+            <summary>
+            Generates the current expression for this <see cref="T:Infragistics.ComparisonConditionBase"/> using the inputted context.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.ComparisonConditionBase.GetCurrentExpression">
+            <summary>
+            Generates the current expression for this <see cref="T:Infragistics.ComparisonConditionBase"/>.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.ComparisonConditionBase.OnPropertyChanged(System.String)">
+            <summary>
+            Raises the PropertyChanged event.
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="P:Infragistics.ComparisonConditionBase.Parent">
+            <summary>
+            The <see cref="T:Infragistics.IRecordFilter"/> object that ultimately is the parent of this object.
+            </summary>
+        </member>
+        <member name="E:Infragistics.ComparisonConditionBase.PropertyChanged">
+            <summary>
+            Event raised when a property on this object changes.
+            </summary>
+        </member>
+        <member name="M:Infragistics.ComparisonCondition.GetCurrentExpression(Infragistics.FilterContext)">
+            <summary>
+            Generates the current expression for this <see cref="T:Infragistics.ComparisonConditionBase"/> using the inputted context.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.ComparisonCondition.GetCurrentExpression">
+            <summary>
+            Generates the current expression for this <see cref="T:Infragistics.ComparisonConditionBase"/>.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.ComparisonCondition.Operator">
+            <summary>
+            Gets / sets the <see cref="T:Infragistics.ComparisonCondition"/> that should be applied.
+            </summary>
+        </member>
+        <member name="P:Infragistics.ComparisonCondition.FilterValue">
+            <summary>
+            Gets / sets the value that will be used to build the filter.
+            </summary>
+        </member>
+        <member name="P:Infragistics.ComparisonCondition.CaseSensitive">
+            <summary>
+            Gets / sets if the filter that will be built from this term will be case sensitive.		
+            </summary>
+            <remarks >
+            This value is only used for string columns.
+            </remarks>
+        </member>
+        <member name="T:Infragistics.ConditionCollection">
+            <summary>
+            A collection of <see cref="T:Infragistics.IFilterCondition"/> objects which represent a group of conditions bound by a <see cref="P:Infragistics.ConditionCollection.LogicalOperator"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.IGroupFilterConditions">
+            <summary>
+            Interface that describes and object that can contain other IFilterCondition objects and will generate an expression for all of them.
+            </summary>
+        </member>
+        <member name="P:Infragistics.IGroupFilterConditions.LogicalOperator">
+            <summary>
+            The <see cref="P:Infragistics.IGroupFilterConditions.LogicalOperator"/> which will be used to combine all the Conditions listed by this group.
+            </summary>
+        </member>
+        <member name="E:Infragistics.IGroupFilterConditions.CollectionItemChanged">
+            <summary>
+            Event raised when an Item in the Collection is changed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.RemoveItem(System.Int32)">
+            <summary>
+            Removes the item at the specified index.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.RemoveItemSilently(Infragistics.IFilterCondition)">
+            <summary>
+            Removes the item at the specified index without raising any events.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.AddItem(System.Int32,Infragistics.IFilterCondition)">
+            <summary>
+            Adds the item at the specified index. 
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.ResetItems">
+            <summary>
+            Removes all items from the collection.
+            </summary>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.InsertItem(System.Int32,Infragistics.IFilterCondition)">
+            <summary>
+            Adds an item to the collection at a given index.
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.ResetItemsSilently">
+            <summary>
+            Removes all items from the collection without firing any events.
+            </summary>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.GetCurrentExpression">
+            <summary>
+            Generates the current expression for this <see cref="T:Infragistics.ConditionCollection"/>.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.GetCurrentExpression(Infragistics.FilterContext)">
+            <summary>
+            Generates the current expression for this <see cref="T:Infragistics.ConditionCollection"/> using the inputted context.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.OnCollectionItemChanged">
+            <summary>
+            Raises the CollectionItemChanged event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.OnPropertyChanged(System.String)">
+            <summary>
+            Raises the <see cref="E:Infragistics.ConditionCollection.PropertyChanged"/> event.
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.ClearSilently">
+            <summary>
+            Removes all the elements of the collection without raising any events.
+            </summary>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.AddItemSilently(Infragistics.IFilterCondition)">
+            <summary>
+            Adds an element to the collection without raising any events.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.GetLookupKeys">
+            <summary>
+            Gets a list of keys that each object in the collection has. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.ConditionCollection.CanRehydrate(System.Collections.ObjectModel.Collection{System.String})">
+            <summary>
+            Looks through the keys, and determines that all the keys are in the collection, and that the same about of objects are in the collection.
+            If this isn't the case, false is returned, and the Control Persistence Framework, will not try to reuse the object that are already in the collection.
+            </summary>
+            <param name="lookupKeys"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.ConditionCollection.Parent">
+            <summary>
+            Gets the <see cref="T:Infragistics.IRecordFilter"/> object which contains this object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.ConditionCollection.LogicalOperator">
+            <summary>
+            Gets / sets the <see cref="P:Infragistics.ConditionCollection.LogicalOperator"/> that will be used to combine all the <see cref="T:Infragistics.IFilterCondition"/> objects in this collection.
+            </summary>
+        </member>
+        <member name="E:Infragistics.ConditionCollection.CollectionItemChanged">
+            <summary>
+            Event raised when an Item in the Collection is changed.
+            </summary>
+        </member>
+        <member name="E:Infragistics.ConditionCollection.PropertyChanged">
+            <summary>
+            Event raised when a property on this object changes.
+            </summary>
+        </member>
+        <member name="T:Infragistics.CustomComparisonCondition">
+            <summary>
+            Represents a <see cref="T:Infragistics.ComparisonConditionBase"/> object that is based on a custom Expression object.
+            </summary>
+        </member>
+        <member name="M:Infragistics.CustomComparisonCondition.GetCurrentExpression">
+            <summary>
+            Generates the current expression for this <see cref="T:Infragistics.ComparisonConditionBase"/>.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.CustomComparisonCondition.GetCurrentExpression(Infragistics.FilterContext)">
+            <summary>
+            Generates the current expression for this <see cref="T:Infragistics.ComparisonConditionBase"/> using the inputted context.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.CustomComparisonCondition.Expression">
+            <summary>
+            Gets / sets the Expression that will be used by the filtering statement.
+            </summary>
+        </member>
+        <member name="P:Infragistics.CustomComparisonCondition.FilterValue">
+            <summary>
+            Gets / sets the value that will be used to build the filter.
+            </summary>
+        </member>
+        <member name="P:Infragistics.CustomComparisonCondition.FilterOperand">
+            <summary>
+            Get / set the type of the FilterOperand (via string)
+            </summary>
+        </member>
+        <member name="T:Infragistics.IRecordFilter">
+            <summary>
+            The IRecordFilter interface is used to define objects which will contain a collection of conditions which will build up filters.
+            </summary>
+        </member>
+        <member name="P:Infragistics.IRecordFilter.FieldName">
+            <summary>
+            The property on the underlying data object which the filter will be applied to.
+            </summary>
+        </member>
+        <member name="P:Infragistics.IRecordFilter.ObjectType">
+            <summary>
+            The Type of the object that the filter will be applied to.
+            </summary>
+        </member>
+        <member name="P:Infragistics.IRecordFilter.ObjectTypedInfo">
+            <summary>
+            The Type of the object along with any PropertyDescriptors.
+            </summary>
+        </member>
+        <member name="P:Infragistics.IRecordFilter.FieldType">
+            <summary>
+            The Type of the property that is being evaluated.
+            </summary>
+        </member>
+        <member name="P:Infragistics.IRecordFilter.Conditions">
+            <summary>
+            A Collection of Conditions which will be applied to the object.
+            </summary>
+        </member>
+        <member name="T:Infragistics.RecordFilterCollection">
+            <summary>
+            A CollectionBase of <see cref="T:Infragistics.IRecordFilter"/> objects which combine to give the the current filter.
+            </summary>
+        </member>
+        <member name="M:Infragistics.RecordFilterCollection.GetCurrentExpression(Infragistics.FilterContext)">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> based on the objects current values.
+            </summary>
+            <param name="context">The <see cref="T:Infragistics.FilterContext"/> object which will be used as a basis for the Expression being built.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.RecordFilterCollection.GetCurrentExpression">
+            <summary>
+            Creates an <see cref="T:System.Linq.Expressions.Expression"/> based on the objects current values.
+            </summary>
+            <remarks>
+            Not used by this object.
+            </remarks>
+            <exception cref="T:System.NotImplementedException">Will be raised if this method is used.</exception>
+        </member>
+        <member name="M:Infragistics.RecordFilterCollection.AddItemSilently(Infragistics.IRecordFilter)">
+            <summary>
+            Adds an element to the collection without invoking any events.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.RecordFilterCollection.AddItem(System.Int32,Infragistics.IRecordFilter)">
+            <summary>
+            Adds the item at the specified index. 
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.RecordFilterCollection.RemoveItem(System.Int32)">
+            <summary>
+            Removes the item at the specified index.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.RecordFilterCollection.ResetItems">
+            <summary>
+            Removes all items from the collection.
+            </summary>
+        </member>
+        <member name="M:Infragistics.RecordFilterCollection.InsertItem(System.Int32,Infragistics.IRecordFilter)">
+            <summary>
+            Adds an item to the collection at a given index.
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.RecordFilterCollection.OnCollectionItemChanged">
+            <summary>
+            Raises the <see cref="E:Infragistics.RecordFilterCollection.CollectionItemChanged"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.RecordFilterCollection.OnPropertyChanged(System.String)">
+            <summary>
+            Raises the <see cref="E:Infragistics.RecordFilterCollection.PropertyChanged"/> event.
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="P:Infragistics.RecordFilterCollection.LogicalOperator">
+            <summary>
+            The <see cref="P:Infragistics.RecordFilterCollection.LogicalOperator"/> which will be used to combine all the terms in the <see cref="T:Infragistics.RecordFilterCollection"/>.
+            </summary>
+        </member>
+        <member name="E:Infragistics.RecordFilterCollection.CollectionItemChanged">
+            <summary>
+            Raised when an Item in collection is modified.
+            </summary>
+        </member>
+        <member name="E:Infragistics.RecordFilterCollection.PropertyChanged">
+            <summary>
+            Fired when a property changes on the <see cref="T:Infragistics.RecordFilterCollection"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.IRule">
+            <summary>
+            Defines an interface which will participate the data binding so that it can gather data during the
+            data processing.
+            </summary>
+        </member>
+        <member name="M:Infragistics.IRule.GatherData(System.Linq.IQueryable)">
+            <summary>
+            Allows access to the query at the time so that values can be derived off it for the condition.
+            </summary>
+        </member>
+        <member name="P:Infragistics.IRule.RuleExecution">
+            <summary>
+            Designates at what stage during the data binding the GatherData needs to be evaluated.
+            </summary>		
+        </member>
+        <member name="T:Infragistics.IBindableItem">
+            <summary>
+            An interface that should be used to describe whether an object was created from a data source or added adhoc. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.IBindableItem.IsDataBound">
+            <summary>
+            Gets/sets a value that determines if the object was created from a data source or adhoc. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.IProvideDataItems`1">
+            <summary>
+            An interface that describes a collection of objects.
+            </summary>
+            <typeparam name="T">The type of object that is being provided.</typeparam>
+        </member>
+        <member name="M:Infragistics.IProvideDataItems`1.GetDataItem(System.Int32)">
+            <summary>
+            Resolves the item at the specified index.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.IProvideDataItems`1.CreateItem">
+            <summary>
+            Creates a new object with a default underlying data object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.IProvideDataItems`1.CreateItem(System.Object)">
+            <summary>
+            Creates a new object using the inputted data object.
+            </summary>
+            <param name="dataItem"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.IProvideDataItems`1.AddItem(`0)">
+            <summary>
+            Adds a new object to the collection
+            </summary>
+            <param name="addedObject"></param>
+        </member>
+        <member name="M:Infragistics.IProvideDataItems`1.RemoveItem(`0)">
+            <summary>
+            Removes an object from the collection
+            </summary>
+            <param name="removedObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.IProvideDataItems`1.RemoveRange(System.Collections.Generic.IList{`0})">
+            <summary>
+            Removes the specified range of items from the collection.
+            </summary>
+            <param name="itemsToRemove"></param>
+        </member>
+        <member name="M:Infragistics.IProvideDataItems`1.InsertItem(System.Int32,`0)">
+            <summary>
+            Adds an item to the collection at a given index.
+            </summary>
+            <param name="index"></param>
+            <param name="insertedObject"></param>
+        </member>
+        <member name="P:Infragistics.IProvideDataItems`1.DataCount">
+            <summary>
+            Gets the amount of objects in the collection.
+            </summary>
+        </member>
+        <member name="T:Infragistics.IFilteredCollectionView">
+            <summary>
+            An interface which describes how to provide filtering information to a datasource.
+            </summary>
+        </member>
+        <member name="P:Infragistics.IFilteredCollectionView.CanFilter">
+            <summary>
+            Whether filtering is supported on a particular datasource.
+            </summary>
+        </member>
+        <member name="P:Infragistics.IFilteredCollectionView.FilterConditions">
+            <summary>
+            A collection of FilterConditions that should be applied to the datasource.
+            </summary>
+        </member>
+        <member name="T:Infragistics.ISupportLinqSummaries">
+            <summary>
+            An interface used to designate a summary that can use the LINQ summary structure.
+            </summary>
+        </member>
+        <member name="P:Infragistics.ISupportLinqSummaries.SummaryType">
+            <summary>
+            Gets the <see cref="T:Infragistics.LinqSummaryOperator"/> which designates which LINQ summary to use.
+            </summary>
+        </member>
+        <member name="P:Infragistics.ISupportLinqSummaries.SummaryContext">
+            <summary>
+            Gets / sets the <see cref="P:Infragistics.ISupportLinqSummaries.SummaryContext"/> that will be used by the summary framework to build the summary.
+            </summary>
+        </member>
+        <member name="T:Infragistics.SummaryCalculatorBase">
+            <summary>
+            Provides a base class for SummaryCalculators for the Summary framework.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryCalculatorBase.SummaryExecution">
+            <summary>
+            Gets the <see cref="P:Infragistics.SummaryCalculatorBase.SummaryExecution"/>, indicating when the summary will be applied.  
+            </summary>
+            <remarks>
+            When overridden, this can be used to indicate when an individual summary should be evaluated.   Depending 
+            on when the summary is executed the final result of the evaluation can change.
+            </remarks>
+        </member>
+        <member name="T:Infragistics.SynchronousSummaryCalculator">
+            <summary>
+            A summary that will be executed during the normal databinding in process.
+            </summary>
+        </member>
+        <member name="M:Infragistics.SynchronousSummaryCalculator.Summarize(System.Linq.IQueryable,System.String)">
+            <summary>
+            Calculates the summary information from the records provided by the query.
+            </summary>
+            <param name="data">The LINQ that provides the data which is currently available.</param>
+            <param name="fieldKey">The name of the field being acted on.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.SummaryDefinition">
+            <summary>
+            A class which describes the type of summary being applied.
+            </summary>
+        </member>
+        <member name="F:Infragistics.SummaryDefinition.ColumnKeyProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.SummaryDefinition.ColumnKey"/> dependency property. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryDefinition.ColumnKey">
+            <summary>
+            Gets / sets the key of the column which this filter applies to.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryDefinition.SummaryOperand">
+            <summary>
+            Get / set the <see cref="T:Infragistics.SummaryOperandBase"/> which designates which summary should be executed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.SummaryDefinitionCollection">
+            <summary>
+            A collection of <see cref="T:Infragistics.SummaryDefinition"/> objects.
+            </summary>
+        </member>
+        <member name="M:Infragistics.SummaryDefinitionCollection.GetDefinitionsByKey(System.String)">
+            <summary>
+            Returns a collection of <see cref="T:Infragistics.SummaryDefinition"/> which are applied to a given column based on it's key value.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.SummaryDefinitionCollection.GetDefinitionsBySummaryExecution(Infragistics.SummaryExecution)">
+            <summary>
+            Returns a collection of <see cref="T:Infragistics.SummaryDefinition"/>  based on when the summary is applied during databind.
+            </summary>
+            <param name="summaryExecution"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.SummaryDefinitionCollection.GetDefinitionsBySummaryExecution(Infragistics.SummaryExecution,System.Boolean)">
+            <summary>
+            Returns a collection of <see cref="T:Infragistics.SummaryDefinition"/>  based on when the summary is applied during databind.
+            </summary>
+            <param name="summaryExecution"></param>
+            <param name="includeNulls"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.SummaryDefinitionCollection.AddItemSilently(Infragistics.SummaryDefinition)">
+            <summary>
+            Adds an element to the collection without invoking any events.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="T:Infragistics.SummaryOperandBase">
+            <summary>
+            A base class for operands that will be used in the Summary framework which contains information 
+            which is needed for display.
+            </summary>
+        </member>
+        <member name="M:Infragistics.SummaryOperandBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.SummaryOperandBase"/> class.
+            </summary>
+        </member>
+        <member name="F:Infragistics.SummaryOperandBase.SelectionDisplayLabelProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.SummaryOperandBase.SelectionDisplayLabel"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.SummaryOperandBase.RowDisplayLabelProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.SummaryOperandBase.RowDisplayLabel"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.SummaryOperandBase.FormatStringProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.SummaryOperandBase.FormatString"/> dependency property. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.DefaultSelectionDisplayLabel">
+            <summary>
+            Get's the default text that will be displayed in the drop down for this <see cref="T:Infragistics.SummaryOperandBase"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.DefaultRowDisplayLabel">
+            <summary>
+            Get's the default text that will be displayed in a SummaryRow when this <see cref="T:Infragistics.SummaryOperandBase"/> is selected.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.SelectionDisplayLabel">
+            <summary>
+            Gets the string that will be displayed in the drop down for this <see cref="T:Infragistics.SummaryOperandBase"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.SelectionDisplayLabelResolved">
+            <summary>
+            Gets the value that will be displayed in the SummaryRow.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.RowDisplayLabel">
+            <summary>
+            Gets / sets the string that will be displayed in the SummaryRow when this <see cref="T:Infragistics.SummaryOperandBase"/> is selected.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.RowDisplayLabelResolved">
+            <summary>
+            Gets the value that will be displayed in the SummaryRow.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.FormatString">
+            <summary>
+            Gets/Sets the format string that will be applied the value of this summary. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.SummaryCalculator">
+            <summary>
+            Gets the <see cref="P:Infragistics.SummaryOperandBase.SummaryCalculator"/> which will be used to calculate the summary.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.LinqSummaryOperator">
+            <summary>
+            Gets the operator that will be associated with this operand.
+            </summary>						
+        </member>
+        <member name="P:Infragistics.SummaryOperandBase.IsApplied">
+            <summary>
+            Gets / sets if the summary should processed for this summary operand.
+            </summary>
+        </member>
+        <member name="T:Infragistics.SummaryResult">
+            <summary>
+            An object that contains the information related to an executed summary.
+            </summary>
+        </member>
+        <member name="M:Infragistics.SummaryResult.#ctor(Infragistics.SummaryDefinition,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.SummaryResult"/> class.
+            </summary>
+            <param name="definition">The <see cref="P:Infragistics.SummaryResult.SummaryDefinition"/> that was used to generate this result.</param>
+            <param name="value">The generated value of the result.</param>
+        </member>
+        <member name="P:Infragistics.SummaryResult.SummaryDefinition">
+            <summary>
+            Gets the <see cref="P:Infragistics.SummaryResult.SummaryDefinition"/> that was used to generate the result
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryResult.Value">
+            <summary>
+            Gets the value generated by the <see cref="P:Infragistics.SummaryResult.SummaryDefinition"/> when last evaluated.
+            </summary>
+        </member>
+        <member name="T:Infragistics.SummaryResultCollection">
+            <summary>
+            A collection of <see cref="T:Infragistics.SummaryResult"/> objects which are used to display summary data.
+            </summary>
+        </member>
+        <member name="P:Infragistics.SummaryResultCollection.Item(Infragistics.SummaryOperandBase)">
+            <summary>
+            Gets the <see cref="T:Infragistics.SummaryResult"/> for a given <see cref="T:Infragistics.SummaryOperandBase"/>.
+            </summary>
+            <param name="op"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.DataManager.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManager.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DataManager.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>
