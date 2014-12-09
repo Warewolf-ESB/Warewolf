@@ -305,10 +305,6 @@
     <Compile Include="Environments\TestServerProvider.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="Factories\DsfActivityFactoryTests.cs" />
-    <Compile Include="Feedback\Actions\RecorderFeedbackActionTests.cs" />
-    <Compile Include="Feedback\Actions\EmailFeedbackActionTests.cs" />
-    <Compile Include="Feedback\FeedbackInvokerTests.cs" />
-    <Compile Include="Feedback\FeedbackRecorderTests.cs" />
     <Compile Include="Helpers\LatestWebGetterTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />
     <Compile Include="Helpers\VersionCheckerTestClass.cs" />
@@ -368,7 +364,6 @@
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
     <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
-    <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WebActivityTests.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />

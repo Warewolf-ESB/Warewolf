@@ -25,7 +25,6 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Activities;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.AppResources.Repositories;
 using Dev2.Collections;
@@ -421,20 +420,6 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         #endregion
-
-        #region NotifyItemSelected Tests
-
-        [TestMethod]
-        public void NotifyItemSelected_WebpagePreviewNullReferenceBugFix()
-        {
-            Mock<IContextualResourceModel> resource = Dev2MockFactory.SetupResourceModelMock(); //new Mock<IContextualResourceModel>();
-            WorkflowDesignerViewModel wf = CreateWorkflowDesignerViewModel(resource.Object, null, false);
-            var page = new DsfWebPageActivity();
-            Assert.IsTrue(wf.NotifyItemSelected(page) == false);
-            wf.Dispose();
-        }
-
-        #endregion NotifyItemSelected Tests
 
         #region Internal Test Methods
 

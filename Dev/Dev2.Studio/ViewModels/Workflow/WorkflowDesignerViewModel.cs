@@ -37,7 +37,6 @@ using System.Windows.Media.Imaging;
 using System.Xaml;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
 using Dev2.AppResources.Converters;
 using Dev2.Common;
@@ -173,8 +172,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="resource">Resource that will be opened</param>
         /// <param name="workflowHelper">Serialisation Helper</param>
         /// <param name="popupController">Injected popup controller</param>
+        /// <param name="asyncWorker"></param>
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
+        /// <param name="setupUnknownVariableTimer"></param>
         // ReSharper disable TooManyDependencies
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false, bool setupUnknownVariableTimer=true)
             : base(eventPublisher)
@@ -564,8 +565,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected void InitializeFlowStep(ModelItem mi)
         {
             ModelProperty modelProperty = mi.Properties["Action"];
-            InitialiseIsDSFWebPage(modelProperty);
-
+            
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
             ModelProperty modelProperty1 = mi.Properties["Action"];
             InitialiseWithAction(modelProperty1);
@@ -657,24 +657,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             modelProperty1.SetValue(droppedActivity);
 
                                
-        }
-
-        void InitialiseIsDSFWebPage(ModelProperty modelProperty)
-        {
-            if (modelProperty != null && modelProperty.ComputedValue is DsfWebPageActivity)
-            {
-                var modelService = Designer.Context.Services.GetService<ModelService>();
-                var items = modelService.Find(modelService.Root, typeof(DsfWebPageActivity));
-
-                IEnumerable<ModelItem> modelItems = items as IList<ModelItem> ?? items.ToList();
-                int totalActivities = modelItems.Count();
-
-                ModelProperty property = modelItems.Last().Properties["DisplayName"];
-                if (property != null)
-                {
-                    property.SetValue(string.Format("Webpage {0}", totalActivities));
-                }
-            }
         }
 
         protected void InitializeFlowSwitch(ModelItem mi)
@@ -1106,11 +1088,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                                               resource.ResourceName.Equals(displayName,
                                                   StringComparison.InvariantCultureIgnoreCase));
 
-                        if (resourceModel != null || selectedItem.ItemType == typeof(DsfWebPageActivity))
-                        {
-                            WebActivityFactory.CreateWebActivity(selectedItem, resourceModel as IContextualResourceModel, displayName);
-                            isItemSelected = true;
-                        }
                     }
                 }
             }
@@ -1759,37 +1736,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
 
-                if (HandleWebActivity(designerView))
-                    return true;
             }
             return false;
         }
 
-        bool HandleWebActivity(DesignerView designerView)
-        {
-            if (designerView != null && designerView.FocusedViewElement != null &&
-                   designerView.FocusedViewElement.ModelItem != null)
-            {
-                ModelItem modelItem = designerView.FocusedViewElement.ModelItem;
-
-                if (modelItem.ItemType == typeof(DsfWebPageActivity) ||
-                       modelItem.ItemType == typeof(DsfWebSiteActivity))
-                {
-                    ModelProperty modelProperty = modelItem.Properties["DisplayName"];
-                    if (modelProperty != null)
-                    {
-                        IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel,
-                            modelProperty
-                                .ComputedValue.ToString());
-                        Dev2Logger.Log.Info("Publish message of type - " + typeof(AddWorkSurfaceMessage));
-                        EventPublisher.Publish(new AddWorkSurfaceMessage(webpageActivity));
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
-
+        
         /// <summary>
         /// Views the preview drop.
         /// </summary>

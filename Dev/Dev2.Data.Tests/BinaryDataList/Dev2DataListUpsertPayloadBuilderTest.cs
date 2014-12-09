@@ -60,15 +60,13 @@ namespace Dev2.Data.Tests.BinaryDataList
             builder.Add("[[rs(*).val]]", "aaa");
 
             var items = builder.FetchFrames(true);
-            int idx = 1;
             foreach (var itm in items)
             {
                 var exp = itm.FetchNextFrameItem().Expression;
-                const string expected = "rs(*).val";
+                const string Expected = "rs(*).val";
 
-                StringAssert.Contains(exp, expected, "Index substitution occurred when not active");
+                StringAssert.Contains(exp, Expected, "Index substitution occurred when not active");
 
-                idx++;
             }
         }
     }

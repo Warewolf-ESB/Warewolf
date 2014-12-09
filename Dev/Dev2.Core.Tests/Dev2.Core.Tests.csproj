@@ -202,7 +202,6 @@
     <Compile Include="Parsing\TokenizerTest.cs" />
     <Compile Include="Parsing\LanguageParserTest.cs" />
     <Compile Include="PathOperationTests\ActivityIOFactoryTests.cs" />
-    <Compile Include="PathOperationTests\PathIOTestingUtils.cs" />
     <Compile Include="DataListCompilerTest.cs" />
     <Compile Include="DataListFactoryTest.cs" />
     <Compile Include="DataListCleaningUtilTest.cs" />
