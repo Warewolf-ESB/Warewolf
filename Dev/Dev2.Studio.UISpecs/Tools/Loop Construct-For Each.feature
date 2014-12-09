@@ -12,6 +12,7 @@ Scenario: For Each containing calculate tool Exectuing 1k times within expected 
 	#Opening New Design Surface
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
+	##ToolDesigners_ForEach_DraggingNonDecision_Allowed
 	#Dragging Assign Tool
 	And I send "Assign" to ""
 	And I drag "TOOLASSIGN" onto "WORKSURFACE,StartSymbol"
@@ -74,7 +75,7 @@ Scenario: For Each Exectuing Workflow in it and debug output is generating withi
 
 
 	
-Scenario:Testing Decision and switch is alowing in foreach
+Scenario:Drag Decision and switch into foreach and expected not allowed
     ###DragADecisionSwitchIntoForEachExpectNotAddedToForEach
 	###DragSequenceIntoForEachAndExpectedAddedToForEach
 	Given I have Warewolf running
