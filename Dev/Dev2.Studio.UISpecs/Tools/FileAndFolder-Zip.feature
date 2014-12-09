@@ -55,7 +55,7 @@ Scenario:Zip Tool Large View And Invalid Variables Expected Error On Done Button
 	Given "WORKSURFACE,Zip(ZipDesigner),SmallViewContent" is visible
 	
 
-Scenario:Zip Tool Testing Tab Order and UiRepondingFine as expected
+Scenario: Zip Tool Testing Tab Order and UiRepondingFine as expected
 	Given I have Warewolf running
 	And all tabs are closed	
 	Given I click "EXPLORERCONNECTCONTROL"

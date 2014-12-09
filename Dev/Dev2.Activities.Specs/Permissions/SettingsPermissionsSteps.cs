@@ -97,7 +97,7 @@ namespace Dev2.Activities.Specs.Permissions
                 i++;
                 if (i == 30)
                 {
-                    Assert.Fail("Server {0} did not start within 30 secs", environmentModel.DisplayName);
+                    Assert.Fail("Server {0} did not connect within 30 secs{1}", environmentModel.DisplayName,DateTime.Now);
                 }
             }
         }
