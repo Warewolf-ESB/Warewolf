@@ -594,24 +594,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feedback.
-        /// </summary>
-        public static string Feedback_Recordings_Directory {
-            get {
-                return ResourceManager.GetString("Feedback_Recordings_Directory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to feedback@warewolf.io.
-        /// </summary>
-        public static string FeedbackEmail {
-            get {
-                return ResourceManager.GetString("FeedbackEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to AttachmentPath must contain exactly one semicolon seperator, between recording log file and server log file..
         /// </summary>
         public static string FeedbackViewModel_Init_ArgException {
