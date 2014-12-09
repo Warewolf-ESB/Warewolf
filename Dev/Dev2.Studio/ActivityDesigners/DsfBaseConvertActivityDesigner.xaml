@@ -16,7 +16,7 @@
                       MouseEnter="DsfBaseConvertActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfBaseConvertActivityDesigner_OnMouseLeave"
                       PreviewDragEnter="DsfBaseConvertActivityDesigner_OnPreviewDragEnter"
-                      ContextMenuOpening="ContextMenu_ContextMenuOpening"
+                      ContextMenuOpening="ContextMenuContextMenuOpening"
                       PreviewMouseDoubleClick="DsfBaseConvertActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
         <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
@@ -73,7 +73,7 @@
     <sap:ActivityDesigner.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Insert Row" Click="InsertRow_MenuItem_Click"  IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            <MenuItem Header="Delete Row" Click="DeleteRow_MenuItem_Click" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <MenuItem Header="Delete Row" Click="DeleteRowMenuItemClick" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </ContextMenu>
     </sap:ActivityDesigner.ContextMenu>
     <sap:ActivityDesigner.Icon>
@@ -119,7 +119,7 @@
             <DataGridTemplateColumn Header="Results" Width="100"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox AllowUserInsertLine="False" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
+                        <ui:IntellisenseTextBox AllowUserInsertLine="False" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxtKeyUp" MaxHeight="39">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FromExpressiontxt_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />

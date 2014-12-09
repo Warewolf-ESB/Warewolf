@@ -171,22 +171,22 @@
                                           Visibility="{Binding CanCreateNewFolder, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewFolderCommand}"
                                           AutomationProperties.AutomationId ="UI_NewFolderContextMenuItem_AutoID"/>
-                                <MenuItem Header="New Workflow Service   (Ctrl+W)"
+                                <MenuItem Header="New Service   (Ctrl+W)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="Workflow"
                                           AutomationProperties.AutomationId ="UI_NewWorkflowContextMenuItem_AutoID"/>
-                                <MenuItem Header="New Database Procedure Service   (Ctrl+Shift+D)"
+                                <MenuItem Header="New Database Connector   (Ctrl+Shift+D)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="DatabaseService"
                                           AutomationProperties.AutomationId ="UI_NewDatabaseServiceContextMenuItem_AutoID" />
-                                <MenuItem Header="New Plugin Service   (Ctrl+Shift+P)"
+                                <MenuItem Header="New Plugin Connector   (Ctrl+Shift+P)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="ResourceService"
                                           AutomationProperties.AutomationId ="UI_NewPluginServiceContextMenuItem_AutoID" />
-                                <MenuItem Header="New Web Service   (Ctrl+Shift+W)"
+                                <MenuItem Header="New Web Service Connector   (Ctrl+Shift+W)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="WebService"
