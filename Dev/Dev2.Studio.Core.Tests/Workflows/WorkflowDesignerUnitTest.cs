@@ -25,7 +25,6 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Activities;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.AppResources.Repositories;
 using Dev2.Collections;

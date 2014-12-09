@@ -70,7 +70,7 @@ namespace Dev2.Tests
         public void GenerateWithGuidExpectedValidGuid()
         {
             var result = _dev2Random.GetRandom(enRandomType.Guid, -1, -1, -1);
-            var tryParse = new Guid();
+            Guid tryParse;
             Assert.IsTrue(Guid.TryParse(result, out tryParse), "Did not generate a valid guid");
             Assert.AreNotEqual(Guid.Empty, tryParse, "Generated an empty Guid");
         }

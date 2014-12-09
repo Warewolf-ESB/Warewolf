@@ -10,7 +10,6 @@
 */
 
 using System;
-using Dev2.Studio.Core.AppResources.Converters;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Helpers;

@@ -367,6 +367,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     fElement.BringToFront();
                 }
             }
+                // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
             }
