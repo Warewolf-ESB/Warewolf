@@ -796,7 +796,7 @@ You need Administrator permission.</value>
     Please clear the duplicates before saving.</value>
   </data>
   <data name="DragRemoteNotSupported" xml:space="preserve">
-    <value>You are allowed to drag remote workflows onto a remote service designer.</value>
+    <value>You are not allowed to drag remote workflows onto a remote service designer.</value>
   </data>
   <data name="DragRemoteNotSupportedHeader" xml:space="preserve">
     <value>Invalid Designer Operation</value>
