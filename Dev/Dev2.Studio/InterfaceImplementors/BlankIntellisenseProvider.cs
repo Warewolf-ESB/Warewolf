@@ -17,6 +17,11 @@ namespace Dev2.Studio.InterfaceImplementors
 {
     public class BlankIntellisenseProvider : IIntellisenseProvider
     {
+        public BlankIntellisenseProvider(IntellisenseProviderType intellisenseProviderType)
+        {
+            IntellisenseProviderType = intellisenseProviderType;
+        }
+
         #region Properties
 
         public bool HandlesResultInsertion { get; set; }

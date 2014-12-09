@@ -11,17 +11,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Input;
-using Dev2.Common;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Utils;
@@ -37,11 +33,7 @@ namespace Dev2.Studio.ViewModels.Help
     public sealed class FeedbackViewModel : SimpleBaseViewModel
     {
         #region private fields
-        private ICommand _sendCommand;
         private ICommand _cancelCommand;
-        private ICommand _openRecordingAttachmentFolderCommand;
-        private ICommand _openServerLogAttachmentFolderCommand;
-        private ICommand _openStudioLogAttachmentFolderCommand;
         private string _comment;
         private OptomizedObservableCollection<string> _categories;
         private string _selectedCategory;
@@ -55,13 +47,14 @@ namespace Dev2.Studio.ViewModels.Help
 
         public Func<string, bool> DoesFileExists = fileName => File.Exists(fileName);
 
-        public FeedbackViewModel()
-            : this(new Dictionary<string, string>())
+        public FeedbackViewModel(string attachments)
+            : this(new Dictionary<string, string>(), attachments)
         {
         }
 
-        public FeedbackViewModel(Dictionary<string, string> attachedFiles)
+        public FeedbackViewModel(Dictionary<string, string> attachedFiles, string attachments)
         {
+            Attachments = attachments;
             SysInfoService = CustomContainer.Get<ISystemInfoService>();
 
             var sysInfo = SysInfoService.GetSystemInfo();
@@ -84,8 +77,7 @@ namespace Dev2.Studio.ViewModels.Help
 
             ServerLogAttachmentPath = attachedFiles.Where(f => f.Key.Equals("ServerLog", StringComparison.CurrentCulture)).Select(v => v.Value).SingleOrDefault();
             StudioLogAttachmentPath = attachedFiles.Where(f => f.Key.Equals("StudioLog", StringComparison.CurrentCulture)).Select(v => v.Value).SingleOrDefault();
-            RecordingAttachmentPath = attachedFiles.Where(f => f.Key.Equals("RecordingLog", StringComparison.CurrentCulture)).Select(v => v.Value).SingleOrDefault();
-
+            
             Comment = GenerateDefaultComment(sysInfo);
             SetCaretPosition();
             Categories.AddRange(new List<string> { "General", "Compliment", "Feature request", "Bug", "Feedback" });
@@ -290,13 +282,7 @@ namespace Dev2.Studio.ViewModels.Help
         /// </value>
         public bool HasStudioLogAttachment { get { return DoesFileExists(StudioLogAttachmentPath); } }
 
-        /// <summary>
-        /// Get a value displayed on the button be it allowing user to send mail or to go to the community
-        /// </summary>
-        public string SendMessageButtonCaption
-        {
-            get { return IsOutlookInstalled() ? "Open Outlook Mail" : "Go to Community"; }
-        }
+
 
         /// <summary>
         /// Gets or sets the sys info service to retreieve system info from.
@@ -309,43 +295,13 @@ namespace Dev2.Studio.ViewModels.Help
         public ISystemInfoService SysInfoService { get; set; }
 
         /// <summary>
-        /// Gets or sets the communication service used for email
-        /// </summary>
-        /// <value>
-        /// The email comm service.
-        /// </value>
-        /// <author>Jurie.smit</author>
-        /// <datetime>2013/01/14-09:17 AM</datetime>
-        public MapiEmailCommService<EmailCommMessage> EmailCommService { get; set; }
-
-        /// <summary>
         /// Browser Popup
         /// </summary>
         public IBrowserPopupController BrowserPopupController { get; set; }
 
-        public ICommand SendCommand
-        {
-            get { return _sendCommand ?? (_sendCommand = new DelegateCommand(o => Send())); }
-        }
-
         public ICommand CancelCommand
         {
             get { return _cancelCommand ?? (_cancelCommand = new DelegateCommand(o => Cancel())); }
-        }
-
-        public ICommand OpenRecordingAttachmentFolderCommand
-        {
-            get { return _openRecordingAttachmentFolderCommand ?? (_openRecordingAttachmentFolderCommand = new DelegateCommand(o => OpenAttachmentFolder(RecordingAttachmentPath))); }
-        }
-
-        public ICommand OpenServerLogAttachmentFolderCommand
-        {
-            get { return _openServerLogAttachmentFolderCommand ?? (_openServerLogAttachmentFolderCommand = new DelegateCommand(o => OpenAttachmentFolder(ServerLogAttachmentPath))); }
-        }
-
-        public ICommand OpenStudioLogAttachmentFolderCommand
-        {
-            get { return _openStudioLogAttachmentFolderCommand ?? (_openStudioLogAttachmentFolderCommand = new DelegateCommand(o => OpenAttachmentFolder(StudioLogAttachmentPath))); }
         }
 
         public string Attachments { get; private set; }
@@ -379,18 +335,6 @@ namespace Dev2.Studio.ViewModels.Help
             sb.Append(Environment.NewLine);
             sb.Append(Environment.NewLine);
 
-            sb.Append("I Like the product : YES/NO");
-            sb.Append(Environment.NewLine);
-
-            sb.Append("I Use the product everyday : YES/NO");
-            sb.Append(Environment.NewLine);
-
-            sb.Append("My name is Earl : YES/NO");
-            sb.Append(Environment.NewLine);
-
-            sb.Append("Really, my name is Earl : YES/NO");
-            sb.Append(Environment.NewLine);
-
             sb.Append("OS version : ");
             sb.Append(sysInfo.Name + " ");
             sb.Append(sysInfo.Edition + " ");
@@ -406,66 +350,11 @@ namespace Dev2.Studio.ViewModels.Help
 
         }
 
-        private void OpenAttachmentFolder(string path)
-        {
-            try
-            {
-                Process.Start("explorer.exe", "/select, \"" + path + "\"");
-            }
-            // ReSharper disable once EmptyGeneralCatchClause
-            // ReSharper disable EmptyGeneralCatchClause
-            catch
-            // ReSharper restore EmptyGeneralCatchClause
-            {
-                //fail silently if the folder to the attachment couldn't be opened
-            }
-        }
-
         #endregion
 
         #region public methods
-        /// <summary>
-        /// Sends an actual comment through email, mainly invoked by the UI through the SendCommand
-        /// </summary>
-        /// <author>Jurie.smit</author>
-        /// <datetime>2013/01/14-09:19 AM</datetime>
-        public void Send()
-        {
-            if(IsOutlookInstalled())
-            {
-                var emailCommService = new MapiEmailCommService<EmailCommMessage>();
-                Send(emailCommService);
-            }
-            else
-            {
-                BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
-                RequestClose(ViewModelDialogResults.Okay);
-            }
-        }
 
-        /// <summary>
-        /// Function to determine if outlook is installed machine running the studio
-        /// </summary>
-        public Func<bool> IsOutlookInstalled = () =>
-        {
-            try
-            {
-                Dev2Logger.Log.Info("");
-                Type type = Type.GetTypeFromCLSID(new Guid("0006F03A-0000-0000-C000-000000000046"));
-                if(type == null)
-                {
-                    return false;
-                }
-                object obj = Activator.CreateInstance(type);
-                Marshal.ReleaseComObject(obj);
-                return true;
-            }
-            catch(COMException)
-            {
-                Dev2Logger.Log.Info("Outlook not installed on machine");
-                return false;
-            }
-        };
+
 
         /// <summary>
         /// Cancels the feedback
@@ -475,47 +364,6 @@ namespace Dev2.Studio.ViewModels.Help
             RequestClose(ViewModelDialogResults.Cancel);
         }
 
-        /// <summary>
-        /// Sends email info using the specified communication service.
-        /// </summary>
-        /// <param name="commService">The comm service.</param>
-        /// <author>Jurie.smit</author>
-        /// <datetime>2013/01/14-09:20 AM</datetime>
-        /// <exception cref="System.NullReferenceException">ICommService of type EmailCommMessage</exception>
-        public void Send(ICommService<EmailCommMessage> commService)
-        {
-            Dev2Logger.Log.Debug("");
-            if(commService == null) throw new NullReferenceException("ICommService<EmailCommMessage>");
-
-            var message = new EmailCommMessage
-            {
-                To = StringResources.FeedbackEmail,
-                Subject = String.Format("Some Real Live Feedback{0}{1}"
-                                        , String.IsNullOrWhiteSpace(SelectedCategory) ? "" : " : ", SelectedCategory),
-                Content = Comment
-            };
-
-            if(HasRecordingAttachment)
-            {
-                Attachments += !string.IsNullOrEmpty(RecordingAttachmentPath) ? RecordingAttachmentPath : "";
-            }
-
-            if(HasServerLogAttachment)
-            {
-                Attachments += !string.IsNullOrEmpty(Attachments) ? ";" : "";
-                Attachments += !string.IsNullOrEmpty(ServerLogAttachmentPath) ? ServerLogAttachmentPath : "";
-            }
-
-            if(HasStudioLogAttachment)
-            {
-                Attachments += !string.IsNullOrEmpty(Attachments) ? ";" : "";
-                Attachments += !string.IsNullOrEmpty(StudioLogAttachmentPath) ? StudioLogAttachmentPath : "";
-            }
-
-            message.AttachmentLocation = Attachments;
-            commService.SendCommunication(message);
-            RequestClose(ViewModelDialogResults.Okay);
-        }
         #endregion
     }
 }

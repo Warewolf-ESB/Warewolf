@@ -240,7 +240,6 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\EnvironmentModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ServerEqualityComparer.cs" />
-    <Compile Include="AppResources\DependencyInjection\EqualityComparers\WebsiteLayoutObjectViewModelEqualityComparer.cs" />
     <Compile Include="AppResources\Enums\NavigationViewContextType.cs" />
     <Compile Include="AppResources\Enums\ReportType.cs" />
     <Compile Include="AppResources\Enums\ResourceType.cs" />
@@ -402,13 +401,11 @@
     <Compile Include="Messages\ShowHelpTabMessage.cs" />
     <Compile Include="Messages\ShowNewResourceWizard.cs" />
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
-    <Compile Include="Messages\ShowWebpartWizardMessage.cs" />
     <Compile Include="Messages\TabClosedMessage.cs" />
     <Compile Include="Messages\UpdateActiveEnvironmentMessage.cs" />
     <Compile Include="Messages\UpdateExplorerMessage.cs" />
     <Compile Include="Messages\UpdateIntellisenseMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
-    <Compile Include="Messages\UpdateWebpagePreviewMessage.cs" />
     <Compile Include="Messages\UpdateWorksurfaceFlowNodeDisplayName.cs" />
     <Compile Include="Models\IExplorerItemModel.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
@@ -499,7 +496,6 @@
     <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceDesignerViewModel.cs" />
     <Compile Include="Interfaces\ILayoutGridViewModel.cs" />
-    <Compile Include="Interfaces\IWebsiteEditorViewModel.cs" />
     <Compile Include="Interfaces\IWebResourceViewModel.cs" />
     <Compile Include="ViewModels\UserInterfaceBuilder\WebResourceViewModel.cs" />
     <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
