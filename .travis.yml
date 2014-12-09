@@ -5,4 +5,4 @@ language: c
 install:
   - sudo apt-get install mono-devel mono-gmcs
 script:
-  - xbuild Dev\Dev2.AcceptanceTesting.sln
+  - xbuild Dev/Dev2.AcceptanceTesting.sln
