@@ -175,6 +175,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                 // force it to XML if need be ;)
 
                 // Fetch and convert DL ;)
+                if (compiler.HasErrors(executionDlid) && executionDlid != GlobalConstants.NullDataListID)
+                {
+                    executionDlid = GlobalConstants.NullDataListID;
+                }
                 if(executionDlid != GlobalConstants.NullDataListID)
                 {
                     // a normal service request
