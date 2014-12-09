@@ -43,6 +43,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="TechTalk.SpecFlow">
+      <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -57,12 +60,29 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="SecurityUISpecs\SecurityUISpec.feature.cs">
+      <DependentUpon>SecurityUISpec.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="Sanity Test Suite\Example Workflows.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Example Workflows.feature.cs</LastGenOutput>
     </None>
+    <None Include="SecurityUISpecs\SecurityUISpec.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SecurityUISpec.feature.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Studio.UISpecs\Dev2.Studio.UI.Specs.csproj">
+      <Project>{2e886fc7-a0f6-4bbf-ae66-6884b3fd8ac5}</Project>
+      <Name>Dev2.Studio.UI.Specs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

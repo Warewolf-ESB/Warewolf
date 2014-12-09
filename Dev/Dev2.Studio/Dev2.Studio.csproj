@@ -1404,11 +1404,8 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>REM Save commit ID:
-for /f "delims=" %25%25a in ('git rev-parse head') do @set ChangesetID=%25%25a
-REM Stop tracking AssemblyInfo:
-cd "$(SolutionDir)"
-git update-index --assume-unchanged AssemblyCommonInfo.cs</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>ROBOCOPY "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
@@ -1418,8 +1415,7 @@ if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>REM copy "$(SolutionDir)Binaries\ActiveDirectory\Interop.ActiveDs.dll" "$(TargetDir)"
-copy "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
+    <PostBuildEvent>copy "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"
 copy "$(SolutionDir)Binaries\Trackerbird.x86.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
