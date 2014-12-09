@@ -7,6 +7,7 @@
 Scenario:Move Tool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
 	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging Move Tool From Tool Box
@@ -19,12 +20,12 @@ Scenario:Move Tool Large View And Invalid Variables Expected Error On Done Butto
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Move(MoveDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
 	Given "WORKSURFACE,UI_Error1_AutoID" is visible
-	Given "WORKSURFACE,UI_Error2_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error2_AutoID" is visible
 	#Correcting File or Folder Field bad variable and expected no error on done button
 	Given I type "[[rec(1).a]]" in "WORKSURFACE,Move(MoveDesigner),LargeViewContent,UI__FileOrFoldertxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Move(MoveDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
-	Given "WORKSURFACE,UI_Error1_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error1_AutoID" is visible
 	#Passing Invalid Recordset Variable in  Destination Field And Expected Validation on Done button
     Given I type "[[rec(1).%a]]" in "WORKSURFACE,Move(MoveDesigner),LargeViewContent,UI__Destinationtxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Move(MoveDesigner),DoneButton"
