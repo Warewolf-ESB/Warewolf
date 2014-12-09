@@ -63,8 +63,8 @@ namespace Dev2.Studio.UI.Specs
         
         //Tools
         //Control Flow
-        static readonly string ToolDecision = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowDecision";
-        static readonly string ToolSwitch = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowSwitch`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]";
+        static readonly string ToolDecision = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowDecision*";
+        static readonly string ToolSwitch = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowSwitch*";
         static readonly string ToolSequence = Toolbox + ",PART_Tools,Control Flow,Dev2.Activities.DsfSequenceActivity";
         //Loop Constructs
         static readonly string ToolForEach = Toolbox + ",PART_Tools,Loop Constructs,Unlimited.Applications.BusinessDesignStudio.Activities.DsfForEachActivity";

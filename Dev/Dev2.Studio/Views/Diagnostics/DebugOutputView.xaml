@@ -429,10 +429,13 @@
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Variable}" Padding="{Binding Variable, Converter={StaticResource PaddingThicknessConverter}}"
-                                               Foreground="{StaticResource DebugItemVariableBrush}" />
-                                    <TextBlock Text="{Binding Operator}" Padding="{Binding Operator, Converter={StaticResource PaddingThicknessConverter}}"/>
+                                               Foreground="{StaticResource DebugItemVariableBrush}"
+                                               AutomationProperties.AutomationId="UI_DebugOutputVariableTextBlock_AutoID" />
+                                    <TextBlock Text="{Binding Operator}" Padding="{Binding Operator, Converter={StaticResource PaddingThicknessConverter}}"
+                                       AutomationProperties.AutomationId="UI_DebugOutputOperatorTextBlock_AutoID"/>
                                     <TextBlock Text="{Binding Value}" Padding="{Binding Value, Converter={StaticResource PaddingThicknessConverter}}"
-                                               Foreground="{StaticResource DebugItemValueBrush}" />
+                                               Foreground="{StaticResource DebugItemValueBrush}"
+                                               AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
                                 </StackPanel>
                                 <Button x:Name="MoreLink"
                                         Focusable="False"
@@ -452,15 +455,19 @@
                         <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Top"
-                                               Text="{Binding Label}" Padding="{Binding Label, Converter={StaticResource PaddingThicknessConverter}}" />
+                                               Text="{Binding Label}" Padding="{Binding Label, Converter={StaticResource PaddingThicknessConverter}}"
+                                               AutomationProperties.AutomationId="UI_DebugOutputLabelTextBlock_AutoID" />
                                     <TextBlock VerticalAlignment="Top"
                                                Text="{Binding Variable}" Padding="{Binding Variable, Converter={StaticResource PaddingThicknessConverter}}"
-                                               Foreground="{StaticResource DebugItemVariableBrush}" />
+                                               Foreground="{StaticResource DebugItemVariableBrush}"
+                                               AutomationProperties.AutomationId="UI_DebugOutputVariableTextBlock_AutoID" />
                                     <TextBlock Text="{Binding Operator}" Padding="{Binding Operator, Converter={StaticResource PaddingThicknessConverter}}"
-                                               VerticalAlignment="Top" />
+                                               VerticalAlignment="Top"
+                                               AutomationProperties.AutomationId="UI_DebugOutputOperatorTextBlock_AutoID" />
                                     <TextBlock Text="{Binding Value}" Padding="{Binding Value, Converter={StaticResource PaddingThicknessConverter}}"
                                                VerticalAlignment="Top"
-                                               Foreground="{StaticResource DebugItemValueBrush}" />
+                                               Foreground="{StaticResource DebugItemValueBrush}"
+                                               AutomationProperties.AutomationId="UI_DebugOutputValueTextBlock_AutoID" />
                                 </StackPanel>
                                 <Button x:Name="MoreLink"
                                         Focusable="False"
@@ -518,7 +525,7 @@
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                             <VirtualizingStackPanel Orientation="Horizontal"
-                                                                    Focusable="False" />
+                                                                    Focusable="False"/>
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
@@ -588,7 +595,7 @@
                                            Grid.Column="2"
                                            Text="{Binding Content.Version}"
                                        Style="{StaticResource VersionVisibility}" 
-                                       AutomationProperties.AutomationId="UI_DebugOutputVersionTextBlock_AutoId" />
+                                       AutomationProperties.AutomationId="UI_DebugOutputVersionTextBlock_AutoID" />
 
                                 <TextBlock Grid.Row="2"
                                            Grid.Column="1"
@@ -611,7 +618,7 @@
                                            Grid.Column="2"
                                        Text="{Binding Content.Name}" 
                                        Style="{StaticResource TypeVisibility}" 
-                                           AutomationProperties.AutomationId="UI_DebugOutputTypeTextBlock_AutoId" />
+                                           AutomationProperties.AutomationId="UI_DebugOutputTypeTextBlock_AutoID" />
 
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="1"
@@ -623,7 +630,7 @@
                                            Grid.Column="2"
                                        Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" 
                                        Style="{StaticResource StartTimeVisibility}" 
-                                           AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoId" />
+                                           AutomationProperties.AutomationId="UI_DebugOutputStartTimeTextBlock_AutoID" />
 
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="1"
@@ -635,7 +642,7 @@
                                            Grid.Column="2"
                                        Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" 
                                        Style="{StaticResource EndTimeVisibility}" 
-                                       AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoId" />
+                                       AutomationProperties.AutomationId="UI_DebugOutputTimeTextBlock_AutoID" />
 
                                 <TextBlock Grid.Row="5"
                                            Grid.Column="1"
@@ -646,7 +653,8 @@
                                 <TextBlock Grid.Row="5"
                                            Grid.Column="2"
                                            Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}"
-                                           Style="{StaticResource DurationVisibility}" />
+                                           Style="{StaticResource DurationVisibility}"
+                                       AutomationProperties.AutomationId="UI_DebugOutputDurationTextBlock_AutoID" />
 
                                 <TextBlock Grid.Row="6"
                                            Grid.Column="1"

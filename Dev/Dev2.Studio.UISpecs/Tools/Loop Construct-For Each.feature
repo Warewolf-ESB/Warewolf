@@ -73,11 +73,30 @@ Scenario: For Each Exectuing Workflow in it and debug output is generating withi
 	#Then "DEBUGOUTPUT,Assign" is visible within "25" seconds
 
 
-
-
-
-
-
+	
+Scenario:Testing Decision and switch is alowing in foreach
+    ###DragADecisionSwitchIntoForEachExpectNotAddedToForEach
+	###DragSequenceIntoForEachAndExpectedAddedToForEach
+	Given I have Warewolf running
+	And all tabs are closed
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "RIBBONNEWENDPOINT"
+	And I double click "TOOLBOX,PART_SearchBox"
+    And I send "For" to ""
+    And I drag "TOOLFOREACH" onto "WORKSURFACE,StartSymbol"
+	And I double click "TOOLBOX,PART_SearchBox"
+    And I send "switch" to ""
+	And I drag "TOOLSWITCH" to point "130,80" on "WORKSURFACE,For Each(ForeachDesigner)"
+	Then "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,FlowSwitchDesigner" is invisible within "1" seconds
+	And I double click "TOOLBOX,PART_SearchBox"
+    And I send "Decision" to ""
+	And I drag "TOOLDECISION" to point "130,80" on "WORKSURFACE,For Each(ForeachDesigner)"
+	Then "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,FlowDecisionDesigner" is invisible within "1" seconds
+	And I double click "TOOLBOX,PART_SearchBox"
+    And I send "Sequence" to ""
+	And I drag "TOOLSEQUENCE" to point "130,80" on "WORKSURFACE,For Each(ForeachDesigner)"
+	Then "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Sequence(SequenceDesigner)" is visible within "1" seconds
 
 
 

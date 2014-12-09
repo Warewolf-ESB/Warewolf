@@ -23,19 +23,9 @@ namespace Dev2.Studio.Views.Diagnostics
     /// </summary>
     public partial class DebugOutputView
     {
-
         public DebugOutputView()
         {
             InitializeComponent();
-        }
-
-        void DebugOutputGrid_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            var grid = sender as Grid;
-            if(grid != null)
-            {
-                grid.Parent.SetValue(AutomationProperties.AutomationIdProperty, "UI_DebugOutputGrid_AutoID");
-            }
         }
     }
 }

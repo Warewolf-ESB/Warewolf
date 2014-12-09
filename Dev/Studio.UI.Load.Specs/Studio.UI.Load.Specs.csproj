@@ -78,6 +78,12 @@
       <LastGenOutput>SecurityUISpec.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Studio.UISpecs\Dev2.Studio.UI.Specs.csproj">
+      <Project>{2e886fc7-a0f6-4bbf-ae66-6884b3fd8ac5}</Project>
+      <Name>Dev2.Studio.UI.Specs</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

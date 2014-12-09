@@ -7,12 +7,12 @@
 Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 	Given I have Warewolf running
 	And all tabs are closed
-	Given I click "EXPLORERCONNECTCONTROL"
-	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I click "EXPLORER,UI_localhost_AutoID"
 	##Searching Workflow with the name "InnerWF" in explorer search
 	And I send "InnerWF" to "EXPLORERFILTER"
 	##Opening WF from explorer
-	And I double click "EXPLORERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_InnerWF_AutoID"
+	And I double click "EXPLORERFOLDERS,UI_Integration Test Resources_AutoID,UI_InnerWF_AutoID"
 	#Changing 'InnerWF' mappings and save, expected popup message as dependency workflows affected
 	And I click "VARIABLESCALAR,UI_Variable_result_AutoID,UI_IsInputCheckbox_AutoID"
 	When I click "RIBBONSAVE"
@@ -31,8 +31,10 @@ Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 
 
 
+##Test will be Open once Ashley Setup an Automation ID's for Grid Rows
 Scenario: DeleteFirstDatagridRow_Expected_RowIsNotDeleted12
 	Given I have Warewolf running
+	Then restart the Studio and Server
 	And all tabs are closed
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
@@ -64,8 +66,9 @@ Scenario: DeleteFirstDatagridRow_Expected_RowIsNotDeleted12
 Scenario: Drag resource multiple times from explorer and expected mappings are not changing
 	Given I have Warewolf running
 	And all tabs are closed
-	Given I click "EXPLORERCONNECTCONTROL"
-	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And "EXPLORER,UI_localhost_AutoID" is visible within "5" seconds
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click new "Workflow"
 	And I send "Utility - Assign" to "EXPLORERFILTER"
 	Given I drag "EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID" onto "WORKSURFACE,StartSymbol"
@@ -90,8 +93,8 @@ Scenario: Drag resource multiple times from explorer and expected mappings are n
 #	Given I have Warewolf running
 #	And all tabs are closed	
 #	And restarted the Studio and Server
-#	Given I click "EXPLORERCONNECTCONTROL"
-#	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+#	And "EXPLORER,UI_localhost_AutoID" is visible within "20" seconds
+#	And I click "EXPLORER,UI_localhost_AutoID"
 #	And I click new "Workflow"
 #	#Opening StartPage
 #	And I double click point "968,51" on "MouseOverBorder"
@@ -104,6 +107,27 @@ Scenario: Drag resource multiple times from explorer and expected mappings are n
 #	Then "RIBBONNEWENDPOINT" is visible
 
 
+Scenario: Testing NewWorkflow ShortcutKey Works as Expected
+	###NewWorkflowShortcutKeyExpectedWorkflowOpens
+	Given I have Warewolf running
+	And all tabs are closed	
+	And I click new "Workflow"
+    Given I send "{CTRL}W" to "WORKSURFACE"
+	Then "WORKFLOWDESIGNER,Unsaved 2(FlowchartDesigner)" is visible within "2" seconds
+    Given I send "{CTRL}{SHIFT}W" to "WORKFLOWDESIGNER"
+	Then "WebBrowserWindow" is visible within "2" seconds
+	Given I send "{ESC}" to "WebBrowserWindow"
+    Given I send "{CTRL}{SHIFT}D" to "WORKFLOWDESIGNER"
+	Then "WebBrowserWindow" is visible within "2" seconds
+	Given I send "{ESC}" to "WebBrowserWindow"
+	Given I send "{CTRL}{SHIFT}P" to "WORKFLOWDESIGNER"
+	Then "WebBrowserWindow" is visible within "2" seconds
+	Given I send "{ESC}" to "WebBrowserWindow"
+	Given I send "{CTRL}S" to ""
+	Then "WebBrowserWindow" is visible within "2" seconds
+	Given I send "{ESC}" to "WebBrowserWindow"
+	Given I send "{CTRL}D" to ""
+	Then "DEPLOYSOURCE" is visible within "2" seconds
 
 
 
