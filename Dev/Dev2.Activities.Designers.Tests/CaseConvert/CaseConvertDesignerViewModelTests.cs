@@ -87,19 +87,12 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
             var modelItem = ModelItemUtils.CreateModelItem(new DsfCaseConvertActivity());
             modelItem.SetProperty("DisplayName", displayName);
 
-            var modelProperty = modelItem.Properties["ConvertCollection"];
-            if(modelProperty != null)
+            var modelItemCollection = modelItem.Properties["ConvertCollection"].Collection;
+            if(items != null)
             {
-                var modelItemCollection = modelProperty.Collection;
-                if(items != null)
+                foreach(var dto in items)
                 {
-                    foreach(var dto in items)
-                    {
-                        if(modelItemCollection != null)
-                        {
-                            modelItemCollection.Add(dto);
-                        }
-                    }
+                    modelItemCollection.Add(dto);
                 }
             }
             return modelItem;

@@ -77,15 +77,16 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatAllArgsValid_Expected_ResultFormattedAccordingToOutputFormat()
         {
-            string result;
-            string errorMsg;
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "14101988";
             dateTimeTO.InputFormat = "ddmmyyyy";
             dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd";
             dateTimeTO.TimeModifierType = "Years";
             dateTimeTO.TimeModifierAmount = 23;
-            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
             string expected = "2011/10/14";
             Assert.AreEqual(expected, result);
         }
@@ -96,15 +97,16 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatAllArgsValid_WithTimeZone_Expected_ResultContainsFullTimezoneName()
         {
-            string result;
-            string errorMsg;
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "14101988GMT";
             dateTimeTO.InputFormat = "ddmmyyyyZ";
             dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' 'ZZZ";
             dateTimeTO.TimeModifierType = "Years";
             dateTimeTO.TimeModifierAmount = 23;
-            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
             string expected = "2011/10/14 Greenwich Mean Time";
             Assert.AreEqual(expected, result);
         }
@@ -116,8 +118,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         public void FormatInputFormatInvalid_Expected_UnableToParseInvalidInputFormat()
         {
             bool isFormatCorrect;
-            string result;
-            string errorMsg;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "14101988";
             dateTimeTO.InputFormat = "dwakkmslyyabsdh'asdx'";
@@ -142,15 +144,16 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatTimeModifierTypeInvalid_Expected_DateNotModified()
         {
-            string result;
-            string errorMsg;
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "14101988";
             dateTimeTO.InputFormat = "ddmmyyyy";
             dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd";
             dateTimeTO.TimeModifierType = "WrongType";
             dateTimeTO.TimeModifierAmount = 23;
-            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
 
             Assert.IsTrue(result == "1988/10/14");
 
@@ -160,30 +163,32 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatWithTrailingZerosInOutputExpectedTrailingZerosNotRemoved()
         {
-            string result;
-            string errorMsg;
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "2013/02/07 08:38:56.953 PM";
             dateTimeTO.InputFormat = "yyyy/mm/dd 12h:min:ss.sp am/pm";
             dateTimeTO.OutputFormat = "sp";
             dateTimeTO.TimeModifierType = "Split Secs";
             dateTimeTO.TimeModifierAmount = -53;
-            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
 
             Assert.AreEqual("900", result);
         }
         [TestMethod]
         public void FormatWithTrailingSpacesInInputExpectedOutputDateNotBlank()
         {
-            string result;
-            string errorMsg;
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "14101988  ";
             dateTimeTO.InputFormat = "ddmmyyyy  ";
             dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd";
             dateTimeTO.TimeModifierType = "Years";
             dateTimeTO.TimeModifierAmount = 23;
-            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
 
             Assert.AreEqual("2011/10/14", result);
         }
@@ -195,8 +200,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         public void FormatDateTimeInvalid_Expected_ErrorMessageReturnedByFormatter()
         {
             bool isFormatCorrect;
-            string result;
-            string errorMsg;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "WrongFormat";
             dateTimeTO.InputFormat = "ddmmyyyy";
@@ -222,8 +227,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         public void FormatDateTimeNULLorEmpty_Expected_ErrorMessageReturnedByFormatter()
         {
             bool isFormatCorrect;
-            string result;
-            string errorMsg;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = null;
             dateTimeTO.InputFormat = "ddmmyyyy";
@@ -247,15 +252,16 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatTimeModifierTypeNULLorEmpty_Expected_SameDateReturned()
         {
-            string result;
-            string errorMsg;
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "14101988";
             dateTimeTO.InputFormat = "ddmmyyyy";
             dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd";
             dateTimeTO.TimeModifierType = "";
             dateTimeTO.TimeModifierAmount = 0;
-            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
             string expected = "1988/10/14";
 
             Assert.AreEqual(expected, result);
@@ -268,8 +274,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatInputFormatNULLorEmptyExpectedDefaultFormatUsed()
         {
-            string result;
-            string errorMsg;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "05/06/2013 10:29:50 AM";
             dateTimeTO.InputFormat = null;
@@ -285,8 +291,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatInputFormatNULLorEmptyExpectedInvariantFormatUsed()
         {
-            string result;
-            string errorMsg;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "05/06/2013 10:29:50";
             dateTimeTO.InputFormat = null;
@@ -302,8 +308,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatInputFormatNULLorEmptyExpectedFullDateTimeFormatUsed()
         {
-            string result;
-            string errorMsg;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "Monday, May 06, 2013 10:29:50 AM";
             dateTimeTO.InputFormat = null;
@@ -321,15 +327,16 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatOutputFormatNULLorEmpty_Expected_NoOutputFormattingPerformed()
         {
-            string result;
-            string errorMsg;
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "14101988";
             dateTimeTO.InputFormat = "ddmmyyyy";
             dateTimeTO.OutputFormat = "";
             dateTimeTO.TimeModifierType = "Years";
             dateTimeTO.TimeModifierAmount = 23;
-            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
             string expected = "14102011";
 
             Assert.AreEqual(expected, result);
@@ -341,15 +348,16 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
         [TestMethod]
         public void FormatInputFormatNULLorEmpty_Expected_DateValueAssumesInputFormat()
         {
-            string result;
-            string errorMsg;
+            bool isFormatCorrect;
+            string result = string.Empty;
+            string errorMsg = string.Empty;
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
             dateTimeTO.DateTime = "2012/8/20";
             dateTimeTO.InputFormat = @"yyyy'/'m'/'d";
             dateTimeTO.OutputFormat = "";
             dateTimeTO.TimeModifierType = "";
             dateTimeTO.TimeModifierAmount = 0;
-            formatter.TryFormat(dateTimeTO, out result, out errorMsg);
+            isFormatCorrect = formatter.TryFormat(dateTimeTO, out result, out errorMsg);
             string expected = "2012/8/20";
 
             Assert.AreEqual(expected, result);

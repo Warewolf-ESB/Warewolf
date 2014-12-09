@@ -264,7 +264,7 @@ namespace Dev2.Runtime.Security
         #endregion
 
         #region EnsureSSL
-        public bool EnsureSsl(string certPath, IPEndPoint endPoint)
+        public bool EnsureSSL(string certPath, IPEndPoint endPoint)
         {
             bool result = false;
 

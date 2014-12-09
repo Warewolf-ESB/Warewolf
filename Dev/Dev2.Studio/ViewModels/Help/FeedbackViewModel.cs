@@ -47,14 +47,13 @@ namespace Dev2.Studio.ViewModels.Help
 
         public Func<string, bool> DoesFileExists = fileName => File.Exists(fileName);
 
-        public FeedbackViewModel(string attachments)
-            : this(new Dictionary<string, string>(), attachments)
+        public FeedbackViewModel()
+            : this(new Dictionary<string, string>())
         {
         }
 
-        public FeedbackViewModel(Dictionary<string, string> attachedFiles, string attachments)
+        public FeedbackViewModel(Dictionary<string, string> attachedFiles)
         {
-            Attachments = attachments;
             SysInfoService = CustomContainer.Get<ISystemInfoService>();
 
             var sysInfo = SysInfoService.GetSystemInfo();

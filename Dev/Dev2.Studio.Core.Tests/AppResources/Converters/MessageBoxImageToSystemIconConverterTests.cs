@@ -43,11 +43,8 @@ namespace Dev2.Core.Tests.AppResources.Converters
             Color actualColor = GetPixel(actual);
             Color expectedColor = Color.FromArgb(0, 0, 0, 0);
 
-            if(actual != null)
-            {
-                Assert.AreEqual(1, actual.PixelHeight, "Returned image should be a height of 1.");
-                Assert.AreEqual(1, actual.PixelWidth, "Returned image should be a width of 1.");
-            }
+            Assert.AreEqual(1, actual.PixelHeight, "Returned image should be a height of 1.");
+            Assert.AreEqual(1, actual.PixelWidth, "Returned image should be a width of 1.");
             Assert.AreEqual(expectedColor, actualColor, "Returned image isn't empty.");
         }
 
@@ -60,11 +57,8 @@ namespace Dev2.Core.Tests.AppResources.Converters
             Color actualColor = GetPixel(actual);
             Color expectedColor = Color.FromArgb(0, 0, 0, 0);
 
-            if(actual != null)
-            {
-                Assert.AreEqual(1, actual.PixelHeight, "Returned image should be a height of 1.");
-                Assert.AreEqual(1, actual.PixelWidth, "Returned image should be a width of 1.");
-            }
+            Assert.AreEqual(1, actual.PixelHeight, "Returned image should be a height of 1.");
+            Assert.AreEqual(1, actual.PixelWidth, "Returned image should be a width of 1.");
             Assert.AreEqual(expectedColor, actualColor, "Returned image isn't empty.");
         }
 
@@ -77,11 +71,8 @@ namespace Dev2.Core.Tests.AppResources.Converters
             Color actualColor = GetPixel(actual);
             Color expectedColor = Color.FromArgb(0, 0, 0, 0);
 
-            if(actual != null)
-            {
-                Assert.AreEqual(1, actual.PixelHeight, "Returned image should be a height of 1.");
-                Assert.AreEqual(1, actual.PixelWidth, "Returned image should be a width of 1.");
-            }
+            Assert.AreEqual(1, actual.PixelHeight, "Returned image should be a height of 1.");
+            Assert.AreEqual(1, actual.PixelWidth, "Returned image should be a width of 1.");
             Assert.AreEqual(expectedColor, actualColor, "Returned image isn't empty.");
         }
 

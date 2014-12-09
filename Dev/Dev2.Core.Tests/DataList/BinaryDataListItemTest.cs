@@ -24,7 +24,7 @@ namespace Dev2.Tests.DataList
         [TestMethod]
         public void FetchFromList_Expected_NonNullDisplayName()
         {
-            string error;
+            string error = string.Empty;
 
             IBinaryDataList dl1;
 
