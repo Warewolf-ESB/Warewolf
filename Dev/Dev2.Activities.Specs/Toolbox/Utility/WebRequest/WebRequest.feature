@@ -122,7 +122,7 @@ Scenario: Enter a URL that is a negative index recordset
 	| [[result]] = |
 
 
-#Scenario: Enter a URL that returns xml
+#Scenario: Enter a google URL and expected no error
 #	Given I have the url "https://www.google.co.za/?gws_rd=cr&ei=U8HnUryVONCGhQfn94C4CQ"
 #	When the web request tool is executed	
 #	Then the result should contain the string "<string>value1</string>"

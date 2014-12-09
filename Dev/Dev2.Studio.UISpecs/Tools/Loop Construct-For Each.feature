@@ -12,6 +12,7 @@ Scenario: For Each containing calculate tool Exectuing 1k times within expected 
 	#Opening New Design Surface
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
+	##ToolDesigners_ForEach_DraggingNonDecision_Allowed
 	#Dragging Assign Tool
 	And I send "Assign" to ""
 	And I drag "TOOLASSIGN" onto "WORKSURFACE,StartSymbol"
@@ -73,8 +74,8 @@ Scenario: For Each Exectuing Workflow in it and debug output is generating withi
 	#Then "DEBUGOUTPUT,Assign" is visible within "25" seconds
 
 
-
-Scenario:Testing Decision and switch is alowing in foreach
+	
+Scenario:Drag Decision and switch into foreach and expected not allowed
     ###DragADecisionSwitchIntoForEachExpectNotAddedToForEach
 	###DragSequenceIntoForEachAndExpectedAddedToForEach
 	Given I have Warewolf running
@@ -97,7 +98,6 @@ Scenario:Testing Decision and switch is alowing in foreach
     And I send "Sequence" to ""
 	And I drag "TOOLSEQUENCE" to point "130,80" on "WORKSURFACE,For Each(ForeachDesigner)"
 	Then "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Sequence(SequenceDesigner)" is visible within "1" seconds
-
 
 
 
