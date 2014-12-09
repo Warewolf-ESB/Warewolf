@@ -71,7 +71,7 @@ namespace Dev2.Core.Tests
                     var versionChecker = new Mock<IVersionChecker>();
                     var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
                     _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object,
-                                                                 versionChecker.Object, false, null, null, null, null, null, new Mock<IStudioResourceRepository>().Object,
+                                                                 versionChecker.Object, false, null, null, null, null, new Mock<IStudioResourceRepository>().Object,
                                                                  new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
                 }
                 return _mockMainViewModel;
