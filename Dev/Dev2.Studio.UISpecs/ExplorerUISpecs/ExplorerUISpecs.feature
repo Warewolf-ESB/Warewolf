@@ -7,8 +7,8 @@
 Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDeleteANDConfirmReadOnlyANDHide
 	Given I have Warewolf running
 	And all tabs are closed
-	Given I click "EXPLORERCONNECTCONTROL"
-	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
 	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length1(RecordsLengthDesigner)" is visible within "2" seconds
@@ -71,8 +71,8 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Expected
 	Given I have Warewolf running
 	And all tabs are closed
-	Given I click "EXPLORERCONNECTCONTROL"
-	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	#Saving a workflow 1
 	And I click "RIBBONSAVE"
@@ -128,15 +128,22 @@ Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Exp
 	Then "EXPLORERFOLDERS,UI_RENAME1_AutoID" is visible within "5" seconds
 	Then "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_FilterTest_AutoID" is visible within "1" seconds
 	When I send "RENAME1" to "EXPLORERFILTER"
+	##RenameResource_WithDashes_ResourceRenamed
+	And I right click "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_FilterTest_AutoID"
+	And I click "UI_RenameContextMenuItem_AutoID"
+	And I type "R-e-n-a-m-e" in "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_FilterTest_AutoID,UI_RenameTexbox_AutoID"
+	And I send "{ENTER}" to "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_FilterTest_AutoID,UI_RenameTexbox_AutoID"
+	##Checking Rename with dashes succussfully renamed or not
+	And "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_R-e-n-a-m-e_AutoID" is visible within "3" seconds
 	#Deleting Resource when filter is ON
 	And I right click "EXPLORERFOLDERS,UI_RENAME1_AutoID"
 	And I click "UI_DeleteContextMenuItem_AutoID"
 	And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
 	#Checking Resource deleted successfully
-	Then "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_FilterTest_AtoID" is invisible within "1" seconds
-	Then "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_FilterTest_AtoID" is invisible within "1" seconds
-
-	
-
-	
-
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	When I send "RENAME1" to "EXPLORERFILTER"
+	Then "EXPLORERFOLDERS,UI_RENAME1_AutoID" is invisible within "1" seconds
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	When I send "R-e-n-a-m-e" to "EXPLORERFILTER"
+	Then "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_R-e-n-a-m-e_AutoID" is invisible within "1" seconds
+	And I click "EXPLORERFILTERCLEARBUTTON"

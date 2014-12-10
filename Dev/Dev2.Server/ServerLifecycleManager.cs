@@ -1312,7 +1312,7 @@ namespace Dev2
                         {
                             var httpsEndpoint = new IPEndPoint(IPAddress.Any, realWebServerSslPort);
                             var httpsUrl = string.Format("https://*:{0}/", webServerSslPort);
-                            var canEnableSsl = HostSecurityProvider.Instance.EnsureSSL(sslCertPath, httpsEndpoint);
+                            var canEnableSsl = HostSecurityProvider.Instance.EnsureSsl(sslCertPath, httpsEndpoint);
 
                             if(canEnableSsl)
                             {

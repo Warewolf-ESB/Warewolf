@@ -7,8 +7,8 @@
 Scenario:Rename Tool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
-	Given I click "EXPLORERCONNECTCONTROL"
-	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging Rename Tool From Tool Box
 	Given I send "Rename" to "TOOLBOX,PART_SearchBox"
@@ -20,12 +20,12 @@ Scenario:Rename Tool Large View And Invalid Variables Expected Error On Done But
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Rename(RenameDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
 	Given "WORKSURFACE,UI_Error1_AutoID" is visible
-	Given "WORKSURFACE,UI_Error2_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error2_AutoID" is visible
 	#Correcting File or Folder Field bad variable and expected no error on done button
 	Given I type "[[rec(1).a]]" in "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__FileOrFoldertxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Rename(RenameDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
-	Given "WORKSURFACE,UI_Error1_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error1_AutoID" is visible
 	#Passing Invalid Recordset Variable in  Destination Field And Expected Validation on Done button
     Given I type "[[rec(1).%a]]" in "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__NewNametxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Rename(RenameDesigner),DoneButton"
@@ -54,3 +54,25 @@ Scenario:Rename Tool Large View And Invalid Variables Expected Error On Done But
 	And I send "Password2" to ""
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Rename(RenameDesigner),DoneButton"
 	Given "WORKSURFACE,Rename(RenameDesigner),SmallViewContent" is visible
+	
+
+Scenario:Rename Tool Testing Tab Order and UiRepondingFine as expected
+	Given I have Warewolf running
+	And all tabs are closed	
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "RIBBONNEWENDPOINT"
+	#Dragging Rename Tool From Tool Box
+	Given I send "Rename" to "TOOLBOX,PART_SearchBox"
+    Given I drag "TOOLRENAME" onto "WORKSURFACE,StartSymbol"
+	##Opening Rename Large View
+	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Rename(RenameDesigner)"
+	##Passing Data Into the tool by using Tabs
+    And I send "[[rec(1).a]]{TAB}" to "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__FileOrFoldertxt_AutoID"
+	And I send "Source@Username{TAB}" to ""
+    And I send "Password{TAB}" to ""
+	And I send "[[rec(2).a]]{TAB}" to ""
+	And I send "Destination{TAB}" to ""
+    And I send "Password{TAB}{SPACE}{TAB}" to ""
+	And I send "[[Result]]" to ""
+	Given "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 

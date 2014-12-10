@@ -582,7 +582,6 @@ namespace BusinessDesignStudio.Unit.Tests
             var model = new Mock<IResourceModel>();
             model.SetupGet(p => p.ResourceName).Returns("My WF");
             model.SetupGet(p => p.Category).Returns("Root");
-            model.Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
 
             var conn = SetupConnection();
 

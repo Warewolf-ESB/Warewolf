@@ -66,9 +66,6 @@ namespace Dev2
         IList<IDebugState> RemoteDebugItems { get; set; }
         string RemoteServiceType { get; set; }
 
-        // Massimo.Guerrera :15-04-2013 - Added for the detection of webpages in the webserver so that the system tags dont get striped
-        bool IsWebpage { get; set; }
-
         ExecutionOrigin ExecutionOrigin { get; set; }
         string ExecutionOriginDescription { get; set; }
         bool IsFromWebServer { get; set; }

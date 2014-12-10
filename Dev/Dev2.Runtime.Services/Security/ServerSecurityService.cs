@@ -34,6 +34,7 @@ namespace Dev2.Runtime.Security
         public ServerSecurityService(string fileName)
         {
             InitializeConfigWatcher(fileName);
+
         }
 
         protected override List<WindowsGroupPermission> ReadPermissions()
@@ -105,6 +106,7 @@ namespace Dev2.Runtime.Security
 
         protected virtual void OnFileChangedEnableRaisingEvents(bool enabled)
         {
+            if (!_isDisposed)
             _configWatcher.EnableRaisingEvents = enabled;
         }
 
@@ -112,12 +114,15 @@ namespace Dev2.Runtime.Security
         {
             if(_configWatcher != null)
             {
+                
+              
                 _configWatcher.EnableRaisingEvents = false;
                 _configWatcher.Changed -= OnFileChanged;
                 _configWatcher.Created -= OnFileChanged;
                 _configWatcher.Deleted -= OnFileChanged;
                 _configWatcher.Renamed -= OnFileRenamed;
                 _configWatcher.Dispose();
+
                 _configWatcher = null;
             }
         }

@@ -7,6 +7,7 @@
 Scenario: Correcting errors on sql bulk insert clicking Done shows small view (using ids)
 	Given I have Warewolf running
 	And all tabs are closed	
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
 	Given I click "EXPLORERCONNECTCONTROL"
 	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
