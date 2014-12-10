@@ -255,12 +255,6 @@
     <Compile Include="ActivityDesigners\DsfTransformActivityDesigner.xaml.cs">
       <DependentUpon>DsfTransformActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfWebPageActivityDesigner.xaml.cs">
-      <DependentUpon>DsfWebPageActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ActivityDesigners\DsfWebSiteActivityDesigner.xaml.cs">
-      <DependentUpon>DsfWebSiteActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="AppResources\AttachedProperties\AvalonEditTextProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\TreeViewItemScrollBehaviour.cs" />
@@ -295,7 +289,6 @@
     <Compile Include="AppResources\Converters\NullToDebugImageConverter.cs" />
     <Compile Include="AppResources\Converters\NullToDebugRibbonButtonTextConverter.cs" />
     <Compile Include="AppResources\Converters\SchedulerStatusToCheckedConverter.cs" />
-    <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
     <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ActivityDesigners\BaseActivityDesigner.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
@@ -493,9 +486,6 @@
     <Compile Include="AppResources\DependencyVisualization\NodeConnectionAdorner.cs" />
     <Compile Include="AppResources\DependencyVisualization\NodeConnectionAdornerDecorator.cs" />
     <Compile Include="AppResources\DependencyVisualization\NodeConnector.cs" />
-    <Compile Include="AppResources\Exceptions\FeedbackRecordingInprogressException.cs" />
-    <Compile Include="AppResources\Exceptions\FeedbackRecordingNoProcessesExcpetion.cs" />
-    <Compile Include="AppResources\Exceptions\FeedbackRecordingTimeoutException.cs" />
     <Compile Include="AppResources\ExtendedControls\AutoLayoutGrid.cs" />
     <Compile Include="AppResources\ExtensionMethods\FrameworkElementExtensionMethods.cs" />
     <Compile Include="AppResources\TextEditorCompletion\TextEditorCompletionData.cs" />
@@ -507,15 +497,6 @@
     <Compile Include="Diagnostics\DebugOutputFilterStrategy.cs" />
     <Compile Include="Deploy\DeployStatsCalculator.cs" />
     <Compile Include="Factory\ExceptionFactory.cs" />
-    <Compile Include="Factory\FeedbackFactory.cs" />
-    <Compile Include="Feedback\Actions\EmailFeedbackAction.cs" />
-    <Compile Include="Feedback\Actions\RecorderFeedbackAction.cs" />
-    <Compile Include="Feedback\FeedbackInvoker.cs" />
-    <Compile Include="Feedback\IAsyncFeedbackAction.cs" />
-    <Compile Include="Feedback\FeedbackRecorder.cs" />
-    <Compile Include="Feedback\IFeedbackAction.cs" />
-    <Compile Include="Feedback\IFeedbackInvoker.cs" />
-    <Compile Include="Feedback\IFeedBackRecorder.cs" />
     <Compile Include="InterfaceImplementors\BlankIntellisenseProvider.cs" />
     <Compile Include="InterfaceImplementors\UserMessageProviderImpl.cs" />
     <Compile Include="InterfaceImplementors\WizardResourceKeys\ResourceKeys.cs" />
@@ -652,14 +633,6 @@
     <Page Include="ActivityDesigners\DsfTransformActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfWebPageActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfWebSiteActivityDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CustomControls\Connections\ConnectControl.xaml">
       <SubType>Designer</SubType>
@@ -1091,8 +1064,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Feedback\6601.cd" />
-    <None Include="Feedback\6670.cd" />
     <None Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Help\HelpTextResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -1393,6 +1364,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AppResources\Exceptions\" />
     <Folder Include="Resources\NewFolder1\" />
     <Folder Include="Wizards\" />
   </ItemGroup>

@@ -56,12 +56,6 @@ namespace Dev2.Webs
             return window.ShowDialog();
         }
 
-        public static bool? ShowWebPageDialog(string absoluteUriString, IPropertyEditorWizard callbackHandler, double width = 800, double height = 600, string leftTitle = "", string rightTitle = "")
-        {
-            var window = CreateWebPageDialog(absoluteUriString, callbackHandler, width, height, leftTitle, rightTitle);
-            return window.ShowDialog();
-        }
-
         #endregion
 
     }

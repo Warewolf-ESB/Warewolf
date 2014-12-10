@@ -12,7 +12,6 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;

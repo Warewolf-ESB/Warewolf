@@ -7,6 +7,7 @@
 Scenario: Find Record index Large view Invalid Recordset Expected Validation on Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
 	Given I click "EXPLORERCONNECTCONTROL"
 	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"

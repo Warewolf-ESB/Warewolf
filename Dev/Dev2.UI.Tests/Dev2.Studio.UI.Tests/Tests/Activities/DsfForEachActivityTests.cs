@@ -77,22 +77,5 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
                 Assert.IsNull(forEachActivity);
             }
         }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ToolDesigners_ForEach")]
-        public void ToolDesigners_ForEach_DraggingNonDecision_Allowed()
-        {
-            using(var dsfActivityUiMap = new DsfForEachUiMap(false, false) { TheTab = RibbonUIMap.CreateNewWorkflow(2000) })
-            {
-                Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);
-                dsfActivityUiMap.Activity = ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.ForEach, dsfActivityUiMap.TheTab, pointToDragTo);
-                dsfActivityUiMap.DragActivityOnDropPoint(ToolType.Assign);
-
-                var forEachActivity = dsfActivityUiMap.GetActivity();
-                Assert.IsNotNull(forEachActivity);
-            }
-        }
-
     }
 }
