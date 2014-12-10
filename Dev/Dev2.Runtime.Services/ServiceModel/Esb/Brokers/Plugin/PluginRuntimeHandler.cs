@@ -146,7 +146,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         serviceMethod.Parameters.Add(
                             new MethodParameter
                             {
-                                DefaultValue = parameterInfo.DefaultValue.ToString(),
+                                DefaultValue = parameterInfo.DefaultValue==null ? string.Empty : parameterInfo.DefaultValue.ToString(),
                                 EmptyToNull = false,
                                 IsRequired = true,
                                 Name = parameterInfo.Name,
