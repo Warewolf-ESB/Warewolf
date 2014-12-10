@@ -49,24 +49,6 @@ namespace Dev2.CodedUI.Tests
         }
 
         #endregion
-
-        #region New PBI Tests
-
-        //PBI_8853
-        [TestMethod]
-        public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
-        {
-            var preCount = TabManagerUIMap.GetTabCount();
-            StudioWindow.SetFocus();
-            Keyboard.SendKeys(StudioWindow, "{CTRL}W");
-            string activeTabName = TabManagerUIMap.GetActiveTabName();
-            var postCount = TabManagerUIMap.GetTabCount();
-            Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
-            Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
-        }
-
-        #endregion New PBI Tests
-
        
         [TestMethod]
         public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()

@@ -128,7 +128,7 @@ namespace Dev2.Core.Tests
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
 
-            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null, null, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
+            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null,  new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
             mvm.Setup(c => c.ShowStartPage()).Verifiable();
 
             //construct
@@ -1405,7 +1405,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 4");
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             var workflowHelper = new Mock<IWorkflowHelper>();
-            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, false);
             var contextViewModel1 = new WorkSurfaceContextViewModel(
                 new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
                 designerViewModel);
@@ -1466,7 +1466,7 @@ namespace Dev2.Core.Tests
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             mockPopUp.Setup(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Verifiable();
             var workflowHelper = new Mock<IWorkflowHelper>();
-            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, false);
             var contextViewModel1 = new WorkSurfaceContextViewModel(
                 new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
                 designerViewModel);
@@ -1796,7 +1796,7 @@ namespace Dev2.Core.Tests
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             var workflowHelper = new Mock<IWorkflowHelper>();
-            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, false);
             var contextViewModel = new WorkSurfaceContextViewModel(
                 new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
                 designerViewModel);
@@ -1847,7 +1847,7 @@ namespace Dev2.Core.Tests
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             var workflowHelper = new Mock<IWorkflowHelper>();
-            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, false);
             var contextViewModel = new WorkSurfaceContextViewModel(
                 new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
                 designerViewModel);
@@ -1890,7 +1890,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
             envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
             envRepo.Setup(e => e.ReadSession()).Returns(new[] { Guid.NewGuid() });
-            var vm = new MainViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, popupController.Object, null, null, null, null, null, null, new Mock<IConnectControlViewModel>().Object);
+            var vm = new MainViewModel(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, popupController.Object, null, null, null, null, null, new Mock<IConnectControlViewModel>().Object);
             vm.ShowCommunityPage();
 
             popupController.Verify(p => p.ShowPopup(It.IsAny<string>()));
@@ -1904,7 +1904,7 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(new Mock<IWindowManager>().Object);
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
             envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
-            var vm = new MainViewModel(mockEventAggregator.Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, null, null, null, null, null, null, null, new Mock<IConnectControlViewModel>().Object);
+            var vm = new MainViewModel(mockEventAggregator.Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, null, null, null, null, null, null, new Mock<IConnectControlViewModel>().Object);
             Assert.IsInstanceOfType(vm.BrowserPopupController, typeof(ExternalBrowserPopupController));
         }
 
@@ -1993,7 +1993,8 @@ namespace Dev2.Core.Tests
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_OnStudioClosing_CallsSchedulerOnClosing()
         {
-            SetupDefaultMef();
+            //Barney, commented out when I removed the feedback stuff from the studio
+            //SetupDefaultMef();
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IEnvironmentRepository>();
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
@@ -2028,7 +2029,8 @@ namespace Dev2.Core.Tests
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_OnStudioClosing_ClosesRemoteEnvironmants()
         {
-            SetupDefaultMef();
+            //Barney, commented out when I removed the feedback stuff from the studio
+            //SetupDefaultMef();
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IEnvironmentRepository>();
             var connected1 = new Mock<IEnvironmentModel>();
@@ -2071,7 +2073,8 @@ namespace Dev2.Core.Tests
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_OnStudioClosing_CallsSettingsOnClosing()
         {
-            SetupDefaultMef();
+            //Barney, commented out when I removed the feedback stuff from the studio
+            //SetupDefaultMef();
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IEnvironmentRepository>();
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
@@ -2107,7 +2110,8 @@ namespace Dev2.Core.Tests
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_OnStudioClosing_CallsSettingsOnClosingDirty()
         {
-            SetupDefaultMef();
+            //Barney, commented out when I removed the feedback stuff from the studio
+            //SetupDefaultMef();
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IEnvironmentRepository>();
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
@@ -2142,7 +2146,8 @@ namespace Dev2.Core.Tests
         [Owner("Leon Rajindrapersadh")]
         public void MainViewModel_OnStudioClosing_CallsSchedulerOnClosingClosesSuccessfully()
         {
-            SetupDefaultMef();
+            //Barney, commented out when I removed the feedback stuff from the studio
+            //SetupDefaultMef();
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IEnvironmentRepository>();
             environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
@@ -2184,7 +2189,8 @@ namespace Dev2.Core.Tests
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Callback((object msg) => actual = msg as SelectItemInDeployMessage).Verifiable();
             #region Setup ImportService - GRRR!
-            SetupDefaultMef();
+            //Barney, commented out when I removed the feedback stuff from the studio
+            //SetupDefaultMef();
             #endregion
 
             var resourceID = Guid.NewGuid();
@@ -2227,7 +2233,8 @@ namespace Dev2.Core.Tests
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Callback((object msg) => actual = msg as SelectItemInDeployMessage).Verifiable();
             #region Setup ImportService - GRRR!
-            SetupDefaultMef();
+            //Barney, commented out when I removed the feedback stuff from the studio
+            //SetupDefaultMef();
             #endregion
 
             var resourceID = Guid.NewGuid();

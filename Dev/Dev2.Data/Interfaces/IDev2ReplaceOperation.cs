@@ -18,7 +18,6 @@ namespace Dev2.Data.Interfaces
 {
     public interface IDev2ReplaceOperation
     {
-
         /// <summary>
         /// Replaces a value in and entry with a new value.
         /// </summary>
@@ -30,6 +29,7 @@ namespace Dev2.Data.Interfaces
         /// <param name="payloadBuilder">The payload builder.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="ReplaceCount">The replace count.</param>
+        /// <param name="entryToReplaceIn"></param>
         /// <returns></returns>
         IDev2DataListUpsertPayloadBuilder<string> Replace(Guid exIdx,
             string expression,

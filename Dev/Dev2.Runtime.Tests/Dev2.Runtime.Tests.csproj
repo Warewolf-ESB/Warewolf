@@ -200,7 +200,6 @@
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
     <Compile Include="Services\DeleteVersionTest.cs" />
     <Compile Include="Services\FetchExplorerItemsTest.cs" />
-    <Compile Include="Services\FindDependenciesTest.cs" />
     <Compile Include="Services\GetServerVersionTest.cs" />
     <Compile Include="Services\GetVersionTest.cs" />
     <Compile Include="Services\GetDirectoriesRelativeToServerTests.cs" />
@@ -213,14 +212,11 @@
     <Compile Include="Hosting\ServiceDefinitionLoaderTest.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerMock.cs" />
     <Compile Include="ESB\DatabaseServiceContainerTests.cs" />
-    <Compile Include="ESB\DatabaseServiceContainerMock.cs" />
-    <Compile Include="ESB\PluginServiceContainerMock.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerTests.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="MockNetworkHost.cs" />
     <Compile Include="Poco\PocoTestFactory.cs" />
     <Compile Include="CompileMessages\ServiceModelCompilerTest.cs" />
-    <Compile Include="Configuration\NetworkContextMock.cs" />
     <Compile Include="Configuration\SettingsProviderTests.cs" />
     <Compile Include="DynamicServicesEndPointTest.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\PluginBrokerTests.cs" />

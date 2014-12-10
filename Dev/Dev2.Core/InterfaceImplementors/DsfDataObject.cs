@@ -264,7 +264,7 @@ namespace Dev2.DynamicServices
         public string RemoteInvokerID { get; set; }
         public IList<IDebugState> RemoteDebugItems { get; set; }
         public string RemoteServiceType { get; set; }
-
+    
         public int ParentThreadID { get; set; }
 
         public bool WorkflowResumeable { get; set; }
@@ -290,8 +290,6 @@ namespace Dev2.DynamicServices
 
         public bool IsDataListScoped { get; set; }
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
-
-        public bool IsWebpage { get; set; }
 
         #endregion Properties
 
@@ -327,7 +325,6 @@ namespace Dev2.DynamicServices
             result.IsDebug = IsDebug;
             result.IsOnDemandSimulation = IsOnDemandSimulation;
             result.IsFromWebServer = IsFromWebServer;
-            result.IsWebpage = IsWebpage;
             result.NumberOfSteps = NumberOfSteps;
             result.OriginalInstanceID = OriginalInstanceID;
             result.ParentInstanceID = ParentInstanceID;

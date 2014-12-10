@@ -7,8 +7,8 @@
 Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDrillDownInForEach
 	Given I have Warewolf running
 	And all tabs are closed
-	Given I click "EXPLORERCONNECTCONTROL"
-	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
 	And I send "Assign" to ""
@@ -53,8 +53,8 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 Scenario: Testing Assign Tool large view Validation Messages for Incorrect Variable
 	Given I have Warewolf running
 	And all tabs are closed
-	Given I click "EXPLORERCONNECTCONTROL"
-	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
 	And I send "Assign" to ""
@@ -77,5 +77,24 @@ Scenario: Testing Assign Tool large view Validation Messages for Incorrect Varia
 	Then "WORKSURFACE,Assign (2)(MultiAssignDesigner),SmallViewContent" is visible
 
 	
+
+
+	
+	
+Scenario:Testing View Sample Workflow Link Is Opening Example Workflow Or Not
+    ###AdornerHelpButtonOpenAnExampleWorlkflowTest
+	Given I have Warewolf running
+	And all tabs are closed
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
+	And I click "RIBBONNEWENDPOINT"
+	And I double click "TOOLBOX,PART_SearchBox"
+    And I send "Assign" to ""
+    And I drag "TOOLASSIGN" onto "WORKSURFACE,StartSymbol"
+    When I double click point "213,5" on "WORKSURFACE,Assign (1)(MultiAssignDesigner)"
+    And I double click "WORKSURFACE,UI_ShowExampleWorkflowLink_AutoID"
+    Then "WORKFLOWDESIGNER,Utility - Assign(FlowchartDesigner)" is visible within "5" seconds
+    Then "WORKFLOWDESIGNER,Utility - Assign(FlowchartDesigner),Assign (3)(MultiAssignDesigner),SmallViewContent" is visible within "2" seconds
+
 
 

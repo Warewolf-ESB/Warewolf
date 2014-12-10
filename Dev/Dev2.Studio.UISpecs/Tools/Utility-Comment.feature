@@ -5,7 +5,7 @@
 
 @Comment
 Scenario: CheckCommentInDebug
-	Given I have Warewolf running
+	Given I have Warewolf running 
 	And all tabs are closed
 	Given I click "EXPLORERCONNECTCONTROL"
 	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"

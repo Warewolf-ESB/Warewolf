@@ -106,8 +106,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDatabaseActivity), typeof(ServiceDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
-                { typeof(DsfWebPageActivity), typeof(DsfWebPageActivityDesigner) },
-                { typeof(DsfWebSiteActivity), typeof(DsfWebSiteActivityDesigner) },
                 { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },
                 { typeof(DsfScriptingJavaScriptActivity), typeof(DsfScriptingJavaScriptDesigner) },
                 { typeof(DsfDropBoxFileActivity), typeof(DropboxUploadFileDesigner) },

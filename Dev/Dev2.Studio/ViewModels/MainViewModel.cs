@@ -53,8 +53,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
-using Dev2.Studio.Feedback;
-using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
@@ -129,17 +127,11 @@ namespace Dev2.Studio.ViewModels
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
-        public IFeedbackInvoker FeedbackInvoker { get; set; }
-
-        public IFeedBackRecorder FeedBackRecorder { get; set; }
-
         public IFrameworkRepository<UserInterfaceLayoutModel> UserInterfaceLayoutRepository { get; set; }
 
         #endregion imports
 
         public bool CloseCurrent { get; set; }
-
-        public static bool IsBusy { get; set; }
 
         public ExplorerViewModel ExplorerViewModel
         {
@@ -384,7 +376,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null, IStudioResourceRepository studioResourceRepository = null, IConnectControlSingleton connectControlSingleton = null, IConnectControlViewModel connectControlViewModel = null)
+            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IStudioResourceRepository studioResourceRepository = null, IConnectControlSingleton connectControlSingleton = null, IConnectControlViewModel connectControlViewModel = null)
             : base(eventPublisher)
         {
             if(environmentRepository == null)
@@ -406,7 +398,6 @@ namespace Dev2.Studio.ViewModels
             PopupProvider = popupController ?? new PopupController();
             WindowManager = windowManager ?? new WindowManager();
             WebController = webController ?? new WebController();
-            FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
             EnvironmentRepository = environmentRepository;
             FlowController = new FlowController(PopupProvider);
 
@@ -910,11 +901,6 @@ namespace Dev2.Studio.ViewModels
             {
                 await ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
             }
-        }
-
-        public void StartFeedback()
-        {
-            FeedbackInvoker.InvokeFeedback(new EmailFeedbackAction(new Dictionary<string, string>(), ActiveEnvironment), new RecorderFeedbackAction());
         }
 
         #endregion

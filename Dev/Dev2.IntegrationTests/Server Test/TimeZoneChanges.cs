@@ -26,14 +26,15 @@ namespace Dev2.Integration.Tests
                 // ReSharper disable once UnusedVariable
                 var a = GlobalConstants.NullDataListID;
                 ChangeTimeZone("South Africa Standard Time");
+                Thread.Sleep(10000);
                 var reponseDataCurrent = ReponseData();
+                XDocument my = XDocument.Parse(reponseDataCurrent);
+                var myHour = DateTime.Parse(my.Descendants().First(x => x.Name == "a").Value);
                 ChangeTimeZone("Pacific Standard Time");
                 Thread.Sleep(10000);
                 var reponseDataChanged = ReponseData();
-                XDocument my = XDocument.Parse(reponseDataCurrent);
                 XDocument their = XDocument.Parse(reponseDataChanged);
                 var theirHour = DateTime.Parse( their.Descendants().First(x => x.Name == "a").Value);
-                var myHour = DateTime.Parse(my.Descendants().First(x => x.Name == "a").Value);
                 Assert.IsTrue( Math.Abs(theirHour.Subtract(myHour).Hours) >1);
 
             }

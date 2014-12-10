@@ -151,9 +151,6 @@ namespace Dev2.Common
         public const string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
 
         // Website constants
-        public const string MetaTagsHolder = @"<Dev2HTML Type=""Meta""/>";
-        public const string WebpageCellContainer = "Webpart";
-        public const string WebpartRenderError = "<Fragement>Error executing webpart's service</Fragment>";
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 
         // JSON constants
@@ -416,7 +413,7 @@ or type_desc LIKE '%Procedure%'";
         public static string DropBoxAppSecret = "tqtil4c1ibja8dn";
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
-
+        public static int AddPopupTimeDelay = 2000;
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

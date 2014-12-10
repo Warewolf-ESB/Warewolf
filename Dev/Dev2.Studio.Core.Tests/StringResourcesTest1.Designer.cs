@@ -154,56 +154,8 @@ namespace Dev2.Core.Tests {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;Dev2ElementName&gt;buttonWizardNameLabel&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;Dev2elementNameButton&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;buttonWizardDisplayTextLabel&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;displayTextButton&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;buttonWizardTypeOfLabel&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;customButtonCode&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;tabIndexLabel&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;Dev2tabIndexButton&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;Dev2toolTipLabel&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;Dev2too [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string GetWebPageElementNames_PositiveTestResult {
-            get {
-                return ResourceManager.GetString("GetWebPageElementNames_PositiveTestResult", resourceCulture);
-            }
-        }
         
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;WebPage&gt;&lt;WebPageServiceName&gt;fileTest&lt;/WebPageServiceName&gt;&lt;WebParts&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;Button&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;Dev2XMLResult&gt;
-        ///  &lt;ADL&gt;
-        ///    &lt;Dev2WebServer&gt;http://127.0.0.1:1234&lt;/Dev2WebServer&gt;
-        ///    &lt;Async /&gt;
-        ///    &lt;Dev2elementNameButton&gt;ButtonClicked&lt;/Dev2elementNameButton&gt;
-        ///    &lt;displayTextButton&gt;Test&lt;/displayTextButton&gt;
-        ///    &lt;customButtonCode&gt;&lt;/customButtonCode&gt;
-        ///    &lt;Dev2tabIndexButton&gt;&lt;/Dev2tabIndexButton&gt;
-        ///    &lt;Dev2toolTipButton&gt;&lt;/Dev2toolT [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Mapping_Test_XMLConfigoration_For_Webpage {
-            get {
-                return ResourceManager.GetString("Mapping_Test_XMLConfigoration_For_Webpage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;Dev2XMLResult&gt;&lt;XmlData /&gt;&lt;Dev2ResumeData&gt;&lt;Dev2WebServer&gt;http://127.0.0.1:1234&lt;/Dev2WebServer&gt;&lt;namedRegionBoundElement&gt;Dev2elementNameButton&lt;/namedRegionBoundElement&gt;&lt;Async /&gt;&lt;/Dev2ResumeData&gt;&lt;Dev2WebPageElementNames&gt;&lt;Dev2ElementName&gt;buttonWizardNameLabel&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;Dev2elementNameButton&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;buttonWizardDisplayTextLabel&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;displayTextButton&lt;/Dev2ElementName&gt;&lt;Dev2ElementName&gt;buttonWizardTypeOfLabel&lt;/Dev2ElementName&gt;&lt;Dev2Eleme [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string MergeXmlConfig_test_result {
-            get {
-                return ResourceManager.GetString("MergeXmlConfig_test_result", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;Dev2XMLResult&gt;
-        ///  &lt;XmlData /&gt;
-        ///  &lt;Dev2ResumeData&gt;
-        ///    &lt;Dev2WebServer&gt;http://127.0.0.1:1234&lt;/Dev2WebServer&gt;
-        ///    &lt;namedRegionBoundElement&gt;Dev2elementNameButton&lt;/namedRegionBoundElement&gt;
-        ///    &lt;Async /&gt;
-        ///  &lt;/Dev2ResumeData&gt;
-        ///&lt;/Dev2XMLResult&gt;.
-        /// </summary>
-        public static string NameRegion_xmlCofig {
-            get {
-                return ResourceManager.GetString("NameRegion_xmlCofig", resourceCulture);
-            }
-        }
+   
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;Service Name=&quot;GetCars&quot;&gt;&lt;Actions&gt;&lt;Action Name=&quot;GetCarsByReg&quot; Type=&quot;InvokeStoredProc&quot; SourceName=&quot;CarsDatabase&quot; SourceMethod=&quot;proc_GetCarsByReg&quot;&gt;&lt;Inputs&gt;&lt;Inputs&gt;&lt;Input Name=&quot;reg&quot; MapsTo=&quot;&quot; Value=&quot;NUD2347&quot; /&gt;&lt;Input Name=&quot;asdfsad&quot; MapsTo=&quot;&quot; Value=&quot;registration223&quot; /&gt;&lt;Input Name=&quot;number&quot; MapsTo=&quot;&quot; Value=&quot;&quot; /&gt;&lt;/Inputs&gt;&lt;/Inputs&gt;&lt;Outputs&gt;&lt;Outputs&gt;&lt;Output Name=&quot;vehicleVin&quot; MapsTo=&quot;VIN&quot; Value=&quot;&quot; /&gt;&lt;Output Name=&quot;vehicleColor&quot; MapsTo=&quot;VehicleColor&quot; Value=&quot;&quot; /&gt;&lt;Output Name=&quot;speed&quot; MapsTo=&quot;speed&quot; Value=&quot;&quot; Recordset=&quot;Fin [rest of string was truncated]&quot;;.
@@ -313,43 +265,7 @@ namespace Dev2.Core.Tests {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;WebPage&gt;&lt;WebPageServiceName&gt;Button_Wizard&lt;/WebPageServiceName&gt;&lt;WebParts&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;Label&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;Dev2XMLResult&gt;
-        ///  &lt;sr&gt;
-        ///    &lt;sr&gt;
-        ///      &lt;XmlData&gt;
-        ///        &lt;Dev2ResumeData&gt;
-        ///          &lt;XmlData&gt;
-        ///            &lt;XmlData&gt;
-        ///              &lt;Dev2elementNameLabel&gt;buttonWizardNameLabel&lt;/Dev2elementNameLabel&gt;
-        ///              &lt;Dev2displayTextLabel&gt;Name&lt;/Dev2displayTextLabel&gt;
-        ///              &lt;Dev2tabIndexLabel&gt;&lt;/Dev2tabIndexLabel&gt;
-        ///           [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string Webpage_Malformed_XmlConfig {
-            get {
-                return ResourceManager.GetString("Webpage_Malformed_XmlConfig", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;WebPage&gt;&lt;WebPageServiceName&gt;Button_Wizard&lt;/WebPageServiceName&gt;&lt;WebParts&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;Label&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;1&lt;/RowIndex&gt;&lt;Dev2XMLResult&gt;
-        ///  &lt;sr&gt;
-        ///    &lt;sr&gt;
-        ///      &lt;XmlData&gt;
-        ///        &lt;Dev2ResumeData&gt;
-        ///          &lt;XmlData&gt;
-        ///            &lt;XmlData&gt;
-        ///              &lt;Dev2elementNameLabel&gt;buttonWizardNameLabel&lt;/Dev2elementNameLabel&gt;
-        ///              &lt;Dev2displayTextLabel&gt;Name&lt;/Dev2displayTextLabel&gt;
-        ///              &lt;Dev2tabIndexLabel&gt;&lt;/Dev2tabIndexLabel&gt;
-        ///           [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string WebPartWizards_DuplicateNameCheck {
-            get {
-                return ResourceManager.GetString("WebPartWizards_DuplicateNameCheck", resourceCulture);
-            }
-        }
+      
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;DataList&gt;

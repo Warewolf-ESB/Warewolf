@@ -147,7 +147,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var stack = new Dev2DecisionStack();
             stack.TheStack = new List<Dev2Decision> { new Dev2Decision() };
 
-            var error = new ErrorResultTO();
+            ErrorResultTO error;
             Guid MyModel = testCompiler.PushSystemModelToDataList(stack, out error);
 
             return MyModel;
@@ -160,7 +160,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             var stack = new Dev2Switch() { SwitchVariable = "" };
 
-            var error = new ErrorResultTO();
+            ErrorResultTO error;
             Guid MyModel = testCompiler.PushSystemModelToDataList(stack, out error);
 
             return MyModel;

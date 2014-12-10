@@ -730,67 +730,7 @@ namespace Dev2.Tests {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;WebPage&gt;&lt;WebPageServiceName&gt;Mo2&lt;/WebPageServiceName&gt;&lt;WebParts&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;Button&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;Dev2XMLResult&gt;
-        ///  &lt;Dev2ResumeData&gt;
-        ///    &lt;Dev2WebServer&gt;http://localhost:1234&lt;/Dev2WebServer&gt;
-        ///    &lt;Dev2elementNameButton&gt;ABC&lt;/Dev2elementNameButton&gt;
-        ///    &lt;displayTextButton&gt;ABCD&lt;/displayTextButton&gt;
-        ///    &lt;btnType&gt;submit&lt;/btnType&gt;
-        ///    &lt;Dev2tabIndexButton&gt;&lt;/Dev2tabIndexButton&gt;
-        ///    &lt;Dev2toolTipButton&gt;&lt;/Dev2toolTipButton&gt;
-        ///    &lt;Dev2customStyle [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string webpageIOTest {
-            get {
-                return ResourceManager.GetString("webpageIOTest", resourceCulture);
-            }
-        }
         
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;XmlData&gt;
-        ///  &lt;XmlData&gt;
-        ///    &lt;ADL&gt;
-        ///      &lt;Resumption&gt;
-        ///        &lt;ParentWorkflowInstanceId&gt;86ede153-ae30-4aca-9c63-534da99f1f59&lt;/ParentWorkflowInstanceId&gt;
-        ///        &lt;ParentServiceName&gt;Release Process&lt;/ParentServiceName&gt;
-        ///      &lt;/Resumption&gt;
-        ///      &lt;Dev2EntryPoint /&gt;
-        ///      &lt;Dev2StepCount&gt;1&lt;/Dev2StepCount&gt;
-        ///      &lt;Dev2Heading /&gt;
-        ///      &lt;Dev2Step1 /&gt;
-        ///      &lt;Dev2Steps /&gt;
-        ///      &lt;Dev2Back /&gt;
-        ///      &lt;Dev2Next /&gt;
-        ///      &lt;Dev2Step2 /&gt;
-        ///      &lt;Dev2Step3 /&gt;
-        ///      &lt;Dev2Step4 /&gt;
-        ///      &lt;Dev2Step5 /&gt;
-        ///      &lt;Dev2GoNext  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string webpageResumptionDL {
-            get {
-                return ResourceManager.GetString("webpageResumptionDL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;WebPage&gt;&lt;WebPageServiceName&gt;Mo&lt;/WebPageServiceName&gt;&lt;WebParts&gt;&lt;WebPart&gt;&lt;WebPartServiceName&gt;Checkbox&lt;/WebPartServiceName&gt;&lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;&lt;RowIndex&gt;0&lt;/RowIndex&gt;&lt;Dev2XMLResult&gt;
-        ///  &lt;Dev2ResumeData&gt;
-        ///    &lt;Dev2WebServer&gt;http://localhost:1234&lt;/Dev2WebServer&gt;
-        ///    &lt;Dev2elementNameCheckbox&gt;sdfijg&lt;/Dev2elementNameCheckbox&gt;
-        ///    &lt;allowEditCB&gt;yes&lt;/allowEditCB&gt;
-        ///    &lt;alignmentCB&gt;h&lt;/alignmentCB&gt;
-        ///    &lt;Dev2fromServiceCB&gt;no&lt;/Dev2fromServiceCB&gt;
-        ///    &lt;Dev2CheckboxStaticOptions&gt;
-        ///      &lt;itemCollection&gt;
-        ///        &lt;i [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string WebPageXMLConfig {
-            get {
-                return ResourceManager.GetString("WebPageXMLConfig", resourceCulture);
-            }
-        }
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;Service ID=&quot;3fd60bce-f56c-46cf-95ca-346ccc668570&quot; Version=&quot;1.0&quot; ServerID=&quot;51a58300-7e9d-4927-a57b-e5d700b11b55&quot; Name=&quot;Bug9304&quot; ResourceType=&quot;WorkflowService&quot;&gt;

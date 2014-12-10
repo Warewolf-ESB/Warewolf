@@ -33,6 +33,7 @@ Scenario: Assign a variable to a variable
     | 2 | [[test]] = 60 |
     | 3 | [[var]] = 60  |
 
+
 Scenario: Assign multiple variables with a calculate expression to a variable
 	Given I assign the value SUM(1,2,3)-5 to a variable "[[var]]"	
 	And I assign the value =[[var]] to a variable "[[test]]"	
@@ -697,7 +698,23 @@ Scenario: Assign addition of all variables to scalar2
 #      | 51 | [[z]]                | =[[a]]+[[b]]/([[[rec().[[a]]]]+123) | 0         | 0        | True       | The-Recordset name [[[rec]] contains invalid character(s)                                         | AN           | 1.The-Recordset name [[[rec]] contains invalid character(s)                                          |
 
 
-
+Scenario: Assign a variable to another variable
+	Given I assign the value a to a variable "[[x]]"	
+	And I assign the value x to a variable "[[b]]"
+	And I assign the value [[[[b]]]] to a variable "[[var]]"
+	When the assign tool is executed
+	Then the value of "[[var]]" equals a
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable   | New Value     |
+	| 1 | [[x]]  =   | a             |
+	| 2 | [[b]] =    | x             |
+	| 3 | [[var]]  = | [[[[b]]]] = a |
+	And the debug output as
+    | # |             |
+    | 1 | [[x]] = a   |
+    | 2 | [[b]] = x   |
+    | 3 | [[var]] = a |
 
 
 

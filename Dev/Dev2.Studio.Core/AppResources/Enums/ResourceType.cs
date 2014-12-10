@@ -39,11 +39,6 @@ namespace Dev2.Studio.Core.AppResources.Enums
         [Description("Unknown")]
         Unknown,
 
-        [Description("Website")]
-        Website,
-
-        [Description("Human Interface Process")]
-        HumanInterfaceProcess,
         Server
     }
 
@@ -61,10 +56,6 @@ namespace Dev2.Studio.Core.AppResources.Enums
                     return WorkSurfaceContext.SourceManager;
                 case ResourceType.Unknown:
                     return WorkSurfaceContext.Unknown;
-                case ResourceType.Website:
-                    return WorkSurfaceContext.Website;
-                case ResourceType.HumanInterfaceProcess:
-                    return WorkSurfaceContext.Webpage;
                 default: return WorkSurfaceContext.Unknown;
             }
         }

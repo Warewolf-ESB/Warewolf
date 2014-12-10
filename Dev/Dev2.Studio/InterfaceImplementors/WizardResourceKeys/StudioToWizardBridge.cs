@@ -74,14 +74,6 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
             {
                 result = "Database";
             }
-            else if(resourceType == "HumanInterfaceProcess" || category == "Webpage")
-            {
-                result = "Webpage";
-            }
-            else if(category == "Website")
-            {
-                result = "Website";
-            }
             else if(resourceType == "WorkflowService")
             {
                 result = "Workflow";

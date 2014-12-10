@@ -138,10 +138,8 @@ namespace Dev2.Common.Reflection
         QUERYASMINFO_FLAG_GETSIZE = 2
     }
 
-#pragma warning disable 1584,1711,1572,1581,1580
-#pragma warning restore 1584,1711,1572,1581,1580
     /// <summary>
-    ///     <see cref="IAssemblyChance.InstallAssembly" />
+    ///     <see cref="IAssemblyCache.InstallAssembly" />
     /// </summary>
     public enum IASSEMBLYCACHE_INSTALL_FLAG
     {

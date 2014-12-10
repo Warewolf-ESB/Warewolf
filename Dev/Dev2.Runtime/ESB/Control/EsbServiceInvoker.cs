@@ -172,8 +172,16 @@ namespace Dev2.Runtime.ESB
                     }
                     finally
                     {
+                        var executionDlid = dataObject.DataListID;
+                        if (compiler.HasErrors(executionDlid) && executionDlid != GlobalConstants.NullDataListID)
+                        {
+                            var errorString = compiler.FetchErrors(executionDlid,true);
+                            var executionErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                            errors.MergeErrors(executionErrors);
+                        }
+
                         ErrorResultTO tmpErrors;
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error,
+                        compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error,
                         errors.MakeDataListReady(), out tmpErrors);
 
                         if(errors.HasErrors())

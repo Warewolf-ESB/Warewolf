@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:Activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
+                    xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                     xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
-                    xmlns:devFeedbackActions="clr-namespace:Dev2.Studio.Feedback.Actions"
                     xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
                     xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
     xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
@@ -11,10 +10,9 @@
                     xmlns:converters1="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
                     xmlns:converters5="clr-namespace:Dev2.AppResources.Converters"
     xmlns:debug="clr-namespace:Dev2.Common.Interfaces.Diagnostics.Debug;assembly=Dev2.Common.Interfaces"
-    xmlns:errors1="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
-    xmlns:logging="clr-namespace:Dev2.Settings.Logging">
+    xmlns:errors1="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces">
 
-    <Activities:ImagePathConverter x:Key="ImagePathConverter" />
+    <activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter" />
     <converters2:BoolToStringConvert x:Key="BoolToStringConvert" />
 
@@ -70,8 +68,6 @@
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters:NullToBoolConvert x:Key="NullToBoolConvert"/>
     <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
-    <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" />
-    <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" MatchingVisibilityValue="Collapsed" MismatchVisibilityValue="Visible" />
     <converters:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter" />
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />

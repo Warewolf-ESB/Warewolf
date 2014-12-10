@@ -170,7 +170,6 @@
     <Compile Include="Panels\DisconnectedUIElementCollection.cs" />
     <Compile Include="Panels\DragCanvas.cs" />
     <Compile Include="Panels\LogicalPanel.cs" />
-    <Compile Include="Panels\Panel3D.cs" />
     <Compile Include="Panels\Viewport3DEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

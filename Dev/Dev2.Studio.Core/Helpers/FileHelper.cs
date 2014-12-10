@@ -37,7 +37,6 @@ namespace Dev2.Studio.Core.Helpers
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 StringResources.App_Data_Directory,
-                StringResources.Feedback_Recordings_Directory,
                 Guid.NewGuid() + extension
             });
             return path;

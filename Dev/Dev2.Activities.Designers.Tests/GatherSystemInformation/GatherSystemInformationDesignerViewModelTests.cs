@@ -76,10 +76,20 @@ namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
             var modelItem = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
             modelItem.SetProperty("DisplayName", displayName);
 
-            var modelItemCollection = modelItem.Properties["SystemInformationCollection"].Collection;
-            foreach(var dto in items)
+            if(modelItem != null)
             {
-                modelItemCollection.Add(dto);
+                var modelProperty = modelItem.Properties["SystemInformationCollection"];
+                if(modelProperty != null)
+                {
+                    var modelItemCollection = modelProperty.Collection;
+                    foreach(var dto in items)
+                    {
+                        if(modelItemCollection != null)
+                        {
+                            modelItemCollection.Add(dto);
+                        }
+                    }
+                }
             }
             return modelItem;
         }

@@ -634,7 +634,7 @@
                                             <Grid>
                                                 <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource NewWorkFlow}"
-                                                   ToolTip="New Workflow (Ctrl+W)"
+                                                   ToolTip="New Service (Ctrl+W)"
                                                    />
                                                 <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding NewResourceCommand.UnauthorizedVisibility}"/>
@@ -697,7 +697,7 @@
                                             <Grid>
                                                 <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource DatabaseService-32}"
-                                                   ToolTip="New Database Service (Ctrl+Shift+D)"
+                                                   ToolTip="New Database Connector (Ctrl+Shift+D)"
                                                    />
                                                 <Image
                                                    Style="{StaticResource AuthNoneIconRibbonStyle}"
@@ -714,7 +714,7 @@
                                             <Grid>
                                                 <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource PluginService-32}"
-                                                   ToolTip="New Plugin Service (Ctrl+Shift+P)"
+                                                   ToolTip="New Plugin Connector (Ctrl+Shift+P)"
                                                    />
                                                 <Image
                                                    Style="{StaticResource AuthNoneIconRibbonStyle}"
@@ -731,7 +731,7 @@
                                             <Grid>
                                                 <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource WebService-32}"
-                                                   ToolTip="New Web Service (Ctrl+Shift+W)"
+                                                   ToolTip="New Web Service Connector (Ctrl+Shift+W)"
                                                    />
                                                 <Image
                                                    Style="{StaticResource AuthNoneIconRibbonStyle}"
