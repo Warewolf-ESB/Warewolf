@@ -25,6 +25,7 @@ Everyone! But it really helps if you’re a C# developer, or a WPF pack leader.
 **Why should you get your paws dirty?**
 
 Pounce on the opportunity to put your name on it - those who make it could be famous!
+See the list of open issues and bugs [here](https://github.com/Warewolf-ESB/Warewolf-ESB/issues) to get started right away.
 
 
 
