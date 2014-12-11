@@ -51,7 +51,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         public void BrowserHandler_OnLoadError_UrlContainsStudioHomePage_RedirectsToPageNotFound()
         {
             var browser = new Mock<IWebBrowser>();
-            browser.Setup(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageNotAvailable)))).Verifiable();
+            browser.Setup(b => b.Load(It.Is<string>(s => s.EndsWith(Resources.Languages.Core.Uri_Studio_PageNotAvailable)))).Verifiable();
 
             var popupController = new Mock<IBrowserPopupController>();
 
@@ -59,14 +59,14 @@ namespace Dev2.Core.Tests.AppResources.Browsers
             var errorText = "Not found";
             var result = handler.OnLoadError(browser.Object, "StudioHomePage.url", 404, ref errorText);
             Assert.IsTrue(result);
-            browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageNotAvailable))), Times.Once());
+            browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(Resources.Languages.Core.Uri_Studio_PageNotAvailable))), Times.Once());
         }
 
         [TestMethod]
         public void BrowserHandler_OnLoadError_UrlDoesNotContainStudioHomePage_RedirectsToServerDisconnected()
         {
             var browser = new Mock<IWebBrowser>();
-            browser.Setup(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageMissing)))).Verifiable();
+            browser.Setup(b => b.Load(It.Is<string>(s => s.EndsWith(Resources.Languages.Core.Uri_Studio_PageMissing)))).Verifiable();
 
             var popupController = new Mock<IBrowserPopupController>();
 
@@ -74,7 +74,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
             var errorText = "Not found";
             var result = handler.OnLoadError(browser.Object, "myfake.url", 404, ref errorText);
             Assert.IsTrue(result);
-            browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageMissing))), Times.Once());
+            browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(Resources.Languages.Core.Uri_Studio_PageMissing))), Times.Once());
         }
         #endregion
 
@@ -186,7 +186,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
 
             //------------Setup for test--------------------------
             var browser = new Mock<IWebBrowser>();
-            browser.Setup(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageRestrictedAccess)))).Verifiable();
+            browser.Setup(b => b.Load(It.Is<string>(s => s.EndsWith(Resources.Languages.Core.Uri_Studio_PageRestrictedAccess)))).Verifiable();
 
             var handler = new BrowserHandler(new Mock<IBrowserPopupController>().Object);
 
@@ -195,7 +195,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
             handler.OnResourceResponse(browser.Object, string.Empty, (int)statusCode, statusCode.ToString(), string.Empty, new WebHeaderCollection());
 
             //------------Assert Results-------------------------
-            browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageRestrictedAccess))), Times.Exactly(hitCount));
+            browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(Resources.Languages.Core.Uri_Studio_PageRestrictedAccess))), Times.Exactly(hitCount));
         }
 
         #endregion

@@ -285,11 +285,6 @@
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="Models\ServerExplorerVersionProxy.cs" />
-    <Compile Include="ResolveExampleResourceNames.Designer.cs">
-      <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
@@ -441,11 +436,6 @@
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResolveExampleResource.Designer.cs">
-      <DependentUpon>ResolveExampleResource.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
@@ -470,11 +460,6 @@
     <Compile Include="Services\WindowsServiceManager.cs" />
     <Compile Include="SortableObservableCollection.cs" />
     <Compile Include="StringResources.Designer.cs" />
-    <Compile Include="StringResources1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StringResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="AppResources\Converters\InverseBooleanConverter.cs" />
     <Compile Include="TO\IWebBrowserNavigateRequestTO.cs" />
     <Compile Include="TO\WebBrowserNavigateRequestTO.cs" />
@@ -519,21 +504,6 @@
     <None Include="SignalR.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ResolveExampleResourceNames.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResolveExampleResourceNames.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ResolveExampleResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResolveExampleResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StringResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StringResources1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
     <None Include="Workspaces\Workspaces.cd" />
   </ItemGroup>
@@ -569,6 +539,10 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Resources\Dev2.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Dev2.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>

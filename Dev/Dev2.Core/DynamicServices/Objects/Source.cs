@@ -100,20 +100,20 @@ namespace Dev2.DynamicServices
                 case enSourceType.SqlDatabase:
                     if (string.IsNullOrEmpty(ConnectionString))
                     {
-                        WriteCompileError(Resources.CompilerError_MissingConnectionString);
+                        WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_MissingConnectionString);
                     }
                     break;
 
                 case enSourceType.WebService:
                     if (WebServiceUri == null)
                     {
-                        WriteCompileError(Resources.CompilerError_MissingUri);
+                        WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_MissingUri);
                     }
                     else
                     {
                         if (!Uri.IsWellFormedUriString(WebServiceUri.ToString(), UriKind.RelativeOrAbsolute))
                         {
-                            WriteCompileError(Resources.CompilerError_InvalidUri);
+                            WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_InvalidUri);
                         }
                         else
                         {
@@ -135,17 +135,17 @@ namespace Dev2.DynamicServices
                 case enSourceType.Plugin:
                     if (string.IsNullOrEmpty(AssemblyName))
                     {
-                        WriteCompileError(Resources.CompilerError_MissingAssemblyName);
+                        WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_MissingAssemblyName);
                     }
 
                     if (string.IsNullOrEmpty(AssemblyLocation))
                     {
-                        WriteCompileError(Resources.CompilerError_MissingAssemblyLocation);
+                        WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_MissingAssemblyLocation);
                     }
                     break;
 
                 case enSourceType.Unknown:
-                    WriteCompileError(Resources.CompilerError_InvalidSourceType);
+                    WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_InvalidSourceType);
                     break;
             }
 

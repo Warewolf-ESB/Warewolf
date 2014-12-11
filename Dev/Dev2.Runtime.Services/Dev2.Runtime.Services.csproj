@@ -358,6 +358,10 @@
       <Project>{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}</Project>
       <Name>Dev2.Network</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Resources\Dev2.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Dev2.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>

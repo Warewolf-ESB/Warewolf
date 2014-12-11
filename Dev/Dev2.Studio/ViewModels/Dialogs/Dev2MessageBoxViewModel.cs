@@ -227,8 +227,8 @@ namespace Dev2.Studio.ViewModels.Dialogs
             string path = Path.Combine(new[] 
                 { 
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
-                    StringResources.App_Data_Directory, 
-                    StringResources.User_Interface_Layouts_Directory 
+                    Resources.Languages.Core.App_Data_Directory, 
+                    Resources.Languages.Core.User_Interface_Layouts_Directory 
                 });
 
             if(!Directory.Exists(path))

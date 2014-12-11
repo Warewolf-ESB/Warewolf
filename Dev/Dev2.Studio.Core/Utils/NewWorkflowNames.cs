@@ -59,10 +59,10 @@ namespace Dev2.Studio.Core.Utils
         /// <returns>The next available workflow name</returns>
         public string GetNext()
         {
-            string newWorkflowBaseName = StringResources.NewWorkflowBaseName;
+            string newWorkflowBaseName = Resources.Languages.Core.NewWorkflowBaseName;
 
             int counter = 1;
-            string fullName = StringResources.NewWorkflowBaseName + " " + counter;
+            string fullName = Resources.Languages.Core.NewWorkflowBaseName + " " + counter;
 
             while(Contains(fullName))
             {
@@ -92,7 +92,7 @@ namespace Dev2.Studio.Core.Utils
         public bool Add(string newWorkflowName)
         {
             // only add the one's that matter ;)
-            if(newWorkflowName.IndexOf(StringResources.NewWorkflowBaseName, StringComparison.Ordinal) == 0)
+            if (newWorkflowName.IndexOf(Resources.Languages.Core.NewWorkflowBaseName, StringComparison.Ordinal) == 0)
             {
                 _workflowNamesHashSet.Add(newWorkflowName);
 

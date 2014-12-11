@@ -9,6 +9,8 @@
 */
 
 using System;
+using Dev2.Resources;
+using Dev2.Resources.Languages;
 
 namespace Dev2
 {
@@ -18,7 +20,7 @@ namespace Dev2
         {
             if (objectValue == null)
             {
-                throw new ArgumentNullException(objectName, FrameworkResources.Exception_ArgumentCannotBeNull);
+                throw new ArgumentNullException(objectName, Framework.Exception_ArgumentCannotBeNull);
             }
         }
 
@@ -30,7 +32,7 @@ namespace Dev2
             {
                 if (string.IsNullOrEmpty(objectValue.ToString()))
                 {
-                    throw new ArgumentException(FrameworkResources.Exception_ArgumentCannotBeNullOrEmpty, objectName);
+                    throw new ArgumentException(Framework.Exception_ArgumentCannotBeNullOrEmpty, objectName);
                 }
             }
         }

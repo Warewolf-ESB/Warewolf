@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -107,51 +108,48 @@ namespace Dev2.Studio.InterfaceImplementors
             ObservableCollection<IDataListItemModel> dataList = null;
 
             var activeDataList = DataListSingleton.ActiveDataList;
-            if(activeDataList != null)
+            var activeDataListViewModels = activeDataList.DataList;
+
+            if(activeDataList != null && activeDataListViewModels != null)
             {
-                var activeDataListViewModels = activeDataList.DataList;
+                dataList = activeDataListViewModels;
+            }
 
-                if(activeDataList != null && activeDataListViewModels != null)
+            if(dataList != null)
+            {
+                if(!HasCachedDatalist || IsUpdated)
                 {
-                    dataList = activeDataListViewModels;
+                    HasCachedDatalist = true;
+                    IsUpdated = false;
                 }
+            }
 
-                if(dataList != null)
+            result.Append("</ADL>");
+
+            if(activeDataList != null && activeDataList.Resource != null && activeDataList.Resource.DataList != null)
+            {
+                if(activeDataList.HasErrors)
                 {
-                    if(!HasCachedDatalist || IsUpdated)
+                    if(activeDataListViewModels != null && results != null)
                     {
-                        HasCachedDatalist = true;
-                        IsUpdated = false;
-                    }
-                }
+                        var error = activeDataListViewModels
+                            .FirstOrDefault(d => d.HasError && input.Contains(d.DisplayName.Replace("()", "")));
 
-                result.Append("</ADL>");
-
-                if(activeDataList.Resource != null && activeDataList.Resource.DataList != null)
-                {
-                    if(activeDataList.HasErrors)
-                    {
-                        if(activeDataListViewModels != null && results != null)
+                        if(error != null)
                         {
-                            var error = activeDataListViewModels
-                                .FirstOrDefault(d => d.HasError && input.Contains(d.DisplayName.Replace("()", "")));
-
-                            if(error != null)
-                            {
-                                results.Add(IntellisenseFactory.CreateErrorResult(1, 1, null, error.ErrorMessage, enIntellisenseErrorCode.SyntaxError, true));
-                            }
-                            else
-                            {
-                                CachedDataList = activeDataList.Resource.DataList;
-                                succeeded = true;
-                            }
+                            results.Add(IntellisenseFactory.CreateErrorResult(1, 1, null, error.ErrorMessage, enIntellisenseErrorCode.SyntaxError, true));
+                        }
+                        else
+                        {
+                            CachedDataList = activeDataList.Resource.DataList;
+                            succeeded = true;
                         }
                     }
-                    else
-                    {
-                        CachedDataList = activeDataList.Resource.DataList;
-                        succeeded = true;
-                    }
+                }
+                else
+                {
+                    CachedDataList = activeDataList.Resource.DataList;
+                    succeeded = true;
                 }
             }
 
@@ -390,7 +388,7 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 if(results != null)
                 {
-                    results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
+                    results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", Dev2.Resources.Languages.Core.IntellisenseErrorMisMacthingBrackets));
                 }
             }
 

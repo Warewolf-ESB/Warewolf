@@ -301,10 +301,10 @@ namespace Dev2.Studio.Core.Models.DataList
                     }
                     else
                     {
-                        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+                        if (!string.Equals(ErrorMessage, Resources.Languages.Core.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, Resources.Languages.Core.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, Resources.Languages.Core.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, Resources.Languages.Core.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
                         {
                             RemoveError();
                         }

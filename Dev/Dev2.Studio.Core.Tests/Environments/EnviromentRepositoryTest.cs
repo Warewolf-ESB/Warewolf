@@ -676,8 +676,8 @@ namespace Dev2.Core.Tests.Environments
             var expected = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                StringResources.App_Data_Directory,
-                StringResources.Environments_Directory
+                Resources.Languages.Core.App_Data_Directory,
+                Resources.Languages.Core.Environments_Directory
             });
 
             var actual = EnvironmentRepository.GetEnvironmentsDirectory();

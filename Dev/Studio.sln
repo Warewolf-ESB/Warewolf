@@ -1,17 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31010.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework", "Dev2.UndoFramework\Dev2.UndoFramework.csproj", "{632E4898-1B1B-474C-A028-D13A5C914F11}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities", "Dev2.Activities\Dev2.Activities.csproj", "{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core", "Dev2.Core\Dev2.Core.csproj", "{6007C1F1-CE38-474A-A88C-0C05A77BC415}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core.Tests", "Dev2.Core.Tests\Dev2.Core.Tests.csproj", "{6A65D99B-61C5-4376-B4F7-71A503F9351F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9BD7DD42-D245-449E-84F9-DBD97A5A7002}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,57 +37,127 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Tests", "Dev2.Activities.Tests\Dev2.Activities.Tests.csproj", "{2A8088A6-8F8D-42FD-B877-D809C494C561}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.OutputLibraries", "Dev2.OutputLibraries\Dev2.OutputLibraries.csproj", "{38650E4E-90E2-44DE-A32F-30F3C4D1438B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime", "Dev2.Runtime\Dev2.Runtime.csproj", "{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services", "Dev2.Runtime.Services\Dev2.Runtime.Services.csproj", "{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Configuration", "Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj", "{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}"
 	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
 		{F5162BDB-D3DB-480E-92E4-FD732904A247} = {F5162BDB-D3DB-480E-92E4-FD732904A247}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppToTestExecuteCommandLineActivity", "ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj", "{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework.Tests", "Dev2.UndoFramework.Tests\Dev2.UndoFramework.Tests.csproj", "{E580C1E3-01E4-424F-A6B2-279C3079C3BF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Tests", "Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj", "{1FD73E36-FC73-4BDF-BCBA-278A44F06550}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics", "Dev2.Diagnostics\Dev2.Diagnostics.csproj", "{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CustomControls", "Dev2.CustomControls\Dev2.CustomControls.csproj", "{F5162BDB-D3DB-480E-92E4-FD732904A247}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2.Util.csproj", "{1990550D-EA6F-4DAC-9B5E-8571E86923ED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Development.Languages", "Dev2.Development.Languages\Dev2.Development.Languages.csproj", "{33896C15-E182-4C09-BA33-99FF9A8BB44A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core", "Dev2.Studio.Core\Dev2.Studio.Core.csproj", "{A58B157B-960B-4E84-8957-24E4884C5C77}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Infrastructure", "Dev2.Infrastructure\Dev2.Infrastructure.csproj", "{615EAE6D-040C-4364-B708-63DC8755CD4F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Infrastructure.Tests", "Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj", "{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Designers", "Dev2.Activities.Designers\Dev2.Activities.Designers.csproj", "{B95B724A-B052-4E18-98A4-88072C8DF2C2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Intellisense", "Dev2.Intellisense\Dev2.Intellisense.csproj", "{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution", "Dev2.Services.Execution\Dev2.Services.Execution.csproj", "{019A92B9-9209-4930-BC96-381CB8B1C0EA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Sql", "Dev2.Services.Sql\Dev2.Services.Sql.csproj", "{FF3115B2-370E-4E40-99C5-7D239BC28679}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data", "Dev2.Data\Dev2.Data.csproj", "{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common", "Dev2.Common\Dev2.Common.csproj", "{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Network", "Dev2.Network\Dev2.Network.csproj", "{14F1E4AA-B9A8-45DD-AF2A-059EFF29201B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Tests", "Dev2.Common.Test\Dev2.Common.Tests.csproj", "{B0564C7A-9DA8-4751-B5D4-D446138E0987}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Designers.Tests", "Dev2.Activities.Designers.Tests\Dev2.Activities.Designers.Tests.csproj", "{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Tests", "Dev2.Data.Tests\Dev2.Data.Tests.csproj", "{86E580CD-C480-435A-8978-A9C27377C900}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{58434E37-3D21-4C5B-A405-9D17DFDA8F79}"
 	ProjectSection(SolutionItems) = preProject
@@ -80,20 +165,44 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{58434E
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Instrumentation", "Dev2.Instrumentation\Dev2.Instrumentation.csproj", "{52F26184-CB50-4D82-B8A2-83F73D2B5011}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers", "Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj", "{1B229665-1631-4275-AFBD-CB5B7775E4CA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler", "Dev2.Scheduler\Dev2.Scheduler.csproj", "{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Tests", "Dev2.Scheduler.Test\Dev2.Scheduler.Tests.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers.Tests", "Dev2.TaskScheduler.Wrappers.Test\Dev2.TaskScheduler.Wrappers.Tests.csproj", "{134EC485-9C05-4EE2-8C35-6A8B6A5528BF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CustomControls.Tests", "Dev2.CustomControls.Tests\Dev2.CustomControls.Tests.csproj", "{BA2D7EFC-D8F2-42FB-8867-3B328AA2A38E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Crypto.HashGenerator", "Dev2.Crypto.HashGenerator\Dev2.Crypto.HashGenerator.csproj", "{E872FFC0-96F9-4FB8-A8D9-B498E158742B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nightly", "Nightly", "{69C361C3-10E4-4875-BA36-3BAF1E74CE05}"
 	ProjectSection(SolutionItems) = preProject
@@ -111,6 +220,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win7", "Win7", "{1E05ADD2-7
 		TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\Workgroup.testsettings = TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\Workgroup.testsettings
 		TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\x86.testsettings = TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\x86.testsettings
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Resources", "Dev2.Resources\Dev2.Resources.csproj", "{CB565C94-8833-4911-B20F-0921EE3C286C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -588,6 +699,18 @@ Global
 		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|x64.ActiveCfg = Release|Any CPU
 		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|x86.ActiveCfg = Release|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Release|x64.ActiveCfg = Release|Any CPU
+		{CB565C94-8833-4911-B20F-0921EE3C286C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

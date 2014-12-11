@@ -21,7 +21,7 @@ namespace Dev2.Studio.AppResources.Converters
         {
             if(value == null)
             {
-                return StringResources.Pack_Uri_Debug_Image;
+                return Resources.Languages.Core.Pack_Uri_Debug_Image;
             }
             return value;
         }

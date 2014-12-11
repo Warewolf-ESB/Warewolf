@@ -647,6 +647,10 @@
       <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
       <Name>Dev2.Intellisense</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Resources\Dev2.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Dev2.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
       <Name>Dev2.Runtime.Configuration</Name>

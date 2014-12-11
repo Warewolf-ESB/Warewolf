@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests.Helpers
             checker.Setup(c => c.Current).Returns(new Version(1, 0, 0, 0));
 
             var startPage = checker.Object.StartPageUri;
-            Assert.AreEqual(StringResources.Warewolf_Homepage_Start, startPage);
+            Assert.AreEqual(Dev2.Resources.Languages.Core.Warewolf_Homepage_Start, startPage);
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace Dev2.Core.Tests.Helpers
             //------------Execute Test---------------------------
             var startPage = checker.Object.CommunityPageUri;
             //------------Assert Results-------------------------
-            Assert.AreEqual(StringResources.Uri_Community_HomePage, startPage);
+            Assert.AreEqual(Resources.Languages.Core.Uri_Community_HomePage, startPage);
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace Dev2.Core.Tests.Helpers
             checker.Setup(c => c.Current).Returns(new Version(1, 0, 0, 0));
 
             var startPage = checker.Object.StartPageUri;
-            Assert.AreEqual(StringResources.Warewolf_Homepage_Start, startPage);
+            Assert.AreEqual(Resources.Languages.Core.Warewolf_Homepage_Start, startPage);
         }
 
         #region IsLastest Tests

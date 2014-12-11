@@ -474,7 +474,7 @@ namespace Dev2.Settings
                     {
                         IsSaved = false;
                         IsDirty = true;
-                        ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateResourcePermissions);
+                        ShowError(Resources.Languages.Core.SaveSettingErrorPrefix, Resources.Languages.Core.SaveSettingsDuplicateResourcePermissions);
                         return false;
                     }
 
@@ -482,7 +482,7 @@ namespace Dev2.Settings
                     {
                         IsSaved = false;
                         IsDirty = true;
-                        ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateServerPermissions);
+                        ShowError(Resources.Languages.Core.SaveSettingErrorPrefix, Resources.Languages.Core.SaveSettingsDuplicateServerPermissions);
                         return false;
                     }
                     SecurityViewModel.Save(Settings.Security);
@@ -506,10 +506,10 @@ namespace Dev2.Settings
                     return IsSaved;
                 }
 
-                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsPermissionsErrorMsg);
+                ShowError(Resources.Languages.Core.SaveSettingErrorPrefix, Resources.Languages.Core.SaveSettingsPermissionsErrorMsg);
                 return false;
             }
-            ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsNotReachableErrorMsg);
+            ShowError(Resources.Languages.Core.SaveSettingErrorPrefix, Resources.Languages.Core.SaveSettingsNotReachableErrorMsg);
             return false;
         }
 

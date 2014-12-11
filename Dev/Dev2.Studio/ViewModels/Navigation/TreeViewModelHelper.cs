@@ -51,7 +51,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public static string GetCategoryDisplayName(string categoryName)
         {
             return string.IsNullOrEmpty(categoryName)
-                       ? StringResources.Navigation_Category_Unassigned
+                       ? Resources.Languages.Core.Navigation_Category_Unassigned
                        : categoryName.ToUpper();
         }
     }

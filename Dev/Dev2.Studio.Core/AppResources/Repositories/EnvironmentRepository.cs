@@ -84,7 +84,7 @@ namespace Dev2.Studio.Core
 
         // Singleton instance only
         protected EnvironmentRepository()
-            : this(CreateEnvironmentModel(Guid.Empty, new Uri(AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
+            : this(CreateEnvironmentModel(Guid.Empty, new Uri(AppSettings.LocalHost), Resources.Languages.Core.DefaultEnvironmentName))
         {
         }
 
@@ -570,8 +570,8 @@ namespace Dev2.Studio.Core
             var path = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                StringResources.App_Data_Directory,
-                StringResources.Environments_Directory
+                Resources.Languages.Core.App_Data_Directory,
+                Resources.Languages.Core.Environments_Directory
             });
 
             if (!Directory.Exists(path))

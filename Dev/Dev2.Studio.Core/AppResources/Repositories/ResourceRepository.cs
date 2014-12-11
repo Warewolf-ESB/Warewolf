@@ -394,7 +394,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
             else
             {
-                throw new ArgumentException(StringResources.Resource_ID_must_be_a_Guid, "resourceId");
+                throw new ArgumentException(Resources.Languages.Core.Resource_ID_must_be_a_Guid, "resourceId");
             }
         }
 
@@ -614,24 +614,24 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 case ResourceType.DbService:
                 case ResourceType.DbSource:
-                    iconPath = StringResources.Pack_Uri_DatabaseService_Image;
+                    iconPath = Resources.Languages.Core.Pack_Uri_DatabaseService_Image;
                     break;
                 case ResourceType.EmailSource:
-                    iconPath = StringResources.Pack_Uri_EmailSource_Image;
+                    iconPath = Resources.Languages.Core.Pack_Uri_EmailSource_Image;
                     break;
                 case ResourceType.PluginService:
                 case ResourceType.PluginSource:
-                    iconPath = StringResources.Pack_Uri_PluginService_Image;
+                    iconPath = Resources.Languages.Core.Pack_Uri_PluginService_Image;
                     break;
                 case ResourceType.WebService:
                 case ResourceType.WebSource:
-                    iconPath = StringResources.Pack_Uri_WebService_Image;
+                    iconPath = Resources.Languages.Core.Pack_Uri_WebService_Image;
                     break;
                 case ResourceType.WorkflowService:
-                    iconPath = StringResources.Pack_Uri_WorkflowService_Image;
+                    iconPath = Resources.Languages.Core.Pack_Uri_WorkflowService_Image;
                     break;
                 case ResourceType.Server:
-                    iconPath = StringResources.Pack_Uri_Server_Image;
+                    iconPath = Resources.Languages.Core.Pack_Uri_Server_Image;
                     break;
             }
 

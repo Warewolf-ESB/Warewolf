@@ -94,7 +94,7 @@ namespace Dev2.DynamicServices
 
             if (string.IsNullOrEmpty(Source))
             {
-                WriteCompileError(Resources.CompilerError_SourceNotFound);
+                WriteCompileError(Resources.Languages.Services.CompilerError_SourceNotFound);
             }
 
             Validators.ForEach(c =>

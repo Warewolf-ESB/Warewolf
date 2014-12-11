@@ -177,7 +177,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                return IsProcessing ? StringResources.Pack_Uri_Stop_Image : StringResources.Pack_Uri_Debug_Image;
+                return IsProcessing ? Resources.Languages.Core.Pack_Uri_Stop_Image : Resources.Languages.Core.Pack_Uri_Debug_Image;
             }
         }
 
@@ -185,7 +185,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                return IsProcessing ? StringResources.Ribbon_StopExecution : StringResources.Ribbon_Debug;
+                return IsProcessing ? Resources.Languages.Core.Ribbon_StopExecution : Resources.Languages.Core.Ribbon_Debug;
             }
         }
 
@@ -792,7 +792,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var lastDebugStateProcessed = _lastStep;
                 _lastStep = null;
                 _dispatchLastDebugState = true;
-                AddItemToTreeImpl(new DebugState { StateType = StateType.Message, Message = Resources.CompilerMessage_ExecutionInterrupted, ParentID = lastDebugStateProcessed.ParentID });
+                AddItemToTreeImpl(new DebugState { StateType = StateType.Message, Message = Resources.Languages.Services.CompilerMessage_ExecutionInterrupted, ParentID = lastDebugStateProcessed.ParentID });
                 AddItemToTreeImpl(lastDebugStateProcessed);
                 _dispatchLastDebugState = false;
             }

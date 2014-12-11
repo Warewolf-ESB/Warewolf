@@ -31,7 +31,7 @@ namespace Dev2.Studio.Core
     {
         public static string GetImageUri(string imageUri)
         {
-            return string.Format("{0}{1}", StringResources.Uri_Application_Image_Website, imageUri);
+            return string.Format("{0}{1}", Resources.Languages.Core.Uri_Application_Image_Website, imageUri);
         }
 
         public static string GetWebPageElementNames(string xmlConfig)
@@ -328,7 +328,7 @@ namespace Dev2.Studio.Core
                 {
                     iconPath = ResourceType.WorkflowService.GetIconLocation();
                 }
-                else if(!resource.IconPath.Contains(StringResources.Pack_Uri_Application_Image))
+                else if (!resource.IconPath.Contains(Resources.Languages.Core.Pack_Uri_Application_Image))
                 {
                     var imageUriConverter = new ContextualResourceModelToImageConverter();
                     var iconUri = imageUriConverter.Convert(resource, null, null, null) as Uri;

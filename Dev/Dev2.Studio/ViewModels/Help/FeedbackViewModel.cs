@@ -438,7 +438,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             else
             {
-                BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
+                BrowserPopupController.ShowPopup(Resources.Languages.Core.Uri_Community_HomePage);
                 RequestClose(ViewModelDialogResults.Okay);
             }
         }
@@ -489,7 +489,7 @@ namespace Dev2.Studio.ViewModels.Help
 
             var message = new EmailCommMessage
             {
-                To = StringResources.FeedbackEmail,
+                To = Resources.Languages.Core.FeedbackEmail,
                 Subject = String.Format("Some Real Live Feedback{0}{1}"
                                         , String.IsNullOrWhiteSpace(SelectedCategory) ? "" : " : ", SelectedCategory),
                 Content = Comment

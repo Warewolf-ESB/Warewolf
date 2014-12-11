@@ -33,12 +33,12 @@
                                                      micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
                                                      Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                                      AutomationProperties.AutomationId="UI_RenameTexbox_AutoID">
-                <i:Interaction.Behaviors>
+                <!--<i:Interaction.Behaviors>
                     <behavior:ControlEnterToTabBehavior NumberOfMoves="1"/>
                     <local:TextboxSelectAllOnFocusBehavior/>
                     <local:TextboxSetFocusOnCreationBehavior IsRenaming="{Binding IsRenaming}"/>
                     <behavior2:TextChangedRegexBehavior RegexOptions="{Binding DisplayNameValidationRegex}"/>
-                </i:Interaction.Behaviors>
+                </i:Interaction.Behaviors>-->
             </TextBox>
             <TextBlock Padding="3,0,0,0" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <TextBlock.ToolTip>

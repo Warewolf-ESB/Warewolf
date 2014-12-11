@@ -31,19 +31,19 @@ namespace Dev2.Studio.Factory
         }
         public DialogViewModelFactory()
         {
-            SetupDialogAction = (dialogueViewModel, ver, packUri) => dialogueViewModel.SetupDialogue(StringResources.About_Header_Text,
-                                            String.Format(StringResources.About_Content, ver,
+            SetupDialogAction = (dialogueViewModel, ver, packUri) => dialogueViewModel.SetupDialogue(Resources.Languages.Core.About_Header_Text,
+                                            String.Format(Resources.Languages.Core.About_Content, ver,
                                                           ver), packUri,
-                                            StringResources.About_Description_Header, StringResources.EULA_Link, StringResources.EULA_Text);
-            SetupServerDialogAction = (dialogueViewModel, ver, packUri, version) => dialogueViewModel.SetupDialogue(StringResources.About_Header_Text,
-                                            String.Format(StringResources.About_Content, ver,
+                                            Resources.Languages.Core.About_Description_Header, Resources.Languages.Core.EULA_Link, Resources.Languages.Core.EULA_Text);
+            SetupServerDialogAction = (dialogueViewModel, ver, packUri, version) => dialogueViewModel.SetupDialogue(Resources.Languages.Core.About_Header_Text,
+                                            String.Format(Resources.Languages.Core.About_Content, ver,
                                                           version), packUri,
-                                            StringResources.About_Description_Header, StringResources.EULA_Link, StringResources.EULA_Text);
+                                            Resources.Languages.Core.About_Description_Header, Resources.Languages.Core.EULA_Link, Resources.Languages.Core.EULA_Text);
         }
         public IDialogueViewModel CreateAboutDialog()
         {
             IDialogueViewModel dialogueViewModel = new DialogueViewModel();
-            string packUri = StringResources.Warewolf_Logo;
+            string packUri = Resources.Languages.Core.Warewolf_Logo;
 
             var ver = VersionInfo.FetchVersionInfo();
 
@@ -54,7 +54,7 @@ namespace Dev2.Studio.Factory
         public IDialogueViewModel CreateServerAboutDialog(string serverVersion)
         {
             IDialogueViewModel dialogueViewModel = new DialogueViewModel();
-            string packUri = StringResources.Warewolf_Logo;
+            string packUri = Resources.Languages.Core.Warewolf_Logo;
 
             var ver = VersionInfo.FetchVersionInfo();
             SetupServerDialogAction(dialogueViewModel, ver, packUri, serverVersion);

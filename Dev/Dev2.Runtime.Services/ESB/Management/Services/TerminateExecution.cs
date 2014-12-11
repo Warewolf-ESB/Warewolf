@@ -48,20 +48,20 @@ namespace Dev2.Runtime.ESB.Management
             var hasResourceId = Guid.TryParse(resourceIdString, out resourceId);
             if(!hasResourceId)
             {
-                res.SetMessage(Resources.CompilerError_TerminationFailed);
+                res.SetMessage(Resources.Languages.Services.CompilerError_TerminationFailed);
                 res.HasError = true;
             }
             var service = ExecutableServiceRepository.Instance.Get(theWorkspace.ID, resourceId);
             if(service == null)
             {
-                res.SetMessage(Resources.CompilerError_TerminationFailed);
+                res.SetMessage(Resources.Languages.Services.CompilerError_TerminationFailed);
                 res.HasError = true;
             }
 
             if(service != null)
             {
                 service.Terminate();
-                res.SetMessage(Resources.CompilerMessage_TerminationSuccess);
+                res.SetMessage(Resources.Languages.Services.CompilerMessage_TerminationSuccess);
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

@@ -375,7 +375,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(Resources.Languages.Core.xmlServiceDefinition));
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -423,7 +423,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(Resources.Languages.Core.xmlServiceDefinition));
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -441,7 +441,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(Resources.Languages.Core.xmlServiceDefinition));
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Category\\Testing");
@@ -465,7 +465,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(Resources.Languages.Core.xmlServiceDefinition));
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -481,7 +481,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(Resources.Languages.Core.xmlServiceDefinition));
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -496,9 +496,9 @@ namespace Dev2.Core.Tests
         static public Mock<IFilePersistenceProvider> SetupFilePersistenceProviderMock()
         {
             var mockFilePersistenceProvider = new Mock<IFilePersistenceProvider>();
-            mockFilePersistenceProvider.Setup(filepro => filepro.Write(String.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, StringResources.DebugData_FilePath), "<xmlData/>")).Verifiable();
-            mockFilePersistenceProvider.Setup(filepro => filepro.Read(String.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, StringResources.DebugData_FilePath))).Returns("<xmlData/>").Verifiable();
-            mockFilePersistenceProvider.Setup(filepro => filepro.Delete(String.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, StringResources.DebugData_FilePath))).Verifiable();
+            mockFilePersistenceProvider.Setup(filepro => filepro.Write(String.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, Resources.Languages.Core.DebugData_FilePath), "<xmlData/>")).Verifiable();
+            mockFilePersistenceProvider.Setup(filepro => filepro.Read(String.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, Resources.Languages.Core.DebugData_FilePath))).Returns("<xmlData/>").Verifiable();
+            mockFilePersistenceProvider.Setup(filepro => filepro.Delete(String.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, Resources.Languages.Core.DebugData_FilePath))).Verifiable();
 
             return mockFilePersistenceProvider;
         }

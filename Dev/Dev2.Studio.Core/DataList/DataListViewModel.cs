@@ -688,15 +688,15 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             foreach(var recordset in RecsetCollection.Where(c => c.Children.Count == 0 || (c.Children.Count == 1 && string.IsNullOrEmpty(c.Children[0].Name)) && !string.IsNullOrEmpty(c.Name)))
             {
-                recordset.SetError(StringResources.ErrorMessageEmptyRecordSet);
+                recordset.SetError(Resources.Languages.Core.ErrorMessageEmptyRecordSet);
             }
         }
 
         void CheckForFixedEmptyRecordsets()
         {
-            foreach(var recset in RecsetCollection.Where(c => c.ErrorMessage == StringResources.ErrorMessageEmptyRecordSet && (c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].Name))))
+            foreach (var recset in RecsetCollection.Where(c => c.ErrorMessage == Resources.Languages.Core.ErrorMessageEmptyRecordSet && (c.Children.Count >= 1 && !string.IsNullOrEmpty(c.Children[0].Name))))
             {
-                if(recset.ErrorMessage != StringResources.ErrorMessageDuplicateRecordset || recset.ErrorMessage != StringResources.ErrorMessageInvalidChar)
+                if (recset.ErrorMessage != Resources.Languages.Core.ErrorMessageDuplicateRecordset || recset.ErrorMessage != Resources.Languages.Core.ErrorMessageInvalidChar)
                 {
                     recset.RemoveError();
                 }
@@ -712,13 +712,13 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if(duplicate.Count() > 1 && !String.IsNullOrEmpty(duplicate.Key))
                 {
-                    duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
+                    duplicate.ForEach(model => model.SetError(Resources.Languages.Core.ErrorMessageDuplicateValue));
                 }
                 else
                 {
                     duplicate.ForEach(model =>
                     {
-                        if(model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
+                        if (model.ErrorMessage != null && model.ErrorMessage.Contains(Resources.Languages.Core.ErrorMessageDuplicateValue))
                         {
                             model.RemoveError();
                         }

@@ -30,8 +30,8 @@ namespace Dev2.Studio.Views.ResourceManagement
         {
             InitializeComponent();
             Owner = Application.Current.MainWindow;
-            Title = String.Format(StringResources.DialogTitle_HasDependencies, model.ResourceType.GetDescription());
-            tbDisplay.Text = String.Format(StringResources.DialogBody_HasDependencies, model.ResourceName,
+            Title = String.Format(Dev2.Resources.Languages.Core.DialogTitle_HasDependencies, model.ResourceType.GetDescription());
+            tbDisplay.Text = String.Format(Dev2.Resources.Languages.Core.DialogBody_HasDependencies, model.ResourceName,
                                                     model.ResourceType.GetDescription());
         }
 

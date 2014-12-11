@@ -111,7 +111,7 @@ namespace Dev2.DynamicServices
 
             if (Actions.Count == 0)
             {
-                WriteCompileError(Resources.CompilerError_ServiceHasNoActions);
+                WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_ServiceHasNoActions);
             }
 
             Actions.ForEach(c =>
