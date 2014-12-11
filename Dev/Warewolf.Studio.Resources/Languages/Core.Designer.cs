@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Dev2.Resources.Languages
+namespace Warewolf.Studio.Resources.Languages
 {
     using System;
     

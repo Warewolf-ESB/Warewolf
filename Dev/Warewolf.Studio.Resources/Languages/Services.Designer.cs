@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Dev2.Resources.Languages {
+namespace Warewolf.Studio.Resources.Languages {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Dev2.Resources.Languages {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dev2.Resources.Languages.Services", typeof(Services).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Warewolf.Studio.Resources.Languages.Services", typeof(Services).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

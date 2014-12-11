@@ -1,4 +1,4 @@
-﻿namespace Dev2.Resources
+﻿namespace Warewolf.Studio.Resources
 {
     public class Resources
     {
