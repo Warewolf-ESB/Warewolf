@@ -15,6 +15,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <ExpressionBlendVersion>12.0.51001.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -216,6 +217,7 @@
     <Compile Include="Studio\Core\IAutoMappingOutputAction.cs" />
     <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
+    <Compile Include="Studio\ViewModels\IExplorerViewModel.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
     <Compile Include="UndoFramework\IActionHistory.cs" />
     <Compile Include="UndoFramework\IMultiAction.cs" />
