@@ -1,0 +1,14 @@
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\StyleElements\Brushes.baml
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources_MarkupCompile.cache
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\bin\Debug\Dev2.Resources.dll
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\bin\Debug\Dev2.Resources.pdb
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\StyleElements\Colors.baml
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources.g.resources
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources.Languages.Core.resources
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources.Languages.ExampleResource.resources
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources.Languages.ExampleResourceNames.resources
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources.Languages.Framework.resources
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources.Languages.Services.resources
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources.csproj.GenerateResource.Cache
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources.dll
+D:\Repos\Warewolf Open Source\Dev\Dev2.Resources\obj\Debug\Dev2.Resources.pdb
