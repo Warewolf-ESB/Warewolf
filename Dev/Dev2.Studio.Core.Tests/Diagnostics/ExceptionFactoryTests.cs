@@ -53,9 +53,9 @@ namespace Dev2.Core.Tests.Diagnostics
             var vm = ExceptionFactory.Create(e);
 
             //Assert
-            Assert.AreEqual(Resources.Languages.Core.ErrorPrefix + "Test Exception", vm.Message, "Exception view model is displaying an incorrect default exception message");
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.ErrorPrefix + "Test Exception", vm.Message, "Exception view model is displaying an incorrect default exception message");
             Assert.AreEqual(1, vm.Exception.Count, "Wrong number of exceptions displayed by exception view model");
-            Assert.AreEqual(Resources.Languages.Core.ErrorPrefix + "Test inner Exception", vm.Exception[0].Message, "Exception view model is displaying the wrong default inner exception message");
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.ErrorPrefix + "Test inner Exception", vm.Exception[0].Message, "Exception view model is displaying the wrong default inner exception message");
         }
 
         [TestMethod]
@@ -68,10 +68,10 @@ namespace Dev2.Core.Tests.Diagnostics
             var vm = ExceptionFactory.Create(e, true);
 
             //Assert
-            Assert.AreEqual(Resources.Languages.Core.CriticalExceptionMessage, vm.Message, "Exception view model is displaying an incorrect critical exception message");
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.CriticalExceptionMessage, vm.Message, "Exception view model is displaying an incorrect critical exception message");
             Assert.AreEqual(2, vm.Exception.Count, "Wrong number of exceptions displayed by exception view model");
-            Assert.AreEqual(Resources.Languages.Core.ErrorPrefix + "Test Exception", vm.Exception[0].Message, "Exception view model is displaying the wrong exception message");
-            Assert.AreEqual(Resources.Languages.Core.ErrorPrefix + "Test inner Exception", vm.Exception[1].Message, "Exception view model is displaying the wrong inner exception message");
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.ErrorPrefix + "Test Exception", vm.Exception[0].Message, "Exception view model is displaying the wrong exception message");
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.ErrorPrefix + "Test inner Exception", vm.Exception[1].Message, "Exception view model is displaying the wrong inner exception message");
         }
 
         #endregion
@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests.Diagnostics
         public void GetExceptionWithCricalExceptionExpectedCriticalInfoIncluded()
         {
             string exceptionResult = ExceptionFactory.CreateStringValue(GetException(), null, true).ToString();
-            StringAssert.Contains(exceptionResult, Resources.Languages.Core.CriticalExceptionMessage, "Error - Additional Trace Info is missing from the exception!");
+            StringAssert.Contains(exceptionResult, Warewolf.Studio.Resources.Languages.Core.CriticalExceptionMessage, "Error - Additional Trace Info is missing from the exception!");
         }
 
         #endregion

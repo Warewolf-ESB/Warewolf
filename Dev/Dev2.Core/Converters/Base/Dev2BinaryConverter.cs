@@ -12,8 +12,6 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common.Interfaces.Core.Convertors.Base;
-using Dev2.DynamicServices;
-using Dev2.Resources.Languages;
 
 namespace Dev2.Converters
 {
@@ -55,7 +53,7 @@ namespace Dev2.Converters
                 return result;
             }
 
-            throw new ArgumentException(Resources.Languages.Services.Dev2BinaryConverterPayloadToSmallException);
+            throw new ArgumentException(Warewolf.Studio.Resources.Languages.Services.Dev2BinaryConverterPayloadToSmallException);
         }
 
         public bool IsType(string payload)

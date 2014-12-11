@@ -24,8 +24,8 @@ namespace Dev2.Studio.Views.ResourceManagement
         {
             InitializeComponent();
             Owner = Application.Current.MainWindow;
-            Title = String.Format(Dev2.Resources.Languages.Core.DialogTitle_FolderHasDependencies);
-            tbDisplay.Text = String.Format(Dev2.Resources.Languages.Core.DialogBody_FolderContentsHaveDependencies);
+            Title = String.Format(Warewolf.Studio.Resources.Languages.Core.DialogTitle_FolderHasDependencies);
+            tbDisplay.Text = String.Format(Warewolf.Studio.Resources.Languages.Core.DialogBody_FolderContentsHaveDependencies);
         }
 
         public DeleteFolderDialog(string title, string message)

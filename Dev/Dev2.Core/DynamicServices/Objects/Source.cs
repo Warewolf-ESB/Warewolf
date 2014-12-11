@@ -100,20 +100,20 @@ namespace Dev2.DynamicServices
                 case enSourceType.SqlDatabase:
                     if (string.IsNullOrEmpty(ConnectionString))
                     {
-                        WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_MissingConnectionString);
+                        WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingConnectionString);
                     }
                     break;
 
                 case enSourceType.WebService:
                     if (WebServiceUri == null)
                     {
-                        WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_MissingUri);
+                        WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingUri);
                     }
                     else
                     {
                         if (!Uri.IsWellFormedUriString(WebServiceUri.ToString(), UriKind.RelativeOrAbsolute))
                         {
-                            WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_InvalidUri);
+                            WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_InvalidUri);
                         }
                         else
                         {
@@ -135,17 +135,17 @@ namespace Dev2.DynamicServices
                 case enSourceType.Plugin:
                     if (string.IsNullOrEmpty(AssemblyName))
                     {
-                        WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_MissingAssemblyName);
+                        WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingAssemblyName);
                     }
 
                     if (string.IsNullOrEmpty(AssemblyLocation))
                     {
-                        WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_MissingAssemblyLocation);
+                        WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingAssemblyLocation);
                     }
                     break;
 
                 case enSourceType.Unknown:
-                    WriteCompileError(Dev2.Resources.Languages.Services.CompilerError_InvalidSourceType);
+                    WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_InvalidSourceType);
                     break;
             }
 

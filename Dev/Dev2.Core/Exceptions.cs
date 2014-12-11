@@ -9,8 +9,8 @@
 */
 
 using System;
-using Dev2.Resources;
-using Dev2.Resources.Languages;
+using Warewolf.Studio.Resources.Languages;
+
 
 namespace Dev2
 {

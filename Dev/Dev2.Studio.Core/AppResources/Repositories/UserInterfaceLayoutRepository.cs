@@ -171,8 +171,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             string path = Path.Combine(new[] 
                 { 
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
-                    Resources.Languages.Core.App_Data_Directory, 
-                    Resources.Languages.Core.User_Interface_Layouts_Directory 
+                    Warewolf.Studio.Resources.Languages.Core.App_Data_Directory, 
+                    Warewolf.Studio.Resources.Languages.Core.User_Interface_Layouts_Directory 
                 });
 
             return path;

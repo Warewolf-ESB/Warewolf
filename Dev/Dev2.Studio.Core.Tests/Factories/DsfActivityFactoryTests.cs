@@ -152,7 +152,7 @@ namespace Dev2.Core.Tests.Factories
         {
             var activity = new DsfServiceActivity();
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.Service);
-            mockRes.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(Resources.Languages.Core.xmlNullSourceMethodServiceDef));
+            mockRes.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(Warewolf.Studio.Resources.Languages.Core.xmlNullSourceMethodServiceDef));
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty);
             DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true, environmentRepository, false);
 

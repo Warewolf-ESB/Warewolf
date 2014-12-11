@@ -234,8 +234,8 @@ namespace Dev2.Studio.Feedback.Actions
             string path = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Resources.Languages.Core.App_Data_Directory,
-                Resources.Languages.Core.Feedback_Recordings_Directory,
+                Warewolf.Studio.Resources.Languages.Core.App_Data_Directory,
+                Warewolf.Studio.Resources.Languages.Core.Feedback_Recordings_Directory,
                 Guid.NewGuid() + ".zip"
             });
             return path;

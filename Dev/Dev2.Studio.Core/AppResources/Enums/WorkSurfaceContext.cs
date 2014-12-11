@@ -61,7 +61,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         [Description("Language Help")]
         LanguageHelp,
 
-        [IconLocation("Pack_Uri_Application_Image_Help", typeof(Resources.Languages.Core))]
+        [IconLocation("Pack_Uri_Application_Image_Help", typeof(Warewolf.Studio.Resources.Languages.Core))]
         [Description("Help")]
         Help,
         Community,
@@ -70,14 +70,14 @@ namespace Dev2.Studio.Core.AppResources.Enums
         [Description("Deploy")]
         DeployResources,
 
-        [IconLocation("Pack_Uri_Application_Image_Home", typeof(Resources.Languages.Core))]
+        [IconLocation("Pack_Uri_Application_Image_Home", typeof(Warewolf.Studio.Resources.Languages.Core))]
         [Description("Start Page")]
         StartPage,
         [IconLocation("pack://application:,,,/images/DependencyGraph-16.png")]
         [Description("Reverse Dependency Visualiser")]
         ReverseDependencyVisualiser,
 
-        [IconLocation("Pack_Uri_Application_Image_Community", typeof(Resources.Languages.Core))]
+        [IconLocation("Pack_Uri_Application_Image_Community", typeof(Warewolf.Studio.Resources.Languages.Core))]
         [Description("Community Portal")]
         CommunityPage,
     }

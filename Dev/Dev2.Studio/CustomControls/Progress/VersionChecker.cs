@@ -74,7 +74,7 @@ namespace Dev2.Studio.Core.Helpers
             get
             {
                 Check();
-                return Resources.Languages.Core.Warewolf_Homepage_Start;
+                return Warewolf.Studio.Resources.Languages.Core.Warewolf_Homepage_Start;
             }
         }
 
@@ -92,7 +92,7 @@ namespace Dev2.Studio.Core.Helpers
             get
             {
                 Check();
-                return Resources.Languages.Core.Uri_Community_HomePage;
+                return Warewolf.Studio.Resources.Languages.Core.Uri_Community_HomePage;
             }
         }
 

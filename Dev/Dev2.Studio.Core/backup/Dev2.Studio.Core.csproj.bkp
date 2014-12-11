@@ -86,13 +86,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.DockManager.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v14.2.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.DockManager.v12.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.v14.2.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.v12.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -285,6 +283,11 @@
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="Models\ServerExplorerVersionProxy.cs" />
+    <Compile Include="ResolveExampleResourceNames.Designer.cs">
+      <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
@@ -436,6 +439,11 @@
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResolveExampleResource.Designer.cs">
+      <DependentUpon>ResolveExampleResource.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
@@ -460,6 +468,11 @@
     <Compile Include="Services\WindowsServiceManager.cs" />
     <Compile Include="SortableObservableCollection.cs" />
     <Compile Include="StringResources.Designer.cs" />
+    <Compile Include="StringResources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="AppResources\Converters\InverseBooleanConverter.cs" />
     <Compile Include="TO\IWebBrowserNavigateRequestTO.cs" />
     <Compile Include="TO\WebBrowserNavigateRequestTO.cs" />
@@ -502,6 +515,21 @@
   <ItemGroup>
     <Content Include="AppResources\XMLFile1.xml" />
     <None Include="SignalR.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ResolveExampleResourceNames.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResolveExampleResourceNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResolveExampleResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResolveExampleResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StringResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringResources1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

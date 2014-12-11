@@ -88,13 +88,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v12.1, Version=12.1.20121.2107, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
+      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.v14.2.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.v12.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -249,13 +248,33 @@
     <Compile Include="Web\WebServiceInvoker.cs" />
     <Compile Include="DynamicServices\Objects\DynamicService.cs" />
     <Compile Include="DynamicServices\Objects\Base\DynamicServiceObjectBase.cs" />
+    <Compile Include="DynamicServices\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Exceptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FrameworkResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FrameworkResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="DynamicServices\Objects\ServiceAction.cs" />
     <Compile Include="DynamicServices\Objects\ServiceActionInput.cs" />
     <Compile Include="DynamicServices\Objects\Source.cs" />
     <Compile Include="DynamicServices\Objects\Validator.cs" />
     <Compile Include="DynamicServices\Objects\WorkflowActivityDef.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DynamicServices\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrameworkResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FrameworkResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dynamic Services.cd" />

@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var res = new ExecuteMessage { HasError = false };
 
             List<DynamicServiceObjectBase> compiledResources = null;
-            var errorMessage = Resources.Languages.Services.CompilerMessage_BuildFailed + " " + DateTime.Now;
+            var errorMessage = Warewolf.Studio.Resources.Languages.Services.CompilerMessage_BuildFailed + " " + DateTime.Now;
             try
             {
                 // Replace with proper object hydration and parsing ;)
@@ -79,7 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     });
 
-                    res.SetMessage(Resources.Languages.Services.CompilerMessage_BuildFailed + " " + DateTime.Now);
+                    res.SetMessage(Warewolf.Studio.Resources.Languages.Services.CompilerMessage_BuildFailed + " " + DateTime.Now);
                 }
             }
             catch(Exception err)

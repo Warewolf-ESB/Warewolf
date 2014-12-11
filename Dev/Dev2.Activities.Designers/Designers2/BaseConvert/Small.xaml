@@ -1,39 +1,40 @@
 ﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.BaseConvert.Small"
                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.BaseConvert"
-                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
-                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:system="clr-namespace:System;assembly=mscorlib"
-                               xmlns:dev2="clr-namespace:Dev2;assembly=Dev2.Core"
                                xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+                               xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
+                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:dev2="clr-namespace:Dev2;assembly=Dev2.Core"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:local="clr-namespace:Dev2.Activities.Designers2.BaseConvert"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                               xmlns:system="clr-namespace:System;assembly=mscorlib"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                Width="280"
                                MaxWidth="280"
                                Padding="7"
-                               mc:Ignorable="d"
+                               d:DataContext="{d:DesignInstance local:BaseConvertDesignerViewModel}"
                                d:DesignWidth="230"
-                               d:DataContext="{d:DesignInstance local:BaseConvertDesignerViewModel}">
+                               mc:Ignorable="d">
 
     <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="TheResources"
-                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
+        <ResourceDictionary x:Name="TheResources" Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
     </core:ActivityDesignerTemplate.Resources>
 
     <Grid>
-      <controls:Dev2DataGrid x:Name="SmallDataGrid"
-                               ItemsSource="{Binding ModelItem.ConvertCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Style="{StaticResource SpacedActivityDataGridStyle}"
-                               MinHeight="56">
+        <controls:Dev2DataGrid x:Name="SmallDataGrid"
+                               MinHeight="56"
+                               ItemsSource="{Binding ModelItem.ConvertCollection,
+                                                     Mode=TwoWay,
+                                                     UpdateSourceTrigger=PropertyChanged}"
+                               Style="{StaticResource SpacedActivityDataGridStyle}">
 
-            <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+            <!--  DO NOT override ItemsPanel - doing so causes column sizing issues on first drop  -->
             <i:Interaction.Behaviors>
                 <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors:DataGridWatermarkModifier.WatermarkText>
@@ -46,45 +47,45 @@
             </i:Interaction.Behaviors>
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="25"
-                                        d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}"
-                                        IsReadOnly="True">
+                                        IsReadOnly="True"
+                                        d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                           <Label Content="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                            <Label Content="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Results"
-                                        Width="100"
-                                        d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}"
-                                        IsReadOnly="False">
+                <DataGridTemplateColumn Width="100"
+                                        Header="Results"
+                                        IsReadOnly="False"
+                                        d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox AllowMultilinePaste="True"
-                                                AcceptsReturn="True"
-                                                AllowUserInsertLine="True"
-                                                    TextWrapping="Wrap"
+                            <ui:IntellisenseTextBox MaxHeight="52"
+                                                    AcceptsReturn="True"
+                                                    AllowMultilinePaste="True"
+                                                    AllowUserInsertLine="True"
                                                     DefaultText="{Binding WatermarkTextVariable}"
-                                                    WrapInBrackets="False"
                                                     Padding="3"
-                                                    Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    Text="{Binding FromExpression,
+                                                                   Mode=TwoWay,
+                                                                   UpdateSourceTrigger=PropertyChanged}"
+                                                    TextWrapping="Wrap"
                                                     ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipBaseInput}"
-                                                    MaxHeight="52">
+                                                    WrapInBrackets="False">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpBaseInput}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <help:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" Text="{x:Static help:HelpTextResources.BaseConversionHelpBaseInput}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FromExpression"
-                                                         SourcePropertyValue="{Binding FromExpression, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                         SourcePropertyValue="{Binding FromExpression,
+                                                                                       UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext,
+                                                                          RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_FromExpressiontxt_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -92,28 +93,31 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="*"
-                                        d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
+                            <ComboBox Margin="0,0,2,0"
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
-                                      Margin="0,0,2,0"
-                                      ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      SelectedValue="{Binding FromType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                      ItemsSource="{Binding DataContext.ConvertTypes,
+                                                            RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                      SelectedValue="{Binding FromType,
+                                                              Mode=TwoWay,
+                                                              UpdateSourceTrigger=PropertyChanged,
+                                                              NotifyOnSourceUpdated=True}"
+                                      Style="{StaticResource ActivityComboBoxStyle}"
                                       ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipFromtype}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpFromType}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <help:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" Text="{x:Static help:HelpTextResources.BaseConversionHelpFromType}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FromType"
-                                                         SourcePropertyValue="{Binding FromType, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                         SourcePropertyValue="{Binding FromType,
+                                                                                       UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext,
+                                                                          RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_SearchType_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>
@@ -126,26 +130,28 @@
                                         d:DataContext="{d:DesignInstance Type=dev2:BaseConvertTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox
-                                      Margin="0,0,2,0"
-                                      ItemsSource="{Binding DataContext.ConvertTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
-                                      Style="{StaticResource ActivityComboBoxStyle}"
+                            <ComboBox Margin="0,0,2,0"
                                       ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
-                                      SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding DataContext.ConvertTypes,
+                                                            RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
+                                      SelectedValue="{Binding Path=ToType,
+                                                              Mode=TwoWay,
+                                                              UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource ActivityComboBoxStyle}"
                                       ToolTip="{x:Static help:HelpTextResources.BaseConversionToolTipTotype}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.BaseConversionHelpToType}"
-                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <help:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" Text="{x:Static help:HelpTextResources.BaseConversionHelpToType}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="ToType"
-                                                         SourcePropertyValue="{Binding ToType, UpdateSourceTrigger=PropertyChanged}"
-                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                         SourcePropertyValue="{Binding ToType,
+                                                                                       UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext,
+                                                                          RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <behavior:ControlEnterToTabBehavior />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_ToTypecbx_AutoID">
-                                        <Binding Path="DataContext.ModelItem.AutomationID"
-                                                 RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />
                                         <Binding Path="IndexNumber" />
                                     </MultiBinding>
                                 </AutomationProperties.AutomationId>

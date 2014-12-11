@@ -36,8 +36,8 @@ namespace Dev2.Studio.Core.Helpers
             var path = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Resources.Languages.Core.App_Data_Directory,
-                Resources.Languages.Core.Feedback_Recordings_Directory,
+                Warewolf.Studio.Resources.Languages.Core.App_Data_Directory,
+                Warewolf.Studio.Resources.Languages.Core.Feedback_Recordings_Directory,
                 Guid.NewGuid() + extension
             });
             return path;
@@ -135,7 +135,7 @@ namespace Dev2.Studio.Core.Helpers
             var result = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Resources.Languages.Core.App_Data_Directory,
+                Warewolf.Studio.Resources.Languages.Core.App_Data_Directory,
                 uri
             });
 

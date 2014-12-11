@@ -221,7 +221,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win7", "Win7", "{1E05ADD2-7
 		TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\x86.testsettings = TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\x86.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Resources", "Dev2.Resources\Dev2.Resources.csproj", "{CB565C94-8833-4911-B20F-0921EE3C286C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Resources", "Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj", "{CB565C94-8833-4911-B20F-0921EE3C286C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

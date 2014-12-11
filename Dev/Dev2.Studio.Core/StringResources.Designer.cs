@@ -51,7 +51,7 @@ namespace Dev2.Studio.Core {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Unlimited.Applications.BusinessDesignStudio.StringResources", typeof(Resources.Languages.Core).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Unlimited.Applications.BusinessDesignStudio.StringResources", typeof(Warewolf.Studio.Resources.Languages.Core).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

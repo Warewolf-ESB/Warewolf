@@ -388,7 +388,7 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 if(results != null)
                 {
-                    results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", Dev2.Resources.Languages.Core.IntellisenseErrorMisMacthingBrackets));
+                    results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", Warewolf.Studio.Resources.Languages.Core.IntellisenseErrorMisMacthingBrackets));
                 }
             }
 

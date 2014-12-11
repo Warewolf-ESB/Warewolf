@@ -50,11 +50,11 @@ namespace Dev2.Studio.Core.AppResources.Browsers
         {
             if(string.IsNullOrEmpty(url) || url.ToLower().Contains("studiohomepage"))
             {
-                ShowErrorPage(browser, Resources.Languages.Core.Uri_Studio_PageNotAvailable);
+                ShowErrorPage(browser, Warewolf.Studio.Resources.Languages.Core.Uri_Studio_PageNotAvailable);
             }
             else
             {
-                ShowErrorPage(browser, Resources.Languages.Core.Uri_Studio_PageMissing);
+                ShowErrorPage(browser, Warewolf.Studio.Resources.Languages.Core.Uri_Studio_PageMissing);
             }
             return true;
         }
@@ -105,7 +105,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
             {
                 case 401:
                 case 403:
-                    ShowErrorPage(browser, Resources.Languages.Core.Uri_Studio_PageRestrictedAccess);
+                    ShowErrorPage(browser, Warewolf.Studio.Resources.Languages.Core.Uri_Studio_PageRestrictedAccess);
                     return;
             }
 

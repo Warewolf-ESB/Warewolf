@@ -30,8 +30,8 @@ namespace Dev2.Studio.Views.ResourceManagement
         {
             InitializeComponent();
             Owner = owner ?? Application.Current.MainWindow;
-            Title = string.Format(Dev2.Resources.Languages.Core.DialogTitle_HasDuplicateName, newName);
-            tbDisplay.Text = string.Format(Dev2.Resources.Languages.Core.DialogBody_HasDuplicateName,
+            Title = string.Format(Warewolf.Studio.Resources.Languages.Core.DialogTitle_HasDuplicateName, newName);
+            tbDisplay.Text = string.Format(Warewolf.Studio.Resources.Languages.Core.DialogBody_HasDuplicateName,
                                 model.ResourceType.GetDescription(), model.ResourceName);
         }
 

@@ -144,7 +144,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             if(UserInterfaceLayoutRepository == null)
             {
-                AssociatedObject.LoadLayout(Resources.Languages.Core.XmlOriginalLayout);
+                AssociatedObject.LoadLayout(Warewolf.Studio.Resources.Languages.Core.XmlOriginalLayout);
                 return;
             }
 
@@ -219,7 +219,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            AssociatedObject.LoadLayout(Resources.Languages.Core.XmlOriginalLayout);
+            AssociatedObject.LoadLayout(Warewolf.Studio.Resources.Languages.Core.XmlOriginalLayout);
 
         }
 

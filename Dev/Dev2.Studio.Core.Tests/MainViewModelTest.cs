@@ -754,7 +754,7 @@ namespace Dev2.Core.Tests
             MainViewModel.AddLanguageHelpPageCommand.Execute(null);
 
             // Assert LanguageHelp is active
-            var languageHelpUri = FileHelper.GetFullPath(Resources.Languages.Core.Uri_Studio_Language_Reference_Document);
+            var languageHelpUri = FileHelper.GetFullPath(Warewolf.Studio.Resources.Languages.Core.Uri_Studio_Language_Reference_Document);
             var langHelpCtx = MainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
             Assert.IsNotNull(langHelpCtx);
             // ReSharper disable PossibleNullReferenceException

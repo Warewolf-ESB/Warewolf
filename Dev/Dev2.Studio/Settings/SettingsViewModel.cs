@@ -474,7 +474,7 @@ namespace Dev2.Settings
                     {
                         IsSaved = false;
                         IsDirty = true;
-                        ShowError(Resources.Languages.Core.SaveSettingErrorPrefix, Resources.Languages.Core.SaveSettingsDuplicateResourcePermissions);
+                        ShowError(Warewolf.Studio.Resources.Languages.Core.SaveSettingErrorPrefix, Warewolf.Studio.Resources.Languages.Core.SaveSettingsDuplicateResourcePermissions);
                         return false;
                     }
 
@@ -482,7 +482,7 @@ namespace Dev2.Settings
                     {
                         IsSaved = false;
                         IsDirty = true;
-                        ShowError(Resources.Languages.Core.SaveSettingErrorPrefix, Resources.Languages.Core.SaveSettingsDuplicateServerPermissions);
+                        ShowError(Warewolf.Studio.Resources.Languages.Core.SaveSettingErrorPrefix, Warewolf.Studio.Resources.Languages.Core.SaveSettingsDuplicateServerPermissions);
                         return false;
                     }
                     SecurityViewModel.Save(Settings.Security);
@@ -506,10 +506,10 @@ namespace Dev2.Settings
                     return IsSaved;
                 }
 
-                ShowError(Resources.Languages.Core.SaveSettingErrorPrefix, Resources.Languages.Core.SaveSettingsPermissionsErrorMsg);
+                ShowError(Warewolf.Studio.Resources.Languages.Core.SaveSettingErrorPrefix, Warewolf.Studio.Resources.Languages.Core.SaveSettingsPermissionsErrorMsg);
                 return false;
             }
-            ShowError(Resources.Languages.Core.SaveSettingErrorPrefix, Resources.Languages.Core.SaveSettingsNotReachableErrorMsg);
+            ShowError(Warewolf.Studio.Resources.Languages.Core.SaveSettingErrorPrefix, Warewolf.Studio.Resources.Languages.Core.SaveSettingsNotReachableErrorMsg);
             return false;
         }
 

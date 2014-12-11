@@ -1367,10 +1367,6 @@
       <Project>{38650e4e-90e2-44de-a32f-30f3c4d1438b}</Project>
       <Name>Dev2.OutputLibraries</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Resources\Dev2.Resources.csproj">
-      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
-      <Name>Dev2.Resources</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>

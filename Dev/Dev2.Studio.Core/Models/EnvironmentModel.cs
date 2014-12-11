@@ -167,7 +167,7 @@ namespace Dev2.Studio.Core.Models
             }
             if(string.IsNullOrEmpty(Name))
             {
-                throw new ArgumentException(string.Format(Resources.Languages.Core.Error_Connect_Failed, Resources.Languages.Core.Error_DSF_Name_Not_Provided));
+                throw new ArgumentException(string.Format(Warewolf.Studio.Resources.Languages.Core.Error_Connect_Failed, Warewolf.Studio.Resources.Languages.Core.Error_DSF_Name_Not_Provided));
             }
 
             Dev2Logger.Log.Debug("Attempting to connect to [ " + Connection.AppServerUri + " ] ");

@@ -151,7 +151,7 @@
                             <Image Width="14"
                                    Height="14"
                                    HorizontalAlignment="Left"
-                                   Source="/../Dev2.Resources/Images/Refresh-32.png" />
+                                   Source="/../Warewolf.Studio.Resources/Images/Refresh-32.png" />
                         </Button>
                     </Grid>
 

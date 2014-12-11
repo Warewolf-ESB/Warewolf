@@ -220,10 +220,6 @@
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Resources\Dev2.Resources.csproj">
-      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
-      <Name>Dev2.Resources</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>

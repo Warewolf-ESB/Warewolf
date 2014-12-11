@@ -31,19 +31,19 @@ namespace Dev2.Studio.Factory
         }
         public DialogViewModelFactory()
         {
-            SetupDialogAction = (dialogueViewModel, ver, packUri) => dialogueViewModel.SetupDialogue(Resources.Languages.Core.About_Header_Text,
-                                            String.Format(Resources.Languages.Core.About_Content, ver,
+            SetupDialogAction = (dialogueViewModel, ver, packUri) => dialogueViewModel.SetupDialogue(Warewolf.Studio.Resources.Languages.Core.About_Header_Text,
+                                            String.Format(Warewolf.Studio.Resources.Languages.Core.About_Content, ver,
                                                           ver), packUri,
-                                            Resources.Languages.Core.About_Description_Header, Resources.Languages.Core.EULA_Link, Resources.Languages.Core.EULA_Text);
-            SetupServerDialogAction = (dialogueViewModel, ver, packUri, version) => dialogueViewModel.SetupDialogue(Resources.Languages.Core.About_Header_Text,
-                                            String.Format(Resources.Languages.Core.About_Content, ver,
+                                            Warewolf.Studio.Resources.Languages.Core.About_Description_Header, Warewolf.Studio.Resources.Languages.Core.EULA_Link, Warewolf.Studio.Resources.Languages.Core.EULA_Text);
+            SetupServerDialogAction = (dialogueViewModel, ver, packUri, version) => dialogueViewModel.SetupDialogue(Warewolf.Studio.Resources.Languages.Core.About_Header_Text,
+                                            String.Format(Warewolf.Studio.Resources.Languages.Core.About_Content, ver,
                                                           version), packUri,
-                                            Resources.Languages.Core.About_Description_Header, Resources.Languages.Core.EULA_Link, Resources.Languages.Core.EULA_Text);
+                                            Warewolf.Studio.Resources.Languages.Core.About_Description_Header, Warewolf.Studio.Resources.Languages.Core.EULA_Link, Warewolf.Studio.Resources.Languages.Core.EULA_Text);
         }
         public IDialogueViewModel CreateAboutDialog()
         {
             IDialogueViewModel dialogueViewModel = new DialogueViewModel();
-            string packUri = Resources.Languages.Core.Warewolf_Logo;
+            string packUri = Warewolf.Studio.Resources.Languages.Core.Warewolf_Logo;
 
             var ver = VersionInfo.FetchVersionInfo();
 
@@ -54,7 +54,7 @@ namespace Dev2.Studio.Factory
         public IDialogueViewModel CreateServerAboutDialog(string serverVersion)
         {
             IDialogueViewModel dialogueViewModel = new DialogueViewModel();
-            string packUri = Resources.Languages.Core.Warewolf_Logo;
+            string packUri = Warewolf.Studio.Resources.Languages.Core.Warewolf_Logo;
 
             var ver = VersionInfo.FetchVersionInfo();
             SetupServerDialogAction(dialogueViewModel, ver, packUri, serverVersion);
