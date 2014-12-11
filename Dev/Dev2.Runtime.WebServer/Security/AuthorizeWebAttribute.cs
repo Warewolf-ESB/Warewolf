@@ -9,10 +9,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -25,13 +25,12 @@ using Dev2.Services.Security;
 namespace Dev2.Runtime.WebServer.Security
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public class AuthorizeWebAttribute : AuthorizationFilterAttribute
+    public class AuthorizeWebAttribute : AuthorizationFilterAttribute//, IAuthenticationFilter 
     {
         public AuthorizeWebAttribute()
             : this(ServerAuthorizationService.Instance)
         {
         }
-
         public AuthorizeWebAttribute(IAuthorizationService authorizationService)
         {
             VerifyArgument.IsNotNull("AuthorizationService", authorizationService);
@@ -44,6 +43,14 @@ namespace Dev2.Runtime.WebServer.Security
         {
             VerifyArgument.IsNotNull("actionContext", actionContext);
             var user = actionContext.ControllerContext.RequestContext.Principal;
+
+            if (user == null && actionContext.ActionDescriptor.ActionName == "ExecutePublicWorkflow")
+            {
+                var genericIdentity = new GenericIdentity("GenericPublicUser");
+                user = new GenericPrincipal(genericIdentity, new string[0]);
+                actionContext.ControllerContext.RequestContext.Principal = user; 
+            }
+
             if(!user.IsAuthenticated())
             {
                 actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization has been denied for this request.");
@@ -101,4 +108,5 @@ namespace Dev2.Runtime.WebServer.Security
             return startIndex;
         }
     }
+
 }

@@ -17,7 +17,6 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
-using Microsoft.Owin.Security;
 using Owin;
 
 namespace Dev2.Runtime.WebServer
@@ -54,11 +53,8 @@ namespace Dev2.Runtime.WebServer
         public void Configuration(IAppBuilder app)
         {
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
-           // listener.AuthenticationSchemes = AuthenticationSchemes.Basic | AuthenticationSchemes.Negotiate;  // Enable NTLM auth
-            //listener.AuthenticationSchemes = AuthenticationSchemes.Basic;  // Enable NTLM auth
-            listener.IgnoreWriteExceptions = true;  // ignore errors written to disconnected clients.
             listener.AuthenticationSchemeSelectorDelegate+=AuthenticationSchemeSelectorDelegate;
-            app.Use(typeof(AuthenticationMiddleware));
+            listener.IgnoreWriteExceptions = true;  // ignore errors written to disconnected clients.
             // Enable cross-domain calls
             app.UseCors(CorsOptions.AllowAll);
 
@@ -80,65 +76,20 @@ namespace Dev2.Runtime.WebServer
 
         AuthenticationSchemes AuthenticationSchemeSelectorDelegate(HttpListenerRequest httpRequest)
         {
-            var header = httpRequest.Headers["Authorization"];
-            if (!String.IsNullOrEmpty(header))
+            if (httpRequest.RawUrl.StartsWith("/public/"))
             {
-                return AuthenticationSchemes.Negotiate;
+                return AuthenticationSchemes.Anonymous;
             }
-            return AuthenticationSchemes.Anonymous;
+            return AuthenticationSchemes.Negotiate;
         }
     }
 
     public class AuthenticationMiddleware : OwinMiddleware
     {
         public AuthenticationMiddleware(OwinMiddleware next) :
-            base(next) { }
-//
-//        public async Task Invoke(OwinRequest request,
-//                                                OwinResponse response)
-//        {
-//
-////            request.OnSendingHeaders(state =>
-////            {
-////                var resp = (OwinResponse)state;
-////
-////                if (resp.StatusCode == 401)
-////                    resp.SetHeader("WWW-Authenticate", "Basic ");
-////            }, response);
-//
-//            var header = request.Headers["Authorization"];
-//
-//            if (!String.IsNullOrWhiteSpace(header))
-//            {
-//                var authHeader = System.Net.Http.Headers
-//                                   .AuthenticationHeaderValue.Parse(header);
-//
-//                if ("Basic".Equals(authHeader.Scheme,
-//                                         StringComparison.OrdinalIgnoreCase))
-//                {
-//                    string parameter = Encoding.UTF8.GetString(
-//                                          Convert.FromBase64String(
-//                                                authHeader.Parameter));
-//                    var parts = parameter.Split(':');
-//
-//                    string userName = parts[0];
-//                    string password = parts[1];
-//
-//                    if (userName == password) // Just a dumb check
-//                    {
-//                        var claims = new[]
-//                    {
-//                        new Claim(ClaimTypes.Name, "Badri")
-//                    };
-//                        var identity = new ClaimsIdentity(claims, "Basic");
-//
-//                        request.User = new ClaimsPrincipal(identity);
-//                    }
-//                }
-//            }
-//
-//            await Next.Invoke(request, response);
-//        }
+            base(next)
+        {           
+        }
 
         #region Overrides of OwinMiddleware
 
@@ -151,18 +102,17 @@ namespace Dev2.Runtime.WebServer
         {
             if (context.Request.User != null)
             {
-               return Next.Invoke(context);
+                return Next.Invoke(context);
             }
-            
-            context.Response.OnSendingHeaders(state =>
-            {
-                var resp = (OwinResponse)state;
-
-                if (resp.StatusCode == 401)
-                    resp.Headers["WWW-Authenticate"] = "Negotiate";
-            }, context.Response);
-
-            return Next.Invoke(context);
+            context.Response.Headers["WWW-Authenticate"] = "Negotiate,Anonymous,Basic realm=\"\"";
+//            context.Response.OnSendingHeaders(state =>
+//            {
+//                var resp = (OwinResponse)state;
+//
+//                if (resp.StatusCode == 401)
+//                    resp.Headers["WWW-Authenticate"] = "Negotiate,Anonymous,Basic realm=\"\"";
+//            }, context.Request);
+            return Task.FromResult(0);
         }
 
         #endregion
