@@ -1,0 +1,455 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CB565C94-8833-4911-B20F-0921EE3C286C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Resources</RootNamespace>
+    <AssemblyName>Dev2.Resources</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Languages\Core.Designer.cs">
+      <DependentUpon>Core.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Languages\ExampleResource.Designer.cs">
+      <DependentUpon>ExampleResource.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Languages\ExampleResourceNames.Designer.cs">
+      <DependentUpon>ExampleResourceNames.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Languages\Framework.Designer.cs">
+      <DependentUpon>Framework.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Languages\Services.Designer.cs">
+      <DependentUpon>Services.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Resize_Grip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Refresh-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceStatusOK-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Languages\Core.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Core.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\ExampleResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExampleResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\ExampleResourceNames.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExampleResourceNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Framework.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Framework.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\Services.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Services.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Rename.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\transform.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\viewinbrowser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\website.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="StyleElements\Brushes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StyleElements\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ActionSuccessful-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AuthExecute-12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AuthNone-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\AuthView-12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Close_Box_Red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DatabaseService-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DatabaseSource-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DependencyGraph-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Deploy-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Deploy-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dropbox-windows.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\EmailSource-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ExecuteDebugStart-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ExecuteDebugStop-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ExplorerFolder-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ExplorerFolderOpen-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ExplorerSources-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ExplorerWarewolfConnection-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GenericHelp-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GenericHelp-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GroupCollapser-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\GroupExpander-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HelpCommunity-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HelpLanguage-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\HelpShortcutKeys-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PluginService-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PluginSource-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PopupError-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PopupInformation-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PopupNotSavedWarning-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\PropertyEdit-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Refresh-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RemoteWarewolf-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ReportsManager-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceCollapseMapping-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceExpandMapping-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceHelp-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServicePropertyEdit-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceQuickVariableInput-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceSettings-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceStatusError-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ServiceStatusWarning-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Settings-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SplashImage_New_2014.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\StartNode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\StartPage-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TaskScheduler-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolAssign-32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolBaseConversion-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolCalculate-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolCaseConversion-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolCMDLine-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolCMDScript-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolComment-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolCopyRecords-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolCountRecords-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolCreateJSON-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolDataMerge-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolDataSplit-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolDateTime-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolDateTimeDifference-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolDecision-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolDelay-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolDeleteRecord-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolDoWhile-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderCopy-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderCreate-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderDelete-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderMove-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderRead-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderReadFolder-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderRename-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderUnzip-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderWrite-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFileFolderZip-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFindIndex-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFindRecords-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolForEach-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolFormatNumber-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolGetWebRequest-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolIfThen-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolJavaScript-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolLength-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolParallel-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolParallelForEach-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolPowerShelScript-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolRandom-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolReplace-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolRules-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolSendEmail-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolSequence-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolService-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolSortRecords-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolSqlBulkInsert-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolSwitch-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolSystemInformation-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolTransactionScope-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolUniqueRecord-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolUtilityXpath-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\WarewolfInsignia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\WarewolfLogoMedRes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\WebService-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\WebSource-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Workflow-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Themes\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
