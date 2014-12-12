@@ -1,0 +1,84 @@
+﻿<Window x:Class="Warewolf.Studio.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dockManager="http://infragistics.com/DockManager"
+        xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        Title="Warewolf Studio"
+        WindowState="Maximized">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" />
+
+            <Grid Grid.Column="1">
+                <dockManager:XamDockManager AllowMaximizeFloatingWindows="True"
+                                            AllowMinimizeFloatingWindows="True"
+                                            Theme="[current]">
+                    <dockManager:XamDockManager.Panes>
+
+                        <dockManager:SplitPane Width="300"
+                                               SplitterOrientation="Vertical"
+                                               dockManager:XamDockManager.InitialLocation="DockedRight">
+                            <dockManager:TabGroupPane>
+                                <dockManager:ContentPane x:Name="Variables"
+                                                         AllowClose="False"
+                                                         AllowInDocumentHost="False"
+                                                         Header="Variables"
+                                                         IsPinned="True"
+                                                         regions:RegionManager.RegionName="Variables" />
+
+                                <dockManager:ContentPane x:Name="OutputPane"
+                                                         AllowClose="False"
+                                                         AllowInDocumentHost="False"
+                                                         Header="Output"
+                                                         IsPinned="True"
+                                                         regions:RegionManager.RegionName="OutputPane" />
+                            </dockManager:TabGroupPane>
+
+                        </dockManager:SplitPane>
+
+                        <dockManager:SplitPane Width="300"
+                                               SplitterOrientation="Vertical"
+                                               dockManager:XamDockManager.InitialLocation="DockedLeft">
+                            <dockManager:TabGroupPane>
+                                <dockManager:ContentPane x:Name="Explorer"
+                                                         AllowClose="False"
+                                                         AllowInDocumentHost="False"
+                                                         Header="Explorer"
+                                                         IsPinned="True"
+                                                         regions:RegionManager.RegionName="Explorer" />
+                                <dockManager:ContentPane x:Name="Toolbox"
+                                                         AllowClose="False"
+                                                         AllowInDocumentHost="False"
+                                                         Header="Toolbox"
+                                                         IsPinned="True"
+                                                         regions:RegionManager.RegionName="Toolbox" />
+                                <dockManager:ContentPane x:Name="Help"
+                                                         AllowClose="False"
+                                                         AllowInDocumentHost="False"
+                                                         Header="Variables"
+                                                         IsPinned="True"
+                                                         regions:RegionManager.RegionName="Help" />
+                            </dockManager:TabGroupPane>
+                        </dockManager:SplitPane>
+
+
+                    </dockManager:XamDockManager.Panes>
+                    <dockManager:DocumentContentHost>
+                        <dockManager:SplitPane>
+                            <dockManager:TabGroupPane regions:RegionManager.RegionName="Workflows" />
+                        </dockManager:SplitPane>
+                    </dockManager:DocumentContentHost>
+                </dockManager:XamDockManager>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
