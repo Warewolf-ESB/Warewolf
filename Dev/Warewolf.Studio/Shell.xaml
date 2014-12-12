@@ -70,7 +70,6 @@
                             </dockManager:TabGroupPane>
                         </dockManager:SplitPane>
 
-
                     </dockManager:XamDockManager.Panes>
                     <dockManager:DocumentContentHost>
                         <dockManager:SplitPane>
