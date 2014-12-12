@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -6,17 +7,17 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerViewModel:BindableBase,IExplorerViewModel
     {
-        ICollection<IExplorerItemViewModel> _explorerItems;
-        public ICollection<IExplorerItemViewModel> ExplorerItems
+        ICollection<IEnvironmentViewModel> _environments;
+        public ICollection<IEnvironmentViewModel> Environments
         {
             get
             {
-                return _explorerItems;
+                return _environments;
             }
             set
             {
-                _explorerItems = value;
-                OnPropertyChanged(() => ExplorerItems);
+                _environments = value;
+                OnPropertyChanged(() => Environments);
             }
         }
     }
@@ -24,6 +25,11 @@ namespace Warewolf.Studio.ViewModels
     public class ExplorerItemViewModel : BindableBase,IExplorerItemViewModel
     {
         string _resourceName;
+
+        public ExplorerItemViewModel()
+        {
+            Children = new ObservableCollection<IExplorerItemViewModel>();
+        }
 
         #region Implementation of IExplorerItemViewModel
 
@@ -39,7 +45,25 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => ResourceName);
             }
         }
-        public string IconPath
+        public ICollection<IExplorerItemViewModel> Children
+        {
+            get;
+            set;
+        }
+
+        #endregion
+    }
+
+    public class EnviromentViewModel:BindableBase,IEnvironmentViewModel
+    {
+        #region Implementation of IEnvironmentViewModel
+
+        public ICollection<IExplorerItemViewModel> ExplorerItemViewModels
+        {
+            get;
+            set;
+        }
+        public string DisplayName
         {
             get;
             set;

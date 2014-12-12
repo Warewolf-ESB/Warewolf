@@ -19,7 +19,12 @@
 			<TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="587.467"/>
 			<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"/>
 		</StackPanel>
-		<ig:XamDataTree Grid.Row="1" ItemsSource="{Binding ExplorerItems}"/>
+        <ig:XamDataTree Grid.Row="1" ItemsSource="{Binding Environments}" DisplayMemberPath="DisplayName">
+            <ig:XamDataTree.NodeLayouts>
+                <ig:NodeLayout Key="ExplorerItemViewModels" DisplayMemberPath="ResourceName"/>
+                <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName"/>
+            </ig:XamDataTree.NodeLayouts>
+        </ig:XamDataTree>
 		
 	</Grid>
 </UserControl>
