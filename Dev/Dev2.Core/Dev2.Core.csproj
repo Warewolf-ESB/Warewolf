@@ -258,6 +258,7 @@
     <Compile Include="DynamicServices\Objects\WorkflowActivityDef.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Dynamic Services.cd" />
     <None Include="Simulation\Simulation.cd" />
   </ItemGroup>

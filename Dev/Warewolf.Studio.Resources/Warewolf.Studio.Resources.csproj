@@ -7,8 +7,8 @@
     <ProjectGuid>{CB565C94-8833-4911-B20F-0921EE3C286C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dev2.Resources</RootNamespace>
-    <AssemblyName>Dev2.Resources</AssemblyName>
+    <RootNamespace>Warewolf.Studio.Resources</RootNamespace>
+    <AssemblyName>Warewolf.Studio.Resources</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -443,6 +443,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Themes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\128x128.png" />
+    <Content Include="Images\16x16.png" />
+    <Content Include="Images\32x32.png" />
+    <Content Include="Images\48x48.png" />
+    <Content Include="Images\64x64.png" />
+    <Content Include="Images\Main.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
