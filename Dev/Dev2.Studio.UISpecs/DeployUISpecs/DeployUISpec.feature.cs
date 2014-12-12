@@ -82,28 +82,30 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
     testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
-    testRunner.Given("I start Studio as \"\" with password \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
-    testRunner.Given("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 12
-    testRunner.Given("\"DEPLOYERROR\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 14
-    testRunner.Given("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 16
-    testRunner.Given("I type \"Decision Testing\" in \"DEPLOYSOURCEFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.And("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+    testRunner.And("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
+    testRunner.And("\"DEPLOYERROR\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
+    testRunner.And("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_Auto" +
-                    "ID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing" +
-                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.And("I type \"Decision Testing\" in \"DEPLOYSOURCEFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
-    testRunner.Given("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 20
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_Auto" +
-                    "ID,Expander\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 22
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_Auto" +
+    testRunner.And("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_Auto" +
                     "ID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing" +
-                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+    testRunner.And("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 21
+    testRunner.And("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_Auto" +
+                    "ID,Expander\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+    testRunner.And("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_Auto" +
+                    "ID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing" +
+                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Address",
@@ -111,33 +113,33 @@ this.ScenarioSetup(scenarioInfo);
                         "UserName",
                         "Password"});
             table1.AddRow(new string[] {
-                        "http://TST-CI-REMOTE:3140/dsf",
+                        "http://SANDBOX-DEV2:3142/dsf",
                         "User",
-                        "Administrator",
-                        ""});
-#line 23
+                        "IntegrationTester",
+                        "I73573r0"});
+#line 24
     testRunner.Given("I create a new remote connection as \"Deployrem\" in Deploy Destination", ((string)(null)), table1, "Given ");
-#line 27
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_Auto" +
-                    "ID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing" +
-                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28
-       testRunner.Given("\"DEPLOYBUTTON\" is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 31
-    testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.And("I click \"DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_Auto" +
+                    "ID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing" +
+                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 29
+       testRunner.And("\"DEPLOYBUTTON\" is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
-    testRunner.Given("I click \"EXPLORER,UI_Deployrem (http://TST-CI-REMOTE:3140/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 33
-    testRunner.Given("I click \"EXPLORERCONNECTBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I click \"EXPLORER,UI_Deployrem (http://sandbox-dev2:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
-    testRunner.Given("I click \"EXPLORER,UI_SourceServerRefreshbtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I click \"EXPLORERCONNECTBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
-       testRunner.Given("I send \"Deployrem\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I click \"EXPLORER,UI_SourceServerRefreshbtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 36
-    testRunner.And("I right click \"EXPLORERFOLDERS,UI_Deployrem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.Given("I send \"Deployrem\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 37
-    testRunner.And("I send \"{TAB}{TAB}{TAB}{TAB}{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I right click \"EXPLORERFOLDERS,UI_Deployrem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
+    testRunner.And("I send \"{TAB}{TAB}{TAB}{TAB}{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
     testRunner.And("I click \"UI_MessageBox_AutoID,UI_YesButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

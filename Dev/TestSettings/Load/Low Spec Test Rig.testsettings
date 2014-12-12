@@ -2,12 +2,17 @@
 <TestSettings name="Nightly Acceptance" id="3E9644B1-F64C-4E3C-9B98-267940B2DDE4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote load test run in a low spec'd environment.</Description>
 	<Deployment>
-		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
-		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+            <!--For Visual Studio-->
+		    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+		    <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
         
             <!--For Build Agents-->
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
         <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
+		
+			<!--For UI Load Specs-->
+        <DeploymentItem filename="..\bin\Dev2.UI.Tests\" />
+		    <DeploymentItem filename="Dev2.Studio.UISpecs\bin\Debug\" />
 	</Deployment>
   <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
