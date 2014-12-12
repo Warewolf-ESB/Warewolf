@@ -68,7 +68,17 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
+        public bool IsConnected { get; private set; }
+        public bool HasLoaded { get; private set; }
 
         #endregion
+
+        public void Connect()
+        {
+        }
+
+        public void Load()
+        {
+        }
     }
 }
