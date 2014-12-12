@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 
@@ -10,7 +11,7 @@ namespace Warewolf.Studio.Specs
         [Given(@"I have connected to localhost")]
         public void GivenIHaveConnectedToLocalhost()
         {
-            var localHostEnvironment = new EnviromentViewModel
+            var localHostEnvironment = new EnvironmentViewModel(new Server())
             {
                 DisplayName = "localhost"                
             };
@@ -24,11 +25,11 @@ namespace Warewolf.Studio.Specs
         [Then(@"localhost has loaded")]
         public void WhenLocalhostHasLoaded()
         {
-            EnviromentViewModel localHostEnvironment;
+            EnvironmentViewModel localHostEnvironment;
             if (ScenarioContext.Current.TryGetValue("localhost", out localHostEnvironment))
             {
                 localHostEnvironment.Load();
-                Assert.IsTrue(localHostEnvironment.HasLoaded);
+                Assert.IsTrue(localHostEnvironment.IsLoaded);
             }
         }
 
@@ -37,5 +38,16 @@ namespace Warewolf.Studio.Specs
         {
             Assert.Fail("Check for localhost resources");
         }
+    }
+
+    public class Server : IServer
+    {
+        #region Implementation of IServer
+
+        public bool Connect()
+        {
+        }
+
+        #endregion
     }
 }

@@ -12,6 +12,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICollection<IExplorerItemViewModel> ExplorerItemViewModels { get; set; }
         string DisplayName { get; set; }
         bool IsConnected { get; }
+        IServer Server { get; set; }
     }
 
     public interface IExplorerItemViewModel

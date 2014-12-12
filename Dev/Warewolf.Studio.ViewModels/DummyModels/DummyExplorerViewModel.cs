@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 
 namespace Warewolf.Studio.ViewModels.DummyModels
@@ -43,7 +44,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
             });
             return new List<IEnvironmentViewModel>
             {
-                new EnviromentViewModel
+                new EnvironmentViewModel(new DummyServer())
                 {
                     DisplayName = "Test1",
                     ExplorerItemViewModels = new List<IExplorerItemViewModel>
@@ -56,8 +57,20 @@ namespace Warewolf.Studio.ViewModels.DummyModels
                         multiLevelDeep
                     }
                 }, 
-                new EnviromentViewModel { DisplayName = "Test4" }
+                new EnvironmentViewModel(new DummyServer()) { DisplayName = "Test4" }
             };
         }
+    }
+
+    internal class DummyServer : IServer
+    {
+        #region Implementation of IServer
+
+        public bool Connect()
+        {
+            return true;
+        }
+
+        #endregion
     }
 }

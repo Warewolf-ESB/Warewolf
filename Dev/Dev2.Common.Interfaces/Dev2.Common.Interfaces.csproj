@@ -186,6 +186,7 @@
     <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPulseLogger.cs" />
+    <Compile Include="IServer.cs" />
     <Compile Include="IVersionStrategy.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
