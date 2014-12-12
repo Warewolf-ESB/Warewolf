@@ -262,14 +262,14 @@ namespace Dev2.Utils
                 {
                     var message =
                         string.Format(
-                            StringResources.ExampleWorkflowNotFound,
+                            Warewolf.Studio.Resources.Languages.Core.ExampleWorkflowNotFound,
                             GetExampleName(activityName));
                     MessageBox.Show(message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
                     popupController.Buttons = MessageBoxButton.OK;
-                    popupController.Description = string.Format(StringResources.ExampleWorkflowNotFound, resourceID);
+                    popupController.Description = string.Format(Warewolf.Studio.Resources.Languages.Core.ExampleWorkflowNotFound, resourceID);
                     popupController.Header = "Example Workflow Not Found";
                     popupController.ImageType = MessageBoxImage.Information;
                     popupController.Show();
@@ -284,7 +284,7 @@ namespace Dev2.Utils
 
         private static Guid GetExampleID(string activityName)
         {
-            var exampleIDString = ResolveExampleResource
+            var exampleIDString = Warewolf.Studio.Resources.Languages.ExampleResource
                 .ResourceManager
                 .GetString(activityName);
             Guid exampleID;
@@ -294,7 +294,7 @@ namespace Dev2.Utils
 
         private static string GetExampleName(string activityName)
         {
-            return ResolveExampleResourceNames
+            return Warewolf.Studio.Resources.Languages.ExampleResourceNames
                 .ResourceManager
                 .GetString(activityName);
         }

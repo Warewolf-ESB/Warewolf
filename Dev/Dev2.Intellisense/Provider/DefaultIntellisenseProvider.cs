@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -107,8 +108,6 @@ namespace Dev2.Studio.InterfaceImplementors
             ObservableCollection<IDataListItemModel> dataList = null;
 
             var activeDataList = DataListSingleton.ActiveDataList;
-            if(activeDataList != null)
-            {
                 var activeDataListViewModels = activeDataList.DataList;
 
                 if(activeDataList != null && activeDataListViewModels != null)
@@ -127,7 +126,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
                 result.Append("</ADL>");
 
-                if(activeDataList.Resource != null && activeDataList.Resource.DataList != null)
+            if(activeDataList != null && activeDataList.Resource != null && activeDataList.Resource.DataList != null)
                 {
                     if(activeDataList.HasErrors)
                     {
@@ -153,7 +152,6 @@ namespace Dev2.Studio.InterfaceImplementors
                         succeeded = true;
                     }
                 }
-            }
 
             return succeeded;
         }
@@ -390,7 +388,7 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 if(results != null)
                 {
-                    results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
+                    results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", Warewolf.Studio.Resources.Languages.Core.IntellisenseErrorMisMacthingBrackets));
                 }
             }
 

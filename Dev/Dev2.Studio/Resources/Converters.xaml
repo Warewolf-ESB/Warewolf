@@ -1,28 +1,30 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
-                    xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
-                    xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
+                    xmlns:Activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                     xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
-    xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-    xmlns:valueConverters="clr-namespace:WPF.JoshSmith.Data.ValueConverters;assembly=Dev2.CustomControls"
-                    xmlns:converters4="clr-namespace:Dev2.Converters;assembly=Dev2.Core"
+                    xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
                     xmlns:converters1="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
+    xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+                    xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
+                    xmlns:converters4="clr-namespace:Dev2.Converters;assembly=Dev2.Core"
                     xmlns:converters5="clr-namespace:Dev2.AppResources.Converters"
     xmlns:debug="clr-namespace:Dev2.Common.Interfaces.Diagnostics.Debug;assembly=Dev2.Common.Interfaces"
-    xmlns:errors1="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces">
+                    xmlns:devFeedbackActions="clr-namespace:Dev2.Studio.Feedback.Actions"
+                    xmlns:errors1="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
+                    xmlns:logging="clr-namespace:Dev2.Settings.Logging"
+                    xmlns:valueConverters="clr-namespace:WPF.JoshSmith.Data.ValueConverters;assembly=Dev2.CustomControls">
 
     <activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter" />
     <converters2:BoolToStringConvert x:Key="BoolToStringConvert" />
 
-    <!-- ========== Converter for XamDock ========== -->
+    <!--  ========== Converter for XamDock ==========  -->
 
     <converters:StringToResourceConverter x:Key="StringToResourceConverter" />
     <converters4:TypeToIconConverter x:Key="TypeToIconConverter" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisConverter" />    
     <converters:PercentageConverter x:Key="PercentageConverter" />
-    <converters2:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
+    <converters2:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
     <converters:NegateVisibilityConverter x:Key="NegateVisibilityConverter" />
     <converters2:DoubleToMarginLeftConverter x:Key="DoubleToMarginLeftConverter" />
     <converters:ModelItemToActivityConverter x:Key="ModelItemToActivityConverter" />
@@ -34,8 +36,12 @@
     <converters5:SchedulerStatusToCheckedConverter x:Key="SchedulerStatusToCheckedConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     <converters:DeployViewConnectedToVisiblityConverter x:Key="DeployViewConnectedToVisiblityConverter" />
-    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsVisible" NotNullVisibilityValue="Collapsed" NullVisibilityValue="Visible" />
-    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed" />
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsVisible"
+                                          NotNullVisibilityValue="Collapsed"
+                                          NullVisibilityValue="Visible" />
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed"
+                                          NotNullVisibilityValue="Visible"
+                                          NullVisibilityValue="Collapsed" />
     <converters3:NavigationViewModelPermissionVisibilityConverter x:Key="NavigationViewModelPermissionVisibilityConverter" />
     <converters3:NavigationViewModelPermissionToBooleanConverter x:Key="NavigationViewModelPermissionToBooleanConverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
@@ -57,23 +63,38 @@
     <converters1:SchedulerMultiBoolToVisibilityConverter x:Key="SchedulerMultiBoolToVisibilityConverter" />
     <converters:ConnectControlDisableConverter x:Key="ConnectControlDisableConverter" />
     <converters:StringToVisibilityConverterMulti x:Key="StringToVisibilityConverterMulti" />
-    <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
-    <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
-    <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
+    <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter"
+                                     FalseValue="-"
+                                     TrueValue="+" />
+    <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive"
+                                           FalseValue="Collapsed"
+                                           TrueValue="Visible" />
+    <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative"
+                                           FalseValue="Visible"
+                                           TrueValue="Collapsed" />
     <converters5:ExplorerItemModelToIconConverter x:Key="ExplorerItemModelToIconConverter" />
     <converters1:ConnectControlMultiValueBoolConverter x:Key="ConnectControlMultiValueBoolConverter" />
-    <converters:AllBoolToVisibilityValueConverter x:Key="AllBoolToVisibilityValueConverter" TrueValue="Visible" FalseValue="Collapsed" />
-    <converters:AllBoolToVisibilityValueConverter x:Key="AllBoolToVisibilityValueConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
-    <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
-    <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
-    <converters:NullToBoolConvert x:Key="NullToBoolConvert"/>
-    <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
+    <converters:AllBoolToVisibilityValueConverter x:Key="AllBoolToVisibilityValueConverter"
+                                                  FalseValue="Collapsed"
+                                                  TrueValue="Visible" />
+    <converters:AllBoolToVisibilityValueConverter x:Key="AllBoolToVisibilityValueConverterNegative"
+                                                  FalseValue="Visible"
+                                                  TrueValue="Collapsed" />
+    <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter" />
+    <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter" />
+    <converters:NullToBoolConvert x:Key="NullToBoolConvert" />
+    <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter" />
+    <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterPositive" Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" />
+    <converters:TypeToVisibilityConverter x:Key="RecorderFeedbackActionTypeToVisibilityConverterNegative"
+                                          MatchingVisibilityValue="Collapsed"
+                                          MismatchVisibilityValue="Visible"
+                                          Type="{x:Type devFeedbackActions:RecorderFeedbackAction}" />
     <converters:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter" />
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
-    <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
-    <converters1:GridRowNumberConverter x:Key="GridRowNumberConverter"/>
-    <converters2:StringToTimespanConverter x:Key="StringToTimespanConverter"/>
+    <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter" />
+    <converters1:GridRowNumberConverter x:Key="GridRowNumberConverter" />
+    <converters2:StringToTimespanConverter x:Key="StringToTimespanConverter" />
     
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>

@@ -630,7 +630,7 @@ namespace Dev2.Studio.ViewModels
         // Write CodedUI Test Because of Silly Chicken affect ;)
         private bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVm)
         {
-            var result = PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved, workflowVm.ResourceModel.ResourceName), StringResources.DialogTitle_NotSaved,
+            var result = PopupProvider.Show(string.Format(Warewolf.Studio.Resources.Languages.Core.DialogBody_NotSaved, workflowVm.ResourceModel.ResourceName), Warewolf.Studio.Resources.Languages.Core.DialogTitle_NotSaved,
                                             MessageBoxButton.YesNoCancel, MessageBoxImage.Question, null);
 
             switch(result)
@@ -787,7 +787,7 @@ namespace Dev2.Studio.ViewModels
 
         public void ShowCommunityPage()
         {
-            BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
+            BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.Uri_Community_HomePage);
         }
 
         #region Overrides of ViewAware
@@ -893,7 +893,7 @@ namespace Dev2.Studio.ViewModels
 
         public async void AddLanguageHelpWorkSurface()
         {
-            var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
+            var path = FileHelper.GetFullPath(Warewolf.Studio.Resources.Languages.Core.Uri_Studio_Language_Reference_Document);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.LanguageHelp
                                                              , new[] { new Tuple<string, object>("Uri", path) });
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Language Help" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
@@ -1081,9 +1081,9 @@ namespace Dev2.Studio.ViewModels
                             deletionName = contextualResourceModel.ResourceName;
                             description = contextualResourceModel.ResourceType.GetDescription();
                         }
-                        var deletePrompt = String.Format(StringResources.DialogBody_ConfirmDelete, deletionName,
+                        var deletePrompt = String.Format(Warewolf.Studio.Resources.Languages.Core.DialogBody_ConfirmDelete, deletionName,
                             description);
-                        var deleteAnswer = PopupProvider.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete,
+                        var deleteAnswer = PopupProvider.Show(deletePrompt, Warewolf.Studio.Resources.Languages.Core.DialogTitle_ConfirmDelete,
                             MessageBoxButton.YesNo, MessageBoxImage.Warning, null);
 
                         var shouldDelete = deleteAnswer == MessageBoxResult.Yes;
@@ -1096,8 +1096,8 @@ namespace Dev2.Studio.ViewModels
 
         static bool ShowDeleteDialogForFolder(string folderBeingDeleted, IPopupController result)
         {
-            var deletePrompt = String.Format(StringResources.DialogBody_ConfirmFolderDelete, folderBeingDeleted);
-            var deleteAnswer = result.Show(deletePrompt, StringResources.DialogTitle_ConfirmDelete, MessageBoxButton.YesNo, MessageBoxImage.Warning, null);
+            var deletePrompt = String.Format(Warewolf.Studio.Resources.Languages.Core.DialogBody_ConfirmFolderDelete, folderBeingDeleted);
+            var deleteAnswer = result.Show(deletePrompt, Warewolf.Studio.Resources.Languages.Core.DialogTitle_ConfirmDelete, MessageBoxButton.YesNo, MessageBoxImage.Warning, null);
             var confirmDelete = deleteAnswer == MessageBoxResult.Yes;
             return confirmDelete;
         }

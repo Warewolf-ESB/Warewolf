@@ -34,17 +34,17 @@ namespace Dev2.DynamicServices
 
             if (string.IsNullOrEmpty(Name))
             {
-                WriteCompileError(Resources.CompilerError_MissingActivityName);
+                WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingActivityName);
             }
 
             if (Service == null)
             {
-                WriteCompileError(Resources.CompilerError_ServiceNotFound);
+                WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_ServiceNotFound);
             }
 
             if (string.IsNullOrEmpty(IconPath))
             {
-                WriteCompileError(Resources.CompilerError_MissingIconPath);
+                WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingIconPath);
             }
 
             return IsCompiled;

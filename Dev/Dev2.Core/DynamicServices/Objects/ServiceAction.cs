@@ -270,7 +270,7 @@ namespace Dev2.DynamicServices.Objects
                 case enActionType.InvokeDynamicService:
                     if (string.IsNullOrEmpty(ServiceName))
                     {
-                        WriteCompileError(Resources.CompilerError_MissingServiceName);
+                        WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingServiceName);
                     }
                     break;
 
@@ -281,16 +281,16 @@ namespace Dev2.DynamicServices.Objects
                     //A Source Name is required except in the case of Management Dynamic Services
                     if (string.IsNullOrEmpty(SourceName) && ActionType != enActionType.InvokeManagementDynamicService)
                     {
-                        WriteCompileError(Resources.CompilerError_MissingSourceName);
+                        WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingSourceName);
                     }
                     if (string.IsNullOrEmpty(SourceMethod))
                     {
-                        WriteCompileError(Resources.CompilerError_MissingSourceMethod);
+                        WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingSourceMethod);
                     }
                     //A source is required except in the case of Management Dynamic Services
                     if (Source == null && ActionType != enActionType.InvokeManagementDynamicService)
                     {
-                        WriteCompileError(Resources.CompilerError_SourceNotFound);
+                        WriteCompileError(Warewolf.Studio.Resources.Languages.Services.CompilerError_SourceNotFound);
                     }
                     break;
             }

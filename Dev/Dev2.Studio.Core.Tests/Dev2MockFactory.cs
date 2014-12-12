@@ -37,7 +37,7 @@ namespace Dev2.Core.Tests
     {
         private static Mock<MainViewModel> _mockMainViewModel;
         private static Mock<IContextualResourceModel> _mockResourceModel;
-        
+
         static Dev2MockFactory()
         {
             AppSettings.LocalHost = "https://localhost:3143";
@@ -76,7 +76,7 @@ namespace Dev2.Core.Tests
                 }
                 return _mockMainViewModel;
             }
-        }
+            }
 
         static public Mock<IContextualResourceModel> ResourceModel
         {
@@ -87,8 +87,8 @@ namespace Dev2.Core.Tests
                     return _mockResourceModel;
                 }
                 _mockResourceModel = SetupResourceModelMock();
-                return _mockResourceModel;
-            }
+                    return _mockResourceModel;
+                }
         }
 
         static public Mock<IEnvironmentConnection> SetupIEnvironmentConnection()
@@ -180,7 +180,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(Warewolf.Studio.Resources.Languages.Core.xmlServiceDefinition));
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -196,7 +196,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(Warewolf.Studio.Resources.Languages.Core.xmlServiceDefinition));
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns("Test");
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
@@ -214,7 +214,7 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            mockResourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(Warewolf.Studio.Resources.Languages.Core.xmlServiceDefinition));
             mockResourceModel.Setup(resModel => resModel.ResourceName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns(resourceName);
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Category\\Testing");

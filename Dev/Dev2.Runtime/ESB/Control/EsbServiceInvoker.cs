@@ -123,7 +123,7 @@ namespace Dev2.Runtime.ESB
                 var serviceName = dataObject.ServiceName;
                 if(serviceId == Guid.Empty && string.IsNullOrEmpty(serviceName))
                 {
-                    errors.AddError(Resources.DynamicServiceError_ServiceNotSpecified);
+                    errors.AddError(Warewolf.Studio.Resources.Languages.Services.DynamicServiceError_ServiceNotSpecified);
                 }
                 else
                 {

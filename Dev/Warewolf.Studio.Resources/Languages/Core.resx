@@ -1,0 +1,683 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BDSAdminRole" xml:space="preserve">
+    <value>Business Design Studio Administrators</value>
+  </data>
+  <data name="BDSDeveloperRole" xml:space="preserve">
+    <value>Business Design Studio Developers</value>
+    <comment>TUW-UKIIS01/dsf</comment>
+  </data>
+  <data name="BDSTestingRole" xml:space="preserve">
+    <value>Business Design Studio Testers</value>
+  </data>
+  <data name="BDSUserRole" xml:space="preserve">
+    <value>Business Design Studio Users</value>
+  </data>
+  <data name="DsfChannelName_Development_Environment" xml:space="preserve">
+    <value>Development Environment</value>
+  </data>
+  <data name="DsfChannelName_Live_Environment" xml:space="preserve">
+    <value>Live Environment</value>
+  </data>
+  <data name="DsfChannelName_Testing_Environment" xml:space="preserve">
+    <value>Testing Environment</value>
+  </data>
+  <data name="HelpContent_CaseValue" xml:space="preserve">
+    <value>Provide a value for the case that you are creating. E.g If you want to do specific visual logic for Durban then you will provide Durban as a case value</value>
+  </data>
+  <data name="HelpContent_SwitchValue" xml:space="preserve">
+    <value>Provides the name of the type of data that will be used to switch logic. E.g If you want visual logic to be defined for different cities you would use a Switch value of City. If you are unsure of what the actual switch values are then contact your administrator </value>
+  </data>
+  <data name="StringWindow_CaseLabelValue" xml:space="preserve">
+    <value>For the case of:</value>
+  </data>
+  <data name="StringWindow_CaseWindowTitle" xml:space="preserve">
+    <value>Provide the case value</value>
+  </data>
+  <data name="StringWindow_SwitchLabelValue" xml:space="preserve">
+    <value>Switch On:</value>
+  </data>
+  <data name="StringWindow_SwitchWindowTitle" xml:space="preserve">
+    <value>Provide the identifier to switch on</value>
+  </data>
+  <data name="Uri_Start_Page" xml:space="preserve">
+    <value>http://www.google.co.za/</value>
+    <comment>http://tuw-hubps/Pages/Business%20Design%20Studio.aspx</comment>
+  </data>
+  <data name="SPN_Endpoint_Identity" xml:space="preserve">
+    <value>TUW-DEVFS/dsfDev</value>
+    <comment>TUW-DEVFS/dsfDev</comment>
+  </data>
+  <data name="AllowedRoles_DevelopmentEnvironment" xml:space="preserve">
+    <value>Business Design Studio Administrators,Business Design Studio Developers,Business Design Studio Users</value>
+  </data>
+  <data name="AllowedRoles_LiveEnvironment" xml:space="preserve">
+    <value>Business Design Studio Administrators,Business Design Studio Testers</value>
+  </data>
+  <data name="AllowedRoles_TestingEnvironment" xml:space="preserve">
+    <value>Business Design Studio Administrators,Business Design Studio Testers,Business Design Studio Developers</value>
+  </data>
+  <data name="Dev_SPN_Endpoint_Identity" xml:space="preserve">
+    <value>TUW-DEVFS/dsfDev</value>
+    <comment>TUW-DEVFS/dsfDev</comment>
+  </data>
+  <data name="Live_SPN_Endpoint_Identity" xml:space="preserve">
+    <value>TUW-DEVFS/dsfLive</value>
+    <comment>TUW-DEVFS/dsfLive</comment>
+  </data>
+  <data name="Test_SPN_Endpoint_Identity" xml:space="preserve">
+    <value>TUW-DEVFS/dsfTest</value>
+    <comment>TUW-DEVFS/dsfTest</comment>
+  </data>
+  <data name="Icon_Default_Path" xml:space="preserve">
+    <value>\\tuw-devfs\bdsimages\activity.png</value>
+  </data>
+  <data name="Environments_Directory" xml:space="preserve">
+    <value>Environments</value>
+  </data>
+  <data name="Error_Connect_Failed" xml:space="preserve">
+    <value>Connection Failed</value>
+  </data>
+  <data name="Error_DSF_Address_Not_Valid" xml:space="preserve">
+    <value>Address not valid</value>
+  </data>
+  <data name="Error_DSF_Name_Not_Provided" xml:space="preserve">
+    <value>Name not provided</value>
+  </data>
+  <data name="Error_Environments_Directory_Not_Found" xml:space="preserve">
+    <value>Directory Not found</value>
+  </data>
+  <data name="Window_Title_Property_Editor" xml:space="preserve">
+    <value>{0} Editor</value>
+  </data>
+  <data name="Default_WebServer_Port" xml:space="preserve">
+    <value>3142</value>
+  </data>
+  <data name="UI_Layout_Grid_Default_Height" xml:space="preserve">
+    <value>80</value>
+  </data>
+  <data name="UI_Layout_Grid_Default_Width" xml:space="preserve">
+    <value>150</value>
+  </data>
+  <data name="Webpage_Default_Website" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Services_Add_Resource" xml:space="preserve">
+    <value>ResourceUpload</value>
+  </data>
+  <data name="Services_Delete_Resource" xml:space="preserve">
+    <value>ThemeResourceDelete</value>
+  </data>
+  <data name="Supported_WebResource_Folders" xml:space="preserve">
+    <value>css,images,js</value>
+  </data>
+  <data name="Navigation_Folder_Icon_Pack_Uri" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolder-32.png</value>
+  </data>
+  <data name="Navigation_Environment_Icon_Pack_Uri" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/Warewolf.ico</value>
+  </data>
+  <data name="Pack_Uri_Application_Image_Home" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/StartPage-16.png</value>
+  </data>
+  <data name="Pack_Uri_Application_Image_Webpage" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/User.png</value>
+  </data>
+  <data name="Pack_Uri_Application_Image_Website" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/webpagebuilder.png</value>
+  </data>
+  <data name="DebugData_FilePath" xml:space="preserve">
+    <value>DebugData</value>
+  </data>
+  <data name="DataMapping_InputXpathExpression" xml:space="preserve">
+    <value>//Inputs</value>
+  </data>
+  <data name="DataMapping_OutputXpathExpression" xml:space="preserve">
+    <value>//Outputs</value>
+  </data>
+  <data name="ErrorMessageDuplicateValue" xml:space="preserve">
+    <value>Variable names must be unique.</value>
+  </data>
+  <data name="ErrorMessageDuplicateVariable" xml:space="preserve">
+    <value>This variable name is a duplicate of an existing variable. Variable names must be unique.</value>
+  </data>
+  <data name="ErrorMessageDuplicateRecordset" xml:space="preserve">
+    <value>The recordset name is a duplicate of an existing recordset. Recordset names must be unique.</value>
+  </data>
+  <data name="ErrorMessageInvalidChar" xml:space="preserve">
+    <value>Variable name contains invalid character(s).</value>
+  </data>
+  <data name="User_Interface_Layouts_Directory" xml:space="preserve">
+    <value>UserInterfaceLayouts</value>
+  </data>
+  <data name="Uri_Studio_Shortcut_Keys_Document" xml:space="preserve">
+    <value>Help\StudioShortCutKeys.htm</value>
+    <comment>Relative to the executable</comment>
+  </data>
+  <data name="Uri_Studio_Homepage" xml:space="preserve">
+    <value>Studio\Help\StudioHomepage.htm</value>
+  </data>
+  <data name="About_Content" xml:space="preserve">
+    <value>Studio: Version {0}
+Server: Version {1}
+
+Sofware development by: www.dev2.co.za
+</value>
+  </data>
+  <data name="Server_About_Content" xml:space="preserve">
+    <value>Server: Version {1}
+
+Sofware development by: www.dev2.co.za
+</value>
+  </data>
+  <data name="About_Header_Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="App_Data_Directory" xml:space="preserve">
+    <value>Warewolf</value>
+  </data>
+  <data name="About_Description_Header" xml:space="preserve">
+    <value>About Server and Studio</value>
+  </data>
+  <data name="Warewolf_Logo" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/WarewolfLogoMedRes.png</value>
+  </data>
+  <data name="SplashImage" xml:space="preserve">
+    <value>Images\SplashImage_New_2014.jpg</value>
+  </data>
+  <data name="Dev2StudioLDAPEndpoint" xml:space="preserve">
+    <value>LDAP://premier.local</value>
+    <comment>Only used if in LDAP mode, The Unlimited = LDAP://premier.local, Dev2 = LDAP://dev2.local</comment>
+  </data>
+  <data name="Dev2StudioSecurityMode" xml:space="preserve">
+    <value>Offline</value>
+    <comment>Possible values are Offline and LDAP at this point in time</comment>
+  </data>
+  <data name="Pack_Uri_Application_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/</value>
+  </data>
+  <data name="Pack_Uri_Application_Image_Help" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/GenericHelp-16.png</value>
+  </data>
+  <data name="ErrorMessageEmptyRecordSet" xml:space="preserve">
+    <value>Recordset must contain one or more field(s).</value>
+  </data>
+  <data name="DefaultEnvironmentName" xml:space="preserve">
+    <value>localhost</value>
+  </data>
+  <data name="Feedback_Recordings_Directory" xml:space="preserve">
+    <value>Feedback</value>
+    <comment>The directory name in which feedback recordings are placed. This should not be a full or relative path, only a directory name.</comment>
+  </data>
+  <data name="NavigationItemViewModel_Unexpected_Resource" xml:space="preserve">
+    <value>Unexpected resource type from delete relay command.</value>
+  </data>
+  <data name="Navigation_Category_Unassigned" xml:space="preserve">
+    <value>Unassigned</value>
+  </data>
+  <data name="Navigation_RootNode_Name" xml:space="preserve">
+    <value>Explorer</value>
+  </data>
+  <data name="RuntimeConfigurationAssemblyDirectory" xml:space="preserve">
+    <value>RuntimeConfigurationAssemblies</value>
+  </data>
+  <data name="NewWorkflowBaseName" xml:space="preserve">
+    <value>Unsaved</value>
+  </data>
+  <data name="DialogBody_NotSaved" xml:space="preserve">
+    <value>The workflow '{0}' that you are closing is not saved.
+Would you like to save the workflow?
+-------------------------------------------------------------------
+Yes - Save the workflow.
+No - Discard your changes.
+Cancel - Returns you to the workflow.</value>
+  </data>
+  <data name="DialogBody_UpdateAvailable" xml:space="preserve">
+    <value>A new version of Warewolf is available:
+    
+Warewolf-{0}.exe
+    
+Would you like to download now?</value>
+  </data>
+  <data name="DialogBody_UpdateReady" xml:space="preserve">
+    <value>A new version of Warewolf has already been downloaded:
+
+Warewolf-{0}.exe
+
+Would you like to start the setup now?</value>
+  </data>
+  <data name="DialogTitle_NotSaved" xml:space="preserve">
+    <value>Workflow not saved...</value>
+  </data>
+  <data name="DialogBody_ConfirmDelete" xml:space="preserve">
+    <value>Are you sure you wish to delete the {0} {1}?
+
+Version History will also be deleted.</value>
+  </data>
+  <data name="DialogBody_ConfirmFolderDelete" xml:space="preserve">
+    <value>Are you sure you wish to delete {0} folder and all its contents?</value>
+  </data>
+  <data name="DialogBody_HasDependencies" xml:space="preserve">
+    <value>The {0} {1} cannot be deleted because something depends on it.</value>
+  </data>
+  <data name="DialogBody_HasDuplicateName" xml:space="preserve">
+    <value>The {0} {1} cannot be renamed because a resource with that name already exists on the same server.</value>
+  </data>
+  <data name="DialogBody_MissingWizard" xml:space="preserve">
+    <value>Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.</value>
+  </data>
+  <data name="DialogTitle_ConfirmDelete" xml:space="preserve">
+    <value>Confirm delete.</value>
+  </data>
+  <data name="DialogTitle_HasDependencies" xml:space="preserve">
+    <value>{0} has dependants</value>
+  </data>
+  <data name="DialogTitle_HasDuplicateName" xml:space="preserve">
+    <value>{0} exists</value>
+  </data>
+  <data name="DialogTitle_MissingWizard" xml:space="preserve">
+    <value>Missing Wizard</value>
+  </data>
+  <data name="Pack_Uri_Debug_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png</value>
+  </data>
+  <data name="Pack_Uri_Stop_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStop-32.png</value>
+  </data>
+  <data name="Ribbon_Debug" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="Ribbon_StopExecution" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Navigation_OpenFolder_Icon_Pack_Uri" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolderOpen-32.png</value>
+  </data>
+  <data name="Resource_Changed_MessageBody" xml:space="preserve">
+    <value>{0} is used by {1} workflow{2}. Please update their mappings.</value>
+  </data>
+  <data name="Uri_Community_HomePage" xml:space="preserve">
+    <value>http://community.warewolf.io/</value>
+  </data>
+  <data name="Pack_Uri_Application_Image_Community" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/HelpCommunity-32.png</value>
+  </data>
+  <data name="Warewolf_Homepage_Start" xml:space="preserve">
+    <value>http://warewolf.io/start.html</value>
+  </data>
+  <data name="BrowserCacheFolder" xml:space="preserve">
+    <value>BrowserCache</value>
+  </data>
+  <data name="Uri_Studio_PageMissing" xml:space="preserve">
+    <value>Help\PageMissing.htm</value>
+  </data>
+  <data name="XmlOriginalLayout" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;xamDockManager version="12.1.20121.2107"&gt;
+  &lt;contentPanes&gt;
+    &lt;contentPane name="OutputPane" location="DockedRight" lastFloatingSize="1000,200" lastFloatingWindowRect="625,541,1016,234" lastFloatingLocation="625,541" lastActivatedTime="2013-06-10T07:30:08.998685Z" /&gt;
+    &lt;contentPane name="Variables" location="DockedRight" lastFloatingSize="300,706" lastFloatingWindowRect="1475,482,316,740" lastFloatingLocation="1475,482" lastActivatedTime="2013-06-10T07:30:02.882685Z" /&gt;
+    &lt;contentPane name="Toolbox" location="DockedLeft" lastFloatingSize="300,706" lastFloatingWindowRect="89,514,316,740" lastFloatingLocation="89,514" lastActivatedTime="2013-06-10T07:29:57.299685Z" /&gt;
+    &lt;contentPane name="Explorer" location="DockedLeft" lastFloatingSize="300,706" lastFloatingWindowRect="-130,482,316,740" lastFloatingLocation="-130,482" lastActivatedTime="2013-06-10T07:29:13.960685Z" /&gt;
+  &lt;/contentPanes&gt;
+  &lt;panes&gt;
+    &lt;splitPane name="Z746a647dd6004001a7df7a7ca0ac65d1" splitterOrientation="Vertical" location="DockedRight" extent="300"&gt;
+      &lt;splitPane name="Z96bb9badc4b148518ea4eff80920f8d9" splitterOrientation="Horizontal" relativeSize="100,100"&gt;
+        &lt;contentPane name="Variables" /&gt;
+        &lt;contentPane name="OutputPane" /&gt;
+      &lt;/splitPane&gt;
+    &lt;/splitPane&gt;
+    &lt;splitPane name="Zc30a7af8e0c54bb5bccfbea116f8ab0d" splitterOrientation="Vertical" location="DockedLeft" extent="300"&gt;
+      &lt;splitPane name="Zf1166e575b5d43bb89f15f346eccb7b1" splitterOrientation="Horizontal" relativeSize="100,100"&gt;
+        &lt;tabGroup name="Z3d0e8544bdbd4fbc8b0369ecfce4e928" selectedIndex="0"&gt;
+          &lt;contentPane name="Explorer" /&gt;
+        &lt;/tabGroup&gt;
+        &lt;contentPane name="Toolbox" /&gt;
+      &lt;/splitPane&gt;
+    &lt;/splitPane&gt;
+    &lt;splitPane name="DockBottom" splitterOrientation="Vertical" location="DockedBottom" extent="200" /&gt;
+    &lt;splitPane name="DockLeft" splitterOrientation="Vertical" location="DockedLeft" extent="300" /&gt;
+    &lt;splitPane name="Z4941c2c791034fd0a4f92f09e5ed1db1" splitterOrientation="Vertical" location="Floating" floatingLocation="-130,482" floatingSize="300,706"&gt;
+      &lt;tabGroup name="Z56347a81a64f4f8890cfac6f17b09b3f" selectedIndex="-1" relativeSize="100,100"&gt;
+        &lt;contentPane name="Explorer" /&gt;
+      &lt;/tabGroup&gt;
+    &lt;/splitPane&gt;
+    &lt;splitPane name="Ze1b8ac25c55d4bedbe213f6fb0e90c40" splitterOrientation="Vertical" location="Floating" floatingLocation="89,514" floatingSize="300,706"&gt;
+      &lt;contentPane name="Toolbox" /&gt;
+    &lt;/splitPane&gt;
+    &lt;splitPane name="Z631d72f44f5f48389b0cf39ff416f725" splitterOrientation="Vertical" location="Floating" floatingLocation="1475,482" floatingSize="300,706"&gt;
+      &lt;contentPane name="Variables" /&gt;
+    &lt;/splitPane&gt;
+    &lt;splitPane name="Zb26fc73622a14daa84dd6e1a66477e05" splitterOrientation="Vertical" location="Floating" floatingLocation="625,541" floatingSize="1000,200"&gt;
+      &lt;tabGroup name="Z25d0da356c7740e3b66c30867a4b22cc" selectedIndex="-1" relativeSize="100,100"&gt;
+        &lt;contentPane name="OutputPane" /&gt;
+      &lt;/tabGroup&gt;
+    &lt;/splitPane&gt;
+  &lt;/panes&gt;
+&lt;/xamDockManager&gt;</value>
+  </data>
+  <data name="RemoteWarewolfIconPath" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png</value>
+  </data>
+  <data name="EULA_Link" xml:space="preserve">
+    <value>http://warewolf.io/eula/</value>
+  </data>
+  <data name="EULA_Text" xml:space="preserve">
+    <value>Warewolf EULA</value>
+  </data>
+  <data name="FeedbackEmail" xml:space="preserve">
+    <value>feedback@warewolf.io</value>
+  </data>
+  <data name="IntellisenseErrorMisMacthingBrackets" xml:space="preserve">
+    <value>Invalid expression: Opening and closing brackets dont match.</value>
+  </data>
+  <data name="IntellisenseErrorExpressionStartingWithANumber" xml:space="preserve">
+    <value>Invalid Expression: Cant start a variable name with a number.</value>
+  </data>
+  <data name="CriticalExceptionMessage" xml:space="preserve">
+    <value>Critical : Warewolf Must Restart. All open tabs will be saved. Please take the time to report this error to the community.</value>
+  </data>
+  <data name="ErrorPrefix" xml:space="preserve">
+    <value>Error : </value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="CritErrorTitle" xml:space="preserve">
+    <value>Critical Error</value>
+  </data>
+  <data name="Warewolf_Version" xml:space="preserve">
+    <value>http://warewolf.io/version.txt</value>
+  </data>
+  <data name="InvalidCategoryNameExceptionMessage" xml:space="preserve">
+    <value>Invalid category name</value>
+  </data>
+  <data name="xmlServiceDefinition" xml:space="preserve">
+    <value>&lt;Service Name="GetCars"&gt;
+  &lt;Actions&gt;
+	&lt;Action Name="GetCarsByReg" Type="InvokeStoredProc" SourceName="CarsDatabase" SourceMethod="proc_GetCarsByReg"&gt;
+		&lt;Inputs&gt;
+			&lt;Input Name="reg" Source="" DefaultValue="NUD2347"&gt;
+				&lt;Validator Type="Required" /&gt;				
+			&lt;/Input&gt;
+			&lt;Input Name="asdfsad" Source="registration223" DefaultValue="w3rt24324"&gt;
+				&lt;Validator Type="Required" /&gt;				
+			&lt;/Input&gt;			
+			&lt;Input Name="number" Source="" DefaultValue=""/&gt;
+		&lt;/Inputs&gt;
+		&lt;Outputs&gt;
+			&lt;Output Name="vehicleVin" MapsTo="VIN" Value=""/&gt;
+			&lt;Output Name="vehicleColor" MapsTo="VehicleColor" Value=""/&gt;
+			&lt;Output Name="speed" MapsTo="speed" Recordset="Fines" Value=""/&gt;
+			&lt;Output Name="date" MapsTo="date" Recordset="Fines" Value="Fines.Date"/&gt;
+			&lt;Output Name="location" MapsTo="location" Recordset="Fines" Value=""/&gt;
+		&lt;/Outputs&gt;
+	&lt;/Action&gt;
+  &lt;/Actions&gt;
+  &lt;AuthorRoles&gt;Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,&lt;/AuthorRoles&gt;
+  &lt;Comment&gt;This service is responsible for copying files between file system locations or FTP locations&lt;/Comment&gt;
+  &lt;Category&gt;Build Acceptance Testing&lt;/Category&gt;
+  &lt;HelpLink&gt;http://d&lt;/HelpLink&gt;
+  &lt;Tags&gt;&lt;/Tags&gt;
+  &lt;UnitTestTargetWorkflowService&gt;&lt;/UnitTestTargetWorkflowService&gt;
+  &lt;BizRule /&gt;
+  &lt;WorkflowActivityDef /&gt;
+  &lt;Source /&gt;
+  &lt;XamlDefinition /&gt;
+  &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
+&lt;/Service&gt;</value>
+  </data>
+  <data name="xmlDataList" xml:space="preserve">
+    <value>&lt;DataList&gt;
+	&lt;NUD2347 Description=""/&gt;
+	&lt;number Description=""/&gt;
+	&lt;vehicleColor Description=""/&gt;
+	&lt;Fines Description=""&gt;
+		&lt;Speed Description=""/&gt;
+		&lt;Date Description=""/&gt;
+		&lt;Location Description=""/&gt;
+	&lt;/Fines&gt;
+	&lt;Registrations Description=""&gt;
+		&lt;Speed Description=""/&gt;
+		&lt;Date Description=""/&gt;
+		&lt;Location Description=""/&gt;
+	&lt;/Registrations&gt;
+&lt;/DataList&gt;</value>
+  </data>
+  <data name="xmlNullSourceMethodServiceDef" xml:space="preserve">
+    <value>&lt;Service Name="GetCars"&gt;
+  &lt;Actions&gt;
+	&lt;Action Name="GetCarsByReg" Type="InvokeStoredProc" SourceName="CarsDatabase"&gt;
+		&lt;Inputs&gt;
+			&lt;Input Name="reg" Source="" DefaultValue="NUD2347"&gt;
+				&lt;Validator Type="Required" /&gt;				
+			&lt;/Input&gt;
+			&lt;Input Name="asdfsad" Source="registration223" DefaultValue="w3rt24324"&gt;
+				&lt;Validator Type="Required" /&gt;				
+			&lt;/Input&gt;			
+			&lt;Input Name="number" Source="" DefaultValue=""/&gt;
+		&lt;/Inputs&gt;
+		&lt;Outputs&gt;
+			&lt;Output Name="vehicleVin" MapsTo="VIN" Value=""/&gt;
+			&lt;Output Name="vehicleColor" MapsTo="VehicleColor" Value=""/&gt;
+			&lt;Output Name="speed" MapsTo="speed" Recordset="Fines" Value=""/&gt;
+			&lt;Output Name="date" MapsTo="date" Recordset="Fines" Value="Fines.Date"/&gt;
+			&lt;Output Name="location" MapsTo="location" Recordset="Fines" Value=""/&gt;
+		&lt;/Outputs&gt;
+	&lt;/Action&gt;
+  &lt;/Actions&gt;
+  &lt;AuthorRoles&gt;Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,&lt;/AuthorRoles&gt;
+  &lt;Comment&gt;This service is responsible for copying files between file system locations or FTP locations&lt;/Comment&gt;
+  &lt;Category&gt;Build Acceptance Testing&lt;/Category&gt;
+  &lt;HelpLink&gt;http://d&lt;/HelpLink&gt;
+  &lt;Tags&gt;&lt;/Tags&gt;
+  &lt;UnitTestTargetWorkflowService&gt;&lt;/UnitTestTargetWorkflowService&gt;
+  &lt;BizRule /&gt;
+  &lt;WorkflowActivityDef /&gt;
+  &lt;Source /&gt;
+  &lt;XamlDefinition /&gt;
+  &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
+&lt;/Service&gt;</value>
+  </data>
+  <data name="InvalidResourceNameExceptionMessage" xml:space="preserve">
+    <value>Invalid resource name</value>
+  </data>
+  <data name="Uri_DownloadPage" xml:space="preserve">
+    <value>https://warewolf.s3.amazonaws.com/Latest/</value>
+  </data>
+  <data name="FeedbackViewModel_Init_ArgException" xml:space="preserve">
+    <value>AttachmentPath must contain exactly one semicolon seperator, between recording log file and server log file.</value>
+  </data>
+  <data name="MappingChangedWarningDialogTitle" xml:space="preserve">
+    <value>Inputs / Outputs Changed</value>
+  </data>
+  <data name="Uri_Studio_Language_Reference_Document" xml:space="preserve">
+    <value>Help\Warewolf Language.htm</value>
+  </data>
+  <data name="ExampleWorkflowNotFound" xml:space="preserve">
+    <value>The {0} example cannot be found. 
+ Please re-install or upgrade to the latest version to resolve this issue</value>
+  </data>
+  <data name="DialogBody_FolderContentsHaveDependencies" xml:space="preserve">
+    <value>This folder cannot be deleted because it contains resources with dependants.</value>
+  </data>
+  <data name="DialogTitle_FolderHasDependencies" xml:space="preserve">
+    <value>Folder has dependants</value>
+  </data>
+  <data name="Resource_ID_must_be_a_Guid" xml:space="preserve">
+    <value>Resource ID must be a Guid</value>
+  </data>
+  <data name="Pack_Uri_DatabaseService_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/DatabaseService-32.png</value>
+  </data>
+  <data name="Pack_Uri_EmailSource_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/ToolSendEmail-32.png</value>
+  </data>
+  <data name="Pack_Uri_PluginService_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png</value>
+  </data>
+  <data name="Pack_Uri_WebService_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/WebService-32.png</value>
+  </data>
+  <data name="Pack_Uri_WorkflowService_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png</value>
+  </data>
+  <data name="Pack_Uri_Server_Image" xml:space="preserve">
+    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png</value>
+  </data>
+  <data name="Uri_Studio_PageRestrictedAccess" xml:space="preserve">
+    <value>Help\PageRestrictedAccess.htm</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Uri_Studio_PageNotAvailable" xml:space="preserve">
+    <value>Help\PageNotAvailable.htm</value>
+  </data>
+  <data name="SaveSettingErrorPrefix" xml:space="preserve">
+    <value>Error while saving</value>
+  </data>
+  <data name="SaveSettingsNotReachableErrorMsg" xml:space="preserve">
+    <value>Error while saving: Server unreachable.</value>
+  </data>
+  <data name="SaveSettingsPermissionsErrorMsg" xml:space="preserve">
+    <value>Error while saving: You don't have permission to change settings on this server.
+You need Administrator permission.</value>
+  </data>
+  <data name="Warewolf_Checksum" xml:space="preserve">
+    <value>http://warewolf.io/checksum.txt</value>
+  </data>
+  <data name="SaveSettingsDuplicateResourcePermissions" xml:space="preserve">
+    <value>There are duplicate permissions for a resource, 
+    i.e. one resource has permissions set twice with the same group. 
+    Please clear the duplicates before saving.</value>
+  </data>
+  <data name="SaveSettingsDuplicateServerPermissions" xml:space="preserve">
+    <value>There are duplicate server permissions, 
+    i.e Server permissions have been setup up with the same group twice. 
+    Please clear the duplicates before saving.</value>
+  </data>
+  <data name="DragRemoteNotSupported" xml:space="preserve">
+    <value>You are not allowed to drag remote workflows onto a remote service designer.</value>
+  </data>
+  <data name="DragRemoteNotSupportedHeader" xml:space="preserve">
+    <value>Invalid Designer Operation</value>
+  </data>
+</root>

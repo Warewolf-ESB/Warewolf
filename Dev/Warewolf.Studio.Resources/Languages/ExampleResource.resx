@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DsfCalculateActivity" xml:space="preserve">
+    <value>5c607d06-68ce-497b-831e-435cbd236894</value>
+  </data>
+  <data name="DsfCountRecordsetActivity" xml:space="preserve">
+    <value>d9f2514c-5d28-4902-9178-029e7eaa35ec</value>
+  </data>
+  <data name="DsfDateTimeActivity" xml:space="preserve">
+    <value>1af8ab32-ebbf-451e-8228-eaec63d41a53</value>
+  </data>
+  <data name="DsfDeleteRecordActivity" xml:space="preserve">
+    <value>2b8cf067-4522-4ec1-af93-e7a9c7030830</value>
+  </data>
+  <data name="DsfFileRead" xml:space="preserve">
+    <value>6275530a-86e7-4b07-ba47-cac4f7feeaab</value>
+  </data>
+  <data name="DsfFileWrite" xml:space="preserve">
+    <value>ab9c75c8-feb6-4058-a3cc-b3e39a333532</value>
+  </data>
+  <data name="DsfFolderRead" xml:space="preserve">
+    <value>39eb06b4-bf25-4190-b48b-b81ae153e2f5</value>
+  </data>
+  <data name="DsfMultiAssignActivity" xml:space="preserve">
+    <value>0bb174fb-e75a-4882-a4ef-169f0367fbad</value>
+  </data>
+  <data name="DsfNumberFormatActivity" xml:space="preserve">
+    <value>4eb6fdd7-f91d-4d7b-973f-644256549c75</value>
+  </data>
+  <data name="DsfPathCopy" xml:space="preserve">
+    <value>73ff08e0-e643-4af8-b0e5-fb7c52cc8c3b</value>
+  </data>
+  <data name="DsfPathCreate" xml:space="preserve">
+    <value>105393fb-88a1-4e5d-a490-a164b5248170</value>
+  </data>
+  <data name="DsfPathDelete" xml:space="preserve">
+    <value>5729d503-04ed-452c-941d-28136dcf8395</value>
+  </data>
+  <data name="DsfPathMove" xml:space="preserve">
+    <value>a9f614c4-fed7-4ace-8c02-5e5ddd0074fb</value>
+  </data>
+  <data name="DsfPathRename" xml:space="preserve">
+    <value>8f633d15-ac17-4320-8b4e-b7e7c9e561bb</value>
+  </data>
+  <data name="DsfSortRecordsActivity" xml:space="preserve">
+    <value>13300af1-dcbf-4761-951c-b3ecf80f09b7</value>
+  </data>
+  <data name="DsfUniqueActivity" xml:space="preserve">
+    <value>0612d271-eb67-4563-8ae2-128111d334a0</value>
+  </data>
+  <data name="DsfUnZip" xml:space="preserve">
+    <value>996e0b56-b1cc-435e-b852-05bda9db9313</value>
+  </data>
+  <data name="DsfWebGetRequestActivity" xml:space="preserve">
+    <value>06a414f6-cf60-4df1-9d48-017e06a8b972</value>
+  </data>
+  <data name="DsfZip" xml:space="preserve">
+    <value>8dbfe7c6-d44b-4232-b243-c6812460e2eb</value>
+  </data>
+  <data name="DsfFindRecordsMultipleCriteriaActivity" xml:space="preserve">
+    <value>638915ed-0797-4d1a-bb79-d361a03e60d2</value>
+  </data>
+  <data name="DsfBaseConvertActivity" xml:space="preserve">
+    <value>93873aaa-3164-41d2-8903-04b9dd5ba71a</value>
+  </data>
+  <data name="DsfExecuteCommandLineActivity" xml:space="preserve">
+    <value>636e8310-88ea-4737-8cdd-fdd1b9ab908d</value>
+  </data>
+  <data name="DsfCommentActivity" xml:space="preserve">
+    <value>9bbba03f-2352-4eee-bff7-05479ebbb3a7</value>
+  </data>
+  <data name="DsfDateTimeDifferenceActivity" xml:space="preserve">
+    <value>7771f2ed-abcc-4d68-bd14-50beec0927fd</value>
+  </data>
+  <data name="DsfIndexActivity" xml:space="preserve">
+    <value>45b9a09f-6ae8-4f89-adee-39539235614d</value>
+  </data>
+  <data name="DsfRandomActivity" xml:space="preserve">
+    <value>cc9a7c9e-151e-4a6c-a85d-59640db99140</value>
+  </data>
+  <data name="DsfReplaceActivity" xml:space="preserve">
+    <value>b2006c93-d767-416e-92b8-832311bf3bb2</value>
+  </data>
+  <data name="DsfScriptingActivity" xml:space="preserve">
+    <value>4fbb3584-dc4a-4f62-8de7-091f6535c0c6</value>
+  </data>
+  <data name="DsfSendEmailActivity" xml:space="preserve">
+    <value>895a9228-f881-4a51-bffa-7c5666d5ec59</value>
+  </data>
+  <data name="DsfForEachActivity" xml:space="preserve">
+    <value>8ba79b49-226e-4c67-a732-4657fd0edb6b</value>
+  </data>
+  <data name="DsfCaseConvertActivity" xml:space="preserve">
+    <value>9593b43b-e80f-4025-8948-3264864bcab5</value>
+  </data>
+  <data name="DsfDataMergeActivity" xml:space="preserve">
+    <value>c44dbf72-933b-41e9-aff5-d1b84ec23dcd</value>
+  </data>
+  <data name="DsfDataSplitActivity" xml:space="preserve">
+    <value>3182dad0-339e-4a0c-926b-4417f7deea46</value>
+  </data>
+  <data name="DsfGatherSystemInformationActivity" xml:space="preserve">
+    <value>68b7b87d-e11d-4bc6-962c-f45dfd763c9f</value>
+  </data>
+  <data name="DsfXPathActivity" xml:space="preserve">
+    <value>b8e90a2b-6e79-4fd7-b606-47c0e313dfb6</value>
+  </data>
+  <data name="DsfSqlBulkInsertActivity" xml:space="preserve">
+    <value>96e09260-9b72-48c9-9fb6-67b7e50f3761</value>
+  </data>
+  <data name="DsfRecordsetLengthActivity" xml:space="preserve">
+    <value>c5e46491-0355-45de-9dd8-c813a00f5245</value>
+  </data>
+</root>

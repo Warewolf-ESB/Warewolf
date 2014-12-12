@@ -417,10 +417,10 @@
                                              IsEnabled="{Binding EnableCellEditing}"
                                              Style="{StaticResource PermissionsGridTextBoxStyle}"
                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}">
-                                        <i:Interaction.Behaviors>
+                                        <!--<i:Interaction.Behaviors>
                                             <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpWindowsGroup}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                        </i:Interaction.Behaviors>-->
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddWindowsGroupTextBox_AutoID">
                                                 <Binding Path="WindowsGroup"
@@ -464,10 +464,10 @@
                                               Style="{StaticResource PermissionsGridCheckBoxStyle}"
                                               IsEnabled="{Binding EnableCellEditing}"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployTo}">
-                                        <i:Interaction.Behaviors>
+                                        <!--<i:Interaction.Behaviors>
                                             <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployTo}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                        </i:Interaction.Behaviors>-->
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_DeployToPermissionCheckBox_AutoID">
                                                 <Binding Path="WindowsGroup"
@@ -500,10 +500,10 @@
                                               Style="{StaticResource PermissionsGridCheckBoxStyle}"
                                               IsEnabled="{Binding EnableCellEditing}"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployFrom}">
-                                        <i:Interaction.Behaviors>
+                                        <!--<i:Interaction.Behaviors>
                                             <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployFrom}"
                                                               DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                        </i:Interaction.Behaviors>-->
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_DeployFromPermissionCheckBox_AutoID">
                                                 <Binding Path="WindowsGroup"
@@ -572,10 +572,10 @@
                                           Style="{StaticResource PermissionsGridCheckBoxStyle}"
                                           IsEnabled="{Binding EnableCellEditing}"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipView}">
-                                    <i:Interaction.Behaviors>
+                                    <!--<i:Interaction.Behaviors>
                                         <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpView}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
+                                    </i:Interaction.Behaviors>-->
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_{0}_ViewPermissionCheckBox_AutoID">
                                             <Binding Path="WindowsGroup"
@@ -608,10 +608,10 @@
                                           Style="{StaticResource PermissionsGridCheckBoxStyle}"
                                           IsEnabled="{Binding EnableCellEditing}"
                                           ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipExecute}">
-                                    <i:Interaction.Behaviors>
+                                    <!--<i:Interaction.Behaviors>
                                         <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpExecute}"
                                                           DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
+                                    </i:Interaction.Behaviors>-->
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_{0}_ExecutePermissionCheckBox_AutoID">
                                             <Binding Path="WindowsGroup"

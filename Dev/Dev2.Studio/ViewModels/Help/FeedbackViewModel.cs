@@ -77,7 +77,7 @@ namespace Dev2.Studio.ViewModels.Help
 
             ServerLogAttachmentPath = attachedFiles.Where(f => f.Key.Equals("ServerLog", StringComparison.CurrentCulture)).Select(v => v.Value).SingleOrDefault();
             StudioLogAttachmentPath = attachedFiles.Where(f => f.Key.Equals("StudioLog", StringComparison.CurrentCulture)).Select(v => v.Value).SingleOrDefault();
-            
+
             Comment = GenerateDefaultComment(sysInfo);
             SetCaretPosition();
             Categories.AddRange(new List<string> { "General", "Compliment", "Feature request", "Bug", "Feedback" });
@@ -353,7 +353,24 @@ namespace Dev2.Studio.ViewModels.Help
         #endregion
 
         #region public methods
-
+        /// <summary>
+        /// Sends an actual comment through email, mainly invoked by the UI through the SendCommand
+        /// </summary>
+        /// <author>Jurie.smit</author>
+        /// <datetime>2013/01/14-09:19 AM</datetime>
+        public void Send()
+        {
+            if(IsOutlookInstalled())
+            {
+                var emailCommService = new MapiEmailCommService<EmailCommMessage>();
+                Send(emailCommService);
+            }
+            else
+            {
+                BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.Uri_Community_HomePage);
+                RequestClose(ViewModelDialogResults.Okay);
+            }
+        }
 
 
         /// <summary>
@@ -364,6 +381,47 @@ namespace Dev2.Studio.ViewModels.Help
             RequestClose(ViewModelDialogResults.Cancel);
         }
 
+        /// <summary>
+        /// Sends email info using the specified communication service.
+        /// </summary>
+        /// <param name="commService">The comm service.</param>
+        /// <author>Jurie.smit</author>
+        /// <datetime>2013/01/14-09:20 AM</datetime>
+        /// <exception cref="System.NullReferenceException">ICommService of type EmailCommMessage</exception>
+        public void Send(ICommService<EmailCommMessage> commService)
+        {
+            Dev2Logger.Log.Debug("");
+            if(commService == null) throw new NullReferenceException("ICommService<EmailCommMessage>");
+
+            var message = new EmailCommMessage
+            {
+                To = Warewolf.Studio.Resources.Languages.Core.FeedbackEmail,
+                Subject = String.Format("Some Real Live Feedback{0}{1}"
+                                        , String.IsNullOrWhiteSpace(SelectedCategory) ? "" : " : ", SelectedCategory),
+                Content = Comment
+            };
+
+            if(HasRecordingAttachment)
+            {
+                Attachments += !string.IsNullOrEmpty(RecordingAttachmentPath) ? RecordingAttachmentPath : "";
+            }
+
+            if(HasServerLogAttachment)
+            {
+                Attachments += !string.IsNullOrEmpty(Attachments) ? ";" : "";
+                Attachments += !string.IsNullOrEmpty(ServerLogAttachmentPath) ? ServerLogAttachmentPath : "";
+            }
+
+            if(HasStudioLogAttachment)
+            {
+                Attachments += !string.IsNullOrEmpty(Attachments) ? ";" : "";
+                Attachments += !string.IsNullOrEmpty(StudioLogAttachmentPath) ? StudioLogAttachmentPath : "";
+            }
+
+            message.AttachmentLocation = Attachments;
+            commService.SendCommunication(message);
+            RequestClose(ViewModelDialogResults.Okay);
+        }
         #endregion
     }
 }

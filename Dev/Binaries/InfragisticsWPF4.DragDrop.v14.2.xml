@@ -1,0 +1,529 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.DragDrop.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.DragDrop.DragDropManager">
+            <summary>
+            Registers and manages interaction between elements marked as drag sources and drop targets and triggers
+            the raising of appropriate events about drag-and-drop operation to the user.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DragDropManager.DragSourceProperty">
+            <summary>
+            Identifies the <see cref="F:Infragistics.DragDrop.DragDropManager.DragSourceProperty"/> attached property.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DragDrop.DragDropManager.GetDragSource(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the <see cref="F:Infragistics.DragDrop.DragDropManager.DragSourceProperty"/> attached property from a given <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj">The object from which to read the property value.</param>
+            <returns>The value of the <see cref="F:Infragistics.DragDrop.DragDropManager.DragSourceProperty"/> attached property.</returns>
+        </member>
+        <member name="M:Infragistics.DragDrop.DragDropManager.SetDragSource(System.Windows.DependencyObject,Infragistics.DragDrop.DragSource)">
+            <summary>
+            Sets value for <see cref="F:Infragistics.DragDrop.DragDropManager.DragSourceProperty"/> attached property to a given <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj">The object on which to set <see cref="F:Infragistics.DragDrop.DragDropManager.DragSourceProperty"/> attached property.</param>
+            <param name="value">The property value to set.</param>
+        </member>
+        <member name="F:Infragistics.DragDrop.DragDropManager.DropTargetProperty">
+            <summary>
+            Identifies the <see cref="F:Infragistics.DragDrop.DragDropManager.DropTargetProperty"/> attached property.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DragDrop.DragDropManager.GetDropTarget(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the <see cref="F:Infragistics.DragDrop.DragDropManager.DropTargetProperty"/> attached property from a given <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj">The object from which to read the property value.</param>
+            <returns>The value of the <see cref="F:Infragistics.DragDrop.DragDropManager.DropTargetProperty"/> attached property.</returns>
+        </member>
+        <member name="M:Infragistics.DragDrop.DragDropManager.SetDropTarget(System.Windows.DependencyObject,Infragistics.DragDrop.DropTarget)">
+            <summary>
+            Sets value for <see cref="F:Infragistics.DragDrop.DragDropManager.DropTargetProperty"/> attached property to a given <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj">The object on which to set <see cref="F:Infragistics.DragDrop.DragDropManager.DropTargetProperty"/> attached property.</param>
+            <param name="value">The property value to set.</param>
+        </member>
+        <member name="M:Infragistics.DragDrop.DragDropManager.EndDrag(System.Boolean)">
+            <summary>
+            Ends drag operation if there is drag operation in progress.
+            </summary>
+            <param name="dragCancel"> When <paramref name="dragCancel"/> is set ot <b>true</b> drag is canceled.
+            When it is set to <b>false</b> it is considered that drop is performed.</param>
+        </member>
+        <member name="M:Infragistics.DragDrop.DragDropManager.RefreshDragLayout">
+            <summary>
+            Ensure that dragged item is on the top of layout.
+            User can use this method to set dragged item as top most popup if there are
+            other popups that are created after drag is already initiated.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DragDrop.DragDropManager.GetDropTargets(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets the drop targets with the specified channels match.
+            </summary>
+            <param name="channels">The channels to match with.</param>
+            <returns>The drop targets where at least one drop channel matches with one of the passed channels.</returns>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.CurrentCopyCursorTemplate">
+            <summary>
+            Gets data template that will be used for copy cursor when copy operation is performed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.CurrentCursorTemplate">
+            <summary>
+            Gets data template that is currently in usage as a mouse cursor.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.CurrentDragTemplate">
+            <summary>
+            Gets data template that will be applied to dragged item when drag-and-drop operation starts.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.CurrentDropNotAllowedCursorTemplate">
+            <summary>
+            Gets data template that will be used for drop operation not allowed 
+            cursor if during drag-and-drop operation there is not found appropriate drop target.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.CurrentMoveCursorTemplate">
+            <summary>
+            Gets data template that will be used for move cursor during drag-and-drop operation.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.DragPopup">
+            <summary>
+            Gets the UI element used to display dragged item on the screen.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.IsDragging">
+            <summary>
+            Gets a value indicating whether drag-and-drop operation is currently in progress.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.HighlightTargetsOnDragStart">
+            <summary>
+            Gets or sets a value indicating whether drop target elements should be highlighted when
+            drag source element with appropriate <see cref="P:Infragistics.DragDrop.DragSource.DragChannels"/> is dragged.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.Instance">
+            <summary>
+            Gets the single instance of DragDropManager class
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropManager.CursorPopup">
+            <summary>
+            Gets most top UI element where cursor data templates are applied.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.DragObject">
+            <summary>
+            This class is intended to be used from the drag-and-drop framework only.
+            There is no need for the user to create the instance of this class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragObject.Data">
+            <summary>
+            Gets the object that represents dragged data.
+            This object can be specified by setting <see cref="P:Infragistics.DragDrop.DragSource.DataObject"/> or
+            <see cref="P:Infragistics.DragDrop.DragDropEventArgs.Data"/> properties.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragObject.DragImage">
+            <summary>
+            Gets the image that represents the snapshot of the UIElement that initiate drag-and-drop operation.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.DragSource">
+            <summary>
+            This class is used to manage how element marked as a drag source behaves to.
+            Element is marked as drag source as <see cref="F:Infragistics.DragDrop.DragDropManager.DragSourceProperty"/> attached 
+            property is set to instance of <see cref="T:Infragistics.DragDrop.DragSource"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DragDrop.DragSource.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DragDrop.DragSource"/> class.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DragSource.CopyCursorTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DragSource.CopyCursorTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DragSource.DataObjectProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DragSource.DataObject"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DragSource.DragChannelsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DragSource.DragChannels"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DragSource.DragTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DragSource.DragTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DragSource.DropNotAllowedCursorTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DragSource.DropNotAllowedCursorTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DragSource.IsDraggableProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DragSource.IsDraggable"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DragSource.MoveCursorTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DragSource.MoveCursorTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.AssociatedObject">
+            <summary>
+            Gets the UIElement associated with this <see cref="T:Infragistics.DragDrop.DragSource"/> object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.CopyCursorTemplate">
+            <summary>
+            Gets or sets the data template used as a cursor while copy operation is performed during drag-and-drop operation.
+            This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.DataObject">
+            <summary>
+            Gets or sets the object that hold the meaningful for the drag-and-drop operation data.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.DragChannels">
+            <summary>
+            Gets or sets the channels that object can be dragged into.
+            This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.DraggingOffset">
+            <summary>
+            Gets or sets the drag mouse offset after which dragging is initiated.
+            The default and minimal value is 2 pixels.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.DragTemplate">
+            <summary>
+            Gets or sets data template used by dragged element while drag-and-drop operation is performed. 
+            This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.DropNotAllowedCursorTemplate">
+            <summary>
+            Gets or sets the data template used as a cursor if there drop target is not found 
+            during drag-and-drop operation. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.FindDropTargetMode">
+            <summary>
+            Gets or sets the find drop target mode.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.IsDraggable">
+            <summary>
+            Gets or sets a value indicating whether marked element can be dragged. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragSource.MoveCursorTemplate">
+            <summary>
+            Gets or sets the data template used as a cursor during regular drag-and-drop operation. 
+            This is a dependency property.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DragDrop.DragSource.DragCancel">
+            <summary>
+            Occurs when drag-and-drop operation is canceled when <see cref="P:Infragistics.DragDrop.DragDropCancelEventArgs.Cancel"/> is set to <b>true</b>
+            in some of event handlers for <see cref="E:Infragistics.DragDrop.DragSource.DragStart"/> or <see cref="E:Infragistics.DragDrop.DragSource.DragEnter"/> events
+            or when <see cref="M:Infragistics.DragDrop.DragDropManager.EndDrag(System.Boolean)"/> method is called with <b>dragCancel</b> set to <b>true</b>.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DragDrop.DragSource.DragEnd">
+            <summary>
+            Occurs at the very end of the drag-and-drop operation. This is the last event that is raised while drag-and-drop is performed.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DragDrop.DragSource.DragEnter">
+            <summary>
+            Occurs when mouse pointer enter into UIElement marked as drop target while drag-and-drop is in progress.
+            This event is cancelable.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DragDrop.DragSource.DragLeave">
+            <summary>
+            Occurs when mouse pointer leaves the boundaries of the UIElement marked as drop target while drag-and-drop operation is in progress.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DragDrop.DragSource.DragOver">
+            <summary>
+            Occurs when mouse pointer is moving over UIElement marked as drop target while drag-and-drop operation is in progress.
+            This event occurs after <see cref="E:Infragistics.DragDrop.DragSource.DragEnter"/> event is raised.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DragDrop.DragSource.DragStart">
+            <summary>
+            Occurs when UIElement marked as draggable initiate drag operation.
+            This event is cancelable.
+            </summary>
+        </member>
+        <member name="E:Infragistics.DragDrop.DragSource.Drop">
+            <summary>
+            Occurs when mouse is released while drag-and-drop operation is in progress, 
+            mouse pointer is over UIElement marked as drop target and drag channels of the
+            drag source matches the drop channels of the drop target.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.BindingContext">
+            <summary>
+            This class is used to make possible <see cref="P:Infragistics.DragDrop.DragSource.DataObject"/> to be bound.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.DropTarget">
+            <summary>
+            This class is used to manage how element marked as a drop target behaves to.
+            Element is marked as drop target as <see cref="F:Infragistics.DragDrop.DragDropManager.DropTargetProperty"/> attached 
+            property is set to instance of <see cref="T:Infragistics.DragDrop.DropTarget"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DragDrop.DropTarget.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.DragDrop.DropTarget"/> class.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DropTarget.DropChannelsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DropTarget.DropChannels"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DropTarget.DropTargetMarkerBrushProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DropTarget.DropTargetMarkerBrush"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DropTarget.DropTargetStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DropTarget.DropTargetStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.DropTarget.IsDropTargetProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.DragDrop.DropTarget.IsDropTarget"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DragDrop.DropTarget.HighlightDropTarget(System.Boolean)">
+            <summary>
+            Highlights the drop target as apply <see cref="P:Infragistics.DragDrop.DropTarget.DropTargetStyle"/> to the <see cref="P:Infragistics.DragDrop.DropTarget.AssociatedObject"/>.
+            </summary>
+            <param name="highlight">if set to <c>true</c> the specified style is set to the drop target element, otherwise the style is reverted to its original value.</param>
+            <returns><c>true</c> when the drop target element can be highlighted.</returns>
+        </member>
+        <member name="P:Infragistics.DragDrop.DropTarget.AssociatedObject">
+            <summary>
+            Gets the UIElement associated with this <see cref="T:Infragistics.DragDrop.DropTarget"/> object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DropTarget.DropChannels">
+            <summary>
+            Gets or sets the channels that drop target is listening to.
+            This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DropTarget.DropTargetMarkerBrush">
+            <summary>
+            Gets or sets the brush used to fill shape that marks the drop target.
+            The default brush color is Transparent.
+            This property is relevant just when <see cref="P:Infragistics.DragDrop.DropTarget.DropTargetStyle"/> is null.
+            This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DropTarget.DropTargetStyle">
+            <summary>
+            Gets or sets style used by the drop target when dragged item is over it.
+            This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DropTarget.IsDropTarget">
+            <summary>
+            Gets or sets a value indicating whether marked element can be drop target. This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DropTarget.HighlightOnDragStart">
+            <summary>
+            Gets or sets a value indicating whether drop target element should be highlighted when 
+            drag source element with appropriate <see cref="P:Infragistics.DragDrop.DragSource.DragChannels"/> is dragged.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.OperationType">
+            <summary>
+            Describes the operation that can be performed against the dragged object.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.OperationType.DropNotAllowed">
+            <summary>
+            Initiated drop operation cannot be completed.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.OperationType.Copy">
+            <summary>
+            The dragged element can be copied.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.OperationType.Move">
+            <summary>
+            The dragged element can be moved.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.FindDropTargetMode">
+            <summary>
+            Describes the way <see cref="T:Infragistics.DragDrop.DragSource"/> instance finds the appropriate <see cref="T:Infragistics.DragDrop.DropTarget"/> instance.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.FindDropTargetMode.TopMostMatchedChannelTarget">
+            <summary>
+            In order to be found the <see cref="T:Infragistics.DragDrop.DropTarget"/> instance just needs to have the same channel as the <see cref="T:Infragistics.DragDrop.DragSource"/> instance.
+            </summary>
+        </member>
+        <member name="F:Infragistics.DragDrop.FindDropTargetMode.TopMostTargetOnly">
+            <summary>
+            In order to be found the <see cref="T:Infragistics.DragDrop.DropTarget"/> instance has to be attached to top most drop target element.
+            If there is no match found between <see cref="P:Infragistics.DragDrop.DropTarget.DropChannels"/> of the top most drop target and <see cref="P:Infragistics.DragDrop.DragSource.DragChannels"/> of
+            the drag source then is assumed that there is no valid drop target.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.DragDropEventArgs">
+            <summary>
+            This class is a base class for all event arguments for events raised by <see cref="P:Infragistics.DragDrop.DragDropEventArgs.DragSource"/> objects.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.CopyCursorTemplate">
+            <summary>
+            Gets or sets the data template that will be used as cursor 
+            when coping operation is performed during dragging.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.Data">
+            <summary>
+            Gets or sets the instance of the object that represents the dragged data.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.DragSource">
+            <summary>
+            Gets the UIElement that initiates drag operation.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.DragTemplate">
+            <summary>
+            Gets or sets the data template that will be applied to dragged element representation.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.DropNotAllowedCursorTemplate">
+            <summary>
+            Gets or sets the data template that will be used as cursor 
+            when drag operation is performed but drop dragged item is not over appropriate target.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.DropTarget">
+            <summary>
+            Gets the instance of the object marked as drop target.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.MoveCursorTemplate">
+            <summary>
+            Gets or sets the data template that will be used as cursor 
+            when item is draged over appropriate drop target.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.OperationType">
+            <summary>
+            Gets or sets the type of intended action during drag-and-drop operation.
+            Setting this property will enforce the applying of related cursor.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.OriginalDragSource">
+            <summary>
+            Gets the original reporting source as determined by pure hit testing. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropEventArgs.CustomMouseHolder">
+            <summary>
+            Gets or sets the <see cref="T:System.Windows.UIElement"/> suggested by consumer of the event as the element which has to capture the mouse during the drag-drop.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.DragDropMoveEventArgs">
+            <summary>
+            Event argumens for <see cref="E:Infragistics.DragDrop.DragSource.DragOver"/> event of the <see cref="T:Infragistics.DragDrop.DragSource"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DragDrop.DragDropMoveEventArgs.GetPosition(System.Windows.UIElement)">
+            <summary>
+            Returns mouse pointer position relative to supplied UIElement-derived object.
+            </summary>
+            <param name="relativeTo">Any UIElement-derived object connected to the object tree.</param>
+            <returns>The x- and y-coordinates of the mouse pointer position relative to the specified object.</returns>
+        </member>
+        <member name="T:Infragistics.DragDrop.DragDropCancelEventArgs">
+            <summary>
+            Class for event argumens for <see cref="E:Infragistics.DragDrop.DragSource.DragEnter"/> cancelable event of the <see cref="T:Infragistics.DragDrop.DragSource"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropCancelEventArgs.Cancel">
+            <summary>
+            Gets or sets a value indicating whether drag-and-drop operation should be canceled.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.DragDropStartEventArgs">
+            <summary>
+            Class for event arguments for <see cref="E:Infragistics.DragDrop.DragSource.DragStart"/> cancelable event of the <see cref="T:Infragistics.DragDrop.DragSource"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DragDropStartEventArgs.DragSnapshotElement">
+            <summary>
+            Gets or sets the UI element that will be dragged.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.DropEventArgs">
+            <summary>
+            Event arguments for <see cref="E:Infragistics.DragDrop.DragSource.Drop"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.DragDrop.DropEventArgs.DropTargetElements">
+            <summary>
+            Gets the collection of visual childs of drop target over which the dragged item is dropped.
+            </summary>
+        </member>
+        <member name="T:Infragistics.DragDrop.StringToDragDropChannelsCollectionConverter">
+            <summary>
+            This class make possible the drag or drop channels to be set as a string containing 
+            the comma separated names of the channels.
+            </summary>
+        </member>
+        <member name="M:Infragistics.DragDrop.StringToDragDropChannelsCollectionConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns true if an <paramref name="sourceType"/> is type of <see cref="T:System.String"/>.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="sourceType">A <see cref="T:System.Type"/> that represents the type you want to convert from.</param>
+            <returns><b>true</b> if this converter can perform the conversion; otherwise, <b>false</b>.</returns>
+        </member>
+        <member name="M:Infragistics.DragDrop.StringToDragDropChannelsCollectionConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts the given object to type of <see cref="T:System.Collections.ObjectModel.ObservableCollection`1"/>, using the specified context and culture information.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
+            <param name="culture">The <see cref="T:System.Globalization.CultureInfo"/> to use as the current culture.</param>
+            <param name="value">The <see cref="T:System.Object"/> to convert.</param>
+            <returns>An <see cref="T:System.Object"/> that represents the converted value.</returns>
+        </member>
+    </members>
+</doc>

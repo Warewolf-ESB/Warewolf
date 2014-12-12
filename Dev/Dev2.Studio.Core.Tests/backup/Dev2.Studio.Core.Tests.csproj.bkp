@@ -1,0 +1,538 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1FD73E36-FC73-4BDF-BCBA-278A44F06550}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Core.Tests</RootNamespace>
+    <AssemblyName>Dev2.Studio.Core.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>none</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp, Version=1.25.0.25466, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\CefSharp\CefSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Wpf, Version=1.25.5.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\CefSharp\CefSharp.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="CubicOrange.Windows.Forms.ActiveDirectory, Version=2.0.5058.16094, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
+    </Reference>
+    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\DropNet.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DockManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.18776, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\Binaries\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Core.Presentation" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Reactive">
+      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Weave">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="WPF.JoshSmith, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\WPF.JoshSmith.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
+    <Compile Include="Activities\WorkerServicePropertyInterigatorTest.cs" />
+    <Compile Include="Activities\WorkflowPropertyInterigatorTest.cs" />
+    <Compile Include="ActivityDropView\DsfActivityDropViewModelTests.cs" />
+    <Compile Include="AppResources\Behaviors\NavigationItemViewModelMouseDownBehaviorTests.cs" />
+    <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
+    <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
+    <Compile Include="AppResources\Browsers\BrowserTests.cs" />
+    <Compile Include="AppResources\Comparers\ContexttualResourceModelEqualityComparerTests.cs" />
+    <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerTests.cs" />
+    <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverterTests.cs" />
+    <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
+    <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverterTests.cs" />
+    <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
+    <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
+    <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
+    <Compile Include="CustomContainerTests.cs" />
+    <Compile Include="DeployNavigationViewModelTest.cs" />
+    <Compile Include="DialogFactoryTests.cs" />
+    <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
+    <Compile Include="Dock\ContentPaneFactoryTests.cs" />
+    <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AppResources\Converters\ExplorerItemModelToIconConverterTests.cs" />
+    <Compile Include="ClientExplorerRepositoryTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntellisenseProvider\CompositeIntellisenseProviderTests.cs" />
+    <Compile Include="ConverterTests\BoolToStringConvertTests.cs" />
+    <Compile Include="ConverterTests\CalculateIntellisenseTextConverterTests.cs" />
+    <Compile Include="ConverterTests\GridRowNumberConverterTests.cs" />
+    <Compile Include="ConverterTests\PaddingThicknessConverterTests.cs" />
+    <Compile Include="ConverterTests\DeployViewConnectedToVisiblityConverterTests.cs" />
+    <Compile Include="ConverterTests\NavigationViewModelPermissionVisibilityConverterTests.cs" />
+    <Compile Include="ConverterTests\RowToIndexConverterTests.cs" />
+    <Compile Include="ConverterTests\DateTimeToStringConverterTests.cs" />
+    <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
+    <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
+    <Compile Include="ConverterTests\MathFunctionToDoubleConverterTests.cs" />
+    <Compile Include="ConverterTests\IntEnsureMinConverterTests.cs" />
+    <Compile Include="ConverterTests\IntInRangeToVisibilityConverterTests.cs" />
+    <Compile Include="Custom Dev2 Controls\Intellisense\MockIntellisenseTextbox.cs" />
+    <Compile Include="DataList\ActivityDataMappingBuilderTest.cs" />
+    <Compile Include="DataList\InputOutputViewModelEqualityComparerTest.cs" />
+    <Compile Include="IntellisenseProvider\FileSystemIntellisenseProviderTest.cs" />
+    <Compile Include="IntellisenseProvider\DateTimeIntellisenseProviderTests.cs" />
+    <Compile Include="DebugOutputViewModelTest.Append.cs" />
+    <Compile Include="DependencyGraph\NodeTest.cs" />
+    <Compile Include="Deploy\DeployViewModelTestBase.cs" />
+    <Compile Include="Dialogs\ResourcePickerDialogTests.cs" />
+    <Compile Include="Dialogs\TestResourcePickerDialog.cs" />
+    <Compile Include="Dialogs\TestResourcePickerDialogOkay.cs" />
+    <Compile Include="Environments\TestEnvironmentModel.cs" />
+    <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
+    <Compile Include="EnvironmentTreeViewModelTests.cs" />
+    <Compile Include="FileSystemQueryTest.cs" />
+    <Compile Include="Helpers\TypeSwitchTest.cs" />
+    <Compile Include="IntellisenseProvider\CalculateIntellisenseProviderTest.cs" />
+    <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
+    <Compile Include="IntellisenseProvider\EventLogParser.cs" />
+    <Compile Include="MainViewModelBase.cs" />
+    <Compile Include="MainViewModelMock.cs" />
+    <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
+    <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
+    <Compile Include="ModelTests\ExplorerItemModelTest.cs" />
+    <Compile Include="NavigationViewModelTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
+    <Compile Include="Network\ServerProxyTests.Specs.cs" />
+    <Compile Include="PopupControllerTests.cs" />
+    <Compile Include="Repositories\StudioResourceRepositoryTests.cs" />
+    <Compile Include="Security\ClientSecurityServiceTests.cs" />
+    <Compile Include="Services\HelpConfigurationTests.cs" />
+    <Compile Include="Services\ServerServiceConfigurationTest.cs" />
+    <Compile Include="Settings\SettingsViewModelTests.cs" />
+    <Compile Include="Settings\TestSecurityViewModel.cs" />
+    <Compile Include="Settings\TestSettingsItemViewModel.cs" />
+    <Compile Include="Settings\TestSettingsViewModel.cs" />
+    <Compile Include="Settings\SecurityViewModelTests.cs" />
+    <Compile Include="DependencyGraph\DependencyGraphGeneratorTest.cs" />
+    <Compile Include="ResourceModelFactoryTests.cs" />
+    <Compile Include="Settings\SettingsItemViewModelTests.cs" />
+    <Compile Include="Settings\ClientScheduledResourceTests.cs" />
+    <Compile Include="Settings\SchedulerViewModelTests.cs" />
+    <Compile Include="ProviderExtensionsTest.cs" />
+    <Compile Include="Settings\LogSettingsViewModelTests.cs" />
+    <Compile Include="ShareTests.cs" />
+    <Compile Include="TestUtil.cs" />
+    <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
+    <Compile Include="UtilsTests\DataListConversionUtilTest.cs" />
+    <Compile Include="UtilsTests\WebServerTests.cs" />
+    <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
+    <Compile Include="DataListItemViewModelTest.cs" />
+    <Compile Include="DataListSingletonTest.cs" />
+    <Compile Include="DataListViewModelTests.cs" />
+    <Compile Include="DebugOutputFilterStrategyTests.cs" />
+    <Compile Include="DebugOutputViewModelTest.cs" />
+    <Compile Include="DeployServiceTest.cs" />
+    <Compile Include="DeployStatsCalculatorTests.cs" />
+    <Compile Include="Deploy\DeployViewModelTest.cs" />
+    <Compile Include="Dev2DialogueTest.cs" />
+    <Compile Include="Diagnostics\AppExceptionHandlerTests.cs" />
+    <Compile Include="Diagnostics\ExceptionFactoryTests.cs" />
+    <Compile Include="Diagnostics\MockApp.cs" />
+    <Compile Include="Diagnostics\FileHelperTests.cs" />
+    <Compile Include="Diagnostics\MockExceptionHandler.cs" />
+    <Compile Include="DragDropHelpersTests.cs" />
+    <Compile Include="Enums\enTestObjectBehaviourChangeType.cs" />
+    <Compile Include="Environments\EnviromentRepositoryTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Environments\EnvironmentModelTest.cs" />
+    <Compile Include="Environments\TestEnvironmentRespository.cs" />
+    <Compile Include="Environments\TestLoadEnvironmentRespository.cs" />
+    <Compile Include="Environments\TestServerProvider.cs" />
+    <Compile Include="ExplorerViewModelTests.cs" />
+    <Compile Include="Factories\DsfActivityFactoryTests.cs" />
+    <Compile Include="Feedback\Actions\RecorderFeedbackActionTests.cs" />
+    <Compile Include="Feedback\Actions\EmailFeedbackActionTests.cs" />
+    <Compile Include="Feedback\FeedbackInvokerTests.cs" />
+    <Compile Include="Feedback\FeedbackRecorderTests.cs" />
+    <Compile Include="Helpers\LatestWebGetterTests.cs" />
+    <Compile Include="Helpers\TestProgressFileDownloader.cs" />
+    <Compile Include="Helpers\VersionCheckerTestClass.cs" />
+    <Compile Include="Helpers\VersionCheckerTests.cs" />
+    <Compile Include="IDataListVerifyPart.cs" />
+    <Compile Include="InputOutputViewModelTest.cs" />
+    <Compile Include="MainViewModelPersistenceMock.cs" />
+    <Compile Include="MainViewModelTest.cs" />
+    <Compile Include="Dev2MockFactory.cs" />
+    <Compile Include="MockUtils\MoqExtensions.cs" />
+    <Compile Include="ModelTests\DataListItemModelTest.cs" />
+    <Compile Include="Services\UserConfigurationServiceTests.cs" />
+    <Compile Include="TestResourceRepository.cs" />
+    <Compile Include="ThreadExecuter.cs" />
+    <Compile Include="ProperMoqs\MockBehaviourBase.cs" />
+    <Compile Include="ProperMoqs\MoqPopup.cs" />
+    <Compile Include="ProperMoqs\TestResourceModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceDesignerViewModelTest.cs" />
+    <Compile Include="ResourceHelperTest.cs" />
+    <Compile Include="ResourceModelTest.cs" />
+    <Compile Include="ResourceRepositoryTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Environments\ServerProviderTest.cs" />
+    <Compile Include="SplashScreenTest.cs" />
+    <Compile Include="StringResourcesTest1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StringResourcesTest.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TestResourceStrings.Designer.cs" />
+    <Compile Include="DebugProviderTests.cs" />
+    <Compile Include="Controller\FlowControllerTests.cs" />
+    <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
+    <Compile Include="Utils\AsyncWorkerTests.cs" />
+    <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
+    <Compile Include="ViewModelTests\DropboxHelperTests.cs" />
+    <Compile Include="ViewModelTests\DropBoxSourceViewModelTests.cs" />
+    <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
+    <Compile Include="ViewModelTests\TestUtils.cs" />
+    <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
+    <Compile Include="ViewModelTests\HelpViewModelTests.cs" />
+    <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
+    <Compile Include="Views\ExplorerViewTests.cs" />
+    <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
+    <Compile Include="TestResourceStringsTest.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestResourceStringsTest.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DebugStateTreeViewItemViewModelTests.cs" />
+    <Compile Include="UtilsTests\NewWorkflowNamesTests.cs" />
+    <Compile Include="Utils\DataListViewModelTestHelper.cs" />
+    <Compile Include="Utils\InputOutputViewModelTestObject.cs" />
+    <Compile Include="Utils\TestModelItemFactory.cs" />
+    <Compile Include="Utils\UIElementExtensionMethods.cs" />
+    <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
+    <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
+    <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
+    <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
+    <Compile Include="WebActivityTests.cs" />
+    <Compile Include="WebResourceViewModelTest.cs" />
+    <Compile Include="Webs\DropboxSourceCallbackHandlerTests.cs" />
+    <Compile Include="Webs\RootWebSiteTest.cs" />
+    <Compile Include="Webs\ServiceCallbackHandlerMock.cs" />
+    <Compile Include="Webs\ServiceCallbackHandlerTests.cs" />
+    <Compile Include="Webs\FileChooserCallbackHandlerTests.cs" />
+    <Compile Include="Webs\WebsiteCallbackHandlerTests.cs" />
+    <Compile Include="Webs\WebServiceCallbackHandlerMock.cs" />
+    <Compile Include="Webs\SourceCallbackHandlerMock.cs" />
+    <Compile Include="Webs\SourceCallbackHandlerTests.cs" />
+    <Compile Include="Webs\WebSourceCallbackHandlerMock.cs" />
+    <Compile Include="Webs\WebSourceCallbackHandlerTests.cs" />
+    <Compile Include="WindowNavigationBehavior.cs" />
+    <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
+    <Compile Include="Workflows\TestActivity.cs" />
+    <Compile Include="Workflows\WorkflowDesignerViewModelMock.cs" />
+    <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
+    <Compile Include="Workflows\WorkflowInputDataViewModelTest.cs" />
+    <Compile Include="Workspaces\WorkspaceItemRepositoryTests.cs" />
+    <Compile Include="XML\XmlResource.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StringResourcesTest.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringResourcesTest1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestResourceStringsTest.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestResourceStringsTest.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\DependenciesGraphUniqueTest.xml" />
+    <EmbeddedResource Include="Assets\Dev2Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
+      <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
+      <Name>Dev2.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
+      <Project>{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}</Project>
+      <Name>Dev2.Infrastructure.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
+      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
+      <Name>Dev2.Intellisense</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
+      <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
+      <Name>Dev2.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
+      <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
+      <Name>Dev2.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
+      <Project>{4db41f93-e0b7-454c-b4c4-b7e20671e7ab}</Project>
+      <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
+      <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
+      <Name>Dev2.Studio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
+      <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
+      <Name>Dev2.TaskScheduler.Wrappers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
+      <Project>{632e4898-1b1b-474c-a028-d13a5c914f11}</Project>
+      <Name>Dev2.UndoFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+    <Folder Include="Diagnostics\Debug\" />
+    <Folder Include="ViewModelTests\Configuration\" />
+    <Folder Include="ViewModelTests\ViewModelMocks\" />
+    <Folder Include="Views\Global\" />
+    <Folder Include="WizardTests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\ResourceWithErrors.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Activities\TestImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>%windir%\system32\ROBOCOPY /A-:R "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
+REM Visual Studio expects 0 when successful
+set rce=%25errorlevel%25
+if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0
+</PreBuildEvent>
+  </PropertyGroup>
+  <!--<PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
+    <PreBuildEvent>"$(DevEnvDir)tf" get /recursive $(ProjectDir)</PreBuildEvent>
+  </PropertyGroup>-->
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

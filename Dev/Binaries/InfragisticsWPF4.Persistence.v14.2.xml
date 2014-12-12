@@ -1,0 +1,861 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Persistence.v14.2</name>
+    </assembly>
+    <members>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+        <member name="M:InternalDynamicResourceString.#ctor(Infragistics.Shared.ResourceCustomizer,System.Globalization.CultureInfo,System.String,System.Object[])">
+            <summary>
+            This constructor is for internal use only.
+            </summary>
+        </member>
+        <member name="M:InternalDynamicResourceString.GetStringFromResource(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            For internal use only.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.Primitives.PersistenceOption">
+            <summary>
+            An enum that specifies how something should be persisted.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Persistence.Primitives.PersistenceOption.AllButIgnored">
+            <summary>
+            All properties should be saved or loaded, except for the properties that list properties marked to be ignored.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Persistence.Primitives.PersistenceOption.OnlySpecified">
+            <summary>
+            Only the list of properties that are specified should be saved or loaded. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.Primitives.PropertyNamePersistenceOptions">
+            <summary>
+            Describes the options available for finding properties by a name.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Persistence.Primitives.PropertyNamePersistenceOptions.PropertyName">
+            <summary>
+            Looks for the specific name. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Persistence.Primitives.PropertyNamePersistenceOptions.PropertyPath">
+            <summary>
+            Looks for the specific name in the property path. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Persistence.Primitives.PropertyNamePersistenceOptions.Contains">
+            <summary>
+            Looks in the Propertypath, and see if the specified name is in there.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PropertyPersistenceEventArgs">
+            <summary>
+            An object used to pass information about a property being saved or loaded. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PropertyPersistenceEventArgs.#ctor(System.Windows.DependencyObject,System.Reflection.PropertyInfo,System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.Persistence.PropertyPersistenceEventArgs"/> object. 
+            </summary>
+            <param name="rootOwner"></param>
+            <param name="pi"></param>
+            <param name="propertyPath"></param>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyPersistenceEventArgs.PropertyPath">
+            <summary>
+            Gets the full property path of an object being saved or loaded. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyPersistenceEventArgs.PropertyInfo">
+            <summary>
+            Gets the PropertyInfo of an object being saved or loaded. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyPersistenceEventArgs.RootOwner">
+            <summary>
+            Gets the root object that is actually being saved or loaded. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.SavePropertyPersistenceEventArgs">
+            <summary>
+            An object used to pass information of a property being saved. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.SavePropertyPersistenceEventArgs.#ctor(System.Windows.DependencyObject,System.Reflection.PropertyInfo,System.String,System.Object)">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.Persistence.SavePropertyPersistenceEventArgs"/> object. 
+            </summary>
+            <param name="rootOwner"></param>
+            <param name="pi"></param>
+            <param name="propertyPath"></param>
+            <param name="value"></param>
+        </member>
+        <member name="P:Infragistics.Persistence.SavePropertyPersistenceEventArgs.Identifier">
+            <summary>
+            Gets/sets an identifier that can be used to identify an property being loaded. 
+            </summary>
+            <remarks>
+            If specified, during loading the framework will attempt to load an object from the Application.Current.Resources using this Identifier. 
+            Otherwise, it may be used by the end developer to identify a specific property in an a event. 
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Persistence.SavePropertyPersistenceEventArgs.SaveValue">
+            <summary>
+            Gets/sets a string representation of the <see cref="P:Infragistics.Persistence.SavePropertyPersistenceEventArgs.Value"/> that will be used to store the property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.SavePropertyPersistenceEventArgs.Value">
+            <summary>
+            Gets/sets the actual value of the property being stored. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.SavePropertyPersistenceEventArgs.Cancel">
+            <summary>
+            Get/sets whether the property shouldn't be stored. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.LoadPropertyPersistenceEventArgs">
+            <summary>
+            An object used to pass information of a property being loaded. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.LoadPropertyPersistenceEventArgs.#ctor(System.Windows.DependencyObject,System.Reflection.PropertyInfo,System.String,System.String,System.String,System.Object,System.Object)">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.Persistence.LoadPropertyPersistenceEventArgs"/> object. 
+            </summary>
+            <param name="rootOwner"></param>
+            <param name="pi"></param>
+            <param name="propertyPath"></param>
+            <param name="savedValue"></param>
+            <param name="id"></param>
+            <param name="owner"></param>
+            <param name="value"></param>
+        </member>
+        <member name="P:Infragistics.Persistence.LoadPropertyPersistenceEventArgs.Identifier">
+            <summary>
+            Gets an identifier that can be used to identify an property being loaded. 
+            </summary>
+            <remarks>
+            If specified, during loading the framework will attempt to load an object from the Application.Current.Resources using this Identifier. 
+            Otherwise, it may be used by the end developer to identify a specific property in an a event. 
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Persistence.LoadPropertyPersistenceEventArgs.Owner">
+            <summary>
+            Gets the object to whom the property belongs. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.LoadPropertyPersistenceEventArgs.SavedValue">
+            <summary>
+            Gets a string representation of the property that was being stored. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.LoadPropertyPersistenceEventArgs.Value">
+            <summary>
+            Gets the value of the property, if the property was a Value type.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.LoadPropertyPersistenceEventArgs.LoadedValue">
+            <summary>
+            Gets/sets the value that should be used to restore the property. 
+            </summary>
+            <remarks>
+            When set, this value will be attempted to be used to load the property.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Persistence.LoadPropertyPersistenceEventArgs.Handled">
+            <summary>
+            Gets/sets whether the property was loaded in the event, and thus shouldn't try to be loaded by the framework.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PersistenceSavedEventArgs">
+            <summary>
+            An object used to pass information for when an object has been saved. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PersistenceLoadedEventArgs">
+            <summary>
+            An object used to pass information for when an object has been loaded. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceLoadedEventArgs.#ctor(System.Collections.ObjectModel.ReadOnlyCollection{Infragistics.Persistence.PropertyPersistenceExceptionDetails})">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.Persistence.PersistenceLoadedEventArgs"/> object. 
+            </summary>
+            <param name="exceptions"></param>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceLoadedEventArgs.PropertyExceptions">
+            <summary>
+            Gets a list of <see cref="T:Infragistics.Persistence.PropertyPersistenceExceptionDetails"/> objects, for properties that could not be loaded. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.InvalidPersistenceGroupException">
+            <summary>
+            An <see cref="T:System.Exception"/> that is thrown when a <see cref="T:Infragistics.Persistence.PersistenceGroup"/>'s controls don't match up with the stream that it's supposed to load from.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.InvalidPersistenceGroupException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Persistence.InvalidPersistenceGroupException"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.InvalidPersistenceGroupException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Persistence.InvalidPersistenceGroupException"/> class.
+            </summary>
+            <param propertyName="message">The message that should be displayed.</param>
+        </member>
+        <member name="M:Infragistics.Persistence.InvalidPersistenceGroupException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Persistence.InvalidPersistenceGroupException"/> class.
+            </summary>
+            <param propertyName="message">The message that should be displayed.</param>
+            <param propertyName="innerException">An inner exception.</param>
+        </member>
+        <member name="T:Infragistics.Persistence.PersistenceEvents">
+            <summary>
+            An object that contains the events used for Saving and Loading the persistence of <see cref="T:System.Windows.DependencyObject"/>s.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Persistence.PersistenceEvents.SavePropertyPersistence">
+            <summary>
+            Occurs before a property is saved. 
+            </summary>
+        </member>
+        <member name="E:Infragistics.Persistence.PersistenceEvents.LoadPropertyPersistence">
+            <summary>
+            Occurs before a property is loaded.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Persistence.PersistenceEvents.PersistenceLoaded">
+            <summary>
+            Occurs after all properties are loaded. 
+            </summary>
+        </member>
+        <member name="E:Infragistics.Persistence.PersistenceEvents.PersistenceSaved">
+            <summary>
+            Ocurrs afert all properties are saved. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PersistenceGroup">
+            <summary>
+            An object used to group multiple <see cref="T:System.Windows.DependencyObject"/>s so that they maybe Saved and Loaded at the same time.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceGroup.#ctor">
+            <summary>
+            Creates a new instances of the <see cref="T:Infragistics.Persistence.PersistenceGroup"/> class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceGroup.RegisteredObjects">
+            <summary>
+            Gets a ReadOnly collection of <see cref="T:System.Windows.DependencyObject"/>s that this <see cref="T:Infragistics.Persistence.PersistenceGroup"/> will save or load.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceGroup.Events">
+            <summary>
+            Gets/Sets the events that will be raised while saving and loading this <see cref="T:Infragistics.Persistence.PersistenceGroup"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PersistenceManager">
+            <summary>
+            A class that can save a <see cref="T:System.Windows.DependencyObject"/> in its current state and load it back.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Persistence.PersistenceManager.TypesToIgnore">
+            <summary>
+            The types that should be ignored when saving and loading properties.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:Infragistics.Persistence.PersistenceManager"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Persistence.PersistenceManager.SettingsProperty">
+            <summary>
+            An Attached Property for storing <see cref="T:Infragistics.Persistence.PersistenceSettings"/> on a <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.GetSettings(System.Windows.DependencyObject)">
+            <summary>
+            Gets the <see cref="T:Infragistics.Persistence.PersistenceSettings"/> on a <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj"></param>
+            <returns>Null if not set</returns>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.SetSettings(System.Windows.DependencyObject,Infragistics.Persistence.PersistenceSettings)">
+            <summary>
+            Sets the <see cref="T:Infragistics.Persistence.PersistenceSettings"/> on a <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj"></param>
+            <param name="settings"></param>
+        </member>
+        <member name="F:Infragistics.Persistence.PersistenceManager.PersistenceGroupProperty">
+            <summary>
+            An Attached Property for storing <see cref="T:Infragistics.Persistence.PersistenceSettings"/> on a <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.GetPersistenceGroup(System.Windows.DependencyObject)">
+            <summary>
+            Gets the <see cref="T:Infragistics.Persistence.PersistenceGroup"/> on a <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj"></param>
+            <returns>Null if not set</returns>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.SetPersistenceGroup(System.Windows.DependencyObject,Infragistics.Persistence.PersistenceGroup)">
+            <summary>
+            Sets the <see cref="T:Infragistics.Persistence.PersistenceGroup"/> on a <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj"></param>
+            <param name="group"></param>
+        </member>
+        <member name="F:Infragistics.Persistence.PersistenceManager.IdentifierProperty">
+            <summary>
+            An Attached Property that allows a user to specify an identifier that can be used to identify an object when its being saved or loaded.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.GetIdentifier(System.Windows.DependencyObject)">
+            <summary>
+            Gets the identifier specified on a <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.SetIdentifier(System.Windows.DependencyObject,System.String)">
+            <summary>
+            Sets the identifier on on a <see cref="T:System.Windows.DependencyObject"/>.
+            </summary>
+            <param name="obj"></param>
+            <param name="id"></param>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.Save(Infragistics.Persistence.PersistenceGroup)">
+            <summary>
+            Saves all objects in the group into a single MemoryStream.
+            </summary>
+            <param name="group">The group that contains the objects to save.</param>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.Save(System.Windows.DependencyObject)">
+            <summary>
+            Saves the properties of an object into a <see cref="T:System.IO.MemoryStream"/>
+            </summary>
+            <param name="obj">The object that should be saved.</param>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.Save(System.Windows.DependencyObject,Infragistics.Persistence.PersistenceSettings)">
+            <summary>
+            Saves the properties of an object into a <see cref="T:System.IO.MemoryStream"/>
+            </summary>
+            <param name="obj">The object that should be saved.</param>
+            <param name="settings">The settings that should be followed while saving properties of the object.</param>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.Load(Infragistics.Persistence.PersistenceGroup,System.IO.Stream)">
+            <summary>
+            Loads all objects of a group from a stream.
+            </summary>
+            <param name="group">The group that contains the objects that should be loaded into.</param>
+            <param name="stream">The stream in which the object information should be loaded from.</param>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.Load(System.Windows.DependencyObject,System.IO.Stream)">
+            <summary>
+            Loads the properties of an object from a <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="obj">The object that should be filled.</param>
+            <param name="stream">The stream in which the object information should be loaded from.</param>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.Load(System.Windows.DependencyObject,System.IO.Stream,Infragistics.Persistence.PersistenceSettings)">
+            <summary>
+            Loads the properties of an object from a <see cref="T:System.IO.Stream"/>
+            </summary>
+            <param name="obj">The object that should be filled.</param>
+            <param name="stream">The stream in which the object information should be loaded from.</param>
+            <param name="settings">The settings that should be followed while loading properties onto the object.</param>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.BuildPropertyTree">
+            <summary>
+            Walks through the root object in which this <see cref="T:Infragistics.Persistence.PersistenceManager"/> represents, and build a recursive list of <see cref="T:Infragistics.Persistence.Primitives.PropertyDataInfo"/> that can be used later to rehydrate the object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.PersistenceManager.UnloadPropertyTree(System.Collections.ObjectModel.Collection{Infragistics.Persistence.Primitives.PropertyDataInfo})">
+            <summary>
+            Walks through a tree of <see cref="T:Infragistics.Persistence.Primitives.PropertyDataInfo"/> objects, and attempts to rehydrate the root object in which this <see cref="T:Infragistics.Persistence.PersistenceManager"/> represents, with those values.
+            </summary>
+            <param name="tree"></param>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceManager.PropertyDataStore">
+            <summary>
+            Gets/sets a dictionary of all the root properties that belong to the object. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceManager.ValueTypes">
+            <summary>
+            Gets alist of Value types that have been stored by their values. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PersistenceSettings">
+            <summary>
+            An object that contains the settings for how an object should save and load properties. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceSettings.SavePersistenceOptions">
+            <summary>
+            Gets/sets which properties should be saved. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceSettings.LoadPersistenceOptions">
+            <summary>
+            Gets/sets which properties should be loaded. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceSettings.PropertySettings">
+            <summary>
+            Gets a collection of PropertyPersistenceInfoBase objects to be saved/loaded.
+            </summary>
+            <remarks>
+            When <see cref="P:Infragistics.Persistence.PersistenceSettings.SavePersistenceOptions"/> or <see cref="P:Infragistics.Persistence.PersistenceSettings.LoadPersistenceOptions"/> are set to OnlySpecified, just properties 
+            that are identified here will be saved/loaded. 
+            Otherwise this collection will be used to identify how a property should be saved/loaded.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceSettings.IgnorePropertySettings">
+            <summary>
+            Gets a collection of PropertyPersistenceInfoBase objects that shouldn't be saved/loaded. 
+            </summary>
+            <remarks>
+            Properties that are identified here will not be saved/loaded. 
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Persistence.PersistenceSettings.Events">
+            <summary>
+            Gets/Sets the events that will be raised while saving and loading this <see cref="T:Infragistics.Persistence.PersistenceSettings"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PropertyPersistenceExceptionDetails">
+            <summary>
+            An object that stores information of a Property that couldn't be loaded b/c of an exception.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PropertyPersistenceExceptionDetails.#ctor(System.Exception,System.Reflection.PropertyInfo,System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.Persistence.PropertyPersistenceExceptionDetails"/>
+            </summary>
+            <param name="ex"></param>
+            <param name="pi"></param>
+            <param name="path"></param>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyPersistenceExceptionDetails.PropertyInfo">
+            <summary>
+            Gets the the PropertyInfo for the property that could not be loaded. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyPersistenceExceptionDetails.PropertyPath">
+            <summary>
+            Gets the full PropertyPath of the property that could not be loaded.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyPersistenceExceptionDetails.Exception">
+            <summary>
+            Gets the Exception that was raised when the property was attempted to be loaded. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PropertyPersistenceInfoBaseCollection">
+            <summary>
+            A Collection of <see cref="T:Infragistics.Persistence.PropertyPersistenceInfoBase"/> objects. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PropertyPersistenceInfoBaseCollection.GetPropertyPersistenceInfo(System.Reflection.PropertyInfo,System.String)">
+            <summary>
+            Loops through all <see cref="T:Infragistics.Persistence.PropertyPersistenceInfoBase"/> objects in the collection, and calls <see cref="M:Infragistics.Persistence.PropertyPersistenceInfoBase.DoesPropertyMeetCriteria(System.Reflection.PropertyInfo,System.String)"/> on them. 
+            The first one found will be returned.  Otherwise null is returned. 
+            </summary>
+            <param name="pi"></param>
+            <param name="propertyPath"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Persistence.PropertyNamePersistenceInfo">
+            <summary>
+            An object that can be used to identify a Property by its Name.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PropertyPersistenceInfoBase">
+            <summary>
+            A base object that can be used to identify a Property.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PropertyPersistenceInfoBase.DoesPropertyMeetCriteria(System.Reflection.PropertyInfo,System.String)">
+            <summary>
+            When overridden on a derived class, this method should be used to determine if the specified property matches
+            the criteria given.
+            </summary>
+            <param name="pi"></param>
+            <param name="propertyPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.PropertyPersistenceInfoBase.SaveValueToString(System.Reflection.PropertyInfo,System.String,System.Object)">
+            <summary>
+            A method that when overridden on a derived class, can be used to build a string version of the value that should be saved.
+            </summary>
+            <param name="pi"></param>
+            <param name="propertyPath"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.PropertyPersistenceInfoBase.LoadObjectFromString(System.Reflection.PropertyInfo,System.String,System.String)">
+            <summary>
+            A method that when overridden on a derived class, can be used to load a object from a string.
+            </summary>
+            <param name="pi"></param>
+            <param name="propertyPath"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyPersistenceInfoBase.Identifier">
+            <summary>
+            Gets/sets an identifier that can be used to identify an property being loaded. 
+            </summary>
+            <remarks>
+            If specified, during loading the framework will attempt to load an object from the Application.Current.Resources using this Identifier. 
+            Otherwise, it may be used by the end developer to identify a specific property in an a event. 
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyPersistenceInfoBase.SaveValue">
+            <summary>
+            Gets/sets a string representation of the value for a property that will be used to store the property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyPersistenceInfoBase.TypeConverter">
+            <summary>
+            Gets/sets the a TypeConverter that can be used to Convert an object to and from a string.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PropertyNamePersistenceInfo.#ctor">
+            <summary>
+            Creates a new instance of PropertyNamePersistenceInfo
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PropertyNamePersistenceInfo.DoesPropertyMeetCriteria(System.Reflection.PropertyInfo,System.String)">
+            <summary>
+            Validates if the property name matches the property that is being passed in. 
+            </summary>
+            <param name="pi"></param>
+            <param name="propertyPath"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyNamePersistenceInfo.PropertyName">
+            <summary>
+            Gets/sets the name of the property that will be used to identify a property while its being loaded or saved.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyNamePersistenceInfo.Options">
+            <summary>
+            Gets/sets the options that describe how the PropertyName will matched with a property. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.PropertyTypePersistenceInfo">
+            <summary>
+            An object that can be used to identify a Property by its Type.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.PropertyTypePersistenceInfo.DoesPropertyMeetCriteria(System.Reflection.PropertyInfo,System.String)">
+            <summary>
+            Validates if the property type matches the property that is being passed in. 
+            </summary>
+            <param name="pi"></param>
+            <param name="propertyPath"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Persistence.PropertyTypePersistenceInfo.PropertyType">
+            <summary>
+            Gets/sets the Type of the property that will be used to identify a property while its being loaded or saved.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.Primitives.ElementData">
+            <summary>
+            An object used to store all the information to serialize or deserialize an object. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.ElementData.PropertyTree">
+            <summary>
+            Gets/sets a list of all the root properties that belong to the object. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.ElementData.PropDataStore">
+            <summary>
+            Gets/sets a list of all the property information that has been stored for this object. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.ElementData.TypeLookupKey">
+            <summary>
+            Gets/sets they lookup key for the type of <see cref="T:System.Windows.DependencyObject"/> that this <see cref="T:Infragistics.Persistence.Primitives.ElementData"/> represents.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.Primitives.GroupData">
+            <summary>
+            An object used to store all the information to serialize or deserialize a group of objects. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.GroupData.TypeStore">
+            <summary>
+            Gets/sets a list of all the Types that are being stored.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.GroupData.Elements">
+            <summary>
+            Gets/sets a list of all the elements that are being stored.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.Primitives.PersistenceObject">
+            <summary>
+            An object used to store the root level of serialziation. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PersistenceObject.Xml">
+            <summary>
+            The xml that contains all the information for serializing and deserializing an object. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PersistenceObject.Types">
+            <summary>
+            A list of AssemblyQualifiedNames that make up all value types that are stored by their actual values instead of a string representation.
+            </summary>
+            <remarks>
+            This list of types is neccessary to deserialize the <see cref="P:Infragistics.Persistence.Primitives.PersistenceObject.Xml"/> defined.
+            </remarks>
+        </member>
+        <member name="T:Infragistics.Persistence.Primitives.PropertyData">
+            <summary>
+            An object that acts as a serializable container for storing information of an object. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.Primitives.PropertyData.#ctor">
+            <summary>
+            Initializes the members of the <see cref="T:Infragistics.Persistence.Primitives.PropertyData"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyData.ConverterTypeName">
+            <summary>
+            Gets/sets the AssemblyQualifiedName of a TypeConverter that can be used to Convert a string back to an object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyData.AssemblyTypeKey">
+            <summary>
+            Gets/sets the lookup key for the type of property this object is. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyData.Value">
+            <summary>
+            Gets/sets the actual value of a property. 
+            </summary>
+            <remarks>
+            This property is only used for properties that are Value types.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyData.StringValue">
+            <summary>
+            Gets/sets a string representation of a property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyData.CustomStorage">
+            <summary>
+            Gets or sets the custom storage.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyData.LookUpKeys">
+            <summary>
+            Gets/sets a collection of string keys that should be used to repopulate a collection.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyData.Properties">
+            <summary>
+            Gets/sets a list of property information for all subproperties of an object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyData.Identifier">
+            <summary>
+            Gets/sets an identifier that can be used to identify an property being loaded. 
+            </summary>
+            <remarks>
+            If specified, during loading the framework will attempt to load an object from the Application.Current.Resources using this Identifier. 
+            Otherwise, it may be used by the end developer to identify a specific property in an a event. 
+            </remarks>
+        </member>
+        <member name="T:Infragistics.Persistence.Primitives.PropertyDataInfo">
+            <summary>
+            An object used to store information about a specific property that has been serialzied.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyDataInfo.PropertyName">
+            <summary>
+            Gets/sets the Name of the Property being stored.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyDataInfo.PropertyPath">
+            <summary>
+            Gets/sets the full property path of a a property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyDataInfo.DataKey">
+            <summary>
+            The look up key used to identify the property values of this property.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.Primitives.PropertyDataPair">
+            <summary>
+            An object used to store <see cref="T:Infragistics.Persistence.Primitives.PropertyData"/> with its lookup key in a format that can be serialized.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyDataPair.LookupKey">
+            <summary>
+            Gets/sets the unique key that identifies the <see cref="T:Infragistics.Persistence.Primitives.PropertyData"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.PropertyDataPair.Data">
+            <summary>
+            Gets/sets the data being stored.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.Primitives.TypeDataPair">
+            <summary>
+            An object used to store the AssemblyQualifiedName of a type with its lookup key in a format that can be serialized.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.TypeDataPair.LookupKey">
+            <summary>
+            Gets/sets the unique key that identifies the Type
+            </summary>
+        </member>
+        <member name="P:Infragistics.Persistence.Primitives.TypeDataPair.TypeName">
+            <summary>
+            The AssemblyQualifiedName of a Type.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Persistence.DurationTypeConverter">
+            <summary>
+            A <see cref="T:System.ComponentModel.TypeConverter"/> that converts from Duration to string, and string to Duration.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.DurationTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns true if the sourceType is of type string.
+            </summary>
+            <param name="context"></param>
+            <param name="sourceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.DurationTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns true if the destinationType is of type string.
+            </summary>
+            <param name="context"></param>
+            <param name="destinationType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.DurationTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts a string into a Duration.
+            </summary>
+            <param name="context"></param>
+            <param name="culture"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.DurationTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>
+            Converts a Duration into a string.
+            </summary>
+            <param name="context"></param>
+            <param name="culture"></param>
+            <param name="value"></param>
+            <param name="destinationType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Persistence.RepeatBehaviorTypeConverter">
+            <summary>
+            A <see cref="T:System.ComponentModel.TypeConverter"/> that converts from RepeatBehavior to string, and string to RepeatBehavior.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.RepeatBehaviorTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns true if the sourceType is of type string.
+            </summary>
+            <param name="context"></param>
+            <param name="sourceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.RepeatBehaviorTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns true if the destinationType is of type string.
+            </summary>
+            <param name="context"></param>
+            <param name="destinationType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.RepeatBehaviorTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts a string into a RepeatBehavior.
+            </summary>
+            <param name="context"></param>
+            <param name="culture"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.RepeatBehaviorTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>
+            Converts a RepeatBehavior into a string.
+            </summary>
+            <param name="context"></param>
+            <param name="culture"></param>
+            <param name="value"></param>
+            <param name="destinationType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Persistence.TimeSpanTypeConverter">
+            <summary>
+            A <see cref="T:System.ComponentModel.TypeConverter"/> that converts from TimeSpan to string, and string to TimeSpan.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Persistence.TimeSpanTypeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns true if the sourceType is of type string.
+            </summary>
+            <param name="context"></param>
+            <param name="sourceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.TimeSpanTypeConverter.CanConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns true if the destinationType is of type string.
+            </summary>
+            <param name="context"></param>
+            <param name="destinationType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.TimeSpanTypeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts a string into a TimeSpan.
+            </summary>
+            <param name="context"></param>
+            <param name="culture"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Persistence.TimeSpanTypeConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+            <summary>
+            Converts a TimeSpan into a string.
+            </summary>
+            <param name="context"></param>
+            <param name="culture"></param>
+            <param name="value"></param>
+            <param name="destinationType"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
