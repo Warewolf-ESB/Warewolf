@@ -354,7 +354,6 @@
     <Compile Include="ViewModelTests\HelpViewModelTests.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
     <Compile Include="Views\ExplorerViewTests.cs" />
-    <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -372,17 +371,6 @@
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WebActivityTests.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />
-    <Compile Include="Webs\DropboxSourceCallbackHandlerTests.cs" />
-    <Compile Include="Webs\RootWebSiteTest.cs" />
-    <Compile Include="Webs\ServiceCallbackHandlerMock.cs" />
-    <Compile Include="Webs\ServiceCallbackHandlerTests.cs" />
-    <Compile Include="Webs\FileChooserCallbackHandlerTests.cs" />
-    <Compile Include="Webs\WebsiteCallbackHandlerTests.cs" />
-    <Compile Include="Webs\WebServiceCallbackHandlerMock.cs" />
-    <Compile Include="Webs\SourceCallbackHandlerMock.cs" />
-    <Compile Include="Webs\SourceCallbackHandlerTests.cs" />
-    <Compile Include="Webs\WebSourceCallbackHandlerMock.cs" />
-    <Compile Include="Webs\WebSourceCallbackHandlerTests.cs" />
     <Compile Include="WindowNavigationBehavior.cs" />
     <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
@@ -503,7 +491,6 @@
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="ViewModelTests\ViewModelMocks\" />
     <Folder Include="Views\Global\" />
-    <Folder Include="WizardTests\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
