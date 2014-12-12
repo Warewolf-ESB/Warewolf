@@ -46,6 +46,7 @@ namespace Warewolf.Studio.Specs
 
         public bool Connect()
         {
+            return true;
         }
 
         #endregion
