@@ -1,4 +1,5 @@
-﻿Feature: Explorer
+﻿@ignore
+Feature: Explorer
 	In order to use my services and connectors
 	As a Warewolf User
 	I want to have a way to see, open, move and rename services and connectors

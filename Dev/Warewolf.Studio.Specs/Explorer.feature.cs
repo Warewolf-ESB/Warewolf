@@ -19,6 +19,7 @@ namespace Warewolf.Studio.Specs
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class ExplorerFeature
     {
         
@@ -32,7 +33,8 @@ namespace Warewolf.Studio.Specs
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Explorer", "In order to use my services and connectors\nAs a Warewolf User\nI want to have a wa" +
-                    "y to see, open, move and rename services and connectors", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "y to see, open, move and rename services and connectors", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -75,13 +77,13 @@ namespace Warewolf.Studio.Specs
         public virtual void DefaultExplorerWithOnlyLocalhost()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Default explorer with only localhost", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("I have connected to localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.When("localhost has loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have connected to localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
+ testRunner.When("localhost has loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 10
  testRunner.Then("I should see localhost resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -93,17 +95,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddingANewEnvironment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding a new environment", ((string[])(null)));
-#line 11
-this.ScenarioSetup(scenarioInfo);
 #line 12
- testRunner.Given("I have connected to localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 13
- testRunner.And("localhost has loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have connected to localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
- testRunner.Then("I should see localhost resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("localhost has loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.When("I connect to a remote server \"RSAKLFSVRTEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I should see localhost resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 16
+ testRunner.When("I connect to a remote server \"RSAKLFSVRTEST\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 17
  testRunner.And("I should see \"RSAKLFSVRTEST\" resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -115,17 +117,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SavingANewResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Saving a new resource", ((string[])(null)));
-#line 18
-this.ScenarioSetup(scenarioInfo);
 #line 19
- testRunner.Given("I have connected to localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 20
- testRunner.And("localhost has loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have connected to localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
- testRunner.Then("I should see localhost resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("localhost has loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
- testRunner.When("new resource \"TestSaveResource\" is saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I should see localhost resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 23
+ testRunner.When("new resource \"TestSaveResource\" is saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 24
  testRunner.Then("\"TestSaveResource\" should be in the explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -137,19 +139,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RenamingAResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Renaming a resource", ((string[])(null)));
-#line 25
-this.ScenarioSetup(scenarioInfo);
 #line 26
- testRunner.Given("I have connected to localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 27
- testRunner.And("localhost has loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have connected to localhost", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28
- testRunner.Then("I should see localhost resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("localhost has loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
- testRunner.When("resource \"ResourceForRename\" is renamed to \"ResourceHasBeenRenamed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("I should see localhost resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 30
- testRunner.Then("\"ResourceHasBeenRenamed\" should be in the explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("resource \"ResourceForRename\" is renamed to \"ResourceHasBeenRenamed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 31
+ testRunner.Then("\"ResourceHasBeenRenamed\" should be in the explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 32
  testRunner.And("\"ResourceForRename\" should not be in the explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -161,7 +163,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MovingAResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Moving a resource", ((string[])(null)));
-#line 33
+#line 34
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -173,7 +175,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeletingAResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting a resource", ((string[])(null)));
-#line 35
+#line 36
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -185,7 +187,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DisplayResourcePermissions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Display resource permissions", ((string[])(null)));
-#line 37
+#line 38
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -197,7 +199,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EditAResource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit a resource", ((string[])(null)));
-#line 39
+#line 40
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -209,7 +211,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DisconnectRemoteEnvironment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disconnect remote environment", ((string[])(null)));
-#line 41
+#line 42
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -221,7 +223,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RemoveRemoteEnvironment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove remote environment", ((string[])(null)));
-#line 43
+#line 44
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -233,7 +235,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RefreshEnvironment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Refresh environment", ((string[])(null)));
-#line 45
+#line 46
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
@@ -245,7 +247,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Filter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Filter", ((string[])(null)));
-#line 47
+#line 48
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
