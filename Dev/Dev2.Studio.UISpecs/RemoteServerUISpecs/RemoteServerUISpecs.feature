@@ -107,7 +107,7 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	   And I right click "EXPLORERFOLDERS,UI_Test_AutoID"
 	   And I send "{TAB}{TAB}{TAB}{TAB}{ENTER}" to ""
 	   And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
-
+	   Given I click "EXPLORERFILTERCLEARBUTTON"   
 
 
 

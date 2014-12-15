@@ -1,0 +1,30 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ig="http://schemas.infragistics.com/xaml"
+	xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
+	mc:Ignorable="d"
+	x:Class="Warewolf.Studio.Views.ExplorerView"
+	d:DesignWidth="640" d:DesignHeight="480"
+	d:DataContext="{d:DesignInstance Type=dummyModels:DummyExplorerViewModel, IsDesignTimeCreatable=False}">
+	
+	<Grid x:Name="LayoutRoot">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<StackPanel Orientation="Horizontal" Grid.Row="0">
+			<TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="587.467"/>
+			<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"/>
+		</StackPanel>
+        <ig:XamDataTree Grid.Row="1" ItemsSource="{Binding Environments}" DisplayMemberPath="DisplayName">
+            <ig:XamDataTree.NodeLayouts>
+                <ig:NodeLayout Key="ExplorerItemViewModels" DisplayMemberPath="ResourceName"/>
+                <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName"/>
+            </ig:XamDataTree.NodeLayouts>
+        </ig:XamDataTree>
+		
+	</Grid>
+</UserControl>

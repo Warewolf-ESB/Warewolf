@@ -29,7 +29,7 @@ namespace Dev2.Studio.StartupResources
         {
             if(SplashScreen == null)
             {
-                SetSplashScreen(StringResources.SplashImage);
+                SetSplashScreen(Warewolf.Studio.Resources.Languages.Core.SplashImage);
             }
             if(SplashScreen != null)
             {

@@ -346,19 +346,19 @@
                                            MaxWidth="315"
                                            HorizontalAlignment="Left"
                                            Width="Auto">
-                                    <i:Interaction.Behaviors>
+                                    <!--<i:Interaction.Behaviors>
                                         <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextTrigger}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                        </i:Interaction.Behaviors>-->
                                 </TextBlock>
                                 <Button Content="Edit Trigger"
                                         ToolTip="When should the workflow run?"
                                         Command="{Binding EditTriggerCommand}"
                                         AutomationProperties.AutomationId="UI_EditTriggerButton_AutoID">
-                                    <i:Interaction.Behaviors>
+                                    <!--<i:Interaction.Behaviors>
                                         <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextTrigger}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
+                                    </i:Interaction.Behaviors>-->
                                 </Button>
                             </StackPanel>
                         </Grid>
@@ -379,10 +379,10 @@
                                      ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipName}"
                                      Text="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                      Width="220">
-                                <i:Interaction.Behaviors>
+                                <!--<i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextName}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
+                                </i:Interaction.Behaviors>-->
                             </TextBox>
                         </StackPanel>
 
@@ -403,10 +403,10 @@
                                          VerticalAlignment="Center"
                                          GroupName="Status"
                                          IsChecked="{Binding Status,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource SchedulerStatusToCheckedConverter},ConverterParameter=true}">
-                                <i:Interaction.Behaviors>
+                                <!--<i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextStatus}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
+                                </i:Interaction.Behaviors>-->
                             </RadioButton>
                             <RadioButton x:Name="DisabledRadioButton"
                                          AutomationProperties.AutomationId="UI_DisabledRadioButton"
@@ -415,10 +415,10 @@
                                          VerticalAlignment="Center"
                                          GroupName="Status"
                                          IsChecked="{Binding Status,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource SchedulerStatusToCheckedConverter},ConverterParameter=false}">
-                                <i:Interaction.Behaviors>
+                                <!--<i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextStatus}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
+                                </i:Interaction.Behaviors>-->
                             </RadioButton>
                         </StackPanel>
 
@@ -434,19 +434,19 @@
                                      AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
                                      Width="220"
                                      IsReadOnly="True">
-                                <i:Interaction.Behaviors>
+                                <!--<i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextWorkFlow}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
+                                </i:Interaction.Behaviors>-->
                             </TextBox>
                             <Button Content="..."
                                     ToolTip="Select a workflow to be triggered"
                                     Command="{Binding AddWorkflowCommand}"
                                     AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
-                                <i:Interaction.Behaviors>
+                                <!--<i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextWorkFlow}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
+                                </i:Interaction.Behaviors>-->
                             </Button>
 
                         </StackPanel>
@@ -458,17 +458,17 @@
                                       VerticalAlignment="Center"
                                       x:Name="RunAsapCheckBox"
                                       AutomationProperties.AutomationId="UI_RunAsapCheckBox">
-                                <i:Interaction.Behaviors>
+                                <!--<i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextRun}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
+                                </i:Interaction.Behaviors>-->
                             </CheckBox>
                             <TextBlock Text="Run task as soon as possible after a scheduled start is missed"
                                        Style="{StaticResource PermissionsGridTextBlockStyle}">
-                                        <i:Interaction.Behaviors>
+                                        <!--<i:Interaction.Behaviors>
                                             <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextRun}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                        </i:Interaction.Behaviors>-->
                             </TextBlock>
                         </StackPanel>
 
@@ -482,10 +482,10 @@
                                      AutomationProperties.AutomationId="UI_NumOfHisTextBox"
                                      ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipHistoryRecords}"
                                      VerticalAlignment="Center">
-                                <i:Interaction.Behaviors>
+                                <!--<i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextHistoryRecords}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </i:Interaction.Behaviors>
+                                </i:Interaction.Behaviors>-->
                             </TextBox>
                         </StackPanel>
 
@@ -511,10 +511,10 @@
                                                Grid.Column="0"
                                                ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipUsername}"
                                                Style="{StaticResource PermissionsGridTextBlockStyle}">
-                                               <i:Interaction.Behaviors>
+                                               <!--<i:Interaction.Behaviors>
                                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextUsername}"
                                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                               </i:Interaction.Behaviors>
+                                               </i:Interaction.Behaviors>-->
                                     </TextBlock>
                                     <TextBox Width="220"
                                              Margin="0,1,0,1"
@@ -525,19 +525,19 @@
                                              ToolTip="Schedule should execute as this user"
                                              VerticalAlignment="Center"
                                              Text="{Binding AccountName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                                        <i:Interaction.Behaviors>
+                                        <!--<i:Interaction.Behaviors>
                                             <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextUsername}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                        </i:Interaction.Behaviors>-->
                                     </TextBox>
                                     <TextBlock Text="Password: "
                                                Grid.Row="1"
                                                Grid.Column="0"
                                                Style="{StaticResource PermissionsGridTextBlockStyle}">
-                                        <i:Interaction.Behaviors>
+                                        <!--<i:Interaction.Behaviors>
                                             <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextUsername}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                        </i:Interaction.Behaviors>-->
                                     </TextBlock>
                                     <PasswordBox Width="220"
                                                  Margin="0,1,0,1"
@@ -548,10 +548,10 @@
                                                  ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipPassword}"
                                                  attachedProperties:PasswordBoxAssistant.BindPassword="true"
                                                  attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                        <i:Interaction.Behaviors>
+                                        <!--<i:Interaction.Behaviors>
                                             <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextPassword}"
                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                        </i:Interaction.Behaviors>-->
                                     </PasswordBox>
                                 </Grid>
                             </StackPanel>
@@ -578,10 +578,10 @@
 
             <TabItem Header="History"
                      AutomationProperties.AutomationId="UI_SchedulerHistoryTab_AutoID">
-                <i:Interaction.Behaviors>
+                <!--<i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextHistoryView}"
                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                </i:Interaction.Behaviors>
+                </i:Interaction.Behaviors>-->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />

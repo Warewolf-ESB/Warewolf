@@ -21,7 +21,7 @@ namespace Dev2.Studio.Core.AppResources.Enums
         Workflow,
         Service,
         SourceManager,
-   
+
         [IconLocation("pack://application:,,,/images/TaskScheduler-32.png")]
         [Description("Scheduler")]
         Scheduler,
@@ -42,13 +42,16 @@ namespace Dev2.Studio.Core.AppResources.Enums
         [Description("Deploy")]
         DeployResources,
 
-        [IconLocation("Pack_Uri_Application_Image_Home", typeof(StringResources))]
+        [IconLocation("Pack_Uri_Application_Image_Home", typeof(Warewolf.Studio.Resources.Languages.Core))]
         [Description("Start Page")]
         StartPage,
         [IconLocation("pack://application:,,,/images/DependencyGraph-16.png")]
         [Description("Reverse Dependency Visualiser")]
         ReverseDependencyVisualiser,
 
+        [IconLocation("Pack_Uri_Application_Image_Community", typeof(Warewolf.Studio.Resources.Languages.Core))]
+        [Description("Community Portal")]
+        CommunityPage,
         Help
     }
 

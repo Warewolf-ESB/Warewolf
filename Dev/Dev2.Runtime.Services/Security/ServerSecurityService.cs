@@ -23,7 +23,7 @@ namespace Dev2.Runtime.Security
     public class ServerSecurityService : SecurityServiceBase
     {
         public const string FileName = "secure.config";
-
+        private bool _disposing;
         FileSystemWatcher _configWatcher = new FileSystemWatcher();
 
         public ServerSecurityService()
@@ -34,6 +34,7 @@ namespace Dev2.Runtime.Security
         public ServerSecurityService(string fileName)
         {
             InitializeConfigWatcher(fileName);
+
         }
 
         protected override List<WindowsGroupPermission> ReadPermissions()
@@ -105,19 +106,24 @@ namespace Dev2.Runtime.Security
 
         protected virtual void OnFileChangedEnableRaisingEvents(bool enabled)
         {
+            if (!_disposing)
             _configWatcher.EnableRaisingEvents = enabled;
         }
 
         protected override void OnDisposed()
         {
-            if(_configWatcher != null)
+            _disposing = true;
+            if (_configWatcher != null && !_isDisposed)
             {
+                
+              
                 _configWatcher.EnableRaisingEvents = false;
                 _configWatcher.Changed -= OnFileChanged;
                 _configWatcher.Created -= OnFileChanged;
                 _configWatcher.Deleted -= OnFileChanged;
                 _configWatcher.Renamed -= OnFileRenamed;
                 _configWatcher.Dispose();
+
                 _configWatcher = null;
             }
         }

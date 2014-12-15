@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{81414783-9990-46EA-9668-DFA61E1AAD18}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Warewolf.Studio.Views</RootNamespace>
+    <AssemblyName>Warewolf.Studio.Views</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <ExpressionBlendVersion>12.0.51001.0</ExpressionBlendVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamSlider.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Data.AnnotationsDataManager.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataManager.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataVisualization.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.DataVisualization.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DockManager.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DragDrop.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Math.Calculators.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Math.Calculators.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Math.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Math.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Persistence.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Persistence.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Composition">
+      <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity">
+      <HintPath>..\packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
+      <HintPath>..\packages\Prism.PubSubEvents.1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
+      <HintPath>..\packages\Prism.UnityExtensions.5.0.1\lib\NET45\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Design.Extensibility, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExplorerView.xaml.cs">
+      <DependentUpon>ExplorerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyCommonInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ExplorerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{c870fe6d-5889-4dfc-90d9-68fa3e525be2}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

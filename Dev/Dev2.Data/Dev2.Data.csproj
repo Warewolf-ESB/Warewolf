@@ -85,21 +85,17 @@
     <Reference Include="DiffieHellman">
       <HintPath>..\Binaries\DiffieHellman.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll</HintPath>
+      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Math.Calculators.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="InfragisticsWPF4.Math.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Math.Calculators.v12.1.dll</HintPath>
+      <HintPath>..\Binaries\InfragisticsWPF4.Math.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Math.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="InfragisticsWPF4.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Math.v12.1.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
+      <HintPath>..\Binaries\InfragisticsWPF4.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
@@ -456,7 +452,12 @@
       <Name>Dev2.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

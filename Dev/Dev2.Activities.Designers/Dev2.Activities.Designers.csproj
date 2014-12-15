@@ -604,6 +604,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -662,6 +663,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

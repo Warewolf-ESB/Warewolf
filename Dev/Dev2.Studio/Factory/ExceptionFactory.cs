@@ -42,12 +42,12 @@ namespace Dev2.Studio.Factory
             ExceptionUiModel uiModel;
             if(isCritical)
             {
-                uiModel = new ExceptionUiModel { Message = StringResources.CriticalExceptionMessage };
+                uiModel = new ExceptionUiModel { Message = Warewolf.Studio.Resources.Languages.Core.CriticalExceptionMessage };
                 uiModel.Exception.Add(Create(exception));
             }
             else
             {
-                uiModel = new ExceptionUiModel { Message = StringResources.ErrorPrefix + exception.Message };
+                uiModel = new ExceptionUiModel { Message = Warewolf.Studio.Resources.Languages.Core.ErrorPrefix + exception.Message };
             }
 
             if(exception.InnerException != null)
@@ -78,7 +78,7 @@ namespace Dev2.Studio.Factory
 
             if(critical)
             {
-                builder.AppendLine(StringResources.CriticalExceptionMessage);
+                builder.AppendLine(Warewolf.Studio.Resources.Languages.Core.CriticalExceptionMessage);
             }
 
             builder.AppendLine("Exception: " + exception.Message);
@@ -134,13 +134,15 @@ namespace Dev2.Studio.Factory
                     OutputText = CreateStringValue(e, null, true).ToString(),
                     StackTrace = e.StackTrace,
                     OutputPath = GetUniqueOutputPath(".txt"),
-                    DisplayName = isCritical == ErrorSeverity.Critical ? StringResources.CritErrorTitle : StringResources.ErrorTitle,
-                    
+                   // ServerLogTempPath = GetServerLogTempPath(environmentModel),
+                  //  StudioLogTempPath = GetStudioLogTempPath(),
+                    DisplayName = isCritical == ErrorSeverity.Critical ? Warewolf.Studio.Resources.Languages.Core.CritErrorTitle : Warewolf.Studio.Resources.Languages.Core.ErrorTitle,
+                  //  Critical = isCritical == ErrorSeverity.Critical
                 };
 
             var attachedFiles = new Dictionary<string, string>();
 
-           vm.Exception.Clear();
+            vm.Exception.Clear();
             vm.Exception.Add(Create(e, isCritical == ErrorSeverity.Critical));
             return vm;
         }

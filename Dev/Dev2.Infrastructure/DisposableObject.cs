@@ -15,7 +15,7 @@ namespace Dev2
 {
     public abstract class DisposableObject : IDisposable
     {
-        bool _isDisposed;
+        protected bool _isDisposed;
 
         #region Implementation of IDisposable
 

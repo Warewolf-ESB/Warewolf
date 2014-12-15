@@ -86,45 +86,47 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.Given("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
- testRunner.Given("I click \"EXPLORERCONNECTCONTROL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
+ testRunner.Given("I click \"EXPLORERCONNECTCONTROL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 12
  testRunner.Given("I click \"U_UI_ExplorerServerCbx_AutoID_localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 13
+#line 14
  testRunner.Given("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 15
+#line 16
  testRunner.When("I send \"service\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 17
+#line 18
  testRunner.Given("I drag \"TOOLSERVICES\" onto \"ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,sc" +
                     "rollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 19
+#line 20
  testRunner.And("I send \"Decision Testing\" to \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUser" +
                     "Control_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 20
+#line 21
  testRunner.And("\"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID\" is invisible withi" +
                     "n \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 22
     testRunner.And("I click \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_Dat" +
                     "alistFilterTextBox_AutoID,UI_FilterButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 23
  testRunner.And("I send \"Control\" to \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_A" +
                     "utoID,UI_DatalistFilterTextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 24
  testRunner.Then("\"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Control Flow - Decision_AutoID\" is i" +
                     "nvisible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 24
+#line 25
  testRunner.Given("I click \"TOOLWORKFLOWRISOURCEPICKFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 26
+#line 27
     testRunner.And("I send \"DBServices\" to \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUserContro" +
                     "l_AutoID,UI_DatalistFilterTextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
+#line 28
  testRunner.And("\"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_bug9394DBService" +
                     "sCall_AutoID\" is visible within \"10\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 29
  testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_b" +
                     "ug9394DBServicesCall_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
+#line 30
  testRunner.And("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 32
  testRunner.And("\"WORKSURFACE,Acceptance Testing Resources\\bug9394DBServicesCall(ServiceDesigner)\"" +
                     " is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

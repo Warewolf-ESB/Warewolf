@@ -81,82 +81,83 @@ namespace Dev2.Studio.UI.Specs.Tools
                         "Sequence"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
-#line 8
- testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
- testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.Given("I click \"EXPLORERCONNECTCONTROL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
- testRunner.Given("I click \"U_UI_ExplorerServerCbx_AutoID_localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.And("I click \"RIBBONNEWENDPOINT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And("I double click \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"RIBBONNEWENDPOINT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
- testRunner.And("I send \"{DELETE}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I double click \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
+ testRunner.And("I send \"{DELETE}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 16
  testRunner.And("I drag \"TOOLSEQUENCE\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
+#line 18
  testRunner.And("I drag \"TOOLDECISION\" to point \"5,5\" on \"WORKSURFACE,Sequence(SequenceDesigner),S" +
                     "mallViewContent,UI__DropPoint_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
+#line 19
+ testRunner.And("I drag \"TOOLSWITCH\" to point \"5,5\" on \"WORKSURFACE,Sequence(SequenceDesigner),Sma" +
+                    "llViewContent,UI__DropPoint_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
  testRunner.And("I drag \"TOOLCOUNT\" to point \"5,5\" on \"WORKSURFACE,Sequence(SequenceDesigner),Smal" +
                     "lViewContent,UI__DropPoint_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
+#line 21
  testRunner.And("I send \"workflow\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 20
+#line 22
  testRunner.And("I drag \"TOOLWORKFLOW\" to point \"5,5\" on \"WORKSURFACE,Sequence(SequenceDesigner),S" +
                     "mallViewContent,UI__DropPoint_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 23
  testRunner.And("I type \"decision\" in \"RESOURCEPICKERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 24
  testRunner.And("I click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Decision" +
                     " Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
- testRunner.And("I click \"RESOURCEPICKEROKBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
- testRunner.When("I double click point \"5,5\" on \"WORKSURFACE,Sequence(SequenceDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
+ testRunner.And("I click \"RESOURCEPICKEROKBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+ testRunner.When("I double click point \"5,5\" on \"WORKSURFACE,Sequence(SequenceDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
  testRunner.Then("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,Count Records(CountRecordsDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 26
+#line 28
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,Acceptance Testing Resources\\Decision Testing(ServiceDesigner)\" is visibl" +
                     "e", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
+#line 29
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,FlowDecisionDesigner\" is invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 29
- testRunner.When("I double click \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 30
- testRunner.And("I send \"{DELETE}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
+ testRunner.When("I double click \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 32
+ testRunner.And("I send \"{DELETE}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
  testRunner.And("I drag \"TOOLDECISION\" to point \"5,5\" on \"WORKSURFACE,Sequence(SequenceDesigner),L" +
                     "argeViewContent,UI__ActivitiesPresenter_AutoID,sacd:VerticalConnector_1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 34
  testRunner.And("I drag \"TOOLLENGTH\" to point \"5,5\" on \"WORKSURFACE,Sequence(SequenceDesigner),Lar" +
                     "geViewContent,UI__ActivitiesPresenter_AutoID,sacd:VerticalConnector_1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
+#line 35
  testRunner.And("I send \"workflow\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 36
  testRunner.And("I drag \"TOOLWORKFLOW\" to point \"5,5\" on \"WORKSURFACE,Sequence(SequenceDesigner),L" +
                     "argeViewContent,UI__ActivitiesPresenter_AutoID,sacd:VerticalConnector_1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
+#line 37
  testRunner.And("I type \"javascript\" in \"RESOURCEPICKERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 38
  testRunner.And("I click \"RESOURCEPICKERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_Javascri" +
                     "pt Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 39
  testRunner.And("I click \"RESOURCEPICKEROKBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 40
  testRunner.Then("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,Length(RecordsLengthDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 39
+#line 41
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,Acceptance Testing Resources\\Javascript Testing(ServiceDesigner)\" is visi" +
                     "ble", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
+#line 42
  testRunner.And("\"WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_" +
                     "AutoID,FlowDecisionDesigner\" is invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

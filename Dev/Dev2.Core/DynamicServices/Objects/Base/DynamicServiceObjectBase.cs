@@ -89,7 +89,7 @@ namespace Dev2.DynamicServices.Objects.Base
             if (string.IsNullOrEmpty(Name))
             {
                 string objectName = GetType().Name;
-                _errorMsg = string.Format(Resources.CompilerError_MissingName, objectName, objectName);
+                _errorMsg = string.Format(Warewolf.Studio.Resources.Languages.Services.CompilerError_MissingName, objectName, objectName);
                 WriteCompileError(_errorMsg);
             }
 

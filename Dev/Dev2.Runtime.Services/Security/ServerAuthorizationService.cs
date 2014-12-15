@@ -103,6 +103,8 @@ namespace Dev2.Runtime.Security
                     break;
 
                 case WebServerRequestType.WebExecuteWorkflow:
+                case WebServerRequestType.WebExecuteSecureWorkflow:
+                case WebServerRequestType.WebExecutePublicWorkflow:
                 case WebServerRequestType.WebBookmarkWorkflow:
                     result = IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
                     break;

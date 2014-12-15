@@ -12,7 +12,7 @@ Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 	##Searching Workflow with the name "InnerWF" in explorer search
 	And I send "InnerWF" to "EXPLORERFILTER"
 	##Opening WF from explorer
-	And I double click "EXPLORERFOLDERS,UI_Integration Test Resources_AutoID,UI_InnerWF_AutoID"
+	And I double click "EXPLORERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_InnerWF_AutoID"
 	#Changing 'InnerWF' mappings and save, expected popup message as dependency workflows affected
 	And I click "VARIABLESCALAR,UI_Variable_result_AutoID,UI_IsInputCheckbox_AutoID"
 	When I click "RIBBONSAVE"
@@ -34,7 +34,6 @@ Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 ##Test will be Open once Ashley Setup an Automation ID's for Grid Rows
 Scenario: DeleteFirstDatagridRow_Expected_RowIsNotDeleted12
 	Given I have Warewolf running
-	Then restart the Studio and Server
 	And all tabs are closed
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
@@ -89,22 +88,21 @@ Scenario: Drag resource multiple times from explorer and expected mappings are n
 	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner)[1],LargeViewContent,OutputsDataGrid,UI_ActivityGridRow_2_AutoID,UI_DataGridCell_AutoID[1]" contains text "[[hero().name]]"
 
 #Bug 18272
-#Scenario: Draging out the TAB is expected not to shutdown the studio 
-#	Given I have Warewolf running
-#	And all tabs are closed	
-#	And restarted the Studio and Server
-#	And "EXPLORER,UI_localhost_AutoID" is visible within "20" seconds
-#	And I click "EXPLORER,UI_localhost_AutoID"
-#	And I click new "Workflow"
-#	#Opening StartPage
-#	And I double click point "968,51" on "MouseOverBorder"
-#	#Opening Hello World workflow
-#	Given I send "Hello World" to "EXPLORERFILTER"
-#	And I double click "EXPLORERFOLDERS,UI_Hello World_AutoID" 
-#	#Dragging hello World tab 
-#	#Given I drag click point "60,2" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID" to "WORKSURFACE"
-#    #And I drag "ACTIVETAB" onto "WORKSURFACE"
-#	Then "RIBBONNEWENDPOINT" is visible
+Scenario: Draging out the TAB is expected not to shutdown the studio 
+	Given I have Warewolf running
+	And all tabs are closed	
+	And "EXPLORER,UI_localhost_AutoID" is visible within "20" seconds
+	And I click "EXPLORER,UI_localhost_AutoID"
+	And I click new "Workflow"
+	#Opening StartPage
+	And I double click point "968,51" on "MouseOverBorder"
+	#Opening Hello World workflow
+	Given I send "Hello World" to "EXPLORERFILTER"
+	And I double click "EXPLORERFOLDERS,UI_Hello World_AutoID" 
+	#Dragging hello World tab 
+	#Given I drag click point "60,2" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID" to "WORKSURFACE"
+    #And I drag "ACTIVETAB" onto "WORKSURFACE"
+	Then "RIBBONNEWENDPOINT" is visible
 
 
 Scenario: Testing NewWorkflow ShortcutKey Works as Expected

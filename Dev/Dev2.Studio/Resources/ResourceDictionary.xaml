@@ -429,9 +429,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeViewItem}">
                     <StackPanel x:Name="stackPanel">
-                        <i:Interaction.Behaviors>
+                        <!--<i:Interaction.Behaviors>
                             <local:PreventHorizontalScrollWhenFocusedTreeViewItemBehavior />
-                        </i:Interaction.Behaviors>
+                        </i:Interaction.Behaviors>-->
 
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates" />

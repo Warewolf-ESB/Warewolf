@@ -1,0 +1,1973 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Controls.Menus.XamMenu.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.AutomationPeers.XamContextMenuAutomationPeer">
+            <summary>
+            Exposes XamContextMenu types to UI Automation.
+            </summary>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamContextMenuAutomationPeer.#ctor(Infragistics.Controls.Menus.XamContextMenu)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.AutomationPeers.XamContextMenuAutomationPeer"/> class.
+            </summary>
+            <param name="owner">The owner.</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamContextMenuAutomationPeer.GetAutomationControlTypeCore">
+            <summary>
+            Returns the control type for the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
+            </summary>
+            <returns>A value of the enumeration.</returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamContextMenuAutomationPeer.GetChildrenCore">
+            <summary>
+            Returns the collection of child elements of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetChildren"/>.
+            </summary>
+            <returns>
+            A list of child <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> elements.
+            </returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamContextMenuAutomationPeer.GetClassNameCore">
+            <summary>
+            Returns the name of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
+            </summary>
+            <returns>
+            The name of the owner type that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. See Remarks.
+            </returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamContextMenuAutomationPeer.GetNameCore">
+            <summary>
+            Returns the text label of the <see cref="T:System.Windows.FrameworkElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetName"/>.
+            </summary>
+            <returns>
+            The text label of the element that is associated with this automation peer.
+            </returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamContextMenuAutomationPeer.CreateItemAutomationPeer(System.Object)">
+            <summary>
+            When overridden in a derived class, creates a new instance of the System.Windows.Automation.Peers.ItemAutomationPeer
+             for a data item in the System.Windows.Controls.ItemsControl.Items collection
+             of this System.Windows.Controls.ItemsControl.
+            </summary>
+            <param name="item">The data item that is associated with this System.Windows.Automation.Peers.ItemAutomationPeer.</param>
+            <returns>The new System.Windows.Automation.Peers.ItemAutomationPeer created.</returns>
+        </member>
+        <member name="T:Infragistics.AutomationPeers.XamMenuAutomationPeer">
+            <summary>
+            Exposes XamMenu types to UI Automation.
+            </summary>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuAutomationPeer.#ctor(Infragistics.Controls.Menus.XamMenu)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.AutomationPeers.XamMenuAutomationPeer"/> class.
+            </summary>
+            <param name="owner">The owner.</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuAutomationPeer.GetAutomationControlTypeCore">
+            <summary>
+            Returns the control type for the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
+            </summary>
+            <returns>A value of the enumeration.</returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuAutomationPeer.GetChildrenCore">
+            <summary>
+            Returns the collection of child elements of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetChildren"/>.
+            </summary>
+            <returns>
+            A list of child <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> elements.
+            </returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuAutomationPeer.GetClassNameCore">
+            <summary>
+            Returns the name of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
+            </summary>
+            <returns>
+            The name of the owner type that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. See Remarks.
+            </returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuAutomationPeer.GetNameCore">
+            <summary>
+            Returns the text label of the <see cref="T:System.Windows.FrameworkElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetName"/>.
+            </summary>
+            <returns>
+            The text label of the element that is associated with this automation peer.
+            </returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuAutomationPeer.CreateItemAutomationPeer(System.Object)">
+            <summary>
+            When overridden in a derived class, creates a new instance of the System.Windows.Automation.Peers.ItemAutomationPeer
+             for a data item in the System.Windows.Controls.ItemsControl.Items collection
+             of this System.Windows.Controls.ItemsControl.
+            </summary>
+            <param name="item">The data item that is associated with this System.Windows.Automation.Peers.ItemAutomationPeer.</param>
+            <returns>The new System.Windows.Automation.Peers.ItemAutomationPeer created.</returns>
+        </member>
+        <member name="T:Infragistics.AutomationPeers.XamMenuItemAutomationPeer">
+            <summary>
+            Exposes XamMenuItem types to UI Automation.
+            </summary>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.#ctor(Infragistics.Controls.Menus.XamMenuItem)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.AutomationPeers.XamMenuItemAutomationPeer"/> class.
+            </summary>
+            <param name="owner">The owner.</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.GetAutomationControlTypeCore">
+            <summary>
+            Returns the control type for the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType"/>.
+            </summary>
+            <returns>A value of the enumeration.</returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.GetChildrenCore">
+            <summary>
+            Returns the collection of child elements of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetChildren"/>.
+            </summary>
+            <returns>
+            A list of child <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> elements.
+            </returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.GetClassNameCore">
+            <summary>
+            Returns the name of the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetClassName"/>.
+            </summary>
+            <returns>
+            The name of the owner type that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. See Remarks.
+            </returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.GetNameCore">
+            <summary>
+            Returns the text label of the <see cref="T:System.Windows.FrameworkElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>. This method is called by <see cref="M:System.Windows.Automation.Peers.AutomationPeer.GetName"/>.
+            </summary>
+            <returns>
+            The text label of the element that is associated with this automation peer.
+            </returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+            <summary>
+            Returns the control pattern for the <see cref="T:System.Windows.UIElement"/> that is associated with this <see cref="T:System.Windows.Automation.Peers.FrameworkElementAutomationPeer"/>.
+            </summary>
+            <param name="patternInterface">One of the enumeration values.</param>
+            <returns>See Remarks.</returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.CreateItemAutomationPeer(System.Object)">
+            <summary>
+            When overridden in a derived class, creates a new instance of the System.Windows.Automation.Peers.ItemAutomationPeer
+            for a data item in the System.Windows.Controls.ItemsControl.Items collection
+            of this System.Windows.Controls.ItemsControl.
+            </summary>
+            <param name="item">The data item that is associated with this System.Windows.Automation.Peers.ItemAutomationPeer.</param>
+            <returns>The new System.Windows.Automation.Peers.ItemAutomationPeer created.</returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.RaiseExpandCollapseStatePropertyChangedEvent(System.Windows.Automation.ExpandCollapseState,System.Windows.Automation.ExpandCollapseState)">
+            <summary>
+            Raises the ExpandCollapseStatePropertyChanged event.
+            </summary>
+            <param name="oldValue">if set to <c>true</c> The old value.</param>
+            <param name="newValue">if set to <c>true</c> The new value.</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.RaiseToggleStatePropertyChangedEvent(System.Windows.Automation.ToggleState,System.Windows.Automation.ToggleState)">
+            <summary>
+            Raises the ToggleStatePropertyChanged event.
+            </summary>
+            <param name="oldValue">if set to <c>true</c> The old value.</param>
+            <param name="newValue">if set to <c>true</c> The new value.</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.OwningMenuItem_Checked(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Checked event of the OwningMenuItem property as XamMenuItem.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.OwningMenuItem_SubmenuClosed(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SubmenuClosed event of the OwningMenuItem property as XamMenuItem.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.OwningMenuItem_SubmenuOpened(System.Object,System.EventArgs)">
+            <summary>
+            Handles the SubmenuOpened event of the OwningMenuItem property as XamMenuItem.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.OwningMenuItem_Unchecked(System.Object,System.EventArgs)">
+            <summary>
+            Handles the Unchecked event of the OwningMenuItem property as XamMenuItem.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.Collapse">
+            <summary>
+            Hides all nodes, controls, or content that are descendants of the control.
+            </summary>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.Expand">
+            <summary>
+            Displays all child nodes, controls, or content of the control.
+            </summary>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.Invoke">
+            <summary>
+            Sends a request to activate a control and initiate its single, unambiguous action.
+            </summary>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.Toggle">
+            <summary>
+            Cycles through the toggle states of a control.
+            </summary>
+        </member>
+        <member name="P:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.ExpandCollapseState">
+            <summary>
+            Gets the state (expanded or collapsed) of the control.
+            </summary>
+            <value></value>
+            <returns>The state (expanded or collapsed) of the control.</returns>
+        </member>
+        <member name="P:Infragistics.AutomationPeers.XamMenuItemAutomationPeer.ToggleState">
+            <summary>
+            Gets the toggle state of the control.
+            </summary>
+            <value></value>
+            <returns>The toggle state of the control, as a value of the enumeration. </returns>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.ContextMenuManager">
+            <summary>
+            Provides the system implementation for displaying a <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Menus.XamContextMenu"/>
+            <seealso cref="T:Infragistics.Controls.Menus.ContextMenuService"/>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.ContextMenuManager.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Controls.Menus.ContextMenuManager"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.ContextMenuManager.ContextMenuProperty">
+            <summary>
+            Identifies the ContextMenu dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.ContextMenuManager.ModifierKeysProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.ContextMenuManager.ModifierKeys"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.ContextMenuManager.OpenModeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.ContextMenuManager.OpenMode"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.ContextMenuManager.ContextMenu">
+            <summary>
+            Gets/sets the value of the ContextMenu property.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.ContextMenuManager.ContextMenuProperty"/>
+            <seealso cref="T:Infragistics.Controls.Menus.XamContextMenu"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.ContextMenuManager.ModifierKeys">
+            <summary>
+            Gets/sets the ModifierKeys of ContextMenuManager.
+            </summary>
+            <remarks>The <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> opens with a combination of mouse click and modifier key such as Control key.</remarks>
+            <seealso cref="F:Infragistics.Controls.Menus.ContextMenuManager.ModifierKeysProperty"/>
+            <seealso cref="P:Infragistics.Controls.Menus.ContextMenuManager.OpenMode"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.ContextMenuManager.OpenMode">
+            <summary>
+            Gets/sets the OpenMode of ContextMenuManager.
+            </summary>
+            <remarks>The <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> opens with a combination of mouse click and modifier key such as Control key.</remarks>
+            <seealso cref="F:Infragistics.Controls.Menus.ContextMenuManager.OpenModeProperty"/>
+            <seealso cref="P:Infragistics.Controls.Menus.ContextMenuManager.ModifierKeys"/>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.ContextMenuService">
+            <summary>
+             Provides the system implementation for attaching a <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> to elements in a WPF application.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.ContextMenuService.ManagerProperty">
+            <summary>
+            Identifies the Manager attached dependency property.
+            </summary>
+            <seealso cref="M:Infragistics.Controls.Menus.ContextMenuService.GetManager(System.Windows.DependencyObject)"/>
+            <seealso cref="M:Infragistics.Controls.Menus.ContextMenuService.SetManager(System.Windows.DependencyObject,Infragistics.Controls.Menus.ContextMenuManager)"/>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.ContextMenuService.GetManager(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the <see cref="T:Infragistics.Controls.Menus.ContextMenuManager"/> attached property.
+            </summary>
+            <param name="element">Object to query concerning the <see cref="T:Infragistics.Controls.Menus.ContextMenuManager"/>property.</param>
+            <returns>Value of the <see cref="T:Infragistics.Controls.Menus.ContextMenuManager"/>property.</returns>
+            <seealso cref="F:Infragistics.Controls.Menus.ContextMenuService.ManagerProperty"/>
+            <seealso cref="M:Infragistics.Controls.Menus.ContextMenuService.SetManager(System.Windows.DependencyObject,Infragistics.Controls.Menus.ContextMenuManager)"/>
+            <seealso cref="T:Infragistics.Controls.Menus.ContextMenuManager"/>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.ContextMenuService.SetManager(System.Windows.DependencyObject,Infragistics.Controls.Menus.ContextMenuManager)">
+            <summary>
+            Sets the value of the <see cref="T:Infragistics.Controls.Menus.ContextMenuManager"/>  attached property.
+            </summary>
+            <param name="element">Object to set the property on.</param>
+            <param name="value">The value to set.</param>
+            <seealso cref="F:Infragistics.Controls.Menus.ContextMenuService.ManagerProperty"/>
+            <seealso cref="M:Infragistics.Controls.Menus.ContextMenuService.GetManager(System.Windows.DependencyObject)"/>
+            <seealso cref="T:Infragistics.Controls.Menus.ContextMenuManager"/>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.ContextMenuService.IsMenuOpenForElement(System.Windows.DependencyObject)">
+            <summary>
+            Determines whether a <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> is a opened for the specified element.
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.ContextMenuService.CloseActiveContextMenu">
+            <summary>
+            Closes the active context menu.
+            </summary>
+            <returns>true on success, false if the user cancels closing</returns>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.MenuItemRole">
+            <summary>
+            Defines the different roles that a <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> can have. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.MenuItemRole.TopLevelItem">
+            <summary>
+            Top-level menu item that can rise click event.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.MenuItemRole.TopLevelHeader">
+            <summary>
+            Header for top-level menus. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.MenuItemRole.SubmenuItem">
+            <summary>
+            Menu item in a submenu that can rise click event.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.MenuItemRole.SubmenuHeader">
+            <summary>
+            Header for a submenu. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.MenuItemPosition">
+            <summary>
+            Defines the different custom positions of the submenu items can have. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.MenuItemPosition.Auto">
+            <summary>
+            The menu takes care about position of its popup. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.MenuItemPosition.Top">
+            <summary>
+            The preferred position is on top of item. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.MenuItemPosition.Bottom">
+            <summary>
+            The preferred position is on bottom of item. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.MenuItemPosition.Left">
+            <summary>
+            The preferred position is on left of item. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.MenuItemPosition.Right">
+            <summary>
+            The preferred position is on right of item. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.PlacementMode">
+            <summary>
+            Describes the placement of where a <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control appears on the screen.
+            The target area of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> is the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.PlacementRectangle"/> 
+            which is relative to the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.PlacementTarget"/>.
+            If the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.PlacementTarget"/> is not set, the element where the context menu is attached is used as a target.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.MouseClick">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control relative to the mouse position
+            and at an offset that is defined by the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.HorizontalOffset"/>
+            and <see cref="P:Infragistics.Controls.Menus.XamContextMenu.VerticalOffset"/> property values.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.AlignedAbove">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control that aligns
+            its lower edge with the upper edge of the target
+            and aligns its left edge with the left edge of the target.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.AlignedBelow">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control where
+            the control aligns its upper edge with the lower edge of the target
+            and aligns its left edge with the left edge of the target.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.AlignedToTheLeft">
+            <summary>
+            A <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control that aligns its right
+            edge with the left edge of the target
+            and aligns its upper edge with the upper edge of the target.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.AlignedToTheRight">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control that aligns
+            its left edge with the right edge of the target
+            and aligns its upper edge with the upper edge of the target.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.Center">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control where
+            it is centered over the target.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.Manual">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control relative
+            to the upper-left corner of the target
+            and at an offset that is defined by the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.HorizontalOffset"/>
+            and <see cref="P:Infragistics.Controls.Menus.XamContextMenu.VerticalOffset"/> property values.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.AlignedTop">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control that aligns
+            its upper edge with the upper edge of the target
+            and aligns its left edge with the left edge of the target.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.AlignedBottom">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control that aligns
+            its lower edge with the lower edge of the target
+            and aligns its left edge with the left edge of the target.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.AlignedLeft">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control that aligns
+            its left edge with the left edge of the target
+            and aligns its upper edge with the upper edge of the target.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.PlacementMode.AlignedRight">
+            <summary>
+            A position of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> control that aligns
+            its right edge with the right edge of the target
+            and aligns its upper edge with the upper edge of the target.
+            If a screen edge obscures the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>,
+            the control repositions itself to align with the screen edge.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.OpenMode">
+            <summary>
+            Specifies on which event the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> opens.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.OpenMode.None">
+            <summary>
+            The <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> does not open when when the user clicks mouse button.
+            In this case a <seealso cref="T:Infragistics.Controls.Menus.Primitives.OpenCommand"/> can be used to open the context menu.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.OpenMode.LeftClick">
+            <summary>
+            The <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> opens using the left mouse button.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.OpenMode.RightClick">
+            <summary>
+            The <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> opens using the right mouse button.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.XamContextMenuCommand">
+            <summary>
+             An enumeration of available commands for the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> object.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenuCommand.Open">
+            <summary>
+            Opens the XamContextMenu
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenuCommand.Close">
+            <summary>
+            Closes the XamContextMenu
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.ItemClickedEventArgs">
+            <summary>
+            Provides data for the <see cref="E:Infragistics.Controls.Menus.XamMenuBase.ItemClicked"></see>, events of a <see cref="T:Infragistics.Controls.Menus.XamMenuBase"/> control.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.ItemClickedEventArgs.Item">
+            <summary>
+            Gets the <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> that was clicked.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.OpenedEventArgs">
+            <summary>
+            Provides data for <see cref="E:Infragistics.Controls.Menus.XamContextMenu.Opened"/> event of <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.OpenedEventArgs.GetClickedElements``1">
+            <summary>
+            Returns the elements of the specified type at the coordinates of the mouse when the menu was opened.
+            </summary>
+            <typeparam name="T">The type of elements</typeparam>
+            <returns>The list of elements at the coordinates of the mouse when the menu was opened.</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.OpenedEventArgs.MouseClickLocation">
+            <summary>
+            Gets the mouse click location.
+            </summary>
+            <remarks>The point is valid only when <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> opens with a mouse click.</remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.OpenedEventArgs.ContextMenuLocation">
+            <summary>
+            Gets the location of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.OpeningEventArgs">
+            <summary>
+            Provides data for <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opening"/> event of <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.OpeningEventArgs.GetClickedElements``1">
+            <summary>
+            Returns the elements of the specified type at the coordinates of the mouse when the menu is opening.
+            </summary>
+            <typeparam name="T">The type of elements</typeparam>
+            <returns>List of elements of the specified type at the coordinates of the mouse when the menu is opening.</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.OpeningEventArgs.MouseClickLocation">
+            <summary>
+            Gets the mouse click location.
+            </summary>
+            <remarks>The point is valid only when <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> opens with a mouse click.</remarks>
+        </member>
+        <member name="T:Infragistics.HeaderedItemContainerGenerator">
+            <summary>
+            The HeaderedItemContainerGenerator provides useful utilities for mapping between
+            the items of an XamHeaderedItemsControl and their generated containers.
+            </summary>
+        </member>
+        <member name="F:Infragistics.HeaderedItemContainerGenerator._itemsHost">
+            <summary>
+            A Panel that is used as the ItemsHost of the ItemsControl.  This
+            property will only be valid when the ItemsControl is live in the
+            tree and has generated containers for some of its items.
+            </summary>
+        </member>
+        <member name="F:Infragistics.HeaderedItemContainerGenerator._scrollHost">
+            <summary>
+            A ScrollViewer that is used to scroll the items in the ItemsHost.
+            </summary>
+        </member>
+        <member name="M:Infragistics.HeaderedItemContainerGenerator.#ctor(System.Windows.Controls.ItemsControl)">
+            <summary>
+            Initializes a new instance of the HeaderedItemContainerGenerator.
+            </summary>
+            <param name="control">
+            The ItemsControl being tracked by the HeaderedItemContainerGenerator.
+            </param>
+        </member>
+        <member name="M:Infragistics.HeaderedItemContainerGenerator.OnApplyTemplate">
+            <summary>
+            Apply a control template to the ItemsControl.
+            </summary>
+        </member>
+        <member name="M:Infragistics.HeaderedItemContainerGenerator.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object,System.Windows.Style)">
+            <summary>
+            Prepares the specified container to display the specified item.
+            </summary>
+            <param name="element">
+            Container element used to display the specified item.
+            </param>
+            <param name="item">Specified item to display.</param>
+            <param name="parentItemContainerStyle">
+            The ItemContainerStyle for the parent ItemsControl.
+            </param>
+        </member>
+        <member name="M:Infragistics.HeaderedItemContainerGenerator.HasDefaultValue(System.Windows.Controls.Control,System.Windows.DependencyProperty)">
+            <summary>
+            Check whether a control has the default value for a property.
+            </summary>
+            <param name="control">The control to check.</param>
+            <param name="property">The property to check.</param>
+            <returns>
+            True if the property has the default value; false otherwise.
+            </returns>
+        </member>
+        <member name="M:Infragistics.HeaderedItemContainerGenerator.PrepareHeaderedItemsControlContainer(Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl,System.Object,System.Windows.Controls.ItemsControl,System.Windows.Style,Infragistics.Controls.HierarchicalDataTemplate)">
+            <summary>
+            Prepare a PrepareHeaderedItemsControlContainer container for an
+            item.
+            </summary>
+            <param name="control">Container to prepare.</param>
+            <param name="item">Item to be placed in the container.</param>
+            <param name="parentItemsControl">The parent ItemsControl.</param>
+            <param name="parentItemContainerStyle"> The ItemContainerStyle for the parent ItemsControl. </param>
+            <param name="hierarchicalTemplate">The HierarchicalTemplate for container</param>
+        </member>
+        <member name="M:Infragistics.HeaderedItemContainerGenerator.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Undoes the effects of PrepareContainerForItemOverride.
+            </summary>
+            <param name="element">The container element.</param>
+            <param name="item">The contained item.</param>
+        </member>
+        <member name="M:Infragistics.HeaderedItemContainerGenerator.UpdateItemContainerStyle(System.Windows.Style)">
+            <summary>
+            Update the style of any generated items when the ItemContainerStyle
+            has been changed.
+            </summary>
+            <param name="itemContainerStyle">The ItemContainerStyle.</param>
+        </member>
+        <member name="M:Infragistics.HeaderedItemContainerGenerator.ScrollIntoView(System.Windows.FrameworkElement)">
+            <summary>
+            Scroll the desired element into the ScrollHost's viewport.
+            </summary>
+            <param name="element">Element to scroll into view.</param>
+        </member>
+        <member name="P:Infragistics.HeaderedItemContainerGenerator._itemsControl">
+            <summary>
+            Gets or sets the ItemsControl being tracked by the
+            HeaderedItemContainerGenerator.
+            </summary>
+        </member>
+        <member name="P:Infragistics.HeaderedItemContainerGenerator.ItemsHost">
+            <summary>
+            Gets a Panel that is used as the ItemsHost of the ItemsControl.
+            This property will only be valid when the ItemsControl is live in
+            the tree and has generated containers for some of its items.
+            </summary>
+        </member>
+        <member name="P:Infragistics.HeaderedItemContainerGenerator.ScrollHost">
+            <summary>
+            Gets a ScrollViewer that is used to scroll the items in the
+            ItemsHost.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.Primitives.IconContentControl">
+            <summary>
+            An internal content control used to display the Icon and UI content inside the XamMenuItem template.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.IconContentControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Menus.Primitives.IconContentControl"/> class.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Resources">
+            <summary>
+            A resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Resources.GetString(System.String)">
+            <summary>
+            Returns the resource string.
+            </summary>
+            <param name="resourceName">Name of the resource.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.XamContextMenu">
+            <summary>
+            Represents a pop-up menu that enables a control to expose functionality that is specific to the context of the control.
+            </summary>
+            <remarks>
+            A context menu (also called contextual, shortcut, and popup or pop-up menu) is a menu in a graphical user interface (GUI) that appears upon user interaction, such as a right mouse click. A context menu offers a limited set of choices that are available in the current state, or context, of the operating system or application.
+            </remarks>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.XamMenuBase">
+            <summary>
+            Represents a control that defines choices for users to select.
+            </summary>
+            <remarks>
+            The MenuBase is the base class for controls that define choices for users to select. 
+            The <see cref="T:Infragistics.Controls.Menus.XamMenu"/> and <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> inherit from MenuBase.
+            </remarks>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl">
+            <summary>
+            Represents a control that contains multiple items and have a header.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.#ctor">
+            <summary>
+            Initializes a new instance of the HeaderedItemsControl class.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.HierarchicalItemTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.HierarchicalItemTemplate"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.DefaultItemsContainerProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.DefaultItemsContainer"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.HeaderProperty">
+            <summary>
+            Identifies the Header dependency property.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.OnHeaderPropertyChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            HeaderProperty property changed handler.
+            </summary>
+            <param name="d">
+            HeaderedItemsControl that changed its Header.
+            </param>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.HeaderTemplateProperty">
+            <summary>
+            Identifies the HeaderTemplate dependency property.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.OnHeaderTemplatePropertyChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            HeaderTemplateProperty property changed handler.
+            </summary>
+            <param name="d">
+            HeaderedItemsControl that changed its HeaderTemplate.
+            </param>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.OnApplyTemplate">
+            <summary>
+            Apply a control template to the control.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Prepares the specified container to display the specified item.
+            </summary>
+            <param name="element">
+            Container element used to display the specified item.
+            </param>
+            <param name="item">Specified item to display.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Undoes the effects of PrepareContainerForItemOverride.
+            </summary>
+            <param name="element">The container element.</param>
+            <param name="item">The contained item.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.OnItemContainerStyleChanged(System.Windows.Style,System.Windows.Style)">
+            <summary>
+            Allows the XamHeaderedItemsControl to respond to changes in the ItemContainerStyle
+            </summary>
+            <param name="oldItemContainerStyle">The previously associated style</param>
+            <param name="newItemContainerStyle">The newly set style</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.OnHeaderChanged(System.Object,System.Object)">
+            <summary>
+            Called when the Header property of a HeaderedItemsControl changes.
+            </summary>
+            <param name="oldHeader">
+            The old value of the Header property.
+            </param>
+            <param name="newHeader">
+            The new value of the Header property.
+            </param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.OnHeaderTemplateChanged(System.Windows.DataTemplate,System.Windows.DataTemplate)">
+            <summary>
+            Called when the HeaderTemplate property changes.
+            </summary>
+            <param name="oldHeaderTemplate">
+            The old value of the HeaderTemplate property.
+            </param>
+            <param name="newHeaderTemplate">
+            The new value of the HeaderTemplate property.
+            </param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.FinishedLoadingPersistence">
+            <summary>
+            Allows an object to perform an operation, after it's been loaded.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.HierarchicalItemTemplate">
+            <summary>
+            Gets or sets the <see cref="T:Infragistics.Controls.HierarchicalDataTemplate"/> for this <see cref="T:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl"/> that describes the visual tree of this item, and what property its children are.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.DefaultItemsContainer">
+            <summary>
+            Gets or sets a DataTemplate that will be used as a container when the items are being generated. 
+            </summary>
+            <remarks>
+            <p class="body">
+            This property takes effect only to the items that are <b>not</b> native containers of the control. For example if
+            you add TextBlock as an item for <see cref="T:Infragistics.Controls.Menus.XamMenu"/>, the control will wrap the item 
+            with <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> container. For generating of this menu item container, the 
+            control will use DataTemplete provided by this property. </p>
+            <p class="note">The root element of the template provided by <b>DefaultItemsContainer</b> should be the native
+            container of the control. For the <see cref="T:Infragistics.Controls.Menus.XamMenu"/> this is <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/>.
+            If the root content of the DataTemplate is not a XamMenuItem, the property will be ignored and 
+            an Empty XamMenuItem will be used instead</p>
+            <p class="note"> This DataTemplate will be used for each XamMenuItem 
+            in the <see cref="T:Infragistics.Controls.Menus.XamMenu"/> unless the <see cref="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.DefaultItemsContainer"/> is set
+            explicitly on the XamMenuItem itself.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.Header">
+            <summary>
+            Gets or sets an object that labels the HeaderedItemsControl.  The
+            default value is null.  The header can be a string, UIElement, or
+            any other content.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.HeaderTemplate">
+            <summary>
+            Gets or sets a data template used to display a control's header. The
+            default is null.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.HeaderIsItem">
+            <summary>
+            Gets or sets a value indicating whether the Header property has been
+            set to the item of an ItemsControl.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.HeaderedItemContainerGenerator">
+            <summary>
+            Gets the HeaderedItemContainerGenerator that is associated with this
+            control.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.PropertiesToIgnore">
+            <summary>
+            Gets a List of properties that shouldn't be saved when the PersistenceManager goes to save them.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.Primitives.XamHeaderedItemsControl.PriorityProperties">
+            <summary>
+            Gets a List of properties that should be applied, before even trying to look at any other property on the object.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Menus.XamMenuBase"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.GetContainerForItemOverride">
+            <summary>
+            Overrides the framework invocation when a new container is needed.
+            </summary>
+            <returns>A new <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.IsItemItsOwnContainerOverride(System.Object)">
+            <summary>
+            Overrides the framework invocation to test if an item is already a container.
+            </summary>
+            <param name="item">The object to test if it is a container.</param>
+            <returns>Returns true if the item is already a <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Prepares the specified container to display the specified item.
+            </summary>
+            <param name="element">
+            Container element used to display the specified item.
+            </param>
+            <param name="item">Specified item to display.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Undoes the effects of PrepareContainerForItemOverride.
+            </summary>
+            <param name="element">The container element.</param>
+            <param name="item">The contained item.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.OnMouseDown(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            Raised before the MouseDown event is fired.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuBase.CurrentOpenProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuBase.CurrentOpen"/> dependency property. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.OnCurrentOpenItemChanged(Infragistics.Controls.Menus.XamMenuItem,Infragistics.Controls.Menus.XamMenuItem)">
+            <summary>
+            Called when the current open menu item has changed.
+            </summary>
+            <param name="oldItem">the old item</param>
+            <param name="newItem">the new item</param>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuBase.CurrentSelectedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuBase.CurrentSelected"/> dependency property. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.OnItemClicked(Infragistics.Controls.Menus.ItemClickedEventArgs)">
+            <summary>
+            Raises a <see cref="E:Infragistics.Controls.Menus.XamMenuBase.ItemClicked"/> event when the user click with left mouse button on any menu item.
+            </summary>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.OnBeforeUnload">
+            <summary>
+            Called before unload the menu from the browser.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.RegisterResources(System.String,System.Reflection.Assembly)">
+            <summary>
+            Adds an additonal Resx file in which the control will pull its resources from.
+            </summary>
+            <param name="name">The name of the embedded resx file that contains the resources to be used.</param>
+            <param name="assembly">The assembly in which the resx file is embedded.</param>
+            <remarks>Don't include the extension of the file, but prefix it with the default Namespace of the assembly.</remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuBase.UnregisterResources(System.String)">
+            <summary>
+            Removes a previously registered resx file.
+            </summary>
+            <param name="name">The name of the embedded resx file that was used for registration.</param>
+            <remarks>
+            Note: this won't have any effect on controls that are already in view and are already displaying strings.
+            It will only affect any new controls created.
+            </remarks>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamMenuBase.ItemClicked">
+            <summary>
+            Occurs when a <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> is clicked.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.#cctor">
+            <summary>
+            Static constructor of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> class. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> class. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.OnCreateAutomationPeer">
+            <summary>
+            When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the automation infrastructure.
+            </summary>
+            <returns>
+            The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.OnItemClicked(Infragistics.Controls.Menus.ItemClickedEventArgs)">
+            <summary>
+            Raises a <see cref="E:Infragistics.Controls.Menus.XamMenuBase.ItemClicked"/> event when the user click with left mouse button on any menu item.
+            </summary>
+            <param name="e">Event arguments.</param>
+            <remarks>The <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>ContextMenu closes always when the clicked <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> has no subitems</remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.OnLostFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
+            </summary>
+            <param name="e">The data for the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.OnBeforeUnload">
+            <summary>
+            Called before unload the menu from the browser.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.KeyDown"/> event occurs.
+            </summary>
+            <param name="e">The data for the event.</param>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenu.IsOpenProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.IsOpen"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenu.PlacementProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.Placement"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenu.PlacementTargetProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.PlacementTarget"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenu.PlacementRectangleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.PlacementRectangle"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenu.HorizontalOffsetProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.HorizontalOffset"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenu.VerticalOffsetProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.VerticalOffset"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenu.ShouldRightClickBeHandledProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.ShouldRightClickBeHandled"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenu.PopupParentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.PopupParent"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamContextMenu.AllowsTransparencyProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.AllowsTransparency"/> dependency property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.OnOpening(Infragistics.Controls.Menus.OpeningEventArgs)">
+            <summary>
+            Raises the <see cref="E:Infragistics.Controls.Menus.XamContextMenu.Opening"/> event.
+            </summary>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opening"/>
+            <seealso cref="T:Infragistics.Controls.Menus.OpeningEventArgs"/>
+            <seealso cref="T:Infragistics.Controls.Menus.XamContextMenu"/>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.OnClosing(Infragistics.CancellableEventArgs)">
+            <summary>
+            Raises the <see cref="E:Infragistics.Controls.Menus.XamContextMenu.Closing"/> event.
+            </summary>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closing"/>
+            <seealso cref="T:Infragistics.CancellableEventArgs"/>
+            <seealso cref="T:Infragistics.Controls.Menus.XamContextMenu"/>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.OnClosed(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:Infragistics.Controls.Menus.XamContextMenu.Closed"/> event.
+            </summary>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closed"/>
+            <seealso cref="T:System.EventArgs"/>
+            <seealso cref="T:Infragistics.Controls.Menus.XamContextMenu"/>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.OnOpened(Infragistics.Controls.Menus.OpenedEventArgs)">
+            <summary>
+            Raises the <see cref="E:Infragistics.Controls.Menus.XamContextMenu.Opened"/> event.
+            </summary>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opened"/>
+            <seealso cref="T:Infragistics.Controls.Menus.OpenedEventArgs"/>
+            <seealso cref="T:Infragistics.Controls.Menus.XamContextMenu"/>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.GetParameter(Infragistics.Controls.CommandSource)">
+            <summary>
+            Gets the object that defines the parameters necessary to execute the command.
+            </summary>
+            <param name="source">The CommandSource object which defines the command to be executed.</param>
+            <returns>The object necessary for the command to complete.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenu.SupportsCommand(System.Windows.Input.ICommand)">
+            <summary>
+            Gets if the object will support a given command type.
+            </summary>
+            <param name="command">The command to be validated.</param>
+            <returns>
+            True if the object recognizes the command as actionable against it.
+            </returns>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.PropertiesToIgnore">
+            <summary>
+            Gets a List of properties that shouldn't be saved when the PersistenceManager goes to save them.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.IsOpen">
+            <summary>
+            Gets/set a value that indicates whether the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> is visible. 
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamContextMenu.IsOpenProperty"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opening"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opened"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closing"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closed"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.Placement">
+            <summary>
+            Gets/sets the mode that controls how <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> appears on the screen.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamContextMenu.PlacementProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.PlacementTarget">
+            <summary>
+            Gets/sets the target element relative to which of <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> is positioned when it opens.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamContextMenu.PlacementTargetProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.PlacementTargetResolved">
+            <summary>
+            Gets the effective value of <see cref="P:Infragistics.Controls.Menus.XamContextMenu.PlacementTarget"/> property.
+            </summary>
+            <remarks>The <see cref="P:Infragistics.Controls.Menus.XamContextMenu.PlacementTarget"/>  proeprty </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.PlacementRectangle">
+            <summary>
+            Gets/sets the rectangle which is relative to the <see cref="P:Infragistics.Controls.Menus.XamContextMenu.PlacementTarget"/> used to calculate the position of <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamContextMenu.PlacementRectangleProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.HorizontalOffset">
+            <summary>
+            Gets/set the horizontal distance between the target origin and the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> alignment point.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamContextMenu.HorizontalOffsetProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.VerticalOffset">
+            <summary>
+            Gets/sets the vertical distance between the target origin and the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> alignment point.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamContextMenu.VerticalOffsetProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.MouseClickLocation">
+            <summary>
+            Gets the mouse position when the mouse click is used to open the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>, otherwise this value is invalid.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Menus.OpenMode"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.ContextMenuLocation">
+            <summary>
+            Gets the location of the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.ShouldRightClickBeHandled">
+            <summary>
+            Gets/Sets whether the RightClick should be handled when displaying the ContextMenu
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.PopupParent">
+            <summary>
+            Gets/sets the Panel to contain the Popup which contains the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamContextMenu.PopupParentProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenu.AllowsTransparency">
+            <summary>
+            Gets/sets the AllowsTransparency property of the Popup hosting <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamContextMenu.PopupParentProperty"/>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamContextMenu.Opening">
+            <summary>
+            Occurs before a particular instance of a <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> opens.
+            </summary>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opened"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closing"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closed"/>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamContextMenu.Opened">
+            <summary>
+            Occurs after a particular instance of a <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> opens.
+            </summary>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opening"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closing"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closed"/>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamContextMenu.Closing">
+            <summary>
+            Occurs before a particular instance of a <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> closes.
+            </summary>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closed"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opening"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opened"/>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamContextMenu.Closed">
+            <summary>
+            Occurs after a particular instance of a <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> closes.
+            </summary>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Closing"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opening"/>
+            <seealso cref="E:Infragistics.Controls.Menus.XamContextMenu.Opened"/>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.XamContextMenuCommandSource">
+            <summary>
+            The command source object for <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> object.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamContextMenuCommandSource.ResolveCommand">
+            <summary>
+            Generates the <see cref="T:System.Windows.Input.ICommand"/> object that will execute the command.
+            </summary>
+            <returns>The object that will execute the command.</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamContextMenuCommandSource.CommandType">
+            <summary>
+            Gets/sets the XamContextMenuCommand which is to be executed by the command.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.Primitives.XamContextMenuCommandBase">
+            <summary>
+            Base class for all commands that deal with a <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamContextMenuCommandBase.CanExecute(System.Object)">
+            <summary>
+            Reports if the command can be executed on the object inputted.
+            </summary>
+            <param name="parameter">The object that the command will be executed against.</param>
+            <returns>True if the object can support this command.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamContextMenuCommandBase.Execute(System.Object)">
+            <summary>
+            Executes the command 
+            </summary>
+            <param name="parameter">The <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> object that will be executed against.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamContextMenuCommandBase.ExecuteCommand(Infragistics.Controls.Menus.XamContextMenu)">
+            <summary>
+            Executes the specific command on the specified <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>
+            </summary>
+            <param name="contextMenu">target XamContextMenu</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.XamContextMenuCommandBase.CanExecuteCommand(Infragistics.Controls.Menus.XamContextMenu)">
+            <summary>
+            Executes the specific command on the specified <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>
+            </summary>
+            <param name="contextMenu">target XamContextMenu</param>
+            <returns>
+            <c>true</c> if the object can execute command; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.Primitives.OpenCommand">
+            <summary>
+            A <see cref="T:Infragistics.CommandBase"/> object that will open the XamContextMenu.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.OpenCommand.ExecuteCommand(Infragistics.Controls.Menus.XamContextMenu)">
+            <summary>
+            Opens the XamContextMenu.
+            </summary>
+            <param name="contextMenu">A <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> object that will be opened.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.OpenCommand.CanExecuteCommand(Infragistics.Controls.Menus.XamContextMenu)">
+            <summary>
+            Reports if the OpenCommand can be executed on the specified <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+            <param name="contextMenu">The object that the command will be executed against.</param>
+            <returns>True if the object can support this command.</returns>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.Primitives.CloseCommand">
+            <summary>
+            A <see cref="T:Infragistics.CommandBase"/> object that will close the XamContextMenu.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.CloseCommand.ExecuteCommand(Infragistics.Controls.Menus.XamContextMenu)">
+            <summary>
+            Closes the XamContextMenu.
+            </summary>
+            <param name="contextMenu">A <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> object that will be closed.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.Primitives.CloseCommand.CanExecuteCommand(Infragistics.Controls.Menus.XamContextMenu)">
+            <summary>
+            Reports if the CloseCommand can be executed on the specified <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/>.
+            </summary>
+            <param name="contextMenu">The object that the command will be executed against.</param>
+            <returns>True if the object can support this command.</returns>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.XamMenu">
+            <summary>
+            Displays a menu in a WPF application.
+            </summary>
+            <remarks>
+            <p class="body">The <b>XamMenu</b> control is used to display a menu in a WPF application.
+            The <b>XamMenu</b> control supports the following features:
+                <ul>
+                    <li>Data binding that allows the control's menu items to be bound to hierarchal data sources.</li>
+                    <li>Programmatic access to the <b>XamMenu</b> object model to dynamically create menus, populate menu items, set properties, and so on.</li>
+                    <li>Customizable appearance through styles, and user-defined templates.</li>
+                </ul>
+            </p>
+            <p class="body"><b>XamMenu</b> is a ItemsControl. Its content properties are Items and ItemsSource.
+            You can read more information about ItemsControl in WPF help dcumentation.</p>
+            <p class="body">The <b>XamMenu</b> control presents a list of items that specify commands or options
+            for a WPF application. Typically, clicking an item on a menu opens a submenu or causes an
+            application to carry out a command. </p>
+            <p class="body">An item in a menu can be anything that can be added to an ItemCollection. 
+            The <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> is the most common type of item in a XamMenu. A <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> can contain 
+            child items. The child items will appear in a submenu when the user chooses a parent <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/>.</p>
+            <p class="body">You can change the menu orientation by <see cref="P:Infragistics.Controls.Menus.XamMenu.MenuOrientation"/> property to either horizontal or vertical.
+            Also you can change how the menu opens its submenus by <see cref="P:Infragistics.Controls.Menus.XamMenu.ExpandOnHover"/> property.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenu.#cctor">
+            <summary>
+            Static constructor of the <see cref="T:Infragistics.Controls.Menus.XamMenu"/> class. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenu.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Menus.XamMenu"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenu.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges and sizes the auto complete control and its contents.
+            </summary>
+            <param name="finalSize">The provided arrangement bounds object.</param>
+            <returns>Returns the arrangement bounds, unchanged.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenu.OnBeforeUnload">
+            <summary>
+            Called before unload the menu from the browser.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenu.OnCreateAutomationPeer">
+            <summary>
+            When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the automation infrastructure.
+            </summary>
+            <returns>
+            The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenu.OnCurrentOpenItemChanged(Infragistics.Controls.Menus.XamMenuItem,Infragistics.Controls.Menus.XamMenuItem)">
+            <summary>
+            Called when the current open menu item has changed.
+            </summary>
+            <param name="oldItem">the old item</param>
+            <param name="newItem">the new item</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenu.OnLostFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
+            </summary>
+            <param name="e">The data for the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenu.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call System.Windows.FrameworkElement.ApplyTemplate().
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenu.MenuOrientationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenu.MenuOrientation"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenu.ExpandOnHoverProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenu.ExpandOnHover"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenu.NavigationElementProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenu.NavigationElement"/> dependency property. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenu.MenuOrientation">
+            <summary>
+            Determinates how the menu is orientated. It can be positioned either horizontal or vertical.
+            </summary>
+            <remarks>
+            The menu relies on the SatckPanel to arranges its items. If you change the ItemsPanelTemplate to
+            different from StackPanel the property will have no mean in menu. 
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenu.ExpandOnHover">
+            <summary>
+            Determinates if the submenu of the root item will be opened when the 
+            mouse is over the item or user must click on the root item to open the submenu.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenu.NavigationElement">
+            <summary>
+            Gets or sets a control that will be used for navigation.
+            </summary>
+            <remarks>      
+            <p class="note">The only elements you can set here are Frame and Page. Only those controls support navigation.</p>
+            <p class="body">When you set this property, all <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/>s in the menu will use 
+            it to deal with navigation. Except when you set explicitly <see cref="P:Infragistics.Controls.Menus.XamMenuItem.NavigationElement"/>.</p>
+            </remarks>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.XamMenuItem">
+            <summary>
+            Represents a selectable item inside a <see cref="T:Infragistics.Controls.Menus.XamMenu"/> control.
+            </summary>
+            <remarks>
+            <p class="body">A <b>XamMenuItem</b> can have submenus. The submenu of the <b>XamMenuItem</b> is made up of the objects within
+            the ItemCollection of a <b>XamMenuItem</b>. It is common for a <b>XamMenuItem</b> to contain other <b>XamMenuItem</b> objects to create 
+            nested submenus.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.#cctor">
+            <summary>
+            Static constructor of the <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> class. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges and sizes the auto complete control and its contents.
+            </summary>
+            <param name="finalSize">The provided arrangement bounds object.</param>
+            <returns>Returns the arrangement bounds, unchanged.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Invoked to measure the element and its children.
+            </summary>
+            <param name="constraint">The size that reflects the available size that this element can give to its children.</param>
+            <returns>The <see cref="T:System.Windows.Size"/> that represents the desired size of the element.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnApplyTemplate">
+            <summary>
+            Invoked when the template for the element has been applied.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnCreateAutomationPeer">
+            <summary>
+            When implemented in a derived class, returns class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> implementations for the automation infrastructure.
+            </summary>
+            <returns>
+            The class-specific <see cref="T:System.Windows.Automation.Peers.AutomationPeer"/> subclass to return.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.GetContainerForItemOverride">
+            <summary>
+            Creates a new XamMenuItem to use to display the object.
+            </summary>
+            <returns>A new XamMenuItem.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.IsItemItsOwnContainerOverride(System.Object)">
+            <summary>
+            Overrides the framework invocation testing if an item is already a container.
+            </summary>
+            <param name="item">The item to test.</param>
+            <returns>Returns true if its already a <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> or <see cref="T:Infragistics.Controls.Menus.XamMenuSeparator"/></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Prepares the specified element to display the specified item.
+            </summary>
+            <param name="element">
+            Element used to display the specified item.
+            </param>
+            <param name="item">Specified item.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Undoes the effects of PrepareContainerForItemOverride.
+            </summary>
+            <param name="element">The container element.</param>
+            <param name="item">The contained item.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Overrides the framework invocation when an item is added or removed for the objects in the tree.
+            </summary>
+            <param name="e">Data on what items changed.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.MouseEnter"/> event occurs.
+            </summary>
+            <param name="e">The data for the event</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.MouseLeave"/> event occurs.
+            </summary>
+            <param name="e">The data for the event</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            Overrides the framework invocation when a user clicks the left mouse button.
+            </summary>
+            <param name="e">Data about the mousedown event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            Overrides the framework invocation when a user releases the left mouse button.
+            </summary>
+            <param name="e">Data about the left mouse button up event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnLostMouseCapture(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.LostMouseCapture"/> event occurs to provide handling for the event in a derived class without attaching a delegate.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnAccessKey(System.Windows.Input.AccessKeyEventArgs)">
+            <summary>
+            Provides class handling for when an access key that is meaningful for this element is invoked.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+            <summary>
+            Overrides the framework invocation when a user clicks a key.
+            </summary>
+            <param name="e">Data about the keydown event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnLostFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            Called before the <see cref="E:System.Windows.UIElement.LostFocus"/> event occurs.
+            </summary>
+            <param name="e">The data for the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnGotFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            Invoked whenever an unhandled <see cref="E:System.Windows.UIElement.GotFocus"/> event reaches this element in its route.
+            </summary>
+            <param name="e">The <see cref="T:System.Windows.RoutedEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.CommandProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.Command"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.CommandParameterProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.CommandParameter"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.CommandTargetProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.CommandTarget"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IsKeyboardNavigableProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsKeyboardNavigable"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.CheckBoxVisibilityResolvedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.CheckBoxVisibilityResolved"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IconProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.Icon"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IconVisibilityResolvedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IconVisibilityResolved"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.InputGestureTextProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.InputGestureText"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IsCheckableProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsCheckable"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IsCheckedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsChecked"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IsHighlightedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsHighlighted"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IsSubmenuOpenProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsSubmenuOpen"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.MenuOrientationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.MenuOrientation"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.HasChildrenProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.HasChildren"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.SubmenuPreferredLocationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.SubmenuPreferredLocation"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.StaysOpenOnClickProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.StaysOpenOnClick"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.RoleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.Role"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IsSelectedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsSelected"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IsMouseOverProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsMouseOver"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.IsMouseOverSublingProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsMouseOverSubling"/> dependency property. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.ManipulateSubmenu(System.Boolean,System.Boolean)">
+            <summary>
+            Helper method that set IsImmediately before to call open or close for submenu.
+            </summary>
+            <param name="isOpen">if true the submenu is open; false close the submenu</param>
+            <param name="isImmediately">if true the action on submenu is execute imeddiately;
+            false the action on submenu is execute with animation</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnChecked(System.EventArgs)">
+            <summary>
+            Raises a Checked event when the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsChecked"/> property changes from
+            false to true.
+            </summary>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnUnchecked(System.EventArgs)">
+            <summary>
+            Raises an Unchecked event when the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.IsChecked"/> property changes from
+            true to false.
+            </summary>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnClick(System.EventArgs)">
+            <summary>
+            Raises a Click event when the user click with left mouse button.
+            </summary>
+            <param name="e">Event arguments.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnSubmenuClosed(System.EventArgs)">
+            <summary>
+            Raises an SubmenuClosed event when the submenu is closed.
+            </summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnSubmenuOpened(System.EventArgs)">
+            <summary>
+            Raises an SubmenuOpened event when the submenu is opened.
+            </summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.ControlIsEnabledChanged(System.Object,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Handle the change of the IsEnabled property.
+            </summary>
+            <param name="sender">The source object.</param>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.UpdateRoleState">
+            <summary>
+            Based on the Role of the <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> sets up the visual states of the control.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.ChangeVisualState(System.Boolean)">
+            <summary>
+            Sets the VisualStates on the control to represent the current settings.
+            </summary>
+            <param name="useTransitions"></param>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.NavigationElementProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.NavigationElement"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.NavigationUriProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.NavigationUri"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.NavigationParameterProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.NavigationParameter"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuItem.NavigationOnClickProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.NavigationOnClick"/> dependency property. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuItem.OnPropertyChanged(System.String)">
+            <summary>
+            Raises the PropertyChanged event.
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.IsEnabledCore">
+            <summary>
+            Gets a value indicating if the item is enabled
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.Command">
+            <summary>
+            Returns or sets the command associated with the menu item.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamMenuItem.CommandProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.CommandParameter">
+            <summary>
+            Returns or sets the parameter passed to the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.Command"/>.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamMenuItem.CommandParameterProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.CommandTarget">
+            <summary>
+            Returns or sets the element for which the <see cref="P:Infragistics.Controls.Menus.XamMenuItem.Command"/> is to be executed if the Command is a RoutedCommand.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Menus.XamMenuItem.CommandTargetProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.IsKeyboardNavigable">
+            <summary>
+            Gets / sets if the end user will be able to reach this <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> via the keyboard.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.CheckBoxVisibilityResolved">
+            <summary>
+            Determinates if the checkbox is visible. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.Icon">
+            <summary>
+            Gets or sets the data for image that is displayed next to the text in a menu item.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.IconVisibilityResolved">
+            <summary>
+            Determinates if the icon is visible. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.InputGestureText">
+            <summary>
+            Sets the text describing an input gesture that will call the command tied to the specified item. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.IsCheckable">
+            <summary>
+            Gets/sets a value that indicates whether a XamMenuItem can be checked.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.IsChecked">
+            <summary>
+            Gets a value that indicates whether a XamMenuItem is checked.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.IsHighlighted">
+            <summary>
+            Gets a value that indicates whether a XamMenuItem is highlighted.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.IsSubmenuOpen">
+            <summary>
+            Gets or sets a value that indicates whether the submenu of the XamMenuItem is open.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.MenuOrientation">
+            <summary>
+            Determinates how menu is orientated. It can be positioned either horizontal or vertical.
+            </summary>
+            <remarks>
+            <p class="body">For arranging the items, menu uses the panel supplied by ItemsPanel property. 
+            The default one is a StackPanel and it allows the items to be arranged vertical or horizontal.
+            If you set another type panel, for example a Grid, then the MenuOrientation property will not
+            be honored automatically. The Grid will take responsibility for arranging the items according 
+            its layout logic. </p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.HasChildren">
+            <summary>
+            Indicates if this XamMenuItem has any child XamMenuItem (read-only) 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.ParentXamMenuItem">
+            <summary>
+            Gets a reference to the parent XamMenuItem of this XamMenuItem.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.SubmenuPreferredLocation">
+            <summary>
+            Determinates the user preferred position where the popup will be opened for this menu item. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.StaysOpenOnClick">
+            <summary>
+            Gets or sets a value that indicates that the  submenu in which
+            this MenuItem is located should not close when this item is clicked.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.Role">
+            <summary>
+            Gets a value that indicates the role of a XamMenuItem in the menu.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.IsInContextMenu">
+            <summary>
+            Gets a value to the parent XamMenu of the XamMenuItem.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.ParentItemsControl">
+            <summary>
+            Gets or sets a reference to the parent ItemsControl of a XamMenuItem.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.ParentXamMenu">
+            <summary>
+            Gets a reference to the parent XamMenu of the XamMenuItem.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.IgnorePropertyChange">
+            <summary>
+            Gets or sets a value indicating whether to ignore calling a pending 
+            change handlers. 
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamMenuItem.Click">
+            <summary>
+            Occurs when a <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> is clicked.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamMenuItem.Checked">
+            <summary>
+            Occurs when a <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> is checked.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamMenuItem.Unchecked">
+            <summary>
+            Occurs when a <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> is unchecked.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamMenuItem.SubmenuClosed">
+            <summary>
+            Occurs when a submenu of <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> is closed.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamMenuItem.SubmenuOpened">
+            <summary>
+            Occurs when a submenu of <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> is opened.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.NavigationElement">
+            <summary>
+            Gets or sets a control that will be used for navigation.
+            </summary>
+            <remarks>      
+            <p class="note">The only elements you can set here are Frame and Page. Only those controls support navigation.</p>
+            <p class="body">When this property is not set, then <see cref="P:Infragistics.Controls.Menus.XamMenu.NavigationElement"/> will be used
+            to deal with navigation.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.NavigationUri">
+            <summary>
+            The URI of the content to navigate to.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.NavigationParameter">
+            <summary>
+            Gets or sets parameters that are passed to NavigationService.Navigate method.
+            </summary>
+            <remarks>
+            <p class="body">This is a string that contains parameters which can be reach after navigation complete by 
+            NavigationContext.QueryString property. The format must be as follow: /param1/param2…/paramN. Each parameter must be separated by ‘/’.</p>
+            <para class="note">If you pass only one parameter you don't need to write '/' sing.</para>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuItem.NavigationOnClick">
+            <summary>
+            Gets or sets whether the <see cref="T:Infragistics.Controls.Menus.XamMenuItem"/> will navigate to the content specified in the 
+            <see cref="P:Infragistics.Controls.Menus.XamMenuItem.NavigationUri"/> property when user clicks on it.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Menus.XamMenuItem.PropertyChanged">
+            <summary>
+            Event raised when a property on this object changes.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Menus.XamMenuSeparator">
+            <summary>
+            Control that is used to separate menu items in <see cref="T:Infragistics.Controls.Menus.XamMenu"/> control. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuSeparator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Menus.XamMenuSeparator"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Menus.XamMenuSeparator.OnApplyTemplate">
+            <summary>
+            Builds the visual tree for the XamMenuSeparator control when a new control
+            template is applied.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Menus.XamMenuSeparator.SeparatorOrientationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Menus.XamMenuSeparator.SeparatorOrientation"/> dependency property. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Menus.XamMenuSeparator.SeparatorOrientation">
+            <summary>
+            Determinates how separator is orientated. It can be positioned either horizontally or vertically.
+            </summary>
+        </member>
+    </members>
+</doc>

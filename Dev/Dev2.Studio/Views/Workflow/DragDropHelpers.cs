@@ -82,7 +82,7 @@ namespace Dev2.Studio.Views.Workflow
                     }
                     if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemModel.EnvironmentId && !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemModel.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService)
                     {
-                        CustomContainer.Get<IPopupController>().Show(StringResources.DragRemoteNotSupported, StringResources.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null);
+                        CustomContainer.Get<IPopupController>().Show(Warewolf.Studio.Resources.Languages.Core.DragRemoteNotSupported, Warewolf.Studio.Resources.Languages.Core.DragRemoteNotSupportedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null);
                         return true;
                     }
                     if(explorerItemModel.Permissions >= Permissions.Execute && explorerItemModel.ResourceType <= Common.Interfaces.Data.ResourceType.WebService)

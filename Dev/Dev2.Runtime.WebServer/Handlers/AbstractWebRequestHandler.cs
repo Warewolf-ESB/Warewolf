@@ -44,7 +44,6 @@ namespace Dev2.Runtime.WebServer.Handlers
     {
         protected readonly List<DataListFormat> PublicFormats = new DataListTranslatorFactory().FetchAllFormats().Where(c => c.ContentType != "").ToList();
         string _location;
-        static readonly object ExecutionObject = new object();
         public string Location { get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); } }
 
         public abstract void ProcessRequest(ICommunicationContext ctx);

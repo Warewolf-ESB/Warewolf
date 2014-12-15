@@ -119,7 +119,7 @@ namespace Dev2.Studio.ViewModels.Help
                         }
                         else
                         {
-                            ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
+                            ResourcePath = FileHelper.GetFullPath(Warewolf.Studio.Resources.Languages.Core.Uri_Studio_PageNotAvailable);
                             Execute.OnUIThread(() =>
                                                {
                                                    HelpViewWrapper.Navigate(ResourcePath);

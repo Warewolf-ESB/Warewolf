@@ -167,6 +167,22 @@ namespace Dev2.Runtime.WebServer.Controllers
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables)
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
+
+        [HttpGet]
+        [HttpPost]
+        [Route("secure/{*__name__}")]
+        public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
+        {
+          return ExecuteWorkflow(__name__);
+        } 
+        
+        [HttpGet]
+        [HttpPost]
+        [Route("public/{*__name__}")]
+        public HttpResponseMessage ExecutePublicWorkflow(string __name__)
+        {
+          return ExecuteWorkflow(__name__);
+        }
         
         [HttpGet]
         [HttpPost]

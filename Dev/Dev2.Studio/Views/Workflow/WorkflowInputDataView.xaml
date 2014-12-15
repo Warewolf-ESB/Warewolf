@@ -25,9 +25,9 @@
         <KeyBinding Key="Escape" Command="{Binding Path=CancelCommand}"/>
     </Window.InputBindings>
 
-    <i:Interaction.Behaviors>
+    <!--<i:Interaction.Behaviors>
         <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />
-    </i:Interaction.Behaviors>
+    </i:Interaction.Behaviors>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />

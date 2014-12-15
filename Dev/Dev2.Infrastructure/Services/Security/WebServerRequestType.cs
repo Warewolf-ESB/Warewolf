@@ -30,6 +30,8 @@ namespace Dev2.Services.Security
         WebGetView,
         WebInvokeService,
         WebExecuteWorkflow,
+        WebExecuteSecureWorkflow,
+        WebExecutePublicWorkflow,
         WebExecuteGetLogFile,
         WebBookmarkWorkflow,
 
