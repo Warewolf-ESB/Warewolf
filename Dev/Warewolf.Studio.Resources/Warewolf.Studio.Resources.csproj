@@ -115,9 +115,6 @@
     <Resource Include="Images\viewinbrowser.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\website.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="StyleElements\Brushes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
