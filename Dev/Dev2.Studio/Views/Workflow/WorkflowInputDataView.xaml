@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
         xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-        xmlns:InterfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
         xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+        xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
         xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
         Title="Debug"         
         Width="470"        
@@ -101,7 +101,7 @@
                                             </AutomationProperties.AutomationId>
                                             <ui:IntellisenseTextBox.IntellisenseProvider>
                                                 <interfaceImplementors:CompositeIntellisenseProvider>
-                                                    <InterfaceImplementors:BlankIntellisenseProvider />
+                                                    <provider:BlankIntellisenseProvider />
                                                 </interfaceImplementors:CompositeIntellisenseProvider>
                                             </ui:IntellisenseTextBox.IntellisenseProvider>
                                         </ui:IntellisenseTextBox>
