@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.31010.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -231,6 +231,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Views", "Warewolf.Studio.Views\Warewolf.Studio.Views.csproj", "{81414783-9990-46EA-9668-DFA61E1AAD18}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Core", "Warewolf.Studio.Core\Warewolf.Studio.Core.csproj", "{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.ViewModels.Tests", "Warewolf.Studio.ViewModels.Tests\Warewolf.Studio.ViewModels.Tests.csproj", "{7A342AA8-9693-4FEE-A235-939044F5C1D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -768,6 +770,18 @@ Global
 		{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}.Release|x64.ActiveCfg = Release|Any CPU
 		{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|x64.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
