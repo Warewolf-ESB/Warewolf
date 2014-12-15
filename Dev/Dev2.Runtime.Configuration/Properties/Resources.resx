@@ -31,30 +31,30 @@
     name/value pairs.
     
     Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
+    type or mime-type. Type corresponds to a .NET class that support 
     text/value conversion through the TypeConverter architecture. 
     Classes that don't support this are serialized and stored with the 
-    mimetype set.
+    mime-type set.
     
-    The mimetype is used for serialized objects, and tells the 
+    The mime-type is used for serialized objects, and tells the 
     ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
+    extensible. For a given mime-type the value must be set accordingly:
     
     Note - application/x-microsoft.net.object.binary.base64 is the format 
     that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
     
-    mimetype: application/x-microsoft.net.object.binary.base64
+    mime-type: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
-    mimetype: application/x-microsoft.net.object.soap.base64
+    mime-type: application/x-microsoft.net.object.soap.base64
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
-    mimetype: application/x-microsoft.net.object.bytearray.base64
+    mime-type: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
@@ -123,7 +123,7 @@
   </data>
   <data name="AutoComplete_OnMaxDropDownHeightPropertyChanged_InvalidValue" xml:space="preserve">
     <value>Invalid maximum drop down height value '{0}'. The value must be greater than or equal to zero.</value>
-    <comment>Exception thrown when the MaxDropDownHeight dependency property is seto to a value that is negative.</comment>
+    <comment>Exception thrown when the MaxDropDownHeight dependency property is set to a value that is negative.</comment>
   </data>
   <data name="AutoComplete_OnMinimumPopulateDelayPropertyChanged_InvalidValue" xml:space="preserve">
     <value>Invalid MinimumPopulateDelay value '{0}'. The value must be greater than or equal to zero.</value>
