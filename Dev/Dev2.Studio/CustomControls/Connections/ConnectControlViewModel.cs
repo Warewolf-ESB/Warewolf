@@ -10,7 +10,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -18,6 +17,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.ConnectionHelpers;
 using Dev2.Interfaces;
@@ -115,60 +115,60 @@ namespace Dev2.CustomControls.Connections
             SetSelectedEnvironment();
         }
 
-        public void ConnectedServerChanged(object sender, ConnectedServerChangedEvent e)
+        public void ConnectedServerChanged(object sender, IConnectedServerChangedEvent connectedServerChangedEvent)
         {
-            var index = Servers.IndexOf(Servers.FirstOrDefault(s => s.EnvironmentModel.ID == e.EnvironmentId));
-
-            if(index != -1)
-            {
-                SelectedServerIndex = index;
-            }
+//            var index = Servers.IndexOf(Servers.FirstOrDefault(s => s.EnvironmentModel.ID == e.EnvironmentId));
+//
+//            if(index != -1)
+//            {
+//                SelectedServerIndex = index;
+//            }
         }
 
-        public void ConnectedStatusChanged(object sender, ConnectionStatusChangedEventArg e)
+        public void ConnectedStatusChanged(object sender, IConnectionStatusChangedEventArg connectionStatusChangedEventArg)
         {
-            var server = Servers.FirstOrDefault(c => c.EnvironmentModel.ID == e.EnvironmentId);
-            if(server == null)
-            {
-                return;
-            }
-
-            var isBusyStatus = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
-            bool isconnected;
-
-            if(isBusyStatus)
-            {
-                isconnected = false;
-                IsConnectButtonSpinnerVisible = true;
-                IsDropDownEnabled = false;
-            }
-            else
-            {
-                IsConnectButtonSpinnerVisible = false;
-                IsDropDownEnabled = true;
-                isconnected = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Connected;
-            }
-
-            server.IsConnected = isconnected;
-            server.AllowEdit = !server.EnvironmentModel.IsLocalHost && e.ConnectedStatus != ConnectionEnumerations.ConnectedState.Busy;
-
-            if(SelectedServer != null && SelectedServer.EnvironmentModel.ID == e.EnvironmentId)
-            {
-                if(e.DoCallback)
-                {
-                    _callbackHandler(server.EnvironmentModel);
-                }
-            }
+//            var server = Servers.FirstOrDefault(c => c.EnvironmentModel.ID == e.EnvironmentId);
+//            if(server == null)
+//            {
+//                return;
+//            }
+//
+//            var isBusyStatus = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
+//            bool isconnected;
+//
+//            if(isBusyStatus)
+//            {
+//                isconnected = false;
+//                IsConnectButtonSpinnerVisible = true;
+//                IsDropDownEnabled = false;
+//            }
+//            else
+//            {
+//                IsConnectButtonSpinnerVisible = false;
+//                IsDropDownEnabled = true;
+//                isconnected = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Connected;
+//            }
+//
+//            server.IsConnected = isconnected;
+//            server.AllowEdit = !server.EnvironmentModel.IsLocalHost && e.ConnectedStatus != ConnectionEnumerations.ConnectedState.Busy;
+//
+//            if(SelectedServer != null && SelectedServer.EnvironmentModel.ID == e.EnvironmentId)
+//            {
+//                if(e.DoCallback)
+//                {
+//                    _callbackHandler(server.EnvironmentModel);
+//                }
+//            }
         }
 
         public void SetTargetEnvironment()
         {
-            var otherConnectedServers = Servers.Where(s => s.IsConnected && !s.EnvironmentModel.IsLocalHost);
-            IEnumerable<IConnectControlEnvironment> connectControlEnvironments = otherConnectedServers as IConnectControlEnvironment[] ?? otherConnectedServers.ToArray();
-            if(connectControlEnvironments.Count() == 1)
-            {
-                SelectedServerIndex = Servers.IndexOf(connectControlEnvironments.First());
-            }
+//            var otherConnectedServers = Servers.Where(s => s.IsConnected && !s.EnvironmentModel.IsLocalHost);
+//            IEnumerable<IConnectControlEnvironment> connectControlEnvironments = otherConnectedServers as IConnectControlEnvironment[] ?? otherConnectedServers.ToArray();
+//            if(connectControlEnvironments.Count() == 1)
+//            {
+//                SelectedServerIndex = Servers.IndexOf(connectControlEnvironments.First());
+//            }
         }
 
         void SetSelectedEnvironment()
@@ -180,25 +180,25 @@ namespace Dev2.CustomControls.Connections
                     return;
                 }
 
-                var server = Servers.FirstOrDefault(c => c.EnvironmentModel.IsLocalHost);
-                if(server == null)
-                {
-                    return;
-                }
-                _selectedServerIndex = Servers.IndexOf(server);
-                SelectedServer = server;
-                _connectControlSingleton.Refresh(server.EnvironmentModel.ID);
-                _mainViewModel.SetActiveEnvironment(server.EnvironmentModel);
+//                var server = Servers.FirstOrDefault(c => c.EnvironmentModel.IsLocalHost);
+//                if(server == null)
+//                {
+//                    return;
+//                }
+//                _selectedServerIndex = Servers.IndexOf(server);
+//                SelectedServer = server;
+//                _connectControlSingleton.Refresh(server.EnvironmentModel.ID);
+//                _mainViewModel.SetActiveEnvironment(server.EnvironmentModel);
             }
             else
             {
                 if(SelectedServer == null && Servers.Any())
                 {
-                    var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.IsLocalHost);
-                    if(selectedServerIndex >= 0)
-                    {
-                        SelectedServerIndex = selectedServerIndex;
-                    }
+//                    var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.IsLocalHost);
+//                    if(selectedServerIndex >= 0)
+//                    {
+//                        SelectedServerIndex = selectedServerIndex;
+//                    }
                 }
             }
         }
@@ -294,7 +294,7 @@ namespace Dev2.CustomControls.Connections
             }
             set
             {
-                if(value == -1 || value == _selectedServerIndex || Servers.Count <= value)
+                if (value == -1 || value == _selectedServerIndex || Servers.Count <= value)
                 {
                     return;
                 }
@@ -304,55 +304,56 @@ namespace Dev2.CustomControls.Connections
 
                 var selectedServer = Servers[value];
 
-                if(selectedServer.EnvironmentModel.Name == ConnectControlSingleton.NewServerText)
-                {
-                    int newServerIndex;
-
-                    if(!AddNewServer(out newServerIndex, OpenConnectionWizard))
-                    {
-                        if(_dispatcher != null)
-                        {
-                            _dispatcher.BeginInvoke(
-                            new Action(() =>
-                            {
-                                _selectedServerIndex = origValue;
-                                OnPropertyChanged();
-                            }),
-                            DispatcherPriority.ContextIdle,
-                            null
-                        );
-                        }
-                        else
-                        {
-                            _selectedServerIndex = origValue;
-                            OnPropertyChanged();
-                        }
-                    }
-                }
-                else
-                {
-                    SelectedServer = selectedServer;
-                    var environmentModel = EnvironmentRepository.Instance.Get(selectedServer.EnvironmentModel.ID);
-                    //_callbackHandler(selectedServer.EnvironmentModel);
-                    _callbackHandler(environmentModel);
-                }
-                OnPropertyChanged();
+                //                if(selectedServer.EnvironmentModel.Name == ConnectControlSingleton.NewServerText)
+                //                {
+                //                    int newServerIndex;
+                //
+                //                    if(!AddNewServer(out newServerIndex, OpenConnectionWizard))
+                //                    {
+                //                        if(_dispatcher != null)
+                //                        {
+                //                            _dispatcher.BeginInvoke(
+                //                            new Action(() =>
+                //                            {
+                //                                _selectedServerIndex = origValue;
+                //                                OnPropertyChanged();
+                //                            }),
+                //                            DispatcherPriority.ContextIdle,
+                //                            null
+                //                        );
+                //                        }
+                //                        else
+                //                        {
+                //                            _selectedServerIndex = origValue;
+                //                            OnPropertyChanged();
+                //                        }
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    SelectedServer = selectedServer;
+                //                    var environmentModel = EnvironmentRepository.Instance.Get(selectedServer.EnvironmentModel.ID);
+                //                    //_callbackHandler(selectedServer.EnvironmentModel);
+                //                    _callbackHandler(environmentModel);
+                //                }
+                //                OnPropertyChanged();
+                //            }
             }
         }
 
         public bool AddNewServer(out int newServerIndex, Action<int> openDialog)
         {
             newServerIndex = -1;
-            IEnvironmentModel newEnvironment;
-            if(ActionForNewRemoteServer(out newEnvironment, openDialog))
-            {
-                var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == newEnvironment.ID);
-                if(selectedServerIndex >= 0)
-                {
-                    newServerIndex = selectedServerIndex;
-                    return true;
-                }
-            }
+//            IEnvironmentModel newEnvironment;
+//            if(ActionForNewRemoteServer(out newEnvironment, openDialog))
+//            {
+//                var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == newEnvironment.ID);
+//                if(selectedServerIndex >= 0)
+//                {
+//                    newServerIndex = selectedServerIndex;
+//                    return true;
+//                }
+//            }
             return false;
         }
 
@@ -388,22 +389,22 @@ namespace Dev2.CustomControls.Connections
         bool GetNewlyAddedServer(out IEnvironmentModel environment)
         {
             var existingEnvironments = _environmentRepository.All();
+            environment = null;
             if(existingEnvironments == null)
             {
-                environment = null;
                 return false;
             }
 
             var newEnvironments = existingEnvironments.Except(Servers.Select(c => c.EnvironmentModel));
-            IEnumerable<IEnvironmentModel> environmentModels = newEnvironments as IEnvironmentModel[] ?? newEnvironments.ToArray();
+//            IEnumerable<IEnvironmentModel> environmentModels = newEnvironments as IEnvironmentModel[] ?? newEnvironments.ToArray();
+//
+//            if(!environmentModels.Any())
+//            {
+//                environment = null;
+//                return false;
+//            }
 
-            if(!environmentModels.Any())
-            {
-                environment = null;
-                return false;
-            }
-
-            environment = environmentModels.ToList().Last();
+//            environment = environmentModels.ToList().Last();
             return true;
         }
 
@@ -411,25 +412,25 @@ namespace Dev2.CustomControls.Connections
 
         public void OpenConnectionWizard(int selectedIndex)
         {
-            var localhost = Servers.FirstOrDefault(c => c.EnvironmentModel.IsLocalHost);
-            if(localhost != null)
-            {
-                if(selectedIndex >= 0)
-                {
-                    var environmentModel = Get(selectedIndex);
-                    _openWizard(localhost.EnvironmentModel, ResourceType.Server, null, string.Empty, environmentModel.ID.ToString(), null, environmentModel.Name);
-                }
-                else
-                {
-                    _openWizard(localhost.EnvironmentModel, ResourceType.Server, null, string.Empty, null, null, null);
-                }
-            }
+//            var localhost = Servers.FirstOrDefault(c => c.EnvironmentModel.IsLocalHost);
+//            if(localhost != null)
+//            {
+//                if(selectedIndex >= 0)
+//                {
+//                    var environmentModel = Get(selectedIndex);
+//                    _openWizard(localhost.EnvironmentModel, ResourceType.Server, null, string.Empty, environmentModel.ID.ToString(), null, environmentModel.Name);
+//                }
+//                else
+//                {
+//                    _openWizard(localhost.EnvironmentModel, ResourceType.Server, null, string.Empty, null, null, null);
+//                }
+//            }
         }
 
         IEnvironmentModel Get(int selectedIndex)
         {
             var selectedServer = Servers[selectedIndex];
-            return selectedServer.EnvironmentModel;
+            return selectedServer.EnvironmentModel as IEnvironmentModel;
         }
 
         public ICommand ConnectCommand
@@ -475,15 +476,15 @@ namespace Dev2.CustomControls.Connections
 
             if(environmentModel != null && _bindToActiveEnvironment)
             {
-                var index = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == environmentModel.ID);
-                if(index >= 0)
-                {
-                    _selectedServerIndex = index;
-                    SelectedServer = Servers[index];
-                    // ReSharper disable ExplicitCallerInfoArgument
-                    OnPropertyChanged("SelectedServerIndex");
-                    // ReSharper restore ExplicitCallerInfoArgument
-                }
+//                var index = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == environmentModel.ID);
+//                if(index >= 0)
+//                {
+//                    _selectedServerIndex = index;
+//                    SelectedServer = Servers[index];
+//                    // ReSharper disable ExplicitCallerInfoArgument
+//                    OnPropertyChanged("SelectedServerIndex");
+//                    // ReSharper restore ExplicitCallerInfoArgument
+//                }
             }
         }
     }

@@ -19,18 +19,17 @@ using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
-using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
 using Dev2.Factory;
-using Dev2.Models;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings;
@@ -159,11 +158,11 @@ namespace Dev2.Core.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.ResourceName).Returns(resourceName);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
-            resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(m => m.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
-            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
+            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
             resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
 
 
@@ -216,11 +215,11 @@ namespace Dev2.Core.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.ResourceName).Returns(resourceName);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
-            resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(m => m.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
-            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
+            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
 
             var envConn = new Mock<IEnvironmentConnection>();
             envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
@@ -238,7 +237,7 @@ namespace Dev2.Core.Tests
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var viewModel = new MainViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
 
-            resourceRepo.Verify(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true), Times.Never());
+            resourceRepo.Verify(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true), Times.Never());
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
 
             Assert.AreEqual(1, viewModel.Items.Count); // 1 extra for the help tab!
@@ -268,11 +267,11 @@ namespace Dev2.Core.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.ResourceName).Returns(resourceName);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
-            resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(m => m.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
-            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
+            resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
             resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
 
             var envConn = new Mock<IEnvironmentConnection>();
@@ -644,7 +643,6 @@ namespace Dev2.Core.Tests
 
             PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.No);
             var activetx = MainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
-            MainViewModel.CloseWorkSurfaceContext(activetx, null);
             FirstResource.Verify(r => r.Commit(), Times.Never(), "ResourceModel was committed when not saved.");
             FirstResource.Verify(r => r.Rollback(), Times.Once(), "ResourceModel was not rolled back when not saved.");
         }
@@ -664,7 +662,6 @@ namespace Dev2.Core.Tests
 
             PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             var activetx = MainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
-            MainViewModel.CloseWorkSurfaceContext(activetx, null);
             FirstResource.Verify(r => r.Commit(), Times.Once(), "ResourceModel was not committed when saved.");
             FirstResource.Verify(r => r.Rollback(), Times.Never(), "ResourceModel was rolled back when saved.");
         }
@@ -689,7 +686,6 @@ namespace Dev2.Core.Tests
             var activetx = MainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
 
             //------------Execute Test---------------------------
-            MainViewModel.CloseWorkSurfaceContext(activetx, null);
             PrivateObject pvt = new PrivateObject(MainViewModel);
             //------------Assert Results-------------------------
             EventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Never());
@@ -946,7 +942,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             int HitCounter = 0;
             IContextualResourceModel payloadResourceModel = null;
-            MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()));
+            MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IResource>()));
             WebController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Callback((IContextualResourceModel c, bool b1) =>
                 {
                     HitCounter++;
@@ -967,7 +963,7 @@ namespace Dev2.Core.Tests
             {
                 Assert.Fail("The resource passed in was null");
             }
-            MockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
+            MockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IResource>()), Times.Never());
         }
 
         [TestMethod]
@@ -976,7 +972,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             int HitCounter = 0;
             IContextualResourceModel payloadResourceModel = null;
-            MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()));
+            MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IResource>()));
             WebController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Callback((IContextualResourceModel c, bool b1) =>
                 {
                     HitCounter++;
@@ -997,7 +993,7 @@ namespace Dev2.Core.Tests
             {
                 Assert.Fail("The resource passed in was null");
             }
-            MockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
+            MockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IResource>()), Times.Never());
         }
 
         [TestMethod]
@@ -1006,7 +1002,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             int HitCounter = 0;
             IContextualResourceModel payloadResourceModel = null;
-            MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()));
+            MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IResource>()));
             WebController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), true)).Callback((IContextualResourceModel c, bool b1) =>
                 {
                     HitCounter++;
@@ -1029,7 +1025,7 @@ namespace Dev2.Core.Tests
             {
                 Assert.Fail("The resource passed in was null");
             }
-            MockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
+            MockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IResource>()), Times.Never());
         }
 
         [TestMethod]
@@ -1050,7 +1046,7 @@ namespace Dev2.Core.Tests
         {
             //Setup
             CreateFullExportsAndVmWithEmptyRepo();
-            MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()));
+            MockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IResource>()));
             var environmentRepo = CreateMockEnvironment();
             Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
             mockAuthService.Setup(c => c.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
@@ -1064,7 +1060,7 @@ namespace Dev2.Core.Tests
             MainViewModel.NewResourceCommand.Execute("Workflow");
             //Assert
             resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());
-            MockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()), Times.Once());
+            MockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IResource>()), Times.Once());
         }
 
         #endregion
@@ -2372,7 +2368,7 @@ namespace Dev2.Core.Tests
             var workspaceId = Guid.NewGuid();
 
             var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             resourceModel.SetupGet(r => r.ID).Returns(resourceId);
             resourceModel.SetupGet(r => r.ServerID).Returns(serverId);
             resourceModel.SetupGet(r => r.ResourceName).Returns("My_Resource_Name");
@@ -2386,7 +2382,7 @@ namespace Dev2.Core.Tests
             environmentModel.SetupGet(e => e.Connection).Returns(environmentConnection.Object);
 
             var resourceRepository = new Mock<IResourceRepository>();
-            resourceRepository.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>())).Returns(() =>
+            resourceRepository.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>())).Returns(() =>
             {
                 Thread.Sleep(100);
                 return new List<IResourceModel>();
@@ -2413,7 +2409,7 @@ namespace Dev2.Core.Tests
             var workspaceId = Guid.NewGuid();
 
             var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(r => r.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             resourceModel.SetupGet(r => r.ID).Returns(resourceId);
             resourceModel.SetupGet(r => r.ServerID).Returns(serverId);
             resourceModel.SetupGet(r => r.ResourceName).Returns("My_Resource_Name");
@@ -2427,7 +2423,7 @@ namespace Dev2.Core.Tests
             environmentModel.SetupGet(e => e.Connection).Returns(environmentConnection.Object);
 
             var resourceRepository = new Mock<IResourceRepository>();
-            resourceRepository.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>())).Returns(() =>
+            resourceRepository.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>())).Returns(() =>
             {
                 Thread.Sleep(100);
                 return new List<IResourceModel>();

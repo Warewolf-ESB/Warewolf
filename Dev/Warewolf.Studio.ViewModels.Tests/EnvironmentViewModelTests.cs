@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -70,6 +72,37 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             server.Verify();
             Assert.IsTrue(environmentViewModel.IsConnected);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentViewModel_Load")]
+        public void EnvironmentViewModel_Load_WhenServerNotConnected_ShouldNotLoadResources()
+        {
+            //------------Setup for test--------------------------
+            var server = new Mock<IServer>();
+            var environmentModel = new EnvironmentViewModel(server.Object);
+            
+            //------------Execute Test---------------------------
+            environmentModel.Load();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(environmentModel.IsLoaded);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentViewModel_Load")]
+        public void EnvironmentViewModel_Load_WhenServerConnected_ShouldNotLoadResourcesFromServer()
+        {
+            //------------Setup for test--------------------------
+            var server = new Mock<IServer>();
+            server.Setup(server1 => server1.Load()).Returns(new List<IExplorerItem>());
+            var environmentModel = new EnvironmentViewModel(server.Object);
+            
+            //------------Execute Test---------------------------
+            environmentModel.Load();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(environmentModel.IsLoaded);
         }
     }
 }

@@ -10,14 +10,12 @@
 */
 
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
-using Dev2.ConnectionHelpers;
+using Dev2.Common.Interfaces;
 using Dev2.CustomControls.Connections;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels;
-using Dev2.Threading;
 
 namespace Dev2.Core.Tests
 {

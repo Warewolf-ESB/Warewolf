@@ -209,7 +209,6 @@
     <Compile Include="Shared Models\ResultList.cs" />
     <Compile Include="Shared Models\SerializableResource.cs" />
     <Compile Include="Threading\AsyncWorker.cs" />
-    <Compile Include="Threading\IAsyncWorker.cs" />
     <Compile Include="Threading\TestAsyncWorker.cs" />
     <Compile Include="VerifyArgument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

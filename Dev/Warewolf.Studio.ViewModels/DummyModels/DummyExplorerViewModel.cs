@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 
 namespace Warewolf.Studio.ViewModels.DummyModels
@@ -69,6 +70,11 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         public bool Connect()
         {
             return true;
+        }
+
+        public IList<IExplorerItem> Load()
+        {
+            return new List<IExplorerItem>();
         }
 
         #endregion

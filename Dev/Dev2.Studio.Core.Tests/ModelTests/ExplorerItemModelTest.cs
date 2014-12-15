@@ -18,7 +18,7 @@ using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
-using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio;
@@ -36,7 +36,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -1861,12 +1860,13 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             var aggregator = new Mock<EventAggregator>();
-#pragma warning disable 219
+            // ReSharper disable NotAccessedVariable
             Guid resourceGuid;
 
             string oldName;
             string newName;
-#pragma warning restore 219
+            // ReSharper restore NotAccessedVariable
+
             aggregator.Setup(a => a.Publish(It.IsAny<UpdateWorksurfaceFlowNodeDisplayName>())).Callback<object>(msg =>
                 {
                     var workSurfaceObject = (msg as UpdateWorksurfaceFlowNodeDisplayName);

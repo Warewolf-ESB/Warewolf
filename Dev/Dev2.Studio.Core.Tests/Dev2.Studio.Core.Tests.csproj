@@ -206,7 +206,6 @@
     <Compile Include="DeployNavigationViewModelTest.cs" />
     <Compile Include="DialogFactoryTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
-    <Compile Include="Dock\ContentPaneFactoryTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -483,6 +482,7 @@
   <ItemGroup>
     <Folder Include="Configuration\" />
     <Folder Include="Diagnostics\Debug\" />
+    <Folder Include="Dock\" />
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="ViewModelTests\ViewModelMocks\" />
     <Folder Include="Views\Global\" />

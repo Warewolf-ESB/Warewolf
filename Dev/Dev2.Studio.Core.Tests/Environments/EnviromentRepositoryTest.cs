@@ -18,7 +18,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
-using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.ServiceModel;

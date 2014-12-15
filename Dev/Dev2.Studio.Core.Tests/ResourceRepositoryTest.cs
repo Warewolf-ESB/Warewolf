@@ -18,7 +18,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;

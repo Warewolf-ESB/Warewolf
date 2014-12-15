@@ -13,6 +13,7 @@ using System;
 using System.Network;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;

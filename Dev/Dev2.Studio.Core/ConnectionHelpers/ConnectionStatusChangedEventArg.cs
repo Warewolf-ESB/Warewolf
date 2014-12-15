@@ -10,10 +10,11 @@
 */
 
 using System;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.ConnectionHelpers
 {
-    public class ConnectionStatusChangedEventArg : EventArgs
+    public class ConnectionStatusChangedEventArg : EventArgs,IConnectionStatusChangedEventArg
     {
         public ConnectionEnumerations.ConnectedState ConnectedStatus { get; private set; }
         public Guid EnvironmentId { get; private set; }

@@ -14,7 +14,7 @@ using System.Activities.Expressions;
 using System.Linq.Expressions;
 using System.Text;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Interegators;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;

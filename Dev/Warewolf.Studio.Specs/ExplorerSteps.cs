@@ -1,4 +1,7 @@
-﻿using Dev2.Common.Interfaces;
+﻿using System.Collections.Generic;
+using System.Resources;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Explorer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
@@ -44,9 +47,21 @@ namespace Warewolf.Studio.Specs
     {
         #region Implementation of IServer
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public Server(IStudioResource)
+        {
+        }
+
         public bool Connect()
         {
             return true;
+        }
+
+        public IList<IExplorerItem> Load()
+        {
+            return StudioRe;
         }
 
         #endregion

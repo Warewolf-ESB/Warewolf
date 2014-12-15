@@ -13,6 +13,7 @@ using System;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.ConnectionHelpers;
 using Dev2.Models;
 using Dev2.Services.Events;

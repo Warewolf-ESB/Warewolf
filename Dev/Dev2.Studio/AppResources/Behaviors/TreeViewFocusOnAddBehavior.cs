@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interactivity;
+using Dev2.Common.Interfaces;
 using Dev2.Models;
 
 // ReSharper disable CheckNamespace

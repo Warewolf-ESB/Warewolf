@@ -26,6 +26,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;

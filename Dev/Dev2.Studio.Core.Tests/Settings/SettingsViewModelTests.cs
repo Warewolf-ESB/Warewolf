@@ -14,8 +14,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
@@ -26,7 +26,6 @@ using Dev2.Settings;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

@@ -15,7 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Network;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;

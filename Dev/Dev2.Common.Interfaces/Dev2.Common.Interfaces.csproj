@@ -141,6 +141,7 @@
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
+    <Compile Include="ConnectionEnumerations.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConverter.cs" />
@@ -197,6 +198,12 @@
     <Compile Include="Explorer\IExplorerItem.cs" />
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
+    <Compile Include="IAsyncWorker.cs" />
+    <Compile Include="IConnectControlEnvironment.cs" />
+    <Compile Include="IConnectControlSingleton.cs" />
+    <Compile Include="IConnectedServerChangedEvent.cs" />
+    <Compile Include="IConnectionStatusChangedEventArg.cs" />
+    <Compile Include="IExplorerItemModel.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="Infrastructure\Communication\IExecuteMessage.cs" />
     <Compile Include="Infrastructure\Events\IEventPublisher.cs" />
@@ -220,6 +227,7 @@
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="IServer.cs" />
+    <Compile Include="IStudioResourceRepository.cs" />
     <Compile Include="IVersionStrategy.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />

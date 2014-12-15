@@ -12,8 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Models;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.TO;
 using Dev2.ViewModels.Deploy;

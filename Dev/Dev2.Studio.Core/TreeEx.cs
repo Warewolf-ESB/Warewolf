@@ -11,7 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Models;
+using Dev2.Common.Interfaces;
 
 namespace Dev2
 {

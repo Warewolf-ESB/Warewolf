@@ -21,6 +21,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio;
@@ -73,7 +74,7 @@ namespace Dev2.Models
         private readonly IStudioResourceRepository _studioResourceRepository;
         private static bool _serverRefreshing;
         ObservableCollection<IExplorerItemModel> _children;
-        RelayCommand _refreshCommand;
+        ICommand _refreshCommand;
         private Permissions _permissions;
         bool _isRefreshing;
         ICommand _newFolderCommand;
@@ -120,13 +121,14 @@ namespace Dev2.Models
             ToggleVersionHistoryHeader = "Show Version History";
         }
 
-        private void ConnectedStatusChanged(object sender, ConnectionStatusChangedEventArg e)
+        private void ConnectedStatusChanged(object sender, IConnectionStatusChangedEventArg connectionStatusChangedEventArg)
         {
-            if(EnvironmentId == e.EnvironmentId && ResourceType == ResourceType.Server)
-            {
-                IsRefreshing = _serverRefreshing = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
-                RefreshCommand.RaiseCanExecuteChanged();
-            }
+            _serverRefreshing = true;
+//            if(EnvironmentId == e.EnvironmentId && ResourceType == ResourceType.Server)
+//            {
+//                IsRefreshing = _serverRefreshing = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
+//                RefreshCommand.RaiseCanExecuteChanged();
+//            }
         }
 
         void ChildrenCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -679,7 +681,7 @@ namespace Dev2.Models
             }
         }
 
-        public RelayCommand RefreshCommand
+        public ICommand RefreshCommand
         {
             get
             {
@@ -872,7 +874,7 @@ namespace Dev2.Models
         /// The connect command.
         /// </value>
         /// <author>Massimo Guerrera</author>
-        public RelayCommand ConnectCommand
+        public ICommand ConnectCommand
         {
             get
             {
@@ -888,7 +890,7 @@ namespace Dev2.Models
         /// The disconnect command.
         /// </value>
         /// <author>Massimo Guerrera</author>
-        public RelayCommand DisconnectCommand
+        public ICommand DisconnectCommand
         {
             get
             {
@@ -961,7 +963,7 @@ namespace Dev2.Models
             }
         }
 
-        public ExplorerItemModel Clone()
+        public IExplorerItemModel Clone()
         {
             ExplorerItemModel result = new ExplorerItemModel();
             var fieldInfos = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -986,7 +988,7 @@ namespace Dev2.Models
             return result;
         }
 
-        public ExplorerItemModel Clone(IConnectControlSingleton connectControlSingleton, IStudioResourceRepository studioResourceRepository)
+        public IExplorerItemModel Clone(IConnectControlSingleton connectControlSingleton, IStudioResourceRepository studioResourceRepository)
         {
             ExplorerItemModel result = new ExplorerItemModel(connectControlSingleton, studioResourceRepository);
             var fieldInfos = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
