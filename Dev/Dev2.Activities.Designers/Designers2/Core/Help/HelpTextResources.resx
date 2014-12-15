@@ -31,30 +31,30 @@
     name/value pairs.
     
     Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
+    type or mime-type. Type corresponds to a .NET class that support 
     text/value conversion through the TypeConverter architecture. 
     Classes that don't support this are serialized and stored with the 
-    mimetype set.
+    mime-type set.
     
-    The mimetype is used for serialized objects, and tells the 
+    The mime-type is used for serialized objects, and tells the 
     ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
+    extensible. For a given mime-type the value must be set accordingly:
     
     Note - application/x-microsoft.net.object.binary.base64 is the format 
     that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
     
-    mimetype: application/x-microsoft.net.object.binary.base64
+    mime-type: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
-    mimetype: application/x-microsoft.net.object.soap.base64
+    mime-type: application/x-microsoft.net.object.soap.base64
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
-    mimetype: application/x-microsoft.net.object.bytearray.base64
+    mime-type: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
@@ -143,13 +143,13 @@ Which direction would you like to process in?</value>
   </data>
   <data name="QuickVariablePrefixWithHelpText" xml:space="preserve">
     <value>To append something onto the front of the variables in your list, type it in here.
-For recordsets, type  recordsetname(). Dont forget the "." after the "()"
+For recordsets, type  recordsetname(). Don't forget the "." after the "()"
 You do not need to put the "[[" in.</value>
   </data>
   <data name="QuickVariableSplitAndAtHelpText" xml:space="preserve">
     <value>Select the criteria to split the variables in the list. This will be the pattern used to repeat against the Variable List box.
 Char will split on the characters you specify, like comma or | &lt;/.
-Index will split on the numeric index from the previouse split.
+Index will split on the numeric index from the previous split.
 New Line will split on carriage return.
 Space will split on blank space.
 Tab splits on a tab character.</value>
@@ -203,7 +203,7 @@ If you specify 50, then 50 rows will be bulk inserted at a time.</value>
     <value>Check constraints while data is being inserted. By default, constraints are not checked.</value>
   </data>
   <data name="SqlBulkInsertToolTipDatabase" xml:space="preserve">
-    <value>Select a preconfigured database source or "New Database Source..." to add a new one.</value>
+    <value>Select a pre-configured database source or "New Database Source..." to add a new one.</value>
   </data>
   <data name="SqlBulkInsertToolTipFireTriggers" xml:space="preserve">
     <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.</value>
@@ -1442,10 +1442,10 @@ Data
 [[Recordset().Field]]</value>
   </data>
   <data name="EmailHelpMailSource" xml:space="preserve">
-    <value>Select a preconfigured email source or "New Email Source..." to add a new one.
+    <value>Select a pre-configured email source or "New Email Source..." to add a new one.
 
 Allowed:
-Select a preconfigured email source or "New Email Source..." to add a new one.</value>
+Select a pre-configured email source or "New Email Source..." to add a new one.</value>
   </data>
   <data name="EmailHelpPassword" xml:space="preserve">
     <value>Enter the password, if there is one, for the account you are sending from.
@@ -1512,7 +1512,7 @@ If you are on a domain, you still need to provide the email address of the accou
 If you leave it blank, the account used to setup the Email Source will be used.</value>
   </data>
   <data name="EmailToolTipMailSource" xml:space="preserve">
-    <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
+    <value>Select a pre-configured email source or "New Email Source..." to add a new one.</value>
   </data>
   <data name="EmailToolTipPassword" xml:space="preserve">
     <value>Enter the password, if there is one, for the account you are sending from.</value>
@@ -1631,7 +1631,7 @@ Returns the output of the script, if any.</value>
 To run a programming script, put the script you want to execute in here.</value>
   </data>
   <data name="ForEachHelpForEachType" xml:space="preserve">
-    <value>Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+    <value>Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
 [[Customer(2).ID]],
 [[Customer(3).ID]].
 * in Range allows you to input a range of indexes.
@@ -1644,7 +1644,7 @@ Allowed:
 na</value>
   </data>
   <data name="ForEachHelpValue" xml:space="preserve">
-    <value>Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+    <value>Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
 
 Allowed:
 Data   
@@ -1654,7 +1654,7 @@ Data
 [[Recordset().Field]]</value>
   </data>
   <data name="ForEachToolTipValue" xml:space="preserve">
-    <value>Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],</value>
+    <value>Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],</value>
   </data>
   <data name="XPathHelpXML" xml:space="preserve">
     <value>Any data or variable can go in here.
@@ -1668,7 +1668,7 @@ Data
 [[Recordset().Field]]</value>
   </data>
   <data name="XPathHelpXPath" xml:space="preserve">
-    <value>Xpath notation describing the route to the data in the XML input.
+    <value>XPath notation describing the route to the data in the XML input.
 
 Allowed:
 Data   
@@ -1682,7 +1682,7 @@ Data
 To traverse an XML document and return information from it, enter the raw XML in here.</value>
   </data>
   <data name="XPathToolTipXPath" xml:space="preserve">
-    <value>Xpath notation describing the route to the data in the XML input.</value>
+    <value>XPath notation describing the route to the data in the XML input.</value>
   </data>
   <data name="UnzipHelpArchivePassword" xml:space="preserve">
     <value>Specify the password needed to open the zip file here.
@@ -1749,7 +1749,7 @@ Renaming a Schedule will loose its History.</value>
     <value>Check this box if you would like a missed trigger to execute as soon as possible.</value>
   </data>
   <data name="SchedulerSettingsHelpTextStatus" xml:space="preserve">
-    <value>To change if the trigger is active or not, select Enabled or Dissabled.</value>
+    <value>To change if the trigger is active or not, select Enabled or Disabled.</value>
   </data>
   <data name="SchedulerSettingsHelpTextTrigger" xml:space="preserve">
     <value>To run a workflow on a schedule select the Edit Trigger button.</value>
@@ -2351,7 +2351,7 @@ Using recordset () will add a new record and (*) will assign every record.
 If there are multiple results and a scalar is used, then each result will be separated with a comma.</value>
   </data>
   <data name="ForEachToolTipForEachType" xml:space="preserve">
-    <value>Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+    <value>Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
 [[Customer(2).ID]],
 [[Customer(3).ID]].
 * in Range allows you to input a range of indexes.
@@ -2709,7 +2709,7 @@ How long before timing out?</value>
 0 or blank will not timeout.
 
 Allowed:
-Timepart for the timeout</value>
+Time part for the timeout</value>
   </data>
   <data name="TransactionToolTip" xml:space="preserve">
     <value>To run an activity or sequence of activities in a transaction, drop it on here.
@@ -2783,7 +2783,7 @@ Allowed:
   </data>
   <data name="WebRequestHelpURL" xml:space="preserve">
     <value>Any data or variable can go in here.
-To traverse and retrieve the raw response from a webpage, enter it in here.
+To traverse and retrieve the raw response from a web page, enter it in here.
 
 Allowed:
 Data   
@@ -2801,7 +2801,7 @@ Returns the response text of the web get request.</value>
   </data>
   <data name="WebRequestToolTipURL" xml:space="preserve">
     <value>Any data or variable can go in here.
-To traverse and retrieve the raw response from a webpage, enter it in here.</value>
+To traverse and retrieve the raw response from a web page, enter it in here.</value>
   </data>
   <data name="WorkerServiceHelpInput" xml:space="preserve">
     <value>Insert the input data for this service. It will be mapped to the input field listed in the To Service column. 
@@ -2899,12 +2899,12 @@ Data
     <value>Any variable and/or data goes in here.
 Put the contents you want written to the file in here.</value>
   </data>
-  <data name="XpathHelpResults" xml:space="preserve">
+  <data name="XPathHelpResults" xml:space="preserve">
     <value>Only variables go in here.
-Returns the result of the Xpath expression.
+Returns the result of the XPath expression.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.
-Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.
+Each XPath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.
 
 Allowed:
 [[Scalar]]  
@@ -2912,12 +2912,12 @@ Allowed:
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="XpathToolTipResults" xml:space="preserve">
+  <data name="XPathToolTipResults" xml:space="preserve">
     <value>Only variables go in here.
-Returns the result of the Xpath expression.
+Returns the result of the XPath expression.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.
-Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.</value>
+Each XPath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.</value>
   </data>
   <data name="ZipToolTipCompressiontype" xml:space="preserve">
     <value>The system will try and match your zipping requirements as far as possible.
@@ -3135,10 +3135,10 @@ Allowed:
 Check constraints while data is being inserted.</value>
   </data>
   <data name="SQLBulkInsertHelpDatabase" xml:space="preserve">
-    <value>Select a preconfigured database source or "New Database Source..." to add a new one.
+    <value>Select a pre-configured database source or "New Database Source..." to add a new one.
 
 Allowed:
-Select a preconfigured database source or "New Database Source..." to add a new one.</value>
+Select a pre-configured database source or "New Database Source..." to add a new one.</value>
   </data>
   <data name="SQLBulkInsertHelpFiretriggers" xml:space="preserve">
     <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.
