@@ -413,7 +413,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are allowed to drag remote workflows onto a remote service designer..
+        ///   Looks up a localized string similar to You are not allowed to drag remote workflows onto a remote service designer..
         /// </summary>
         public static string DragRemoteNotSupported {
             get {
@@ -499,24 +499,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Error_Environments_Directory_Not_Found {
             get {
                 return ResourceManager.GetString("Error_Environments_Directory_Not_Found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Supported Webparts for websites has not been configured correctly.
-        /// </summary>
-        public static string Error_Supported_Webparts_Not_Set {
-            get {
-                return ResourceManager.GetString("Error_Supported_Webparts_Not_Set", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The website resource selected already exists!.
-        /// </summary>
-        public static string Error_Website_Resource_Exists {
-            get {
-                return ResourceManager.GetString("Error_Website_Resource_Exists", resourceCulture);
             }
         }
         
@@ -1115,15 +1097,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TUW-DEVFS/dsfTest.
-        /// </summary>
-        public static string Test_SPN_Endpoint_Identity {
-            get {
-                return ResourceManager.GetString("Test_SPN_Endpoint_Identity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to 80.
         /// </summary>
         public static string UI_Layout_Grid_Default_Height {
@@ -1142,285 +1115,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to assert.png.
-        /// </summary>
-        public static string Uri_Application_Image_Assert {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Assert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to assign.png.
-        /// </summary>
-        public static string Uri_Application_Image_Assign {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Assign", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to build.png.
-        /// </summary>
-        public static string Uri_Application_Image_Build {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Build", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to checkpoint.png.
-        /// </summary>
-        public static string Uri_Application_Image_Checkpoint {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Checkpoint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to comment.png.
-        /// </summary>
-        public static string Uri_Application_Image_Comment {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Comment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to datasource.png.
-        /// </summary>
-        public static string Uri_Application_Image_Datasource {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Datasource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to decision.png.
-        /// </summary>
-        public static string Uri_Application_Image_Decision {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Decision", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DependencyGraph-16.png.
-        /// </summary>
-        public static string Uri_Application_Image_Dependency {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Dependency", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to dsfcli.png.
-        /// </summary>
-        public static string Uri_Application_Image_DSFCLI {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_DSFCLI", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to edit.png.
-        /// </summary>
-        public static string Uri_Application_Image_Edit {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Edit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to explorer.png.
-        /// </summary>
-        public static string Uri_Application_Image_Explorer {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Explorer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to flowswitch.png.
-        /// </summary>
-        public static string Uri_Application_Image_FlowSwitch {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_FlowSwitch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ExplorerFolder-32.png.
-        /// </summary>
-        public static string Uri_Application_Image_Folder {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Folder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to foreach.png.
-        /// </summary>
-        public static string Uri_Application_Image_ForEach {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_ForEach", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ftp.png.
-        /// </summary>
-        public static string Uri_Application_Image_FTP {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_FTP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to home.ico.
-        /// </summary>
-        public static string Uri_Application_Image_Home {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Home", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to log.png.
-        /// </summary>
-        public static string Uri_Application_Image_Log {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Log", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to newdsfactivity.png.
-        /// </summary>
-        public static string Uri_Application_Image_NewActivity {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_NewActivity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to newdsfservice.png.
-        /// </summary>
-        public static string Uri_Application_Image_NewService {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_NewService", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to newdsfservice32.png.
-        /// </summary>
-        public static string Uri_Application_Image_NewService32 {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_NewService32", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to output.png.
-        /// </summary>
-        public static string Uri_Application_Image_Output {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Output", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Refresh-16.png.
-        /// </summary>
-        public static string Uri_Application_Image_Refresh {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Refresh", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to play.png.
-        /// </summary>
-        public static string Uri_Application_Image_Run {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Run", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to run.png.
-        /// </summary>
-        public static string Uri_Application_Image_Run2 {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Run2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to search.png.
-        /// </summary>
-        public static string Uri_Application_Image_Search {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Search", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to sequence.png.
-        /// </summary>
-        public static string Uri_Application_Image_Sequence {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Sequence", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ExplorerSources-32.png.
-        /// </summary>
-        public static string Uri_Application_Image_Source {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Source", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to toolbox.png.
-        /// </summary>
-        public static string Uri_Application_Image_Toolbox {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Toolbox", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://localhost/businessdesignstudio/images/.
-        /// </summary>
-        public static string Uri_Application_Image_Website {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_Website", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to workerservice.png.
-        /// </summary>
-        public static string Uri_Application_Image_WorkerService {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_WorkerService", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to workflowservice2.png.
-        /// </summary>
-        public static string Uri_Application_Image_WorklflowService {
-            get {
-                return ResourceManager.GetString("Uri_Application_Image_WorklflowService", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to http://community.warewolf.io/.
         /// </summary>
         public static string Uri_Community_HomePage {
@@ -1435,15 +1129,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Uri_DownloadPage {
             get {
                 return ResourceManager.GetString("Uri_DownloadPage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://www.google.co.za/.
-        /// </summary>
-        public static string Uri_Start_Page {
-            get {
-                return ResourceManager.GetString("Uri_Start_Page", resourceCulture);
             }
         }
         
@@ -1552,24 +1237,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Webpage_Default_Website {
             get {
                 return ResourceManager.GetString("Webpage_Default_Website", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BootStrapWebsite.
-        /// </summary>
-        public static string Website_BootStrap_Service {
-            get {
-                return ResourceManager.GetString("Website_BootStrap_Service", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to image,label,dev2verticalmenu,dev2horizontalmenu.
-        /// </summary>
-        public static string Website_Supported_Webparts {
-            get {
-                return ResourceManager.GetString("Website_Supported_Webparts", resourceCulture);
             }
         }
         

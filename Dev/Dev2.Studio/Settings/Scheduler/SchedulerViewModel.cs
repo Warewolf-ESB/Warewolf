@@ -54,7 +54,7 @@ namespace Dev2.Settings.Scheduler
         #region Fields
 
         const string DuplicateNameErrorMessage = "There is already a task with the same name";
-        const string LoginErrorMessage = "Error while saving: Logon failure: unknown user name or bad password";
+        const string LoginErrorMessage = "Error while saving: Login failure: unknown username or bad password";
         const string NotConnectedErrorMessage = "Error while saving: Server unreachable.";
         const string BlankWorkflowNameErrorMessage = "Please select a workflow to schedule";
         const string BlankNameErrorMessage = "The name can not be blank";
