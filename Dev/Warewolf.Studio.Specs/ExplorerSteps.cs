@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
@@ -61,9 +61,9 @@ namespace Warewolf.Studio.Specs
             return true;
         }
 
-        public IList<IExplorerItem> Load()
+        public IList<IResource> Load()
         {
-            return new List<IExplorerItem>();
+            return new List<IResource>();
         }
 
         #endregion

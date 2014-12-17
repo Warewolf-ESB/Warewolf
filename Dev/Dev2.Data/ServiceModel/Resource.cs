@@ -293,6 +293,11 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
             }
         }
+        public IList<IResource> Children
+        {
+            get;
+            set;
+        }
 
         [JsonIgnore]
         public bool IsNewResource { get; set; }

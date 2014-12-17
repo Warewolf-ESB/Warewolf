@@ -203,6 +203,7 @@
     <Compile Include="IConnectControlSingleton.cs" />
     <Compile Include="IConnectedServerChangedEvent.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
+    <Compile Include="Studio\ViewModels\IEnvironmentViewModel.cs" />
     <Compile Include="IExplorerItemModel.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="Infrastructure\Communication\IExecuteMessage.cs" />
@@ -259,7 +260,6 @@
     <Compile Include="Studio\Core\IAutoMappingOutputAction.cs" />
     <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
-    <Compile Include="Studio\ViewModels\IEnvironmentViewModel.cs" />
     <Compile Include="Studio\ViewModels\IExplorerItemViewModel.cs" />
     <Compile Include="Studio\ViewModels\IExplorerViewModel.cs" />
     <Compile Include="UndoFramework\IAction.cs" />

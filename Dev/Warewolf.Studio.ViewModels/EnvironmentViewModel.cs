@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class EnvironmentViewModel:BindableBase,IEnvironmentViewModel
+    public class EnvironmentViewModel:BindableBase, IEnvironmentViewModel
     {
         public EnvironmentViewModel(IServer server)
         {
@@ -38,9 +40,24 @@ namespace Warewolf.Studio.ViewModels
         {
             if (IsConnected)
             {
-                Server.Load();
+                var explorerItems = Server.Load();
+                var explorerItemViewModels = CreateExplorerItems(explorerItems);
+                ExplorerItemViewModels = explorerItemViewModels;
                 IsLoaded = true;
             }
+        }
+
+        // ReSharper disable ParameterTypeCanBeEnumerable.Local
+        IList<IExplorerItemViewModel> CreateExplorerItems(IList<IResource> explorerItems)
+        // ReSharper restore ParameterTypeCanBeEnumerable.Local
+        {
+            if(explorerItems==null) return new List<IExplorerItemViewModel>();
+            var explorerItemModels = explorerItems.Select(explorerItem => new ExplorerItemViewModel
+            {
+                Resource = explorerItem,
+                Children = CreateExplorerItems(explorerItem.Children)
+            }).Cast<IExplorerItemViewModel>().ToList();
+            return  explorerItemModels;
         }
     }
 }
