@@ -162,6 +162,20 @@
 /Dev/Studio.UI.Load.Specs/obj
 /Dev/Example Shipper/Example Shipper/bin
 /Dev/Example Shipper/Example Shipper/obj
+/Dev/Warewolf.Studio/bin
+/Dev/Warewolf.Studio/obj
+/Dev/Warewolf.Studio.Core/bin
+/Dev/Warewolf.Studio.Core/obj
+/Dev/Warewolf.Studio.Resources/bin
+/Dev/Warewolf.Studio.Resources/obj
+/Dev/Warewolf.Studio.Specs/bin
+/Dev/Warewolf.Studio.Specs/obj
+/Dev/Warewolf.Studio.ViewModels/bin
+/Dev/Warewolf.Studio.ViewModels/obj
+/Dev/Warewolf.Studio.ViewModels.Tests/bin
+/Dev/Warewolf.Studio.ViewModels.Tests/obj
+/Dev/Warewolf.Studio.Views/bin
+/Dev/Warewolf.Studio.Views/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
