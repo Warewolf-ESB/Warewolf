@@ -155,7 +155,7 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         [HttpGet]
         [HttpPost]
-        [Route("services/{*__name__}")]
+        [Route("Services/{*__name__}")]
         public HttpResponseMessage ExecuteWorkflow(string __name__)
         {
             var requestVariables = new NameValueCollection
@@ -168,22 +168,24 @@ namespace Dev2.Runtime.WebServer.Controllers
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
 
+
         [HttpGet]
         [HttpPost]
-        [Route("secure/{*__name__}")]
+        [Route("Secure/{*__name__}")]
         public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
         {
-          return ExecuteWorkflow(__name__);
-        } 
-        
+            return ExecuteWorkflow(__name__);
+        }
+
+
         [HttpGet]
         [HttpPost]
-        [Route("public/{*__name__}")]
+        [Route("Public/{*__name__}")]
         public HttpResponseMessage ExecutePublicWorkflow(string __name__)
         {
-          return ExecuteWorkflow(__name__);
+            return ExecuteWorkflow(__name__);
         }
-        
+
         [HttpGet]
         [HttpPost]
         [Route("internal/getlogfile")]
