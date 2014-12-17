@@ -661,11 +661,6 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             Guid environmentId = Guid.Empty;
             var selectedId = Guid.Empty;
             var eventRaised = false;
-            connectControlSingleton.ConnectedServerChanged += (sender, arg) =>
-            {
-                environmentId = arg.EnvironmentId;
-                eventRaised = true;
-            };
             //------------Execute Test---------------------------
             connectControlSingleton.Remove(selectedId);
             //------------Assert Results-------------------------
@@ -701,11 +696,6 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             Guid environmentId = Guid.NewGuid();
             var eventRaised = false;
             var selectedId = Guid.Empty;
-            connectControlSingleton.ConnectedServerChanged += (sender, arg) =>
-            {
-                environmentId = arg.EnvironmentId;
-                eventRaised = true;
-            };
             //------------Execute Test---------------------------
             connectControlSingleton.Remove(selectedId);
             //------------Assert Results-------------------------

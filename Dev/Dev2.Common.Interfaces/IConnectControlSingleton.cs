@@ -22,7 +22,6 @@ namespace Dev2.Common.Interfaces
         void SetConnectionState(Guid environmentId, ConnectionEnumerations.ConnectedState connectedState);
         void EditConnection(int selectedIndex, Action<int> openWizard);
         event EventHandler<IConnectionStatusChangedEventArg> ConnectedStatusChanged;
-        event EventHandler<IConnectedServerChangedEvent> ConnectedServerChanged;
         ObservableCollection<IConnectControlEnvironment> Servers { get; set; }
         void Remove(Guid environmentId);
     }

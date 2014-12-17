@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Resources;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +13,7 @@ namespace Warewolf.Studio.Specs
         [Given(@"I have connected to localhost")]
         public void GivenIHaveConnectedToLocalhost()
         {
-            var localHostEnvironment = new EnvironmentViewModel(new Server())
+            var localHostEnvironment = new EnvironmentViewModel(new Server(null))
             {
                 DisplayName = "localhost"                
             };
@@ -45,13 +44,16 @@ namespace Warewolf.Studio.Specs
 
     public class Server : IServer
     {
+        readonly IStudioResourceRepository _resourceRepository;
+
         #region Implementation of IServer
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public Server(IStudioResource)
+        public Server(IStudioResourceRepository resourceRepository)
         {
+            _resourceRepository = resourceRepository;
         }
 
         public bool Connect()
@@ -61,7 +63,7 @@ namespace Warewolf.Studio.Specs
 
         public IList<IExplorerItem> Load()
         {
-            return StudioRe;
+            return new List<IExplorerItem>();
         }
 
         #endregion

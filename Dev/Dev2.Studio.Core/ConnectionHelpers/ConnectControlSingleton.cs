@@ -32,7 +32,6 @@ namespace Dev2.ConnectionHelpers
         readonly IEnvironmentRepository _environmentRepository;
         public const string NewServerText = "New Remote Server...";
         public event EventHandler<IConnectionStatusChangedEventArg> ConnectedStatusChanged;
-        public event EventHandler<IConnectedServerChangedEvent> ConnectedServerChanged;
 
         public static IConnectControlSingleton Instance
         {

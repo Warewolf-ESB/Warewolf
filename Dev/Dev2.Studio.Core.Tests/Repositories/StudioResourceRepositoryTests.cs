@@ -26,7 +26,6 @@ using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
-using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Explorer;
@@ -2308,7 +2307,7 @@ namespace Dev2.Core.Tests.Repositories
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
             //------------Execute Test---------------------------
-            studioResourceRepository.AddResouceItem(resourceModel.Object);
+            //studioResourceRepository.AddResouceItem(resourceModel.Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, rootItem.Children.Count);
             Assert.AreEqual(1, rootItem.Children[0].Children.Count);

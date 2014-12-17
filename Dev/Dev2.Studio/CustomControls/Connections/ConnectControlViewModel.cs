@@ -101,7 +101,6 @@ namespace Dev2.CustomControls.Connections
             _connectControlSingleton = connectControlSingleton;
             _bindToActiveEnvironment = bindToActiveEnvironment;
             _connectControlSingleton.ConnectedStatusChanged += ConnectedStatusChanged;
-            _connectControlSingleton.ConnectedServerChanged += ConnectedServerChanged;
 
             if(openWizard == null)
             {

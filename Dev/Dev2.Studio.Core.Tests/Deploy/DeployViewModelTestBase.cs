@@ -98,7 +98,7 @@ namespace Dev2.Core.Tests.Deploy
             // ReSharper restore ObjectCreationAsStatement
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            studioResourceRepository.AddResouceItem(resourceModel.Object);
+            //studioResourceRepository.AddResouceItem(resourceModel.Object);
             resourceVm = workflowsFolder.Children[0];
             resourceVm.IsChecked = isChecked;
             return studioResourceRepository;
@@ -126,7 +126,7 @@ namespace Dev2.Core.Tests.Deploy
             // ReSharper restore ObjectCreationAsStatement
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            studioResourceRepository.AddResouceItem(resourceModel.Object);
+            //studioResourceRepository.AddResouceItem(resourceModel.Object);
             resourceVm = workflowsFolder.Children[0];
             resourceVm.IsChecked = isChecked;
             return studioResourceRepository;

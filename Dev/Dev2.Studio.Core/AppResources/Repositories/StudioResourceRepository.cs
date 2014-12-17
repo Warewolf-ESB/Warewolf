@@ -34,7 +34,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Threading;
 using ServiceStack.Common.Extensions;
 
 namespace Dev2.AppResources.Repositories
@@ -450,12 +449,12 @@ namespace Dev2.AppResources.Repositories
             RefreshVersionHistory(model.EnvironmentId, model.ResourceId);
         }
 
-        public void AddResouceItem(IContextualResourceModel resourceModel)
+        public void AddResouceItem(IResource resourceModel)
         {
-            var explorerItemModel = new ServerExplorerItem { ResourcePath = resourceModel.Category, DisplayName = resourceModel.DisplayName, ResourceId = resourceModel.ID, Permissions = resourceModel.UserPermissions,ServerId = resourceModel.Environment.ID};
-            ResourceType resourceType;
-            Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
-            explorerItemModel.ResourceType = resourceType;
+            var explorerItemModel = new ServerExplorerItem { ResourcePath = resourceModel.ResourcePath, DisplayName = resourceModel.ResourceName, ResourceId = resourceModel.ResourceID, Permissions = resourceModel.UserPermissions,
+                //ServerId = resourceModel.Environment.ID
+            };
+            explorerItemModel.ResourceType = resourceModel.ResourceType;
             ItemAddedMessageHandler(explorerItemModel);
         }
 
