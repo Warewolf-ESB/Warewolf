@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
@@ -52,11 +51,16 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if(explorerItems==null) return new List<IExplorerItemViewModel>();
-            var explorerItemModels = explorerItems.Select(explorerItem => new ExplorerItemViewModel
+            IList<IExplorerItemViewModel> explorerItemModels = new List<IExplorerItemViewModel>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var explorerItem in explorerItems)
             {
-                Resource = explorerItem,
-                Children = CreateExplorerItems(explorerItem.Children)
-            }).Cast<IExplorerItemViewModel>().ToList();
+                explorerItemModels.Add(new ExplorerItemViewModel
+                {
+                    Resource = explorerItem,
+                    Children = CreateExplorerItems(explorerItem.Children)
+                });
+            }
             return  explorerItemModels;
         }
     }
