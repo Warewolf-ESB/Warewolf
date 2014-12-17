@@ -259,6 +259,8 @@
     <Compile Include="Studio\Core\IAutoMappingOutputAction.cs" />
     <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
+    <Compile Include="Studio\ViewModels\IEnvironmentViewModel.cs" />
+    <Compile Include="Studio\ViewModels\IExplorerItemViewModel.cs" />
     <Compile Include="Studio\ViewModels\IExplorerViewModel.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
     <Compile Include="UndoFramework\IActionHistory.cs" />

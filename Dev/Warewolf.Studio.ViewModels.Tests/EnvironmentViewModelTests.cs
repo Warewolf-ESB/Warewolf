@@ -60,11 +60,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("EnvironmentViewModel_Connect")]
-        public void EnvironmentViewModel_Connect_WhenServerDoesNotConnect_ShouldNotBeConnected()
+        public void EnvironmentViewModel_Connect_WhenServerDoesConnect_ShouldBeConnected()
         {
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
-            server.Setup(server1 => server1.Connect()).Returns(true);
+            server.Setup(server1 => server1.Connect()).Returns(true).Verifiable();
             var environmentViewModel = new EnvironmentViewModel(server.Object);
             
             //------------Execute Test---------------------------
@@ -81,28 +81,48 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
+            server.Setup(server1 => server1.Load()).Returns(new List<IExplorerItem>()).Verifiable();
             var environmentModel = new EnvironmentViewModel(server.Object);
             
             //------------Execute Test---------------------------
             environmentModel.Load();
             //------------Assert Results-------------------------
             Assert.IsFalse(environmentModel.IsLoaded);
+            server.Verify(server1 => server1.Load(),Times.Never());
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("EnvironmentViewModel_Load")]
-        public void EnvironmentViewModel_Load_WhenServerConnected_ShouldNotLoadResourcesFromServer()
+        public void EnvironmentViewModel_Load_WhenServerConnected_ShouldLoadResourcesFromServer()
         {
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
-            server.Setup(server1 => server1.Load()).Returns(new List<IExplorerItem>());
+            server.Setup(server1 => server1.Connect()).Returns(true);
+            server.Setup(server1 => server1.Load()).Returns(new List<IExplorerItem>()).Verifiable();
             var environmentModel = new EnvironmentViewModel(server.Object);
-            
+            environmentModel.Connect();
             //------------Execute Test---------------------------
             environmentModel.Load();
             //------------Assert Results-------------------------
+            server.Verify();
             Assert.IsTrue(environmentModel.IsLoaded);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentViewModel_Load")]
+        public void EnvironmentViewModel_Load_ShouldCreateExplorerItems()
+        {
+            //------------Setup for test--------------------------
+            var server = new Mock<IServer>();
+            server.Setup(server1 => server1.Connect()).Returns(true);
+            server.Setup(server1 => server1.Load()).Returns(new List<IExplorerItem>()).Verifiable();
+            var environmentViewModel = new EnvironmentViewModel(server.Object);
+            
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+         }
     }
 }

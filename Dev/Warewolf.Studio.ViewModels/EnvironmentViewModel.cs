@@ -8,15 +8,13 @@ namespace Warewolf.Studio.ViewModels
 {
     public class EnvironmentViewModel:BindableBase,IEnvironmentViewModel
     {
-        public IServer Server { get; set; }
-
         public EnvironmentViewModel(IServer server)
         {
             if(server==null) throw new ArgumentNullException("server");
             Server = server;
         }
 
-        #region Implementation of IEnvironmentViewModel
+        public IServer Server { get; set; }
 
         public ICollection<IExplorerItemViewModel> ExplorerItemViewModels
         {
@@ -31,8 +29,6 @@ namespace Warewolf.Studio.ViewModels
         public bool IsConnected { get; private set; }
         public bool IsLoaded { get; private set; }
 
-        #endregion
-
         public void Connect()
         {
             IsConnected = Server.Connect();
@@ -40,7 +36,11 @@ namespace Warewolf.Studio.ViewModels
 
         public void Load()
         {
-            IsLoaded = true;
+            if (IsConnected)
+            {
+                Server.Load();
+                IsLoaded = true;
+            }
         }
     }
 }
