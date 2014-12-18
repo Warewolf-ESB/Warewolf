@@ -15,6 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;

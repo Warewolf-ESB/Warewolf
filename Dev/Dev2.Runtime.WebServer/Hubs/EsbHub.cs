@@ -31,6 +31,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
+using Dev2.Services;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
 
