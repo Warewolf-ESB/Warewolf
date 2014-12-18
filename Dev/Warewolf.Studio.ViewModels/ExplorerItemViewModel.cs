@@ -15,8 +15,6 @@ namespace Warewolf.Studio.ViewModels
             Children = new ObservableCollection<IExplorerItemViewModel>();
         }
 
-        #region Implementation of IExplorerItemViewModel
-
         public string ResourceName
         {
             get
@@ -35,7 +33,5 @@ namespace Warewolf.Studio.ViewModels
             set;
         }
         public IResource Resource { get; set; }
-
-        #endregion
     }
 }
