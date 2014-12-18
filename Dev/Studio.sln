@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.31010.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -233,6 +233,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Core", "Warewolf.Studio.Core\Warewolf.Studio.Core.csproj", "{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Themes.Luna", "Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj", "{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.ViewModels.Tests", "Warewolf.Studio.ViewModels.Tests\Warewolf.Studio.ViewModels.Tests.csproj", "{7A342AA8-9693-4FEE-A235-939044F5C1D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2142,6 +2144,42 @@ Global
 		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|Mixed Platforms.Build.0 = Trial|Any CPU
 		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|x64.ActiveCfg = Trial|Any CPU
 		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|x86.ActiveCfg = Trial|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Beta|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Beta|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Beta|x64.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Beta|x86.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.CTP|Any CPU.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.CTP|Any CPU.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.CTP|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.CTP|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.CTP|x64.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.CTP|x86.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Japan|Any CPU.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Japan|Any CPU.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Japan|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Japan|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Japan|x64.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Japan|x86.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|x64.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Trial|Any CPU.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Trial|Any CPU.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Trial|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Trial|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Trial|x64.ActiveCfg = Release|Any CPU
+		{7A342AA8-9693-4FEE-A235-939044F5C1D2}.Trial|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
