@@ -12,6 +12,7 @@
 
 using System;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Integration.Tests.Helpers;

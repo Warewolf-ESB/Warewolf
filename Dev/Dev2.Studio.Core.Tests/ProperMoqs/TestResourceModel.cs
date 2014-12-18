@@ -19,6 +19,7 @@ using Dev2.Collections;
 using Dev2.Common.Interfaces.Core.Collections;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using Dev2.Services.Security;

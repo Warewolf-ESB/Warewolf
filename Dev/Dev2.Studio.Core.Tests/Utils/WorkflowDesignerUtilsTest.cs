@@ -15,6 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;

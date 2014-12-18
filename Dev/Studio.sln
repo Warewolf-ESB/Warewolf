@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31010.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -235,6 +235,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.ViewModels.Tests", "Warewolf.Studio.ViewModels.Tests\Warewolf.Studio.ViewModels.Tests.csproj", "{7A342AA8-9693-4FEE-A235-939044F5C1D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Specs", "Warewolf.Studio.Specs\Warewolf.Studio.Specs.csproj", "{055903B2-8801-4714-B6AF-57DEC358CEEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.ServerProxyLayer", "ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj", "{97A827FF-65C4-4267-99D2-DCE6803B2348}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.ServerProxyLayerTests", "ServerProxyLayerTests\Warewolf.Studio.ServerProxyLayerTests.csproj", "{7832D912-8E26-44C4-B8A2-05449246B070}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -796,6 +800,30 @@ Global
 		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|x64.ActiveCfg = Release|Any CPU
 		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|x86.ActiveCfg = Release|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Release|x64.ActiveCfg = Release|Any CPU
+		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Release|x86.ActiveCfg = Release|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Release|x64.ActiveCfg = Release|Any CPU
+		{7832D912-8E26-44C4-B8A2-05449246B070}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

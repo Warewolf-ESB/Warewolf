@@ -11,12 +11,12 @@
 
 
 
-namespace Dev2.Network
-{
-    public enum ConnectResult
-    {
-        Success,
-        ConnectFailed,
-        LoginFailed,
-    }
-}
+//namespace Dev2.Network
+//{
+//    public enum ConnectResult
+//    {
+//        Success,
+//        ConnectFailed,
+//        LoginFailed,
+//    }
+//}

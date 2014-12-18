@@ -21,13 +21,14 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Threading;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -37,7 +38,6 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    [Ignore] //TODO: Fix so not dependant on resource file or localize resource file to test project
     public class SqlBulkInsertDesignerViewModelTests
     {
 

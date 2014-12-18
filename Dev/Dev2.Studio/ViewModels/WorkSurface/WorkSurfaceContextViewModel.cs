@@ -20,6 +20,8 @@ using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
@@ -224,7 +226,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         }
 
-        void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList compileMessageList)
+        void OnReceivedResourceAffectedMessage(Guid resourceId, ICompileMessageList compileMessageList)
         {
             var numberOfDependants = compileMessageList.Dependants;
             if (resourceId == ContextualResourceModel.ID && numberOfDependants.Count>0)

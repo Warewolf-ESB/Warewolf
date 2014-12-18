@@ -14,6 +14,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
@@ -37,7 +38,7 @@ namespace Dev2.Runtime.Security
 
         }
 
-        protected override List<WindowsGroupPermission> ReadPermissions()
+        protected override List<IWindowsGroupPermission> ReadPermissions()
         {
             var reader = new SecurityRead();
             var result = reader.Execute(null, null);
@@ -47,7 +48,7 @@ namespace Dev2.Runtime.Security
             return securitySettingsTO.WindowsGroupPermissions;
         }
 
-        protected override void WritePermissions(List<WindowsGroupPermission> permissions)
+        protected override void WritePermissions(List<IWindowsGroupPermission> permissions)
         {
             SecurityWrite.Write(new SecuritySettingsTO(permissions));
         }

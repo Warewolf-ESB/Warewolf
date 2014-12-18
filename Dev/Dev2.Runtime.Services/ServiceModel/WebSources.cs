@@ -15,6 +15,7 @@ using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Diagnostics;

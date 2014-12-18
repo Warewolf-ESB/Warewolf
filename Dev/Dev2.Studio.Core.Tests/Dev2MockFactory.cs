@@ -17,6 +17,8 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Common.Interfaces.Studio.Core.Network;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
 using Dev2.Network;

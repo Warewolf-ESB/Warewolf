@@ -19,6 +19,7 @@ using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Permissions;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.CustomControls.Connections;
 using Dev2.Services.Events;
 using Dev2.Services.Security;

@@ -421,7 +421,6 @@
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Models\WorkflowActivityMessage.cs" />
-    <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\ServiceProxy.cs" />

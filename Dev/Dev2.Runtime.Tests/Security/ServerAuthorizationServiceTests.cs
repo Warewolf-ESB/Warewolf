@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Communication;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;

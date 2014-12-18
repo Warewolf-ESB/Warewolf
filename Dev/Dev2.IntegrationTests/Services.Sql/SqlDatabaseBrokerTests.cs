@@ -12,6 +12,7 @@
 
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

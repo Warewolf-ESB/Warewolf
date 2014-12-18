@@ -11,7 +11,7 @@
 
 using System;
 using System.Threading.Tasks;
-using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

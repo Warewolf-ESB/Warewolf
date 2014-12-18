@@ -21,6 +21,7 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Communication;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;

@@ -12,7 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Services.Security;
 
 namespace Dev2.Services.Security
 {
@@ -31,6 +33,6 @@ namespace Dev2.Services.Security
 
         string JsonPermissions();
 
-        List<WindowsGroupPermission> GetPermissions(IPrincipal user);
+        List<IWindowsGroupPermission> GetPermissions(IPrincipal user);
     }
 }

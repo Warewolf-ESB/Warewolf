@@ -20,6 +20,8 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;

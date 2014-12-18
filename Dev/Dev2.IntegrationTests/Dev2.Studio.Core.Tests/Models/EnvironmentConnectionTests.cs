@@ -14,6 +14,7 @@ using System;
 using System.Text;
 using System.Xml;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Studio.Core.AppResources.Enums;

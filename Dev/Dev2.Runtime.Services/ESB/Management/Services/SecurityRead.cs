@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -102,7 +103,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(securitySettingsTo);
         }
 
-        int QuickSortForPermissions(WindowsGroupPermission x, WindowsGroupPermission y)
+        int QuickSortForPermissions(IWindowsGroupPermission x, IWindowsGroupPermission y)
         {
             var px = x;
             var py = y;
