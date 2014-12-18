@@ -7,5 +7,6 @@ namespace Dev2.Common.Interfaces
     {
         bool Connect();
         IList<IResource> Load();
+        IList<IConnection> GetServerConnections();
     }
 }

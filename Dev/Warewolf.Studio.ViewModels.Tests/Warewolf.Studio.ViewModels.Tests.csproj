@@ -59,6 +59,7 @@
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
+    <Compile Include="ConnectControlViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
