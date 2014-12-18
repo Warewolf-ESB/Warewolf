@@ -11,7 +11,10 @@
 
 using System;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Services.Security;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.ConnectionHelpers;
 using Dev2.Models;
 using Dev2.Services.Security;

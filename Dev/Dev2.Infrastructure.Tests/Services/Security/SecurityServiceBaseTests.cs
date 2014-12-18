@@ -11,6 +11,8 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -40,12 +42,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public void SecurityServiceBase_Read_ReadPermissionsResultIsNotNull_PermissionsUpdated()
         {
             //------------Setup for test--------------------------
-            var perms1 = new List<WindowsGroupPermission>
+            var perms1 = new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission(),
                 new WindowsGroupPermission()
             };
-            var perms2 = new List<WindowsGroupPermission>
+            var perms2 = new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission { ResourceName = "Permission1" },
                 new WindowsGroupPermission { ResourceName = "Permission2" },
@@ -74,12 +76,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public void SecurityServiceBase_Read_FiresPermissionsUpdatedEvent_HasModifiedPermissionsAsEventArgsProperty()
         {
             //------------Setup for test--------------------------
-            List<WindowsGroupPermission> changedPermissions = null;
-            var perms1 = new List<WindowsGroupPermission>
+            List<IWindowsGroupPermission> changedPermissions = null;
+            var perms1 = new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission { ResourceName = "Permission1" },
             };
-            var perms2 = new List<WindowsGroupPermission>
+            var perms2 = new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission { ResourceName = "Permission1" },
                 new WindowsGroupPermission { ResourceName = "Permission2" },
@@ -111,14 +113,14 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public void SecurityServiceBase_Read_NoChanges_FiresPermissionsUpdatedEvent_HasModifiedPermissionsAsEventArgsProperty()
         {
             //------------Setup for test--------------------------
-            List<WindowsGroupPermission> changedPermissions = null;
-            var perms1 = new List<WindowsGroupPermission>
+            List<IWindowsGroupPermission> changedPermissions = null;
+            var perms1 = new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission { ResourceName = "Permission1" },
                 new WindowsGroupPermission { ResourceName = "Permission2" },
                 new WindowsGroupPermission { ResourceName = "Permission3" },
             };
-            var perms2 = new List<WindowsGroupPermission>
+            var perms2 = new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission { ResourceName = "Permission1" },
                 new WindowsGroupPermission { ResourceName = "Permission2" },
@@ -150,7 +152,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public void SecurityServiceBase_Read_ReadPermissionsResultIsNull_PermissionsCleared()
         {
             //------------Setup for test--------------------------
-            var perms1 = new List<WindowsGroupPermission>
+            var perms1 = new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission(),
                 new WindowsGroupPermission()
@@ -193,7 +195,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test--------------------------
             var toBeRemovedID = Guid.NewGuid();
             var resourceID = Guid.NewGuid();
-            var permissions = new List<WindowsGroupPermission>
+            var permissions = new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission { ResourceID = resourceID, Permissions = AuthorizationContext.View.ToPermissions() }
             };
@@ -219,7 +221,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test--------------------------
             var toBeRemovedID = Guid.NewGuid();
             var resourceID = toBeRemovedID;
-            var permissions = new List<WindowsGroupPermission>
+            var permissions = new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission { ResourceID = Guid.NewGuid(), Permissions = AuthorizationContext.View.ToPermissions() },
                 new WindowsGroupPermission { ResourceID = resourceID, Permissions = AuthorizationContext.View.ToPermissions() },

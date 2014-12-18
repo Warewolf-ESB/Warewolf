@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Dev2.Models;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable CheckNamespace

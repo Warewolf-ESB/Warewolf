@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class DbTable
+    public class DbTable : IDbTable
     {
         public string Schema { get; set; }
         public string TableName { get; set; }

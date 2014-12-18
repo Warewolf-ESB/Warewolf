@@ -17,12 +17,13 @@ using System.Security.Claims;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Data.ServiceModel;
@@ -599,7 +600,7 @@ namespace Dev2.Studio.ViewModels
             tempResource.ResourceName = newWorflowName;
             tempResource.DisplayName = newWorflowName;
             tempResource.IsNewWorkflow = true;
-            StudioResourceRepository.AddResouceItem(tempResource);
+           // StudioResourceRepository.AddResouceItem(tempResource);
 
             AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(tempResource));
             AddWorkspaceItem(tempResource);

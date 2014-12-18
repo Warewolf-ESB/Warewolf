@@ -59,7 +59,7 @@ namespace Dev2.Scheduler
                     {100, "Task Started"},
                     {101, "Failed To Start"},
                     {103, "Job Failed"},
-                    {104, "Logon Failed"}
+                    {104, "Login Failed"}
                 };
             _taskService = taskService;
             _warewolfFolderPath = warewolfFolderId;

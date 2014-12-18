@@ -165,12 +165,6 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
-    <Compile Include="Explorer\Explorer.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Explorer.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Explorer\ExplorerSteps.cs" />
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -456,10 +450,6 @@
     </None>
     <None Include="Default.srprofile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Explorer\Explorer.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Explorer.feature.cs</LastGenOutput>
     </None>
     <None Include="Language Parser\Language Parser.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

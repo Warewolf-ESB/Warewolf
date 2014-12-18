@@ -75,6 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DummyModels\DummyExplorerViewModel.cs" />
+    <Compile Include="EnvironmentViewModel.cs" />
+    <Compile Include="ExplorerItemViewModel.cs" />
     <Compile Include="ExplorerViewModel.cs" />
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
   </ItemGroup>

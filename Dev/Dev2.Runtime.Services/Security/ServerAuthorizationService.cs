@@ -14,6 +14,7 @@ using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Communication;
 using Dev2.Services.Security;
 

@@ -19,6 +19,7 @@ using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;

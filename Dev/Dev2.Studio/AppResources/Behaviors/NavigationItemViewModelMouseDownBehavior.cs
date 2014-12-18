@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using Caliburn.Micro;
 using Dev2.AppResources.Enums;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Models;

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Newtonsoft.Json;
 
@@ -86,6 +87,8 @@ namespace Dev2.Common.Interfaces.Data
 
         [JsonIgnore]
         string Outputs { get; set; }
+        Permissions UserPermissions { get; set; }
+        IList<IResource> Children { get; set; }
 
         /// <summary>
         ///     Gets the XML representation of this resource.

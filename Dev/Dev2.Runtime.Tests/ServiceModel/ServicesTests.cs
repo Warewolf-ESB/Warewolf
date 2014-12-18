@@ -13,6 +13,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;

@@ -19,8 +19,12 @@ using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.CustomControls.Connections;
 using Dev2.Dialogs;
@@ -349,8 +353,8 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
                 }
             };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.ShowError("Error while saving: Logon failure: unknown user name or bad password");
-            Assert.AreEqual("Error while saving: Logon failure: unknown user name or bad password", schedulerViewModel.Error);
+            schedulerViewModel.ShowError("Error while saving: Login failure: unknown username or bad password");
+            Assert.AreEqual("Error while saving: Login failure: unknown username or bad password", schedulerViewModel.Error);
             //------------Execute Test---------------------------
             schedulerViewModel.AccountName = "someAccountName";
             //------------Assert Results-------------------------
@@ -372,8 +376,8 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.ShowError("Error while saving: Logon failure: unknown user name or bad password");
-            Assert.AreEqual("Error while saving: Logon failure: unknown user name or bad password", schedulerViewModel.Error);
+            schedulerViewModel.ShowError("Error while saving: Login failure: unknown username or bad password");
+            Assert.AreEqual("Error while saving: Login failure: unknown username or bad password", schedulerViewModel.Error);
             schedulerViewModel.AccountName = "someAccountName";
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
@@ -408,8 +412,8 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
             var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.ShowError("Error while saving: Logon failure: unknown user name or bad password");
-            Assert.AreEqual("Error while saving: Logon failure: unknown user name or bad password", schedulerViewModel.Error);
+            schedulerViewModel.ShowError("Error while saving: Login failure: unknown user name or bad password");
+            Assert.AreEqual("Error while saving: Login failure: unknown username or bad password", schedulerViewModel.Error);
             //------------Execute Test---------------------------
             schedulerViewModel.Password = "somePassword";
             //------------Assert Results-------------------------

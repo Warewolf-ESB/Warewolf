@@ -25,10 +25,13 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.CustomControls.Connections;
 using Dev2.DataList.Contract;
 using Dev2.Dialogs;
@@ -53,7 +56,7 @@ namespace Dev2.Settings.Scheduler
         #region Fields
 
         const string DuplicateNameErrorMessage = "There is already a task with the same name";
-        const string LoginErrorMessage = "Error while saving: Logon failure: unknown user name or bad password";
+        const string LoginErrorMessage = "Error while saving: Login failure: unknown username or bad password";
         const string NotConnectedErrorMessage = "Error while saving: Server unreachable.";
         const string BlankWorkflowNameErrorMessage = "Please select a workflow to schedule";
         const string BlankNameErrorMessage = "The name can not be blank";

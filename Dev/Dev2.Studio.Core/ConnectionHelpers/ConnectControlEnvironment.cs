@@ -11,6 +11,7 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.ConnectionHelpers
@@ -26,7 +27,7 @@ namespace Dev2.ConnectionHelpers
         #endregion
 
         #region |Properties|
-        public IEnvironmentModel EnvironmentModel
+        public object EnvironmentModel
         {
             get
             {
@@ -34,8 +35,11 @@ namespace Dev2.ConnectionHelpers
             }
             set
             {
-                _environmentModel = value;
-                DisplayName = _environmentModel.Name;
+                _environmentModel = value as IEnvironmentModel;
+                if(_environmentModel != null)
+                {
+                    DisplayName = _environmentModel.Name;
+                }
                 OnPropertyChanged();
             }
         }

@@ -10,10 +10,11 @@
 */
 
 using System;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.ConnectionHelpers
 {
-    public class ConnectedServerChangedEvent
+    public class ConnectedServerChangedEvent : IConnectedServerChangedEvent
     {
         public Guid EnvironmentId { get; private set; }
 

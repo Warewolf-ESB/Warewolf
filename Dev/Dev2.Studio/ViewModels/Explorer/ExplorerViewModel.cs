@@ -12,9 +12,9 @@
 using System;
 using System.Linq;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common;
-using Dev2.ConnectionHelpers;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.CustomControls.Connections;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
@@ -23,7 +23,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Threading;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Explorer

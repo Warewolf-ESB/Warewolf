@@ -261,7 +261,6 @@
     <Compile Include="AppResources\ExtensionMethods\TypeExtensionMethods.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\Repositories\DataListRepository.cs" />
-    <Compile Include="AppResources\Repositories\IStudioResourceRepository.cs" />
     <Compile Include="AppResources\Repositories\StudioResourceRepository.cs" />
     <Compile Include="AppResources\Repositories\UserInterfaceLayoutRepository.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
@@ -272,11 +271,8 @@
     <Compile Include="ConnectionHelpers\ConnectControlEnvironment.cs" />
     <Compile Include="ConnectionHelpers\ConnectedServerChangedEvent.cs" />
     <Compile Include="ConnectionHelpers\ConnectEventHandlers.cs" />
-    <Compile Include="ConnectionHelpers\ConnectionEnumerations.cs" />
     <Compile Include="ConnectionHelpers\ConnectionStatusChangedEventArg.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingleton.cs" />
-    <Compile Include="ConnectionHelpers\IConnectControlEnvironment.cs" />
-    <Compile Include="ConnectionHelpers\IConnectControlSingleton.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="CustomContainer.cs" />
@@ -404,7 +400,6 @@
     <Compile Include="Messages\UpdateIntellisenseMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Messages\UpdateWorksurfaceFlowNodeDisplayName.cs" />
-    <Compile Include="Models\IExplorerItemModel.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
     <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
@@ -426,7 +421,6 @@
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Models\WorkflowActivityMessage.cs" />
-    <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\ServiceProxy.cs" />

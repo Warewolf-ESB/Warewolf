@@ -11,6 +11,7 @@
 
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.ConnectionHelpers;
 using Dev2.Dialogs;
 using Dev2.Studio.Core.Interfaces;
@@ -18,7 +19,7 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
 using Moq;
-
+using Dev2.Common.Interfaces.Threading;
 namespace Dev2.Core.Tests.Dialogs
 {
     public class TestResourcePickerDialog : ResourcePickerDialog

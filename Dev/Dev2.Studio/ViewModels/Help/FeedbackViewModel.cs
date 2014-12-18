@@ -15,9 +15,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
+using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Utils;
@@ -360,12 +362,12 @@ namespace Dev2.Studio.ViewModels.Help
         /// <datetime>2013/01/14-09:19 AM</datetime>
         public void Send()
         {
-            if(IsOutlookInstalled())
-            {
-                var emailCommService = new MapiEmailCommService<EmailCommMessage>();
-                Send(emailCommService);
-            }
-            else
+//            if(IsOutlookInstalled())
+//            {
+//                var emailCommService = new MapiEmailCommService<EmailCommMessage>();
+//                Send(emailCommService);
+//            }
+//            else
             {
                 BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.Uri_Community_HomePage);
                 RequestClose(ViewModelDialogResults.Okay);

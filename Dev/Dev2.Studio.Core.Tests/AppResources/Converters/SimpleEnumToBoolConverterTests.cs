@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
 using Dev2.AppResources.Converters;
+using Dev2.Common.Interfaces.Infrastructure.Logging;
 using Dev2.Settings.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

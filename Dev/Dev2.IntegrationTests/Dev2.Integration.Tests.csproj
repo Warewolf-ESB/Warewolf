@@ -281,7 +281,6 @@
     <Compile Include="Server Test\TimeZoneChanges.cs" />
     <Compile Include="Server Test\WebServerTests\WebServerTests.cs" />
     <Compile Include="Server Test\Workspace\XML\XmlResource.cs" />
-    <Compile Include="Dev2.Studio.Core.Tests\Models\EnviromentModelTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\MoqConfigurationReader.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\MoqPopup.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\StudioServerCommsTests.cs" />

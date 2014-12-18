@@ -522,7 +522,7 @@
                                              AutomationProperties.AutomationId="UI_UserNameTextBox"
                                              Grid.Row="0"
                                              Grid.Column="1"
-                                             ToolTip="Schedule should execute as this user"
+                                             ToolTip="Schedule should execute with this username"
                                              VerticalAlignment="Center"
                                              Text="{Binding AccountName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                                         <!--<i:Interaction.Behaviors>

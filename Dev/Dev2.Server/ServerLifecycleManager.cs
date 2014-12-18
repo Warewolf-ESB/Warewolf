@@ -287,18 +287,19 @@ namespace Dev2
         /// </summary>
         ServerLifecycleManager(string[] arguments)
         {
-            _pulseLogger = new PulseLogger(60000);
-            _pulseLogger.Start();
-            _arguments = arguments ?? new string[0];
-            _configFile = DefaultConfigFileName;
-            _externalDependencies = AssemblyReference.EmptyReferences;
-            _workflowGroups = new Dictionary<string, WorkflowEntry[]>(StringComparer.OrdinalIgnoreCase);
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
             const string settingsConfigFile = "Settings.config";
             if (!File.Exists(settingsConfigFile))
             {
                 File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultServerLogFileConfig);
             }
             XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+            _pulseLogger = new PulseLogger(60000);
+            _pulseLogger.Start();
+            _arguments = arguments ?? new string[0];
+            _configFile = DefaultConfigFileName;
+            _externalDependencies = AssemblyReference.EmptyReferences;
+            _workflowGroups = new Dictionary<string, WorkflowEntry[]>(StringComparer.OrdinalIgnoreCase);            
             InitializeCommandLineArguments();
         }
 

@@ -15,7 +15,9 @@ using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.ConnectionHelpers;
+using Dev2.Common.Interfaces;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
@@ -98,7 +100,7 @@ namespace Dev2.Core.Tests.Deploy
             // ReSharper restore ObjectCreationAsStatement
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            studioResourceRepository.AddResouceItem(resourceModel.Object);
+            //studioResourceRepository.AddResouceItem(resourceModel.Object);
             resourceVm = workflowsFolder.Children[0];
             resourceVm.IsChecked = isChecked;
             return studioResourceRepository;
@@ -126,7 +128,7 @@ namespace Dev2.Core.Tests.Deploy
             // ReSharper restore ObjectCreationAsStatement
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            studioResourceRepository.AddResouceItem(resourceModel.Object);
+            //studioResourceRepository.AddResouceItem(resourceModel.Object);
             resourceVm = workflowsFolder.Children[0];
             resourceVm.IsChecked = isChecked;
             return studioResourceRepository;

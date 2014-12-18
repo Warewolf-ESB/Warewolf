@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;

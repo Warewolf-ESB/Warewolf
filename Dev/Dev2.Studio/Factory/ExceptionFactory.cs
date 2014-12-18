@@ -134,10 +134,10 @@ namespace Dev2.Studio.Factory
                     OutputText = CreateStringValue(e, null, true).ToString(),
                     StackTrace = e.StackTrace,
                     OutputPath = GetUniqueOutputPath(".txt"),
-                    ServerLogTempPath = GetServerLogTempPath(environmentModel),
-                    StudioLogTempPath = GetStudioLogTempPath(),
+                   // ServerLogTempPath = GetServerLogTempPath(environmentModel),
+                  //  StudioLogTempPath = GetStudioLogTempPath(),
                     DisplayName = isCritical == ErrorSeverity.Critical ? Warewolf.Studio.Resources.Languages.Core.CritErrorTitle : Warewolf.Studio.Resources.Languages.Core.ErrorTitle,
-                    Critical = isCritical == ErrorSeverity.Critical
+                  //  Critical = isCritical == ErrorSeverity.Critical
                 };
 
             var attachedFiles = new Dictionary<string, string>();

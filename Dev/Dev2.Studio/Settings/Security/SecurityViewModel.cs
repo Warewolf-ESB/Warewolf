@@ -20,6 +20,7 @@ using System.Windows.Input;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
@@ -69,9 +70,9 @@ namespace Dev2.Settings.Security
             InitializePermissions(securitySettings == null ? null : securitySettings.WindowsGroupPermissions);
         }
 
-        public ObservableCollection<WindowsGroupPermission> ServerPermissions { get; private set; }
+        public ObservableCollection<IWindowsGroupPermission> ServerPermissions { get; private set; }
 
-        public ObservableCollection<WindowsGroupPermission> ResourcePermissions { get; private set; }
+        public ObservableCollection<IWindowsGroupPermission> ResourcePermissions { get; private set; }
 
         public ActivityDesignerToggle ServerHelpToggle { get; private set; }
 
@@ -116,7 +117,7 @@ namespace Dev2.Settings.Security
             Copy(ResourcePermissions, securitySettings.WindowsGroupPermissions);
         }
 
-        void Copy(IList<WindowsGroupPermission> source, IList<WindowsGroupPermission> target)
+        void Copy(IList<IWindowsGroupPermission> source, IList<IWindowsGroupPermission> target)
         {
             for(var i = source.Count - 1; i >= 0; i--)
             {
@@ -144,16 +145,16 @@ namespace Dev2.Settings.Security
             ResourceHelpToggle = CreateHelpToggle(IsResourceHelpVisibleProperty);
         }
 
-        void InitializePermissions(IEnumerable<WindowsGroupPermission> permissions)
+        void InitializePermissions(IEnumerable<IWindowsGroupPermission> permissions)
         {
-            ServerPermissions = new ObservableCollection<WindowsGroupPermission>();
-            ResourcePermissions = new ObservableCollection<WindowsGroupPermission>();
+            ServerPermissions = new ObservableCollection<IWindowsGroupPermission>();
+            ResourcePermissions = new ObservableCollection<IWindowsGroupPermission>();
 
             if(permissions != null)
             {
                 foreach(var permission in permissions)
                 {
-                    RegisterPropertyChanged(permission);
+                    RegisterPropertyChanged((WindowsGroupPermission)permission);
                     if(permission.IsServer)
                     {
                         ServerPermissions.Add(permission);

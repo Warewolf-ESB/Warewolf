@@ -11,6 +11,7 @@
 
 using System;
 using System.Text;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;

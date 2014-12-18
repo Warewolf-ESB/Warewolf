@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Network;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 
@@ -30,7 +32,7 @@ namespace Dev2.Security
             EnvironmentConnection.PermissionsModified+=EnvironmentConnectionOnPermissionsModified;
         }
 
-        void EnvironmentConnectionOnPermissionsModified(object sender, List<WindowsGroupPermission> windowsGroupPermissions)
+        void EnvironmentConnectionOnPermissionsModified(object sender, List<IWindowsGroupPermission> windowsGroupPermissions)
         {
             Permissions = windowsGroupPermissions;
         }
@@ -64,7 +66,7 @@ namespace Dev2.Security
             await Task.Factory.StartNew(() => base.Read());
         }
 
-        protected override List<WindowsGroupPermission> ReadPermissions()
+        protected override List<IWindowsGroupPermission> ReadPermissions()
         {
 //            var communicationController = new CommunicationController
 //            {
@@ -78,7 +80,7 @@ namespace Dev2.Security
             return null;
         }
 
-        protected override void WritePermissions(List<WindowsGroupPermission> permissions)
+        protected override void WritePermissions(List<IWindowsGroupPermission> permissions)
         {
         }
 

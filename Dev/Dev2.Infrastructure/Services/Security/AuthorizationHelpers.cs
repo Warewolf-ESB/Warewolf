@@ -10,7 +10,9 @@
 */
 
 using System;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Services.Security;
 
 namespace Dev2.Services.Security
 {
@@ -72,7 +74,7 @@ namespace Dev2.Services.Security
             return Permissions.None;
         }
 
-        public static bool Matches(this WindowsGroupPermission permission, string resource)
+        public static bool Matches(this IWindowsGroupPermission permission, string resource)
         {
             if(permission.IsServer)
             {

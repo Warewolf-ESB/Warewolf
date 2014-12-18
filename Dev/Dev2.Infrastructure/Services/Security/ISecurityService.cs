@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Infrastructure;
 
 namespace Dev2.Services.Security
 {
@@ -18,7 +19,7 @@ namespace Dev2.Services.Security
     {
         event EventHandler PermissionsChanged;
 
-        IReadOnlyList<WindowsGroupPermission> Permissions { get; }
+        IReadOnlyList<IWindowsGroupPermission> Permissions { get; }
         TimeSpan TimeOutPeriod { get; set; }
 
         void Read();

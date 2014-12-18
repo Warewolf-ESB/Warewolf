@@ -10,6 +10,8 @@
 */
 
 using System.Security.Principal;
+using Dev2.Common.Interfaces.Services.Security;
+using Dev2.Services;
 using Dev2.Services.Security;
 
 namespace Dev2.Infrastructure.Tests.Services.Security
