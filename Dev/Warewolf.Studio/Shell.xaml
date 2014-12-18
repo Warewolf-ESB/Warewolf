@@ -1,12 +1,13 @@
 ﻿<Window x:Class="Warewolf.Studio.Shell"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:dockManager="http://infragistics.com/DockManager"
+         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
-        Title="Warewolf Studio"
+    Title="Warewolf Studio"
         WindowState="Maximized">
-
-    <Grid Background="White">
+    
+    <Grid >
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -18,10 +19,10 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" />
 
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1">                
                 <dockManager:XamDockManager AllowMaximizeFloatingWindows="True"
                                             AllowMinimizeFloatingWindows="True"
-                                            Theme="[current]">
+                                            >
                     <dockManager:XamDockManager.Panes>
 
                         <dockManager:SplitPane Width="300"

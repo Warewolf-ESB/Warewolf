@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate x:Key="DefaultDefaultTextTemplate">
+        <ContentControl Content="{Binding}"
+                        Focusable="False"
+                        FontStyle="Italic"
+                        FontWeight="Normal"
+                        Foreground="{StaticResource BrushDisabledForeground}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultItemTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="CakeA" />
+                <ColumnDefinition SharedSizeGroup="CakeB" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0">
+                <Run Text="{Binding Name, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock Grid.Column="1"
+                       FontStyle="Italic"
+                       Padding="5,0,0,0"
+                       TextTrimming="CharacterEllipsis">
+                <Run Text="{Binding DropdownDescription, Mode=OneWay}" />
+            </TextBlock>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

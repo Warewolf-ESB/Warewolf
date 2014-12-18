@@ -1,0 +1,1725 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Undo.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Undo.UndoManagerCommandType">
+            <summary>
+            Enumeration used by an <see cref="T:Infragistics.Undo.UndoManagerCommandSource"/> to identify a command for a <see cref="T:Infragistics.Undo.UndoManager"/> instance.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoManagerCommandType.Undo">
+            <summary>
+            Performs an undo operation. The parameter should be an object that was registered as a reference (see <see cref="M:Infragistics.Undo.UndoManager.RegisterReference(System.Object)"/> or an <see cref="T:Infragistics.Undo.UndoManager"/> instance or null to operate on the shared <see cref="P:Infragistics.Undo.UndoManager.Current"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoManagerCommandType.Redo">
+            <summary>
+            Performs a redo operation. The parameter should be an object that was registered as a reference (see <see cref="M:Infragistics.Undo.UndoManager.RegisterReference(System.Object)"/> or an <see cref="T:Infragistics.Undo.UndoManager"/> instance or null to operate on the shared <see cref="P:Infragistics.Undo.UndoManager.Current"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoManagerCommandType.UndoRedoHistoryItem">
+            <summary>
+            Invokes an undo or redo for a given <see cref="T:Infragistics.Undo.UndoHistoryItem"/> up to and including the HistoryItem. The parameter must be a <see cref="T:Infragistics.Undo.UndoHistoryItem"/> instance.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoManagerCommandType.PreventMerge">
+            <summary>
+            Temporarily prevents merging of UndoUnits until the next UndoUnit that is not part of a Undo/Redo operation is performed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoManagerCommandSource">
+            <summary>
+            The command source for the <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerCommandSource.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoManagerCommandSource"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerCommandSource.ResolveCommand">
+            <summary>
+            Creates the <see cref="T:System.Windows.Input.ICommand"/> that will perform the associated action based upon the <see cref="P:Infragistics.Undo.UndoManagerCommandSource.CommandType"/> property value.
+            </summary>
+            <seealso cref="P:Infragistics.Undo.UndoManagerCommandSource.CommandType"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManagerCommandSource.CommandType">
+            <summary>
+            Returns or sets an enumeration used to identify the command that should be executed when the command source is triggered.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoManagerCommandBase">
+            <summary>
+            Base class for a command for an <see cref="T:Infragistics.Undo.UndoManager"/> where the parameter may be a reference or an <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerCommandBase.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoManagerCommandBase"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerCommandBase.CanExecute(System.Object)">
+            <summary>
+            Returns a boolean indicating if the command can be executed based on the specified parameter
+            </summary>
+            <param name="parameter">The parameter to evaluate. May be an integer to indicate the number of items in the history to undo.</param>
+            <returns>True if the parameter </returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerCommandBase.Execute(System.Object)">
+            <summary>
+            Invoked when the command should be executed.
+            </summary>
+            <param name="parameter">The parameter to evaluate. Should be a <see cref="T:Infragistics.Undo.UndoHistoryItem"/> instance.</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerCommandBase.Execute(Infragistics.Undo.UndoManager)">
+            <summary>
+            Used to perform the action associated with the command.
+            </summary>
+            <param name="manager">The undo manager for which the operation is to be performed</param>
+            <returns>Returns true if the operation was performed. Otherwise false is returned.</returns>
+        </member>
+        <member name="T:Infragistics.Undo.UndoManagerUndoCommand">
+            <summary>
+            Custom command for invoking the <see cref="M:Infragistics.Undo.UndoManager.Undo(System.Int32)"/> method on an <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerUndoCommand.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoManagerUndoCommand"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerUndoCommand.Execute(Infragistics.Undo.UndoManager)">
+            <summary>
+            Used to perform the action associated with the command.
+            </summary>
+            <param name="manager">The undo manager for which the operation is to be performed</param>
+            <returns>Returns true if the operation was performed. Otherwise false is returned.</returns>
+        </member>
+        <member name="T:Infragistics.Undo.UndoManagerRedoCommand">
+            <summary>
+            Custom command for invoking the <see cref="M:Infragistics.Undo.UndoManager.Redo(System.Int32)"/> method on an <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerRedoCommand.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoManagerRedoCommand"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerRedoCommand.Execute(Infragistics.Undo.UndoManager)">
+            <summary>
+            Used to perform the action associated with the command.
+            </summary>
+            <param name="manager">The undo manager for which the operation is to be performed</param>
+            <returns>Returns true if the operation was performed. Otherwise false is returned.</returns>
+        </member>
+        <member name="T:Infragistics.Undo.UndoManagerHistoryItemCommand">
+            <summary>
+            Custom command used to execute an undo/redo for an <see cref="T:Infragistics.Undo.UndoManager"/> given a specific <see cref="T:Infragistics.Undo.UndoHistoryItem"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerHistoryItemCommand.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoManagerHistoryItemCommand"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerHistoryItemCommand.CanExecute(System.Object)">
+            <summary>
+            Returns a boolean indicating if the command can be executed based on the specified parameter
+            </summary>
+            <param name="parameter">The parameter to evaluate. Should be a <see cref="T:Infragistics.Undo.UndoHistoryItem"/> instance</param>
+            <returns>True if the parameter </returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerHistoryItemCommand.Execute(System.Object)">
+            <summary>
+            Invoked when the command should be executed.
+            </summary>
+            <param name="parameter">The parameter to evaluate. Should be a <see cref="T:Infragistics.Undo.UndoHistoryItem"/> instance.</param>
+        </member>
+        <member name="T:Infragistics.Undo.UndoManagerPreventMergeCommand">
+            <summary>
+            Custom command for invoking the <see cref="P:Infragistics.Undo.UndoManager.ShouldPreventMerge"/> method on an <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerPreventMergeCommand.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoManagerPreventMergeCommand"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManagerPreventMergeCommand.Execute(Infragistics.Undo.UndoManager)">
+            <summary>
+            Used to perform the action associated with the command.
+            </summary>
+            <param name="manager">The undo manager for which the operation is to be performed</param>
+            <returns>Returns true if the operation was performed. Otherwise false is returned.</returns>
+        </member>
+        <member name="T:Infragistics.Undo.UndoHistoryItemType">
+            <summary>
+            Used to indicate the type of operation that <see cref="T:Infragistics.Undo.UndoHistoryItem"/> represents.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoHistoryItemType.Undo">
+            <summary>
+            The item represents an undo operation.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoHistoryItemType.Redo">
+            <summary>
+            The item represents a redo operation.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoExecuteReason">
+            <summary>
+            Enumeration used to identify the cause of the <see cref="M:Infragistics.Undo.UndoUnit.Execute(Infragistics.Undo.UndoExecuteContext)"/>
+            </summary>
+            <seealso cref="P:Infragistics.Undo.UndoExecuteContext.Reason"/>
+        </member>
+        <member name="F:Infragistics.Undo.UndoExecuteReason.Undo">
+            <summary>
+            The execute is being performed because an Undo was requested.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoExecuteReason.Redo">
+            <summary>
+            The execute is being performed because a Redo was requested
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoExecuteReason.Rollback">
+            <summary>
+            The execute is being performed because an <see cref="T:Infragistics.Undo.UndoTransaction"/> was being rolled back.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoTransactionCloseAction">
+            <summary>
+            Enumeration used to indicate what should happen to the <see cref="T:Infragistics.Undo.UndoTransaction"/> when it is closed.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoTransactionCloseAction.Commit">
+            <summary>
+            The group is being committed/completed.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoTransactionCloseAction.Rollback">
+            <summary>
+            The group is being cancelled and the object should be undone and removed.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoTransactionCloseAction.Cancel">
+            <summary>
+            The group is being cancelled and the object should be released.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoMergeAction">
+            <summary>
+            Used to identify the result of a call to <see cref="M:Infragistics.Undo.UndoUnit.Merge(Infragistics.Undo.UndoMergeContext)"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoMergeAction.NotMerged">
+            <summary>
+            The information from the specified unit could not be merged and should be added to the undo stack.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoMergeAction.Merged">
+            <summary>
+            The information from the specified unit was merged in and doesn't need to be added to the undo stack.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Undo.UndoMergeAction.MergedRemoveUnit">
+            <summary>
+            The information from the specified unit was merged and the original unit should be removed from the undo stack.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.StackList`1.#ctor(System.Int32)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.StackList`1"/>
+            </summary>
+            <param name="maxCapacity">The maximum number of items to store</param>
+        </member>
+        <member name="M:Infragistics.Undo.StackList`1.Clear">
+            <summary>
+            Clears the stack
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.StackList`1.GetEnumerator">
+            <summary>
+            Returns an enumerator for the stack
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Undo.StackList`1.GetItem(System.Int32)">
+            <summary>
+            Returns the specified item that is <paramref name="offset"/> number of items from the top of the stack.
+            </summary>
+            <param name="offset">The number of items offset from the top of the stack from which the item should be obtained</param>
+            <returns>An item offset by the specified amount from the top of the stack</returns>
+        </member>
+        <member name="M:Infragistics.Undo.StackList`1.Peek">
+            <summary>
+            Returns the most recent item added to the stack without removing it.
+            </summary>
+            <returns>Returns the last item added to the stack</returns>
+            <exception cref="T:System.InvalidOperationException">The 'Count' must be 1 or greater.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.StackList`1.Pop">
+            <summary>
+            Removes the most recent item from the stack and returns it.
+            </summary>
+            <returns>The most recent item on the stack.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.StackList`1.Push(`0)">
+            <summary>
+            Adds a new item to the top of the stack.
+            </summary>
+            <param name="item">The item to add to the stack</param>
+        </member>
+        <member name="P:Infragistics.Undo.StackList`1.Count">
+            <summary>
+            Returns the number of items in the stack.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.StackList`1.MaxCapacity">
+            <summary>
+            Returns or sets the maximum number of items that may be stored in the stack.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Undo.StackList`1.CollectionChanged">
+            <summary>
+            Invoked after the collection has been changed
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.IUndoTransactionOwner.OnChildOpened(Infragistics.Undo.UndoTransaction)">
+            <summary>
+            Invoked when a child <see cref="T:Infragistics.Undo.UndoTransaction"/> is about to be opened.
+            </summary>
+            <param name="child">The child group being opened</param>
+            <returns>Returns true if the group can be opened.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.IUndoTransactionOwner.OnChildClosed(Infragistics.Undo.UndoTransaction,Infragistics.Undo.UndoTransactionCloseAction)">
+            <summary>
+            Invoked when the child <see cref="T:Infragistics.Undo.UndoTransaction"/> is being closed.
+            </summary>
+            <param name="child">The child group being closed</param>
+            <param name="closeAction">Indicates the type of close action occurring.</param>
+        </member>
+        <member name="P:Infragistics.Undo.IUndoTransactionOwner.UndoManager">
+            <summary>
+            Returns the associated <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1">
+            <summary>
+            Observable collection that supports adding collection change notifications to an <see cref="P:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.UndoManager"/>
+            </summary>
+            <typeparam name="T">The type of items in the collection</typeparam>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.#ctor(System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1"/> associated with the <see cref="P:Infragistics.Undo.UndoManager.Current"/>
+            </summary>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.#ctor(Infragistics.Undo.UndoManager,System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1"/>
+            </summary>
+            <param name="undoManager">The <see cref="P:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.UndoManager"/> with which to record the collection changes</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.ClearItems">
+            <summary>
+            Removes all the items from the collection.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.InsertItem(System.Int32,`0)">
+            <summary>
+            Inserts a new item at the specified index in the collection.
+            </summary>
+            <param name="index">The index at which to insert the <paramref name="item"/></param>
+            <param name="item">The object to insert in the collection</param>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Inserts the elements of a collection into the collection at the specified index.
+            </summary>
+            <param name="index">The zero-based index at which the new elements should be inserted.</param>
+            <param name="collection">The collection whose elements should be inserted into the List. The collection itself cannot be null, but it can contain elements that are null, if type T is a reference type.</param>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.MoveItem(System.Int32,System.Int32)">
+            <summary>
+            Moves an item from one index in the collection to a new location.
+            </summary>
+            <param name="oldIndex">The index of the item to relocate</param>
+            <param name="newIndex">The new index of the item currently located at index <paramref name="oldIndex"/></param>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.OnBeginUpdate">
+            <summary>
+            Invoked when BeginUpdate is first called and <see cref="P:Infragistics.Collections.ObservableCollectionExtended`1.IsUpdating"/> becomes true.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.OnEndUpdate">
+            <summary>
+            Invoked when EndUpdate is called and <see cref="P:Infragistics.Collections.ObservableCollectionExtended`1.IsUpdating"/> becomes false.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.RemoveItem(System.Int32)">
+            <summary>
+            Removes an item at the specified index.
+            </summary>
+            <param name="index">The index of the item in the collection to be removed.</param>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.RemoveRange(System.Int32,System.Int32)">
+            <summary>
+            Removes a contiguous block of items from the collection.
+            </summary>
+            <param name="index">The zero-based starting index of the range of elements to remove.</param>
+            <param name="count">The number of elements to remove</param>
+        </member>
+        <member name="M:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.SetItem(System.Int32,`0)">
+            <summary>
+            Replaces an item at the specified index in the collection 
+            </summary>
+            <param name="index">Index of the item to replace</param>
+            <param name="item">The item to insert into the collection.</param>
+        </member>
+        <member name="P:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.UndoManager">
+            <summary>
+            Returns the <see cref="P:Infragistics.Undo.ObservableCollectionExtendedWithUndo`1.UndoManager"/> with which the collection change operations should be recorded for undo.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoExecuteContext">
+            <summary>
+            Used to provide information to the <see cref="T:Infragistics.Undo.UndoUnit"/> while the <see cref="M:Infragistics.Undo.UndoUnit.Execute(Infragistics.Undo.UndoExecuteContext)"/> method is being invoked.
+            </summary>
+            <seealso cref="M:Infragistics.Undo.UndoUnit.Execute(Infragistics.Undo.UndoExecuteContext)"/>
+            <seealso cref="T:Infragistics.Undo.UndoExecuteReason"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoExecuteContext.#ctor(Infragistics.Undo.UndoManager,Infragistics.Undo.UndoExecuteReason)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoExecuteContext"/>
+            </summary>
+            <param name="undoManager">The UndoManager for which the <see cref="T:Infragistics.Undo.UndoUnit"/> is being executed.</param>
+            <param name="reason">Indicates what triggered the execute.</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoExecuteContext.GetUnit(System.Int32)">
+            <summary>
+            Returns an undo unit in the current execution stack.
+            </summary>
+            <param name="offset">The offset into the undo units being executed. 0 returns the UndoUnit currently being executed and <see cref="P:Infragistics.Undo.UndoExecuteContext.UnitCount"/> - 1 would return the outermost unit being executed.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoExecuteContext.Execute(Infragistics.Undo.UndoUnit)">
+            <summary>
+            Used to execute an UndoUnit with this instance as the context.
+            </summary>
+            <param name="unit">The unit to be executed.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Undo.UndoExecuteContext.ExecuteItemType">
+            <summary>
+            Returns an enumeration used to indicate the type of operation being performed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoExecuteContext.Reason">
+            <summary>
+            Returns an enumeration indicating what triggered the <see cref="M:Infragistics.Undo.UndoUnit.Execute(Infragistics.Undo.UndoExecuteContext)"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoExecuteContext.UnitCount">
+            <summary>
+            Returns the depth of the current UndoUnit being executed.
+            </summary>
+            <remarks>This will typically return 1 unless there are transactions being executed.</remarks>
+        </member>
+        <member name="P:Infragistics.Undo.UndoExecuteContext.UndoManager">
+            <summary>
+            Returns the <see cref="P:Infragistics.Undo.UndoExecuteContext.UndoManager"/> for which the <see cref="T:Infragistics.Undo.UndoUnit"/> is being executed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoHistoryItem">
+            <summary>
+            Represents an item in the undo or redo history.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoHistoryItem.Execute">
+            <summary>
+            Executes all the items in the associated history up to and including this instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoHistoryItem.ItemType">
+            <summary>
+            Returns an enumeration indicating the type of operation that will be performed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoHistoryItem.LongDescription">
+            <summary>
+            Returns a more detailed representation of the item.
+            </summary>
+            <seealso cref="P:Infragistics.Undo.UndoHistoryItem.ShortDescription"/>
+            <seealso cref="M:Infragistics.Undo.UndoUnit.GetDescription(Infragistics.Undo.UndoHistoryItemType,System.Boolean)"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoHistoryItem.ShortDescription">
+            <summary>
+            Returns a basic string representation of the item.
+            </summary>
+            <seealso cref="P:Infragistics.Undo.UndoHistoryItem.LongDescription"/>
+            <seealso cref="M:Infragistics.Undo.UndoUnit.GetDescription(Infragistics.Undo.UndoHistoryItemType,System.Boolean)"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoHistoryItem.UndoManager">
+            <summary>
+            Returns the associated <see cref="P:Infragistics.Undo.UndoHistoryItem.UndoManager"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoHistoryItem.Unit">
+            <summary>
+            Returns the action that will be invoked.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoManager">
+            <summary>
+            Class used to manage an undo/redo history.
+            </summary>
+            <remarks>
+            <p class="body">The UndoManager manages the undo and redo history. Operations are added to the undo/redo history by adding 
+            <see cref="T:Infragistics.Undo.UndoUnit"/> instances to it using one of the available methods. One can create an instance of a custom UndoUnit 
+            derived class or one of the classes included in this assembly and use the <see cref="M:Infragistics.Undo.UndoManager.AddChange(Infragistics.Undo.UndoUnit)"/> method. The 
+            UndoManager also exposes a number of helper methods that will create an UndoUnit and add it to the history. The 
+            AddPropertyChange overloads can be used to record the change of a property of some object. The AddCollectionChange overloads 
+            can be used to record a change to an collection implementing ICollection&gt;T&lt;. The remaining AddChange overloads may be 
+            used to provide a set of delegates representing the Undo and Redo actions that should be taken when the manager is performing 
+            an undo or redo operation. These methods using the <see cref="P:Infragistics.Undo.UndoManager.UndoUnitFactoryResolved"/> so if you want to change the UndoUnit 
+            type that is created by these methods you may derive a class from <see cref="T:Infragistics.Undo.UndoUnitFactory"/> and set the 
+            <see cref="P:Infragistics.Undo.UndoManager.UndoUnitFactory"/> property to an instance of that class.</p>
+            <p class="body">The <see cref="P:Infragistics.Undo.UndoManager.UndoHistory"/> and <see cref="P:Infragistics.Undo.UndoManager.RedoHistory"/> are read-only collections of <see cref="T:Infragistics.Undo.UndoHistoryItem"/> 
+            instances. UndoHistoryItem exposes the root <see cref="T:Infragistics.Undo.UndoUnit"/> that represents the operation to be performed as well as 
+            short and long descriptions of the operation. These collections implement INotifyCollectionChanged and therefore can be used 
+            in your UI as the source for menu, etc. that would display the history to the end user.</p>
+            <p class="body">The <see cref="M:Infragistics.Undo.UndoManager.Undo(System.Int32)"/> and <see cref="M:Infragistics.Undo.UndoManager.Redo(System.Int32)"/> methods are used to perform an undo or redo operation. When 
+            these methods are invoked a <see cref="T:Infragistics.Undo.UndoHistoryItem"/> is removed from the associated history (e.g. UndoHistory) and then the 
+            <see cref="M:Infragistics.Undo.UndoUnit.Execute(Infragistics.Undo.UndoExecuteContext)"/> method of the <see cref="P:Infragistics.Undo.UndoHistoryItem.Unit"/> is invoked. It is important 
+            to realize that by default UndoUnits are not automatically moved to the opposite history. For example, while undoing a property change 
+            it is expected that the property change will result in a new call to the AddPropertyChange overload. That would create a new undo unit 
+            representing that change and add it to the UndoManager's history. In that case, since the UndoManager was in the process of performing 
+            an undo, the new UndoUnit would be added to the redo history.</p>
+            <p class="body">The UndoManager exposes a number of read-only boolean properties which indicate the current state of the object. The 
+            <see cref="P:Infragistics.Undo.UndoManager.IsPerformingUndo"/> and <see cref="P:Infragistics.Undo.UndoManager.IsPerformingRedo"/> are true while performing an undo or redo respectively. The 
+            <see cref="P:Infragistics.Undo.UndoManager.CanUndo"/> and <see cref="P:Infragistics.Undo.UndoManager.CanRedo"/> properties indicate if there are any items in the undo/redo history.</p>
+            <p class="body">When performing discrete initialization, one can use the <see cref="M:Infragistics.Undo.UndoManager.Suspend"/> method to temporarily disable 
+            logging of the UndoUnits in the history. Any calls to AddChange are ignored until the <see cref="M:Infragistics.Undo.UndoManager.Resume"/> method is invoked. The 
+            Resume method must be invoked once for each time that the Suspend method is invoked. The <see cref="P:Infragistics.Undo.UndoManager.IsSuspended"/> property will 
+            return true between the calls to Suspend and Resume.</p>
+            <p class="body">The UndoManager provides support for merging of a new UndoUnit with the most recent UndoUnit that was stored. This is 
+            useful in cases where the same action is occuring multiple times. For example while dragging the thumb of a Slider and therefore the 
+            property that is bound to the Slider's Value. Merging may be disabled indefinitely by setting the <see cref="P:Infragistics.Undo.UndoManager.AllowMerging"/> to false. 
+            One can also suppress the merging of the current item by invoking the <see cref="M:Infragistics.Undo.UndoManager.PreventMerge"/> method.</p>
+            <p class="body">When multiple operations should be treated as a single undoable action, one can use transactions. The UndoManager 
+            provides support for transactions using the <see cref="M:Infragistics.Undo.UndoManager.StartTransaction(System.String,System.String)"/> method. This returns a <see cref="T:Infragistics.Undo.UndoTransaction"/> 
+            instance. Any subsequent units that are added to the UndoManager are stored within that transaction until the transaction has been committed 
+            (see <see cref="M:Infragistics.Undo.UndoTransaction.Commit"/>) or rolled back (see <see cref="M:Infragistics.Undo.UndoTransaction.Rollback"/>. Nested transactions are supported so 
+            calling StartTransaction while a transaction is progress will add that to the <see cref="P:Infragistics.Undo.UndoTransaction.Units"/> of the 
+            <see cref="P:Infragistics.Undo.UndoManager.CurrentTransaction"/>. One can get access to the current open transaction, if there is one, using the <see cref="P:Infragistics.Undo.UndoManager.RootTransaction"/> 
+            property. Also, if there is a block of code that you want to execute within a transaction, you may use the 
+            <see cref="M:Infragistics.Undo.UndoManager.ExecuteInTransaction(System.String,System.String,System.Action)"/> method. This method will take care of calling the Rollback method of the transaction 
+            it creates if an exception occurs (without preventing the exception from bubbling up). Otherwise it will invoke the Commit of the transaction. 
+            When the <see cref="P:Infragistics.Undo.UndoManager.RootTransaction"/> has been committed it is then added to the undo or redo history depending on the current state of the 
+            UndoManager.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddChange(Infragistics.Undo.UndoUnit)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> to the history.
+            </summary>
+            <param name="unit">The unit to add to the history.</param>
+            <exception cref="T:System.ArgumentNullException">The 'unit' cannot be null.</exception>
+            <remarks>
+            <p class="body">This overload takes the provided <paramref name="unit"/> and adds it to either 
+            the undo or redo history stack based on the current state of the UndoManager. For example while 
+            executing an Undo (i.e. <see cref="P:Infragistics.Undo.UndoManager.IsPerformingUndo"/> is true), change units will be added to 
+            the redo stack.</p>
+            <p class="note"><b>Note:</b> An undo unit is not automatically moved from the undo stack to the 
+            redo stack or vice versa. It is expected that either the change that the UndoUnit makes (e.g. a 
+            property change) will result in a new change being added to the UndoManager or that the unit itself 
+            will add a unit (even itself) to the UndoManager. The <see cref="M:Infragistics.Undo.UndoManager.AddChange(System.String,System.String,System.Action,System.Action,System.Object)"/> is one 
+            such example of the latter. The UndoUnit created by that overload will add itself back into the 
+            UndoManager if the associated undo or redo delegate is successful.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddChange(System.String,System.String,System.Func{Infragistics.Undo.UndoExecuteContext,System.Boolean},System.Func{Infragistics.Undo.UndoExecuteContext,System.Boolean},System.Object)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> to the history.
+            </summary>
+            <param name="description">The general description for the transaction.</param>
+            <param name="detailedDescription">The detailed description for the transaction.</param>
+            <param name="undoMethod">The method to invoke when an Undo is being performed</param>
+            <param name="redoMethod">The method to invoke when an Redo is being performed</param>
+            <param name="target">An optional parameter that represents the object that will be affected by the operation.</param>
+            <remarks>
+            <p class="body">This overload creates an undo unit that will execute the <paramref name="undoMethod"/> when an Undo operation 
+            is being performed and will execute the <paramref name="redoMethod"/> when a Redo operation is being performed. If the operation 
+            is successful (i.e. the method returns true) the UndoUnit will add itself back into the history.</p>
+            <p class="note"><b>Note:</b> Since an explicit description is passed in, the string should be applicable to both undo and redo operations. For example 
+            one might use "Bold" or "Toggle Bold" instead of "Enable Bold"/"Disable Bold" since the latter might not be correct if the change is being created for the redo stack. If you do want to 
+            use a string specific to the context then you might decide which description to provide by evaluating the <see cref="P:Infragistics.Undo.UndoManager.IsPerformingRedo"/> property.</p>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">The 'undoMethod' and 'redoMethod' parameters cannot be null.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddChange(System.String,System.String,System.Func{System.Boolean},System.Func{System.Boolean},System.Object)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> to the history.
+            </summary>
+            <param name="description">The general description for the transaction.</param>
+            <param name="detailedDescription">The detailed description for the transaction.</param>
+            <param name="undoMethod">The method to invoke when an Undo is being performed</param>
+            <param name="redoMethod">The method to invoke when an Redo is being performed</param>
+            <param name="target">An optional parameter that represents the object that will be affected by the operation.</param>
+            <remarks>
+            <p class="body">This overload creates an undo unit that will execute the <paramref name="undoMethod"/> when an Undo operation 
+            is being performed and will execute the <paramref name="redoMethod"/> when a Redo operation is being performed. If the operation 
+            is successful (i.e. the method returns true) the UndoUnit will add itself back into the history.</p>
+            <p class="note"><b>Note:</b> Since an explicit description is passed in, the string should be applicable to both undo and redo operatoins. For example 
+            one might use "Bold" or "Toggle Bold" instead of "Enable Bold"/"Disable Bold" since the latter might not be correct if the change is being created for the redo stack. If you do want to 
+            use a string specific to the context then you might decide which description to provide by evaluating the <see cref="P:Infragistics.Undo.UndoManager.IsPerformingRedo"/> property.</p>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">The 'undoMethod' and 'redoMethod' parameters cannot be null.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddChange(System.String,System.String,System.Action,System.Action,System.Object)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> to the history.
+            </summary>
+            <param name="description">The general description for the transaction.</param>
+            <param name="detailedDescription">The detailed description for the transaction.</param>
+            <param name="undoMethod">The method to invoke when an Undo is being performed</param>
+            <param name="redoMethod">The method to invoke when an Redo is being performed</param>
+            <param name="target">An optional parameter that represents the object that will be affected by the operation.</param>
+            <remarks>
+            <p class="body">This overload creates an undo unit that will execute the <paramref name="undoMethod"/> when an Undo operation 
+            is being performed and will execute the <paramref name="redoMethod"/> when a Redo operation is being performed.</p>
+            <p class="note"><b>Note:</b> Since an explicit description is passed in, the string should be applicable to both undo and redo operatoins. For example 
+            one might use "Bold" or "Toggle Bold" instead of "Enable Bold"/"Disable Bold" since the latter might not be correct if the change is being created for the redo stack. If you do want to 
+            use a string specific to the context then you might decide which description to provide by evaluating the <see cref="P:Infragistics.Undo.UndoManager.IsPerformingRedo"/> property.</p>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">The 'undoMethod' and 'redoMethod' parameters cannot be null.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddCollectionChange``1(System.Collections.Generic.ICollection{``0},System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> for the specified collection change to the undo history.
+            </summary>
+            <typeparam name="TItem">The type of the item </typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="changeArgs">An object that describes the changes made to the collection</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddCollectionChange``1(System.Collections.Generic.ICollection{``0},System.Collections.Specialized.NotifyCollectionChangedAction,``0,System.Int32,System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> for the specified add/remove collection change to the undo history.
+            </summary>
+            <typeparam name="TItem">The type of the item </typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="action">Either 'Add' or 'Remove' to indicate the type of operation that occurred</param>
+            <param name="changedItem">The item that was added or removed</param>
+            <param name="index">The index of the new item for an Add operation or the index where the item existed for a Remove operation.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddCollectionChange``1(System.Collections.Generic.ICollection{``0},System.Collections.Specialized.NotifyCollectionChangedAction,``0[],System.Int32,System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> for the specified add/remove collection change to the undo history.
+            </summary>
+            <typeparam name="TItem">The type of the item </typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="action">Either 'Add' or 'Remove' to indicate the type of operation that occurred</param>
+            <param name="items">The items that were added or removed</param>
+            <param name="index">The index of the new item for an Add operation or the index where the item existed for a Remove operation.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddCollectionChange``1(System.Collections.Generic.ICollection{``0},``0[],System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> to the undo history for a collection change that replaces the contents of the collection.
+            </summary>
+            <typeparam name="TItem">The type of the item </typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="items">The items to restore when the operation is undone</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddCollectionChange``1(System.Collections.Generic.ICollection{``0},``0,``0,System.Int32,System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> for the specified replace collection change to the undo history.
+            </summary>
+            <typeparam name="TItem">The type of the item </typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="oldItem">The item that was replaced</param>
+            <param name="newItem">The item that was the replacement for <paramref name="oldItem"/></param>
+            <param name="index">The index of the item that was replaced.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddCollectionChange``1(System.Collections.Generic.ICollection{``0},``0,System.Int32,System.Int32,System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.UndoUnit"/> for the specified replace collection change to the undo history.
+            </summary>
+            <typeparam name="TItem">The type of the item </typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="item">The item that was moved.</param>
+            <param name="oldIndex">The previous index of the item.</param>
+            <param name="newIndex">The new index of the item.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddPropertyChange``2(``0,System.Linq.Expressions.Expression{System.Func{``1}},``1,``1,System.Nullable{System.Boolean},System.String,System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.PropertyChangeUndoUnitBase"/> for the specified property value change to the undo history.
+            </summary>
+            <typeparam name="TOwner">The type of class whose value was changed</typeparam>
+            <typeparam name="TProperty">The type of the property that was changed</typeparam>
+            <param name="owner">The instance whose property was changed</param>
+            <param name="getter">An expression for the property of the <typeparamref name="TOwner"/> that was changed</param>
+            <param name="oldValue">The old value of the property that should be restored when the action is undone.</param>
+            <param name="newValue">The new value of the property</param>
+            <param name="preventMerge">Used to determine if the property change should be prevented from being merged with the top entry on the undo stack when merging is allowed.</param>
+            <param name="propertyDisplayName">The name of the property as it should be displayed to the end user. If this is not specified the actual name of the property will be used.</param>
+            <param name="typeDisplayName">The name of the object whose property is being changed as it should be displayed to the end user.</param>
+            <seealso cref="T:Infragistics.Undo.UndoUnitFactory"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.UndoUnitFactory"/>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddPropertyChange``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,``1,System.Nullable{System.Boolean},System.String,System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.PropertyChangeUndoUnitBase"/> for the specified property value change to the undo history.
+            </summary>
+            <typeparam name="TOwner">The type of class whose value was changed</typeparam>
+            <typeparam name="TProperty">The type of the property that was changed</typeparam>
+            <param name="owner">The instance whose property was changed</param>
+            <param name="getter">An expression for the property that was changed</param>
+            <param name="oldValue">The old value of the property that should be restored when the action is undone.</param>
+            <param name="newValue">The new value of the property</param>
+            <param name="preventMerge">Used to determine if the property change should be prevented from being merged with the top entry on the undo stack when merging is allowed.</param>
+            <param name="propertyDisplayName">The name of the property as it should be displayed to the end user. If this is not specified the actual name of the property will be used.</param>
+            <param name="typeDisplayName">The name of the object whose property is being changed as it should be displayed to the end user.</param>
+            <seealso cref="T:Infragistics.Undo.UndoUnitFactory"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.UndoUnitFactory"/>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddPropertyChange``2(``0,System.String,``1,``1,System.Nullable{System.Boolean},System.String,System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.PropertyChangeUndoUnitBase"/> for the specified property value change to the undo history.
+            </summary>
+            <typeparam name="TOwner">The type of class whose value was changed</typeparam>
+            <typeparam name="TProperty">The type of the property that was changed</typeparam>
+            <param name="owner">The instance whose property was changed</param>
+            <param name="propertyName">The string name of the public property that was changed. This is used to find the PropertyInfo for the property to be affected when the operation is undone.</param>
+            <param name="oldValue">The old value of the property that should be restored when the action is undone.</param>
+            <param name="newValue">The new value of the property</param>
+            <param name="preventMerge">Used to determine if the property change should be prevented from being merged with the top entry on the undo stack when merging is allowed.</param>
+            <param name="propertyDisplayName">The name of the property as it should be displayed to the end user. If this is not specified the actual name of the property will be used.</param>
+            <param name="typeDisplayName">The name of the object whose property is being changed as it should be displayed to the end user.</param>
+            <seealso cref="T:Infragistics.Undo.UndoUnitFactory"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.UndoUnitFactory"/>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.ClearHistory">
+            <summary>
+            Clears the undo and redo history.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> This method does not affect the current open <see cref="P:Infragistics.Undo.UndoManager.RootTransaction"/> if there is one. If you 
+            want to stop that transaction you would invoke its <see cref="M:Infragistics.Undo.UndoTransaction.Commit"/> or <see cref="M:Infragistics.Undo.UndoTransaction.Rollback"/> 
+            method.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.ExecuteInTransaction(System.String,System.String,System.Action)">
+            <summary>
+            Executes the specified action within an <see cref="T:Infragistics.Undo.UndoTransaction"/>
+            </summary>
+            <param name="description">The description for the transaction.</param>
+            <param name="detailedDescription">The detailed description for the transaction.</param>
+            <param name="action">The action to be invoked within the transaction</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.ExecuteInTransaction(Infragistics.Undo.UndoTransaction,System.Action)">
+            <summary>
+            Executes the specified action within an <see cref="T:Infragistics.Undo.UndoTransaction"/>
+            </summary>
+            <param name="transaction">The custom transaction to be executed</param>
+            <param name="action">The action to be invoked within the transaction</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.ForEach(System.Action{Infragistics.Undo.UndoUnit})">
+            <summary>
+            Performs the specified action on each <see cref="T:Infragistics.Undo.UndoUnit"/> within the undo and redo history.
+            </summary>
+            <param name="action">The action to invoke for each item.</param>
+            <remarks>
+            <p class="body">The ForEach method will invoke the specified action on all items in the <see cref="P:Infragistics.Undo.UndoManager.UndoHistory"/>, 
+            <see cref="P:Infragistics.Undo.UndoManager.RedoHistory"/> as well as <see cref="P:Infragistics.Undo.UndoManager.RootTransaction"/> if there is one currently open.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.FromReference(System.Object)">
+            <summary>
+            Used to obtain the UndoManager instance that has been registered with a given object.
+            </summary>
+            <param name="reference">The object that was registered with a given UndoManager using the <seealso cref="M:Infragistics.Undo.UndoManager.RegisterReference(System.Object)"/> method.</param>
+            <returns>The <see cref="T:Infragistics.Undo.UndoManager"/> that was registered with the specified reference.</returns>
+            <see cref="M:Infragistics.Undo.UndoManager.UnregisterReference(System.Object)"/>
+            <see cref="M:Infragistics.Undo.UndoManager.RegisterReference(System.Object)"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.PreventMerge">
+            <summary>
+            Used to ensure that the next <see cref="T:Infragistics.Undo.UndoUnit"/> that is recorded is not allowed to merge with the last operation on the <see cref="P:Infragistics.Undo.UndoManager.UndoHistory"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.Redo(System.Int32)">
+            <summary>
+            Performs one or more redo operations from the current history.
+            </summary>
+            <param name="redoCount">The number of operations in the redo history to execute</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="redoCount"/> must be 1 or greater</exception>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.RegisterReference(System.Object)">
+            <summary>
+            Used to associate an object with a given <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+            <remarks>
+            <p class="body">Registering an object with an UndoManager allows a reference to the object to be passed to static 
+            methods that are used to obtain the UndoManager with which an undo operation should be registered. This allows an 
+            object to not have to store a reference to the UndoManager directly.</p>
+            </remarks>
+            <param name="reference">The object with which to associate this UndoManager instance</param>
+            <see cref="M:Infragistics.Undo.UndoManager.UnregisterReference(System.Object)"/>
+            <see cref="M:Infragistics.Undo.UndoManager.FromReference(System.Object)"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.RemoveAll(System.Func{Infragistics.Undo.UndoUnit,System.Boolean},System.Boolean)">
+            <summary>
+            Removes all the matching <see cref="T:Infragistics.Undo.UndoUnit"/> instances from the <see cref="P:Infragistics.Undo.UndoManager.UndoHistory"/> and <see cref="P:Infragistics.Undo.UndoManager.RedoHistory"/> collections.
+            </summary>
+            <param name="match">The delegate to invoke with each <see cref="T:Infragistics.Undo.UndoUnit"/> to determine if it should be removed.</param>
+            <param name="includeRootTransaction">Indicates whether the method should affect the current open <see cref="P:Infragistics.Undo.UndoManager.RootTransaction"/> if there is one.</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.Resume">
+            <summary>
+            Resumes the recording of <see cref="T:Infragistics.Undo.UndoUnit"/> instances in the history.
+            </summary>
+            <remarks>
+            <p class="body">The <see cref="M:Infragistics.Undo.UndoManager.Suspend"/> method is meant to be used to temporarily prevent recording of undo operations. This 
+            can be helpful when initializing objects/collections before they will be manipulated by the end user. The Resume method must 
+            be called to remove the suspension and must be called an equal number of times that the Suspend method is invoked.</p>
+            <p class="note">While suspended, calls to <see cref="M:Infragistics.Undo.UndoManager.AddChange(Infragistics.Undo.UndoUnit)"/> will be ignored. Also any calls to <see cref="M:Infragistics.Undo.UndoManager.Undo(System.Int32)"/> 
+            or <see cref="M:Infragistics.Undo.UndoManager.Redo(System.Int32)"/> will result in an exception.</p>
+            </remarks>
+            <seealso cref="M:Infragistics.Undo.UndoManager.Suspend"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.IsSuspended"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.StartTransaction(System.String,System.String)">
+            <summary>
+            Used to start a new transaction that will group one or more <see cref="T:Infragistics.Undo.UndoUnit"/> actions.
+            </summary>
+            <param name="description">The general description for the transaction.</param>
+            <param name="detailedDescription">The detailed description for the transaction.</param>
+            <returns>The transaction that was created.</returns>
+            <remarks>
+            <p class="body">A transaction is used to group one or more <see cref="T:Infragistics.Undo.UndoUnit"/> instances into a single 
+            item in the undo/redo history. The StartTranaction method is used to start a new transaction. If no 
+            transactions have been started or all tranasactions are closed, this will create a new root level 
+            transaction that is exposed via the <see cref="P:Infragistics.Undo.UndoManager.RootTransaction"/>. If a transaction has already been 
+            started, and therefore RootTransaction returns non-null, the new transaction will be a nested transaction 
+            of the leaf open transaction within that <see cref="T:Infragistics.Undo.UndoTransaction"/>. The method returns the newly 
+            started transaction.</p>
+            <p class="note"><b>Note:</b> The <see cref="M:Infragistics.Undo.UndoManager.Undo(System.Int32)"/> and <see cref="M:Infragistics.Undo.UndoManager.Redo(System.Int32)"/> methods cannot be 
+            invoked while a transaction is open but one can create transactions while performing an undo/redo operation 
+            to gather the operations into a single unit.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Undo.UndoManager.RootTransaction"/>
+            <seealso cref="P:Infragistics.Undo.UndoTransaction.OpenTransaction"/>
+            <seealso cref="M:Infragistics.Undo.UndoUnitFactory.CreateTransaction(System.String,System.String)"/>
+            <seealso cref="T:Infragistics.Undo.UndoTransaction"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.StartTransaction(Infragistics.Undo.UndoTransaction)">
+            <summary>
+            Used to start a new transaction that will group one or more <see cref="T:Infragistics.Undo.UndoUnit"/> actions.
+            </summary>
+            <param name="transaction">The new transaction instance that is to be used.</param>
+            <returns>The transaction that was created.</returns>
+            <remarks>
+            <p class="body">A transaction is used to group one or more <see cref="T:Infragistics.Undo.UndoUnit"/> instances into a single 
+            item in the undo/redo history. The StartTranaction method is used to start a new transaction. If no 
+            transactions have been started or all tranasactions are closed, this will create a new root level 
+            transaction that is exposed via the <see cref="P:Infragistics.Undo.UndoManager.RootTransaction"/>. If a transaction has already been 
+            started, and therefore RootTransaction returns non-null, the new transaction will be a nested transaction 
+            of the leaf open transaction within that <see cref="T:Infragistics.Undo.UndoTransaction"/>. The method returns the newly 
+            started transaction.</p>
+            <p class="note"><b>Note:</b> The <see cref="M:Infragistics.Undo.UndoManager.Undo(System.Int32)"/> and <see cref="M:Infragistics.Undo.UndoManager.Redo(System.Int32)"/> methods cannot be 
+            invoked while a transaction is open but one can create transactions while performing an undo/redo operation 
+            to gather the operations into a single unit.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Undo.UndoManager.RootTransaction"/>
+            <seealso cref="M:Infragistics.Undo.UndoManager.StartTransaction(System.String,System.String)"/>
+            <seealso cref="P:Infragistics.Undo.UndoTransaction.OpenTransaction"/>
+            <seealso cref="T:Infragistics.Undo.UndoTransaction"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.Suspend">
+            <summary>
+            Suspends the recording of <see cref="T:Infragistics.Undo.UndoUnit"/> instances in the history.
+            </summary>
+            <remarks>
+            <p class="body">The Suspend method is meant to be used to temporarily prevent recording of undo operations. This 
+            can be helpful when initializing objects/collections before they will be manipulated by the end user. The <see cref="M:Infragistics.Undo.UndoManager.Resume"/> 
+            method must be called to remove the suspension and must be called an equal number of times that the Suspend method is invoked.</p>
+            <p class="note">While suspended, calls to <see cref="M:Infragistics.Undo.UndoManager.AddChange(Infragistics.Undo.UndoUnit)"/> will be ignored. Also any calls to <see cref="M:Infragistics.Undo.UndoManager.Undo(System.Int32)"/> 
+            or <see cref="M:Infragistics.Undo.UndoManager.Redo(System.Int32)"/> will result in an exception.</p>
+            </remarks>
+            <seealso cref="M:Infragistics.Undo.UndoManager.Resume"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.IsSuspended"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.UnregisterReference(System.Object)">
+            <summary>
+            Used to remove an registration for an object that was registered with this UndoManager instance via the <see cref="M:Infragistics.Undo.UndoManager.RegisterReference(System.Object)"/> method.
+            </summary>
+            <param name="reference">The object with that was previously registered with this UndoManager instance</param>
+            <see cref="M:Infragistics.Undo.UndoManager.RegisterReference(System.Object)"/>
+            <see cref="M:Infragistics.Undo.UndoManager.FromReference(System.Object)"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.Undo(System.Int32)">
+            <summary>
+            Performs one or more undo operations from the current history.
+            </summary>
+            <param name="undoCount">The number of operations in the undo history to execute</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="undoCount"/> must be 1 or greater</exception>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.AddPropertyChange(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs,System.Nullable{System.Boolean},System.String,System.String)">
+            <summary>
+            Adds an <see cref="T:Infragistics.Undo.PropertyChangeUndoUnitBase"/> for the specified property value change to the undo history.
+            </summary>
+            <param name="owner">The instance whose property was changed</param>
+            <param name="propertyChangedArgs">The DependencyPropertyChangedEventArgs containing the old and new value.</param>
+            <param name="preventMerge">Used to determine if the property change should be prevented from being merged with the top entry on the undo stack when merging is allowed.</param>
+            <param name="propertyDisplayName">The name of the property as it should be displayed to the end user. If this is not specified the actual name of the property will be used.</param>
+            <param name="typeDisplayName">The name of the object whose property is being changed as it should be displayed to the end user.</param>
+            <remarks>
+            <p class="note"><b>Note:</b> In Silverlight a default description may not be able to be properly provided if the Name of the DependencyProperty cannot be obtained.</p>
+            </remarks>
+            <seealso cref="T:Infragistics.Undo.UndoUnitFactory"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.UndoUnitFactory"/>
+            <returns>Returns the UndoUnit that was added or null if one was not added</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.RegisterResources(System.String,System.Reflection.Assembly)">
+            <summary>
+            Adds an additonal Resx file in which the control will pull its resources from.
+            </summary>
+            <param name="name">The name of the embedded resx file that contains the resources to be used.</param>
+            <param name="assembly">The assembly in which the resx file is embedded.</param>
+            <remarks>Don't include the extension of the file, but prefix it with the default Namespace of the assembly.</remarks>
+        </member>
+        <member name="M:Infragistics.Undo.UndoManager.UnregisterResources(System.String)">
+            <summary>
+            Removes a previously registered resx file.
+            </summary>
+            <param name="name">The name of the embedded resx file that was used for registration.</param>
+            <remarks>
+            Note: this won't have any effect on controls that are already in view and are already displaying strings.
+            It will only affect any new controls created.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.AllowMerging">
+            <summary>
+            Returns or sets a boolean indicating if the <see cref="M:Infragistics.Undo.UndoUnit.Merge(Infragistics.Undo.UndoMergeContext)"/> method may be used to merge changes.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> The <see cref="M:Infragistics.Undo.UndoUnit.Merge(Infragistics.Undo.UndoMergeContext)"/> method is only invoked when 2 or more 
+            new UndoUnits are added to the history. If an Undo or Redo operation is performed, the method will not be 
+            invoked until after the next non-undo/redo operation is performed.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.CanRedo">
+            <summary>
+            Returns a boolean indicating if there is an operation that can be redone.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.CanUndo">
+            <summary>
+            Returns a boolean indicating if there is an operation that can be undone.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.Current">
+            <summary>
+            Returns a thread static singleton instance of an UndoManager.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.CurrentHistoryItem">
+            <summary>
+            Returns the <see cref="T:Infragistics.Undo.UndoHistoryItem"/> from the <see cref="P:Infragistics.Undo.UndoManager.UndoHistory"/> or <see cref="P:Infragistics.Undo.UndoManager.RedoHistory"/> that is currently being executed or null if no undo/redo is in progress.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.CurrentTransaction">
+            <summary>
+            Returns the current open leaf <see cref="T:Infragistics.Undo.UndoTransaction"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.IsPerformingRedo">
+            <summary>
+            Returns a boolean indicating if the manager is performing a redo operation.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.IsPerformingRollback">
+            <summary>
+            Returns a boolean indicating if the <see cref="T:Infragistics.Undo.UndoManager"/> is performing a Rollback of a <see cref="T:Infragistics.Undo.UndoTransaction"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.IsPerformingUndo">
+            <summary>
+            Returns a boolean indicating if the manager is performing an undo operation.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.IsSuspended">
+            <summary>
+            Returns a boolean indicating if the recording of <see cref="T:Infragistics.Undo.UndoUnit"/> instances in the history has been suspended using the <see cref="M:Infragistics.Undo.UndoManager.Suspend"/> method.
+            </summary>
+            <seealso cref="M:Infragistics.Undo.UndoManager.Suspend"/>
+            <seealso cref="M:Infragistics.Undo.UndoManager.Resume"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.MergeTimeout">
+            <summary>
+            Returns the amount of time since the last operation that a <see cref="M:Infragistics.Undo.UndoUnit.Merge(Infragistics.Undo.UndoMergeContext)"/> will be allowed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.RedoHistory">
+            <summary>
+            Returns a read-only collection of the items in the redo history.
+            </summary>
+            <seealso cref="P:Infragistics.Undo.UndoManager.TopRedoHistoryItem"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.CanRedo"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.UndoHistory"/>
+            <seealso cref="T:Infragistics.Undo.UndoHistoryItem"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.RootTransaction">
+            <summary>
+            Returns the outermost current open transaction or null if there is currently no transaction open.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.TopRedoHistoryItem">
+            <summary>
+            Returns the next item on the top of the <see cref="P:Infragistics.Undo.UndoManager.RedoHistory"/>
+            </summary>
+            <remarks>
+            <p>This property returns the <see cref="T:Infragistics.Undo.UndoHistoryItem"/> at the top of the <see cref="P:Infragistics.Undo.UndoManager.RedoHistory"/> 
+            stack and is therefore equivalent to accessing RedoHistory[0]. The primary use case for this property 
+            is for binding such as when displaying the <see cref="P:Infragistics.Undo.UndoHistoryItem.ShortDescription"/> for the tooltip 
+            of an Redo button in the UI to avoid the exception information in the output window.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Undo.UndoManager.TopUndoHistoryItem"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.RedoHistory"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.TopUndoHistoryItem">
+            <summary>
+            Returns the next item on the top of the <see cref="P:Infragistics.Undo.UndoManager.UndoHistory"/>
+            </summary>
+            <remarks>
+            <p>This property returns the <see cref="T:Infragistics.Undo.UndoHistoryItem"/> at the top of the <see cref="P:Infragistics.Undo.UndoManager.UndoHistory"/> 
+            stack and is therefore equivalent to accessing UndoHistory[0]. The primary use case for this property 
+            is for binding such as when displaying the <see cref="P:Infragistics.Undo.UndoHistoryItem.ShortDescription"/> for the tooltip 
+            of an Undo button in the UI to avoid the exception information in the output window.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Undo.UndoManager.TopRedoHistoryItem"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.UndoHistory"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.UndoLimit">
+            <summary>
+            Returns or sets the maximum number of items to maintain within the undo/redo history.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.UndoHistory">
+            <summary>
+            Returns a read-only collection of the items in the undo history.
+            </summary>
+            <seealso cref="P:Infragistics.Undo.UndoManager.TopUndoHistoryItem"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.CanUndo"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.RedoHistory"/>
+            <seealso cref="T:Infragistics.Undo.UndoHistoryItem"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.UndoUnitFactory">
+            <summary>
+            Returns or sets an object that is used to create the default <see cref="T:Infragistics.Undo.UndoUnit"/> instances for this <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+            <see cref="T:Infragistics.Undo.UndoUnitFactory"/>
+            <see cref="P:Infragistics.Undo.UndoManager.UndoUnitFactoryResolved"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoManager.UndoUnitFactoryResolved">
+            <summary>
+            Read-Only property that returns the <see cref="P:Infragistics.Undo.UndoManager.UndoUnitFactory"/> that the UndoManager uses to create the UndoUnit units.
+            </summary>
+            <see cref="T:Infragistics.Undo.UndoUnitFactory"/>
+            <see cref="P:Infragistics.Undo.UndoManager.UndoUnitFactory"/>
+        </member>
+        <member name="T:Infragistics.Undo.UndoMergeContext">
+            <summary>
+            Used to provide information about a potential merge operation to the <see cref="M:Infragistics.Undo.UndoUnit.Merge(Infragistics.Undo.UndoMergeContext)"/> method.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoMergeContext.#ctor(Infragistics.Undo.UndoManager,Infragistics.Undo.UndoUnit)">
+            <summary>
+            Initializes a new <see cref="P:Infragistics.Undo.UndoMergeContext.UndoManager"/>
+            </summary>
+            <param name="undoManager">The UndoManager for which the unit is being added</param>
+            <param name="unitBeingAdded">The unit being added</param>
+        </member>
+        <member name="P:Infragistics.Undo.UndoMergeContext.UndoManager">
+            <summary>
+            Returns the <see cref="P:Infragistics.Undo.UndoMergeContext.UndoManager"/> for which the UndoUnit is being added.
+            </summary>
+            <seealso cref="P:Infragistics.Undo.UndoMergeContext.UnitBeingAdded"/>
+        </member>
+        <member name="P:Infragistics.Undo.UndoMergeContext.UnitBeingAdded">
+            <summary>
+            Returns the <see cref="T:Infragistics.Undo.UndoUnit"/> that is being added.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.CollectionChangeUndoUnit`1">
+            <summary>
+            Custom <see cref="T:Infragistics.Undo.UndoUnit"/> for undoing changes to an <see cref="T:System.Collections.Generic.ICollection`1"/>.
+            </summary>
+            <typeparam name="T">The type of item in the collection</typeparam>
+        </member>
+        <member name="T:Infragistics.Undo.UndoUnit">
+            <summary>
+            Base class for an undo/redo operation.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnit.Execute(Infragistics.Undo.UndoExecuteContext)">
+            <summary>
+            Used to perform the associated action.
+            </summary>
+            <param name="executeInfo">Provides information about the undo/redo operation being executed.</param>
+            <returns>Returns true if some action was taken. Otherwise false is returned. In either case the object was removed from the undo stack.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnit.ForEach(System.Action{Infragistics.Undo.UndoUnit})">
+            <summary>
+            Used to invoke an action on the descendants.
+            </summary>
+            <param name="action">The action to invoke on descendants</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnit.GetDescription(Infragistics.Undo.UndoHistoryItemType,System.Boolean)">
+            <summary>
+            Returns a string representation of the action based on whether this is for an undo or redo operation.
+            </summary>
+            <param name="itemType">The type of history for which the description is being requested.</param>
+            <param name="detailed">A boolean indicating if a detailed description should be returned. For example, when false one may return "Typing" but for verbose one may return "Typing 'qwerty'".</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnit.Merge(Infragistics.Undo.UndoMergeContext)">
+            <summary>
+            Used to allow multiple consecutive undo units to be merged into a single operation.
+            </summary>
+            <param name="mergeInfo">Provides information about the unit to evaluate for a merge operation</param>
+            <returns>Returns an enumeration used to provide identify how the unit was merged.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnit.RemoveAll(System.Func{Infragistics.Undo.UndoUnit,System.Boolean})">
+            <summary>
+            Used to remove any matching descendants and indicate if the unit should be removed.
+            </summary>
+            <param name="match">The routine to evaluate any descendant units. This should not be executed against the UndoUnit whose RemoveAll is being called.</param>
+            <returns>Returns true if the item should be removed; otherwise returns false.</returns>
+        </member>
+        <member name="P:Infragistics.Undo.UndoUnit.Target">
+            <summary>
+            Returns the target object that will be affected by the <see cref="T:Infragistics.Undo.UndoUnit"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.CollectionChangeUndoUnit`1.#ctor(System.Collections.Generic.ICollection{`0},System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.CollectionChangeUndoUnit`1"/> based upon the specified <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/>
+            </summary>
+            <param name="collection">The collection that was modified</param>
+            <param name="changedArgs">An object that describes the changes made to the collection</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="collection"/> and <paramref name="changedArgs"/> must not be null.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="collection"/> cannot be ReadOnly.</exception>
+            <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Collections.Specialized.NotifyCollectionChangedEventArgs.Action"/> cannot be 'Reset'.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.CollectionChangeUndoUnit`1.#ctor(System.Collections.Generic.ICollection{`0},System.Collections.Specialized.NotifyCollectionChangedAction,`0,System.Int32,System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.CollectionChangeUndoUnit`1"/> for an add or remove of a specific item.
+            </summary>
+            <param name="collection">The collection that was modified</param>
+            <param name="action">Must be either 'Add' or 'Remove' to indicate if the item was added or removed.</param>
+            <param name="changedItem">The item that was added or removed.</param>
+            <param name="index">The index at which the item was inserted for an Add or the old index of the item for a Remove <paramref name="action"/>.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="collection"/> must not be null.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="collection"/> cannot be ReadOnly.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="action"/> must be 'Add' or 'Remove'.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.CollectionChangeUndoUnit`1.#ctor(System.Collections.Generic.ICollection{`0},System.Collections.Specialized.NotifyCollectionChangedAction,`0[],System.Int32,System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.CollectionChangeUndoUnit`1"/> for an add or remove of multiple items.
+            </summary>
+            <param name="collection">The collection that was modified</param>
+            <param name="action">Must be either 'Add' or 'Remove' to indicate if the item was added or removed.</param>
+            <param name="items">The items that were added or removed.</param>
+            <param name="index">The index at which the items were inserted for an Add or the old index of the item for a Remove <paramref name="action"/>.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="collection"/> must not be null.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="collection"/> cannot be ReadOnly.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="action"/> must be 'Add' or 'Remove'.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.CollectionChangeUndoUnit`1.#ctor(System.Collections.Generic.ICollection{`0},`0[],System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.CollectionChangeUndoUnit`1"/> for a reset of the specified collection.
+            </summary>
+            <param name="collection">The collection that was modified</param>
+            <param name="items">The old items previously in the collection.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="collection"/> must not be null.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="collection"/> cannot be ReadOnly.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.CollectionChangeUndoUnit`1.#ctor(System.Collections.Generic.ICollection{`0},`0,`0,System.Int32,System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.CollectionChangeUndoUnit`1"/> for a replacement of a specific item.
+            </summary>
+            <param name="collection">The collection that was modified</param>
+            <param name="oldItem">The item that was removed/replaced.</param>
+            <param name="newItem">The item that was added as a replacement for <paramref name="oldItem"/>.</param>
+            <param name="index">The index of the item that was replaced which is also the index of the replacement.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="collection"/> must not be null.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="collection"/> cannot be ReadOnly.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.CollectionChangeUndoUnit`1.#ctor(System.Collections.Generic.ICollection{`0},`0,System.Int32,System.Int32,System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.CollectionChangeUndoUnit`1"/> for a move of a specific item.
+            </summary>
+            <param name="collection">The collection that was modified</param>
+            <param name="item">The item that was moved.</param>
+            <param name="oldIndex">The previous index of the item.</param>
+            <param name="newIndex">The new index of the item.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="collection"/> must not be null.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="collection"/> cannot be ReadOnly.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.CollectionChangeUndoUnit`1.Execute(Infragistics.Undo.UndoExecuteContext)">
+            <summary>
+            Used to perform the associated action.
+            </summary>
+            <param name="executeInfo">Provides information about the undo/redo operation being executed.</param>
+            <returns>Returns true if some action was taken. Otherwise false is returned. In either case the object was removed from the undo stack.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.CollectionChangeUndoUnit`1.GetDescription(Infragistics.Undo.UndoHistoryItemType,System.Boolean)">
+            <summary>
+            Returns a string representation of the action based on whether this is for an undo or redo operation.
+            </summary>
+            <param name="itemType">The type of history for which the description is being requested.</param>
+            <param name="detailed">A boolean indicating if a detailed description should be returned. For example, when false one may return "Typing" but for verbose one may return "Typing 'qwerty'".</param>
+        </member>
+        <member name="M:Infragistics.Undo.CollectionChangeUndoUnit`1.Merge(Infragistics.Undo.UndoMergeContext)">
+            <summary>
+            Used to allow multiple consecutive undo units to be merged into a single operation.
+            </summary>
+            <param name="mergeInfo">Provides information about the unit to evaluate for a merge operation</param>
+            <returns>Returns an enumeration used to provide identify how the unit was merged.</returns>
+        </member>
+        <member name="P:Infragistics.Undo.CollectionChangeUndoUnit`1.Target">
+            <summary>
+            Returns the target <see cref="P:Infragistics.Undo.CollectionChangeUndoUnit`1.Collection"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.CollectionChangeUndoUnit`1.Collection">
+            <summary>
+            Returns the associated collection that will be updated if the unit is executed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.CustomUndoUnit">
+            <summary>
+            Custom <see cref="T:Infragistics.Undo.UndoUnit"/> that takes a delegate that performs the execute operation.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.CustomUndoUnit.#ctor(System.String,System.String,System.Func{Infragistics.Undo.UndoExecuteContext,System.Boolean},System.Object)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.CustomUndoUnit"/> that invokes the specified method when the operation in the undo/redo history is to be performed.
+            </summary>
+            <param name="description">The description for the transaction.</param>
+            <param name="detailedDescription">The detailed description for the transaction.</param>
+            <param name="executeMethod">The method to be invoked. The method returns a boolean indicating if the operation was successful.</param>
+            <param name="target">The object that is the target of the function. This information is exposed via the <see cref="P:Infragistics.Undo.CustomUndoUnit.Target"/> property.</param>
+            <exception cref="T:System.ArgumentNullException">The executeMethod parameter cannot be null.</exception>
+        </member>
+        <member name="M:Infragistics.Undo.CustomUndoUnit.Execute(Infragistics.Undo.UndoExecuteContext)">
+            <summary>
+            Used to perform the associated action.
+            </summary>
+            <param name="executeInfo">Provides information about the undo/redo operation being executed.</param>
+            <returns>Returns true if some action was taken. Otherwise false is returned. In either case the object was removed from the undo stack.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.CustomUndoUnit.GetDescription(Infragistics.Undo.UndoHistoryItemType,System.Boolean)">
+            <summary>
+            Returns a string representation of the action based on whether this is for an undo or redo operation.
+            </summary>
+            <param name="itemType">The type of history for which the description is being requested.</param>
+            <param name="detailed">A boolean indicating if a detailed description should be returned. For example, when false one may return "Typing" but for verbose one may return "Typing 'qwerty'".</param>
+        </member>
+        <member name="P:Infragistics.Undo.CustomUndoUnit.Target">
+            <summary>
+            Returns the target object that will be affected by the <see cref="T:Infragistics.Undo.CustomUndoUnit"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.PropertyChangeUndoUnit`2">
+            <summary>
+            Custom undo unit used to undo the result of a property change.
+            </summary>
+            <typeparam name="TTarget">The type of object whose property was changed</typeparam>
+            <typeparam name="TProperty">The type of the property whose value was changed</typeparam>
+        </member>
+        <member name="T:Infragistics.Undo.PropertyChangeUndoUnitBase">
+            <summary>
+            Base class for an <see cref="T:Infragistics.Undo.UndoUnit"/> that changes the value of a single property.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.PropertyChangeUndoUnitBase.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.PropertyChangeUndoUnitBase"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.PropertyChangeUndoUnitBase.GetDescription(Infragistics.Undo.UndoHistoryItemType,System.Boolean)">
+            <summary>
+            Returns a string representation of the action based on whether this is for an undo or redo operation.
+            </summary>
+            <param name="itemType">The type of history for which the description is being requested.</param>
+            <param name="detailed">A boolean indicating if a detailed description should be returned. For example, when false one may return "Typing" but for verbose one may return "Typing 'qwerty'".</param>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnitBase.NewValue">
+            <summary>
+            Returns the new value that was set on the object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnitBase.OldValue">
+            <summary>
+            Returns the original value of the object that will be restored.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnitBase.PropertyName">
+            <summary>
+            Returns the name of the property that will be changed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnitBase.PropertyDisplayName">
+            <summary>
+            Optional string representing the property name as it should be displayed to the end user.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnitBase.TargetDisplayName">
+            <summary>
+            Optional string representing the target as it should be displayed to the end user.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.PropertyChangeUndoUnit`2.#ctor(`0,`1,`1,System.Action{`0,`1},System.String,System.String,System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.PropertyChangeUndoUnit`2"/>
+            </summary>
+            <param name="target">Object whose property was changed</param>
+            <param name="oldValue">The old value of the property that is to be restored when an undo is performed.</param>
+            <param name="newValue">The new value of the property.</param>
+            <param name="setter">The delegate used to perform the undo</param>
+            <param name="memberName">The name of the associated property</param>
+            <param name="propertyDisplayName">The name of the property as it should be displayed to the end user or null to use the <paramref name="memberName"/>.</param>
+            <param name="targetDisplayName">A string representing the target as it should be displayed to the end user or null to obtain the string representation from the <paramref name="target"/> itself.</param>
+        </member>
+        <member name="M:Infragistics.Undo.PropertyChangeUndoUnit`2.Execute(Infragistics.Undo.UndoExecuteContext)">
+            <summary>
+            Used to perform the associated action.
+            </summary>
+            <param name="executeInfo">Provides information about the undo/redo operation being executed.</param>
+        </member>
+        <member name="M:Infragistics.Undo.PropertyChangeUndoUnit`2.Merge(Infragistics.Undo.UndoMergeContext)">
+            <summary>
+            Used to allow multiple consecutive undo units to be merged into a single operation.
+            </summary>
+            <param name="mergeInfo">Provides information about the unit to evaluate for a merge operation</param>
+            <returns>Returns an enumeration used to provide identify how the unit was merged.</returns>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnit`2.NewValue">
+            <summary>
+            Returns the new value that was set on the object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnit`2.OldValue">
+            <summary>
+            Returns the original value of the object that will be restored.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnit`2.PropertyDisplayName">
+            <summary>
+            Optional string representing the property name as it should be displayed to the end user.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnit`2.PropertyName">
+            <summary>
+            Returns the name of the property that will be changed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnit`2.Target">
+            <summary>
+            Returns the target object that will be affected by the <see cref="T:Infragistics.Undo.UndoUnit"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnit`2.TargetDisplayName">
+            <summary>
+            Optional string representing the target as it should be displayed to the end user.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.PropertyChangeUndoUnit`2.ActualTarget">
+            <summary>
+            Returns the object whose property is to be restored when executed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoTransaction">
+            <summary>
+            Custom <see cref="T:Infragistics.Undo.UndoUnit"/> that contains one or more <see cref="T:Infragistics.Undo.UndoUnit"/>
+            </summary>
+            <seealso cref="M:Infragistics.Undo.UndoManager.StartTransaction(System.String,System.String)"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.CurrentTransaction"/>
+            <seealso cref="P:Infragistics.Undo.UndoManager.RootTransaction"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoTransaction"/>
+            </summary>
+            <param name="description">The description for the transaction or null to provide a default one.</param>
+            <param name="detailedDescription">The detailed description for the transaction or null to provide a default one.</param>
+            <remarks>
+            <p class="note">A transaction is typically created by using the <see cref="M:Infragistics.Undo.UndoManager.StartTransaction(System.String,System.String)"/>. The control 
+            is exposed in case a derived transaction class is needed in which case one would need a derived <see cref="T:Infragistics.Undo.UndoUnitFactory"/> 
+            where the <see cref="M:Infragistics.Undo.UndoUnitFactory.CreateTransaction(System.String,System.String)"/> method is overriden and then an instance of that factory 
+            class is set on either the <see cref="P:Infragistics.Undo.UndoUnitFactory.Current"/> or the <see cref="P:Infragistics.Undo.UndoManager.UndoUnitFactory"/> properties.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.Execute(Infragistics.Undo.UndoExecuteContext)">
+            <summary>
+            Used to perform the associated action for all items in the <see cref="P:Infragistics.Undo.UndoTransaction.Units"/>
+            </summary>
+            <param name="executeInfo">Provides information about the undo/redo operation being executed.</param>
+            <returns>Returns true if one or more of the <see cref="P:Infragistics.Undo.UndoTransaction.Units"/> executed successfully. Otherwise false is returned.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.ForEach(System.Action{Infragistics.Undo.UndoUnit})">
+            <summary>
+            Used to invoke an action on the descendants.
+            </summary>
+            <param name="action">The action to invoke on descendants</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.GetDescription(Infragistics.Undo.UndoHistoryItemType,System.Boolean)">
+            <summary>
+            Returns a string representation of the action based on whether this is for an undo or redo operation.
+            </summary>
+            <param name="itemType">The type of history for which the description is being requested.</param>
+            <param name="detailed">A boolean indicating if a detailed description should be returned. For example, when false one may return "Typing" but for verbose one may return "Typing 'qwerty'".</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.Merge(Infragistics.Undo.UndoMergeContext)">
+            <summary>
+            Used to allow multiple consecutive undo units to be merged into a single operation.
+            </summary>
+            <param name="mergeInfo">Provides information about the unit to evaluate for a merge operation</param>
+            <returns>Returns an enumeration used to provide identify how the unit was merged.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.RemoveAll(System.Func{Infragistics.Undo.UndoUnit,System.Boolean})">
+            <summary>
+            Used to remove any matching descendants.
+            </summary>
+            <param name="match">The routine to evaluate any descendant units. This should not be executed against the UndoUnit whose RemoveAll is being called.</param>
+            <returns>Returns true if the item should be removed</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.Close(Infragistics.Undo.UndoTransactionCloseAction)">
+            <summary>
+            Used to close the group either committing the units or cancelling them.
+            </summary>
+            <param name="closeAction">Indicates the action to take</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.Open(Infragistics.Undo.IUndoTransactionOwner)">
+            <summary>
+            Invoked when a group is about to be opened.
+            </summary>
+            <param name="parent">The parent for the group.</param>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.Commit">
+            <summary>
+            Commits and closes the transaction
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.Rollback">
+            <summary>
+            Closes the transaction, executes the <see cref="P:Infragistics.Undo.UndoTransaction.Units"/> and removes it from the parent.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoTransaction.CreateExecuteTransaction(Infragistics.Undo.UndoExecuteContext)">
+            <summary>
+            Creates a transaction that will be started while executing the <see cref="P:Infragistics.Undo.UndoTransaction.Units"/>.
+            </summary>
+            <param name="executeInfo">Provides information about the undo/redo operation being executed.</param>
+            <returns>A new instance of a <see cref="T:Infragistics.Undo.UndoTransaction"/> or derived class that can be used with 
+            <see cref="M:Infragistics.Undo.UndoManager.StartTransaction(Infragistics.Undo.UndoTransaction)"/> to start a transaction that will encompass the current execution operation.</returns>
+        </member>
+        <member name="P:Infragistics.Undo.UndoTransaction.Target">
+            <summary>
+            Returns null since the <see cref="T:Infragistics.Undo.UndoTransaction"/> is a group of <see cref="T:Infragistics.Undo.UndoUnit"/> instances and may affect multiple targets
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoTransaction.IsClosed">
+            <summary>
+            Returns a boolean indicating if the transaction has been closed/ended.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoTransaction.OpenTransaction">
+            <summary>
+            Returns the child transaction that is currently opened.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoTransaction.Parent">
+            <summary>
+            Returns the parent/containing <see cref="T:Infragistics.Undo.UndoTransaction"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoTransaction.Units">
+            <summary>
+            Returns a read-only collection of the child units.
+            </summary>
+            <remarks>
+            <p class="body">Units are added to a group by using the <see cref="M:Infragistics.Undo.UndoManager.AddChange(Infragistics.Undo.UndoUnit)"/> method.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Undo.UndoTransaction.Description">
+            <summary>
+            Returns the description provided to the constructor of the transaction.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.UndoTransaction.DetailedDescription">
+            <summary>
+            Returns the detailed description provided to the constructor of the transaction.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Undo.UndoUnitFactory">
+            <summary>
+            Factory class for creating common <see cref="T:Infragistics.Undo.UndoUnit"/> instances for use in an <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+            <see cref="P:Infragistics.Undo.UndoManager.UndoUnitFactory"/>
+            <see cref="P:Infragistics.Undo.UndoManager.UndoUnitFactoryResolved"/>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.UndoUnitFactory"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreateChange(System.String,System.String,System.Func{Infragistics.Undo.UndoExecuteContext,System.Boolean},System.Func{Infragistics.Undo.UndoExecuteContext,System.Boolean},System.Object)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.UndoUnit"/> for the specified method.
+            </summary>
+            <param name="description">The description for the transaction.</param>
+            <param name="detailedDescription">The more detailed description for the operation.</param>
+            <param name="undoMethod">The method to be invoked when an Undo is being performed. The method returns a boolean indicating if the operation was successful.</param>
+            <param name="redoMethod">The method to be invoked when an Redo is being performed. The method returns a boolean indicating if the operation was successful.</param>
+            <param name="target">The object that is the target of the function. This information is exposed via the <see cref="P:Infragistics.Undo.UndoUnit.Target"/> property.</param>
+            <returns>An <see cref="T:Infragistics.Undo.UndoUnit"/> that can be used to undo the operation</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreateCollectionChange``1(System.Collections.Generic.ICollection{``0},System.Collections.Specialized.NotifyCollectionChangedEventArgs,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.UndoUnit"/> for a collection change based upon a specified <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/>.
+            </summary>
+            <typeparam name="T">The type of item in the collection</typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="changedArgs">An object that describes the changes made to the collection</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>An <see cref="T:Infragistics.Undo.UndoUnit"/> that can be used to undo the operation</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreateCollectionChange``1(System.Collections.Generic.ICollection{``0},System.Collections.Specialized.NotifyCollectionChangedAction,``0,System.Int32,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.UndoUnit"/> for an Add/Remove operation of a specific item.
+            </summary>
+            <typeparam name="T">The type of item in the collection</typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="action">Either 'Add' or 'Remove' to indicate the type of operation that occurred</param>
+            <param name="changedItem">The item that was added or removed</param>
+            <param name="index">The index of the new item for an Add operation or the index where the item existed for a Remove operation.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>An <see cref="T:Infragistics.Undo.UndoUnit"/> that can be used to undo the operation</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreateCollectionChange``1(System.Collections.Generic.ICollection{``0},System.Collections.Specialized.NotifyCollectionChangedAction,``0[],System.Int32,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.UndoUnit"/> for an Add/Remove operation of multiple items.
+            </summary>
+            <typeparam name="T">The type of item in the collection</typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="action">Either 'Add' or 'Remove' to indicate the type of operation that occurred</param>
+            <param name="items">The item that were added or removed</param>
+            <param name="index">The index of the new item for an Add operation or the index where the item existed for a Remove operation.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>An <see cref="T:Infragistics.Undo.UndoUnit"/> that can be used to undo the operation</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreateCollectionChange``1(System.Collections.Generic.ICollection{``0},``0[],System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.UndoUnit"/> for replacing the entire contents of a collection.
+            </summary>
+            <typeparam name="T">The type of item in the collection</typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="items">The item to restore to the collection upon undo.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>An <see cref="T:Infragistics.Undo.UndoUnit"/> that can be used to undo the operation</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreateCollectionChange``1(System.Collections.Generic.ICollection{``0},``0,``0,System.Int32,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.UndoUnit"/> for a Replace operation of a specific item.
+            </summary>
+            <typeparam name="T">The type of item in the collection</typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="oldItem">The item that was removed/replaced</param>
+            <param name="newItem">The item that was add as the replacement for <paramref name="oldItem"/></param>
+            <param name="index">The index of the where the old item existed that is where the new item has been added.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>An <see cref="T:Infragistics.Undo.UndoUnit"/> that can be used to undo the operation</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreateCollectionChange``1(System.Collections.Generic.ICollection{``0},``0,System.Int32,System.Int32,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.UndoUnit"/> for Move operation of a specific item.
+            </summary>
+            <typeparam name="T">The type of item in the collection</typeparam>
+            <param name="collection">The collection that was modified</param>
+            <param name="item">The item that was moved.</param>
+            <param name="oldIndex">The previous index of the item.</param>
+            <param name="newIndex">The new index of the item.</param>
+            <param name="itemTypeDisplayName">A string representing the type of items in the collection as they should be presented to the end user or null to use the type name and/or item.</param>
+            <returns>An <see cref="T:Infragistics.Undo.UndoUnit"/> that can be used to undo the operation</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreatePropertyChange``2(``0,System.Linq.Expressions.Expression{System.Func{``1}},``1,``1,System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.PropertyChangeUndoUnitBase"/> for the specified property change.
+            </summary>
+            <typeparam name="TOwner">The type of class whose value was changed</typeparam>
+            <typeparam name="TProperty">The type of the property that was changed</typeparam>
+            <param name="owner">The instance whose property was changed</param>
+            <param name="getter">An expression for the property of the <typeparamref name="TOwner"/> that was changed</param>
+            <param name="oldValue">The old value of the property that should be restored when the action is undone.</param>
+            <param name="newValue">The new value of the property</param>
+            <param name="propertyDisplayName">The preferred name of the property as it should be displayed to the end user. If this is not specified the actual name of the property will be used.</param>
+            <param name="typeDisplayName">The preferred name of the object whose property is being changed as it should be displayed to the end user.</param>
+            <returns>Returns an undo unit that can be used to undo the specified property change.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreatePropertyChange``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}},``1,``1,System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.PropertyChangeUndoUnitBase"/> for the specified property change.
+            </summary>
+            <typeparam name="TOwner">The type of class whose value was changed</typeparam>
+            <typeparam name="TProperty">The type of the property that was changed</typeparam>
+            <param name="owner">The instance whose property was changed</param>
+            <param name="getter">An expression for the property that was changed</param>
+            <param name="oldValue">The old value of the property that should be restored when the action is undone.</param>
+            <param name="newValue">The new value of the property</param>
+            <param name="propertyDisplayName">The preferred name of the property as it should be displayed to the end user. If this is not specified the actual name of the property will be used.</param>
+            <param name="typeDisplayName">The preferred name of the object whose property is being changed as it should be displayed to the end user.</param>
+            <returns>Returns an undo unit that can be used to undo the specified property change.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreatePropertyChange``2(``0,System.String,``1,``1,System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.PropertyChangeUndoUnitBase"/> for the specified property change.
+            </summary>
+            <typeparam name="TOwner">The type of class whose value was changed</typeparam>
+            <typeparam name="TProperty">The type of the property that was changed</typeparam>
+            <param name="owner">The instance whose property was changed</param>
+            <param name="propertyName">The string name of the public property that was changed. This is used to find the PropertyInfo for the property to be affected when the operation is undone.</param>
+            <param name="oldValue">The old value of the property that should be restored when the action is undone.</param>
+            <param name="newValue">The new value of the property</param>
+            <param name="propertyDisplayName">The preferred name of the property as it should be displayed to the end user. If this is not specified the actual name of the property will be used.</param>
+            <param name="typeDisplayName">The preferred name of the object whose property is being changed as it should be displayed to the end user.</param>
+            <returns>Returns an undo unit that can be used to undo the specified property change.</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreateTransaction(System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.UndoTransaction"/>
+            </summary>
+            <param name="description">The description for the transaction.</param>
+            <param name="detailedDescription">The detailed description for the transaction.</param>
+            <returns>Returns a new <see cref="T:Infragistics.Undo.UndoTransaction"/> instance</returns>
+        </member>
+        <member name="M:Infragistics.Undo.UndoUnitFactory.CreatePropertyChange(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs,System.String,System.String)">
+            <summary>
+            Creates an <see cref="T:Infragistics.Undo.PropertyChangeUndoUnitBase"/> for the specified property change.
+            </summary>
+            <param name="d">The instance whose property was changed</param>
+            <param name="e">The DependencyPropertyChangedEventArgs containing the old and new value.</param>
+            <param name="propertyDisplayName">The preferred name of the property as it should be displayed to the end user. If this is not specified the actual name of the property will be used.</param>
+            <param name="typeDisplayName">The preferred name of the object whose property is being changed as it should be displayed to the end user.</param>
+            <remarks>
+            <p class="note"><b>Note:</b> In Silverlight a default description may not be able to be provided if the Name of the DependencyProperty cannot be obtained.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Undo.UndoUnitFactory.Current">
+            <summary>
+            Returns the default factory used to create <see cref="T:Infragistics.Undo.UndoUnit"/> instances for use in an <see cref="T:Infragistics.Undo.UndoManager"/>
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> This class should be thread safe since it will be stored statically.</p>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">The property cannot be set to a null value.</exception>
+        </member>
+        <member name="T:Infragistics.Undo.DependencyPropertyChangeUndoUnit">
+            <summary>
+            Custom undo unit used to undo the result of a DependencyProperty change.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Undo.DependencyPropertyChangeUndoUnit.#ctor(System.Windows.DependencyObject,System.Object,System.Object,System.Windows.DependencyProperty,System.String,System.String)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Undo.DependencyPropertyChangeUndoUnit"/>
+            </summary>
+            <param name="target">The object whose property was changed</param>
+            <param name="oldValue">The old value of the property that is to be restored when an undo is performed.</param>
+            <param name="newValue">The new value of the property.</param>
+            <param name="property">The DependencyProperty of the target to restore</param>
+            <param name="propertyDisplayName">The name of the property as it should be displayed to the end user or null to use the name of the DependencyProperty. Note, in Silverlight it may not be possible to obtain the name of the property so it is recommended that this be provided.</param>
+            <param name="targetDisplayName">A string representing the target as it should be displayed to the end user or null to obtain the string representation from the <paramref name="target"/> itself.</param>
+        </member>
+        <member name="M:Infragistics.Undo.DependencyPropertyChangeUndoUnit.Execute(Infragistics.Undo.UndoExecuteContext)">
+            <summary>
+            Used to perform the associated action.
+            </summary>
+            <param name="executeInfo">Provides information about the undo/redo operation being executed.</param>
+        </member>
+        <member name="M:Infragistics.Undo.DependencyPropertyChangeUndoUnit.Merge(Infragistics.Undo.UndoMergeContext)">
+            <summary>
+            Used to allow multiple consecutive undo units to be merged into a single operation.
+            </summary>
+            <param name="mergeInfo">Provides information about the unit to evaluate for a merge operation</param>
+            <returns>Returns an enumeration used to provide identify how the unit was merged.</returns>
+        </member>
+        <member name="P:Infragistics.Undo.DependencyPropertyChangeUndoUnit.NewValue">
+            <summary>
+            Returns the new value that was set on the object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.DependencyPropertyChangeUndoUnit.OldValue">
+            <summary>
+            Returns the original value of the object that will be restored.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.DependencyPropertyChangeUndoUnit.PropertyDisplayName">
+            <summary>
+            Optional string representing the property name as it should be displayed to the end user.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.DependencyPropertyChangeUndoUnit.PropertyName">
+            <summary>
+            Returns the name of the property that will be changed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.DependencyPropertyChangeUndoUnit.Target">
+            <summary>
+            Returns the target object that will be affected by the <see cref="T:Infragistics.Undo.UndoUnit"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.DependencyPropertyChangeUndoUnit.TargetDisplayName">
+            <summary>
+            Optional string representing the target as it should be displayed to the end user.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Undo.DependencyPropertyChangeUndoUnit.ActualTarget">
+            <summary>
+            Returns the object whose property is to be restored when executed.
+            </summary>
+        </member>
+    </members>
+</doc>
