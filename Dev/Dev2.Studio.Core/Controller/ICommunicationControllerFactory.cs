@@ -9,17 +9,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Studio.Core.Controller;
 
 namespace Dev2.Controller
 {
-    public interface ICommunicationControllerFactory
-    {
-        ICommunicationController CreateController(string serviceName);
-    }
+
 
     public class CommunicationControllerFactory : ICommunicationControllerFactory
     {
-        public ICommunicationController CreateController(string serviceName)
+        public Common.Interfaces.Studio.Core.Controller.ICommunicationController CreateController(string serviceName)
         {
             return new CommunicationController { ServiceName = serviceName };
         }

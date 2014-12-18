@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Models;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;

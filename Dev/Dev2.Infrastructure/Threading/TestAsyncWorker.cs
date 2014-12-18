@@ -11,7 +11,7 @@
 
 using System;
 using System.Threading.Tasks;
-using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Threading;
 
 namespace Dev2.Threading
 {

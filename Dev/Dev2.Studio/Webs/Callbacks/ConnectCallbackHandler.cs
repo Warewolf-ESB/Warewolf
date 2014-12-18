@@ -11,6 +11,7 @@
 
 using System;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;

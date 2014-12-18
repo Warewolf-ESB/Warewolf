@@ -124,6 +124,7 @@
     <Compile Include="DB Support\DB_Sanity\AbstractSanitizer.cs" />
     <Compile Include="DB Support\DB_Sanity\DataSanitizerFactory.cs" />
     <Compile Include="DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
+    <Compile Include="DB Support\enSupportedDBTypes.cs" />
     <Compile Include="Dev2EnumConverter.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />

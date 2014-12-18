@@ -18,7 +18,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Services.Security;
 
 namespace Dev2.Services.Security
 {
@@ -117,14 +119,14 @@ namespace Dev2.Services.Security
             return result;
         }
 
-        public List<WindowsGroupPermission> GetPermissions(IPrincipal user)
+        public List<IWindowsGroupPermission> GetPermissions(IPrincipal user)
         {
             lock (_getPermissionsLock)
             {
                 var serverPermissions = _securityService.Permissions.ToList();
                 var resourcePermissions = serverPermissions.Where(p => IsInRole(user, p) && !p.IsServer).ToList();
                 var serverPermissionsForUser = serverPermissions.Where(p => IsInRole(user, p) && (p.IsServer || p.ResourceID == Guid.Empty)).ToList();
-                var groupPermissions = new List<WindowsGroupPermission>();
+                var groupPermissions = new List<IWindowsGroupPermission>();
                 groupPermissions.AddRange(resourcePermissions);
                 groupPermissions.AddRange(serverPermissionsForUser);
                 return groupPermissions;
@@ -195,19 +197,20 @@ namespace Dev2.Services.Security
             }
         }
 
-        static bool IsAuthorized(AuthorizationContext context, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)
+        static bool IsAuthorized(AuthorizationContext context, Func<IEnumerable<IWindowsGroupPermission>> getGroupPermissions)
         {
             var contextPermissions = context.ToPermissions();
             var groupPermissions = getGroupPermissions();
             return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
         }
 
-        protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
+        protected virtual IEnumerable<IWindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
             var serverPermissions = _securityService.Permissions;
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
 
-            var groupPermissions = new List<WindowsGroupPermission>();
+   
+            var groupPermissions = new List<IWindowsGroupPermission>();
             // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var permission in serverPermissions)
             {
@@ -227,7 +230,7 @@ namespace Dev2.Services.Security
             return groupPermissions;
         }
 
-        protected virtual bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
+        protected virtual bool IsInRole(IPrincipal principal, IWindowsGroupPermission p)
         {
             var isInRole = false;
 
@@ -321,14 +324,14 @@ namespace Dev2.Services.Security
             return isInRole || p.IsBuiltInGuestsForExecution;
         }
 
-        IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
+        IEnumerable<IWindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
         {
             var groupPermissions = _securityService.Permissions.Where(p => IsInRole(principal, p)).ToList();
             FilterAdminGroupForRemote(groupPermissions);
             return groupPermissions;
         }
 
-        private void FilterAdminGroupForRemote(List<WindowsGroupPermission> groupPermissions)
+        private void FilterAdminGroupForRemote(List<IWindowsGroupPermission> groupPermissions)
         {
             if(!_isLocalConnection)
             {

@@ -25,7 +25,9 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
 using Dev2.Controller;
@@ -1182,7 +1184,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _cachedServices = new HashSet<Guid>();
         }
 
-        void AuthorizationServiceOnPermissionsModified(object sender, List<WindowsGroupPermission> windowsGroupPermissions)
+        void AuthorizationServiceOnPermissionsModified(object sender, List<IWindowsGroupPermission> windowsGroupPermissions)
         {
             lock(_updatingPermissions)
             {
@@ -1191,9 +1193,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        void ReceivePermissionsModified(List<WindowsGroupPermission> modifiedPermissions)
+        void ReceivePermissionsModified(List<IWindowsGroupPermission> modifiedPermissions)
         {
-            var windowsGroupPermissions = modifiedPermissions as IList<WindowsGroupPermission> ?? modifiedPermissions.ToList();
+            var windowsGroupPermissions = modifiedPermissions as IList<IWindowsGroupPermission> ?? modifiedPermissions.ToList();
 //            var exclusionResourceIds = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer).Select(permission => permission.ResourceID);
             var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
 //            UpdateServerBasedOnPermissions(windowsGroupPermissions, exclusionResourceIds, serverPermissions);
@@ -1233,7 +1235,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        void UpdateResourcesBasedOnPermissions(IList<WindowsGroupPermission> windowsGroupPermissions)
+        void UpdateResourcesBasedOnPermissions(IList<IWindowsGroupPermission> windowsGroupPermissions)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
@@ -1247,7 +1249,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             foreach(var perm in windowsGroupPermissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer))
             {
-                WindowsGroupPermission permission = perm;
+                IWindowsGroupPermission permission = perm;
                 var resourceModel = FindSingle(model => model.ID == permission.ResourceID);
                 if(resourceModel != null)
                 {

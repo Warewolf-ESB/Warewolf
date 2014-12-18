@@ -16,6 +16,7 @@ using System.Linq.Expressions;
 using System.Windows.Forms;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Dialogs;
 using Dev2.Help;
 using Dev2.Services.Security;
@@ -143,8 +144,8 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsNotNull(viewModel.ServerPermissions);
             Assert.IsNotNull(viewModel.ResourcePermissions);
 
-            var serverPerms = securitySettingsTO == null ? new List<WindowsGroupPermission>() : securitySettingsTO.WindowsGroupPermissions.Where(p => p.IsServer).ToList();
-            var resourcePerms = securitySettingsTO == null ? new List<WindowsGroupPermission>() : securitySettingsTO.WindowsGroupPermissions.Where(p => !p.IsServer).ToList();
+            var serverPerms = securitySettingsTO == null ? new List<IWindowsGroupPermission>() : securitySettingsTO.WindowsGroupPermissions.Where(p => p.IsServer).ToList();
+            var resourcePerms = securitySettingsTO == null ? new List<IWindowsGroupPermission>() : securitySettingsTO.WindowsGroupPermissions.Where(p => !p.IsServer).ToList();
 
             // constructor adds an extra "new"  permission
             Assert.AreEqual(serverPerms.Count + 1, viewModel.ServerPermissions.Count);

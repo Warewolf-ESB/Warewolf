@@ -23,6 +23,8 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Core.Tests;

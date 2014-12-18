@@ -22,6 +22,7 @@ using System.Threading;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;

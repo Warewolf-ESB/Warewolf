@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Infrastructure;
 
 namespace Dev2.Services.Security
 {
@@ -20,10 +21,10 @@ namespace Dev2.Services.Security
     {
         public SecuritySettingsTO()
         {
-            WindowsGroupPermissions = new List<WindowsGroupPermission>();
+            WindowsGroupPermissions = new List<IWindowsGroupPermission>();
         }
 
-        public SecuritySettingsTO(IEnumerable<WindowsGroupPermission> permissions)
+        public SecuritySettingsTO(IEnumerable<IWindowsGroupPermission> permissions)
             : this()
         {
             if(permissions != null)
@@ -32,7 +33,7 @@ namespace Dev2.Services.Security
             }
         }
 
-        public List<WindowsGroupPermission> WindowsGroupPermissions { get; private set; }
+        public List<IWindowsGroupPermission> WindowsGroupPermissions { get; private set; }
         public TimeSpan CacheTimeout { get; set; }
     }
 }

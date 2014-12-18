@@ -14,6 +14,7 @@ using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.CustomControls.Connections;
 using Dev2.Dialogs;
 using Dev2.Services.Security;
@@ -21,6 +22,7 @@ using Dev2.Settings;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Threading;
 using Moq;
 
 namespace Dev2.Core.Tests.Settings

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Dev2.Common.Interfaces.Infrastructure.Logging;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
 using Dev2.Studio.Core.Interfaces;

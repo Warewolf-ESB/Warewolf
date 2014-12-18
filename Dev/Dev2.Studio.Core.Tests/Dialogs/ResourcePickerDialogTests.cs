@@ -23,6 +23,8 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Dialogs;

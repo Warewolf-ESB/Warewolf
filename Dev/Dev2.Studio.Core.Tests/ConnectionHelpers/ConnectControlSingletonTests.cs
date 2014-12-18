@@ -13,12 +13,17 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

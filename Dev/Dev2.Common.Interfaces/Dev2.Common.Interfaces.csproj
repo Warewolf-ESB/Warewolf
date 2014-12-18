@@ -74,6 +74,9 @@
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Prism.Composition">
       <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
     </Reference>
@@ -204,6 +207,7 @@
     <Compile Include="IConnectedServerChangedEvent.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
     <Compile Include="Studio\ViewModels\IEnvironmentViewModel.cs" />
+    <Compile Include="IEsbExecuteRequest.cs" />
     <Compile Include="IExplorerItemModel.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="Infrastructure\Communication\IExecuteMessage.cs" />
@@ -211,6 +215,9 @@
     <Compile Include="Infrastructure\IExplorerRepositorySync.cs" />
     <Compile Include="Infrastructure\IExplorerResourceRepository.cs" />
     <Compile Include="Infrastructure\IExplorerServerResourceRepository.cs" />
+    <Compile Include="Infrastructure\IWindowsGroupPermission.cs" />
+    <Compile Include="Infrastructure\Logging\ILogSettings.cs" />
+    <Compile Include="Infrastructure\Logging\LogLevel.cs" />
     <Compile Include="Infrastructure\Providers\Errors\ErrorType.cs" />
     <Compile Include="Infrastructure\Providers\Errors\FixType.cs" />
     <Compile Include="Infrastructure\Providers\Errors\IActionableErrorInfo.cs" />
@@ -225,6 +232,7 @@
     <Compile Include="Infrastructure\SharedModels\ICompileMessageTO.cs" />
     <Compile Include="Infrastructure\SharedModels\IDbColumn.cs" />
     <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
+    <Compile Include="Infrastructure\SharedModels\IDbTable.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="IServer.cs" />
@@ -235,6 +243,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
+    <Compile Include="Runtime\ServiceModel\AuthenticationType.cs" />
     <Compile Include="Scheduler\Interfaces\IClientSchedulerFactory.cs" />
     <Compile Include="Scheduler\Interfaces\IDirectoryHelper.cs" />
     <Compile Include="Scheduler\Interfaces\IEventInfo.cs" />
@@ -250,16 +259,32 @@
     <Compile Include="Scheduler\Interfaces\ScheduleRunStatus.cs" />
     <Compile Include="Scripting\IScriptingContext.cs" />
     <Compile Include="Security\Permissions.cs" />
+    <Compile Include="ServerProxyLayer\IAdminManager.cs" />
+    <Compile Include="ServerProxyLayer\IAdminProxyFactory.cs" />
+    <Compile Include="ServerProxyLayer\IExplorerQueryManager.cs" />
+    <Compile Include="ServerProxyLayer\ILoggingManager.cs" />
+    <Compile Include="ServerProxyLayer\IQueryManager.cs" />
+    <Compile Include="ServerProxyLayer\ISecurityManager.cs" />
+    <Compile Include="ServerProxyLayer\IScheduleManager.cs" />
+    <Compile Include="ServerProxyLayer\IUpdateManager.cs" />
+    <Compile Include="ServerProxyLayer\IVersionManager.cs" />
     <Compile Include="ServerStats.cs" />
+    <Compile Include="Services\Security\AuthorizationContext.cs" />
+    <Compile Include="Services\Security\ReasonAttribute.cs" />
     <Compile Include="Services\Sql\IDbFactory.cs" />
     <Compile Include="Services\Sql\IDbServer.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2Tokenizer.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
     <Compile Include="Studio\Controller\IPopUp.cs" />
     <Compile Include="Studio\Core\Activities\IServiceXmlTranslator.cs" />
+    <Compile Include="Studio\Core\Controller\ICommunicationController.cs" />
+    <Compile Include="Studio\Core\Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="Studio\Core\IAutoMappingOutputAction.cs" />
+    <Compile Include="Studio\Core\IEnvironmentConnection.cs" />
+    <Compile Include="Studio\Core\Network\Enums.cs" />
     <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
+    <Compile Include="Threading\IAsyncWorker.cs" />
     <Compile Include="Studio\ViewModels\IExplorerItemViewModel.cs" />
     <Compile Include="Studio\ViewModels\IExplorerViewModel.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
@@ -298,6 +323,7 @@
     <Folder Include="Core\Convertors\DateTime\" />
     <Folder Include="Core\Data\" />
     <Folder Include="Infrastructure\Services\" />
+    <Folder Include="Services\Securty\" />
     <Folder Include="Studio\Core\AppResources\Enums\" />
     <Folder Include="Studio\Core\DataList\" />
   </ItemGroup>

@@ -17,6 +17,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Explorer;

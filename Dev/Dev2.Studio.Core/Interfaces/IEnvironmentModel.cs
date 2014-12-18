@@ -10,6 +10,7 @@
 */
 
 using System;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Services.Security;
 
 // ReSharper disable CheckNamespace

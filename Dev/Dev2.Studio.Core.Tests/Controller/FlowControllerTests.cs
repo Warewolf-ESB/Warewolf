@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;

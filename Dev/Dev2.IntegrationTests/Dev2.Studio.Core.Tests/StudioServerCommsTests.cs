@@ -12,6 +12,7 @@
 
 using System;
 using System.Threading;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Network;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

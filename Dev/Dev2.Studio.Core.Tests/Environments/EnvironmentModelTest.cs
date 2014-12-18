@@ -18,6 +18,8 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Services.Security;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Providers.Events;
