@@ -66,6 +66,11 @@ namespace Warewolf.Studio.Specs
             return new List<IResource>();
         }
 
+        public IList<IConnection> GetServerConnections()
+        {
+            return new List<IConnection>();
+        }
+
         #endregion
     }
 }

@@ -40,6 +40,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(connectControlViewModel.ServerConnections);
             mockServer.Verify();
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectControlViewModel_SelectedServer")]
+        public void ConnectControlViewModel_SelectedServer_WhenSet_ShouldNotBeNull()
+        {
+            //------------Setup for test--------------------------
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IConnection>());
+            var server = mockServer.Object;
+            var connectControlViewModel = new ConnectControlViewModel(server);
+            
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+        }
     }
 
     public class ConnectControlViewModel
