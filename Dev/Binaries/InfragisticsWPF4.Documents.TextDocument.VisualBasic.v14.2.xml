@@ -1,0 +1,2954 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Documents.TextDocument.VisualBasic.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Documents.Parsing.VisualBasicLanguage">
+            <summary>
+            Represents the Visual Basic .NET language.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Parsing.VisualBasicLanguage"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.CreateLexerStates(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Creates the LexerStates for the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.CreateNonTerminalSymbols(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Creates the NonTerminalSymbols for the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.CreateProductions(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Creates the productions for the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.CreateSyntaxRules(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Creates the syntax rules for the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.GetParseTable">
+            <summary>
+            Gets the parse table for a GLR parser.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.InitializeGrammarProperties(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Initializes the properties of the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.GetErrorAlias(Infragistics.Documents.Parsing.Symbol)">
+            <summary>
+            Returns a customized error alias for the specified symbol or null to use the default alias.
+            </summary>
+            <remarks>
+            <p class="body">
+            If null is returned, the default alias for non-terminal symbols is the symbol name. For terminal symbols
+            it is the value for literal comparison terminals and the symbol name for regular expression comparison 
+            terminals.
+            </p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.InitializeDefaultServices">
+            <summary>
+            Gets called once on each instance to let derived <see cref="T:Infragistics.Documents.Parsing.LanguageBase"/> classes initialize the default services in the 
+            <see cref="T:Infragistics.Documents.Parsing.ServicesManager"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.OnError(Infragistics.Documents.Parsing.ParseErrorContext)">
+            <summary>
+            Gets called when an error is detected during the parse.
+            </summary>
+            <remarks>
+            <p class="body">
+            The errors in the specified <paramref name="context"/> can be modified, added, or removed.
+            </p>
+            </remarks>
+            <param name="context">The contextual information about the error which was detected.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.OnGlobalAmbiguityDetected(Infragistics.Documents.Parsing.GlobalAmbiguityContext)">
+            <summary>
+            Gets called when a global ambiguity is detected while parsing a document.
+            </summary>
+            <remarks>
+            <p class="body">
+            A global ambiguity occurs when the same span of text in a document can be interpreted in two or more different ways based on the grammar
+            rules for the language and the context in which text occurs. The specified <paramref name="context"/> contains two alternate parses for
+            the text (if there are more than two alternate parses, this method will be called multiple times). A derived implementation of this method 
+            can determine which of the two alternate parse sub-trees should be used in the final tree by setting
+            <see cref="P:Infragistics.Documents.Parsing.GlobalAmbiguityContext.PreferredSubTreeRoot"/> on the specified context.
+            </p>
+            <p class="body">
+            A grammar creator can override this method in a derived language to get notified of global ambiguities and know which rules need to be
+            re-written or mark with priority.
+            </p>
+            </remarks>
+            <param name="context">An object containing the relevant information about the global ambiguity.</param>
+            <seealso cref="P:Infragistics.Documents.Parsing.NonTerminalSymbol.HasPriority"/>
+            <seealso cref="E:Infragistics.Documents.Parsing.CustomLanguage.GlobalAmbiguityDetected"/>
+        </member>
+        <member name="P:Infragistics.Documents.Parsing.VisualBasicLanguage.Instance">
+            <summary>
+            Returns a static instance of the language (read-only)
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames">
+            <summary>
+            Symbol name constants for the <see cref="T:Infragistics.Documents.Parsing.VisualBasicLanguage"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AddAssignment">
+            <summary>
+            Name for the AddAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AddExpression">
+            <summary>
+            Name for the AddExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AddHandlerAccessorStatement">
+            <summary>
+            Name for the AddHandlerAccessorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AddHandlerBlock">
+            <summary>
+            Name for the AddHandlerBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AddHandlerKeyword">
+            <summary>
+            Name for the AddHandlerKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AddHandlerStatement">
+            <summary>
+            Name for the AddHandlerStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AddressOfExpression">
+            <summary>
+            Name for the AddressOfExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AddressOfKeyword">
+            <summary>
+            Name for the AddressOfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AggregateClause">
+            <summary>
+            Name for the AggregateClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AggregateKeyword">
+            <summary>
+            Name for the AggregateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AggregationRangeVariable">
+            <summary>
+            Name for the AggregationRangeVariable symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AliasImportsClause">
+            <summary>
+            Name for the AliasImportsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AliasKeyword">
+            <summary>
+            Name for the AliasKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AmpersandEqualsToken">
+            <summary>
+            Name for the AmpersandEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AmpersandToken">
+            <summary>
+            Name for the AmpersandToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AndAlsoExpression">
+            <summary>
+            Name for the AndAlsoExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AndAlsoKeyword">
+            <summary>
+            Name for the AndAlsoKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AndExpression">
+            <summary>
+            Name for the AndExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AndKeyword">
+            <summary>
+            Name for the AndKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AnonymousObjectCreationExpression">
+            <summary>
+            Name for the AnonymousObjectCreationExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AnsiKeyword">
+            <summary>
+            Name for the AnsiKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ArgumentList">
+            <summary>
+            Name for the ArgumentList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ArrayBoundList">
+            <summary>
+            Name for the ArrayBoundList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ArrayCreationExpression">
+            <summary>
+            Name for the ArrayCreationExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ArrayRankSpecifier">
+            <summary>
+            Name for the ArrayRankSpecifier symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ArrayType">
+            <summary>
+            Name for the ArrayType symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AscendingKeyword">
+            <summary>
+            Name for the AscendingKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AscendingOrdering">
+            <summary>
+            Name for the AscendingOrdering symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AsKeyword">
+            <summary>
+            Name for the AsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AsNewClause">
+            <summary>
+            Name for the AsNewClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AssemblyKeyword">
+            <summary>
+            Name for the AssemblyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AssignmentStatement">
+            <summary>
+            Name for the AssignmentStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AsteriskEqualsToken">
+            <summary>
+            Name for the AsteriskEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AsteriskToken">
+            <summary>
+            Name for the AsteriskToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.Attribute">
+            <summary>
+            Name for the Attribute symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AttributeBlock">
+            <summary>
+            Name for the AttributeBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AutoKeyword">
+            <summary>
+            Name for the AutoKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.AutoPropertyStatement">
+            <summary>
+            Name for the AutoPropertyStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.BackslashEqualsToken">
+            <summary>
+            Name for the BackslashEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.BackslashToken">
+            <summary>
+            Name for the BackslashToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.BinaryKeyword">
+            <summary>
+            Name for the BinaryKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.Block">
+            <summary>
+            Name for the Block symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.BooleanKeyword">
+            <summary>
+            Name for the BooleanKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ByKeyword">
+            <summary>
+            Name for the ByKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ByRefKeyword">
+            <summary>
+            Name for the ByRefKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ByteKeyword">
+            <summary>
+            Name for the ByteKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ByValKeyword">
+            <summary>
+            Name for the ByValKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CallKeyword">
+            <summary>
+            Name for the CallKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CallStatement">
+            <summary>
+            Name for the CallStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaretEqualsToken">
+            <summary>
+            Name for the CaretEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaretToken">
+            <summary>
+            Name for the CaretToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseBlock">
+            <summary>
+            Name for the CaseBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseElseBlock">
+            <summary>
+            Name for the CaseElseBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseElseClause">
+            <summary>
+            Name for the CaseElseClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseElseStatement">
+            <summary>
+            Name for the CaseElseStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseEqualsClause">
+            <summary>
+            Name for the CaseEqualsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseGreaterThanClause">
+            <summary>
+            Name for the CaseGreaterThanClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseGreaterThanOrEqualClause">
+            <summary>
+            Name for the CaseGreaterThanOrEqualClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseKeyword">
+            <summary>
+            Name for the CaseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseLessThanClause">
+            <summary>
+            Name for the CaseLessThanClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseLessThanOrEqualClause">
+            <summary>
+            Name for the CaseLessThanOrEqualClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseNotEqualsClause">
+            <summary>
+            Name for the CaseNotEqualsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseRangeClause">
+            <summary>
+            Name for the CaseRangeClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseStatement">
+            <summary>
+            Name for the CaseStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CaseValueClause">
+            <summary>
+            Name for the CaseValueClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CatchFilterClause">
+            <summary>
+            Name for the CatchFilterClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CatchKeyword">
+            <summary>
+            Name for the CatchKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CatchPart">
+            <summary>
+            Name for the CatchPart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CatchStatement">
+            <summary>
+            Name for the CatchStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CBoolKeyword">
+            <summary>
+            Name for the CBoolKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CByteKeyword">
+            <summary>
+            Name for the CByteKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CCharKeyword">
+            <summary>
+            Name for the CCharKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CDateKeyword">
+            <summary>
+            Name for the CDateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CDblKeyword">
+            <summary>
+            Name for the CDblKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CDecKeyword">
+            <summary>
+            Name for the CDecKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CharacterLiteralEnd">
+            <summary>
+            Name for the CharacterLiteralEnd symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CharacterLiteralExpression">
+            <summary>
+            Name for the CharacterLiteralExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CharacterLiteralToken">
+            <summary>
+            Name for the CharacterLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CharKeyword">
+            <summary>
+            Name for the CharKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CIntKeyword">
+            <summary>
+            Name for the CIntKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ClassBlock">
+            <summary>
+            Name for the ClassBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ClassConstraint">
+            <summary>
+            Name for the ClassConstraint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ClassKeyword">
+            <summary>
+            Name for the ClassKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ClassStatement">
+            <summary>
+            Name for the ClassStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CLngKeyword">
+            <summary>
+            Name for the CLngKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CloseBraceToken">
+            <summary>
+            Name for the CloseBraceToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CloseParenToken">
+            <summary>
+            Name for the CloseParenToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CObjKeyword">
+            <summary>
+            Name for the CObjKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CollectionInitializer">
+            <summary>
+            Name for the CollectionInitializer symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CollectionRangeVariable">
+            <summary>
+            Name for the CollectionRangeVariable symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ColonEqualsToken">
+            <summary>
+            Name for the ColonEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ColonToken">
+            <summary>
+            Name for the ColonToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CommaToken">
+            <summary>
+            Name for the CommaToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CompareKeyword">
+            <summary>
+            Name for the CompareKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CompilationUnit">
+            <summary>
+            Name for the CompilationUnit symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ConcatenateAssignment">
+            <summary>
+            Name for the ConcatenateAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ConcatenateExpression">
+            <summary>
+            Name for the ConcatenateExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ConditionalExpression">
+            <summary>
+            Name for the ConditionalExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ConstantDeclarator">
+            <summary>
+            Name for the ConstantDeclarator symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ConstantMemberDeclaration">
+            <summary>
+            Name for the ConstantMemberDeclaration symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ConstKeyword">
+            <summary>
+            Name for the ConstKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ConstraintList">
+            <summary>
+            Name for the ConstraintList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ConstructorBlock">
+            <summary>
+            Name for the ConstructorBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ConstructorStatement">
+            <summary>
+            Name for the ConstructorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ContinueDoStatement">
+            <summary>
+            Name for the ContinueDoStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ContinueForStatement">
+            <summary>
+            Name for the ContinueForStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ContinueKeyword">
+            <summary>
+            Name for the ContinueKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ContinueWhileStatement">
+            <summary>
+            Name for the ContinueWhileStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CSByteKeyword">
+            <summary>
+            Name for the CSByteKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CShortKeyword">
+            <summary>
+            Name for the CShortKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CSngKeyword">
+            <summary>
+            Name for the CSngKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CStrKeyword">
+            <summary>
+            Name for the CStrKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CTypeExpression">
+            <summary>
+            Name for the CTypeExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CTypeKeyword">
+            <summary>
+            Name for the CTypeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CUIntKeyword">
+            <summary>
+            Name for the CUIntKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CULngKeyword">
+            <summary>
+            Name for the CULngKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CUShortKeyword">
+            <summary>
+            Name for the CUShortKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.CustomKeyword">
+            <summary>
+            Name for the CustomKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DateKeyword">
+            <summary>
+            Name for the DateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DateLiteralExpression">
+            <summary>
+            Name for the DateLiteralExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DateLiteralToken">
+            <summary>
+            Name for the DateLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DecimalKeyword">
+            <summary>
+            Name for the DecimalKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DeclareFunctionStatement">
+            <summary>
+            Name for the DeclareFunctionStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DeclareKeyword">
+            <summary>
+            Name for the DeclareKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DeclareSubStatement">
+            <summary>
+            Name for the DeclareSubStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DefaultKeyword">
+            <summary>
+            Name for the DefaultKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DelegateFunctionStatement">
+            <summary>
+            Name for the DelegateFunctionStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DelegateKeyword">
+            <summary>
+            Name for the DelegateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DelegateSubStatement">
+            <summary>
+            Name for the DelegateSubStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DescendingKeyword">
+            <summary>
+            Name for the DescendingKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DescendingOrdering">
+            <summary>
+            Name for the DescendingOrdering symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DictionaryAccess">
+            <summary>
+            Name for the DictionaryAccess symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DimKeyword">
+            <summary>
+            Name for the DimKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DirectCastExpression">
+            <summary>
+            Name for the DirectCastExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DirectCastKeyword">
+            <summary>
+            Name for the DirectCastKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DistinctClause">
+            <summary>
+            Name for the DistinctClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DistinctKeyword">
+            <summary>
+            Name for the DistinctKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DivideAssignment">
+            <summary>
+            Name for the DivideAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DivideExpression">
+            <summary>
+            Name for the DivideExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DoKeyword">
+            <summary>
+            Name for the DoKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DollarSignToken">
+            <summary>
+            Name for the DollarSignToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DoLoopBottomTestBlock">
+            <summary>
+            Name for the DoLoopBottomTestBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DoLoopForeverBlock">
+            <summary>
+            Name for the DoLoopForeverBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DoLoopTopTestBlock">
+            <summary>
+            Name for the DoLoopTopTestBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DotToken">
+            <summary>
+            Name for the DotToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.DoubleKeyword">
+            <summary>
+            Name for the DoubleKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EachKeyword">
+            <summary>
+            Name for the EachKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ElseIfKeyword">
+            <summary>
+            Name for the ElseIfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ElseIfPart">
+            <summary>
+            Name for the ElseIfPart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ElseIfStatement">
+            <summary>
+            Name for the ElseIfStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ElseKeyword">
+            <summary>
+            Name for the ElseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ElsePart">
+            <summary>
+            Name for the ElsePart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ElseStatement">
+            <summary>
+            Name for the ElseStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndAddHandlerStatement">
+            <summary>
+            Name for the EndAddHandlerStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndClassStatement">
+            <summary>
+            Name for the EndClassStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndConstructorStatement">
+            <summary>
+            Name for the EndConstructorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndEnumStatement">
+            <summary>
+            Name for the EndEnumStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndEventStatement">
+            <summary>
+            Name for the EndEventStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndFunctionStatement">
+            <summary>
+            Name for the EndFunctionStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndGetStatement">
+            <summary>
+            Name for the EndGetStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndIfStatement">
+            <summary>
+            Name for the EndIfStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndInterfaceStatement">
+            <summary>
+            Name for the EndInterfaceStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndKeyword">
+            <summary>
+            Name for the EndKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndModuleStatement">
+            <summary>
+            Name for the EndModuleStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndNamespaceStatement">
+            <summary>
+            Name for the EndNamespaceStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndOfStreamToken">
+            <summary>
+            Name for the EndOfStreamToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndOperatorStatement">
+            <summary>
+            Name for the EndOperatorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndPropertyStatement">
+            <summary>
+            Name for the EndPropertyStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndRaiseEventStatement">
+            <summary>
+            Name for the EndRaiseEventStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndRemoveHandlerStatement">
+            <summary>
+            Name for the EndRemoveHandlerStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndSelectStatement">
+            <summary>
+            Name for the EndSelectStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndSetStatement">
+            <summary>
+            Name for the EndSetStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndStatement">
+            <summary>
+            Name for the EndStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndStructureStatement">
+            <summary>
+            Name for the EndStructureStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndSubStatement">
+            <summary>
+            Name for the EndSubStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndSyncLockStatement">
+            <summary>
+            Name for the EndSyncLockStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndTryStatement">
+            <summary>
+            Name for the EndTryStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndUsingStatement">
+            <summary>
+            Name for the EndUsingStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndWhileStatement">
+            <summary>
+            Name for the EndWhileStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EndWithStatement">
+            <summary>
+            Name for the EndWithStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EnumBlock">
+            <summary>
+            Name for the EnumBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EnumKeyword">
+            <summary>
+            Name for the EnumKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EnumMemberDeclaration">
+            <summary>
+            Name for the EnumMemberDeclaration symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EnumStatement">
+            <summary>
+            Name for the EnumStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EqualsExpression">
+            <summary>
+            Name for the EqualsExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EqualsKeyword">
+            <summary>
+            Name for the EqualsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EqualsToken">
+            <summary>
+            Name for the EqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EqualsValue">
+            <summary>
+            Name for the EqualsValue symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EraseKeyword">
+            <summary>
+            Name for the EraseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EraseStatement">
+            <summary>
+            Name for the EraseStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ErrorKeyword">
+            <summary>
+            Name for the ErrorKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ErrorStatement">
+            <summary>
+            Name for the ErrorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EventBlock">
+            <summary>
+            Name for the EventBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EventKeyword">
+            <summary>
+            Name for the EventKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EventMemberDeclaration">
+            <summary>
+            Name for the EventMemberDeclaration symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.EventStatement">
+            <summary>
+            Name for the EventStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExclamationToken">
+            <summary>
+            Name for the ExclamationToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExitDoStatement">
+            <summary>
+            Name for the ExitDoStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExitForStatement">
+            <summary>
+            Name for the ExitForStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExitFunctionStatement">
+            <summary>
+            Name for the ExitFunctionStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExitKeyword">
+            <summary>
+            Name for the ExitKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExitPropertyStatement">
+            <summary>
+            Name for the ExitPropertyStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExitSelectStatement">
+            <summary>
+            Name for the ExitSelectStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExitSubStatement">
+            <summary>
+            Name for the ExitSubStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExitTryStatement">
+            <summary>
+            Name for the ExitTryStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExitWhileStatement">
+            <summary>
+            Name for the ExitWhileStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExplicitKeyword">
+            <summary>
+            Name for the ExplicitKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ExpressionRangeVariable">
+            <summary>
+            Name for the ExpressionRangeVariable symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FalseKeyword">
+            <summary>
+            Name for the FalseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FalseLiteralExpression">
+            <summary>
+            Name for the FalseLiteralExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FieldDeclaration">
+            <summary>
+            Name for the FieldDeclaration symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FinallyKeyword">
+            <summary>
+            Name for the FinallyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FinallyPart">
+            <summary>
+            Name for the FinallyPart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FinallyStatement">
+            <summary>
+            Name for the FinallyStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FloatingPointLiteralToken">
+            <summary>
+            Name for the FloatingPointLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ForBlock">
+            <summary>
+            Name for the ForBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ForEachBlock">
+            <summary>
+            Name for the ForEachBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ForEachStatement">
+            <summary>
+            Name for the ForEachStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ForKeyword">
+            <summary>
+            Name for the ForKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ForStatement">
+            <summary>
+            Name for the ForStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ForStepClause">
+            <summary>
+            Name for the ForStepClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FriendKeyword">
+            <summary>
+            Name for the FriendKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FromClause">
+            <summary>
+            Name for the FromClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FromKeyword">
+            <summary>
+            Name for the FromKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FunctionBlock">
+            <summary>
+            Name for the FunctionBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FunctionKeyword">
+            <summary>
+            Name for the FunctionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FunctionLambdaHeader">
+            <summary>
+            Name for the FunctionLambdaHeader symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.FunctionStatement">
+            <summary>
+            Name for the FunctionStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GenericName">
+            <summary>
+            Name for the GenericName symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GetAccessorStatement">
+            <summary>
+            Name for the GetAccessorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GetKeyword">
+            <summary>
+            Name for the GetKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GetTypeExpression">
+            <summary>
+            Name for the GetTypeExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GetTypeKeyword">
+            <summary>
+            Name for the GetTypeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GetXmlNamespaceExpression">
+            <summary>
+            Name for the GetXmlNamespaceExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GetXmlNamespaceKeyword">
+            <summary>
+            Name for the GetXmlNamespaceKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GlobalAttribute">
+            <summary>
+            Name for the GlobalAttribute symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GlobalAttributeBlock">
+            <summary>
+            Name for the GlobalAttributeBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GlobalAttributeTarget">
+            <summary>
+            Name for the GlobalAttributeTarget symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GlobalKeyword">
+            <summary>
+            Name for the GlobalKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GoSubKeyword">
+            <summary>
+            Name for the GoSubKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GoToKeyword">
+            <summary>
+            Name for the GoToKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GotoStatement">
+            <summary>
+            Name for the GotoStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GreaterThanEqualsToken">
+            <summary>
+            Name for the GreaterThanEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GreaterThanExpression">
+            <summary>
+            Name for the GreaterThanExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GreaterThanGreaterThanEqualsToken">
+            <summary>
+            Name for the GreaterThanGreaterThanEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GreaterThanGreaterThanToken">
+            <summary>
+            Name for the GreaterThanGreaterThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GreaterThanOrEqualExpression">
+            <summary>
+            Name for the GreaterThanOrEqualExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GreaterThanToken">
+            <summary>
+            Name for the GreaterThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GroupByClause">
+            <summary>
+            Name for the GroupByClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GroupJoinClause">
+            <summary>
+            Name for the GroupJoinClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.GroupKeyword">
+            <summary>
+            Name for the GroupKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.HandlesClause">
+            <summary>
+            Name for the HandlesClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.HandlesClauseItem">
+            <summary>
+            Name for the HandlesClauseItem symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.HandlesKeyword">
+            <summary>
+            Name for the HandlesKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IdentifierBracketedToken">
+            <summary>
+            Name for the IdentifierBracketedToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IdentifierCSK">
+            <summary>
+            Name for the IdentifierCSK symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IdentifierName">
+            <summary>
+            Name for the IdentifierName symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IdentifierToken">
+            <summary>
+            Name for the IdentifierToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IfKeyword">
+            <summary>
+            Name for the IfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IfPart">
+            <summary>
+            Name for the IfPart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IfStatement">
+            <summary>
+            Name for the IfStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ImplementsClause">
+            <summary>
+            Name for the ImplementsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ImplementsKeyword">
+            <summary>
+            Name for the ImplementsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ImplementsStatement">
+            <summary>
+            Name for the ImplementsStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ImportsKeyword">
+            <summary>
+            Name for the ImportsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ImportsStatement">
+            <summary>
+            Name for the ImportsStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IncompleteMember">
+            <summary>
+            Name for the IncompleteMember symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InferKeyword">
+            <summary>
+            Name for the InferKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InferredFieldInitializer">
+            <summary>
+            Name for the InferredFieldInitializer symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InheritsKeyword">
+            <summary>
+            Name for the InheritsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InheritsStatement">
+            <summary>
+            Name for the InheritsStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InKeyword">
+            <summary>
+            Name for the InKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InstanceExpression">
+            <summary>
+            Name for the InstanceExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IntegerDivideAssignment">
+            <summary>
+            Name for the IntegerDivideAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IntegerDivideExpression">
+            <summary>
+            Name for the IntegerDivideExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IntegerKeyword">
+            <summary>
+            Name for the IntegerKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IntegerLiteralToken">
+            <summary>
+            Name for the IntegerLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfaceBlock">
+            <summary>
+            Name for the InterfaceBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfaceEventStatement">
+            <summary>
+            Name for the InterfaceEventStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfaceFunctionStatement">
+            <summary>
+            Name for the InterfaceFunctionStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfaceIncompleteMember">
+            <summary>
+            Name for the InterfaceIncompleteMember symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfaceInheritsStatement">
+            <summary>
+            Name for the InterfaceInheritsStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfaceKeyword">
+            <summary>
+            Name for the InterfaceKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfaceMemberSpecifier">
+            <summary>
+            Name for the InterfaceMemberSpecifier symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfacePropertyStatement">
+            <summary>
+            Name for the InterfacePropertyStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfaceStatement">
+            <summary>
+            Name for the InterfaceStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InterfaceSubStatement">
+            <summary>
+            Name for the InterfaceSubStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IntoKeyword">
+            <summary>
+            Name for the IntoKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.InvocationExpression">
+            <summary>
+            Name for the InvocationExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IsExpression">
+            <summary>
+            Name for the IsExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IsFalseKeyword">
+            <summary>
+            Name for the IsFalseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IsKeyword">
+            <summary>
+            Name for the IsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IsNotExpression">
+            <summary>
+            Name for the IsNotExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IsNotKeyword">
+            <summary>
+            Name for the IsNotKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.IsTrueKeyword">
+            <summary>
+            Name for the IsTrueKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.JoinClause">
+            <summary>
+            Name for the JoinClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.JoinCondition">
+            <summary>
+            Name for the JoinCondition symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.JoinKeyword">
+            <summary>
+            Name for the JoinKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.KeyKeyword">
+            <summary>
+            Name for the KeyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LabelStatement">
+            <summary>
+            Name for the LabelStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LambdaExpression">
+            <summary>
+            Name for the LambdaExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LeftShiftAssignment">
+            <summary>
+            Name for the LeftShiftAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LeftShiftExpression">
+            <summary>
+            Name for the LeftShiftExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LessThanEqualsToken">
+            <summary>
+            Name for the LessThanEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LessThanExpression">
+            <summary>
+            Name for the LessThanExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LessThanGreaterThanToken">
+            <summary>
+            Name for the LessThanGreaterThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LessThanLessThanEqualsToken">
+            <summary>
+            Name for the LessThanLessThanEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LessThanLessThanToken">
+            <summary>
+            Name for the LessThanLessThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LessThanOrEqualExpression">
+            <summary>
+            Name for the LessThanOrEqualExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LessThanToken">
+            <summary>
+            Name for the LessThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LetKeyword">
+            <summary>
+            Name for the LetKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LetQueryOperator">
+            <summary>
+            Name for the LetQueryOperator symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LibKeyword">
+            <summary>
+            Name for the LibKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LikeExpression">
+            <summary>
+            Name for the LikeExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LikeKeyword">
+            <summary>
+            Name for the LikeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LineContinuationToken">
+            <summary>
+            Name for the LineContinuationToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LineTerminatorToken">
+            <summary>
+            Name for the LineTerminatorToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LiteralExpression">
+            <summary>
+            Name for the LiteralExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LocalDeclaration">
+            <summary>
+            Name for the LocalDeclaration symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LongKeyword">
+            <summary>
+            Name for the LongKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.LoopKeyword">
+            <summary>
+            Name for the LoopKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MeKeyword">
+            <summary>
+            Name for the MeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MemberAccessExpression">
+            <summary>
+            Name for the MemberAccessExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MembersImportsClause">
+            <summary>
+            Name for the MembersImportsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MidAssignment">
+            <summary>
+            Name for the MidAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MidKeyword">
+            <summary>
+            Name for the MidKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MinusEqualsToken">
+            <summary>
+            Name for the MinusEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MinusToken">
+            <summary>
+            Name for the MinusToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ModifiedIdentifier">
+            <summary>
+            Name for the ModifiedIdentifier symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ModKeyword">
+            <summary>
+            Name for the ModKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ModuleBlock">
+            <summary>
+            Name for the ModuleBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ModuleKeyword">
+            <summary>
+            Name for the ModuleKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ModuleStatement">
+            <summary>
+            Name for the ModuleStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ModuloExpression">
+            <summary>
+            Name for the ModuloExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MultiLineFunctionLambdaExpression">
+            <summary>
+            Name for the MultiLineFunctionLambdaExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MultiLineFunctionLambdaHeader">
+            <summary>
+            Name for the MultiLineFunctionLambdaHeader symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MultiLineIfBlock">
+            <summary>
+            Name for the MultiLineIfBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MultiLineSubLambdaExpression">
+            <summary>
+            Name for the MultiLineSubLambdaExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MultiplyAssignment">
+            <summary>
+            Name for the MultiplyAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MultiplyExpression">
+            <summary>
+            Name for the MultiplyExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MustInheritKeyword">
+            <summary>
+            Name for the MustInheritKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MustOverrideFunctionStatement">
+            <summary>
+            Name for the MustOverrideFunctionStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MustOverrideKeyword">
+            <summary>
+            Name for the MustOverrideKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MustOverridePropertyStatement">
+            <summary>
+            Name for the MustOverridePropertyStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MustOverrideSubStatement">
+            <summary>
+            Name for the MustOverrideSubStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MyBaseKeyword">
+            <summary>
+            Name for the MyBaseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.MyClassKeyword">
+            <summary>
+            Name for the MyClassKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NamedArgument">
+            <summary>
+            Name for the NamedArgument symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NamedFieldInitializer">
+            <summary>
+            Name for the NamedFieldInitializer symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NamespaceBlock">
+            <summary>
+            Name for the NamespaceBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NamespaceKeyword">
+            <summary>
+            Name for the NamespaceKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NamespaceStatement">
+            <summary>
+            Name for the NamespaceStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NarrowingKeyword">
+            <summary>
+            Name for the NarrowingKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NegateExpression">
+            <summary>
+            Name for the NegateExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NewConstraint">
+            <summary>
+            Name for the NewConstraint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NewKeyword">
+            <summary>
+            Name for the NewKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NewLineToken">
+            <summary>
+            Name for the NewLineToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NextKeyword">
+            <summary>
+            Name for the NextKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NextLabel">
+            <summary>
+            Name for the NextLabel symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NextStatement">
+            <summary>
+            Name for the NextStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NotEqualsExpression">
+            <summary>
+            Name for the NotEqualsExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NotExpression">
+            <summary>
+            Name for the NotExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NothingKeyword">
+            <summary>
+            Name for the NothingKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NothingLiteralExpression">
+            <summary>
+            Name for the NothingLiteralExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NotInheritableKeyword">
+            <summary>
+            Name for the NotInheritableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NotKeyword">
+            <summary>
+            Name for the NotKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NotOverridableKeyword">
+            <summary>
+            Name for the NotOverridableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NullableType">
+            <summary>
+            Name for the NullableType symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.NumericLiteralExpression">
+            <summary>
+            Name for the NumericLiteralExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ObjectCollectionInitializer">
+            <summary>
+            Name for the ObjectCollectionInitializer symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ObjectCreationExpression">
+            <summary>
+            Name for the ObjectCreationExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ObjectKeyword">
+            <summary>
+            Name for the ObjectKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ObjectMemberInitializer">
+            <summary>
+            Name for the ObjectMemberInitializer symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OffKeyword">
+            <summary>
+            Name for the OffKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OfKeyword">
+            <summary>
+            Name for the OfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OmittedArgument">
+            <summary>
+            Name for the OmittedArgument symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OnErrorGoToLabelStatement">
+            <summary>
+            Name for the OnErrorGoToLabelStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OnErrorGoToMinusOneStatement">
+            <summary>
+            Name for the OnErrorGoToMinusOneStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OnErrorGoToZeroStatement">
+            <summary>
+            Name for the OnErrorGoToZeroStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OnErrorResumeNextStatement">
+            <summary>
+            Name for the OnErrorResumeNextStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OnKeyword">
+            <summary>
+            Name for the OnKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OpenBraceToken">
+            <summary>
+            Name for the OpenBraceToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OpenParenToken">
+            <summary>
+            Name for the OpenParenToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OperatorBlock">
+            <summary>
+            Name for the OperatorBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OperatorKeyword">
+            <summary>
+            Name for the OperatorKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OperatorStatement">
+            <summary>
+            Name for the OperatorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OptionalKeyword">
+            <summary>
+            Name for the OptionalKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OptionKeyword">
+            <summary>
+            Name for the OptionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OptionStatement">
+            <summary>
+            Name for the OptionStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OrderByClause">
+            <summary>
+            Name for the OrderByClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OrderKeyword">
+            <summary>
+            Name for the OrderKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OrElseExpression">
+            <summary>
+            Name for the OrElseExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OrElseKeyword">
+            <summary>
+            Name for the OrElseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OrExpression">
+            <summary>
+            Name for the OrExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OrKeyword">
+            <summary>
+            Name for the OrKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OutKeyword">
+            <summary>
+            Name for the OutKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OverloadsKeyword">
+            <summary>
+            Name for the OverloadsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OverridableKeyword">
+            <summary>
+            Name for the OverridableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.OverridesKeyword">
+            <summary>
+            Name for the OverridesKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ParamArrayKeyword">
+            <summary>
+            Name for the ParamArrayKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.Parameter">
+            <summary>
+            Name for the Parameter symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ParameterList">
+            <summary>
+            Name for the ParameterList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ParameterModifier">
+            <summary>
+            Name for the ParameterModifier symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ParenthesizedExpression">
+            <summary>
+            Name for the ParenthesizedExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PartialKeyword">
+            <summary>
+            Name for the PartialKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PlusEqualsToken">
+            <summary>
+            Name for the PlusEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PlusExpression">
+            <summary>
+            Name for the PlusExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PlusToken">
+            <summary>
+            Name for the PlusToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PowerAssignment">
+            <summary>
+            Name for the PowerAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PowerExpression">
+            <summary>
+            Name for the PowerExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PredefinedCastExpression">
+            <summary>
+            Name for the PredefinedCastExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PredefinedType">
+            <summary>
+            Name for the PredefinedType symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorConstContent">
+            <summary>
+            Name for the PreprocessorConstContent symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorConstToken">
+            <summary>
+            Name for the PreprocessorConstToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorElseIfToken">
+            <summary>
+            Name for the PreprocessorElseIfToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorElseToken">
+            <summary>
+            Name for the PreprocessorElseToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorEndIfToken">
+            <summary>
+            Name for the PreprocessorEndIfToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorEndRegionToken">
+            <summary>
+            Name for the PreprocessorEndRegionToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorIfContent">
+            <summary>
+            Name for the PreprocessorIfContent symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorIfToken">
+            <summary>
+            Name for the PreprocessorIfToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorLabelContent">
+            <summary>
+            Name for the PreprocessorLabelContent symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorLabelEnd">
+            <summary>
+            Name for the PreprocessorLabelEnd symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorLabelStart">
+            <summary>
+            Name for the PreprocessorLabelStart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorRegionToken">
+            <summary>
+            Name for the PreprocessorRegionToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreprocessorThenToken">
+            <summary>
+            Name for the PreprocessorThenToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PreserveKeyword">
+            <summary>
+            Name for the PreserveKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PrivateKeyword">
+            <summary>
+            Name for the PrivateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PropertyBlock">
+            <summary>
+            Name for the PropertyBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PropertyGetBlock">
+            <summary>
+            Name for the PropertyGetBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PropertyKeyword">
+            <summary>
+            Name for the PropertyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PropertySetBlock">
+            <summary>
+            Name for the PropertySetBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PropertyStatement">
+            <summary>
+            Name for the PropertyStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ProtectedKeyword">
+            <summary>
+            Name for the ProtectedKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.PublicKeyword">
+            <summary>
+            Name for the PublicKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.QualifiedName">
+            <summary>
+            Name for the QualifiedName symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.QualifiedNamespaceName">
+            <summary>
+            Name for the QualifiedNamespaceName symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.QualifiedOpenTypeName">
+            <summary>
+            Name for the QualifiedOpenTypeName symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.QueryExpression">
+            <summary>
+            Name for the QueryExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.QuestionToken">
+            <summary>
+            Name for the QuestionToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RaiseEventBlock">
+            <summary>
+            Name for the RaiseEventBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RaiseEventHandlerAccessorStatement">
+            <summary>
+            Name for the RaiseEventHandlerAccessorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RaiseEventKeyword">
+            <summary>
+            Name for the RaiseEventKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RaiseEventStatement">
+            <summary>
+            Name for the RaiseEventStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RangeArgument">
+            <summary>
+            Name for the RangeArgument symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ReadOnlyKeyword">
+            <summary>
+            Name for the ReadOnlyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ReDimKeyword">
+            <summary>
+            Name for the ReDimKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ReDimPreserveStatement">
+            <summary>
+            Name for the ReDimPreserveStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ReDimStatement">
+            <summary>
+            Name for the ReDimStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RemKeyword">
+            <summary>
+            Name for the RemKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RemoveHandlerAccessorStatement">
+            <summary>
+            Name for the RemoveHandlerAccessorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RemoveHandlerBlock">
+            <summary>
+            Name for the RemoveHandlerBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RemoveHandlerKeyword">
+            <summary>
+            Name for the RemoveHandlerKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RemoveHandlerStatement">
+            <summary>
+            Name for the RemoveHandlerStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ResumeKeyword">
+            <summary>
+            Name for the ResumeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ResumeNextStatement">
+            <summary>
+            Name for the ResumeNextStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ResumeStatement">
+            <summary>
+            Name for the ResumeStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ReturnKeyword">
+            <summary>
+            Name for the ReturnKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ReturnStatement">
+            <summary>
+            Name for the ReturnStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RightShiftAssignment">
+            <summary>
+            Name for the RightShiftAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.RightShiftExpression">
+            <summary>
+            Name for the RightShiftExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SByteKeyword">
+            <summary>
+            Name for the SByteKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SelectBlock">
+            <summary>
+            Name for the SelectBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SelectClause">
+            <summary>
+            Name for the SelectClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SelectKeyword">
+            <summary>
+            Name for the SelectKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SelectStatement">
+            <summary>
+            Name for the SelectStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SetAccessorStatement">
+            <summary>
+            Name for the SetAccessorStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SetKeyword">
+            <summary>
+            Name for the SetKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ShadowsKeyword">
+            <summary>
+            Name for the ShadowsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SharedKeyword">
+            <summary>
+            Name for the SharedKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ShortKeyword">
+            <summary>
+            Name for the ShortKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SimpleArgument">
+            <summary>
+            Name for the SimpleArgument symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SimpleArgumentRequired">
+            <summary>
+            Name for the SimpleArgumentRequired symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SimpleAsClause">
+            <summary>
+            Name for the SimpleAsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SimpleNameExpression">
+            <summary>
+            Name for the SimpleNameExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SingleKeyword">
+            <summary>
+            Name for the SingleKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SingleLineComment">
+            <summary>
+            Name for the SingleLineComment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SingleLineElsePart">
+            <summary>
+            Name for the SingleLineElsePart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SingleLineFunctionLambdaExpression">
+            <summary>
+            Name for the SingleLineFunctionLambdaExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SingleLineIfPart">
+            <summary>
+            Name for the SingleLineIfPart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SingleLineIfStatement">
+            <summary>
+            Name for the SingleLineIfStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SingleLineSubLambdaExpression">
+            <summary>
+            Name for the SingleLineSubLambdaExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SkipClause">
+            <summary>
+            Name for the SkipClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SkipKeyword">
+            <summary>
+            Name for the SkipKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SkipWhileClause">
+            <summary>
+            Name for the SkipWhileClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SlashEqualsToken">
+            <summary>
+            Name for the SlashEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SlashToken">
+            <summary>
+            Name for the SlashToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StatementTerminator">
+            <summary>
+            Name for the StatementTerminator symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StaticKeyword">
+            <summary>
+            Name for the StaticKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StepKeyword">
+            <summary>
+            Name for the StepKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StopKeyword">
+            <summary>
+            Name for the StopKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StopStatement">
+            <summary>
+            Name for the StopStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StrictKeyword">
+            <summary>
+            Name for the StrictKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StringKeyword">
+            <summary>
+            Name for the StringKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StringLiteralContent">
+            <summary>
+            Name for the StringLiteralContent symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StringLiteralEnd">
+            <summary>
+            Name for the StringLiteralEnd symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StringLiteralExpression">
+            <summary>
+            Name for the StringLiteralExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StringLiteralStart">
+            <summary>
+            Name for the StringLiteralStart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StringLiteralToken">
+            <summary>
+            Name for the StringLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StructureBlock">
+            <summary>
+            Name for the StructureBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StructureConstraint">
+            <summary>
+            Name for the StructureConstraint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StructureKeyword">
+            <summary>
+            Name for the StructureKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.StructureStatement">
+            <summary>
+            Name for the StructureStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SubBlock">
+            <summary>
+            Name for the SubBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SubKeyword">
+            <summary>
+            Name for the SubKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SubLambdaHeader">
+            <summary>
+            Name for the SubLambdaHeader symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SubStatement">
+            <summary>
+            Name for the SubStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SubtractAssignment">
+            <summary>
+            Name for the SubtractAssignment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SubtractExpression">
+            <summary>
+            Name for the SubtractExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SyncLockBlock">
+            <summary>
+            Name for the SyncLockBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SyncLockKeyword">
+            <summary>
+            Name for the SyncLockKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.SyncLockStatement">
+            <summary>
+            Name for the SyncLockStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TakeClause">
+            <summary>
+            Name for the TakeClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TakeKeyword">
+            <summary>
+            Name for the TakeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TakeWhileClause">
+            <summary>
+            Name for the TakeWhileClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TextKeyword">
+            <summary>
+            Name for the TextKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ThenKeyword">
+            <summary>
+            Name for the ThenKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ThrowKeyword">
+            <summary>
+            Name for the ThrowKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ThrowStatement">
+            <summary>
+            Name for the ThrowStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ToKeyword">
+            <summary>
+            Name for the ToKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TrueKeyword">
+            <summary>
+            Name for the TrueKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TrueLiteralExpression">
+            <summary>
+            Name for the TrueLiteralExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TryBlock">
+            <summary>
+            Name for the TryBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TryCastExpression">
+            <summary>
+            Name for the TryCastExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TryCastKeyword">
+            <summary>
+            Name for the TryCastKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TryKeyword">
+            <summary>
+            Name for the TryKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TryPart">
+            <summary>
+            Name for the TryPart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TryStatement">
+            <summary>
+            Name for the TryStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeArgument">
+            <summary>
+            Name for the TypeArgument symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeArgumentList">
+            <summary>
+            Name for the TypeArgumentList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeArityList">
+            <summary>
+            Name for the TypeArityList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeConstraint">
+            <summary>
+            Name for the TypeConstraint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeOfIsExpression">
+            <summary>
+            Name for the TypeOfIsExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeOfKeyword">
+            <summary>
+            Name for the TypeOfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeParameter">
+            <summary>
+            Name for the TypeParameter symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeParameterList">
+            <summary>
+            Name for the TypeParameterList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeParameterMultipleConstraintClause">
+            <summary>
+            Name for the TypeParameterMultipleConstraintClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.TypeParameterSingleConstraintClause">
+            <summary>
+            Name for the TypeParameterSingleConstraintClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UIntegerKeyword">
+            <summary>
+            Name for the UIntegerKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.ULongKeyword">
+            <summary>
+            Name for the ULongKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UnicodeKeyword">
+            <summary>
+            Name for the UnicodeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UnrecognizedToken">
+            <summary>
+            Name for the UnrecognizedToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UntilClause">
+            <summary>
+            Name for the UntilClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UntilKeyword">
+            <summary>
+            Name for the UntilKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UShortKeyword">
+            <summary>
+            Name for the UShortKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UsingBlock">
+            <summary>
+            Name for the UsingBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UsingKeyword">
+            <summary>
+            Name for the UsingKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UsingResources">
+            <summary>
+            Name for the UsingResources symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.UsingStatement">
+            <summary>
+            Name for the UsingStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.VariableDeclarator">
+            <summary>
+            Name for the VariableDeclarator symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.VariantKeyword">
+            <summary>
+            Name for the VariantKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WendKeyword">
+            <summary>
+            Name for the WendKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WhenKeyword">
+            <summary>
+            Name for the WhenKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WhereClause">
+            <summary>
+            Name for the WhereClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WhereKeyword">
+            <summary>
+            Name for the WhereKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WhileBlock">
+            <summary>
+            Name for the WhileBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WhileClause">
+            <summary>
+            Name for the WhileClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WhileKeyword">
+            <summary>
+            Name for the WhileKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WhileStatement">
+            <summary>
+            Name for the WhileStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WhitespaceToken">
+            <summary>
+            Name for the WhitespaceToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WideningKeyword">
+            <summary>
+            Name for the WideningKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WithBlock">
+            <summary>
+            Name for the WithBlock symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WithEventsKeyword">
+            <summary>
+            Name for the WithEventsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WithKeyword">
+            <summary>
+            Name for the WithKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WithStatement">
+            <summary>
+            Name for the WithStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.WriteOnlyKeyword">
+            <summary>
+            Name for the WriteOnlyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.XMLNamespaceName">
+            <summary>
+            Name for the XMLNamespaceName symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.XorExpression">
+            <summary>
+            Name for the XorExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.VisualBasicLanguage.SymbolNames.XorKeyword">
+            <summary>
+            Name for the XorKeyword symbol.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.VisualBasicLanguage.VBIndentProvider.IsSignificantForIndent(Infragistics.Documents.Parsing.Token)">
+            <summary>
+            Returns whether this token is significant to the indenting logic
+            </summary>
+            <returns>True if the token is significant to the indenting logic</returns>
+        </member>
+    </members>
+</doc>

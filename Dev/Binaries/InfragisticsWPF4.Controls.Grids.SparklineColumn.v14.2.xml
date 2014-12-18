@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Controls.Grids.SparklineColumn.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Controls.Grids.SparklineColumn">
+            <summary>
+            A <see cref="T:Infragistics.Controls.Grids.Column"/> which can be used to show A Sparkline Chart.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.SparklineColumn.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.SparklineColumn"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.SparklineColumn.GenerateContentProvider">
+            <summary>
+            Generates a new <see cref="T:Infragistics.Controls.Grids.SparklineColumnContentProvider"/> that will be used to generate content for <see cref="T:Infragistics.Controls.Grids.Cell"/> objects for this <see cref="T:Infragistics.Controls.Grids.Column"/>.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.SparklineColumn.ValueMemberPathProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.SparklineColumn.ValueMemberPath"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.SparklineColumn.LabelMemberPathProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.SparklineColumn.LabelMemberPath"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.SparklineColumn.StyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.SparklineColumn.Style"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.SparklineColumn.DisplayTypeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.SparklineColumn.DisplayType"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.SparklineColumn.ItemsSourcePathProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.SparklineColumn.ItemsSourcePath"/> dependency property. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.IsSummable">
+            <summary>
+            Gets / sets if the column will show the UI for SummaryRow.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.IsFilterable">
+            <summary>
+            Gets/sets if a column can be filtered via the UI.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.IsSortable">
+            <summary>
+            Gets/Sets if a Column can be sorted. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.IsGroupable">
+            <summary>
+            Gets/Sets if a Column can be grouped. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.RequiresBoundDataKey">
+            <summary>
+            Gets whether an exception should be thrown if the key associated with the <see cref="T:Infragistics.Controls.Grids.ColumnBase"/> doesn't 
+            correspond with a property in the data that this object represents.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.ValueMemberPath">
+            <summary>
+            Gets / sets the string path to the value column that will be assigned to the <see cref="T:Infragistics.Controls.Charts.XamSparkline"/> controls of the <see cref="T:Infragistics.Controls.Grids.SparklineColumn"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.LabelMemberPath">
+            <summary>
+            Gets / sets the string path to the label column that will be assigned to the <see cref="T:Infragistics.Controls.Charts.XamSparkline"/> controls of the <see cref="T:Infragistics.Controls.Grids.SparklineColumn"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.Style">
+            <summary>
+            Gets / sets the Style that will be applied to the <see cref="T:Infragistics.Controls.Charts.XamSparkline"/> altering the appearance and behavior of the control in the <see cref="T:Infragistics.Controls.Grids.SparklineColumn"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.DisplayType">
+            <summary>
+            Gets / sets the <see cref="P:Infragistics.Controls.Grids.SparklineColumn.DisplayType"/> that will be assigned to the <see cref="T:Infragistics.Controls.Charts.XamSparkline"/> controls of the <see cref="T:Infragistics.Controls.Grids.SparklineColumn"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.SparklineColumn.ItemsSourcePath">
+            <summary>
+            Gets / sets the <see cref="P:Infragistics.Controls.Grids.SparklineColumn.ItemsSourcePath"/> that contains the set of data to be displayed in the <see cref="T:Infragistics.Controls.Charts.XamSparkline"/> controls of the <see cref="T:Infragistics.Controls.Grids.SparklineColumn"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.SparklineColumnContentProvider">
+            <summary>
+            An object that provides content to <see cref="T:Infragistics.Controls.Grids.Cell"/> objects that belong to a <see cref="T:Infragistics.Controls.Grids.SparklineColumnContentProvider"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.SparklineColumnContentProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.SparklineColumnContentProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.SparklineColumnContentProvider.ResolveDisplayElement(Infragistics.Controls.Grids.Cell,System.Windows.Data.Binding)">
+            <summary>
+            Sets up the element that will be displayed in a <see cref="T:Infragistics.Controls.Grids.Cell"/>, when the cell is not in edit mode. 
+            </summary>
+            <param name="cell">The cell that the display element will be displayed in.</param>
+            <param name="cellBinding">A <see cref="T:System.Windows.Data.Binding"/> object that can be applied to the cell. Note: this binding can be null.</param>
+            <returns>The element that should be displayed.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.SparklineColumnContentProvider.ResolveBinding(Infragistics.Controls.Grids.Cell)">
+            <summary>
+            Builds the binding that will be used for a <see cref="T:Infragistics.Controls.Grids.Cell"/>
+            </summary>
+            <param name="cell"></param>
+            <returns>
+            If a binding cannot be created, null will be returned.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.SparklineColumnContentProvider.ResolveEditorControl(Infragistics.Controls.Grids.Cell,System.Object,System.Double,System.Double,System.Windows.Data.Binding)">
+            <summary>
+            Sets up the editor control that will be displayed in a <see cref="T:Infragistics.Controls.Grids.Cell"/> when the the cell is in edit mode.
+            </summary>
+            <param name="cell">The <see cref="T:Infragistics.Controls.Grids.Cell"/> entering edit mode.</param>
+            <param name="editorValue">The value that should be put in the editor.</param>
+            <param name="availableWidth">The amount of horizontal space available.</param>
+            <param name="availableHeight">The amount of vertical space available.</param>
+            <param name="editorBinding">Provides a <see cref="T:System.Windows.Data.Binding"/> that can be used for setting up the editor.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.SparklineColumnContentProvider.ResolveValueFromEditor(Infragistics.Controls.Grids.Cell)">
+            <summary>
+            Resolves the value of the editor control, so that the cell's underlying data can be updated. 
+            </summary>
+            <param name="cell">The <see cref="T:Infragistics.Controls.Grids.Cell"/> that the editor id being displayed in.</param>
+            <returns>The value that should be displayed in the cell.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.SparklineColumnContentProvider.ApplyBindingToDisplayElement(System.Windows.Data.Binding)">
+            <summary>
+            This is where a ColumnContentProvider should apply the Binding to their Display element.
+            </summary>
+            <param name="cellBinding"></param>
+        </member>
+    </members>
+</doc>

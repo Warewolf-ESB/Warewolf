@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Themes.Luna", "Warewolf.Studio.Themes.Luna.csproj", "{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Beta|Any CPU = Beta|Any CPU
+		CTP|Any CPU = CTP|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Japan|Any CPU = Japan|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Trial|Any CPU = Trial|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.CTP|Any CPU.ActiveCfg = CTP|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.CTP|Any CPU.Build.0 = CTP|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Japan|Any CPU.ActiveCfg = Japan|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Japan|Any CPU.Build.0 = Japan|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|Any CPU.ActiveCfg = Trial|Any CPU
+		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|Any CPU.Build.0 = Trial|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

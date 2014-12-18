@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Documents.RichText.Html.ImageSavePreference">
+            <summary>
+            Determines what to serialize if an <see cref="T:Infragistics.Documents.RichText.ImageNode"/> has both an <see cref="P:Infragistics.Documents.RichText.ImageNode.ImageUri"/> and an <see cref="P:Infragistics.Documents.RichText.ImageNode.ImageResolved"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Html.ImageSavePreference.Link">
+            <summary>
+            Set the 'img' elments's 'src' attribute to the <see cref="P:Infragistics.Documents.RichText.ImageNode.ImageUri"/> if available. If the <b>ImageUri</b> is not specified then save the image file locally if file access is granted. Otherwise embed the image as a 'data url' using base64 encoding.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Html.ImageSavePreference.SaveLocally">
+            <summary>
+            If the <see cref="P:Infragistics.Documents.RichText.ImageNode.ImageResolved"/> is available, save the image file locally if file access is granted. Otherwise use the <see cref="P:Infragistics.Documents.RichText.ImageNode.ImageUri"/>. If the <b>ImageUri</b> is not set then embed the image as a 'data url' using base64 encoding.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Html.ImageSavePreference.Embed">
+            <summary>
+            If the <see cref="P:Infragistics.Documents.RichText.ImageNode.ImageResolved"/> is available embed the image as a 'data url' using base64 encoding. Otherwise set the 'img' elments's 'src' attribute to the <see cref="P:Infragistics.Documents.RichText.ImageNode.ImageUri"/>. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Html.ImageSavePreference.LinkEmbed">
+            <summary>
+            Set the 'img' elments's 'src' attribute to the <see cref="P:Infragistics.Documents.RichText.ImageNode.ImageUri"/> if available. Otherwise embed the image as a 'data url' using base64 encoding.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter">
+            <summary>
+            A data connector which can save and/or load HTML data with a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.RefreshDocumentCore">
+            <summary>
+            Refreshes the content of the <see cref="P:Infragistics.Documents.RichText.Serialization.RichTextDocumentAdapterBase.Document"/> to reflect the current state of the <see cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.Value"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.RefreshValueCore">
+            <summary>
+            Refreshes the <see cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.Value"/> so it reflects the current state of the <see cref="P:Infragistics.Documents.RichText.Serialization.RichTextDocumentAdapterBase.Document"/>, which could be null.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.BaseUriProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.BaseUri"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.ImageSavePreferenceProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.ImageSavePreference"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.LocalFilePathProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.LocalFilePath"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.SaveAbsoluteLocalFilePathsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.SaveAbsoluteLocalFilePaths"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.ValueProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.Value"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.BaseUri">
+            <summary>
+            Returns or sets the BaseUri 
+            </summary>
+            <seealso cref="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.BaseUriProperty"/>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.ImageSavePreference">
+            <summary>
+            Determines how images are saved.
+            </summary>
+            <seealso cref="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.ImageSavePreferenceProperty"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.BaseUri"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.LocalFilePath"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.SaveAbsoluteLocalFilePaths"/>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.LocalFilePath">
+            <summary>
+            Returns or sets a relative or absolute path where external files, like images, are written to.
+            </summary>
+            <seealso cref="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.LocalFilePathProperty"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.BaseUri"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.SaveAbsoluteLocalFilePaths"/>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.SaveAbsoluteLocalFilePaths">
+            <summary>
+            Returns or sets whether to save relative or absolute local file paths.
+            </summary>
+            <seealso cref="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.SaveAbsoluteLocalFilePathsProperty"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.BaseUri"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.LocalFilePath"/>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.Value">
+            <summary>
+            Returns or sets the HTML content representing the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/>.
+            </summary>
+            <seealso cref="F:Infragistics.Documents.RichText.Html.HtmlDocumentAdapter.ValueProperty"/>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Html.HtmlLoadOptions">
+            <summary>
+            Represents the various options available when loading a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> in the HTML file format.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlLoadOptions.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.RichText.Html.HtmlLoadOptions"/> instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlLoadOptions.BaseUri">
+            <summary>
+            Returns or sets the BaseUri to use to resolve external references
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Html.HtmlSaveOptions">
+            <summary>
+            Represents the various options available when saving a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> in the HTML file format.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlSaveOptions.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.RichText.Html.HtmlSaveOptions"/> instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.BaseUri">
+            <summary>
+            Returns or sets the BaseUri to use to resolve external references
+            </summary>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.LocalFilePath"/>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.ImageSavePreference">
+            <summary>
+            Determines how images are saved.
+            </summary>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.BaseUri"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.LocalFilePath"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.SaveAbsoluteLocalFilePaths"/>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.LocalFilePath">
+            <summary>
+            Returns or sets a relative or absolute path where external files, like images, are written to.
+            </summary>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.BaseUri"/>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.SaveAbsoluteLocalFilePaths">
+            <summary>
+            Returns or sets whether absolute paths are saved out to locate local external files.
+            </summary>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.BaseUri"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.HtmlSaveOptions.LocalFilePath"/>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Html.HtmlSerializationProvider">
+            <summary>
+            A class which can save/load a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> instance in the HTML file format.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlSerializationProvider.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.RichText.Html.HtmlSerializationProvider"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlSerializationProvider.LoadDocument(Infragistics.Documents.RichText.Serialization.LoadDocumentContext)">
+            <summary>
+            Loads the document using the specified context information.
+            </summary>
+            <param name="context">The context information for loading the document.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlSerializationProvider.SaveDocument(Infragistics.Documents.RichText.Serialization.SaveDocumentContext)">
+            <summary>
+            Saves the document using the specified context information.
+            </summary>
+            <param name="context">The context information for saving the document.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlSerializationProvider.LoadFromClipboard(Infragistics.Documents.RichText.Serialization.LoadFromClipboardContext)">
+            <summary>
+            Loads portions of a document from the clipboard.
+            </summary>
+            <param name="context">The context information for loading the clipboard content.</param>
+            <returns>
+            A <see cref="T:Infragistics.Documents.RichText.Serialization.LoadFromClipboardResult"/> instance if the content was loaded successfully; 
+            Null to try loading the content using another serialization provider.
+            </returns>
+            <seealso cref="M:Infragistics.Documents.RichText.Html.HtmlSerializationProvider.SaveToClipboard(Infragistics.Documents.RichText.Serialization.SaveToClipboardContext)"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Serialization.SerializationProviderBase.SupportedClipboardFormats"/>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.HtmlSerializationProvider.SaveToClipboard(Infragistics.Documents.RichText.Serialization.SaveToClipboardContext)">
+            <summary>
+            Saves portions of a document to the clipboard.
+            </summary>
+            <param name="context">The context information for saving the clipboard content.</param>
+            <returns>True if the content was saved successfully; False to try saving the content using another serialization provider.</returns>
+            <seealso cref="M:Infragistics.Documents.RichText.Html.HtmlSerializationProvider.LoadFromClipboard(Infragistics.Documents.RichText.Serialization.LoadFromClipboardContext)"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Serialization.SerializationProviderBase.SupportedClipboardFormats"/>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.HtmlSerializationProvider.Instance">
+            <summary>
+            Gets a singleton instance of the <see cref="T:Infragistics.Documents.RichText.Html.HtmlSerializationProvider"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.HtmlSerializationProviderExtensions">
+            <summary>
+            Extension methods related to the <see cref="T:Infragistics.Documents.RichText.Html.HtmlSerializationProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.HtmlSerializationProviderExtensions.LoadFromHtml(Infragistics.Documents.RichText.RichTextDocument,System.String,Infragistics.Documents.RichText.Html.HtmlLoadOptions)">
+            <summary>
+            Loads the HTML content from a file into the document.
+            </summary>
+            <param name="document">The document in which the content should be loaded.</param>
+            <param name="filePath">The path of the file containing the RTF content.</param>
+            <param name="options">The options to use when loading the content.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.HtmlSerializationProviderExtensions.LoadFromHtml(Infragistics.Documents.RichText.RichTextDocument,System.IO.Stream,Infragistics.Documents.RichText.Html.HtmlLoadOptions)">
+            <summary>
+            Loads the HTML content from the stream into the document.
+            </summary>
+            <param name="document">The document in which the content should be loaded.</param>
+            <param name="stream">The stream containing the RTF content.</param>
+            <param name="options">The options to use when loading the content.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.HtmlSerializationProviderExtensions.SaveToHtml(Infragistics.Documents.RichText.RichTextDocument,System.String,Infragistics.Documents.RichText.Html.HtmlSaveOptions)">
+            <summary>
+            Saves the content from the document into a file using the HTML format.
+            </summary>
+            <param name="document">The document containing the content to be saved.</param>
+            <param name="filePath">The path of the file into which the document should be saved.</param>
+            <param name="options">The options to use when saving the content.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.HtmlSerializationProviderExtensions.SaveToHtml(Infragistics.Documents.RichText.RichTextDocument,System.IO.Stream,Infragistics.Documents.RichText.Html.HtmlSaveOptions)">
+            <summary>
+            Saves the content from the document into the stream using the HTML format.
+            </summary>
+            <param name="document">The document containing the content to be saved.</param>
+            <param name="stream">The stream into which the document should be saved.</param>
+            <param name="options">The options to use when saving the content.</param>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Html.LinkedResourceResolver">
+            <summary>
+            Abstract base class for resolving linked resources
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Html.FileSystemLinkedResourceResolver">
+            <summary>
+            Class for resolving resources located in files
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Html.LinkedResourceSerializer">
+            <summary>
+            Base class for serializing linked resources
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Html.FileSystemLinkedResourceSerializer">
+            <summary>
+            Class for serializing resources into files
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Html.Resources">
+            <summary>
+            Exposes a <see cref="T:Infragistics.Shared.ResourceCustomizer"/> instance for this assembly. 
+            </summary>
+            <seealso cref="P:Infragistics.Documents.RichText.Html.Resources.Customizer"/> 
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.Resources.GetString(System.String,System.Object[])">
+            <summary>
+            Returns the resource string using the specified name and default culture.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.Resources.GetString(System.String)">
+            <summary>
+            Returns the resource string using the specified resource name and default culture. The string is then formatted using the arguments specified.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Html.Resources.GetObject(System.String)">
+            <summary>
+            Returns the resource object using the specified name.
+            </summary>
+            <param name="name">Name of the resource item</param>
+            <returns>An object containing the specified resource</returns>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Html.Resources.Customizer">
+            <summary>
+            Returns the <see cref="T:Infragistics.Shared.ResourceCustomizer"/> for this assembly.
+            </summary>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+    </members>
+</doc>

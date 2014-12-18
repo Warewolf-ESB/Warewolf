@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Luna.DockManager.xaml" />
+
+        <!--
+            <ResourceDictionary Source="Luna.DataGrid.xaml"/>
+            <ResourceDictionary Source="Luna.Button.xaml"/>
+            <ResourceDictionary Source="Luna.CheckBox.xaml"/>
+            <ResourceDictionary Source="Luna.ComboBox.xaml"/>
+            <ResourceDictionary Source="Luna.Expander.xaml"/>
+            <ResourceDictionary Source="Luna.GridSplitter.xaml"/>
+            <ResourceDictionary Source="Luna.GroupBox.xaml"/>
+            <ResourceDictionary Source="Luna.Label.xaml"/>
+            <ResourceDictionary Source="Luna.ListBox.xaml"/>
+            <ResourceDictionary Source="Luna.PassWordBox.xaml"/>
+            <ResourceDictionary Source="Luna.ProgressBar.xaml"/>
+            <ResourceDictionary Source="Luna.RadioButton.xaml"/>
+            <ResourceDictionary Source="Luna.ScrollBar.xaml"/>
+            <ResourceDictionary Source="Luna.Slider.xaml"/>
+            <ResourceDictionary Source="Luna.TextBlock.xaml"/>
+            <ResourceDictionary Source="Luna.TextBox.xaml"/>
+            <ResourceDictionary Source="Luna.ToggleButton.xaml"/>
+            <ResourceDictionary Source="Luna.ToolTip.xaml"/>
+            <ResourceDictionary Source="Luna.TreeView.xaml"/>
+            <ResourceDictionary Source="Luna.Window.xaml"/>
+            <ResourceDictionary Source="Luna.TabControl.xaml"/>
+        -->
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

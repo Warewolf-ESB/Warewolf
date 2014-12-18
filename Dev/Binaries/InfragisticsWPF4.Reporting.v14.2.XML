@@ -1,0 +1,1447 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Reporting.v14.2</name>
+    </assembly>
+    <members>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+        <member name="M:InternalDynamicResourceString.#ctor(Infragistics.Shared.ResourceCustomizer,System.Globalization.CultureInfo,System.String,System.Object[])">
+            <summary>
+            This constructor is for internal use only.
+            </summary>
+        </member>
+        <member name="M:InternalDynamicResourceString.GetStringFromResource(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            For internal use only.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection">
+            <summary>
+            Class that represents a section of a <see cref="T:Infragistics.Windows.Reporting.Report"/> where each page's content is supplied by an embedded visual.
+            </summary>
+            <remarks>
+            <p class="body">
+            An instance of this class can be added to a <see cref="T:Infragistics.Windows.Reporting.Report"/>'s <see cref="P:Infragistics.Windows.Reporting.Report.Sections"/> collection. 
+            Then, when a pagination process is started, by calling <see cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/> or <see cref="M:Infragistics.Windows.Reporting.Report.Print"/> on <see cref="T:Infragistics.Windows.Reporting.Report"/>, 
+            the EmbeddedVisualReportSection class creates an instance of a <see cref="T:Infragistics.Windows.Reporting.ReportPagePresenter"/> and sets 
+            its content based on the parameters passed into one of its constructors. It then rasies the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>, <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/> and finally the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/> events.
+            </p>
+            <p class="body">The EmbeddedVisualReportSection class can contain three types of objects, supplied in the constructor:
+                <ul>
+                    <li>The objects that implement <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginator"/> interface</li>
+                    <li>The objects that implement <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface, e.g. the XamDataGrid</li>
+                    <li>The objects derived from <b>System.Windows.Media.Visual</b></li>
+                </ul>
+            The first and second type of objects ultimately provide pagination support through the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginator"/> interface. 
+            The third type of object will be printed in one page and if they don’t fit on page, they will be clipped by default. 
+            To prevent clipping of the visual set <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> on <see cref="P:Infragistics.Windows.Reporting.ReportBase.ReportSettings"/> to 'Scale'. 
+            </p>
+            <para class="note"><b>Note:</b> each section in a <see cref="T:Infragistics.Windows.Reporting.Report"/> starts on a new page. For example, if you created a <b>Report</b> with 3 EmbeddedVisualReportSections, one with a XamDataGrid and 2 others with 
+            simple visual elements, each section would start on a new page even though there might have been available space on the last page from the previous section.</para>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.#ctor(System.Windows.Media.Visual)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/> class.
+            </summary>
+            <param name="sourceVisual">The source visual to be printed</param>
+            <remarks>
+            <p class="body">If sourceVisual implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface then the interface's <see cref="M:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory.Create"/> method 
+            will be called to create the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/> before the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/> event is raised.</p>
+            <p class="body">In this case the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/> will be cleared immediately after the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/> event is raised.</p>
+            <p class="note"><b>Note:</b>XamDataGrid implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface and returns a special derived class of DataPresenterBase as the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/>.
+            Therefore, if special event handling is required, the events can be wired up in the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/> event by casting the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/> to DataPresenterBase. 
+            Those events can be unwired in the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/> event.</p>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">sourceVisual can not be null.</exception>
+            <seealso cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginator"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.SourceVisual"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.#ctor(System.Windows.Media.Visual,Infragistics.Windows.Reporting.IEmbeddedVisualPaginator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/> class.
+            </summary>
+            <param name="sourceVisual">The source visual to be printed</param>
+            <param name="visualPaginator">Object that implements the IEmbeddedVisualPaginator interface to provide pagination.</param>
+            <remarks>
+            <p class="body">If sourceVisual implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface then the interface's <see cref="M:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory.Create"/> method 
+            will be called to create the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/> before the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/> event is raised.</p>
+            <p class="body">In this case the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/> will be cleared immediately after the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/> event is raised.</p>
+            <p class="note"><b>Note:</b>XamDataGrid implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface and returns a special derived class of DataPresenterBase as the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/>.
+            Therefore, if special event handling is required, the events can be wired up in the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/> event by casting the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/> to DataPresenterBase. 
+            Those events can be unwired in the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/> event.</p>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">sourceVisual can not be null.</exception>
+            <seealso cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginator"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.SourceVisual"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnPaginationEnded(Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs)">
+            <summary>
+            Occurs after a pagination process has been started
+            </summary>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnPaginationStarted(Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs)">
+            <summary>
+            Occurs after a pagination process has been started
+            </summary>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnPaginationStarting(Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs)">
+            <summary>
+            Occurs before a pagination process is about to begin.
+            </summary>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.GetPage(System.Int32)">
+            <summary>
+            Gets the page from the section
+            </summary>
+            <param name="pageNumber">Zero-based physical page number relative to the beginning of the section.</param>
+            <returns>A DocumentPage containing the page or null if past end of section.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">The page number parameter is less than zero.</exception>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnBeginPagination(Infragistics.Windows.Reporting.ReportBase)">
+            <summary>
+            Called when a pagination operation is about to begin.
+            </summary>
+            <param name="report">The report that starts the printing.</param>
+            <remarks>
+            <p class="body">This method creates and prepares a <see cref="T:Infragistics.Windows.Reporting.ReportPagePresenter"/> and raises the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/> and <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/> events. </p>
+            </remarks>
+            <seealso cref="M:Infragistics.Windows.Reporting.ReportSection.OnBeginPagination(Infragistics.Windows.Reporting.ReportBase)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnEndPagination"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnEndPagination">
+            <summary>
+            Called when a pagination operation has ended.
+            </summary>
+            <remarks>
+            <p class="body">This method releases the <see cref="T:Infragistics.Windows.Reporting.ReportPagePresenter"/> and raises the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/> event. </p>
+            </remarks>
+            <seealso cref="M:Infragistics.Windows.Reporting.ReportSection.OnEndPagination"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnBeginPagination(Infragistics.Windows.Reporting.ReportBase)"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/>
+        </member>
+        <member name="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded">
+            <summary>
+            Occurs after a pagination process has ended.
+            </summary>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnPaginationEnded(Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs)"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>
+        </member>
+        <member name="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted">
+            <summary>
+            Occurs after a pagination process has been started.
+            </summary>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnPaginationStarted(Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs)"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>
+        </member>
+        <member name="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting">
+            <summary>
+            Occurs before a pagination process is about to begin.
+            </summary>
+            <remarks>
+            <p class="body">If <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.SourceVisual"/> implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface then the interface's <see cref="M:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory.Create"/> method 
+            will be called to create the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/> before this event is raised.</p>
+            <p class="body">In this case the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/> will be cleared immediately after the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/> event is raised.</p>
+            <p class="note"><b>Note:</b>XamDataGrid implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface and returns a special derived class of DataPresenterBase as the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/>.
+            Therefore, if special event handling is required, the events can be wired up in the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/> event by casting the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/> to DataPresenterBase. 
+            Those events can then be unwired in the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/> event.</p>
+            </remarks>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.OnPaginationStarting(Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs)"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.SourceVisual">
+            <summary>
+            Returns the source visual that was passed into the constructor (read-only).
+            </summary>
+            <value>The sourceVisual passed into the constructor.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator">
+            <summary>
+            Returns the visual paginator that will be used inside the report section (read-only).
+            </summary>
+            <value>An object that implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginator"/> interface or null.</value>
+            <remarks>
+            <p class="body">If the VisualPaginator was supplied in the constructor it will be returned by this property. However, if the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.SourceVisual"/> 
+            implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface then this property will return null except during a pagination operation.</p>
+            <p class="note"><b>Note:</b>XamDataGrid implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface and returns a special derived class of DataPresenterBase as the <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.VisualPaginator"/>.
+            Therefore, if special event handling is required, the events can be wired up in the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/> event by casting the VisualPaginator to DataPresenterBase. 
+            Those events can be unwired in the <see cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/> event.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.GeneratedPageCount">
+            <summary>
+            The number of physical pages generated so far (read-only). 
+            </summary>
+            <remarks>
+            <p class="note">This property only has meaning during a pagination, otherwise it returns 0.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.IsEndReached">
+            <summary>
+            Returns whether the report section is on the last page (read-only).
+            </summary>
+            <remarks>
+            <p class="note">This property only has meaning during a pagination.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.LogicalChildren">
+            <summary>
+            Gets an enumerator that can iterate the logical child elements of this element.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.LogicalPageNumber">
+            <summary>
+            The logical page number of the current page being printed within this section. 
+            </summary>
+            <value>A 1-based integer representing the logical page number of the current page being printed within this section.</value>
+            <remarks>
+            <p class="note"><b>Note:</b> if there are multiple sections within a report this property restarts at 1 within each section.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionLogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSection.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.LogicalPagePartNumber">
+            <summary>
+            The logical page part number of the current page being printed within this section (read-only). 
+            </summary>
+            <value>A 1-based integer representing the logical page part number of the current page being printed within this section.</value>
+            <remarks>
+            <p class="note"><b>Note:</b> if the logical page is not wide enough to span multiple pages or the <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return 1.
+            </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPagePartNumber"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PhysicalPageNumber">
+            <summary>
+            The physical page number of the current page being printed within this section (read-only). 
+            </summary>
+            <value>A 1-based integer representing the physical page number of the current page being printed within this section.</value>
+            <remarks>
+            <p class="body">If there are multiple sections within a report this property restarts at 1 within each section.</p>
+            <p class="note"><b>Note:</b> if <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return the same value as <see cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.LogicalPageNumber"/>.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.OutputFormat">
+            <summary>
+            Identifies the output format of an export operation.
+            </summary>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.IO.Stream)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String,System.Boolean)"/>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.OutputFormat.XPS">
+            <summary>
+            Exports to XPS format
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.PrintCancelationReason">
+            <summary>
+            Indicates why the print operation was canceled. 
+            </summary>
+            <seealso cref="T:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs"/>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.PrintCancelationReason.NotCanceled">
+            <summary>
+            The print operation was not canceled
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.PrintCancelationReason.User">
+            <summary>
+            The print operation was canceled by the user
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.PrintCancelationReason.NoPrinterAvailable">
+            <summary>
+            There aren't any printer's defined.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.PrintStatus">
+            <summary>
+            Indicates the printing status. 
+            </summary>
+            <seealso cref="T:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs"/>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.PrintStatus.Successful">
+            <summary>
+            The print operation ended successfully
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.PrintStatus.Canceled">
+            <summary>
+            The print operation was cancelled by the user.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs">
+            <summary>
+            Event arguments for event <see cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/> pagination events.
+            </summary>
+            <seealso cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs.#ctor(Infragistics.Windows.Reporting.IEmbeddedVisualPaginator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs"/> class 
+            </summary>
+            <param name="visualPaginator">The IEmbeddedVisualPaginator used for the pagination</param>
+            <seealso cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarting"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationStarted"/>
+            <seealso cref="E:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.PaginationEnded"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Events.EmbeddedVisualPaginationEventArgs.VisualPaginator">
+            <summary>
+            Returns the visual paginator used for the pagination (read-only).
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.Events.PrintProgressEventArgs">
+            <summary>
+            Event arguments for event <see cref="E:Infragistics.Windows.Reporting.Report.PrintProgress"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Events.PrintProgressEventArgs.#ctor(System.Int32,System.String,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Windows.Reporting.Events.PrintProgressEventArgs"/> class 
+            </summary>
+            <param name="currenPage">Number of page currently being printed</param>
+            <param name="description">Descriptive information displayed in the progress window when the content of a grid is being printed. </param>
+            <param name="percentCompleted">Percent of completing of process</param>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Events.PrintProgressEventArgs.CurrentPageNumber">
+            <summary>
+            Returns the number of page currently being printed
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Events.PrintProgressEventArgs.Description">
+            <summary>
+            Returns/sets descriptive information displayed in the progress window when the content of a grid is being printed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Events.PrintProgressEventArgs.PercentCompleted">
+            <summary>
+            Returns a value representing the percentage of the printing process that has been completed
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs">
+            <summary>
+            Event arguments for event <see cref="E:Infragistics.Windows.Reporting.Report.PrintEnded"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs.#ctor(Infragistics.Windows.Reporting.PrintStatus,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs"/> class 
+            </summary>
+            <param name="status">The status of printing process</param>
+            <param name="pages">Count of printed pages</param>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs.#ctor(Infragistics.Windows.Reporting.PrintStatus,System.Int32,Infragistics.Windows.Reporting.PrintCancelationReason)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs"/> class 
+            </summary>
+            <param name="status">The status of printing process</param>
+            <param name="pages">Count of printed pages</param>
+            <param name="reason">The reason the operation was canceled</param>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs.Reason">
+            <summary>
+            Returns the reason the operation was canceled.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs.Status">
+            <summary>
+            Returns the status of printing.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs.TotalPrintedPages">
+            <summary>
+            Returns the count of printed pages.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.ReportProgressControl">
+            <summary>
+            Indicates the progress of a print operation.
+            </summary>
+            <remarks>
+            <p class="body">To show this control automatically on a modeless window, you can call <see cref="M:Infragistics.Windows.Reporting.Report.Print(System.Boolean,System.Boolean)"/> method. 
+            Otherwise, if you are using it on one of your windows you should set the <see cref="P:Infragistics.Windows.Reporting.ReportProgressControl.Report"/> property to wire things up.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.ReportProgressControl.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/> class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.ReportProgressControl.OnApplyTemplate">
+            <summary>
+            Called when the template is applied.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportProgressControl.CancelCommand">
+            <summary>
+            Cancels the print operation.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportProgressControl.Report">
+            <summary>
+            Returns/sets <see cref="T:Infragistics.Windows.Reporting.Report"/> object whose progress will be indicated.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.Report">
+            <summary>
+            The Report object exposes all properties and methods necessary to print a report or export it to a file in XPS format.
+            </summary>
+            <remarks>
+            <p class="body">To create a report do the following:
+                <ul>
+                    <li>1. Instantiate a Report object.</li>
+                    <li>2. Specify appropriate settings through the <see cref="P:Infragistics.Windows.Reporting.Report.ReportSettings"/> property.</li>
+                    <li>3. Create one or more <see cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/>s and add them to the <see cref="P:Infragistics.Windows.Reporting.Report.Sections"/> collection.</li>
+                    <li>4. Call either the <see cref="M:Infragistics.Windows.Reporting.Report.Print"/>, <see cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/> or <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>.<see cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/> methods.</li>
+                </ul>
+            </p>
+            <p class="note"><b>Note:</b> styling, templates, header content and footer content for each page's <see cref="T:Infragistics.Windows.Reporting.ReportPagePresenter"/>s can be specified for the entire report by setting the following properties:
+                <ul>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageContentTemplate"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageContentTemplateSelector"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageFooter"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageFooterTemplate"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageFooterTemplateSelector"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageHeader"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageHeaderTemplate"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageHeaderTemplateSelector"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PagePresenterStyle"/></li>
+                </ul>
+                The same set of properties is exposed by <see cref="T:Infragistics.Windows.Reporting.ReportSection"/> to override these defaults on a section by section basis.
+            </p>
+            </remarks>
+            <seealso cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.ReportBase"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.Windows.Reporting.Report"/> class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.GenerateReport(System.Object)">
+            <summary>
+            Generate report / Print or Xps file
+            </summary>
+            <param name="reportObject"></param>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.IsPermissionGranted(System.Security.CodeAccessPermission)">
+            <summary>
+            IsPermissionGranted - Detect whether or not this application has the requested permission
+            </summary>
+            <param name="requestedPermission"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.ProcessXpsDocumentWriter(System.Windows.Xps.XpsDocumentWriter,System.Printing.PrintQueue)">
+            <summary>
+            ProcessXpsDocumentWriter(XpsDocumentWriter)
+            </summary>
+            <param name="writer"></param>
+            <param name="printQueue"></param>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.ProcessXpsDocumentWriter(System.Windows.Xps.XpsDocumentWriter,System.Printing.PrintTicket,System.Printing.PrintQueue)">
+            <summary>
+            ProcessXpsDocumentWriter(XpsDocumentWriter , PrintTicket)
+            </summary>
+            <param name="writer"></param>
+            <param name="printTicket"></param>
+            <param name="printQueue"></param>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.RaisePrintStartEvent(System.EventArgs)">
+            <summary>
+            Takes care for raise event in correct thread
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.RaisePrintProgressEvent(Infragistics.Windows.Reporting.Events.PrintProgressEventArgs)">
+            <summary>
+            Takes care for raise event in correct thread
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.RaisePrintEndedEvent(Infragistics.Windows.Reporting.Events.PrintEndedEventArgs)">
+            <summary>
+            Takes care for raise event in correct thread
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.OnPrintProgress(System.Object,Infragistics.Windows.Reporting.Events.PrintProgressEventArgs)">
+            <summary>
+            Called when the new page is printed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.OnWritingCompleted(System.Object,System.Windows.Documents.Serialization.WritingCompletedEventArgs)">
+            <summary>
+            Called when the printing is completed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.OnWritingCanceled(System.Object,System.Windows.Documents.Serialization.WritingCancelledEventArgs)">
+            <summary>
+            Called when the printing is canceled.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)">
+            <summary>
+            Exports the Report to a file in a specified output format. The <see cref="P:Infragistics.Windows.Reporting.ReportSettings.FileName"/> determinates the exported file name.
+            </summary>
+            <param name="outputFormat">The output document type (XPS only). </param>
+            <remarks>
+            <p class="note">If the <see cref="P:Infragistics.Windows.Reporting.Report.ReportSettings"/>.<see cref="P:Infragistics.Windows.Reporting.ReportSettings.FileName"/> property is not set, 
+            then the Report will be exported in <see cref="P:System.Environment.CurrentDirectory"/> with default file name: <b>Export.xps</b>. 
+            If the <see cref="P:Infragistics.Windows.Reporting.ReportSettings.FileName"/> property contains only a folder name, e.g. 'C:\MyFolder\', 
+            the Report will be exported in that folder with a filename of <b>Export.xps</b>.  If the property only contains a file name,
+            e.g. "xamGridExport.xps", the Report will be exported in the CurrentDirectory with the specified name. 
+            </p>
+            </remarks>
+            <exception cref="T:System.NotSupportedException">The exception will be thrown if you try to run export in non FullTrust environment.</exception>
+            <exception cref="T:System.InvalidOperationException">The exception will be thrown if you try to export or print a Report that doesn't have any sections.</exception>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String,System.Boolean)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.IO.Stream)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.ShowPrintDialog"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String)">
+            <summary>
+            Exports the Report to a file in the specified file format using the specified file name.
+            </summary>
+            <param name="outputFormat">The output document type (XPS only).</param>
+            <param name="fileName">The file name where the report will be exported. If the file exists, it will be overwritten.</param>
+            <remarks>
+            <p class="note">If the fileName is null or an empty string then the Report will be exported in <see cref="P:System.Environment.CurrentDirectory"/> with default file name: <b>Export.xps</b>. 
+            If the fileNam contains only a folder name, e.g. 'C:\MyFolder\', 
+            the Report will be exported in that folder with a filename of <b>Export.xps</b>.  If the parameter only contains a file name,
+            e.g. "xamGridExport.xps", the Report will be exported in the CurrentDirectory with the specified name. 
+            </p>
+            </remarks>
+            <exception cref="T:System.NotSupportedException">The exception will be thrown if you try to run export in non FullTrust environment.</exception>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String,System.Boolean)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.IO.Stream)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.ShowPrintDialog"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String,System.Boolean)">
+            <summary>
+            Exports the Report to a file in the specified file format using the specified file name.
+            </summary>
+            <param name="outputFormat">The output document type (XPS only).</param>
+            <param name="fileName">The file name where the report will be exported. If the file exists, it will be overwritten.</param>
+            <param name="showSaveFileDialog">If true the SaveFileDialog will be shown.</param>
+            <remarks>
+            <p class="note">if showSaveFileDialog is true then the filename parameter will be used as the default file name 
+            in the SaveFileDialog. Otherwise, if the fileName is null or an empty string then the Report will be exported in <see cref="P:System.Environment.CurrentDirectory"/> with default file name: <b>Export.xps</b>. 
+            If the fileNam contains only a folder name, e.g. 'C:\MyFolder\', 
+            the Report will be exported in that folder with a filename of <b>Export.xps</b>.  If the parameter only contains a file name,
+            e.g. "xamGridExport.xps", the Report will be exported in the CurrentDirectory with the specified name. 
+            </p>
+            </remarks>
+            <exception cref="T:System.ArgumentException">The exception can be thrown if the file name is invalid or the directory doesn't exists</exception>
+            <exception cref="T:System.NotSupportedException">The exception will be thrown if you try to run export in non FullTrust environment.</exception>
+            <exception cref="T:System.InvalidOperationException">The exception will be thrown if you try to export or print a Report that doesn't have any sections.</exception>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.IO.Stream)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.ShowPrintDialog"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.IO.Stream)">
+            <summary>
+            Exports the Report in a specified file format in a specified stream.
+            </summary>
+            <param name="outputFormat">The output document type (XPS only).</param>
+            <param name="stream">The stream to which the Report will be exported.</param>
+            <remarks>
+            <p class="body">If you stream is null then the result will be the same as calling <see cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/>.</p>
+            </remarks>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String,System.Boolean)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.ShowPrintDialog"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/>
+            <exception cref="T:System.NotSupportedException">The exception will be thrown if you try to run export in a non FullTrust environment.</exception>
+            <exception cref="T:System.InvalidOperationException">The exception will be thrown if you try to export or print a Report that doesn't have any sections.</exception>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Print">
+            <summary>
+            Prints the report first showing a standard print dialog but without showing a progress dialog.
+            </summary>
+            <seealso cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String,System.Boolean)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.IO.Stream)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print(System.Boolean,System.Boolean)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print(System.Boolean,System.Boolean,System.Windows.FrameworkElement)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.ShowPrintDialog"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Print(System.Boolean,System.Boolean)">
+            <summary>
+            Prints the report and can show an optional progress window as well as a standard print dialog. 
+            </summary>
+            <param name="showReportProgressControl">If true a progress window is displayed during the print operation.</param>
+            <param name="showPrintDialog">If true a standard print dialog is firat displayed to the user before printing begins.</param>
+            <seealso cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String,System.Boolean)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.IO.Stream)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print(System.Boolean,System.Boolean,System.Windows.FrameworkElement)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.ShowPrintDialog"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Print(System.Boolean,System.Boolean,System.Windows.FrameworkElement)">
+            <summary>
+            Prints the report and can show an optional progress window (with a specified owning window) as well as a standard print dialog.
+            </summary>
+            <param name="showReportProgressControl">If true a progress window is displayed during the print operation.</param>
+            <param name="showPrintDialog">If true a standard print dialog is firat displayed to the user before printing begins.</param>
+            <param name="reportProgressControlOwnedElement">The owning element. This element will be used to set the owner of the progress window displayed during the print operation.</param>
+            <seealso cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String,System.Boolean)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.IO.Stream)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print(System.Boolean,System.Boolean,System.Windows.FrameworkElement)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.ShowPrintDialog"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/>
+            <exception cref="T:System.InvalidOperationException">The exception will be thrown if you try to export or print a Report that doesn't have any sections.</exception>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.ShowPrintDialog">
+            <summary>
+            Shows a standard PrintDialog and saves settings from it in the <see cref="P:Infragistics.Windows.Reporting.Report.ReportSettings"/> object.
+            </summary>
+            <returns>False if the dialog was cancelled, otherwise true.</returns>
+            <remarks>
+            <p class="body">You can use this method before calling any of the Print methods. This allows you to edit the user's settings before the report starts printing.
+            If you use this method in non trusted environment (XBAP) you must initialize the <see cref="P:Infragistics.Windows.Reporting.Report.ReportSettings"/>.<see cref="P:Infragistics.Windows.Reporting.ReportSettings.PrintQueue"/>
+            before calling one of Print methods.</p>
+            </remarks>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Export(Infragistics.Windows.Reporting.OutputFormat,System.String,System.Boolean)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.Report.Print(System.Boolean,System.Boolean,System.Windows.FrameworkElement)"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.PageSizeResolved">
+            <summary>
+            The actual size of the page used during a report generation or export operation (read-only).
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> this value is only valid during a report generation or export operation. Also it doesn't take into the page orientation.</para>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.ReportSettings">
+            <summary>
+            Gets the object that contains the settings for the entire Report (read-only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.IsGeneratingPreview">
+            <summary>
+            Returns whether the report is currently generating a preview (read-only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.PhysicalPageNumber">
+            <summary>
+            The physical page number of the current page being printed within the report (read-only). 
+            </summary>
+            <value>A 1-based integer representing the physical page number of the current page being printed within the report.</value>
+            <remarks>
+            <p class="body">If there are multiple sections within a report this property continues on from the section to section.</p>
+            <p class="note"><b>Note:</b> if <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return the same value as <see cref="P:Infragistics.Windows.Reporting.Report.LogicalPageNumber"/>.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionLogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionLogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.LogicalPageNumber">
+            <summary>
+            The logical page part number of the current page being printed (read-only). 
+            </summary>
+            <value>A 1-based integer representing the logical page part number of the current page being printed.</value>
+            <remarks>
+            <p class="note"><b>Note:</b> if the logical page is not wide enough to span multiple pages or the <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return 1.
+            </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionLogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.LogicalPagePartNumber">
+            <summary>
+            The logical page part number of the current page being printed (read-only). 
+            </summary>
+            <value>A 1-based integer representing the logical page part number of the current page being printed.</value>
+            <remarks>
+            <p class="note"><b>Note:</b> if the logical page is not wide enough to span multiple pages or the <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return 1.
+            </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionLogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.SectionPhysicalPageNumber">
+            <summary>
+            The physical page number of the current page being printed within this section (read-only). 
+            </summary>
+            <value>A 1-based integer representing the physical page number of the current page being printed within this section.</value>
+            <remarks>
+            <p class="body">If there are multiple sections within a report this property restarts at 1 within each section.</p>
+            <p class="note"><b>Note:</b> if <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return the same value as <see cref="P:Infragistics.Windows.Reporting.Report.LogicalPageNumber"/>.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionLogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.SectionLogicalPageNumber">
+            <summary>
+            The logical page number of the current page being printed within this section (read-only). 
+            </summary>
+            <value>A 1-based integer representing the logical page number of the current page being printed within this section.</value>
+            <remarks>
+            <p class="body">If there are multiple sections within a report this property restarts at 1 within each section.</p>
+            <p class="note"><b>Note:</b> if <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return the same value as <see cref="P:Infragistics.Windows.Reporting.Report.SectionPhysicalPageNumber"/>.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionLogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.SectionLogicalPagePartNumber">
+            <summary>
+            The logical page part number of the current page being printed (read-only). 
+            </summary>
+            <value>A 1-based integer representing the logical page part number of the current page being printed.</value>
+            <remarks>
+            <p class="note"><b>Note:</b> if the logical page is not wide enough to span multiple pages or the <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return 1.
+            </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionLogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.Sections">
+            <summary>
+            Returns a collection of <see cref="T:Infragistics.Windows.Reporting.ReportSection"/> objects.
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> each section in a Report starts on a new page. For example, if you created a <b>Report</b> with 3 <see cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/>s, one with a XamDataGrid and 2 others with 
+            simple visual elements, each section would start on a new page even though there might have been available space on the last page from the previous section.</para>
+            </remarks>
+            <seealso cref="T:Infragistics.Windows.Reporting.ReportSectionCollection"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.ReportSection"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/>
+        </member>
+        <member name="E:Infragistics.Windows.Reporting.Report.PrintProgress">
+            <summary>
+            Occurs as each page is printed or exported.
+            </summary>
+            <seealso cref="T:Infragistics.Windows.Reporting.Events.PrintProgressEventArgs"/>
+        </member>
+        <member name="E:Infragistics.Windows.Reporting.Report.PrintStart">
+            <summary>
+            Occurs when a print or export operation is about to begin.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Windows.Reporting.Report.PrintEnded">
+            <summary>
+            Occurs when a print or export operation ends.
+            </summary>
+            <seealso cref="T:Infragistics.Windows.Reporting.Events.PrintEndedEventArgs"/>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.Report.Paginator">
+            <summary>
+            private class Paginator
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Paginator.GetPage(System.Int32)">
+            <summary>
+            Get the specified page for whole report 
+            </summary>
+            <param name="pageNumber"></param>
+            <returns>Ready for print document page</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Paginator.Initialize(Infragistics.Windows.Reporting.ReportSettings)">
+            <summary>
+            Initializes paginator members
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Report.Paginator.RaisePrintProgress(System.Int32)">
+            <summary>
+            Raises the PrintProgress event.
+            </summary>
+            <param name="pageNumber">A PrintProgressEventArgs that contains the event data.</param>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.Paginator.PageCount">
+            <summary>
+            This must be always 0. We control print break by seting _isPageCountValid to true;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Report.Paginator.PageVisual">
+            <summary>
+            Use for print preview
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.ReportPagePresenter">
+            <summary>
+            Represents one page in a <see cref="T:Infragistics.Windows.Reporting.Report"/>
+            </summary>
+            <remarks>
+            <p class="body">An instance of this element is created internally by each <see cref="T:Infragistics.Windows.Reporting.ReportSection"/> to represent a page in the report.
+            It's Margin property is set based on the <see cref="P:Infragistics.Windows.Reporting.Report.ReportSettings"/>'s <see cref="P:Infragistics.Windows.Reporting.ReportSettings.Margin"/>. 
+            </p>
+            <p class="body">Styling, templates, header content and footer content can be specified for the entire report by setting the following properties on <see cref="T:Infragistics.Windows.Reporting.ReportBase"/>:
+                <ul>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageContentTemplate"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageContentTemplateSelector"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageFooter"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageFooterTemplate"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageFooterTemplateSelector"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageHeader"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageHeaderTemplate"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PageHeaderTemplateSelector"/></li>
+                    <li><see cref="P:Infragistics.Windows.Reporting.ReportBase.PagePresenterStyle"/></li>
+                </ul>
+                The same set of properties is exposed by <see cref="T:Infragistics.Windows.Reporting.ReportSection"/> to override these defaults on a section by section basis.
+            </p>
+            <para class="note"><b>Note:</b> if an object implements the <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginator"/> or 
+            <see cref="T:Infragistics.Windows.Reporting.IEmbeddedVisualPaginatorFactory"/> interface, e.g. a XamDataGrid, and it is inside an <see cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/> as 
+            each page is returned from <see cref="M:Infragistics.Windows.Reporting.EmbeddedVisualReportSection.GetPage(System.Int32)"/> the DataContext of the ReportPagePresenter will be set
+            to value returned from <see cref="P:Infragistics.Windows.Reporting.IEmbeddedVisualPaginator.CurrentPageDataContext"/>. In the case of a XamDataGrid this will be the first Record on the page.</para>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.ReportPagePresenter.#ctor">
+            <summary>
+            Creates an instance of the <see cref="T:Infragistics.Windows.Reporting.ReportPagePresenter"/> class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.ReportPagePresenter.#ctor(Infragistics.Windows.Reporting.ReportSection)">
+            <summary>
+            Creates an instance of the <see cref="T:Infragistics.Windows.Reporting.ReportPagePresenter"/> class
+            </summary>
+            <param name="section">The owing section</param>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.FooterProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.Footer"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.FooterStringFormatProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterStringFormat"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplateProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplate"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplateSelectorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplateSelector"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumberProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumber"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumberProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumber"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.PhysicalPageNumberProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.PhysicalPageNumber"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPageNumberProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPageNumber"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPagePartNumberProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPagePartNumber"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumberProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumber"/> dependency property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.ReportPagePresenter.OnApplyTemplate">
+            <summary>
+            Occurs when the template for the element has been applied.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.Footer">
+            <summary>
+            Gets or sets the content of the footer.
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> the <see cref="T:Infragistics.Windows.Reporting.ReportSection"/> uses its <see cref="P:Infragistics.Windows.Reporting.ReportSection.PageFooter"/> value to 
+            set this property. If that is null set it will use the value of the <see cref="T:Infragistics.Windows.Reporting.Report"/>'s <see cref="P:Infragistics.Windows.Reporting.ReportBase.PageFooter"/> property.</para>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSection.PageFooter"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplate"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplateSelector"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterStringFormat">
+            <summary>
+            Returns/sets a composite string that specifies how to format the Footer property if it is displayed as a string. 
+            </summary>
+            <remarks>
+            <para class="body">FooterStringFormat can be a predefined, composite, or custom string format. For more information see the documentation on the corresponding HeaderFormatString property of the <see cref="T:System.Windows.Controls.HeaderedContentControl"/>.</para>
+            <p class="note"><b>Note:</b>If you are using a version of Microsoft's .Net framework that is before 3.5-SP1 or if you set the <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplate"/> or <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplateSelector"/> property of a <see cref="T:Infragistics.Windows.Reporting.ReportPagePresenter"/>, then the FooterStringFormat property is ignored.
+            </p>
+            </remarks>
+            <seealso cref="F:Infragistics.Windows.Reporting.ReportPagePresenter.FooterStringFormatProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplate">
+            <summary>
+            The template used to display the footer content.
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> the <see cref="T:Infragistics.Windows.Reporting.ReportSection"/> uses its <see cref="P:Infragistics.Windows.Reporting.ReportSection.PageFooterTemplate"/> value to 
+            set this property. If that is null set it will use the value of the <see cref="T:Infragistics.Windows.Reporting.Report"/>'s <see cref="P:Infragistics.Windows.Reporting.ReportBase.PageFooterTemplate"/> property.</para>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSection.PageFooterTemplate"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.Footer"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplateSelector"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplateSelector">
+            <summary>
+            A DataTemplateSelector that can be used to provide custom logic for choosing the template for the footer.
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> the <see cref="T:Infragistics.Windows.Reporting.ReportSection"/> uses its <see cref="P:Infragistics.Windows.Reporting.ReportSection.PageFooterTemplateSelector"/> value to 
+            set this property. If that is null set it will use the value of the <see cref="T:Infragistics.Windows.Reporting.Report"/>'s <see cref="P:Infragistics.Windows.Reporting.ReportBase.PageFooterTemplateSelector"/> property.</para>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSection.PageFooterTemplateSelector"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.Footer"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.FooterTemplate"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.Section">
+            <summary>
+            The owning <see cref="T:Infragistics.Windows.Reporting.ReportSection"/> (read-only)
+            </summary>
+            <seealso cref="T:Infragistics.Windows.Reporting.ReportSection"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumber">
+            <summary>
+            The logical page number of this page within the report (read-only). 
+            </summary>
+            <value>A 1-based integer representing the logical page number of this page within the report, i.e. across sections</value>
+            <remarks>
+            <p class="body">If there are multiple sections within a report this property continues on from the section to section.</p>
+            <p class="note"><b>Note:</b> if <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return the same value as <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.PhysicalPageNumber"/>.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumber">
+            <summary>
+            The logical page part number of this page (read-only). 
+            </summary>
+            <value>A 1-based integer representing the logical page part number of this page.</value>
+            <remarks>
+            <p class="note"><b>Note:</b> if the logical page is not wide enough to span multiple pages or the <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return 1.
+            </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.PhysicalPageNumber">
+            <summary>
+            The physical page number of this page within the report (read-only). 
+            </summary>
+            <value>A 1-based integer representing the physical page number of this page within the report.</value>
+            <remarks>
+            <p class="body">If there are multiple sections within a report this property continues on from the section to section.</p>
+            <p class="note"><b>Note:</b> if <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return the same value as <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumber"/>.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPageNumber">
+            <summary>
+            The logical page number of this page within this section (read-only). 
+            </summary>
+            <value>A 1-based integer representing the logical page number of this page within this section.</value>
+            <remarks>
+            <p class="body">If there are multiple sections within a report this property restarts at 1 within each section.</p>
+            <p class="note"><b>Note:</b> if <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return the same value as <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumber"/>.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPagePartNumber">
+            <summary>
+            The logical page part number of this page (read-only). 
+            </summary>
+            <value>A 1-based integer representing the logical page part number of this page.</value>
+            <remarks>
+            <p class="note"><b>Note:</b> if the logical page is not wide enough to span multiple pages or the <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return 1.
+            </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumber">
+            <summary>
+            The physical page number of this page within this section (read-only). 
+            </summary>
+            <value>A 1-based integer representing the physical page number of this page within this section.</value>
+            <remarks>
+            <p class="body">If there are multiple sections within a report this property restarts at 1 within each section.</p>
+            <p class="note"><b>Note:</b> if <see cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/> property is set to 'Scale' then this property will return the same value as <see cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumber"/>.</p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.LogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.PhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionLogicalPagePartNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportPagePresenter.SectionPhysicalPageNumber"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.HorizontalPaginationMode"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.ReportSettings.PagePrintOrder"/>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.XamReportPreview">
+            <summary>
+            Report preview control that contains a standard <see cref="T:System.Windows.Controls.DocumentViewer"/>.
+            </summary>
+            <seealso cref="P:Infragistics.Windows.Reporting.XamReportPreview.Report"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.XamReportPreview.DocumentViewer"/>
+            <seealso cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.XamReportPreview.#ctor">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/> class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.XamReportPreview.OnApplyTemplate">
+            <summary>
+            Invoked when the template for the element has been applied.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.XamReportPreview.DocumentViewerStyleKey">
+            <summary>
+            The key used to identify the style used for the <see cref="T:System.Windows.Controls.DocumentViewer"/> used within the <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/> control.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.XamReportPreview.IsContentVisibleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.XamReportPreview.IsContentVisible"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Reporting.XamReportPreview.ReportProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Reporting.XamReportPreview.Report"/> dependency property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a preview of a specified report and displays in via the contained <see cref="P:Infragistics.Windows.Reporting.XamReportPreview.DocumentViewer"/>
+            </summary>
+            <param name="report">The report to generate the preview for.</param>
+            <param name="showPrintDialog">If true will display a standard PrintDialog before the report is generated.</param>
+            <param name="showReportProgressControl">If true will show a progress window while the report is being generated.</param>
+            <seealso cref="P:Infragistics.Windows.Reporting.XamReportPreview.Report"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.XamReportPreview.DocumentViewer">
+            <summary>
+            Returns a reference to <see cref="T:System.Windows.Controls.DocumentViewer"/> which is internaly used for preview.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.XamReportPreview.IsContentVisible">
+            <summary>
+            Return/sets whether or not the contained DocumentViewer is visible.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.Reporting.XamReportPreview.IsContentVisibleProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.XamReportPreview.Report">
+            <summary>
+            Returns the Report that is being previewed (read-only).
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> this property will return null until <see cref="M:Infragistics.Windows.Reporting.XamReportPreview.GeneratePreview(Infragistics.Windows.Reporting.Report,System.Boolean,System.Boolean)"/> is called.</para>
+            </remarks>
+            <seealso cref="F:Infragistics.Windows.Reporting.XamReportPreview.ReportProperty"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.Report"/>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.ReportSectionCollection">
+            <summary>
+            A collection of <see cref="T:Infragistics.Windows.Reporting.ReportSection"/> objects used by <see cref="T:Infragistics.Windows.Reporting.Report"/>.
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> each section in a <see cref="T:Infragistics.Windows.Reporting.Report"/> starts on a new page. For example, if you created a <b>Report</b> with 3 <see cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/>s, one with a XamDataGrid and 2 others with 
+            simple visual elements, each section would start on a new page even though there might have been available space on the last page from the previous section.</para>
+            </remarks>
+            <seealso cref="T:Infragistics.Windows.Reporting.Report"/>
+            <seealso cref="P:Infragistics.Windows.Reporting.Report.Sections"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.ReportSection"/>
+            <seealso cref="T:Infragistics.Windows.Reporting.EmbeddedVisualReportSection"/>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.Resources">
+            <summary>
+            Exposes a <see cref="T:Infragistics.Shared.ResourceCustomizer"/> instance for this assembly. 
+            </summary>
+            <seealso cref="P:Infragistics.Windows.Reporting.Resources.Customizer"/> 
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Resources.GetString(System.String,System.Object[])">
+            <summary>
+            Returns the resource string using the specified name and default culture.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Resources.GetString(System.String)">
+            <summary>
+            Returns the resource string using the specified resource name and default culture. The string is then formatted using the arguments specified.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Resources.GetDynamicResourceString(System.String)">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Resources.GetDynamicResourceString(System.String,System.Object[])">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Resources.GetDynamicResourceString(System.String,System.Object[],System.Globalization.CultureInfo)">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+            <param name="culture">Culture whose resource should loaded. The resource will go through a fallback process to locate the appropriate resources.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Windows.Reporting.Resources.GetObject(System.String)">
+            <summary>
+            Returns the resource object using the specified name.
+            </summary>
+            <param name="name">Name of the resource item</param>
+            <returns>An object containing the specified resource</returns>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.Customizer">
+            <summary>
+            Returns the <see cref="T:Infragistics.Shared.ResourceCustomizer"/> for this assembly.
+            </summary>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.ProgressCancelButton">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the content of the cancel button in  <see cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.ProgressInitialDescription">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the content of the label description in <see cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.XamReportPreviewPrintToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the print button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.XamReportPreviewZoomInToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the zoomin button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.XamReportPreviewZoomOutToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the zoomout button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.XamReportPreviewActualSizeToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the actual size button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.XamReportPreviewPageWidthToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the page width button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.XamReportPreviewWholePageToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the whole page button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.XamReportPreviewTwoPagesToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the two pages button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.XamReportPreviewContextMenuZoomIn">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the header of zoom in context menu item in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.Resources.XamReportPreviewContextMenuZoomOut">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the header of zoom out context menu item in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Reporting.ResourcesReporting">
+            <summary>
+            Exposes the <see cref="T:Infragistics.Shared.DynamicResourceString"/> instances used in the assembly.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.ProgressCancelButton">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the content of the cancel button in  <see cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.ProgressInitialDescription">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the content of the label description in <see cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.XamReportPreviewPrintToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the print button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.XamReportPreviewZoomInToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the zoomin button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.XamReportPreviewZoomOutToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the zoomout button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.XamReportPreviewActualSizeToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the actual size button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.XamReportPreviewPageWidthToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the page width button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.XamReportPreviewWholePageToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the whole page button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.XamReportPreviewTwoPagesToolTip">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the tool tip of the two pages button content in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.XamReportPreviewContextMenuZoomIn">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the header of zoom in context menu item in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Reporting.ResourcesReporting.XamReportPreviewContextMenuZoomOut">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource for the header of zoom out context menu item in <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Themes.Internal.ReportingAssemblyResourceSetLoader">
+            <summary>
+            Loads the themes contained in this assembly.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Themes.Internal.ReportingAssemblyResourceSetLoader.OnRegisterResourceSets(System.String)">
+            <summary>
+            Loads and registers the resource sets
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Themes.ReportingResourceSet`1">
+            <summary>
+            Abstract base class used to supply style resources for a specific look for XamReporting.
+            </summary>
+            <typeparam name="T">A <see cref="T:Infragistics.Windows.Themes.ResourceSetLocator"/> derived class that must have a public parameterless constructor.</typeparam>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingResourceSet`1.Grouping">
+            <summary>
+            Returns the grouping that the resources are applied to (read-only)
+            </summary>
+            <remarks>
+            Examples: Reporting, Editors, Primitives, etc.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingResourceSet`1.Theme">
+            <summary>
+            Returns the name of the look (read-only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingResourceSet`1.Resources">
+            <summary>
+            Returns the ResourceDictionary containing the associated styles (read-only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingResourceSet`1.Location">
+            <summary>
+            Returns the <see cref="T:Infragistics.Windows.Themes.ResourceSetLocator"/> that describes the theme information for the resource set.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingResourceSet`1.ReportPagePresenter">
+            <summary>
+            The style for a <see cref="T:Infragistics.Windows.Reporting.ReportPagePresenter"/> 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingResourceSet`1.ReportProgressControl">
+            <summary>
+            The style for a <see cref="T:Infragistics.Windows.Reporting.ReportProgressControl"/> 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingResourceSet`1.XamReportPreview">
+            <summary>
+            The style for a <see cref="T:Infragistics.Windows.Reporting.XamReportPreview"/> 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Themes.ReportingGeneric">
+            <summary>
+            Class used to supply style resources for the Generic look for a Reporting
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingGeneric.Instance">
+            <summary>
+            Returns a static instance of this type (read-only)
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Themes.ReportingGeneric.Locator">
+            <summary>
+            Identifies the location of a specific theme grouping
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingGeneric.Locator.Assembly">
+            <summary>The assembly containg the resource set</summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingGeneric.Locator.Theme">
+            <summary>The name of the theme</summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingGeneric.Locator.Grouping">
+            <summary>The name of the grouping</summary>
+        </member>
+        <member name="P:Infragistics.Windows.Themes.ReportingGeneric.Locator.ResourcePath">
+            <summary>The path to the embedded resources within the assembly</summary>
+        </member>
+    </members>
+</doc>

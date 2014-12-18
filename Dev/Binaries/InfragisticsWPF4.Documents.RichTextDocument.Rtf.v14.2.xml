@@ -1,0 +1,324 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Documents.RichTextDocument.Rtf.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Documents.RichText.Rtf.Resources">
+            <summary>
+            Exposes a <see cref="T:Infragistics.Shared.ResourceCustomizer"/> instance for this assembly. 
+            </summary>
+            <seealso cref="P:Infragistics.Documents.RichText.Rtf.Resources.Customizer"/> 
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.Resources.GetString(System.String,System.Object[])">
+            <summary>
+            Returns the resource string using the specified name and default culture.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.Resources.GetString(System.String)">
+            <summary>
+            Returns the resource string using the specified resource name and default culture. The string is then formatted using the arguments specified.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.Resources.GetObject(System.String)">
+            <summary>
+            Returns the resource object using the specified name.
+            </summary>
+            <param name="name">Name of the resource item</param>
+            <returns>An object containing the specified resource</returns>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Rtf.Resources.Customizer">
+            <summary>
+            Returns the <see cref="T:Infragistics.Shared.ResourceCustomizer"/> for this assembly.
+            </summary>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter">
+            <summary>
+            A data connector which can save and/or load RTF data with a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter.RefreshDocumentCore">
+            <summary>
+            Refreshes the content of the <see cref="P:Infragistics.Documents.RichText.Serialization.RichTextDocumentAdapterBase.Document"/> to reflect the current state of the <see cref="P:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter.Value"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter.RefreshValueCore">
+            <summary>
+            Refreshes the <see cref="P:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter.Value"/> so it reflects the current state of the <see cref="P:Infragistics.Documents.RichText.Serialization.RichTextDocumentAdapterBase.Document"/>, which could be null.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter.ValueProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter.Value"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter.Value">
+            <summary>
+            Returns or sets the RTF content representing the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/>.
+            </summary>
+            <seealso cref="F:Infragistics.Documents.RichText.Rtf.RtfDocumentAdapter.ValueProperty"/>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Rtf.RtfLoadOptions">
+            <summary>
+            Represents the various options available when loading a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> in the RTF file format.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfLoadOptions.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.RichText.Rtf.RtfLoadOptions"/> instance.
+            </summary>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfGroup.SelectChildGroupWithDestination(System.String)">
+            <summary>
+            Searches for the first child group which has a tag with the given name
+            as its first child, e.g. the given destination.
+            </summary>
+            <param name="destination">the name of the start tag of the group to search</param>
+            <returns>the first matching group or null if nothing found</returns>
+            <exception cref="T:System.ArgumentNullException">in case of a null argument</exception>
+        </member>
+        <member name="P:Itenso.Rtf.IRtfGroup.Destination">
+            <summary>
+            Returns the name of the first element if it is a tag, null otherwise.
+            </summary>
+        </member>
+        <member name="P:Itenso.Rtf.IRtfGroup.IsExtensionDestination">
+            <summary>
+            Determines whether the first element is a '\*' tag.
+            </summary>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParser.AddParserListener(Itenso.Rtf.IRtfParserListener)">
+            <summary>
+            Adds a listener that will get notified along the parsing process.
+            </summary>
+            <param name="listener">the listener to add</param>
+            <exception cref="T:System.ArgumentNullException">in case of a null argument</exception>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParser.RemoveParserListener(Itenso.Rtf.IRtfParserListener)">
+            <summary>
+            Removes a listener from this instance.
+            </summary>
+            <param name="listener">the listener to remove</param>
+            <exception cref="T:System.ArgumentNullException">in case of a null argument</exception>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParser.Parse(Itenso.Rtf.IRtfSource)">
+            <summary>
+            Parses the given RTF text that is read from the given source.
+            </summary>
+            <param name="rtfTextSource">the source with RTF text to parse</param>
+            <exception cref="T:System.FormatException">in case of invalid RTF syntax</exception>
+            <exception cref="T:System.IO.IOException">in case of an IO error</exception>
+            <exception cref="T:System.ArgumentNullException">in case of a null argument</exception>
+        </member>
+        <member name="P:Itenso.Rtf.IRtfParser.IgnoreContentAfterRootGroup">
+            <summary>
+            Determines whether to ignore all content after the root group ends.
+            Set this to true when parsing content from streams which contain other
+            data after the RTF or if the writer of the RTF is known to terminate the
+            actual RTF content with a null byte (as some popular sources such as
+            WordPad are known to behave).
+            </summary>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParserListener.ParseBegin">
+            <summary>
+            Called before any other of the methods upon starting parsing of new input.
+            </summary>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParserListener.GroupBegin">
+            <summary>
+            Called when a new group began.
+            </summary>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParserListener.TagFound(Itenso.Rtf.IRtfTag)">
+            <summary>
+            Called when a new tag was found.
+            </summary>
+            <param name="tag">the newly found tag</param>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParserListener.TextFound(Itenso.Rtf.IRtfText)">
+            <summary>
+            Called when a new text was found.
+            </summary>
+            <param name="text">the newly found text</param>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParserListener.GroupEnd">
+            <summary>
+            Called after a group ended.
+            </summary>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParserListener.ParseSuccess">
+            <summary>
+            Called if parsing finished sucessfully.
+            </summary>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParserListener.ParseFail(System.Exception)">
+            <summary>
+            Called if parsing failed.
+            </summary>
+            <param name="reason">the reason for the failure</param>
+        </member>
+        <member name="M:Itenso.Rtf.IRtfParserListener.ParseEnd">
+            <summary>
+            Called after parsing finished. Always called, also in case of a failure.
+            </summary>
+        </member>
+        <member name="P:Itenso.Rtf.IRtfTag.FullName">
+            <summary>
+            Returns the name together with the concatenated value as it stands in the rtf.
+            </summary>
+        </member>
+        <member name="T:Itenso.Sys.Collection.CollectionTool">
+            <summary>
+            Some utility methods for collections.
+            </summary>
+            <remarks>
+            Just a container for some static methods which make life somewhat easier.
+            </remarks>
+        </member>
+        <member name="M:Itenso.Sys.Collection.CollectionTool.ToString(System.Collections.IEnumerable,System.String,System.String,System.String,System.String)">
+            <summary>
+            conventiently concatenates the given items to a string for debugging purposes.
+            </summary>
+            <remarks>
+            the whole collection is embraced with square brackets and the individual items
+            are separated by a comma. null items will be displayed as 'null' instead of the
+            empty string.
+            </remarks>
+            <param name="enumerable">the collection of items to print</param>
+            <param name="startText">the starting text</param>
+            <param name="endText">the ending textrint</param>
+            <param name="delimiterText">the item delimiter text</param>
+            <param name="undefinedValueText">text for undefined values</param>
+            <returns>a concatenation of the string representations of all the items</returns>
+        </member>
+        <member name="T:Itenso.Sys.HashTool">
+            <summary>
+            Some hash utility methods for collections.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Rtf.RtfSaveOptions">
+            <summary>
+            Represents the various options available when saving a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> in the RTF file format.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfSaveOptions.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.RichText.Rtf.RtfSaveOptions"/> instance.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider">
+            <summary>
+            A class which can save/load a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> instance in the RTF file format.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider.LoadDocument(Infragistics.Documents.RichText.Serialization.LoadDocumentContext)">
+            <summary>
+            Loads the document using the specified context information.
+            </summary>
+            <param name="context">The context information for loading the document.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider.SaveDocument(Infragistics.Documents.RichText.Serialization.SaveDocumentContext)">
+            <summary>
+            Saves the document using the specified context information.
+            </summary>
+            <param name="context">The context information for saving the document.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider.LoadFromClipboard(Infragistics.Documents.RichText.Serialization.LoadFromClipboardContext)">
+            <summary>
+            Loads portions of a document from the clipboard.
+            </summary>
+            <param name="context">The context information for loading the clipboard content.</param>
+            <returns>
+            A <see cref="T:Infragistics.Documents.RichText.Serialization.LoadFromClipboardResult"/> instance if the content was loaded successfully; 
+            Null to try loading the content using another serialization provider.
+            </returns>
+            <seealso cref="M:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider.SaveToClipboard(Infragistics.Documents.RichText.Serialization.SaveToClipboardContext)"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Serialization.SerializationProviderBase.SupportedClipboardFormats"/>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider.SaveToClipboard(Infragistics.Documents.RichText.Serialization.SaveToClipboardContext)">
+            <summary>
+            Saves portions of a document to the clipboard.
+            </summary>
+            <param name="context">The context information for saving the clipboard content.</param>
+            <returns>True if the content was saved successfully; False to try saving the content using another serialization provider.</returns>
+            <seealso cref="M:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider.LoadFromClipboard(Infragistics.Documents.RichText.Serialization.LoadFromClipboardContext)"/>
+            <seealso cref="P:Infragistics.Documents.RichText.Serialization.SerializationProviderBase.SupportedClipboardFormats"/>
+        </member>
+        <member name="P:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider.Instance">
+            <summary>
+            Gets a singleton instance of the <see cref="T:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.RichText.RtfSerializationProviderExtensions">
+            <summary>
+            Extension methods related to the <see cref="T:Infragistics.Documents.RichText.Rtf.RtfSerializationProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.RtfSerializationProviderExtensions.LoadFromRtf(Infragistics.Documents.RichText.RichTextDocument,System.String,Infragistics.Documents.RichText.Rtf.RtfLoadOptions)">
+            <summary>
+            Loads the RTF content from a file into the document.
+            </summary>
+            <param name="document">The document in which the content should be loaded.</param>
+            <param name="filePath">The path of the file containing the RTF content.</param>
+            <param name="options">The options to use when loading the content.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.RtfSerializationProviderExtensions.LoadFromRtf(Infragistics.Documents.RichText.RichTextDocument,System.IO.Stream,Infragistics.Documents.RichText.Rtf.RtfLoadOptions)">
+            <summary>
+            Loads the RTF content from the stream into the document.
+            </summary>
+            <param name="document">The document in which the content should be loaded.</param>
+            <param name="stream">The stream containing the RTF content.</param>
+            <param name="options">The options to use when loading the content.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.RtfSerializationProviderExtensions.SaveToRtf(Infragistics.Documents.RichText.RichTextDocument,System.String,Infragistics.Documents.RichText.Rtf.RtfSaveOptions)">
+            <summary>
+            Saves the content from the document into a file using the RTF format.
+            </summary>
+            <param name="document">The document containing the content to be saved.</param>
+            <param name="filePath">The path of the file into which the document should be saved.</param>
+            <param name="options">The options to use when saving the content.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.RtfSerializationProviderExtensions.SaveToRtf(Infragistics.Documents.RichText.RichTextDocument,System.IO.Stream,Infragistics.Documents.RichText.Rtf.RtfSaveOptions)">
+            <summary>
+            Saves the content from the document into the stream using the RTF format.
+            </summary>
+            <param name="document">The document containing the content to be saved.</param>
+            <param name="stream">The stream into which the document should be saved.</param>
+            <param name="options">The options to use when saving the content.</param>
+        </member>
+        <member name="M:Infragistics.Documents.RichText.Rtf.RtfSerializer.WriteText(System.String,System.Int32@,System.Boolean)">
+            <summary>
+            Writes the specified text to the RTF file.
+            </summary>
+            <param name="text">The text to be written.</param>
+            <param name="startIndex">The start index of the text to be written.</param>
+            <param name="forceWriteOtherFormatCharacters">
+            Indicates whether characters should be written out even if their format type does not match the current type active in the document. 
+            Should be true for anything other than text content in a run.
+            </param>
+            <returns>True if all text specified was written; False if one or more characters could not have been written.</returns>
+        </member>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+    </members>
+</doc>
