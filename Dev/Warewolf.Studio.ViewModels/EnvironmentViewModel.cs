@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public void Filter(string filter)
-        {
+        {            
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local

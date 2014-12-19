@@ -8,6 +8,26 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ExplorerViewModelTests
     {
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExplorerViewModel_Filter")]
+        public void ExplorerViewModel_Filter_NullEnvironments_ShouldNotCallFilterOnEachEnvironment()
+        {
+            //------------Setup for test--------------------------
+            IExplorerViewModel explorerViewModel = new ExplorerViewModel();
+            var mockEnv1 = new Mock<IEnvironmentViewModel>();
+            mockEnv1.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
+            var mockEnv2 = new Mock<IEnvironmentViewModel>();
+            mockEnv2.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
+            explorerViewModel.Environments = null;
+            //------------Execute Test---------------------------
+            explorerViewModel.Filter("TestValue");
+            //------------Assert Results-------------------------
+            mockEnv1.Verify(model => model.Filter(It.IsAny<string>()),Times.Never());
+            mockEnv2.Verify(model => model.Filter(It.IsAny<string>()),Times.Never());
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerViewModel_Filter")]

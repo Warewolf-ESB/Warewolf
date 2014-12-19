@@ -22,6 +22,13 @@ namespace Warewolf.Studio.ViewModels
 
         public void Filter(string filter)
         {
+            if (Environments != null)
+            {
+                foreach(var environmentViewModel in Environments)
+                {
+                    environmentViewModel.Filter(filter);
+                }
+            }
         }
     }
 }
