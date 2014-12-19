@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -26,20 +27,20 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resourceId">the resource</param>
         /// <returns>a list of tree dependencies</returns>
-        public IList<IExplorerItem> FetchDependencies(Guid resourceId)
+        public IList<IResource> FetchDependencies(Guid resourceId)
         {
 
             return FetchDependantsFromServerService(resourceId, true);
         }
 
-        IList<IExplorerItem> FetchDependantsFromServerService(Guid resourceId, bool getDependsOnMe)
+        IList<IResource> FetchDependantsFromServerService(Guid resourceId, bool getDependsOnMe)
         {
             var comsController = CommunicationControllerFactory.CreateController("FindDependencyService");
             comsController.AddPayloadArgument("ResourceId", resourceId.ToString());
             comsController.AddPayloadArgument("GetDependsOnMe", getDependsOnMe.ToString());
 
             var workspaceId = Connection.WorkspaceID;
-            var payload = comsController.ExecuteCommand<IList<IExplorerItem>>(Connection, workspaceId);
+            var payload = comsController.ExecuteCommand<IList<IResource>>(Connection, workspaceId);
 
             return payload;
         }
@@ -49,7 +50,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resourceId"></param>
         /// <returns></returns>
-        public IList<IExplorerItem> FetchDependants(Guid resourceId)
+        public IList<IResource> FetchDependants(Guid resourceId)
         {
             return FetchDependantsFromServerService(resourceId, false);
         }

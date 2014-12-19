@@ -17,13 +17,13 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// </summary>
         /// <param name="resourceId">the resource</param>
         /// <returns>a list of tree dependencies</returns>
-        IList<IExplorerItem> FetchDependencies(Guid resourceId);
+        IList<IResource> FetchDependencies(Guid resourceId);
         /// <summary>
         /// Get the list of items that use this resource a nested resource
         /// </summary>
         /// <param name="resourceId"></param>
         /// <returns></returns>
-        IList<IExplorerItem> FetchDependants(Guid resourceId);
+        IList<IResource> FetchDependants(Guid resourceId);
 
         /// <summary>
         /// Fetch a heavy weight reource

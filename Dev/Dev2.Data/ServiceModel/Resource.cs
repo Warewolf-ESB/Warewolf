@@ -298,6 +298,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             get;
             set;
         }
+//todo: this is temporary using it for deploy but wont need to soon enough
+        public bool IsSelected { get; set; }
 
         [JsonIgnore]
         public bool IsNewResource { get; set; }
