@@ -1,0 +1,1910 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.DataPresenter.ExcelExporter.v14.2</name>
+    </assembly>
+    <members>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+        <member name="M:InternalDynamicResourceString.#ctor(Infragistics.Shared.ResourceCustomizer,System.Globalization.CultureInfo,System.String,System.Object[])">
+            <summary>
+            This constructor is for internal use only.
+            </summary>
+        </member>
+        <member name="M:InternalDynamicResourceString.GetStringFromResource(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            For internal use only.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.ChildRecordCollectionSpacing">
+            <summary>
+            An enumeration specifying the amount of empty rows used as padding around a set of child rows.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.ChildRecordCollectionSpacing.None">
+            <summary>
+            Specifies that no empty rows will be placed around a group of child records.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.ChildRecordCollectionSpacing.SingleRow">
+            <summary>
+            A single empty row will be placed above and below a child record collection.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.FileLimitBehaviour">
+            <summary>
+            An enumeration specifying different behaviors if excel file limit (maximum column number, maximum row number etc.) is reached during the export.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FileLimitBehaviour.ThrowException">
+            <summary>
+            Throw exception if excel file limit is reached.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FileLimitBehaviour.TruncateData">
+            <summary>
+            Truncate extra data if excel file limit is reached.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.BeginExportEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.BeginExport"/> event.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs">
+            <summary>
+            ExcelExportEventArgs is a base class for non-cancelable event argument classes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs.CurrentColumnIndex">
+            <summary>
+            Zero-based index of current exporting column in excel worksheet.
+            </summary>			
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs.CurrentOutlineLevel">
+            <summary>
+            Current outline level used for grouping.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs.CurrentRowIndex">
+            <summary>
+            Zero-based index of current exporting row in excel worksheet.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs.CurrentWorksheet">
+            <summary>
+            Current exporting worksheet.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs.Workbook">
+            <summary>
+            Exporting workbook.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.BeginExportEventArgs.DataPresenter">
+            <summary>
+            Returns a clone of the DataPresenter that is about to be exported.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note: </b>The data presenter has been intialized from the original
+            source, but the DataSource property has not been copied.  Attempting to set the DatSource
+            manually will result in an exception.</p>
+            </remarks>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.CellExportedEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.CellExported"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.CellExportedEventArgs.Field">
+            <summary>
+            Returns the field containing the cell.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.CellExportedEventArgs.Record">
+            <summary>
+            Returns the record containing the cell.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.CellExportedEventArgs.Value">
+            <summary>
+            Returns the exported value of the cell.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.CellExportingEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.CellExporting"/> event.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs">
+            <summary>
+            ExcelExportCancelEventArgs is a base class for cancelable event argument classes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs.Workbook">
+            <summary>
+            Exporting workbook.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs.CurrentColumnIndex">
+            <summary>
+            Zero-based index of current exporting column in excel worksheet..
+            </summary>			
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs.CurrentRowIndex">
+            <summary>
+            Zero-based index of current exporting row in excel worksheet.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs.CurrentOutlineLevel">
+            <summary>
+            Current outline level used for grouping.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs.CurrentWorksheet">
+            <summary>
+            Current exporting worksheet.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs.FormatSettings">
+            <summary>
+            Gets or sets the settings that should be applied to exported label.  Settings specified on
+            individual labels take precedence.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.CellExportingEventArgs.Field">
+            <summary>
+            Returns the field containing the cell.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.CellExportingEventArgs.Record">
+            <summary>
+            Returns the record containing the cell.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.CellExportingEventArgs.Value">
+            <summary>
+            Gets or sets the value of the cell being exported.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.EndExportEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.EndExport"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.EndExportEventArgs.Canceled">
+            <summary>
+            True if exporting process was been canceled.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExportStartedEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportStarted"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportStartedEventArgs.DataPresenter">
+            <summary>
+            Returns a clone of the DataPresenter that is about to be exported.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note: </b>The data presenter has been intialized from the original
+            source, but the DataSource property has not been copied.  Attempting to set the DatSource
+            manually will result in an exception.</p>
+            </remarks>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExportEndedEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnded"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportEndedEventArgs.CancelInfo">
+            <summary>
+            Returns an object that provides information about action that canceled the export.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportEndedEventArgs.Canceled">
+            <summary>
+            True if exporting process was been canceled.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExportEndingEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnding"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportEndingEventArgs.CancelInfo">
+            <summary>
+            Returns an object that provides information about action that canceled the export.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportEndingEventArgs.Canceled">
+            <summary>
+            True if exporting process was canceled.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportedEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.HeaderAreaExported"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportedEventArgs.FieldLayout">
+            <summary>
+            Returns the layout associated with the header being exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportedEventArgs.Record">
+            <summary>
+            Returns the first record associated with the header.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportingEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.HeaderAreaExporting"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportingEventArgs.FieldLayout">
+            <summary>
+            Returns the layout associated with the header being exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportingEventArgs.Record">
+            <summary>
+            Returns the first record associated with the header.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportedEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.HeaderLabelExported"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportedEventArgs.Field">
+            <summary>
+            Returns the field associated with the header cell.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportedEventArgs.Label">
+            <summary>
+            Returns the label value of the header cell.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportedEventArgs.Record">
+            <summary>
+            Returns the first record associated with the headers.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportingEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.HeaderLabelExporting"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportingEventArgs.Field">
+            <summary>
+            Returns the field associated with the header cell.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportingEventArgs.Label">
+            <summary>
+            Gets or sets the label value of the header cell.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportingEventArgs.Record">
+            <summary>
+            Returns the first record associated with the headers.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.InitializeRecordEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.InitializeRecord"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.InitializeRecordEventArgs.Record">
+            <summary>
+            Returns the record that is going to be exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.InitializeRecordEventArgs.SkipDescendants">
+            <summary>
+            Specifies whether to skip the descendants of the current record.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.InitializeRecordEventArgs.SkipRecord">
+            <summary>
+            Specifies whether to skip the current record.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.InitializeRecordEventArgs.SkipSiblings">
+            <summary>
+            Specifies whether to skip sibling records of the current record.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.InitializeRecordEventArgs.TerminateExport">
+            <summary>
+            Specifies whether to terminate the export process.  The current record will 
+            not be processed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportedEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.RecordExported"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportedEventArgs.Record">
+            <summary>
+            Returns the record being exported.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportingEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.RecordExporting"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportingEventArgs.Record">
+            <summary>
+            Returns the record that is being exported.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportedEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SummaryCellExported"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportedEventArgs.Summary">
+            <summary>
+            Returns the summary being exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportedEventArgs.SummaryLevel">
+            <summary>
+            Returns the 0-based index of the current summary record.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportingEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SummaryCellExporting"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportingEventArgs.Summary">
+            <summary>
+            Returns the summary being exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportingEventArgs.SummaryLevel">
+            <summary>
+            Returns the 0-based index of the current summary record.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportingEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SummaryRowExporting"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportingEventArgs.AssociatedRecord">
+            <summary>
+            Gets the record associated with the summaries (read-only)
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> This will return either a GroupByRecord or a SummaryRecord.</para>
+            </remarks>
+            <seealso cref="T:Infragistics.Windows.DataPresenter.GroupByRecord"/>
+            <seealso cref="T:Infragistics.Windows.DataPresenter.SummaryRecord"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportingEventArgs.Summaries">
+            <summary>
+            Returns the collection of summary values that are being exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportingEventArgs.SummaryLevel">
+            <summary>
+            Returns the 0-based index of the current summary record.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportingEventArgs.SummaryDescription">
+            <summary>
+            The description of the summaries that will be displayed on the row above the summaries
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> setting this property to null or an empty string will prevent the title row from being exported.</para>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportingEventArgs.SummaryDescriptionFormat"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportingEventArgs.SummaryDescriptionFormat">
+            <summary>
+            Gets or sets the settings that should be applied to the summary description. 
+            </summary>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportingEventArgs.SummaryDescription"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportedEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SummaryRowExported"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportedEventArgs.AssociatedRecord">
+            <summary>
+            Gets the record associated with the summaries (read-only)
+            </summary>
+            <remarks>
+            <para class="note"><b>Note:</b> This will return either a GroupByRecord or a SummaryRecord.</para>
+            </remarks>
+            <seealso cref="T:Infragistics.Windows.DataPresenter.GroupByRecord"/>
+            <seealso cref="T:Infragistics.Windows.DataPresenter.SummaryRecord"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportedEventArgs.Summaries">
+            <summary>
+            Returns the collection of summary values that are being exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportedEventArgs.SummaryLevel">
+            <summary>
+            Returns the 0-based index of the current summary record.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions">
+            <summary>
+            A class defining a set of options that control various aspects of the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/>
+            Excel exporting process.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.ChildRecordCollectionSpacing">
+            <summary>
+            Gets or sets the amount of empty rows used as padding around a set of child records.  Defaults to a single row.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.FileLimitBehaviour">
+            <summary>
+            Specifies behavior during the exporting process. Use this if you want exporter to behave 
+            differently when it reaches one of excel file limits.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.ExcludeExpandedState">
+            <summary>
+            Determines if each record's IsExpanded state is honored during the exporting process.
+            </summary>
+            <remarks>
+            <p class="body">
+            If set to true this means that we don't want to copy over each <see cref="T:Infragistics.Windows.DataPresenter.Record"/>'s <see cref="P:Infragistics.Windows.DataPresenter.Record.IsExpanded"/> state from the 
+            <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> being exported.  Default value is false. </p>
+            </remarks>              
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.ExcludeFieldLayoutSettings">
+            <summary>
+            Determines if the FieldLayoutSettings of the DataPresenter are honored during the exporting process.
+            </summary>
+            <remarks>
+            <p class="body">
+            If set to true this means that we don't want to copy the <see cref="T:Infragistics.Windows.DataPresenter.FieldLayoutSettings"/> from the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/>
+            being exported. Default value is false. </p>
+            </remarks>        
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldLayout.Settings"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.ExcludeFieldSettings">
+            <summary>
+            Determines if the FieldSettings of the DataPresenter are honored during the exporting process.
+            </summary>
+            <remarks>
+            <p class="body">
+            If set to true this means that we don't want to copy the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/> from the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/>
+            being exported. Default value is false. </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.DataPresenterBase.FieldSettings"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.ExcludeGroupBySettings">
+            <summary>
+            Determines if the groupby settings of the DataPresenter are honored during the exporting process.
+            </summary>
+            <remarks>
+            <p class="body">
+            If set to true this means that we don't want to copy the groupby settings from the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/>
+            being exported. Default value is false. </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldSortDescription.IsGroupBy"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldLayout.SortedFields"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.ExcludeRecordFilters">
+            <summary>
+            Determines if record filter criteria of the DataPresenter is honored during the exporting process.
+            </summary>
+            <remarks>
+            <p class="body">
+            If set to true this means that we don't want to copy over the record filter criteria from the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/>
+            being exported. Default value is false. </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.DataRecord.IsFilteredOut"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.RecordManager.RecordFilters"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.ExcludeRecordVisibility">
+            <summary>
+            Determines if each record's Visibility setting of the DataPresenter is honored during the exporting process.
+            </summary>
+            <remarks>
+            <p class="body">
+            If set to true this means that we don't want to copy over each <see cref="T:Infragistics.Windows.DataPresenter.Record"/>'s <see cref="P:Infragistics.Windows.DataPresenter.Record.Visibility"/> property setting
+            from the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> being exported. Default value is false. </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.Record.Visibility"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.ExcludeSortOrder">
+            <summary>
+            Determines if the sorted fields of the DataPresenter are honored during the exporting process.
+            </summary>
+            <remarks>
+            <p class="body">
+            If set to true this means that we don't want to copy the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.SortedFields"/> from the associated
+            <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> being exported. Default value is false. </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldLayout.SortedFields"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions.ExcludeSummaries">
+            <summary>
+            Determines if the summary settings of the DataPresenter are honored during the exporting process.
+            </summary>
+            <remarks>
+            <p class="body">
+            If set to true this means that we don't want to copy the summary settings of the associated 
+            <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> being exported. Default value is false. </p>
+            </remarks>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldSettings.AllowSummaries"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldSettings.SummaryUIType"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldSettings.SummaryDisplayArea"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldLayoutSettings.SummaryDescriptionVisibility"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.FieldLayout.SummaryDefinitions"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings">
+            <summary>
+            A class that provides a set of default appearances and settings used when exporting a <see cref="T:Infragistics.Windows.DataPresenter.Field"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BorderColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BorderColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BorderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BorderStyle"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPattern"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternBackgroundColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternBackgroundColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternForegroundColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternForegroundColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontFamilyProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontFamily"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontSizeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontSize"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontStrikeoutProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontStrikeout"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontStyle"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontSuperscriptSubscriptStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontSuperscriptSubscriptStyle"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontUnderlineStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontUnderlineStyle"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontWeightProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontWeight"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FormatStringProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FormatString"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.HorizontalAlignmentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.HorizontalAlignment"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.IndentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.Indent"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LockedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.Locked"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RotationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.Rotation"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.ShrinkToFitProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.ShrinkToFit"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.VerticalAlignmentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.VerticalAlignment"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.WrapTextProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.WrapText"/> dependency property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.Clone">
+            <summary>
+            Returns a copy of the object.
+            </summary>
+            <returns>A copy of the current object.</returns>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BorderColor">
+            <summary>
+            Gets or sets the color of the borders around the cells of a field.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BorderStyle">
+            <summary>
+            Gets or sets the style of all of the borders.  Individual border settings take precedence.
+            </summary>
+            <remarks>
+            <p class="body">
+            If the border style is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/> is default (Color.Empty), 
+            it will be resolved to Color.Black.
+            </p>
+            </remarks>
+            <value>The bottom border style.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor">
+            <summary>
+            Gets or sets the bottom border color.
+            </summary>
+            <remarks>
+            <p class="body">
+            If the border color is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle"/> is set to Default, 
+            it will be resolved to Thin.
+            </p>
+            </remarks>
+            <value>The bottom border color.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle">
+            <summary>
+            Gets or sets the bottom border style.
+            </summary>
+            <remarks>
+            <p class="body">
+            If the border style is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/> is default (Color.Empty), 
+            it will be resolved to Color.Black.
+            </p>
+            </remarks>
+            <value>The bottom border style.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPattern">
+            <summary>
+            Gets or sets the fill pattern in the cell.
+            </summary>
+            <remarks>
+            <p class="body">
+            If fill pattern is set to Solid, the cell is filled using just the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternForegroundColor"/>. For all other patterns, 
+            both FillPatternForegroundColor and <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternBackgroundColor"/> are used.
+            </p>
+            </remarks>
+            <value>The fill pattern in the cell.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternForegroundColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternBackgroundColor"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternBackgroundColor">
+            <summary>
+            Gets or sets the background color of a field.
+            </summary>
+            <remarks>
+            If the background color is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPattern"/>
+            is set to <i>Default</i>, the resolved fill pattern style is Gray50percent.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPatternForegroundColor">
+            <summary>
+            Gets or sets the foreground color of the cells in a field.
+            </summary>
+            <remarks>
+            If the foreground color is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FillPattern"/>
+            is set to <i>Default</i>, the resolved fill pattern style is Solid. There, a solid cell
+            color can easily be applied by setting only the FillPatternForegroundColor.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontColor">
+            <summary>
+            Gets or sets the color of the font.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontFamily">
+            <summary>
+            Gets or sets the font family of the object being exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontSize">
+            <summary>
+            Gets or sets the size of the font for the object being exported, in device-independent units.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontStrikeout">
+            <summary>
+            Gets or sets the value which indicates whether the font is struck out.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontStyle">
+            <summary>
+            Gets or sets the style of the font for the object being exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontSuperscriptSubscriptStyle">
+            <summary>
+            Gets or sets the underline style of the font.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontUnderlineStyle">
+            <summary>
+            Gets or sets the underline style of the font.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FontWeight">
+            <summary>
+            Gets or sets the weight of the font for the object being exported.
+            </summary>
+            <remarks>
+            <p class="note">
+            <b>Note: </b>Since Excel does not have full support for all of the various options of
+            font weights, the values will be converted to the closest match that Excel supports.
+            </p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.FormatString">
+            <summary>
+            Gets or sets the Excel-style number format string.
+            </summary>
+            <remarks>
+            <p class="body">For more information on excel format strings, consult Microsoft Excel help.</p>
+            </remarks>        
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.HorizontalAlignment">
+            <summary>
+            Gets or sets the horizontal alignment of the content in a cell.
+            </summary>
+            <value>The horizontal alignment of the content in a cell.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.VerticalAlignment"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.Indent">
+            <summary>
+            Gets or sets the indent in units of average character widths.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            The assigned value is outside the valid indent level range of 0 and 15.
+            </exception>
+            <value>The indent in units of average character widths.</value>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor">
+            <summary>
+            Gets or sets the left border color.
+            </summary>
+            <remarks>
+            <p class="body">
+            If the border color is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/> is set to Default, 
+            it will be resolved to Thin.
+            </p>
+            </remarks>
+            <value>The left border color.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle">
+            <summary>
+            Gets or sets the left border style.
+            </summary>
+            <remarks>
+            <p class="body">
+            If the border style is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/> is default (Color.Empty), 
+            it will be resolved to Color.Black.
+            </p>
+            </remarks>
+            <value>The left border style.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.Locked">
+            <summary>
+            Gets or sets the valid which indicates whether the cell is locked in protected mode.
+            </summary>
+            <remarks>
+            <p class="body">The Locked valid is used in Excel file only if the associated <see cref="T:Infragistics.Documents.Excel.Worksheet"/> or <see cref="T:Infragistics.Documents.Excel.Workbook"/> 
+            is protected. Otherwise the value is ignored.
+            </p>
+            </remarks>
+            <value>The valid which indicates whether the cell is locked in protected mode.</value>
+            <seealso cref="P:Infragistics.Documents.Excel.Workbook.Protected"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor">
+            <summary>
+            Gets or sets the right border color.
+            </summary>
+            <remarks>
+            <p class="body">
+            If the border color is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/> is set to Default, 
+            it will be resolved to Thin.
+            </p>
+            </remarks>
+            <value>The right border color.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle">
+            <summary>
+            Gets or sets the right border style.
+            </summary>
+            <remarks>
+            <p class="body">
+            If the border style is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/> is default (Color.Empty), 
+            it will be resolved to Color.Black.
+            </p>
+            </remarks>
+            <value>The right border style.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.Rotation">
+            <summary>
+            Gets or sets the rotation of the cell content in degrees.
+            </summary>
+            <remarks>
+            <p class="body">
+            Cell text rotation, in degrees; 0 – 90 is up 0 – 90 degrees, 91 – 180 is down 1 – 90 degrees, and 255 is vertical.
+            </p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.ShrinkToFit">
+            <summary>
+            Gets or sets the value indicating whether the cell content will shrink to fit the cell.
+            </summary>
+            <remarks>
+            <p class="body">
+            If True, the size of the cell font will shrink so all data fits within the cell.
+            </p>
+            </remarks>
+            <value>The value indicating whether the cell content will shrink to fit the cell.</value>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor">
+            <summary>
+            Gets or sets the top border color.
+            </summary>
+            <remarks>
+            <p class="body">
+            If the border color is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/> is set to Default, 
+            it will be resolved to Thin.
+            </p>
+            </remarks>
+            <value>The top border color.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderStyle">
+            <summary>
+            Gets or sets the top border style.
+            </summary>
+            <remarks>
+            <p class="body">
+            If the border style is set to a non-default value and the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/> is default (Color.Empty), 
+            it will be resolved to Color.Black.
+            </p>
+            </remarks>
+            <value>The top border style.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.BottomBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.LeftBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderColor"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.RightBorderStyle"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.TopBorderColor"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.VerticalAlignment">
+            <summary>
+            Gets or sets the vertical alignment of the content in a cell.
+            </summary>
+            <value>The vertical alignment of the content in a cell.</value>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.HorizontalAlignment"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings.WrapText">
+            <summary>
+            Gets or sets the value which indicates whether text will wrap in a cell.
+            </summary>
+            <remarks>
+            <p class="body">
+            If True, and the row associated with the cell has a default <see cref="P:Infragistics.Documents.Excel.WorksheetRow.Height"/>, the row's
+            height will automatically be increased to fit wrapped content.
+            </p>
+            </remarks>
+            <value>The value which indicates whether text will wrap in a cell.</value>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.Resources">
+            <summary>
+            Exposes a <see cref="T:Infragistics.Shared.ResourceCustomizer"/> instance for this assembly. 
+            </summary>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.Customizer"/> 
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.GetString(System.String,System.Object[])">
+            <summary>
+            Returns the resource string using the specified name and default culture.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.GetString(System.String)">
+            <summary>
+            Returns the resource string using the specified resource name and default culture. The string is then formatted using the arguments specified.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.GetDynamicResourceString(System.String)">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.GetDynamicResourceString(System.String,System.Object[])">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.GetDynamicResourceString(System.String,System.Object[],System.Globalization.CultureInfo)">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+            <param name="culture">Culture whose resource should loaded. The resource will go through a fallback process to locate the appropriate resources.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.GetObject(System.String)">
+            <summary>
+            Returns the resource object using the specified name.
+            </summary>
+            <param name="name">Name of the resource item</param>
+            <returns>An object containing the specified resource</returns>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.Customizer">
+            <summary>
+            Returns the <see cref="T:Infragistics.Shared.ResourceCustomizer"/> for this assembly.
+            </summary>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.FieldFixToFarEdgePrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedFieldButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedFieldButton.FixToFarEdgePrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.FieldFixToNearEdgePrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedFieldButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedFieldButton.FixToNearEdgePrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.FieldUnfixPrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedFieldButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedFieldButton.UnfixPrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.GroupByAreaPrompt1">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.GroupByAreaBase"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.GroupByAreaBase.Prompt1"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.GroupByAreaPrompt2">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.GroupByAreaBase"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.GroupByAreaBase.Prompt2"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.RecordFixToBottomPrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedRecordButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedRecordButton.FixToBottomPrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.RecordFixToTopPrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedRecordButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedRecordButton.FixToTopPrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.Resources.RecordUnfixPrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedRecordButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedRecordButton.UnfixPrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.ResourcesExcelExporter">
+            <summary>
+            Exposes the <see cref="T:Infragistics.Shared.DynamicResourceString"/> instances used in the assembly.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ResourcesExcelExporter.FieldFixToFarEdgePrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedFieldButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedFieldButton.FixToFarEdgePrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ResourcesExcelExporter.FieldFixToNearEdgePrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedFieldButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedFieldButton.FixToNearEdgePrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ResourcesExcelExporter.FieldUnfixPrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedFieldButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedFieldButton.UnfixPrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ResourcesExcelExporter.GroupByAreaPrompt1">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.GroupByAreaBase"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.GroupByAreaBase.Prompt1"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ResourcesExcelExporter.GroupByAreaPrompt2">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.GroupByAreaBase"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.GroupByAreaBase.Prompt2"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ResourcesExcelExporter.RecordFixToBottomPrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedRecordButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedRecordButton.FixToBottomPrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ResourcesExcelExporter.RecordFixToTopPrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedRecordButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedRecordButton.FixToTopPrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.ResourcesExcelExporter.RecordUnfixPrompt">
+            <summary>
+            Returns a <see cref="T:Infragistics.Shared.DynamicResourceString"/> instance that contains the localized resource used in the <see cref="T:Infragistics.Windows.DataPresenter.FixedRecordButton"/> as the default for its <see cref="P:Infragistics.Windows.DataPresenter.FixedRecordButton.UnfixPrompt"/> property./&gt;
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter">
+            <summary>
+            A class providing Excel exporting functionality for <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/>-derived controls.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.#ctor">
+            <summary>
+            Instantiates a new DataPresenterExcelExporter.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportDurationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportDuration"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportIntervalProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportInterval"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelCellFormatSettingsProperty">
+            <summary>
+            Identifies the ExcelCellFormatSettings property, used to control the various export-related settings for cells.
+            </summary>
+            <seealso cref="T:Infragistics.Windows.DataPresenter.Cell"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelCellFormatSettings(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the 'ExcelCellFormatSettings' attached property that is used to control the various export-related settings.
+            </summary>        
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelCellFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelCellFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelCellFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)">
+            <summary>
+            Sets the value of the 'ExcelCellFormatSettings' attached property.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelCellFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelCellFormatSettings(System.Windows.DependencyObject)"/>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelGroupFormatSettingsProperty">
+            <summary>
+            Identifies the ExcelGroupFormatSettings property, used to control the various export-related settings for GroupByRecords.
+            </summary>
+            <seealso cref="T:Infragistics.Windows.DataPresenter.GroupByRecord"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelGroupFormatSettings(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the 'ExcelGroupFormatSettings' attached property that is used to control the various export-related settings.
+            </summary>        
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelGroupFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelGroupFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelGroupFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)">
+            <summary>
+            Sets the value of the 'ExcelGroupFormatSettings' attached property.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelGroupFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelGroupFormatSettings(System.Windows.DependencyObject)"/>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelLabelFormatSettingsProperty">
+            <summary>
+            Identifies the ExcelLabelFormatSettings property, used to control the various export-related settings for labels.
+            </summary>        
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelLabelFormatSettings(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the 'ExcelLabelFormatSettings' attached property that is used to control the various export-related settings.
+            </summary>        
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelLabelFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelLabelFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelLabelFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)">
+            <summary>
+            Sets the value of the 'ExcelLabelFormatSettings' attached property.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelLabelFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelLabelFormatSettings(System.Windows.DependencyObject)"/>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelSummaryCellFormatSettingsProperty">
+            <summary>
+            Identifies the ExcelSummaryCellFormatSettings property, used to control the various export-related settings for cells.
+            </summary>
+            <seealso cref="T:Infragistics.Windows.DataPresenter.Cell"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelSummaryCellFormatSettings(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the 'ExcelSummaryCellFormatSettings' attached property that is used to control the various export-related settings.
+            </summary>        
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelSummaryCellFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelSummaryCellFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelSummaryCellFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)">
+            <summary>
+            Sets the value of the 'ExcelSummaryCellFormatSettings' attached property.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelSummaryCellFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelSummaryCellFormatSettings(System.Windows.DependencyObject)"/>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelSummaryLabelFormatSettingsProperty">
+            <summary>
+            Identifies the ExcelLabelFormatSettings property, used to control the various export-related settings for labels.
+            </summary>        
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelSummaryLabelFormatSettings(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the 'ExcelSummaryLabelFormatSettings' attached property that is used to control the various export-related settings.
+            </summary>        
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelSummaryLabelFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelSummaryLabelFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SetExcelSummaryLabelFormatSettings(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.ExcelExporter.FormatSettings)">
+            <summary>
+            Sets the value of the 'ExcelSummaryLabelFormatSettings' attached property.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExcelSummaryLabelFormatSettingsProperty"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.GetExcelSummaryLabelFormatSettings(System.Windows.DependencyObject)"/>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.IsExportingProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.IsExporting"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ShowAsyncExportStatusProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ShowAsyncExportStatus"/> dependency property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnBeginExport(Infragistics.Windows.DataPresenter.ExcelExporter.BeginExportEventArgs)">
+            <summary>
+            Called before grid export starts.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnCellExported(Infragistics.Windows.DataPresenter.ExcelExporter.CellExportedEventArgs)">
+            <summary>
+            Called after grid cell is exported to excel.
+            </summary>
+            <param name="e">An object containing information about the cell that was exported.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnCellExporting(Infragistics.Windows.DataPresenter.ExcelExporter.CellExportingEventArgs)">
+            <summary>
+            Called before grid cell is exported to excel.
+            </summary>
+            <param name="e">An object containing information about the cell being exported.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnEndExport(Infragistics.Windows.DataPresenter.ExcelExporter.EndExportEventArgs)">
+            <summary>
+            Called after grid export is finished.
+            </summary>
+            <param name="e">An object containing information about the final status of the export process.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnExportEnded(Infragistics.Windows.DataPresenter.ExcelExporter.ExportEndedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnded"/> event.
+            </summary>
+            <param name="e">An object contained information about the final status of the export process.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnExportEnding(Infragistics.Windows.DataPresenter.ExcelExporter.ExportEndingEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnding"/> event.
+            </summary>
+            <param name="e">An object containing information about the final status of the export process.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnExportStarted(Infragistics.Windows.DataPresenter.ExcelExporter.ExportStartedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportStarted"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnHeaderAreaExported(Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportedEventArgs)">
+            <summary>
+            Called after header row is exported to excel.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnHeaderAreaExporting(Infragistics.Windows.DataPresenter.ExcelExporter.HeaderAreaExportingEventArgs)">
+            <summary>
+            Called before header row is exported to excel.
+            </summary>
+            <param name="e">An object containing information about the header row.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnHeaderLabelExported(Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportedEventArgs)">
+            <summary>
+            Called after header cell is exported to excel.
+            </summary>
+            <param name="e">An object containing information about the header cell this was exported.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnHeaderLabelExporting(Infragistics.Windows.DataPresenter.ExcelExporter.HeaderLabelExportingEventArgs)">
+            <summary>
+            Called before header cell is exported to excel.
+            </summary>
+            <param name="e">An object containing information about the header cell being exported.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnInitializeRecord(Infragistics.Windows.DataPresenter.ExcelExporter.InitializeRecordEventArgs)">
+            <summary>
+            Called when a record is initialized.
+            </summary>
+            <param name="e">An object containing various options for controlling, or excluding, a record.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnRecordExported(Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportedEventArgs)">
+            <summary>
+            Called after a record is exported to Excel.
+            </summary>
+            <param name="e">An object providing information about the record.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnRecordExporting(Infragistics.Windows.DataPresenter.ExcelExporter.RecordExportingEventArgs)">
+            <summary>
+            Called before a record is exported to Excel.
+            </summary>
+            <param name="e">An object providing information about the record, or allowing the export to be cancelled.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnSummaryRowExported(Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportedEventArgs)">
+            <summary>
+            Called after summary row is exported to excel.
+            </summary>
+            <param name="e">An object containing information about the summary record that was exported.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnSummaryRowExporting(Infragistics.Windows.DataPresenter.ExcelExporter.SummaryRowExportingEventArgs)">
+            <summary>
+            Called before summary record is exported to excel.
+            </summary>
+            <param name="e">An object containing information about the summary record being exported.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnSummaryCellExported(Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportedEventArgs)">
+            <summary>
+            Called after summary cell is exported to excel.
+            </summary>
+            <param name="e">An object containing information about the summary cell that was exported.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.OnSummaryCellExporting(Infragistics.Windows.DataPresenter.ExcelExporter.SummaryCellExportingEventArgs)">
+            <summary>
+            Called before summary cell is exported to excel.
+            </summary>
+            <param name="e">An object containing information about the summary cell being exported.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.CancelExport(Infragistics.Windows.DataPresenter.DataPresenterBase)">
+            <summary>
+            Cancels any asynchronous export operations for the specified <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> that were initiated by this instance.
+            </summary>
+            <remarks>
+            <p class="body">An export operation may be cancelled by handling the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.InitializeRecord"/> event and setting the 
+            <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.InitializeRecordEventArgs.TerminateExport"/> to true. However, for an asynchronous export the operation may be 
+            pending while another asynchronous operation is pending or the export may still be preparing the source control. For those 
+            situations this method may be used to cancel the operation.</p>
+            </remarks>
+            <param name="dataPresenter">The datapresenter whose asynchronous export is to be cancelled</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,System.String,Infragistics.Documents.Excel.WorkbookFormat)">
+            <summary>
+            Exports the passed in data presenter to specified file. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="fileName">Name and path of resulting Excel file.</param>
+            <param name="workbookFormat">Specifies the format for the new workbook (Excel2007 or Excel97To2003) .</param>
+            <returns>Created <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,System.String,Infragistics.Documents.Excel.WorkbookFormat,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Exports the passed in data presenter to specified file. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="fileName">Name and path of resulting Excel file.</param>
+            <param name="workbookFormat">Specifies the format for the new workbook (Excel2007 or Excel97To2003) .</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+            <returns>Created <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.WorkbookFormat)">
+            <summary>
+            Creates a new workbook with empty <see cref="T:Infragistics.Documents.Excel.Worksheet"/> 
+            and exports the passed in data presenter to it. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbookFormat">Specifies the format for the new workbook (Excel2007 or Excel97To2003) .</param>
+            <returns>Created <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.WorkbookFormat,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Creates a new workbook with empty <see cref="T:Infragistics.Documents.Excel.Worksheet"/> 
+            and exports the passed in data presenter to it. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbookFormat">Specifies the format for the new workbook (Excel2007 or Excel97To2003) .</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+            <returns>Created <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Workbook)">
+            <summary>
+            Exports the passed in data presenter to the specified workbook in the active 
+            worksheet. If there are no worksheets in workbook, new worksheet is created. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbook">Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</param>
+            <returns>Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Workbook,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Exports the passed in data presenter to the specified workbook in the active 
+            worksheet. If there are no worksheets in workbook, new worksheet is created. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbook">Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+            <returns>Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet)">
+            <summary>
+            Exports the passed in data presenter to the specified worksheet.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="worksheet">Destination <see cref="T:Infragistics.Documents.Excel.Worksheet"/>.</param>
+            <returns>Parent workbook of passed in worksheet.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Exports the passed in data presenter to the specified worksheet.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="worksheet">Destination <see cref="T:Infragistics.Documents.Excel.Worksheet"/>.</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+            <returns>Parent workbook of passed in worksheet.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Workbook,System.Int32,System.Int32)">
+            <summary>
+            Exports the passed in data presenter to the specified workbook in the active 
+            worksheet starting at the specified row and column. If there are no 
+            worksheets in workbook, new worksheet is created. It returns the passed 
+            in workbook.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbook">Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</param>
+            <param name="startRow">Start row for exported data (zero based).</param>
+            <param name="startColumn">Start column for exported data (zero based).</param>
+            <returns>Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Workbook,System.Int32,System.Int32,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Exports the passed in data presenter to the specified workbook in the active 
+            worksheet starting at the specified row and column. If there are no 
+            worksheets in workbook, new worksheet is created. It returns the passed 
+            in workbook.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbook">Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</param>
+            <param name="startRow">Start row for exported data (zero based).</param>
+            <param name="startColumn">Start column for exported data (zero based).</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+            <returns>Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet,System.Int32,System.Int32)">
+            <summary>
+            Exports the passed in XamDataGrid to the specified worksheet starting at 
+            the specified row and column.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="worksheet">Destination <see cref="T:Infragistics.Documents.Excel.Worksheet"/>.</param>
+            <param name="startRow">Start row for exported data (zero based).</param>
+            <param name="startColumn">Start column for exported data (zero based).</param>
+            <returns>Parent workbook of passed in worksheet.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet,System.Int32,System.Int32,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Exports the passed in XamDataGrid to the specified worksheet starting at 
+            the specified row and column.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="worksheet">Destination <see cref="T:Infragistics.Documents.Excel.Worksheet"/>.</param>
+            <param name="startRow">Start row for exported data (zero based).</param>
+            <param name="startColumn">Start column for exported data (zero based).</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+            <returns>Parent workbook of passed in worksheet.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,System.String,Infragistics.Documents.Excel.WorkbookFormat)">
+            <summary>
+            Asynchronously exports the passed in data presenter to specified file. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="fileName">Name and path of resulting Excel file.</param>
+            <param name="workbookFormat">Specifies the format for the new workbook (Excel2007 or Excel97To2003) .</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,System.String,Infragistics.Documents.Excel.WorkbookFormat,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Asynchronously exports the passed in data presenter to specified file. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="fileName">Name and path of resulting Excel file.</param>
+            <param name="workbookFormat">Specifies the format for the new workbook (Excel2007 or Excel97To2003) .</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Workbook)">
+            <summary>
+            Asynchronously exports the passed in data presenter to the specified workbook in the active 
+            worksheet. If there are no worksheets in workbook, new worksheet is created. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbook">Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Workbook,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Asynchronously exports the passed in data presenter to the specified workbook in the active 
+            worksheet. If there are no worksheets in workbook, new worksheet is created. 
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbook">Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet)">
+            <summary>
+            Asynchronously exports the passed in data presenter to the specified worksheet.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="worksheet">Destination <see cref="T:Infragistics.Documents.Excel.Worksheet"/>.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Asynchronously exports the passed in data presenter to the specified worksheet.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="worksheet">Destination <see cref="T:Infragistics.Documents.Excel.Worksheet"/>.</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Workbook,System.Int32,System.Int32)">
+            <summary>
+            Asynchronously exports the passed in data presenter to the specified workbook in the active 
+            worksheet starting at the specified row and column. If there are no 
+            worksheets in workbook, new worksheet is created. It returns the passed 
+            in workbook.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbook">Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</param>
+            <param name="startRow">Start row for exported data (zero based).</param>
+            <param name="startColumn">Start column for exported data (zero based).</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Workbook,System.Int32,System.Int32,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Asynchronously exports the passed in data presenter to the specified workbook in the active 
+            worksheet starting at the specified row and column. If there are no 
+            worksheets in workbook, new worksheet is created. It returns the passed 
+            in workbook.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="workbook">Destination <see cref="T:Infragistics.Documents.Excel.Workbook"/>.</param>
+            <param name="startRow">Start row for exported data (zero based).</param>
+            <param name="startColumn">Start column for exported data (zero based).</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet,System.Int32,System.Int32)">
+            <summary>
+            Asynchronously exports the passed in XamDataGrid to the specified worksheet starting at 
+            the specified row and column.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="worksheet">Destination <see cref="T:Infragistics.Documents.Excel.Worksheet"/>.</param>
+            <param name="startRow">Start row for exported data (zero based).</param>
+            <param name="startColumn">Start column for exported data (zero based).</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet,System.Int32,System.Int32,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)">
+            <summary>
+            Asynchronously exports the passed in XamDataGrid to the specified worksheet starting at 
+            the specified row and column.
+            </summary>
+            <param name="dataPresenter">The data presenter to export.</param>
+            <param name="worksheet">Destination <see cref="T:Infragistics.Documents.Excel.Worksheet"/>.</param>
+            <param name="startRow">Start row for exported data (zero based).</param>
+            <param name="startColumn">Start column for exported data (zero based).</param>
+            <param name="options">A set of options controlling the output of the exporting process.</param>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportDuration">
+            <summary>
+            Returns or sets the amount of time that should be spent processing the export each time the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportInterval"/> elapses.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">The TimeSpan must be greater than 0.</exception>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportDurationProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportInterval"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ShowAsyncExportStatus"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet,System.Int32,System.Int32,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportInterval">
+            <summary>
+            Returns or sets the amount of time to wait after performing an asynchronous export for the amount of time specified by the <see cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportDuration"/>.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">The TimeSpan must be greater than 0.</exception>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportIntervalProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportDuration"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ShowAsyncExportStatus"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Documents.Excel.Worksheet,System.Int32,System.Int32,Infragistics.Windows.DataPresenter.ExcelExporter.ExportOptions)"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.IsExporting">
+            <summary>
+            Returns a boolean indicating if the exporter is in the process of an export operation.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.IsExportingProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ShowAsyncExportStatus">
+            <summary>
+            Returns or sets a value that indicates whether a control containing the export status is displayed to the end user while an asynchronous export is in progress.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ShowAsyncExportStatusProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportDuration"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.AsyncExportInterval"/>
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.BeginExport">
+            <summary>
+            Occurs at the beginning of the export process.  The data presenter has been initialized but the data source has not yet been set.
+            </summary>
+            <remarks>
+            <p class="body">The <i>DataPresenter</i> argument returns a reference to the cloned object that is about to be exported.</p>        
+            <p class="body">Additionaly this event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">This event is fired before all other events. You can use it to do any preprocessing before exporting process starts, such as writing a custom header to the Excel workbook.</p>
+            <p class="note"><b>Note:</b> The BeginExport event has been deprecated. The <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportStarted"/> event should be used instead.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.InitializeRecord">
+            <summary>
+            Occurs when a record is initialized.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Record</i> argument returns a reference to the record that is being exported.</p>
+            <p class="body">The <i>SkipRecord</i> argument specifies whether to skip the current record. This argument doesn't affect exporting of descendant records.</p>
+            <p class="body">The <i>SkipDescendants</i> argument specifies whether to skip the descendats of the current record.</p>
+            <p class="body">The <i>SkipSiblings</i> argument specifies whether to skip sibling rows of the current record.</p>
+            <p class="body">The <i>TerminateExport</i> argument specifies whether to terminate the export process. The current record will not be processed.</p>
+            <p class="body">Additionaly this event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">This event is fired for every record that is being exported, and before <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.RecordExporting"/> and <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.RecordExported"/> are fired. Use this event to set record-specific properties and to control the exporting process.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.RecordExporting">
+            <summary>
+            Occurs before a record is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Record</i> argument returns a reference to record being exported.</p>
+            <p class="body">Additionaly this event has Cancel, Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs"/>.</p>
+            <p class="body">This event is fired before the Excel row is processed. Use Cancel argument to cancel row exporting. If the records span multiple rows, this event is fired only for the first row.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.RecordExported">
+            <summary>
+            Occurs after a record is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Record</i> argument returns a reference to the record being exported.</p>
+            <p class="body">Additionaly this event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">This event is fired after the Excel row is processed. Use it to apply any additional formatting to Excel row. If the records span multiple rows, this event is fired only for the last row..</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SummaryRowExporting">
+            <summary>
+            Occurs before a summary row is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Summaries</i> argument returns a reference to summary values.</p>
+            <p class="body">The <i>SummaryLevel</i> argument returns a current summary level.</p>
+            <p class="body">Additionaly this event has Cancel, Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs"/>.</p>
+            <p class="body">This event is fired before Excel row with summary values for specific level is processed. Use the Cancel argument to cancel row exporting. If summaries span multiple Excel rows, this event is fired only for first row of summaries.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SummaryRowExported">
+            <summary>
+            Occurs after summary record is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Summaries</i> argument returns a reference to summary values.</p>
+            <p class="body">The <i>SummaryLevel</i> argument returns a current summary level.</p>
+            <p class="body">Additionaly this event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">This event is fired after Excel row with summary values for specific level is processed. Use it to apply any additional formatting to Excel row. If summaries span multiple Excel rows, this event is fired only for last row of summaries.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.HeaderAreaExporting">
+            <summary>
+            Occurs before header area is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>FieldLayout</i> argument returns a reference the layout object associated with the headers.</p>
+            <p class="body">The <i>Record</i> argument returns a reference to the first record associated with the headers.</p>    
+            <p class="body">Additionaly this event has Cancel, Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs"/>.</p>
+            <p class="body">This event is fired before Excel row with header values is processed. Use Cancel argument to cancel row exporting. If headers span multiple Excel rows, this event is fired only for first header row.</p>
+            <p class="note">This event is not fired when the labels are displayed with the cells instead of in a separate header area.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.HeaderAreaExported">
+            <summary>
+            Occurs after header area is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>FieldLayout</i> argument returns a reference the layout object associated with the headers.</p>
+            <p class="body">The <i>Record</i> argument returns a reference to the first record associated with the headers.</p>        
+            <p class="body">Additionaly this event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">This event is fired after Excel row with header values is processed. Use it to apply any additional formatting to Excel row. If headers span multiple Excel rows, this event is fired only for last header row.</p>
+            <p class="note">This event is not fired when the labels are displayed with the cells instead of in a separate header area.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.CellExporting">
+            <summary>
+            Occurs before a cell is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Field</i> argument returns a reference to the associated field.</p>
+            <p class="body">The <i>Record</i> argument returns a reference to the record containing the cell.</p>
+            <p class="body">The <i>Value</i> argument returns the value of the cell.</p>
+            <p class="body">Additionaly this event has Cancel, Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs"/>.</p>
+            <p class="body">Use the Cancel argument to cancel cell exporting.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.CellExported">
+            <summary>
+            Occurs after a cell is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Field</i> argument returns a reference to the associated field.</p>
+            <p class="body">The <i>Record</i> argument returns a reference to the record containing the cell.</p>
+            <p class="body">The <i>Value</i> argument returns the value of the cell.</p>
+            <p class="body">Additionaly this event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">Use this event to apply any additional formatting to Excel cell after the cell has been exported.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.HeaderLabelExporting">
+            <summary>
+            Occurs before a header label is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Field</i> argument returns a reference to the associated field.</p>
+            <p class="body">The <i>Label</i> argument allows control over what value should be shown in the header cell.</p>
+            <p class="body">The <i>Record</i> argument returns a reference to the first record associated with the headers.</p>  
+            <p class="body">Additionaly this event has Cancel, Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs"/>.</p>
+            <p class="body">Use the Cancel argument to cancel the exporting of this cell.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.HeaderLabelExported">
+            <summary>
+            Occurs after a header label is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Field</i> argument returns a reference to the associated field.</p>
+            <p class="body">The <i>Label</i> argument retuns the value that has been exported to the header cell.</p>
+            <p class="body">The <i>Record</i> argument returns a reference to the first record associated with the headers.</p>  
+            <p class="body">Additionaly this event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">Use this event to apply any additional formatting to Excel cell.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SummaryCellExporting">
+            <summary>
+            Occurs before a summary cell is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Summaries</i> argument returns a reference to summary values.</p>
+            <p class="body">The <i>SummaryLevel</i> argument returns a current summary level.</p>
+            <p class="body">Additionaly this event has Cancel, Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportCancelEventArgs"/>.</p>
+            <p class="body">Use the Cancel argument to cancel the exporting of the summary cell.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.SummaryCellExported">
+            <summary>
+            Occurs after a summary cell is exported to Excel.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Summary</i> argument returns a reference to a summary value.</p>
+            <p class="body">The <i>SummaryLevel</i> argument returns current summary level.</p>
+            <p class="body">Additionaly this event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">Use this event to apply any additional formatting to a summary cell.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.EndExport">
+            <summary>
+            Occurs after the exporting process is finished.
+            </summary>
+            <remarks>
+            <p class="body">The <i>Canceled</i> argument is true if exporting process was been canceled.</p>
+            <p class="body">This event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">This event is fired after exporting process is finished.</p>
+            <p class="note"><b>Note:</b> The EndExport event has been deprecated. The <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnding"/> or <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnded"/> event should be used instead. The direct replacement 
+            for this event is the ExportEnding but if you used an overload of Export that saved to a file then you should use the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnded"/> to show the file since the 
+            file will not be saved until after the ExportEnding has been raised.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportStarted">
+            <summary>
+            Occurs after the export process has started.  The data presenter has been initialized but the data source has not yet been set.
+            </summary>
+            <remarks>
+            <p class="body">The <i>DataPresenter</i> argument returns a reference to the cloned object that is about to be exported.</p>        
+            <p class="body">Additionaly this event has Workbook, CurrentWorksheet, CurrentRowIndex, CurrentColumnIndex, CurrentOutlineLevel arguments inherited from <see cref="T:Infragistics.Windows.DataPresenter.ExcelExporter.ExcelExportEventArgs"/>.</p>
+            <p class="body">This event is fired before all other events. You can use it to do any preprocessing before exporting process starts, such as writing a custom header to the Excel workbook.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnding">
+            <summary>
+            Invoked after the export process is complete but before the contents are saved to a file.
+            </summary>
+            <remarks>
+            <p class="body">The ExportEnding event is invoked when the export process has completed to give the developer 
+            one final opportunity to manipulate the Workbook being generated. This is particularly important when using an 
+            overload of the Export method that takes a filename as the file will be saved after the ExportEnding is complete 
+            but before the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnded"/> so any changes to the Workbook in the ExportEnded will not be reflected in the saved 
+            file. Also, since the file will not have been created until after the ExportEnding, if you wanted to copy the 
+            file to another location or display the file to the end user, the ExportEnded event should be used to do that.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnded">
+            <summary>
+            Occurs after the export process has completed.
+            </summary>
+            <remarks>
+            <p class="body">The ExportEnded event is raised after the export process has been completed. If an overload of 
+            the Export method that accepts a filename was used, then the file would be available at this point since the file 
+            is saved after the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnding"/> event has been completed but before the ExportEnded. Therefore any 
+            manipulations of the Workbook should be done in the <see cref="E:Infragistics.Windows.DataPresenter.ExcelExporter.DataPresenterExcelExporter.ExportEnding"/> event or else those changes will 
+            not be reflected in the saved file.</p>
+            </remarks>        
+        </member>
+    </members>
+</doc>

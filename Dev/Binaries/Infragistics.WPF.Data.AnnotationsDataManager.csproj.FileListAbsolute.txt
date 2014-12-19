@@ -1,0 +1,6 @@
+D:\Repos\Warewolf Closed Source\ThirdParty\Infragistics.14.2\Build\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.xml
+D:\Repos\Warewolf Closed Source\ThirdParty\Infragistics.14.2\Build\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll
+D:\Repos\Warewolf Closed Source\ThirdParty\Infragistics.14.2\Build\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.pdb
+D:\Repos\Warewolf Closed Source\ThirdParty\Infragistics.14.2\Infragistics.Data.AnnotationsDataManager\obj\Release\Infragistics.WPF.Data.AnnotationsDataManager.csprojResolveAssemblyReference.cache
+D:\Repos\Warewolf Closed Source\ThirdParty\Infragistics.14.2\Infragistics.Data.AnnotationsDataManager\obj\Release\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll
+D:\Repos\Warewolf Closed Source\ThirdParty\Infragistics.14.2\Infragistics.Data.AnnotationsDataManager\obj\Release\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.pdb

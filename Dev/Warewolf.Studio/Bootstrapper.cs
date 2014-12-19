@@ -1,18 +1,10 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Infragistics.Windows.DockManager;
-using Microsoft.Practices.Prism.Modularity;
+﻿using System.Windows;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
-
+using Warewolf.Studio.Core;
+using Warewolf.Studio.ViewModels.DummyModels;
+using Warewolf.Studio.Views;
 
 namespace Warewolf.Studio
 {
@@ -27,6 +19,13 @@ namespace Warewolf.Studio
         {
             base.InitializeShell();
             Window window = (Window)Shell;
+
+            var regionManager = Container.Resolve<IRegionManager>();
+            var explorerRegion = regionManager.Regions[RegionNames.Explorer];
+            var explorerView = new ExplorerView();
+            explorerView.DataContext = new DummyExplorerViewModel();
+            explorerRegion.Add(explorerView, "Explorer");
+            explorerRegion.Activate(explorerView);
             window.Show();
 
         }

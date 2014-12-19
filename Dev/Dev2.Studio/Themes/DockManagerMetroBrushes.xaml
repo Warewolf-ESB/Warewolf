@@ -9,19 +9,12 @@
     </ResourceDictionary.MergedDictionaries>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemLeftCenterFillKey}" Color="{StaticResource Color_008}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemRightCenterFillKey}" Color="{StaticResource Color_008}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemTopCenterFillKey}" Color="{StaticResource Color_008}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemBottomCenterFillKey}" Color="{StaticResource Color_008}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemLeftHottrackCenterFillKey}" Color="{StaticResource Color_006}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemRightHottrackCenterFillKey}" Color="{StaticResource Color_006}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemTopHottrackCenterFillKey}" Color="{StaticResource Color_006}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemBottomHottrackCenterFillKey}" Color="{StaticResource Color_006}"/>
 
     <LinearGradientBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedPaneInnerBorderFillKey}" StartPoint="0.50,0.18" EndPoint="0.50,1.02">
@@ -84,15 +77,10 @@
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCenterFillKey}" Color="{StaticResource Color_009}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCheckmarkBoxNormalCenterFillKey}" Color="{StaticResource Color_009}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCheckmarkBoxHottrackCenterFillKey}" Color="{StaticResource Color_009}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionCenterFillKey}" Color="{StaticResource Color_006}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.ToolTipCenterFillKey}" Color="{StaticResource Color_009}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.XamDockManagerBackgroundFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
 
     <LinearGradientBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalCenterFillKey}" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -122,177 +110,94 @@
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorCenterFillKey}" Color="{StaticResource Color_009}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorHeaderFillKey}" Color="{StaticResource Color_009}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorItemHottrackCenterFillKey}" Color="{StaticResource Color_006}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.DarkBrushKey}" Color="{StaticResource WarewolfDarkGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.LightBrushKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.ThemeColorTextFillKey}" Color="{StaticResource Color_001}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemOuterBorderFillKey}" Color="{StaticResource Color_004}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHighlightFillKey}" Color="{StaticResource Color_050}" />
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackOuterBorderFillKey}" Color="{StaticResource Color_003}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackHighlightFillKey}" Color="{StaticResource Color_050}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabGroupPaneGlyphFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedPaneOuterBorderFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedPaneCenterFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveOuterBorderFillKey}" Color="{StaticResource Color_015}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveInnerBorderFillKey}" Color="{StaticResource Color_050}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveBottomCenterFillKey}" Color="{StaticResource Color_009}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListGroupFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveTopCenterFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveLeftCenterFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveRightCenterFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveTextFillKey}" Color="{StaticResource Color_000}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHighlightFillKey}" Color="{StaticResource Color_009}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHighlightBorderFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
 
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveTextFillKey}" Color="{StaticResource Color_000}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveOuterBorderFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveInnerBorderFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveBottomCenterFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveTopCenterFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveLeftCenterFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveRightCenterFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackInnerBorderFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackTextFillKey}" Color="{StaticResource Color_001}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveOuterBorderFillKey}" Color="{StaticResource Color_015}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveInnerBorderFillKey}" Color="{StaticResource Color_009}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveOuterBorderFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveInnerBorderFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveCenterFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackOuterBorderFillKey}" Color="{StaticResource Color_022}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackTextFillKey}" Color="{StaticResource Color_001}" />    
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentGlyphFillKey}" Color="{StaticResource Color_009}" Opacity="0.7" />
-    
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentGlyphHottrackFillKey}" Color="{StaticResource Color_009}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneActiveCaptionInnerBorderFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionInnerBorderFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonHottrackOuterBorderFillKey}" Color="{StaticResource Color_016b}" />
-    
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonPressedOuterBorderFillKey}" Color="{StaticResource Color_016b}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonNotActiveHottrackOuterBorderFillKey}" Color="{StaticResource Color_016b}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemOuterBorderFillKey}" Color="{StaticResource Color_005}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemIconGroupBorderFillKey}" Color="{StaticResource Color_005}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemIconGroupCenterFillKey}" Color="{StaticResource WarewolfDarkGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCheckmarkBoxNormalOuterBorderFillKey}" Color="{StaticResource Color_004}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemCheckmarkBoxHottrackOuterBorderFillKey}" Color="{StaticResource Color_003}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionOuterBorderFillKey}" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionInnerBorderFillKey}" Color="{StaticResource WarewolfDarkGrey}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionHottrackTextFillKey}" Color="{StaticResource Color_001}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.ToolTipOuterBorderFillKey}" Color="{StaticResource Color_004}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}" Color="{DynamicResource Color_009}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneHeaderNotActiveTextFillKey}" Color="{DynamicResource Color_000}"/>    
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.ContentPaneBorderFillKey}" Color="{StaticResource Color_011}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabFlyoutSplitterLightStrokeFillKey}" Color="{StaticResource Color_032}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabFlyoutSplitterDarkStrokeFillKey}" Color="{StaticResource Color_033}" />
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemSeparatorLightFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemSeparatorDarkFillKey}" Color="{StaticResource Color_034}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalOuterBorderFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalInnerBorderFillKey}" Color="{StaticResource WarewolfLightGrey}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupHottrackOuterBorderFillKey}" Color="{StaticResource Color_038}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorOuterBorderFillKey}" Color="{StaticResource Color_011}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorFooterFillKey}" Color="{StaticResource Color_009}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorItemHottrackOuterBorderFillKey}" Color="{StaticResource Color_003}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorItemHottrackInnerBorderFillKey}" Color="{StaticResource Color_003}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorLightTextFillKey}" Color="{StaticResource Color_001}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorDarkTextFillKey}" Color="{StaticResource Color_001}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentGroupFillKey}" x:Shared="false" Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>
-
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.GrayTextBrushKey}" Color="{StaticResource Color_001}" Opacity="0.3" />
-
     <SolidColorBrush x:Key="PreviewStyleKeyBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" Opacity="0.3" />
-
     <SolidColorBrush x:Key="TileAreaSplitterThumbBorderBrush" Color="{StaticResource Color_004}"/>
-
     <SolidColorBrush x:Key="TileAreaSplitterThumbBackground" Color="{StaticResource Color_008}"/>
-
     <SolidColorBrush x:Key="PaneSplitterBackground" Color="{StaticResource Color_011}"/>
-
     <SolidColorBrush x:Key="DockTypeIndicatorTransparentBrush" Color="{StaticResource Color_004}"/>
-
     <SolidColorBrush x:Key="DockIndicatorBackgroundBrush" Color="{StaticResource Color_009}" Opacity="0.4"/>
-
     <SolidColorBrush x:Key="DockIndicatorBorderbrush" Color="{StaticResource Color_004}"/>
-
     <SolidColorBrush x:Key="DocTypeIndicatorLIghtStrokeBrush" Color="{StaticResource WarewolfDarkGrey}"/>
-
     <SolidColorBrush x:Key="DockTypeIndicatorStrokeBrush" Color="{StaticResource Color_011}"/>
-
     <SolidColorBrush x:Key="DocTypeIndicatorLightBackgroundBrush"  Color="{StaticResource WarewolfDarkGrey}" />
-
     <SolidColorBrush x:Key="DocTypeIndicatorBackgroundBrush" Color="{StaticResource Color_005}" />
-
     <SolidColorBrush x:Key="PreviewIndicatorBackground" Color="{StaticResource Color_011}"  />
-
     <SolidColorBrush x:Key="PreviewIndicatorBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-
     <SolidColorBrush x:Key="DockableTabGroupTemplateBackground" Color="{StaticResource Color_011}" />
     
     <!--  ToolWindow Brushes  -->

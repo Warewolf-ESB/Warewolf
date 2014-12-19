@@ -1,0 +1,3027 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Controls.Primitives.CustomCursorHelper">
+            <summary>
+            Helper class for managing the display of a custom Cursor for a given element using either a DataTemplate or Cursor.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.CustomCursorHelper.HideTemplate">
+            <summary>
+            Forces the cursor to be hidden if the datatemplate is being used.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.CustomCursorHelper.Initialize(System.Windows.Input.Cursor,System.Windows.DataTemplate,System.Windows.Input.Cursor)">
+            <summary>
+            Changes the state of the cursor with the specified values in an atomic operation.
+            </summary>
+            <param name="customCursor">The new cursor or null</param>
+            <param name="cursorTemplate">The new custom template or null</param>
+            <param name="fallbackCursor">The fallback/default cursor</param>
+            <returns>Returns true if the cursor source has been changed.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.CustomCursorHelper.ShowTemplate">
+            <summary>
+            Used to force the cursor to be shown for an element when using a custom cursor template.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Primitives.CustomCursorHelper.CursorTemplate">
+            <summary>
+            The DataTemplate of the custom cursor
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Primitives.CustomCursorHelper.CustomCursor">
+            <summary>
+            Returns or sets the preferred cursor for the associated element.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Primitives.CustomCursorHelper.FallbackCursor">
+            <summary>
+            The cursor that should be used as a last resort
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Primitives.CustomCursorHelper.HorizontalOffset">
+            <summary>
+            Returns or sets the horizontal offset of the <see cref="P:Infragistics.Controls.Primitives.CustomCursorHelper.CursorTemplate"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Primitives.CustomCursorHelper.VerticalOffset">
+            <summary>
+            Returns or sets the vertical offset of the <see cref="P:Infragistics.Controls.Primitives.CustomCursorHelper.CursorTemplate"/>
+            </summary>
+        </member>
+        <member name="E:Infragistics.Windows.Ime.ImeEditorHelperState.PropertyChanged">
+            <summary>
+            Event raised when a property on the object changes.
+            </summary>
+        </member>
+        <member name="T:Infragistics.AutomationPeers.XamRichTextEditorAutomationPeer">
+            <summary>
+            Exposes <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> types to UI Automation
+            </summary>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamRichTextEditorAutomationPeer.#ctor(Infragistics.Controls.Editors.XamRichTextEditor)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.AutomationPeers.XamRichTextEditorAutomationPeer"/>
+            </summary>
+            <param name="owner">The <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> that the peer represents</param>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamRichTextEditorAutomationPeer.GetAutomationControlTypeCore">
+            <summary>
+            Returns an enumeration indicating the type of control represented by the automation peer.
+            </summary>
+            <returns>The <b>Custom</b> enumeration value</returns>
+        </member>
+        <member name="M:Infragistics.AutomationPeers.XamRichTextEditorAutomationPeer.GetClassNameCore">
+            <summary>
+            Returns the name of the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>
+            </summary>
+            <returns>A string that contains 'XamSyntaxEditor'</returns>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichTextEditorCommand">
+            <summary>
+            Class for all commands associated with the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichTextEditorCommand.#ctor(Infragistics.Controls.Editors.RichTextEditorCommandType)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="commandType"></param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichTextEditorCommand.CanExecute(System.Object)">
+            <summary>
+            Reports if the command can be executed on the object inputted.
+            </summary>
+            <param name="parameter">The object that the command will be executed against.</param>
+            <returns>True if the object can support this command.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichTextEditorCommand.Execute(System.Object)">
+            <summary>
+            Executes the command 
+            </summary>
+            <param name="parameter">The <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> object that will be executed against.</param>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichTextEditorCommandSource">
+            <summary>
+            The command source object for <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> object.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichTextEditorCommandSource.ResolveCommand">
+            <summary>
+            Generates the <see cref="T:System.Windows.Input.ICommand"/> object that will execute the command.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.RichTextEditorCommandSource.CommandType">
+            <summary>
+            Gets or sets the RichTextEditorCommand which is to be executed by the command.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase">
+            <summary>
+            An abstract base class for all adornment providers.
+            </summary>
+            <remarks>
+            <para class="body">
+            Adornment generators supply adorners for a particular <see cref="P:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.AdornmentLayer"/> in a <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </para>
+            </remarks>
+            <seealso cref="P:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.AdornmentLayer"/>
+            <seealso cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>
+            <seealso cref="T:Infragistics.Controls.Editors.AdornmentGeneratorProvider"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.#ctor(Infragistics.Controls.Editors.RichDocumentView,Infragistics.Controls.Editors.AdornmentLayerInfo)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="documentView">The <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> associated with this <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/></param>
+            <param name="layerInfo">The <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> that identifies the <see cref="P:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.AdornmentLayer"/> that will be hosting the adornments created by this <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/></param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.OnRefreshAdornments">
+            <summary>
+            Called when settings in the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> (that could affect the display of adornments) have changed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.OnTextAreaInitialized">
+            <summary>
+            Called when the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/> has been initialized.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.OnUnloaded">
+            <summary>
+            Called when the generator is unloaded.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.AdornmentLayer">
+            <summary>
+            Returns the <see cref="P:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.AdornmentLayer"/> that this <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/> is supplying adornments for (read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.DocumentView">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> that is associated with this <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/> (read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase.RichTextEditor">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> that this <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/> is hosted by (read only)
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.AdornmentGeneratorProvider">
+            <summary>
+            A factory class that creates instances of an <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/> derived type. 
+            </summary>
+            <remarks>
+            <para class="body">
+            The <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/> derived type to be created is passed in the constructor.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.AdornmentGeneratorProvider.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.AdornmentGeneratorProvider.CreateAdornmentGenerator(Infragistics.Controls.Editors.RichDocumentView)">
+            <summary>
+            Returns an <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/> for the specified <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> 
+            </summary>
+            <param name="documentView">The <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> for which to create the <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/></param>
+            <returns>An <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/> instance.</returns>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.AdornmentInfo">
+            <summary>
+            A class that holds data related to an adornment.  Adornments are added to an <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentInfo.Element">
+            <summary>
+            Returns the element associated with the adornment. (read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentInfo.PixelLocation">
+            <summary>
+            Returns the Point (in text area coordinates) that represents the pixel location of the associated adornment <see cref="P:Infragistics.Controls.Editors.AdornmentInfo.Element"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentInfo.UserData">
+            <summary>
+            Returns/sets an object containing arbitrary data to associate with the adornment.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.AdornmentInfo.PropertyChanged">
+            <summary>
+            Raised when a property value changes.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.AdornmentLayerInfo">
+            <summary>
+            Provides the data necessary to create an <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>.
+            </summary>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+            <seealso cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>
+            <seealso cref="T:Infragistics.Controls.Editors.AdornmentLayerKeys"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.AdornmentLayerInfo.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="key">The string identifier assigned to <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s created from this <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>.</param>
+            <param name="beforeKeys">An array of string keys that represent the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s before which the current <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/> should be sorted.</param>
+            <param name="afterKeys">An array of string keys that represent the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s after which the current <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/> should be sorted.</param>
+            <seealso cref="T:Infragistics.Controls.Editors.AdornmentLayerKeys"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.BackgroundContent">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> used to create the 'BackgroundContent' <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>. (static, read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.Selection">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> used to create the 'Selection' <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>. (static, read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.SpellingError">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> used to create the 'SpellingError' <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>. (static, read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.MiddleContent">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> used to create the 'MiddleContent' <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>. (static, read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.ForegroundContent">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> used to create the 'ForegroundContent ' <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>. (static, read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.Caret">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> used to create the 'Caret' <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>. (static, read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.EditGlyphs">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> used to create the 'EditGlyphs' <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>. (static, read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.After">
+            <summary>
+            An array of string keys that represent the items after which the current item should be sorted.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.Before">
+            <summary>
+            An array of string keys that represent the items before which the current item should be sorted.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.AdornmentLayerInfo.Key">
+            <summary>
+            The string key of the current item.  This key will be referenced in the <see cref="P:Infragistics.Controls.Editors.AdornmentLayerInfo.Before"/> and <see cref="P:Infragistics.Controls.Editors.AdornmentLayerInfo.After"/> lists of other items.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.AdornmentLayerKeys">
+            <summary>
+            A class that exposes the positioning keys used by the built-in <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s.  
+            </summary>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+            <seealso cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>
+            <seealso cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.AdornmentLayerKeys.BackgroundContentLayer">
+            <summary>
+            A constant used by the background content layer to specify its <see cref="P:Infragistics.ISupportPositioning.Key"/>.
+            </summary>
+            <para class="body">
+            When creating a custom <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> choose a a set of 'before' and 'after' keys (see <see cref="T:Infragistics.ISupportPositioning"/>) that places it in the desired location relative to the built-in <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>s. 
+            </para>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.AdornmentLayerKeys.SelectionLayer">
+            <summary>
+            A constant used by the selection layer to specify its <see cref="P:Infragistics.ISupportPositioning.Key"/>.
+            </summary>
+            <para class="body">
+            When creating a custom <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> choose a a set of 'before' and 'after' keys (see <see cref="T:Infragistics.ISupportPositioning"/>) that places it in the desired location relative to the built-in <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>s. 
+            </para>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.AdornmentLayerKeys.SpellingErrorLayer">
+            <summary>
+            A constant used by the spelling error layer to specify its <see cref="P:Infragistics.ISupportPositioning.Key"/>.
+            </summary>
+            <para class="body">
+            When creating a custom <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> choose a a set of 'before' and 'after' keys (see <see cref="T:Infragistics.ISupportPositioning"/>) that places it in the desired location relative to the built-in <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>s. 
+            </para>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.AdornmentLayerKeys.MiddleContentLayer">
+            <summary>
+            A constant used by the middle content layer to specify its <see cref="P:Infragistics.ISupportPositioning.Key"/>.
+            </summary>
+            <para class="body">
+            When creating a custom <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> choose a a set of 'before' and 'after' keys (see <see cref="T:Infragistics.ISupportPositioning"/>) that places it in the desired location relative to the built-in <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>s. 
+            </para>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.AdornmentLayerKeys.ForegroundContentLayer">
+            <summary>
+            A constant used by the foreground content layer to specify its <see cref="P:Infragistics.ISupportPositioning.Key"/>.
+            </summary>
+            <para class="body">
+            When creating a custom <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> choose a a set of 'before' and 'after' keys (see <see cref="T:Infragistics.ISupportPositioning"/>) that places it in the desired location relative to the built-in <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>s. 
+            </para>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.AdornmentLayerKeys.CaretLayer">
+            <summary>
+            A constant used by the caret layer to specify its <see cref="P:Infragistics.ISupportPositioning.Key"/>.
+            </summary>
+            <para class="body">
+            When creating a custom <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> choose a a set of 'before' and 'after' keys (see <see cref="T:Infragistics.ISupportPositioning"/>) that places it in the desired location relative to the built-in <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>s. 
+            </para>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.AdornmentLayerKeys.EditGlyphsLayer">
+            <summary>
+            A constant used by the caret layer to specify its <see cref="P:Infragistics.ISupportPositioning.Key"/>.
+            </summary>
+            <para class="body">
+            When creating a custom <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> choose a a set of 'before' and 'after' keys (see <see cref="T:Infragistics.ISupportPositioning"/>) that places it in the desired location relative to the built-in <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>s. 
+            </para>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.CaretAdornmentGenerator.OnRefreshAdornments">
+            <summary>
+            Called when settings in the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> (that could affect the display of adornments) have changed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.CaretAdornmentGenerator.OnTextAreaInitialized">
+            <summary>
+            Called when the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea">RichDocumentViewTextArea</see> has been initialized.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.CaretAdornmentGenerator.OnUnloaded">
+            <summary>
+            Called when the generator is unloaded.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.EditGlyphsAdornmentGenerator.OnRefreshAdornments">
+            <summary>
+            Called when settings in the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> (that could affect the display of adornments) have changed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.EditGlyphsAdornmentGenerator.OnTextAreaInitialized">
+            <summary>
+            Called when the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea">RichDocumentViewTextArea</see> has been initialized.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.EditGlyphsAdornmentGenerator.OnUnloaded">
+            <summary>
+            Called when the generator is unloaded.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.SelectionAdornmentGenerator.OnRefreshAdornments">
+            <summary>
+            Called when settings in the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> (that could affect the display of adornments) have changed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.SelectionAdornmentGenerator.OnTextAreaInitialized">
+            <summary>
+            Called when the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea">RichDocumentViewTextArea</see> has been initialized.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.SelectionAdornmentGenerator.OnUnloaded">
+            <summary>
+            Called when the generator is unloaded.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.SelectionAdornmentGeneratorProvider.CreateAdornmentGenerator(Infragistics.Controls.Editors.RichDocumentView)">
+            <summary>
+            Returns an <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/> for the specified <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> 
+            </summary>
+            <param name="documentView">The <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> for which to create the <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/></param>
+            <returns>An <see cref="T:Infragistics.Controls.Editors.RichTextAdornmentGeneratorBase"/> instance.</returns>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Caret">
+            <summary>
+            Represents the insertion point in the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Caret.SetDocumentOffset(System.Int32)">
+            <summary>
+            Sets the offset within the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> at which the Caret should be logically positioned.  
+            The Caret's physical location in the display is adjusted accordingly.
+            </summary>
+            <param name="documentOffset">The offset within the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> at which to position the Caret.</param>
+            <seealso cref="P:Infragistics.Controls.Editors.Caret.DocumentOffset"/>
+            <seealso cref="P:Infragistics.Controls.Editors.Caret.PixelLocation"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Caret.Brush">
+            <summary>
+            Returns the brush used to render the caret. (read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Caret.DocumentOffset">
+            <summary>
+            Returns the versioned offset of the caret in the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> associated with the current active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> (read-only)
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.Caret.PixelLocation"/>
+            <seealso cref="M:Infragistics.Controls.Editors.Caret.SetDocumentOffset(System.Int32)"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Caret.Height">
+            <summary>
+            Returns the height of the caret in pixels. (read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Caret.IsVisible">
+            <summary>
+            Returns true if the caret is visible. (read-only)
+            </summary>
+            <para class="note">
+            <b>Note:</b> This property will always return false if the containing <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is not active since 
+            the caret is only displayed in active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>s.
+            </para>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.IsActive"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Caret.PixelLocation">
+            <summary>
+            Returns the Point (in text area coordinates) that represents the top left corner of the Caret. (read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Caret.Width">
+            <summary>
+            Returns the width of the caret in pixels. (read only)
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.Caret.PropertyChanged">
+            <summary>
+            Event raised when a property on the object changes.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.EditorUndoTransaction">
+            <summary>
+            A custom undo/redo transaction for <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> operations.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.EditorUndoTransaction.CreateExecuteTransaction(Infragistics.Undo.UndoExecuteContext)">
+            <summary>
+            Creates a transaction
+            </summary>
+            <param name="executeInfo">The necessary context.</param>
+            <returns>The transaction.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.EditorUndoTransaction.Execute(Infragistics.Undo.UndoExecuteContext)">
+            <summary>
+            Used to perform the associated action.
+            </summary>
+            <param name="executeInfo">Provides information about the undo/redo operation being executed.</param>
+            <returns>Returns true if some action was taken. Otherwise false is returned. In either case the object was removed from the undo stack.</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.EditorUndoTransaction.Target">
+            <summary>
+            Returns the target object that will be affected by the <see cref="T:Infragistics.Undo.UndoUnit"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.MarginBase">
+            <summary>
+            An abstract base class for creating classes that provide an implementation for a <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> Margin.
+            </summary>
+            <remarks>
+            <para class="body">
+            This is the base class for all Margins.
+            </para>
+            </remarks>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+            <seealso cref="T:Infragistics.Controls.Editors.MarginKeys"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.MarginBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.MarginBase.CreatePresenter(Infragistics.Controls.Editors.RichDocumentView)">
+            <summary>
+            Returns an instance of the element that represents the Margin within the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <param name="documentView">The <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> for which the Margin presenter should be created.</param>
+            <returns>An instance of a FrameworkElement derived class the represents the Margin in the UI.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.MarginBase.OnPresenterDiscarded(System.Windows.FrameworkElement)">
+            <summary>
+            Called when the margin's associated presenter element is being discarded to give the margin an opportunity to cleanup any allocated resources.
+            </summary>
+            <param name="discardedPresenter">The margin presenter element that is being discarded.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.MarginBase.Location">
+            <summary>
+            Returns the location of the Margin within the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> (read only).
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewMarginLocation"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.MarginBase.After">
+            <summary>
+            An array of string keys that represent the items after which the current item should be sorted.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.MarginBase.Before">
+            <summary>
+            An array of string keys that represent the items before which the current item should be sorted.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.MarginBase.Key">
+            <summary>
+            The string key of the current item.  This key will be referenced in the <see cref="P:Infragistics.Controls.Editors.MarginBase.Before"/> and <see cref="P:Infragistics.Controls.Editors.MarginBase.After"/> lists of other items.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.MarginKeys">
+            <summary>
+            A class that exposes the positioning keys used by the built-in Margins.  
+            </summary>
+            <para class="note">
+            <b>Note:</b> Margins that are positioned 'before' other margins (as determined by the Margin's implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the text area.
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.MarginKeys.HorizontalRulerMargin">
+            <summary>
+            A constant used by the <see cref="F:Infragistics.Controls.Editors.MarginKeys.HorizontalRulerMargin"/> to specify its <see cref="P:Infragistics.ISupportPositioning.Key"/>.
+            </summary>
+            <para class="body">
+            When creating a custom Margin choose a set of 'before' and 'after' keys (see <see cref="T:Infragistics.ISupportPositioning"/>) that places it in the desired location relative to the built-in Margins. 
+            </para>
+            <para class="note">
+            <b>Note:</b> Margins that are positioned 'before' other margins (as determined by the Margin's implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the text area.
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.MarginKeys.VerticalRulerMargin">
+            <summary>
+            A constant used by the <see cref="F:Infragistics.Controls.Editors.MarginKeys.VerticalRulerMargin"/> to specify its <see cref="P:Infragistics.ISupportPositioning.Key"/>.
+            </summary>
+            <para class="body">
+            When creating a custom Margin choose a set of 'before' and 'after' keys (see <see cref="T:Infragistics.ISupportPositioning"/>) that places it in the desired location relative to the built-in Margins. 
+            </para>
+            <para class="note">
+            <b>Note:</b> Margins that are positioned 'before' other margins (as determined by the Margin's implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the text area.
+            </para>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.RichDocumentView">
+            <summary>
+            A class that represents a view into the document being edited in the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> .  
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.Activate">
+            <summary>
+            Makes this <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> the active view.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnDocumentChanged(Infragistics.Documents.RichText.RichTextDocument,Infragistics.Documents.RichText.RichTextDocument)">
+            <summary>
+            Called when the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Document"/> property has changed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnLoaded">
+            <summary>
+            Called when the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is loaded.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnMouseLeftControl">
+            <summary>
+            Called when the mouse leaves the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> control.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnUnloaded">
+            <summary>
+            Called when the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is unloaded.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.RefreshLayerLayout(Infragistics.Controls.Editors.AdornmentLayerInfo)">
+            <summary>
+            Refreshes the layout of the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/> described by the specified <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/>
+            </summary>
+            <param name="layerInfo">The <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> that describes the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/> whose layout should be refreshed.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.RefreshLayersLayout">
+            <summary>
+            Refreshes the layout of all <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s associated with this <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnActivated">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.RichDocumentView.Activated"/> event.
+            </summary>
+            <seealso cref="M:Infragistics.Controls.Editors.RichDocumentView.OnDeactivated"/>
+            <seealso cref="E:Infragistics.Controls.Editors.RichDocumentView.Activated"/>
+            <seealso cref="E:Infragistics.Controls.Editors.RichDocumentView.Deactivated"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnDeactivated">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.RichDocumentView.Deactivated"/> event.
+            </summary>
+            <seealso cref="M:Infragistics.Controls.Editors.RichDocumentView.OnActivated"/>
+            <seealso cref="E:Infragistics.Controls.Editors.RichDocumentView.Activated"/>
+            <seealso cref="E:Infragistics.Controls.Editors.RichDocumentView.Deactivated"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnLayoutChanged(Infragistics.Controls.Editors.RichDocumentViewLayoutChangedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.RichDocumentView.LayoutChanged"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.RichDocumentView.LayoutChanged"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewLayoutChangedEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnSelectionChanged(Infragistics.Controls.Editors.RichTextSelectionChangedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.RichDocumentView.SelectionChanged"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.RichDocumentView.SelectionChanged"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichTextSelectionChangedEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnFocusReceived">
+            <summary>
+            Called when the view receives focus.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.OnFocusLost">
+            <summary>
+            Called when the view loses focus.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.Document">
+            <summary>
+            Returns the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> associated with the view.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.HorizontalViewOffset">
+            <summary>
+            Returns/sets the zero-based horizontal pixel offset of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            </summary>
+            <remarks>
+            The value exposed by this property will always be a positive value.  If an attempt is made to set it to a negative value, the property will be set to zero instead.
+            The maximum value is based on the length of the longest line encountered in the display as well as the width of the text area.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.IsActive">
+            <summary>
+            Returns whether the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is the current active view. (read-only).
+            </summary>
+            <seealso cref="M:Infragistics.Controls.Editors.RichDocumentView.OnActivated"/>
+            <seealso cref="M:Infragistics.Controls.Editors.RichDocumentView.OnDeactivated"/>
+            <seealso cref="E:Infragistics.Controls.Editors.RichDocumentView.Activated"/>
+            <seealso cref="E:Infragistics.Controls.Editors.RichDocumentView.Deactivated"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.HorizontalScrollBarVisibility">
+            <summary>
+            Returns the visibility of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>'s horizontal scrollbar.  (read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.LayoutStyle">
+            <summary>
+            Returns/sets a value that specifies how the content of the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> is laid out in the editing area of a <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>. 
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewLayoutStyle"/>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.RichTextEditor">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> associated with the view.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.Selection">
+            <summary>
+            Returns/sets the <see cref="P:Infragistics.Controls.Editors.RichDocumentView.Selection"/>associated with the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.Selection"/>
+            <seealso cref="T:Infragistics.Documents.RichText.Range"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.VerticalScrollBarVisibility">
+            <summary>
+            Returns the visibility of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>'s vertical scrollbar.  (read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.VerticalViewOffset">
+            <summary>
+            Returns/sets the zero-based vertical pixel offset of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            </summary>
+            <remarks>
+            The value exposed by this property will always be a positive value.  If an attempt is made to set it to a negative value, the property will be set to zero instead.
+            The maximum value is based on the calculated render height )in pixels) of the entire <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichDocumentView.ViewLocation">
+            <summary>
+            Returns an <see cref="T:Infragistics.Controls.Editors.RichDocumentViewLocation"/> enumeration that specifies the location of this <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> within the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> control. (read-only).
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewLocation"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.RichDocumentView.Activated">
+            <summary>
+            Raised after the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> has been activated.
+            </summary>
+            <seealso cref="M:Infragistics.Controls.Editors.RichDocumentView.OnActivated"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.RichDocumentView.Deactivated">
+            <summary>
+            Raised after the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> has been deactivated.
+            </summary>
+            <seealso cref="M:Infragistics.Controls.Editors.RichDocumentView.OnActivated"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.RichDocumentView.LayoutChanged">
+            <summary>
+            Raised after the layout of the lines in the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> has changed.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewLayoutChangedEventArgs"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.RichDocumentView.SelectionChanged">
+            <summary>
+            Raised after the <see cref="T:Infragistics.Documents.RichText.Selection"/> is changed in the view.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichTextSelectionChangedEventArgs"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.Selection"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.RichDocumentView.PropertyChanged">
+            <summary>
+            Event raised when a property on the object changes.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey.GetHashCode">
+            <summary>
+            Returns the hash code of the structure.
+            </summary>
+            <returns>A hash code for this instance</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey.Equals(System.Object)">
+            <summary>
+            Compares the specified object to this object to see if they are equivalent.
+            </summary>
+            <param name="obj">The object to compare</param>
+            <returns>True if the objects are equal; otherwise false</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey.op_Equality(Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey,Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey)">
+            <summary>
+            Compares the values of two <see cref="T:Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey"/> structures for equality
+            </summary>
+            <param name="item1">The first structure</param>
+            <param name="item2">The other structure</param>
+            <returns>true if the two instances are equal; otherwise false</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey.op_Inequality(Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey,Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey)">
+            <summary>
+            Compares the values of two <see cref="T:Infragistics.Controls.Editors.RichDocumentView.CaretLayoutInfoCacheKey"/> structures for inequality
+            </summary>
+            <param name="item1">The first structure</param>
+            <param name="item2">The other structure</param>
+            <returns>true if the two instances are not equal; otherwise false</returns>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer">
+            <summary>
+            A panel that manages and arranges adornments at a specific level in the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.Primitives.AdornmentLayer.AdornmentLayerInfo"/>
+            <seealso cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.AdornmentLayer.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges child elements.
+            </summary>
+            <param name="finalSize">The final size used for arranging elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.AdornmentLayer.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures child elements
+            </summary>
+            <param name="availableSize">The size available for child elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.AdornmentLayer.AddAdornment(System.Windows.UIElement,System.Windows.Point,System.Object)">
+            <summary>
+            Adds an adornment to the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>
+            </summary>
+            <param name="adornmentElement">The element that represents the adornment.</param>
+            <param name="adornmentLocation">The location (in text area coordinates) within the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/> at which to position the adornment.</param>
+            <param name="userData">An arbitrary piece of data to store with the adornment.</param>
+            <returns>An <see cref="T:Infragistics.Controls.Editors.AdornmentInfo"/> instance representing the aodrnment.</returns>
+            <seealso cref="T:Infragistics.Controls.Editors.AdornmentInfo"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.AdornmentLayer.RemoveAdornment(Infragistics.Controls.Editors.AdornmentInfo)">
+            <summary>
+            Removes an adornment from the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>
+            </summary>
+            <param name="adornmentInfo">The <see cref="T:Infragistics.Controls.Editors.AdornmentInfo"/> associated with the adornment to remove.</param>
+            <returns>True if the adornment represented by the specified <see cref="T:Infragistics.Controls.Editors.AdornmentInfo"/> was found and removed, otherwise false.</returns>
+            <seealso cref="T:Infragistics.Controls.Editors.AdornmentInfo"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.AdornmentLayer.DocumentView">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> that this <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/> belongs to. (read only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.AdornmentLayer.Key">
+            <summary>
+            The string Key assigned to the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.Primitives.AdornmentLayer.AdornmentLayerInfo"/>
+            <seealso cref="T:Infragistics.ISupportPositioning"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.ContentAdornmentLayerBase.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges child elements.
+            </summary>
+            <param name="finalSize">The final size used for arranging elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.ContentAdornmentLayerBase.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures child elements
+            </summary>
+            <param name="availableSize">The size available for child elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.BorderRenderingSurface.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures child elements
+            </summary>
+            <param name="availableSize">The size available for child elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.BorderRenderingSurface.OnRender(System.Windows.Media.DrawingContext)">
+            <summary>
+            Invoked when the element should render,
+            </summary>
+            <param name="drawingContext">An initialized DrawingContext that should be used for all drawing within this method.</param>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichTextCaretPresenter">
+            <summary>
+            An element that represents the editing caret.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.Primitives.RichTextCaretPresenter.Caret"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Caret"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichTextCaretPresenter.OnApplyTemplate">
+            <summary>
+            Called when a new template is applied. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.RichTextCaretPresenter.Caret">
+            <summary>
+            Returns the caret associated with this caret presenter. (read-only)
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.Primitives.RichTextCaretPresenter.Caret"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.ContentElementClippingHost.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges child elements.
+            </summary>
+            <param name="finalSize">The final size used for arranging elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.ContentElementClippingHost.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures child elements
+            </summary>
+            <param name="availableSize">The size available for child elements.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.HyperlinkToolTipPresenter">
+            <summary>
+            An element that represents the content for a hyperlink tooltip.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.HyperlinkToolTipPresenter.ToolTipPrompt">
+            <summary>
+            Returns the tooltip prompt associated with this HyperlinkToolTipPresenter. (read-only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.HyperlinkToolTipPresenter.ToolTipText">
+            <summary>
+            Returns the tooltip text associated with this HyperlinkToolTipPresenter. (read-only)
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.ImageContainer.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges child elements.
+            </summary>
+            <param name="finalSize">The final size used for arranging elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.ImageContainer.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures child elements
+            </summary>
+            <param name="availableSize">The size available for child elements.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Controls.Primitives.LayoutTransformer">
+            <summary>
+            Represents a control that applies a layout transformation to its Content.
+            </summary>
+            <QualityBand>Preview</QualityBand>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer.TransformRootName">
+            <summary>
+            Name of the TransformRoot template part.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer.PresenterName">
+            <summary>
+            Name of the Presenter template part.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer.AcceptableDelta">
+            <summary>
+            Acceptable difference between two doubles.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer.DecimalsAfterRound">
+            <summary>
+            Number of decimals to round the Matrix to.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer.LayoutTransformProperty">
+            <summary>
+            Identifies the LayoutTransform DependencyProperty.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer._transformRoot">
+            <summary>
+            Root element for performing transformations.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer._contentPresenter">
+            <summary>
+            ContentPresenter element for displaying the content.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer._matrixTransform">
+            <summary>
+            RenderTransform/MatrixTransform applied to _transformRoot.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer._transformation">
+            <summary>
+            Transformation matrix corresponding to _matrixTransform.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Primitives.LayoutTransformer._childActualSize">
+            <summary>
+            Actual DesiredSize of Child element (the value it returned from its MeasureOverride method).
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.#ctor">
+            <summary>
+            Initializes a new instance of the LayoutTransformer class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.OnApplyTemplate">
+            <summary>
+            Builds the visual tree for the LayoutTransformer control when a new 
+            template is applied.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.LayoutTransformChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Handles changes to the Transform DependencyProperty.
+            </summary>
+            <param name="o">Source of the change.</param>
+            <param name="e">Event args.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.ApplyLayoutTransform">
+            <summary>
+            Applies the layout transform on the LayoutTransformer control content.
+            </summary>
+            <remarks>
+            Only used in advanced scenarios (like animating the LayoutTransform). 
+            Should be used to notify the LayoutTransformer control that some aspect 
+            of its Transform property has changed. 
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.ProcessTransform(System.Windows.Media.Transform)">
+            <summary>
+            Processes the Transform to determine the corresponding Matrix.
+            </summary>
+            <param name="transform">Transform to process.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.GetTransformMatrix(System.Windows.Media.Transform)">
+            <summary>
+            Walks the Transform(Group) and returns the corresponding Matrix.
+            </summary>
+            <param name="transform">Transform(Group) to walk.</param>
+            <returns>Computed Matrix.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Provides the behavior for the "Measure" pass of layout.
+            </summary>
+            <param name="availableSize">The available size that this element can give to child elements.</param>
+            <returns>The size that this element determines it needs during layout, based on its calculations of child element sizes.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Provides the behavior for the "Arrange" pass of layout.
+            </summary>
+            <param name="finalSize">The final area within the parent that this element should use to arrange itself and its children.</param>
+            <returns>The actual size used.</returns>
+            <remarks>
+            Using the WPF paramater name finalSize instead of Silverlight's finalSize for clarity
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.ComputeLargestTransformedSize(System.Windows.Size)">
+            <summary>
+            Compute the largest usable size (greatest area) after applying the transformation to the specified bounds.
+            </summary>
+            <param name="arrangeBounds">Arrange bounds.</param>
+            <returns>Largest Size possible.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.IsSizeSmaller(System.Windows.Size,System.Windows.Size)">
+            <summary>
+            Returns true if Size a is smaller than Size b in either dimension.
+            </summary>
+            <param name="a">Second Size.</param>
+            <param name="b">First Size.</param>
+            <returns>True if Size a is smaller than Size b in either dimension.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.RoundMatrix(System.Windows.Media.Matrix,System.Int32)">
+            <summary>
+            Rounds the non-offset elements of a Matrix to avoid issues due to floating point imprecision.
+            </summary>
+            <param name="matrix">Matrix to round.</param>
+            <param name="decimals">Number of decimal places to round to.</param>
+            <returns>Rounded Matrix.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.RectTransform(System.Windows.Rect,System.Windows.Media.Matrix)">
+            <summary>
+            Implements WPF's Rect.Transform on Silverlight.
+            </summary>
+            <param name="rect">Rect to transform.</param>
+            <param name="matrix">Matrix to transform with.</param>
+            <returns>Bounding box of transformed Rect.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.MatrixMultiply(System.Windows.Media.Matrix,System.Windows.Media.Matrix)">
+            <summary>
+            Implements WPF's Matrix.Multiply on Silverlight.
+            </summary>
+            <param name="matrix1">First matrix.</param>
+            <param name="matrix2">Second matrix.</param>
+            <returns>Multiplication result.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.MatrixHasInverse(System.Windows.Media.Matrix)">
+            <summary>
+            Implements WPF's Matrix.HasInverse on Silverlight.
+            </summary>
+            <param name="matrix">Matrix to check for inverse.</param>
+            <returns>True if the Matrix has an inverse.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Primitives.LayoutTransformer.DiagnosticWriteLine(System.String)">
+            <summary>
+            Outputs diagnostic info if DIAGNOSTICWRITELINE is defined.
+            </summary>
+            <param name="message">Diagnostic message.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Primitives.LayoutTransformer.LayoutTransform">
+            <summary>
+            Gets or sets the layout transform to apply on the LayoutTransformer 
+            control content.
+            </summary>
+            <remarks>
+            Corresponds to UIElement.LayoutTransform.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Primitives.LayoutTransformer.Child">
+            <summary>
+            Gets the child element being transformed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewLayoutPanel">
+            <summary>
+            A control that arranges <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter"/>s inside a <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewLayoutPanel.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewLayoutPanel.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges child elements.
+            </summary>
+            <param name="finalSize">The final size used for arranging elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewLayoutPanel.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures child elements
+            </summary>
+            <param name="availableSize">The size available for child elements.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewMarginPanel">
+            <summary>
+            A panel used to arrange <see cref="T:Infragistics.Controls.Editors.MarginBase"/> instances.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewMarginPanel.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewMarginPanel.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges child elements.
+            </summary>
+            <param name="finalSize">The final size used for arranging elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewMarginPanel.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures child elements
+            </summary>
+            <param name="availableSize">The size available for child elements.</param>
+            <returns></returns>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewMarginPanel.LocationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewMarginPanel.Location"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewMarginPanel.Location">
+            <summary>
+            Returns/sets the Location of the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewMarginPanel"/>.  The default is Left.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewMarginPanel.LocationProperty"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewMarginLocation"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewMiniSplitter">
+            <summary>
+            A splitter used inside the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> to control the size of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>s contained within it.
+            </summary>
+            <remarks>
+            </remarks>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewMiniSplitter.#ctor">
+            <summary>
+            Creates an instance of an RichDocumentViewMiniSplitter.  For internal use only.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewMiniSplitter.OnApplyTemplate">
+            <summary>
+            Called when a new template is applied. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter">
+            <summary>
+            An element that represents an <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> in the UI.
+            </summary>
+            <para class="body">
+            A <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> can display 1 or 2 editing areas which are independently scrollable views
+            into the document being edited. Each editing area is backed by an <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> which is 
+            represented in the UI by a <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter"/>.  
+            </para>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewLocation"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevel"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges child elements.
+            </summary>
+            <param name="finalSize">The final size used for arranging elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnApplyTemplate">
+            <summary>
+            Called when a new template is applied. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnGotFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            Called when the element receives the focus.
+            </summary>
+            <param name="e">Information about the event</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnKeyDown(System.Windows.Input.KeyEventArgs)">
+            <summary>
+            Called when a key is pressed
+            </summary>
+            <param name="e">Information about the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnKeyUp(System.Windows.Input.KeyEventArgs)">
+            <summary>
+            Called when a key is released.
+            </summary>
+            <param name="e">Information about the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnLostFocus(System.Windows.RoutedEventArgs)">
+            <summary>
+            Called when the element loses focus.
+            </summary>
+            <param name="e">Information about the event</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnMouseEnter(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Called when the mouse engters the element.
+            </summary>
+            <param name="e">Information about the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Called when the mouse leaves the element.
+            </summary>
+            <param name="e">Information about the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            Called when the left mouse button is pressed.
+            </summary>
+            <param name="e">Information about the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            Called when the left mouse button is released.
+            </summary>
+            <param name="e">Information about the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnMouseRightButtonDown(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            Called when the right mouse button is pressed.
+            </summary>
+            <param name="e">Information about the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnMouseRightButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            Called when the right mouse button is released.
+            </summary>
+            <param name="e">Information about the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnMouseMove(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Called when the mouse is moved
+            </summary>
+            <param name="e">Information about the event</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnMouseWheel(System.Windows.Input.MouseWheelEventArgs)">
+            <summary>
+            Invoked when the mouse wheel has been scrolled
+            </summary>
+            <param name="e">Provides information about the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.OnTextInput(System.Windows.Input.TextCompositionEventArgs)">
+            <summary>
+            Called before the System.Windows.UIElement.TextInput event occurs.
+            </summary>
+            <param name="e">A System.Windows.Input.TextCompositionEventArgs that contains the event data.</param>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.ScrollbarIntersectionBrushProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.ScrollbarIntersectionBrush"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.ScrollbarIntersectionBrush">
+            <summary>
+            Returns/sets the Brush used to color area at the intersection of the vertical and horizontal scrollbars.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewPresenter.ScrollbarIntersectionBrushProperty"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea">
+            <summary>
+            An element that represents the scrollbar area in a <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <remarks>
+            <para class="body">The element contains a scrollbar and a mini-splitter.</para>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.#ctor">
+            <summary>
+            Creates an instance of an RichDocumentViewScrollBarArea.  For internal use only.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.OnApplyTemplate">
+            <summary>
+            Called when a new template is applied. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.OrientationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.Orientation"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.ScrollBarVisibilityProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.ScrollBarVisibility"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.Orientation">
+            <summary>
+            Returns/sets the orientation of the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea"/>.  The default is Vertical.
+            </summary>
+            <remarks>
+            <para class="body">The <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea"/> contains a scrollbar and a mini-splitter.</para>
+            </remarks>
+            <seealso cref="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.OrientationProperty"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.ScrollBarVisibility">
+            <summary>
+            Returns the visibility of the contained scrollbar.  (read only)
+            </summary>
+            <remarks>
+            <para class="body">The <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea"/> contains a scrollbar and a mini-splitter.</para>
+            </remarks>
+            <seealso cref="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewScrollBarArea.ScrollBarVisibilityProperty"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewSplitter">
+            <summary>
+            A splitter used inside the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> to control the size of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>s contained within it.
+            </summary>
+            <remarks>
+            <para class="body">
+            The <see cref="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewSplitter.Orientation"/> property determines whether the splitter iscontrolling horizontal or vertical splits.
+            </para>
+            </remarks>
+            <seealso cref="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewSplitter.Orientation"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewSplitter.OnApplyTemplate">
+            <summary>
+            Called when a new template is applied. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewSplitter.OrientationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewSplitter.Orientation"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Primitives.RichDocumentViewSplitter.Orientation">
+            <summary>
+            Returns/sets an Orientation value that represents the kind of split that will be created with the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewSplitter"/>.  The default is Vertical.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.Primitives.RichDocumentViewSplitter.OrientationProperty"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea">
+            <summary>
+            An element that arranges <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s based on the positioning information exposed by the associated <see cref="T:Infragistics.Controls.Editors.AdornmentLayerInfo"/> via its implementation of <see cref="T:Infragistics.ISupportPositioning"/>.
+            </summary>
+            <para class="note">
+            <b>Note:</b> <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>s that are positioned 'before' other layers (as determined by the <see cref="T:Infragistics.Controls.Editors.Primitives.AdornmentLayer"/>'s implementation of the <see cref="T:Infragistics.ISupportPositioning"/> interface) are arranged closer to the bottom of the adornment layer stack within the <see cref="T:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea"/>. 
+            </para>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges child elements.
+            </summary>
+            <param name="finalSize">The final size used for arranging elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Primitives.RichDocumentViewTextArea.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures child elements
+            </summary>
+            <param name="availableSize">The size available for child elements.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.HiddenSymbolDisplayMode">
+            <summary>
+            Specifies options for displaying paragraph marks and other hidden symbols.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayMode"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.HiddenSymbolDisplayMode.DoNotDisplay">
+            <summary>
+            Specifies that no hidden symbols should be displayed.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayMode"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.HiddenSymbolDisplayMode.DisplayAllHiddenSymbols">
+            <summary>
+            Specifies that all hidden symbols should  be displayed.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayMode"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.RichDocumentViewLayoutStyle">
+            <summary>
+            Specifies how the content of a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> is laid out in the editing area of a <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> control.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.ViewLocation"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewLayoutStyle.WebLayout">
+            <summary>
+            Display the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> as it would look on a web page. 
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.LayoutStyle"/>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.RichDocumentViewLocation">
+            <summary>
+            Specifies the location of an <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> within the editing area of a <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> control.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.ViewLocation"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewLocation.Center">
+            <summary>
+            The <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is the only view being displayed by the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>
+            and it takes up the entire editing area of the control. 
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.ViewLocation"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewLocation.Upper">
+            <summary>
+            Specifies that the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is the upper view in a <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> with a horizontal split or the left view in a <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> with a vertical split.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.ViewLocation"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewLocation.Lower">
+            <summary>
+            Specifies that the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is the lower view in a <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> with a horizontal split or the right view in a <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> with a vertical split.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.ViewLocation"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.RichDocumentViewMarginLocation">
+            <summary>
+            Specifies the location of an <see cref="T:Infragistics.Controls.Editors.MarginBase"/> within an <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.MarginBase.Location"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewMarginLocation.Left">
+            <summary>
+            Specifies a <see cref="T:Infragistics.Controls.Editors.MarginBase"/> location that is on the left side of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.MarginBase.Location"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewMarginLocation.Top">
+            <summary>
+            Specifies a <see cref="T:Infragistics.Controls.Editors.MarginBase"/> location that is on the top of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.MarginBase.Location"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewMarginLocation.Right">
+            <summary>
+            Specifies a <see cref="T:Infragistics.Controls.Editors.MarginBase"/> location that is on the right side of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.MarginBase.Location"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewMarginLocation.Bottom">
+            <summary>
+            Specifies a <see cref="T:Infragistics.Controls.Editors.MarginBase"/> location that is on the bottom of the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.MarginBase.Location"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.RichDocumentViewTextUpdateMode">
+            <summary>
+            Specifies how new text should be applied to a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/>.
+            </summary>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.TextUpdateMode"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewTextUpdateMode.Insert">
+            <summary>
+            Specifies that new text should be inserted at the current cursor position.
+            </summary>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.TextUpdateMode"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichDocumentViewTextUpdateMode.Overwrite">
+            <summary>
+            Specifies that new text should overwrite the text at the current cursor position.
+            </summary>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.TextUpdateMode"/>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.RichTextEditorCommandType">
+            <summary>
+            An enumeration of available commands for the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> control.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Cut">
+            <summary>
+            Cuts the currently selected text to the clipboard. 
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Copy"/>
+            <seealso cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Paste"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Copy">
+            <summary>
+            Copies the currently selected text to the clipboard. 
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Cut"/>
+            <seealso cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Paste"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Paste">
+            <summary>
+            Pastes the current clipboard text at the current insertion point. 
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Cut"/>
+            <seealso cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Copy"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Undo">
+            <summary>
+            Undo the last edit activity.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Redo"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Redo">
+            <summary>
+            Redo the last undone edit activity.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Undo"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SplitEditArea">
+            <summary>
+            Split the editing area horizontally, creating two <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>s in the editing area of the control separated by a horizontal splitter. 
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.AllowDocumentViewSplitting"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.RemoveSplitFromEditArea">
+            <summary>
+            Remove the split from the editing area - a single <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> will occupy the entire editing area of the control. 
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.AllowDocumentViewSplitting"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.AllowEditAreaSplitting">
+            <summary>
+            Display a mini-splitter that allows the editing area to be split vertically, creating two <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>s in the editing area of the control separated by a vertical splitter. 
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.AllowDocumentViewSplitting"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.DoNotAllowEditAreaSplitting">
+            <summary>
+            Do not display a mini-splitter that allows the editing area to be split into multiple views - a single <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> always occupies the entire editing area of the control. 
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.AllowDocumentViewSplitting"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.DisplayHiddenSymbols">
+            <summary>
+            Display paragraph marks and other hidden formatting symbols.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayMode"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.HideHiddenSymbols">
+            <summary>
+            Hide paragraph marks and other hidden formatting symbols.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayMode"/>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.GrowFont">
+            <summary>
+            Increases the font size.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ShrinkFont">
+            <summary>
+            Decreases the font size.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.IncreaseIndentLevel">
+            <summary>
+            Increases the indent level of the paragraph.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.DecreaseIndentLevel">
+            <summary>
+            Decreases the indent level of the paragraph.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.IncreaseListIndentLevel">
+            <summary>
+            Increase the indentation of the list that contains the selection start.  If the selection start is not within a list then no action is performed.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.DecreaseListIndentLevel">
+            <summary>
+            Decrease the indentation of the list that contains the selection start.  If the selection start is not within a list then no action is performed.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.IncreaseParagraphOrListIndentLevel">
+            <summary>
+            If the selection start is not within the first paragraph of a list, this command does the same thing as the <see cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.IncreaseIndentLevel"/> command.  
+            If the selection start is within the first paragraph of a list, this command does the same thing as the <see cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.IncreaseListIndentLevel"/> command.  
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.DecreaseParagraphOrListIndentLevel">
+            <summary>
+            If the selection start is not within the first paragraph of a list, this command does the same thing as the <see cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.DecreaseIndentLevel"/> command.  
+            If the selection start is within the first paragraph of a list, this command does the same thing as the <see cref="F:Infragistics.Controls.Editors.RichTextEditorCommandType.DecreaseListIndentLevel"/> command.  
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ApplyBoldFormatting">
+            <summary>
+            Add bold formatting to the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.RemoveBoldFormatting">
+            <summary>
+            Remove bold formatting from the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleBoldFormatting">
+            <summary>
+            Toggles bold formatting on the selected text.  If the selected text contains both bold and non-bold formatting, then bold formatting will be removed from all the text in the selection.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ApplyItalicFormatting">
+            <summary>
+            Add italic formatting to the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.RemoveItalicFormatting">
+            <summary>
+            Remove italic formatting from the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleItalicFormatting">
+            <summary>
+            Toggles italic formatting on the selected text.  If the selected text contains both italic and non-italic formatting, then italic formatting will be removed from all the text in the selection.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ApplySingleStrikethroughFormatting">
+            <summary>
+            Add single strikethrough formatting to the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ApplyDoubleStrikethroughFormatting">
+            <summary>
+            Add double strikethrough formatting to the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.RemoveStrikethroughFormatting">
+            <summary>
+            Remove strikethrough formatting from the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.RemoveSingleStrikethroughFormatting">
+            <summary>
+            Remove single strikethrough formatting from the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.RemoveDoubleStrikethroughFormatting">
+            <summary>
+            Remove double strikethrough formatting from the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleSingleStrikethroughFormatting">
+            <summary>
+            Toggle single strikethrough formatting in the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleDoubleStrikethroughFormatting">
+            <summary>
+            Toggle double strikethrough formatting in the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleSingleUnderlineFormatting">
+            <summary>
+            Toggle single underline formatting in the selected text.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.AlignParagraphContentLeft">
+            <summary>
+            Left aligns content in the paragraph(s) that intersect the current selection.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.AlignParagraphContentRight">
+            <summary>
+            Right aligns content in the paragraph(s) that intersect the current selection.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.AlignParagraphContentCenter">
+            <summary>
+            Center aligns content in the paragraph(s) that intersect the current selection.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.AlignParagraphContentJustified">
+            <summary>
+            Justifies content in the paragraph(s) that intersect the current selection.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectAll">
+            <summary>
+            Selects all the content in the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Delete">
+            <summary>
+            Deletes the character at the current location.  If there is a non-zero length selection, the selected text is deleted.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.DeleteNextWord">
+            <summary>
+            Deletes the next word if the caret is between words or deletes to the end of the current word if the caret is within a word.  If there is a non-zero length selection, the selected text is deleted.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.DeletePreviousWord">
+            <summary>
+            Deletes the previous word if the caret is between words or deletes to the beginning of the current word if the caret is within a word.  If there is a non-zero length selection, the selected text is deleted.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ContextMenu">
+            <summary>
+            Displays the control's context menu at the current caret position.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveDown">
+            <summary>
+            Moves the caret down one line.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveUp">
+            <summary>
+            Moves the caret up one line.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveDownByPage">
+            <summary>
+            Moves the caret down one page.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveUpByPage">
+            <summary>
+            Moves the caret up one page.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveToPreviousCharacter">
+            <summary>
+            Moves the caret left one character.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveToNextCharacter">
+            <summary>
+            Moves the caret rightone character.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveToPreviousWord">
+            <summary>
+            Moves the caret to the start of the previous word.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveToNextWord">
+            <summary>
+            Moves the caret to the start of the next word.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveToStartOfDocument">
+            <summary>
+            Moves the caret to the start of the document.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveToEndOfDocument">
+            <summary>
+            Moves the caret to the end of the document.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveToStartOfLine">
+            <summary>
+            Moves the caret to the start of the current line.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.MoveToEndOfLine">
+            <summary>
+            Moves the caret to the end of the current line.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectDown">
+            <summary>
+            Extends the selection down one line.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectUp">
+            <summary>
+            Extends the selection up one line.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectDownByPage">
+            <summary>
+            Extends the selection down one page.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectUpByPage">
+            <summary>
+            Extends the selection up one page.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectPreviousCharacter">
+            <summary>
+            Extends the selection to include the previous character.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectNextCharacter">
+            <summary>
+            Extends the selection to include the next character.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectPreviousWord">
+            <summary>
+            Extends the selection to include the previous word.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectNextWord">
+            <summary>
+            Extends the selection to include the next word.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectToStartOfDocument">
+            <summary>
+            Extends the selection to the start of the document.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectToEndOfDocument">
+            <summary>
+            Extends the selection to the end of the document.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectToStartOfLine">
+            <summary>
+            Extends the selection to the start of the current line.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.SelectToEndOfLine">
+            <summary>
+            Extends the selection to the end of the current line.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleInsert">
+            <summary>
+            Toggles the typing mode between Insert and Overtype.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleSubscript">
+            <summary>
+            Toggles the formatting of the selected text to subscript format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleSuperscript">
+            <summary>
+            Toggles the formatting of the selected text to superscript format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.Backspace">
+            <summary>
+            Requests that a backspace be entered at the current position or over the current selection.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleBullets">
+            <summary>
+            Toggles bullet formatting on the line containing the caret or across the current selection.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.RichTextEditorCommandType.ToggleNumbering">
+            <summary>
+            Toggles number formatting on the line containing the caret or across the current selection.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.ActiveDocumentViewChangedEventArgs">
+            <summary>
+            Class that defines the arguments passed in the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentViewChanged"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.ActiveDocumentViewChangedEventArgs.#ctor(Infragistics.Controls.Editors.RichDocumentView,Infragistics.Controls.Editors.RichDocumentView)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="oldDocumentView">An <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> that represents the previous view.</param>
+            <param name="newDocumentView">An <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> that represents the new view.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.ActiveDocumentViewChangedEventArgs.NewDocumentView">
+            <summary>
+            Returns the new active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.ActiveDocumentViewChangedEventArgs.OldDocumentView">
+            <summary>
+            Returns the new active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.ContextMenuOpeningEventArgs">
+            <summary>
+            Class that defines the arguments passed in the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ContextMenuOpening"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.ContextMenuOpeningEventArgs.#ctor(Infragistics.Controls.Menus.XamContextMenu)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="contextMenu">The <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> that that is about to open.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.ContextMenuOpeningEventArgs.ContextMenu">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> that is about to open.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.ContextMenuClosingEventArgs">
+            <summary>
+            Class that defines the arguments passed in the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ContextMenuClosing"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.ContextMenuClosingEventArgs.#ctor(Infragistics.Controls.Menus.XamContextMenu)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="contextMenu">The <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> that that is about to close.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.ContextMenuClosingEventArgs.ContextMenu">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Menus.XamContextMenu"/> that is about to close.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.DocumentChangedEventArgs">
+            <summary>
+            Class that defines the arguments passed in the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.DocumentChanged"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.DocumentChangedEventArgs.#ctor(Infragistics.Documents.RichText.RichTextDocument,Infragistics.Documents.RichText.RichTextDocument)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="oldDocument">A <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> that represents the previous document.</param>
+            <param name="newDocument">A <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> that represents the new document.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.DocumentChangedEventArgs.NewDocument">
+            <summary>
+            Returns the new <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> being edited.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.DocumentChangedEventArgs.OldDocument">
+            <summary>
+            Returns the previous <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> being edited.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.RichDocumentViewLayoutChangedEventArgs">
+            <summary>
+            Class that defines the arguments passed in the <see cref="E:Infragistics.Controls.Editors.RichDocumentView.LayoutChanged"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichDocumentViewLayoutChangedEventArgs.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.HyperlinkExecutingEventArgs">
+            <summary>
+            Class that defines the arguments passed in the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.HyperlinkExecuting"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.HyperlinkExecutingEventArgs.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="uri">A string that represents the Uri to which the hyperlink will navigate.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.HyperlinkExecutingEventArgs.Uri">
+            <summary>
+            Returns/sets the Uri to which the hyperlink will navigate.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.HyperlinkExecutingEventArgs.WorkingDirectory">
+            <summary>
+            Returns/sets the working directory to use when the <see cref="P:Infragistics.Controls.Editors.HyperlinkExecutingEventArgs.Uri"/> represents a relative file reference.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.RichTextSelectionChangedEventArgs">
+            <summary>
+            Class that defines the arguments passed in the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.SelectionChanged"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.RichTextSelectionChangedEventArgs.#ctor(Infragistics.Controls.Editors.RichDocumentView)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="documentView">The <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> whose selection has changed.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.RichTextSelectionChangedEventArgs.DocumentView">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> whose selection has changed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.SplitStatusChangedEventArgs">
+            <summary>
+            Class that defines the arguments passed in the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.SplitStatusChanged"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.SplitStatusChangedEventArgs.#ctor(System.Boolean,System.Boolean)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="oldSplitStatus">The old split status.</param>
+            <param name="newSplitStatus">The new split status.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.SplitStatusChangedEventArgs.NewSplitStatus">
+            <summary>
+            Returns the new split status.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.SplitStatusChangedEventArgs.OldSplitStatus">
+            <summary>
+            Returns the old split status.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.ViewEventArgs">
+            <summary>
+            Class that defines the arguments passed in the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewLoaded"/> and <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewUnloaded"/> events.
+            </summary>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewLoaded"/>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewUnloaded"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.ViewEventArgs.#ctor(Infragistics.Controls.Editors.RichDocumentView)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="documentView">The <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> associated with the event.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.ViewEventArgs.DocumentView">
+            <summary>
+            Returns the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> associated with the event.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.FindReplaceManager">
+            <summary>
+            Provides Find Matches management as well as Find/Replace and highlight services for <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> 
+            and <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/>.  An instance of this class is accessible via the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.FindReplaceManager"/> property.
+            </summary>
+            <remarks>
+            The FindReplaceManager exposes methods for Finding (<see cref="M:Infragistics.Controls.Editors.FindReplaceManager.FindInDocument(System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)"/>, <see cref="M:Infragistics.Controls.Editors.FindReplaceManager.FindInSpan(System.String,Infragistics.Documents.RichText.DocumentSpan,System.String@,Infragistics.Documents.RichText.FindCriteria)"/>, <see cref="M:Infragistics.Controls.Editors.FindReplaceManager.FindInSpans(System.String,Infragistics.Documents.RichText.DocumentSpan[],System.String@,Infragistics.Documents.RichText.FindCriteria)">FindInSpans</see> and <see cref="M:Infragistics.Controls.Editors.FindReplaceManager.FindInSelection(System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)"/>) 
+            and Replacing (<see cref="M:Infragistics.Controls.Editors.FindReplaceManager.ReplaceCurrent(System.String,System.String@)"/> and <see cref="M:Infragistics.Controls.Editors.FindReplaceManager.ReplaceAll(System.String,System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)"/>) text.  The FindReplaceManager also implements IEnumerable and IEnumerator for iterating through
+            the <see cref="T:Infragistics.Documents.RichText.FindMatch"/>s generated by the most recent find operation.  Note that the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/> is modified to contain all 
+            occurrences of text discovered when a Find operation is performed.
+            
+            The FindReplaceManager also exposes <see cref="M:Infragistics.Controls.Editors.FindReplaceManager.Highlight(System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)"/> and <see cref="M:Infragistics.Controls.Editors.FindReplaceManager.ClearHighlighting"/> methods for managing the highlighting of one or more text strings.
+            Each call to <see cref="M:Infragistics.Controls.Editors.FindReplaceManager.Highlight(System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)"/> will add the matches to the current list of highligted items while <see cref="M:Infragistics.Controls.Editors.FindReplaceManager.ClearHighlighting"/> will clear the list of 
+            highlighted items.  Note that any change to the document will clear the current list of highlighted items.
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.ClearHighlighting">
+            <summary>
+            Clears the list of highlighted items.
+            </summary>
+            <remarks>
+            Items are highlighted by calling the <see cref="M:Infragistics.Controls.Editors.FindReplaceManager.Highlight(System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)"/> method.
+            </remarks>
+            <seealso cref="M:Infragistics.Controls.Editors.FindReplaceManager.Highlight(System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.ClearResults">
+            <summary>
+            Clears the results from previous find operations.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.FindInDocument(System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)">
+            <summary>
+            Finds all occurrences of the specified text in the current <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+            </summary>
+            <param name="textToFind">The text to find.</param>
+            <param name="error">An error message if an error was encountered.</param>
+            <param name="findCriteria">The <see cref="T:Infragistics.Documents.RichText.FindCriteria"/> to use for the operation.</param>
+            <returns>The number of occurrences of the specified text found.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.FindInSpan(System.String,Infragistics.Documents.RichText.DocumentSpan,System.String@,Infragistics.Documents.RichText.FindCriteria)">
+            <summary>
+            Finds all occurrences of the specified text in the specified <see cref="T:Infragistics.Documents.RichText.DocumentSpan"/>.
+            </summary>
+            <param name="textToFind">The text to find.</param>
+            <param name="spanToSearch">The <see cref="T:Infragistics.Documents.RichText.DocumentSpan"/> within which to search for the text.</param>
+            <param name="error">An error message if an error was encountered.</param>
+            <param name="findCriteria">The <see cref="T:Infragistics.Documents.RichText.FindCriteria"/> to use for the operation.</param>
+            <returns>The number of occurrences of the specified text found.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.FindInSpans(System.String,Infragistics.Documents.RichText.DocumentSpan[],System.String@,Infragistics.Documents.RichText.FindCriteria)">
+            <summary>
+            Finds all occurrences of the specified text in the specified array of <see cref="T:Infragistics.Documents.RichText.DocumentSpan"/>s.
+            </summary>
+            <param name="textToFind">The text to find.</param>
+            <param name="spansToSearch">An array of <see cref="T:Infragistics.Documents.RichText.DocumentSpan"/>s within which to search for the text.</param>
+            <param name="error">An error message if an error was encountered.</param>
+            <param name="findCriteria">The <see cref="T:Infragistics.Documents.RichText.FindCriteria"/> to use for the operation.</param>
+            <returns>The number of occurrences of the specified text found.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.FindInSelection(System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)">
+            <summary>
+            Finds all occurrences of the specified text in the current <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>.
+            </summary>
+            <param name="textToFind">The text to find.</param>
+            <param name="error">An error message if an error was encountered.</param>
+            <param name="findCriteria">The <see cref="T:Infragistics.Documents.RichText.FindCriteria"/> to use for the operation.</param>
+            <returns>The number of occurrences of the specified text found.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.Highlight(System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)">
+            <summary>
+            Finds all occurrences of the specified text and highlights them.  
+            If there is an active selection only the selection is searched, otherwise the entire document is searched.
+            </summary>
+            <param name="textToHighlight">The text to highlight.</param>
+            <param name="error">An error message if an error was encountered.</param>
+            <param name="findCriteria">The <see cref="T:Infragistics.Documents.RichText.FindCriteria"/> to use for the operation.</param>
+            <returns>The number of occurrences of the specified text found.</returns>
+            <seealso cref="M:Infragistics.Controls.Editors.FindReplaceManager.ClearHighlighting"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.MoveToNearestMatchFollowingOffset(System.Int32)">
+            <summary>
+            Moves the enumerator to the first match with a start offset that follows the specified offset.
+            </summary>
+            <remarks>
+            If there is no match with a start offset following the specified offset, false is returned and <see cref="P:Infragistics.Controls.Editors.FindReplaceManager.Current"/> is set to null.
+            </remarks>
+            <param name="offset">The reference offset.</param>
+            <returns>True if a match was found after the specified offset, otherwise false.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.MoveToNearestMatchPreceedingOffset(System.Int32)">
+            <summary>
+            Moves the enumerator to the first match with a start offset that follows the specified offset.
+            </summary>
+            <remarks>
+            If there is no match with a start offset preceeding the specified offset, false is returned and <see cref="P:Infragistics.Controls.Editors.FindReplaceManager.Current"/> is set to null.
+            </remarks>
+            <param name="offset">The reference offset.</param>
+            <returns>True if a match was found preceeding the specified offset, otherwise false.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.ReplaceCurrent(System.String,System.String@)">
+            <summary>
+            Replaces the current find match with the specified text, or does nothing if there is no current find match.
+            </summary>
+            <param name="replacementText">The text to use as a replacement for the current find match.</param>
+            <param name="error">An error message if an error was encountered.</param>
+            <returns>True if successful, otherwise false.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.ReplaceAll(System.String,System.String,System.String@,Infragistics.Documents.RichText.FindCriteria)">
+            <summary>
+            Replaces all occurrences of the textToFind with the replacementText.
+            </summary>
+            <param name="textToFind">The text to find and replace.</param>
+            <param name="replacementText">The text to use as a replacement for each occurrence of textToFind.</param>
+            <param name="error">An error message if an error was encountered.</param>
+            <param name="findCriteria">The <see cref="T:Infragistics.Documents.RichText.FindCriteria"/> to use for the operation.</param>
+            <returns>The number of replacements made.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.SelectAllMatches">
+            <summary>
+            Causes all the current find matches to be selected in the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>
+            </summary>
+            <returns>The number of matches selected.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.SelectCurrentMatch">
+            <summary>
+            Causes the current find match (if one exists) to be selected in the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>.
+            </summary>
+            <returns>True if a 'current match' exists and was selected, otherwise returns false.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.SelectNextMatch">
+            <summary>
+            Causes the next find match (if any) to be selected in the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>.
+            </summary>
+            <returns>True if a 'next match' was found and selected, otherwise returns false.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.SelectPreviousMatch">
+            <summary>
+            Causes the previous find match (if any) to be selected in the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>.
+            </summary>
+            <returns>True if a 'previous match' was found and selected, otherwise returns false.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.Dispose">
+            <summary>
+            Disposes the enumersator.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.MoveNext">
+            <summary>
+            Moves the enumerator to the next <see cref="T:Infragistics.Documents.RichText.FindMatch"/> if possible.
+            </summary>
+            <returns>True if the enumerator was able to move to the next <see cref="T:Infragistics.Documents.RichText.FindMatch"/>, otherwise false.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.MovePrevious">
+            <summary>
+            Moves the enumerator to the previous <see cref="T:Infragistics.Documents.RichText.FindMatch"/> if possible.
+            </summary>
+            <returns>True if the enumerator was able to move to the previous <see cref="T:Infragistics.Documents.RichText.FindMatch"/>, otherwise false.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.Reset">
+            <summary>
+            Resets the enumerator to the position immediately before the first <see cref="T:Infragistics.Documents.RichText.FindMatch"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>The enumerator</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.FindReplaceManager.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>The enumerator</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.FindReplaceManager.FindMatchesCount">
+            <summary>
+            Returns a count of the occurrences found by the most recent find operation. (read-only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.FindReplaceManager.HighlightMatchesCount">
+            <summary>
+            Returns a count of the currently highlighted items. (read-only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.FindReplaceManager.IsFindReplaceDialogActive">
+            <summary>
+            Returns/sets whether a FindR/Replace dialog is current active.
+            </summary>
+            <remarks>
+            This property should be set appropriately by client find/replace dialogs using the FindReplaceManager so that the 
+            <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> can use the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightActiveBrush"/> even though
+            the dialog (and not the XamRichTextEditor) has the keyboard focus.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.FindReplaceManager.RichTextEditor">
+            <summary>
+            Returns the associated <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>. (read-only)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.FindReplaceManager.Current">
+            <summary>
+            Returns the current <see cref="T:Infragistics.Documents.RichText.FindMatch"/> or null if there is no current <see cref="T:Infragistics.Documents.RichText.FindMatch"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.FindReplaceManager.System#Collections#IEnumerator#Current">
+            <summary>
+            Returns the current <see cref="T:Infragistics.Documents.RichText.FindMatch"/> or null if there is no current <see cref="T:Infragistics.Documents.RichText.FindMatch"/>
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.FindReplaceManager.PropertyChanged">
+            <summary>
+            Event raised when a property on the object changes.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.ScrollManager">
+            <summary>
+            A class that manages scrolling for an <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.ViewSelectionManager.Redo">
+            <summary>
+            Redo the last undone edit activity.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.ViewSelectionManager.Undo">
+            <summary>
+            Undo the last edit activity.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.ViewSelectionManager.PropertyChanged">
+            <summary>
+            Event raised when a property on the object changes.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Editors.Resources">
+            <summary>
+            Exposes a <see cref="T:Infragistics.Shared.ResourceCustomizer"/> instance for this assembly. 
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.Resources.Customizer"/> 
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Resources.GetString(System.String,System.Object[])">
+            <summary>
+            Returns the resource string using the specified name and default culture.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Resources.GetString(System.String)">
+            <summary>
+            Returns the resource string using the specified resource name and default culture. The string is then formatted using the arguments specified.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Resources.GetDynamicResourceString(System.String)">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Resources.GetDynamicResourceString(System.String,System.Object[])">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Resources.GetDynamicResourceString(System.String,System.Object[],System.Globalization.CultureInfo)">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+            <param name="culture">Culture whose resource should loaded. The resource will go through a fallback process to locate the appropriate resources.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.Resources.GetObject(System.String)">
+            <summary>
+            Returns the resource object using the specified name.
+            </summary>
+            <param name="name">Name of the resource item</param>
+            <returns>An object containing the specified resource</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.Resources.Customizer">
+            <summary>
+            Returns the <see cref="T:Infragistics.Shared.ResourceCustomizer"/> for this assembly.
+            </summary>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="T:Infragistics.Controls.Editors.XamRichTextEditor">
+            <summary>
+            A control that can display and edit rich content (text and objects), apply flexible formatting to the content and render the content using a web layout style.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges child elements.
+            </summary>
+            <param name="finalSize">The final size used for arranging elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures child elements
+            </summary>
+            <param name="availableSize">The size available for child elements.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnApplyTemplate">
+            <summary>
+            Called when a new template is applied. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnCreateAutomationPeer">
+            <summary>
+            Returns an automation peer that exposes the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> to UI Automation.
+            </summary>
+            <returns>A <see cref="T:Infragistics.AutomationPeers.XamRichTextEditorAutomationPeer"/></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnMouseLeave(System.Windows.Input.MouseEventArgs)">
+            <summary>
+            Called when the mouse leaves the element.
+            </summary>
+            <param name="e">The arguments associated with the event.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnMouseWheel(System.Windows.Input.MouseWheelEventArgs)">
+            <summary>
+            Called when the MouseWheel is rotated.
+            </summary>
+            <param name="e">The data associated with the event</param>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnGotKeyboardFocus(System.Windows.Input.KeyboardFocusChangedEventArgs)">
+            <summary>
+            Called when the control receives the keyboard focus.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnLostKeyboardFocus(System.Windows.Input.KeyboardFocusChangedEventArgs)">
+            <summary>
+            Called when the control loses the keyboard focus.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentViewPropertyKey">
+            <summary>
+            Identifies the property key for read-only <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentViewProperty">
+            <summary>
+            Identifies the read-only <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.AllowDocumentViewSplittingProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.AllowDocumentViewSplitting"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.CaretPropertyKey">
+            <summary>
+            Identifies the property key for read-only <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Caret"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.CaretProperty">
+            <summary>
+            Identifies the read-only <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Caret"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.CaretColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.CaretColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardFormatsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardFormats"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardSerializationProvidersProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardSerializationProviders"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.DocumentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Document"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayModeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayMode"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.HorizontalScrollBarVisibilityProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HorizontalScrollBarVisibility"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.InactiveDocumentViewPropertyKey">
+            <summary>
+            Identifies the property key for read-only <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.InactiveDocumentView"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.InactiveDocumentViewProperty">
+            <summary>
+            Identifies the read-only <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.InactiveDocumentView"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplitProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.IsMultiSelectEnabledProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsMultiSelectEnabled"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.IsReadOnlyProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsReadOnly"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.IsUndoEnabledProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsUndoEnabled"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.SelectionPropertyKey">
+            <summary>
+            Identifies the property key for read-only <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.SelectionProperty">
+            <summary>
+            Identifies the read-only <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightActiveBrushProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightActiveBrush"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightInactiveBrushProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightInactiveBrush"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.TextUpdateModeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.TextUpdateMode"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.VerticalScrollBarVisibilityProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.VerticalScrollBarVisibility"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevelProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevel"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevelAsPercentageProperty">
+            <summary>
+            Identifies the read-only <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevelAsPercentage"/> dependency property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnActiveDocumentViewChanged(Infragistics.Controls.Editors.ActiveDocumentViewChangedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentViewChanged"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentViewChanged"/>
+            <seealso cref="T:Infragistics.Controls.Editors.ActiveDocumentViewChangedEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnClipboardOperationExecuting(Infragistics.Documents.RichText.RichTextClipboardOperationCancelEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardOperationExecuting"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardOperationExecuting"/>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextClipboardOperationCancelEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnClipboardOperationExecuted(Infragistics.Documents.RichText.RichTextClipboardOperationEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardOperationExecuted"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardOperationExecuted"/>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextClipboardOperationEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnContextMenuOpening(Infragistics.Controls.Editors.ContextMenuOpeningEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ContextMenuOpening"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ContextMenuOpening"/>
+            <seealso cref="T:Infragistics.Controls.Editors.ContextMenuOpeningEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnContextMenuClosing(Infragistics.Controls.Editors.ContextMenuClosingEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ContextMenuClosing"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ContextMenuClosing"/>
+            <seealso cref="T:Infragistics.Controls.Editors.ContextMenuClosingEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnDocumentChanged(Infragistics.Controls.Editors.DocumentChangedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.DocumentChanged"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.DocumentChanged"/>
+            <seealso cref="T:Infragistics.Controls.Editors.DocumentChangedEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnDocumentContentChanged(Infragistics.Documents.RichText.DocumentContentChangedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.DocumentContentChanged"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.DocumentContentChanged"/>
+            <seealso cref="T:Infragistics.Documents.RichText.DocumentContentChangedEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnHyperlinkExecuting(Infragistics.Controls.Editors.HyperlinkExecutingEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.HyperlinkExecuting"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.HyperlinkExecuting"/>
+            <seealso cref="T:Infragistics.Controls.Editors.HyperlinkExecutingEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnSelectionChanged(Infragistics.Controls.Editors.RichTextSelectionChangedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.SelectionChanged"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.SelectionChanged"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichTextSelectionChangedEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnSplitStatusChanged(Infragistics.Controls.Editors.SplitStatusChangedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.SplitStatusChanged"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.SplitStatusChanged"/>
+            <seealso cref="T:Infragistics.Controls.Editors.SplitStatusChangedEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnViewLoaded(Infragistics.Controls.Editors.ViewEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewLoaded"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewLoaded"/>
+            <seealso cref="T:Infragistics.Controls.Editors.ViewEventArgs"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.OnViewUnloaded(Infragistics.Controls.Editors.ViewEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewUnloaded"/> event.
+            </summary>
+            <param name="args">Event args for raising the event.</param>
+            <seealso cref="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewUnloaded"/>
+            <seealso cref="T:Infragistics.Controls.Editors.ViewEventArgs"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView">
+            <summary>
+            Returns the current active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> (read only).
+            </summary>
+            <remarks>
+            <para class="body">The active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is the view with the keyboard focus.</para>
+            </remarks>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentViewProperty"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewLocation"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.AllowDocumentViewSplitting">
+            <summary>
+            Returns/sets whether the end user can split the document view horizontally.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.Caret">
+            <summary>
+            Returns the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Caret"/> associated with the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/> (read only).
+            </summary>
+            <remarks>
+            <para class="body">The <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>  is the <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> with the keyboard focus.</para>
+            </remarks>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.CaretProperty"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Caret"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.CaretColor">
+            <summary>
+            Returns/sets the <see cref="T:Infragistics.Documents.RichText.ColorInfo"/> used to color the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Caret"/>.  The default is <see cref="P:Infragistics.Documents.RichText.ColorInfo.Automatic"/>.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.CaretColorProperty"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Caret"/>
+            <seealso cref="T:Infragistics.Documents.RichText.ColorInfo"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardFormats">
+            <summary>
+            Returns/sets a comma delimited list of clipboard formats in the preferred order for loading.
+            </summary>
+            <remarks>
+            The formats should correspond to the static string properties exposed by System.Windows.DataFormats class and/or .NET type names.
+            </remarks>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardSerializationProviders"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardSerializationProviders">
+            <summary>
+            Returns/sets a list of <see cref="T:Infragistics.Documents.RichText.Serialization.SerializationProviderBase"/> instances that the control should use when interacting with the Clipboard.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardSerializationProviders"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.Document">
+            <summary>
+            Returns/sets the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> being edited by the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.DocumentProperty"/>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.FindReplaceManager">
+            <summary>
+            Returns an object that provides Find Results management as well as Find/Replace and highlight services for <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/> 
+            and <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayMode">
+            <summary>
+            Returns/sets whether to display paragraph marks and other hidden symbols.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayModeProperty"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HiddenSymbolDisplayMode"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.HorizontalScrollBarVisibility">
+            <summary>
+            Returns/sets the visibility of the horizontal scrollbar.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HorizontalScrollBarVisibility"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.InactiveDocumentView">
+            <summary>
+            Returns the current inactive <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>, or null if there is no inactive view (read only).
+            </summary>
+            <remarks>
+            <para class="body">The active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is the view with the keyboard focus.  An additional view can be created by splitting the active view.</para>
+            </remarks>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.InactiveDocumentViewProperty"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewLocation"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.AllowDocumentViewSplitting"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit">
+            <summary>
+            Returns/sets whether the document view is split horizontally.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.AllowDocumentViewSplitting"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.IsMultiSelectEnabled">
+            <summary>
+            Returns/sets whether the control permits multiple <see cref="T:Infragistics.Documents.RichText.Range"/>s to be selected.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>
+            <seealso cref="T:Infragistics.Documents.RichText.Range"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.IsReadOnly">
+            <summary>
+            Returns/sets whether the control allows the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Document"/>s to be modified.
+            </summary>
+            <remarks>
+            Note that the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> also exposes an IsReadOnly property whose value is independently maintained.  If either
+            this property or the corresponding property on the <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/> is set to true, the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>
+            will not allow modifications to the document.
+            </remarks>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Document"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.IsUndoEnabled">
+            <summary>
+            Returns/sets the status of undo logging in the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Document"/>.  The default is true.
+            </summary>
+            <remarks>
+            <b>Note:</b> When this property is set to true the control will ensure that undo logging is started on the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Document"/> 
+            whenever the end user attempts to modify the document.  When this property is set to false the control will immediately stop
+            undo logging on the document (clearing the undo history in the process) and will not restart it until the property is set to true, even if the end-user attempts
+            to modify the document.  When using this property to control undo logging in this manner, you should avoid calling <see cref="M:Infragistics.Documents.RichText.RichTextDocument.StartUndoLogging"/>
+            or  <see cref="M:Infragistics.Documents.RichText.RichTextDocument.StopUndoLogging"/> directly since that will interfere with the behavior of this property.
+            This property is provided primarily to enable the control of undo logging via ViewModel bindings.
+            </remarks>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Document"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection">
+            <summary>
+            Returns/sets the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>associated with the current active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> or null if there is no active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/>.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>
+            <seealso cref="T:Infragistics.Documents.RichText.Range"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.Selection"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightActiveBrush">
+            <summary>
+            Returns/sets the Brush used to color the selection highlight when the view containing the selection is active.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightActiveBrushProperty"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightInactiveBrush"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.Selection"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightInactiveBrush">
+            <summary>
+            Returns/sets the Brush used to color the selection highlight when the view containing the selection is inactive.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightInactiveBrushProperty"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.SelectionHighlightActiveBrush"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.Selection"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.TextUpdateMode">
+            <summary>
+            Returns/sets how new text should be applied to a <see cref="T:Infragistics.Documents.RichText.RichTextDocument"/>.
+            </summary>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.TextUpdateModeProperty"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentViewTextUpdateMode"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.VerticalScrollBarVisibility">
+            <summary>
+            Returns/sets the visibility of the vertical scrollbar.
+            </summary>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.HorizontalScrollBarVisibility"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevel">
+            <summary>
+            Returns/sets the zoom level for the text area of the control.  The text and all Margins are included in the zoom area - the scrollbars are not included.
+            </summary>
+            <remarks>
+            <para class="note">
+            <b>Note:</b> This value is expressed as a percentage with 1.0 being 100%.  Valid values are from .2 to 4.0.
+            </para>
+            <para class="body">
+            To zoom the text area when running in the Browser (Silverlight or WPF) press the ALT key and scroll the mousewheel.  When running 
+            outside the Browser press the CTRL key and scroll the mousewheel.
+            </para>
+            </remarks>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevelProperty"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevelAsPercentage"/>
+        </member>
+        <member name="P:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevelAsPercentage">
+            <summary>
+            Returns the value of the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevel"/> property expressed as a percentage. (read-only)
+            </summary>
+            <remarks>
+            <para class="body">
+            For example, if the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevel"/> is set to 1.0, this property will return 100.
+            </para>
+            </remarks>
+            <seealso cref="F:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevelAsPercentageProperty"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ZoomLevel"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentViewChanged">
+            <summary>
+            Raised after the control's active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is changed.
+            </summary>
+            <remarks>
+            <para class="body">
+            The active <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is the view that contains the keyboard focus.
+            </para>
+            </remarks>
+            <seealso cref="T:Infragistics.Controls.Editors.ActiveDocumentViewChangedEventArgs"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardOperationExecuting">
+            <summary>
+            Raised before a Clipboard operation (i.e., Cut, Copy or Paste) is executed.
+            </summary>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextClipboardOperationEventArgs"/>
+            <seealso cref="T:Infragistics.Controls.Editors.ClipboardOperation"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.ClipboardOperationExecuted">
+            <summary>
+            Raised before a Clipboard operation (i.e., Cut, Copy or Paste) is executed.
+            </summary>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextClipboardOperationCancelEventArgs"/>
+            <seealso cref="T:Infragistics.Controls.Editors.ClipboardOperation"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.ContextMenuOpening">
+            <summary>
+            Raised when the context menu is about to open.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.ContextMenuOpeningEventArgs"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.ContextMenuClosing">
+            <summary>
+            Raised when the context menu is about to close.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.ContextMenuClosingEventArgs"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.DocumentChanged">
+            <summary>
+            Raised after the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>'s document is changed.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.DocumentChangedEventArgs"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Document"/>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.DocumentContentChanged">
+            <summary>
+            Raised after the <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor"/>'s document is changed.
+            </summary>
+            <seealso cref="T:Infragistics.Documents.RichText.DocumentContentChangedEventArgs"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Document"/>
+            <seealso cref="T:Infragistics.Documents.RichText.RichTextDocument"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.HyperlinkExecuting">
+            <summary>
+            Raised before a Hyperlink is 'executed' (i.e., before the Uri associated with the Hyperlink is navigated to).  
+            The Uri property of the <see cref="T:Infragistics.Controls.Editors.HyperlinkExecutingEventArgs"/> can be changed in this event to alter the,
+            navigation destination, and the Cancel property can be set to true to cancel the navigation.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.HyperlinkExecutingEventArgs"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.SelectionChanged">
+            <summary>
+            Raised after the <see cref="T:Infragistics.Documents.RichText.Selection"/> is changed in the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.ActiveDocumentView"/>.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.RichTextSelectionChangedEventArgs"/>
+            <seealso cref="P:Infragistics.Controls.Editors.RichDocumentView.Selection"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.Selection"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.SplitStatusChanged">
+            <summary>
+            Raised after the <see cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/> changes.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.SplitStatusChangedEventArgs"/>
+            <seealso cref="P:Infragistics.Controls.Editors.XamRichTextEditor.IsDocumentViewSplit"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewLoaded">
+            <summary>
+            Raised after a <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is loaded but before it is displayed.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.ViewEventArgs"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+        </member>
+        <member name="E:Infragistics.Controls.Editors.XamRichTextEditor.ViewUnloaded">
+            <summary>
+            Raised after a <see cref="T:Infragistics.Controls.Editors.RichDocumentView"/> is unloaded.
+            </summary>
+            <seealso cref="T:Infragistics.Controls.Editors.ViewEventArgs"/>
+            <seealso cref="T:Infragistics.Controls.Editors.RichDocumentView"/>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey.GetHashCode">
+            <summary>
+            Returns the hash code of the structure.
+            </summary>
+            <returns>A hash code for this instance</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey.Equals(System.Object)">
+            <summary>
+            Compares the specified object to this object to see if they are equivalent.
+            </summary>
+            <param name="obj">The object to compare</param>
+            <returns>True if the objects are equal; otherwise false</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey.op_Equality(Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey,Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey)">
+            <summary>
+            Compares the values of two <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey"/> structures for equality
+            </summary>
+            <param name="item1">The first structure</param>
+            <param name="item2">The other structure</param>
+            <returns>true if the two instances are equal; otherwise false</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey.op_Inequality(Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey,Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey)">
+            <summary>
+            Compares the values of two <see cref="T:Infragistics.Controls.Editors.XamRichTextEditor.LayoutManagerCacheKey"/> structures for inequality
+            </summary>
+            <param name="item1">The first structure</param>
+            <param name="item2">The other structure</param>
+            <returns>true if the two instances are not equal; otherwise false</returns>
+        </member>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+        <member name="M:InternalDynamicResourceString.#ctor(Infragistics.Shared.ResourceCustomizer,System.Globalization.CultureInfo,System.String,System.Object[])">
+            <summary>
+            This constructor is for internal use only.
+            </summary>
+        </member>
+        <member name="M:InternalDynamicResourceString.GetStringFromResource(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            For internal use only.
+            </summary>
+        </member>
+    </members>
+</doc>

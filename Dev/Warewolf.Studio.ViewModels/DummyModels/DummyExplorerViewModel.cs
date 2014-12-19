@@ -77,6 +77,11 @@ namespace Warewolf.Studio.ViewModels.DummyModels
             return new List<IResource>();
         }
 
+        public IList<IConnection> GetServerConnections()
+        {
+            return new List<IConnection>();
+        }
+
         #endregion
     }
 }

@@ -1,0 +1,1891 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Documents.Core.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Documents.Core.DocumentEncryptedException">
+            <summary>
+            Represents an error that occurs when no password is used to open an encrypted document.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.DocumentEncryptedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.DocumentEncryptedException"/> instance.
+            </summary>
+            <param name="context">Contextual information about the source or destination.</param>
+            <param name="info">The serialized object data.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.DocumentEncryptedException.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.DocumentEncryptedException"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.DocumentEncryptedException.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.DocumentEncryptedException"/> instance.
+            </summary>
+            <param name="message">A message describing the error.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.DocumentEncryptedException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.DocumentEncryptedException"/> instance.
+            </summary>
+            <param name="message">A message describing the error.</param>
+            <param name="innerException">The exception that caused this exception.</param>
+        </member>
+        <member name="T:Infragistics.Documents.Core.CSS.Selectors.NullSingleElementSelector">
+            <summary>
+            Used to represent the base selector of pseudo-element selectors which are written without a base-rule.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlAttribute">
+            <summary>
+            Represents an HTML attribute.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttribute.CompareTo(System.Object)">
+            <summary>
+            Compares the current instance with another attribute. Comparison is based on attributes' name.
+            </summary>
+            <param name="obj">An attribute to compare with this instance.</param>
+            <returns>A 32-bit signed integer that indicates the relative order of the names comparison.</returns>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlAttribute.Name">
+            <summary>
+            Gets the qualified name of the attribute.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlAttribute.OriginalName">
+            <summary>
+            Name of attribute with original case
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlAttribute.QuoteType">
+            <summary>
+            Specifies what type of quote the data should be wrapped in
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlAttribute.Value">
+            <summary>
+            Gets or sets the value of the attribute.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.AttributeValueQuote">
+            <summary>
+            An Enum representing different types of Quotes used for surrounding attribute values
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.AttributeValueQuote.SingleQuote">
+            <summary>
+            A single quote mark '
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.AttributeValueQuote.DoubleQuote">
+            <summary>
+            A double quote mark "
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlAttributeCollection">
+            <summary>
+            Represents a combined list and collection of HTML nodes.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Add(Infragistics.Documents.Core.Html.HtmlAttribute)">
+            <summary>
+            Adds supplied item to collection
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.System#Collections#Generic#ICollection{Infragistics#Documents#Core#Html#HtmlAttribute}#Clear">
+            <summary>
+            Explicit clear
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Contains(Infragistics.Documents.Core.Html.HtmlAttribute)">
+            <summary>
+            Retreives existence of supplied item
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.CopyTo(Infragistics.Documents.Core.Html.HtmlAttribute[],System.Int32)">
+            <summary>
+            Copies collection to array
+            </summary>
+            <param name="array"></param>
+            <param name="arrayIndex"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.System#Collections#Generic#IEnumerable{Infragistics#Documents#Core#Html#HtmlAttribute}#GetEnumerator">
+            <summary>
+            Get Explicit enumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Explicit non-generic enumerator
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.IndexOf(Infragistics.Documents.Core.Html.HtmlAttribute)">
+            <summary>
+            Retrieves the index for the supplied item, -1 if not found
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Insert(System.Int32,Infragistics.Documents.Core.Html.HtmlAttribute)">
+            <summary>
+            Inserts given item into collection at supplied index
+            </summary>
+            <param name="index"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.System#Collections#Generic#ICollection{Infragistics#Documents#Core#Html#HtmlAttribute}#Remove(Infragistics.Documents.Core.Html.HtmlAttribute)">
+            <summary>
+            Explicit collection remove
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.RemoveAt(System.Int32)">
+            <summary>
+            Removes the attribute at the specified index.
+            </summary>
+            <param name="index">The index of the attribute to remove.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Add(System.String,System.String)">
+            <summary>
+            Adds a new attribute to the collection with the given values
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Append(Infragistics.Documents.Core.Html.HtmlAttribute)">
+            <summary>
+            Inserts the specified attribute as the last attribute in the collection.
+            </summary>
+            <param name="newAttribute">The attribute to insert. May not be null.</param>
+            <returns>The appended attribute.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Append(System.String,System.String)">
+            <summary>
+            Creates and inserts a new attribute as the last attribute in the collection.
+            </summary>
+            <param name="name">The name of the attribute to insert.</param>
+            <param name="value">The value of the attribute to insert.</param>
+            <returns>The appended attribute.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Contains(System.String)">
+            <summary>
+            Checks for existance of attribute with given name
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Remove(Infragistics.Documents.Core.Html.HtmlAttribute)">
+            <summary>
+            Removes a given attribute from the list.
+            </summary>
+            <param name="attribute">The attribute to remove. May not be null.</param>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Item(System.String)">
+            <summary>
+            Gets a given attribute from the list using its name.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Count">
+            <summary>
+            Gets the number of elements actually contained in the list.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlAttributeCollection.IsReadOnly">
+            <summary>
+            Gets readonly status of colelction
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlAttributeCollection.Item(System.Int32)">
+            <summary>
+            Gets the attribute at the specified index.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlCommentNode">
+            <summary>
+            Represents an HTML comment.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlNode">
+            <summary>
+            Represents an HTML node.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlNode.HtmlNodeTypeNameComment">
+            <summary>
+            Gets the name of a comment node. It is actually defined as '#comment'.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlNode.HtmlNodeTypeNameDocument">
+            <summary>
+            Gets the name of the document node. It is actually defined as '#document'.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlNode.HtmlNodeTypeNameText">
+            <summary>
+            Gets the name of a text node. It is actually defined as '#text'.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlNode.ElementsFlags">
+            <summary>
+            Gets a collection of flags that define specific behaviors for specific element nodes.
+            The table contains a DictionaryEntry list with the lowercase tag name as the Key, and a combination of HtmlElementFlags as the Value.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.#cctor">
+            <summary>
+            Initialize HtmlNode. Builds a list of all tags that have special allowances
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.#ctor(Infragistics.Documents.Core.Html.HtmlNodeType,Infragistics.Documents.Core.Html.HtmlDocument,System.Int32)">
+            <summary>
+            Initializes HtmlNode, providing type, owner and where it exists in a collection
+            </summary>
+            <param name="type"></param>
+            <param name="ownerdocument"></param>
+            <param name="index"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.CanOverlapElement(System.String)">
+            <summary>
+            Determines if an element node can be kept overlapped.
+            </summary>
+            <param name="name">The name of the element node to check. May not be <c>null</c>.</param>
+            <returns>true if the name is the name of an element node that can be kept overlapped, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.IsCDataElement(System.String)">
+            <summary>
+            Determines if an element node is a CDATA element node.
+            </summary>
+            <param name="name">The name of the element node to check. May not be null.</param>
+            <returns>true if the name is the name of a CDATA element node, false otherwise.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.IsClosedElement(System.String)">
+            <summary>
+            Determines if an element node is closed.
+            </summary>
+            <param name="name">The name of the element node to check. May not be null.</param>
+            <returns>true if the name is the name of a closed element node, false otherwise.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.IsEmptyElement(System.String)">
+            <summary>
+            Determines if an element node is defined as empty.
+            </summary>
+            <param name="name">The name of the element node to check. May not be null.</param>
+            <returns>true if the name is the name of an empty element node, false otherwise.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.Ancestors">
+            <summary>
+            Returns a collection of all ancestor nodes of this element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.AncestorsAndSelf">
+            <summary>
+            Returns a collection of all ancestor nodes of this element and the element itself.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.AppendChild(Infragistics.Documents.Core.Html.HtmlNode)">
+            <summary>
+            Adds the specified node to the end of the list of children of this node.
+            </summary>
+            <param name="newChild">The node to add. May not be null.</param>
+            <returns>The node added.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.DescendantNodes">
+            <summary>
+            Gets all Descendant nodes for this node and each of child nodes
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.DescendantNodesAndSelf">
+            <summary>
+            Returns a collection of all descendant nodes of this element, in document order
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.Descendants">
+            <summary>
+            Gets all Descendant nodes in enumerated list
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.Descendants(System.String)">
+            <summary>
+            Get all descendant nodes with matching name
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.DescendantsAndSelf">
+            <summary>
+            Returns a collection of all descendant nodes of this element, in document order
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.DescendantsAndSelf(System.String)">
+            <summary>
+            Gets all descendant nodes including this node
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.GetAttributeValue(System.String,System.String)">
+            <summary>
+            Helper method to get the value of an attribute of this node. If the attribute is not found, the default value will be returned.
+            </summary>
+            <param name="name">The name of the attribute to get. May not be <c>null</c>.</param>
+            <param name="def">The default value to return if not found.</param>
+            <returns>The value of the attribute if found, the default value if not found.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.GetAttributeValue(System.String,System.Int32)">
+            <summary>
+            Helper method to get the value of an attribute of this node. If the attribute is not found, the default value will be returned.
+            </summary>
+            <param name="name">The name of the attribute to get. May not be <c>null</c>.</param>
+            <param name="def">The default value to return if not found.</param>
+            <returns>The value of the attribute if found, the default value if not found.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.SetAttributeValue(System.String,System.String)">
+            <summary>
+            Helper method to set the value of an attribute of this node. If the attribute is not found, it will be created automatically.
+            </summary>
+            <param name="name">The name of the attribute to set. May not be null.</param>
+            <param name="value">The value for the attribute.</param>
+            <returns>The corresponding attribute instance.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.WriteContentTo(System.IO.TextWriter)">
+            <summary>
+            Saves all the children of the node to the specified TextWriter.
+            </summary>
+            <param name="outText">The TextWriter to which you want to save.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.WriteContentTo">
+            <summary>
+            Saves all the children of the node to a string.
+            </summary>
+            <returns>The saved string.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.WriteTo(System.IO.TextWriter)">
+            <summary>
+            Saves the current node to the specified TextWriter.
+            </summary>
+            <param name="outText">The TextWriter to which you want to save.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.WriteTo(System.Xml.XmlWriter)">
+            <summary>
+            Saves the current node to the specified XmlWriter.
+            </summary>
+            <param name="writer">The XmlWriter to which you want to save.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlNode.WriteTo">
+            <summary>
+            Saves the current node to a string.
+            </summary>
+            <returns>The saved string.</returns>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.Attributes">
+            <summary>
+            Gets the collection of HTML attributes for this node. May not be null.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.ChildNodes">
+            <summary>
+            Gets all the children of the node.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.Closed">
+            <summary>
+            Gets a value indicating if this node has been closed or not.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.HasAttributes">
+            <summary>
+            Gets a value indicating whether the current node has any attributes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.HasChildNodes">
+            <summary>
+            Gets a value indicating whether this node has any child nodes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.Id">
+            <summary>
+            Gets or sets the value of the 'id' HTML attribute. The document must have been parsed using the OptionUseIdAttribute set to true.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.InnerHtml">
+            <summary>
+            Gets or Sets the HTML between the start and end tags of the object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.InnerText">
+            <summary>
+            Gets or Sets the text between the start and end tags of the object.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.Name">
+            <summary>
+            Gets or sets this node's name.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.NodeType">
+            <summary>
+            Gets the type of this node.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.OriginalName">
+            <summary>
+            The original unaltered name of the tag
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.OuterHtml">
+            <summary>
+            Gets or Sets the object and its content in HTML.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.OwnerDocument">
+            <summary>
+            Gets the <see cref="T:Infragistics.Documents.Core.Html.HtmlDocument"/> to which this node belongs.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlNode.ParentNode">
+            <summary>
+            Gets the parent of this node (for nodes that can have parents).
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlCommentNode.Comment">
+            <summary>
+            Gets or Sets the comment text of the node.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlCommentNode.InnerHtml">
+            <summary>
+            Gets or Sets the HTML between the start and end tags of the object. In the case of a text node, it is equals to OuterHtml.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlCommentNode.OuterHtml">
+            <summary>
+            Gets or Sets the object and its content in HTML.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlDocument">
+            <summary>
+            Represents a complete HTML document.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionAddDebuggingAttributes">
+            <summary>
+            Adds Debugging attributes to node. Default is false.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionAutoCloseOnEnd">
+            <summary>
+            Defines if closing for non closed nodes must be done at the end or directly in the document.
+            Setting this to true can actually change how browsers render the page. Default is false.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionCheckSyntax">
+            <summary>
+            Defines if non closed nodes will be checked at the end of parsing. Default is true.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionDefaultStreamEncoding">
+            <summary>
+            Defines the default stream encoding to use. Default is System.Text.Encoding.Default.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionExtractErrorSourceText">
+            <summary>
+            Defines if source text must be extracted while parsing errors.
+            If the document has a lot of errors, or cascading errors, parsing performance can be dramatically affected if set to true.
+            Default is false.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionExtractErrorSourceTextMaxLength">
+            <summary>
+            Defines the maximum length of source text or parse errors. Default is 100.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionFixNestedTags">
+            <summary>
+            Defines if LI, TR, TH, TD tags must be partially fixed when nesting errors are detected. Default is false.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionOutputAsXml">
+            <summary>
+            Defines if output must conform to XML, instead of HTML.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionOutputOptimizeAttributeValues">
+            <summary>
+            Defines if attribute value output must be optimized (not bound with double quotes if it is possible). Default is false.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionOutputOriginalCase">
+            <summary>
+            Defines if name must be output with it's original case. Useful for asp.net tags and attributes
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionOutputUpperCase">
+            <summary>
+            Defines if name must be output in uppercase. Default is false.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionReadEncoding">
+            <summary>
+            Defines if declared encoding must be read from the document.
+            Declared encoding is determined using the meta http-equiv="content-type" content="text/html;charset=XXXXX" html node.
+            Default is true.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionStopperNodeName">
+            <summary>
+            Defines the name of a node that will throw the StopperNodeException when found as an end node. Default is null.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlDocument.OptionWriteEmptyNodes">
+            <summary>
+            Defines if empty nodes must be written as closed during output. Default is false.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.#ctor">
+            <summary>
+            Creates an instance of an HTML document.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.GetXmlName(System.String)">
+            <summary>
+            Gets a valid XML name.
+            </summary>
+            <param name="name">Any text.</param>
+            <returns>A string that is a valid XML name.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.HtmlEncode(System.String)">
+            <summary>
+            Applies HTML encoding to a specified string.
+            </summary>
+            <param name="html">The input string to encode. May not be null.</param>
+            <returns>The encoded string.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.IsWhiteSpace(System.Int32)">
+            <summary>
+            Determines if the specified character is considered as a whitespace character.
+            </summary>
+            <param name="c">The character to check.</param>
+            <returns>true if if the specified character is considered as a whitespace character.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.CreateAttribute(System.String)">
+            <summary>
+            Creates an HTML attribute with the specified name.
+            </summary>
+            <param name="name">The name of the attribute. May not be null.</param>
+            <returns>The new HTML attribute.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.CreateAttribute(System.String,System.String)">
+            <summary>
+            Creates an HTML attribute with the specified name.
+            </summary>
+            <param name="name">The name of the attribute. May not be null.</param>
+            <param name="value">The value of the attribute.</param>
+            <returns>The new HTML attribute.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.CreateComment">
+            <summary>
+            Creates an HTML comment node.
+            </summary>
+            <returns>The new HTML comment node.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.CreateComment(System.String)">
+            <summary>
+            Creates an HTML comment node with the specified comment text.
+            </summary>
+            <param name="comment">The comment text. May not be null.</param>
+            <returns>The new HTML comment node.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.CreateElement(System.String)">
+            <summary>
+            Creates an HTML element node with the specified name.
+            </summary>
+            <param name="name">The qualified name of the element. May not be null.</param>
+            <returns>The new HTML node.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.CreateTextNode">
+            <summary>
+            Creates an HTML text node.
+            </summary>
+            <returns>The new HTML text node.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.CreateTextNode(System.String)">
+            <summary>
+            Creates an HTML text node with the specified text.
+            </summary>
+            <param name="text">The text of the node. May not be null.</param>
+            <returns>The new HTML text node.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.Load(System.IO.Stream)">
+            <summary>
+            Loads an HTML document from a stream.
+            </summary>
+            <param name="stream">The input stream.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.Load(System.IO.TextReader)">
+            <summary>
+            Loads the HTML document from the specified TextReader.
+            </summary>
+            <param name="reader">The TextReader used to feed the HTML data into the document. May not be null.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.LoadHtml(System.String)">
+            <summary>
+            Loads the HTML document from the specified string.
+            </summary>
+            <param name="html">String containing the HTML document to load. May not be null.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlDocument.Save(System.IO.TextWriter)">
+            <summary>
+            Saves the HTML document to the specified TextWriter.
+            </summary>
+            <param name="writer">The TextWriter to which you want to save. May not be null.</param>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlDocument.DocumentNode">
+            <summary>
+            Gets the root node of the document.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlDocument.Encoding">
+            <summary>
+            Gets the document's output encoding.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlDocument.ParseErrors">
+            <summary>
+            Gets a list of parse errors found in the document.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlDocument.StyleSheets">
+            <summary>
+             Gets the style sheets loaded from the document.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlElementFlag">
+            <summary>
+            Flags that describe the behavior of an Element node.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlElementFlag.CData">
+            <summary>
+            The node is a CDATA node.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlElementFlag.Empty">
+            <summary>
+            The node is empty. META or IMG are example of such nodes.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlElementFlag.Closed">
+            <summary>
+            The node will automatically be closed during parsing.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlElementFlag.CanOverlap">
+            <summary>
+            The node can overlap.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlEntity">
+            <summary>
+            A utility class to replace special characters by entities and vice-versa.
+            Follows HTML 4.0 specification found at http://www.w3.org/TR/html4/sgml/entities.html
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlEntity.DeEntitize(System.String)">
+            <summary>
+            Replace known entities by characters.
+            </summary>
+            <param name="text">The source text.</param>
+            <returns>The result text.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlEntity.Entitize(System.String)">
+            <summary>
+            Replace characters above 127 by entities.
+            </summary>
+            <param name="text">The source text.</param>
+            <returns>The result text.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlEntity.Entitize(System.String,System.Boolean)">
+            <summary>
+            Replace characters above 127 by entities.
+            </summary>
+            <param name="text">The source text.</param>
+            <param name="useNames">If set to false, the function will not use known entities name. Default is true.</param>
+            <returns>The result text.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Html.HtmlEntity.Entitize(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Replace characters above 127 by entities.
+            </summary>
+            <param name="text">The source text.</param>
+            <param name="useNames">If set to false, the function will not use known entities name. Default is true.</param>
+            <param name="entitizeQuotAmpAndLtGt">If set to true, the [quote], [ampersand], [lower than] and [greather than] characters will be entitized.</param>
+            <returns>The result text</returns>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlEntity.EntityName">
+            <summary>
+            A collection of entities indexed by name.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlEntity.EntityValue">
+            <summary>
+            A collection of entities indexed by value.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlNodeType">
+            <summary>
+            Represents the type of a node.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlNodeType.Document">
+            <summary>
+            The root of a document.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlNodeType.Element">
+            <summary>
+            An HTML element.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlNodeType.Comment">
+            <summary>
+            An HTML comment.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlNodeType.Text">
+            <summary>
+            A text node is always the child of an element or a document node.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlParseError">
+            <summary>
+            Represents a parsing error found during document parsing.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlParseError.Code">
+            <summary>
+            Gets the type of error.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlParseError.Line">
+            <summary>
+            Gets the line number of this error in the document.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlParseError.LinePosition">
+            <summary>
+            Gets the column number of this error in the document.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlParseError.Reason">
+            <summary>
+            Gets a description for the error.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlParseError.SourceText">
+            <summary>
+            Gets the the full text of the line containing the error.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlParseError.StreamPosition">
+            <summary>
+            Gets the absolute stream position of this error in the document, relative to the start of the document.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlParseErrorCode">
+            <summary>
+            Represents the type of parsing error.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlParseErrorCode.TagNotClosed">
+            <summary>
+            A tag was not closed.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlParseErrorCode.TagNotOpened">
+            <summary>
+            A tag was not opened.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlParseErrorCode.CharsetMismatch">
+            <summary>
+            There is a charset mismatch between stream and declared (META) encoding.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlParseErrorCode.EndTagNotRequired">
+            <summary>
+            An end tag was not required.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Html.HtmlParseErrorCode.EndTagInvalidHere">
+            <summary>
+            An end tag is invalid at this position.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Html.HtmlTextNode">
+            <summary>
+            Represents an HTML text node.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlTextNode.InnerHtml">
+            <summary>
+            Gets or Sets the HTML between the start and end tags of the object. In the case of a text node, it is equals to OuterHtml.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlTextNode.OuterHtml">
+            <summary>
+            Gets or Sets the object and its content in HTML.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Html.HtmlTextNode.Text">
+            <summary>
+            Gets or Sets the text of the node.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.BmpGuid">
+            <summary>
+            Gets the bitmap (BMP) image format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.DibGuid">
+            <summary>
+            Gets the Device-Independent Bitmap (DIB) image format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.EmfGuid">
+            <summary>
+            Gets the enhanced metafile (EMF) image format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.GifGuid">
+            <summary>
+            Gets the Graphics Interchange Format (GIF) image format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.JpegGuid">
+            <summary>
+            Gets the Joint Photographic Experts Group (JPEG) image format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.PngGuid">
+            <summary>
+            Gets the W3C Portable Network Graphics (PNG) image format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.TiffGuid">
+            <summary>
+            Gets the Tagged Image File Format (TIFF) image format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.WmfGuid">
+            <summary>
+            Gets the Windows metafile (WMF) image format.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.Bmp">
+            <summary>
+            Static variable for Bmp image format
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.Dib">
+            <summary>
+            Static variable for Dib image format
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.Emf">
+            <summary>
+            Static variable for Emf image format
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.Gif">
+            <summary>
+            Static variable for Gif image format
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.Jpeg">
+            <summary>
+            Static variable for Jpeg image format
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.Png">
+            <summary>
+            Static variable for Png image format
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.Tiff">
+            <summary>
+            Static variable for Tiff image format
+            </summary>
+        </member>
+        <member name="F:Infragistics.Imaging.ImageFormat.Wmf">
+            <summary>
+            Static variable for Wmf image format
+            </summary>
+        </member>
+        <member name="M:Infragistics.Imaging.ImageFormat.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Imaging.ImageFormat"/> class.
+            </summary>
+            <param name="formatGuid">The <see cref="P:Infragistics.Imaging.ImageFormat.Guid"/> used to identify this <see cref="T:Infragistics.Imaging.ImageFormat"/>.</param>
+        </member>
+        <member name="P:Infragistics.Imaging.ImageFormat.Guid">
+            <summary>
+            Gets the <see cref="P:Infragistics.Imaging.ImageFormat.Guid"/> that identifies this <see cref="T:Infragistics.Imaging.ImageFormat"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.AssemblyVersion">
+            <summary>
+            Contains version information for the Infragistics assemblies.
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.MajorMinor">
+            <summary>
+            Major.Minor number portion of the assembly version
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.Build">
+            <summary>
+            Build number portion of the assembly version
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.Revision">
+            <summary>
+            Revision number portion of the assembly version
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.Version">
+            <summary>
+            Assembly version number
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.CompanyName">
+            <summary>
+            Assembly company name
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.EndCopyrightYear">
+            <summary>
+            End year of assembly copyright
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.SatelliteContractVersion">
+            <summary>
+            The assembly version number for the satellite assemblies.
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.Configuration">
+            <summary>
+            The current build configuration for the assembly.
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.AssemblyNamePrefix">
+            <summary>
+            The prefix of all assembly names in the product.
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.AssemblyNameSuffix">
+            <summary>
+            The suffix of all assembly names in the product.
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.Platform">
+            <summary>
+            Specifies platform name for the assembly
+            </summary>
+        </member>
+        <member name="F:Infragistics.AssemblyVersion.Product">
+            <summary>
+            Specifies product name for the assembly
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Resources">
+            <summary>
+            Exposes a <see cref="T:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer"/> instance for this assembly. 
+            </summary>
+            <seealso cref="P:Infragistics.Documents.Core.Resources.Customizer"/> 
+            <seealso cref="T:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer"/> 
+        </member>
+        <member name="M:Infragistics.Documents.Core.Resources.GetString(System.String,System.Object[])">
+            <summary>
+            Returns the resource string using the specified name and default culture.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+            <returns>The resource string using the specified resource name and default culture.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Resources.GetString(System.String)">
+            <summary>
+            Returns the resource string using the specified resource name and default culture. The string is then formatted using the arguments specified.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <returns>The resource string using the specified resource name and default culture.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Resources.GetObject(System.String)">
+            <summary>
+            Returns the resource object using the specified name.
+            </summary>
+            <param name="name">Name of the resource item.</param>
+            <returns>An object containing the specified resource.</returns>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Resources.Customizer">
+            <summary>
+            Returns the <see cref="T:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer"/> for this assembly.
+            </summary>
+            <seealso cref="T:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer"/> 
+        </member>
+        <member name="T:Infragistics.Documents.Core.EncryptionAlgorithmNotSupportedException">
+            <summary>
+            Represents an error that occurs an encrypted document is loaded with a supplied password, but the
+            encryption algorithm used is unsupported.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.EncryptionAlgorithmNotSupportedException.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.EncryptionAlgorithmNotSupportedException"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.EncryptionAlgorithmNotSupportedException.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.EncryptionAlgorithmNotSupportedException"/> instance.
+            </summary>
+            <param name="message">A message describing the error.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.EncryptionAlgorithmNotSupportedException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.EncryptionAlgorithmNotSupportedException"/> instance.
+            </summary>
+            <param name="message">A message describing the error.</param>
+            <param name="innerException">The exception that caused this exception.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.EncryptionAlgorithmNotSupportedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.EncryptionAlgorithmNotSupportedException"/> instance.
+            </summary>
+            <param name="context">Contextual information about the source or destination.</param>
+            <param name="info">The serialized object data.</param>
+        </member>
+        <member name="T:Infragistics.Documents.Core.InvalidPasswordException">
+            <summary>
+            Represents an error that occurs when an incorrect password is used to open document.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.InvalidPasswordException.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.InvalidPasswordException"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.InvalidPasswordException.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.InvalidPasswordException"/> instance.
+            </summary>
+            <param name="message">A message describing the error.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.InvalidPasswordException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.InvalidPasswordException"/> instance.
+            </summary>
+            <param name="message">A message describing the error.</param>
+            <param name="innerException">The exception that caused this exception.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.InvalidPasswordException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Core.InvalidPasswordException"/> instance.
+            </summary>
+            <param name="context">Contextual information about the source or destination.</param>
+            <param name="info">The serialized object data.</param>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.AgileEncryptedStream">
+            <summary>
+            Stream wrapper class that manages the encryption/decryption for the main stream
+            Assumes that the plaintext length == ciphertext length
+            Uses a 4k window to manage the current content block
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.AgileEncryptionConfig">
+            <summary>
+            Configuration class for the document encryption
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.CipherConfig">
+            <summary>
+            Configuration class for encryption
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CipherConfig.GetAlg">
+            <summary>
+            Returns an Instance of the encryption alg
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.HashConfig">
+            <summary>
+            Configuration class for hashing
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.HashConfig.GetAlg">
+            <summary>
+            Returns an instance of the hash alg
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorConfig">
+            <summary>
+            Configuration information for PasswordKeyEncryptor
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.HmacData">
+            <summary>
+            Data loaded from the file for an HMAC
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.EncryptionData">
+            <summary>
+            Data loaded from the file for document encryption
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.EncryptionData.LoadFromXml(System.Xml.XmlReader,System.Boolean,Infragistics.Documents.Core.MsoCrypto.AgileEncryptionConfig@)">
+            <summary>
+            Load the entire EncryptionInfo XML into the config + data classes
+            </summary>
+            <param name="reader"></param>
+            <param name="useHmac"></param>
+            <param name="configOut"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.EncryptionData.WriteToStream(System.IO.Stream,Infragistics.Documents.Core.MsoCrypto.AgileEncryptionConfig,Infragistics.Documents.Core.MsoCrypto.EncryptionData)">
+            <summary>
+            Write the given config + data classes into the EncryptionInfo stream
+            </summary>
+            <param name="stream"></param>
+            <param name="config"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.EncryptionData.WriteToXml(System.Xml.XmlWriter,Infragistics.Documents.Core.MsoCrypto.AgileEncryptionConfig,Infragistics.Documents.Core.MsoCrypto.EncryptionData)">
+            <summary>
+            Write the given config + data classes into XML
+            </summary>
+            <param name="writer"></param>
+            <param name="config"></param>
+            <param name="data"></param>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorData">
+            <summary>
+            Data for a PasswordKeyEncryptor
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorData.LoadFromXml(System.Xml.XmlReader,Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorConfig@)">
+            <summary>
+            Loads the config + data from XML
+            </summary>
+            <param name="reader"></param>
+            <param name="configOut"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorData.WriteToXml(System.Xml.XmlWriter,Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorConfig,Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorData)">
+            <summary>
+            Writes the config + data into XML
+            </summary>
+            <param name="writer"></param>
+            <param name="config"></param>
+            <param name="data"></param>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.XmlNameToken">
+            <summary>
+            Inefficient way to tokenize XML names
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.AgileEncryptionSession">
+            <summary>
+            Represents an instance of document encryption
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.ReadBytes(System.IO.Stream,System.Int32)">
+            <summary>
+            Read a given number of bytes and fail if not all present
+            </summary>
+            <param name="stream"></param>
+            <param name="bytesToRead"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.ReadInt16(System.IO.Stream)">
+            <summary>
+            Read an Int16
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.ReadInt32(System.IO.Stream)">
+            <summary>
+            Read an Int32
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.ReadInt64(System.IO.Stream)">
+            <summary>
+            Read an Int64
+            </summary>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.WriteInt16(System.IO.Stream,System.Int16)">
+            <summary>
+            Write an Int16
+            </summary>
+            <param name="stream"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.WriteInt32(System.IO.Stream,System.Int32)">
+            <summary>
+            Write an Int32
+            </summary>
+            <param name="stream"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.WriteInt64(System.IO.Stream,System.Int64)">
+            <summary>
+            Write an Int64
+            </summary>
+            <param name="stream"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.RoundUp(System.Int32,System.Int32)">
+            <summary>
+            Round an int up to the next 'round' boundary
+            </summary>
+            <param name="value"></param>
+            <param name="round"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.CloneToFit(System.Byte[],System.Int32)">
+            <summary>
+            Return a copy of the array, sized to fit
+            </summary>
+            <param name="input"></param>
+            <param name="size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.CloneToFit(System.Byte[],System.Int32,System.Byte)">
+            <summary>
+            Return a copy of the array, sized to fit
+            </summary>
+            <param name="input"></param>
+            <param name="size"></param>
+            <param name="pad"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.GetCryptoTransform(Infragistics.Documents.Core.MsoCrypto.ICipherProvider,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            ICipher extension around GetCryptoTransform
+            </summary>
+            <param name="cipher"></param>
+            <param name="key1"></param>
+            <param name="key2"></param>
+            <param name="isEncryption"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.GetEncryptor(Infragistics.Documents.Core.MsoCrypto.ICipherProvider,System.Int32,System.Int32)">
+            <summary>
+            Get an Encryption object
+            </summary>
+            <param name="cipher"></param>
+            <param name="key1"></param>
+            <param name="key2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.GetEncryptor(Infragistics.Documents.Core.MsoCrypto.ICipherProvider,System.Byte[])">
+            <summary>
+            Get an Encryption object
+            </summary>
+            <param name="cipher"></param>
+            <param name="blockKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.GetDecryptor(Infragistics.Documents.Core.MsoCrypto.ICipherProvider,System.Int32,System.Int32)">
+            <summary>
+            Get an Decryption object
+            </summary>
+            <param name="cipher"></param>
+            <param name="key1"></param>
+            <param name="key2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.GetDecryptor(Infragistics.Documents.Core.MsoCrypto.ICipherProvider,System.Byte[])">
+            <summary>
+            Get an Decryption object
+            </summary>
+            <param name="cipher"></param>
+            <param name="blockKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.TransformInPlace(System.Security.Cryptography.ICryptoTransform,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Perform the crypto operation in-place
+            </summary>
+            <param name="transform"></param>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.EqualBytes(System.Byte[],System.Byte[])">
+            <summary>
+            Are two arrays equal?
+            </summary>
+            <param name="arr1"></param>
+            <param name="arr2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.CheckNode(System.Xml.XmlReader,System.String,System.String)">
+            <summary>
+            Validate the current node state
+            </summary>
+            <param name="reader"></param>
+            <param name="namespaceUri"></param>
+            <param name="localName"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.MoveToStartElement(System.Xml.XmlReader)">
+            <summary>
+            Move to the next piece of Content, and check if it's an Element
+            </summary>
+            <param name="reader"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.MoveToNextContent(System.Xml.XmlReader)">
+            <summary>
+            Move to the next piece of Content
+            </summary>
+            <param name="reader"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.MoveToStartElement(System.Xml.XmlReader,System.String,System.String)">
+            <summary>
+            Position the reader on the next startElement
+            </summary>
+            <param name="reader"></param>
+            <param name="namespaceUri"></param>
+            <param name="localName"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.MoveToEndElement(System.Xml.XmlReader)">
+            <summary>
+            Position the reader on the next endElement, or remain on the start element if Empty
+            </summary>
+            <param name="reader"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.ParseAttributes(System.Xml.XmlReader,System.Int32,System.Func{Infragistics.Documents.Core.MsoCrypto.XmlNameToken,System.String,System.Boolean})">
+            <summary>
+            Converts each attribute into a Token, and invokes the Action
+            </summary>
+            <param name="reader"></param>
+            <param name="attributeMax"></param>
+            <param name="action"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.CryptoUtilities.IsXmlnsAttribute(System.Xml.XmlReader)">
+            <summary>
+            Checks if the current attribute is an xmlns attribute
+            </summary>
+            <param name="reader"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.Hmac">
+            <summary>
+            Contains a set of functions related to HMAC
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.Hmac.GetHmac(Infragistics.Documents.Core.MsoCrypto.ICipherProvider,Infragistics.Documents.Core.MsoCrypto.HashConfig,System.IO.Stream)">
+            <summary>
+            Generate a new HMAC for the given stream and encrypt the key + result
+            </summary>
+            <param name="cipher"></param>
+            <param name="hashInfo"></param>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.Hmac.CheckStream(Infragistics.Documents.Core.MsoCrypto.ICipherProvider,Infragistics.Documents.Core.MsoCrypto.HashConfig,Infragistics.Documents.Core.MsoCrypto.HmacData,System.IO.Stream)">
+            <summary>
+            Check the HMAC for a given stream
+            </summary>
+            <param name="cipher"></param>
+            <param name="hashInfo"></param>
+            <param name="hmacInfo"></param>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.ICipherProvider">
+            <summary>
+            Simple interface to abstract the types of encryption
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.KeyManager">
+            <summary>
+            A small class to manage the secret key, and the KeyEncryptors
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.PasswordBasedKey">
+            <summary>
+            This class handles the password-based key derivation
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordBasedKey.#ctor(Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorConfig)">
+            <summary>
+            Creates a new instance
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordBasedKey.#ctor(Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorConfig,Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorData)">
+            <summary>
+            Loads from existing data
+            </summary>
+            <param name="config"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordBasedKey.SetPassword(System.Byte[])">
+            <summary>
+            When the password is set, derive the hash
+            </summary>
+            <param name="passwordUnicode"></param>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptor">
+            <summary>
+            This class handles encrypting the secret key with a password-derived key
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptor.#ctor(Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorConfig)">
+            <summary>
+            Create a new PasswordKeyEncryptor
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptor.#ctor(Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorConfig,Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorData)">
+            <summary>
+            Load an existing PasswordKeyEncryptor
+            </summary>
+            <param name="config"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptor.CreateEncryptedHashInput(Infragistics.Documents.Core.MsoCrypto.PasswordBasedKey,System.Byte[])">
+            <summary>
+            Create a new set of random data for the verifier hash input, and encrypt it
+            </summary>
+            <param name="passwordEncryptor"></param>
+            <param name="passwordUnicode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptor.CreateVerifier(Infragistics.Documents.Core.MsoCrypto.PasswordBasedKey,System.Byte[])">
+            <summary>
+            Creates a password verifier
+                Decrypt encrypted hash input
+                Hash it
+                Encrypt hash value
+            </summary>
+            <param name="passwordEncryptor"></param>
+            <param name="encryptedHashInput"></param>
+            <returns>encrypted hash output</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptor.SetPassword(System.Byte[],System.Byte[])">
+            <summary>
+            Use the password to create a new verifier and encrypt the secret key
+            </summary>
+            <param name="passwordUnicode"></param>
+            <param name="secretKey"></param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptor.TryUnlock(System.Byte[],System.Byte[]@)">
+            <summary>
+            Try to unlock an existing secret key using the password
+            </summary>
+            <param name="passwordUnicode"></param>
+            <param name="secretKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptor.Save(Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorConfig,Infragistics.Documents.Core.MsoCrypto.PasswordKeyEncryptorData)">
+            <summary>
+            Copy the relevant config + data information
+            </summary>
+            <param name="config"></param>
+            <param name="data"></param>
+        </member>
+        <member name="T:Infragistics.Documents.Core.MsoCrypto.PrimaryCipher">
+            <summary>
+            Manages generating the IV and key for the main encryption/decryption
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Packaging.IPackageFactory">
+            <summary>
+            Factory class used to create an IPackage given a stream and a FileMode
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackageFactory.Open(System.IO.Stream,System.IO.FileMode)">
+            <summary>
+            Opens an IPackage with a given IO stream and file mode.
+            </summary>
+            <param name="stream">The IO stream on which to open the IPackage.</param>
+            <param name="packageMode">The file mode in which to open the IPackage.</param>
+            <returns>The opened IPackage.</returns>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Packaging.IPackage">
+            <summary>
+            Represents a container that can store multiple data objects.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackage.CreatePart(System.Uri,System.String)">
+            <summary>
+            Creates a new uncompressed part with a given URI and content type.
+            </summary>
+            <param name="partUri">The uniform resource identifier (URI) of the new part.</param>
+            <param name="contentType">The content type of the data stream.</param>
+            <returns>The new created part.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackage.CreateRelationship(System.Uri,Infragistics.Documents.Core.Packaging.RelationshipTargetMode,System.String,System.String)">
+            <summary>
+            Creates a package-level relationship to a part with a given URI, target mode, relationship type, and identifier (ID).
+            </summary>
+            <param name="targetUri">The uniform resource identifier (URI) of the target part.</param>
+            <param name="targetMode">Indicates if the target part is System.IO.Packaging.TargetMode.Internal or System.IO.Packaging.TargetMode.External to the package.</param>
+            <param name="relationshipType">A URI that uniquely defines the role of the relationship.</param>
+            <param name="id">A unique XML identifier.</param>
+            <returns>The package-level relationship to the specified part.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackage.GetRelationships">
+            <summary>
+            Returns a collection of all the package-level relationships.
+            </summary>
+            <returns>A collection of all the package-level relationships that are contained in the package.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackage.GetRelationship(System.String)">
+            <summary>
+            Returns the relationship that has a specified IPackageRelationship.Id.
+            </summary>
+            <param name="id">The IPackageRelationship.Id of the relationship to return.</param>
+            <returns>The relationship that matches the specified id.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackage.GetPart(System.Uri)">
+            <summary>
+            Returns the part with a given URI.
+            </summary>
+            <param name="partUri">The uniform resource identifier (URI) of the part to return.</param>
+            <returns>The part with the specified partUri.</returns>        
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackage.GetParts">
+            <summary>
+            Returns a collection of all the parts in the package.
+            </summary>
+            <returns>A collection of all the System.IO.Packaging.PackagePart elements that are contained in the package.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackage.PartExists(System.Uri)">
+            <summary>
+            Indicates whether a part with a given URI is in the package.
+            </summary>
+            <param name="partUri">The System.Uri of the part to check for.</param>
+            <returns>true if a part with the specified partUri is in the package; otherwise, false.</returns>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Packaging.IPackagePart">
+            <summary>
+            Provides a base class for parts stored in a System.IO.Packaging.Package. This class is abstract.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackagePart.GetStream(System.IO.FileMode,System.IO.FileAccess)">
+            <summary>
+            Returns the part content stream opened with a specified System.IO.FileMode and System.IO.FileAccess.
+            </summary>
+            <param name="mode">The I/O mode in which to open the content stream.</param>
+            <param name="access">The access permissions to use in opening the content stream.</param>
+            <returns>The content stream for the part.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackagePart.CreateRelationship(System.Uri,Infragistics.Documents.Core.Packaging.RelationshipTargetMode,System.String,System.String)">
+            <summary>
+            Creates a part-level relationship between this IPackagePart to a specified target IPackagePart or external resource.
+            </summary>
+            <param name="targetUri">The URI of the target part.</param>
+            <param name="targetMode">One of the enumeration values. For example, RelationshipTargetMode.Internal if the target part is inside the IPackage; or RelationshipTargetMode.External if the target is a resource outside the IPackage.</param>
+            <param name="relationshipType">The role of the relationship.</param>
+            <param name="id">A unique ID for the relationship.</param>
+            <returns>The part-level relationship between this IPackagePart to the target IPackagePart or external resource.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackagePart.GetRelationships">
+            <summary>
+            Returns a collection of all the relationships that are owned by this part.
+            </summary>
+            <returns>A collection of all the relationships that are owned by the part.</returns>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Packaging.IPackagePart.GetRelationship(System.String)">
+            <summary>
+            Returns the relationship that has a specified IPackageRelationship.Id.
+            </summary>
+            <param name="id">The IPackageRelationship.Id of the relationship to return.</param>
+            <returns>The relationship that matches the specified id.</returns>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Packaging.IPackagePart.Package">
+            <summary>
+            Gets the parent Package of the part.
+            </summary>        
+        </member>
+        <member name="P:Infragistics.Documents.Core.Packaging.IPackagePart.Uri">
+            <summary>
+            Gets the URI of the part.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Packaging.IPackagePart.ContentType">
+            <summary>
+             Gets the MIME type of the content stream.        
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Packaging.IPackageRelationship">
+            <summary>
+            Represents an association between a source IPackage or IPackagePart, and a target object which can be a IPackagePart or external resource.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Packaging.IPackageRelationship.SourceUri">
+            <summary>
+            Gets the URI of the package or part that owns the relationship.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Packaging.IPackageRelationship.TargetUri">
+            <summary>
+            Gets the URI of the target resource of the relationship.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Packaging.IPackageRelationship.Id">
+            <summary>
+            Gets a string that identifies the relationship.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Packaging.IPackageRelationship.RelationshipType">
+            <summary>
+            Gets the qualified type name of the relationship.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Packaging.IPackageRelationship.TargetMode">
+            <summary>
+            Gets a value that indicates whether the target of the relationship is RelationshipTargetMode.Internal or RelationshipTargetMode.External to the IPackage.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Packaging.RelationshipTargetMode">
+            <summary>
+            Specifies whether the target of an IPackageRelationship is inside or outside the IPackage.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Packaging.RelationshipTargetMode.Internal">
+            <summary>
+            The relationship references a part that is inside the package.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Core.Packaging.RelationshipTargetMode.External">
+            <summary>
+            The relationship references a resource that is external to the package.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.OfficeOpenXml.Core.OfficeDocumentManager.GetConformance">
+            <summary>
+            Gets the conformance of the document if it hasn't been specified in the constructor.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.OfficeOpenXml.Core.OfficeDocumentManager.ZipPackage">
+            <summary>
+            Gets the zip package from which to load/save the document.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.OfficeOpenXml.Excel.ExcelDocumentManager.GetConformance">
+            <summary>
+            Gets the conformance of the document if it hasn't been specified in the constructor.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.OfficeOpenXml.Word.WordDocumentManager.GetConformance">
+            <summary>
+            Gets the conformance of the document if it hasn't been specified in the constructor.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer">
+            <summary>
+            Class used to provide the ability to customize resource strings.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.GetCustomizedString(System.String)">
+            <summary>
+            Gets the customized string identified by the specified string resource name.
+            </summary>
+            <param name="name">Name of the string resource that was customized.</param>
+            <returns>The customized string or null if the resource wasn't customized.</returns>
+            <seealso cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.ResetAllCustomizedStrings"/>
+            <seealso cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+        </member>
+        <member name="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.ResetAllCustomizedStrings">
+            <summary>
+            Clears all strings customized by calls to <see cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.SetCustomizedString(System.String,System.String)"/> method.
+            </summary>
+            <seealso cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.ResetCustomizedString(System.String)"/>
+        </member>
+        <member name="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.ResetCustomizedString(System.String)">
+            <summary>
+            Resets a customized string identified by the specified string resource name so that it will load from the resource file.
+            </summary>
+            <param name="name">Name of the string resource to customize.</param>
+            <seealso cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+        </member>
+        <member name="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.SetCustomizedString(System.String,System.String)">
+            <summary>
+            Sets a customized string identified by the specified string resource name.
+            </summary>
+            <param name="name">Name of the string resource to customize.</param>
+            <param name="customizedText">The customized string. If null this has the same effect as calling <see cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.ResetCustomizedString(System.String)"/>.</param>
+            <seealso cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.ResetAllCustomizedStrings"/>
+            <seealso cref="M:Infragistics.Documents.Core.DocumentsCoreResourceCustomizer.ResetCustomizedString(System.String)"/>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Sgml.CaseFolding">
+            <summary>
+            SGML is case insensitive, so here you can choose between converting
+            to lower case or upper case tags.  "None" means that the case is left
+            alone, except that end tags will be folded to match the start tags.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Sgml.HWStack">
+            <summary>
+            This stack maintains a high water mark for allocated objects so the client
+            can reuse the objects in the stack to reduce memory allocations, this is
+            used to maintain current state of the parser for element stack, and attributes
+            in each element.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Sgml.Attribute">
+            <summary>
+            This class represents an attribute.  The AttDef is assigned
+            from a validation process, and is used to provide default values.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Sgml.Attribute.Reset(System.String,System.String,System.Char)">
+            <summary>
+            Attribute objects are reused during parsing to reduce memory allocations, 
+            hence the Reset method. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Sgml.Node">
+            <summary>
+            This class models an XML node, an array of elements in scope is maintained while parsing
+            for validation purposes, and these Node objects are reused to reduce object allocation,
+            hence the reset method.  
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Sgml.Node.Reset(System.String,System.Xml.XmlNodeType,System.String)">
+            <summary>
+            Attribute objects are reused during parsing to reduce memory allocations, 
+            hence the Reset method. 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Core.Sgml.SgmlReader">
+            <summary>
+            SgmlReader is an XmlReader API over any SGML document (including built in 
+            support for HTML).  
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Sgml.SgmlReader.SetBaseUri(System.String)">
+            <summary>
+            The base Uri is used to resolve relative Uri's like the SystemLiteral and
+            Href properties.  This is a method because BaseURI is a read-only
+            property on the base XmlReader class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.Dtd">
+            <summary>
+            Specify the SgmlDtd object directly.  This allows you to cache the Dtd and share
+            it across multipl SgmlReaders.  To load a DTD from a URL use the SystemLiteral property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.DocType">
+            <summary>
+            The name of root element specified in the DOCTYPE tag.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.PublicIdentifier">
+            <summary>
+            The PUBLIC identifier in the DOCTYPE tag
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.SystemLiteral">
+            <summary>
+            The SYSTEM literal in the DOCTYPE tag identifying the location of the DTD.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.InternalSubset">
+            <summary>
+            The DTD internal subset in the DOCTYPE tag
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.InputStream">
+            <summary>
+            The input stream containing SGML data to parse.
+            You must specify this property or the Href property before calling Read().
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.WebProxy">
+            <summary>
+            Sometimes you need to specify a proxy server in order to load data via HTTP
+            from outside the firewall.  For example: "itgproxy:80".
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.Href">
+            <summary>
+            Specify the location of the input SGML document as a URL.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.StripDocType">
+            <summary>
+            Whether to strip out the DOCTYPE tag from the output (default true)
+            </summary>
+        </member>
+        <member name="P:Infragistics.Documents.Core.Sgml.SgmlReader.ErrorLog">
+            <summary>
+            DTD validation errors are written to this stream.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Utilities.SortMergeGeneric``1(System.Collections.Generic.List{``0},System.Collections.Generic.IComparer{``0})">
+            <summary>
+            Sorts the passed in list based on the passed in comparer using a modified merge-sort
+            algorithm. 
+            </summary>
+            <param name="list">The list to be sorted.</param>
+            <param name="comparer">The comparer (must not be null).</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Utilities.SortMergeGeneric``1(``0[],``0[],System.Collections.Generic.IComparer{``0})">
+            <summary>
+            Sorts the passed in array based on the passed in comparer using a modified merge-sort
+            algorithm. Optionally you can pass in a temporary array equal (or greater) in size to arr. 
+            The method will make use of that array instead of allocating one. If null is passed in, 
+            then it will allocate one. Merge sort should be used if the operation of comparing items 
+            is expensive.
+            </summary>
+            <param name="arr">Array to be sorted.</param>
+            <param name="tmpArr">Null or a temporary array equal (or greater) in size to arr.</param>
+            <param name="comparer">Comparer.</param>
+        </member>
+        <member name="M:Infragistics.Documents.Core.Utilities.SortMergeGeneric``1(``0[],``0[],System.Collections.Generic.IComparer{``0},System.Int32,System.Int32)">
+            <summary>
+            Sorts the passed in array based on the passed in comparer using a modified merge-sort
+            algorithm. Optionally you can pass in a temporary array equal (or greater) in size to arr. 
+            The method will make use of that array instead of allocating one. If null is passed in, 
+            then it will allocate one. Merge sort should be used if the operation of comparing items 
+            is expensive.
+            </summary>
+            <param name="arr">Array to be sorted.</param>
+            <param name="tmpArr">Null or a temporary array equal (or greater) in size to arr.</param>
+            <param name="comparer">Comparer.</param>
+            <param name="si">Start index in the array.</param>
+            <param name="ei">End index in the array.</param>
+        </member>
+    </members>
+</doc>

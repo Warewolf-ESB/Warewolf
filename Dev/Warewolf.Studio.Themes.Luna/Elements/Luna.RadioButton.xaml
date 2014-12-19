@@ -1,0 +1,172 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  ********************************** RadioButton Style **********************************  -->
+    <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="6,0,0,0" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="hover"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="pressed"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="contentPresenter"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To=".55" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="disabled"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="Checked1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Indeterminate" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="focused"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ValidationStates">
+                                <VisualState x:Name="Valid" />
+                                <VisualState x:Name="InvalidUnfocused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="invalidUnfocused"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="InvalidFocused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="invalidFocused"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Margin="-6,0" Fill="{StaticResource TransparentBrush}" />
+                        <Ellipse x:Name="normal"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonBackgroundBrush}"
+                                 Opacity="1"
+                                 Stroke="{StaticResource RadioButtonBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="hover"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonHoverBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonHoverBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="pressed"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonPressedBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonPressedBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="focused"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonFocusedBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonFocusedBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="invalidUnfocused"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonInvalidUnfocusedBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonInvalidUnfocusedBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="invalidFocused"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonInvalidFocusedBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonInvalidFocusedBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="Checked1"
+                                 Width="10"
+                                 Height="10"
+                                 Fill="{StaticResource RadioButtonCheckBackgroundBrush}"
+                                 Opacity="0" />
+                        <Ellipse x:Name="disabled"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource DisabledVisualElement}"
+                                 Opacity="0"
+                                 StrokeThickness="1" />
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Grid.Column="1"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  *********************************  Implicit Styles  *********************************  -->
+    <Style BasedOn="{StaticResource RadioButtonStyle}" TargetType="{x:Type RadioButton}" />
+</ResourceDictionary>

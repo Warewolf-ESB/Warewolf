@@ -6,6 +6,7 @@
 	xmlns:ig="http://schemas.infragistics.com/xaml"
 	xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
 	mc:Ignorable="d"
+    x:Name="ExplorerViewControl"
 	x:Class="Warewolf.Studio.Views.ExplorerView"
 	d:DesignWidth="640" d:DesignHeight="480"
 	d:DataContext="{d:DesignInstance Type=dummyModels:DummyExplorerViewModel, IsDesignTimeCreatable=False}">
@@ -20,10 +21,10 @@
 			<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"/>
 		</StackPanel>
         <ig:XamDataTree Grid.Row="1" ItemsSource="{Binding Environments}" DisplayMemberPath="DisplayName">
-            <ig:XamDataTree.NodeLayouts>
+            <ig:XamDataTree.GlobalNodeLayouts>
                 <ig:NodeLayout Key="ExplorerItemViewModels" DisplayMemberPath="ResourceName"/>
                 <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName"/>
-            </ig:XamDataTree.NodeLayouts>
+            </ig:XamDataTree.GlobalNodeLayouts>
         </ig:XamDataTree>
 		
 	</Grid>

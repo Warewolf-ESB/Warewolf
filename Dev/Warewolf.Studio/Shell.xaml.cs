@@ -1,5 +1,6 @@
 ﻿using System.Windows;
-using Infragistics.Windows.Themes;
+using Infragistics.Themes;
+using Warewolf.Studio.Themes.Luna;
 
 namespace Warewolf.Studio
 {
@@ -11,10 +12,8 @@ namespace Warewolf.Studio
         public Shell()
         {
             InitializeComponent();
-            ThemeManager.CurrentTheme = "Metro";
+            ThemeManager.ApplicationTheme = new LunaTheme(); 
+            
         }
-
-        
-
     }
 }

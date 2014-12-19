@@ -1,0 +1,1989 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.v14.2.Design.SmartTag</name>
+    </assembly>
+    <members>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ActionListCanvas">
+            <summary>
+            Area where the current ActionListPage is displayed and where old/new pages are animated into and out of view
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListCanvas.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges the content of an element.
+            </summary>
+            <returns>
+            A Size that represents the arranged size of this element and its descendants.
+            </returns>
+            <param name="arrangeSize">
+            The size that this element should use to arrange its child elements.
+            </param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListCanvas.MeasureOverride(System.Windows.Size)">
+            <summary>
+            MeasureOverride
+            </summary>
+            <param name="constraint"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem">
+            <summary>
+            Provides the base class for types that represent a panel item on a smart tag panel. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.#ctor(System.String,System.String,Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup,System.Int32)">
+            <summary>
+            Initializes a new instance of the DesignerActionItem class.
+            </summary>
+            <param name="displayName">The panel text for this item.</param>        
+            <param name="description">Supplemental text for this item, potentially used in ToolTips.</param>
+            <param name="designerActionItemGroup">An object that defines the groupings of panel entries.</param>
+            <param name="orderNumber">Specifies the order in a group</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.GetDescriptionOverride">
+            <summary>
+            Allows derived classes to dynamically provide a description for the DesignerActionItem
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.NotifyPropertyChanged(System.String)">
+            <summary>
+            Called when a property value changes.
+            </summary>
+            <param name="property"></param>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.DesignerActionItemGroup">
+            <summary>
+            Gets,sets the group object for an item.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.Description">
+            <summary>
+            Gets the supplemental text for the item.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.DisplayName">
+            <summary>
+            Gets, sets the text for this item.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.HasDescription">
+            <summary>
+            Gets the description for this item.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.OrderNumber">
+            <summary>
+            Specifies the order in a group
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.IsEnabled">
+             <summary>
+            Gets or sets a value indicating whether this element is enabled
+             </summary>
+        </member>
+        <member name="E:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem.PropertyChanged">
+            <summary>
+            Defines an event that is raised when a property value changes.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemCollection">
+            <summary>
+            Represents a collection of DesignerActionItem objects. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemCollection.Add(Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem)">
+            <summary>
+            Adds the supplied DesignerActionItem to the current collection. 
+            </summary>
+            <param name="value">The DesignerActionItem to add. </param>
+            <returns>The DesignerActionItemCollection index at which the value has been added.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemCollection.Contains(Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem)">
+            <summary>
+            Determines whether the DesignerActionItemCollection contains a specific element. 
+            </summary>
+            <param name="value">The DesignerActionItem to locate in the DesignerActionItemCollection.</param>
+            <returns>true if the DesignerActionItemCollection contains the specified value; otherwise, false.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemCollection.CopyTo(Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem[],System.Int32)">
+            <summary>
+            Copies the elements of the current collection into the supplied array, starting at the specified array index.
+            </summary>
+            <param name="array">The one-dimensional DesignerActionItem array that is the destination of the elements copied from the current collection. The array must have zero-based indexing.</param>
+            <param name="index">The zero-based index in array at which copying begins.</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemCollection.IndexOf(Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem)">
+            <summary>
+            Determines the index of a specific item in the collection.
+            </summary>
+            <param name="value">The DesignerActionItem to locate in the collection.</param>
+            <returns>The zero-based index of the first occurrence of value within the entire DesignerActionItemCollection, if found; otherwise, -1.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemCollection.Insert(System.Int32,Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem)">
+            <summary>
+            Inserts an element into the DesignerActionItemCollection at the specified index.
+            </summary>
+            <param name="index">The zero-based index at which value should be inserted.</param>
+            <param name="value">The DesignerActionItem to insert.</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemCollection.Remove(Infragistics.Windows.Design.SmartTagFramework.DesignerActionItem)">
+            <summary>
+            Removes the first occurrence of a specific object from the DesignerActionItemCollection. 
+            </summary>
+            <param name="value">The DesignerActionItem to remove from the DesignerActionItemCollection. </param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemCollection.SortByOrderNumber">
+            <summary>
+            Sorts the collection by the order number of each item.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemCollection.Item(System.Int32)">
+            <param name="index">The zero based index of the element.</param>       
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup">
+            <summary>
+            Provides a class which is used for DesignerActionItems grouping.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the DesignerActionItemGroup class
+            </summary>
+            <param name="name">Name of the group</param>
+            <param name="orderNumber">Order number of the group</param>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup.IsExpanded">
+            <summary>
+            Specifies if the group item is exapnded or collapsed. If IsExpandalbe property is - False, IsExpanded property is always - True.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup.IsExpandable">
+            <summary>
+             Specifies if the group item can be exapnded and collapsed.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup.IsHeaderVisible">
+            <summary>
+             Specifies if the group item has a header.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup.Name">
+            <summary>
+            Gets, sets the group name
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup.OrderNumber">
+            <summary>
+            Gets, sets the value used for group order in a smart tag pannel
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList">
+            <summary>
+            Provides the list of items included in a smart tag.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList.#ctor(Microsoft.Windows.Design.EditingContext,Microsoft.Windows.Design.Model.ModelItem)">
+            <summary>
+            Initializes a new instance of the DesignerActionList class. 
+            </summary>
+            <param name="context">EditingContext of the control</param>
+            <param name="modelItem">ModelItem of the control</param>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList.GenericAdornerTitle">
+            <summary>
+            The smart tag's title
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList.GenericAdornerMaxHeight">
+            <summary>
+            The smart tag's MaxHeight
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList.GenericAdornerMinHeight">
+            <summary>
+            The smart tag's MinHeight
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList.GenericAdornerMinWidth">
+            <summary>
+            The smart tag's MinWidth
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList.GenericAdornerMaxWidth">
+            <summary>
+            The smart tag's MaxWidth
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList.Items">
+            <summary>
+            Returns all items.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList.MethodItems">
+            <summary>
+            Returns only the method items
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionList.RootContextMenuGroup">
+            <summary>
+            A MenuGroup object which is the root element of the context menu hierarchy
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionMethodItem">
+            <summary>
+            Represents a panel item that is associated with a method in a class. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionMethodItem.#ctor(System.String,Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup,System.Int32,System.Action{Infragistics.Windows.Design.SmartTagFramework.ActionListExecuteInfo},System.String)">
+            <summary>
+            Initializes a new instance of the DesignerActionMethodItem class. 
+            </summary>
+            <param name="displayName">The panel text for this item</param>
+            <param name="description">Property's description. If a description is specified, an icon pops up.</param>
+            <param name="designerActionItemGroup">An object that defines the groupings of panel entries.</param>
+            <param name="orderNumber">Specifies the order in a group</param>
+            <param name="method">The callback method to execute or null to use the methodName to find the method</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionMethodItem.Invoke">
+            <summary>
+            Invokes the method or constructor represented by the current instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionMethodItem.Context">
+            <summary>
+            EditingContext of the control
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionMethodItem.Command">
+            <summary>
+            A RoutedCommand associated with the method
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionMethodItem.ModelItem">
+            <summary>
+            A ModelItem of the control
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ActionListExecuteInfo">
+            <summary>
+            Provides information for the method being invoked.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.ActionListExecuteInfo.Context">
+            <summary>
+            The EditingContext for the associated element
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.ActionListExecuteInfo.ModelItem">
+            <summary>
+            The ModelItem representing the object being edited.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListExecuteInfo.#ctor(Microsoft.Windows.Design.EditingContext,Microsoft.Windows.Design.Model.ModelItem)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.Design.SmartTagFramework.ActionListExecuteInfo"/>
+            </summary>
+            <param name="context">Provides contextual state about the designer</param>
+            <param name="modelItem">The item being edited</param>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem">
+            <summary>
+            Represents a property of type object. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.#ctor(System.String,System.String,Microsoft.Windows.Design.Model.ModelItem,System.Type,System.Type,System.String,Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup,System.Collections.Generic.IList{System.String},System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the DesignerActionObjectPropertyItem class. 
+            </summary>
+            <param name="propertyName">Property name</param>
+            <param name="displayName">The panel text for this item</param>
+            <param name="parentModelItem">The MpdelItem of the instance that contains this object property</param>       
+            <param name="owningType">The Type of the instance that contains this object property</param>       
+            <param name="propertyType">The Type of this object property</param>       
+            <param name="id">An id that uniquely identifies this item.  This would normally be the same as the proeprtyName, but can be different if there are 2 DesignerActionObjectPropertyItems on the same page for the same property.</param>       
+            <param name="designerActionItemGroup">An object that defines the groupings of panel entries.</param>             
+            <param name="itemsToShow">A list of string identifiers that derived classes can look at to determine which items to include in the list.</param>
+            <param name="orderNumber">Specifies the order in a group</param>        
+            <param name="alternateAdornerTitle">Specifies an alternate Title for the GenericAdorner that hosts the DesignerActionList associated with this item, overriding the one specified in the DesignerActionList itself.</param>        
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.GetDescriptionOverride">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.GetPropertyTypeOverride">
+            <summary>
+            A virtual method that allows derived classes to dynamically supply a Property type at time of need.  By default, the 
+            Type passed into the constructor of DesignerActionObjectPropertyItem is returned.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.ActionList">
+            <summary>
+            Property ActionList
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.Context">
+            <summary>
+            EditingContext of the control
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.Id">
+            <summary>
+            Property Id
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.ModelItem">
+            <summary>
+            Property ModelItem
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.Name">
+            <summary>
+            Property name
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.PropertyType">
+            <summary>
+            Property type
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.Value">
+            <summary>
+            Property value
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionObjectPropertyItem.ParentModelItem">
+            <summary>
+            Returns the Modelitem of the parent.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem">
+            <summary>
+            Represents a panel item that is associated with a property in a class. This class cannot be inherited. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem.#ctor(System.String,System.String,System.Type,Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup,System.Int32)">
+            <summary>
+            Initializes a new instance of the DesignerActionPropertyItem class. 
+            </summary>
+            <param name="propertyName">Property name</param>
+            <param name="displayName">The panel text for this item</param>
+            <param name="owningType">The Type of the instance that contains this property</param>       
+            <param name="designerActionItemGroup">An object that defines the groupings of panel entries.</param>
+            <param name="orderNumber">Specifies the order in a group</param>        
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem.GetDescriptionOverride">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem.Context">
+            <summary>
+            EditingContext of the control
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem.IsReadOnly">
+             <summary>
+            Gets or sets a value indicating whether this element can be changed
+             </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem.IsWriteable">
+             <summary>
+             /// <summary>
+            Gets a value indicating whether this element can be changed
+             </summary>
+             </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem.ModelProperty">
+            <summary>
+            Returns or sets the associated property that the item represents.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem.Name">
+            <summary>
+            Property name
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem.PropertyType">
+            <summary>
+            Property type
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItem.Value">
+            <summary>
+            Property value
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionTextItem">
+            <summary>
+            Represents a static text item on a smart tag panel. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DesignerActionTextItem.#ctor(System.String,Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemGroup,System.Windows.FontWeight,System.Windows.Media.Brush,System.Int32)">
+            <summary>
+            Initializes a new instance of the DesignerActionTextItem class. 
+            </summary>
+            <param name="displayName">The panel text for this item.</param>
+            <param name="designerActionItemGroup">An object that defines the groupings of panel entries.</param>        
+            <param name="fontWeight">Specifies the FontWeight to use for the text.</param>
+            <param name="foreground">Specifies the Foreground to use for the text.</param>
+            <param name="orderNumber">Specifies the order in a group</param>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionTextItem.FontWeight">
+            <summary>
+            Gets, sets a FontWeight property 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignerActionTextItem.Foreground">
+            <summary>
+            Gets, sets a Foreground property 
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ContentLocators">
+            <summary>
+            Exposes static properties for URIs, ImageSources etc that point to various pieces of content contained in the assembly.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ContentLocators.ImageSourceCloseButtonGif">
+            <summary>
+            ImageSource for SmartTagFramework\Images\CloseButton.gif
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ContentLocators.ImageSourceDrillIntoPng">
+            <summary>
+            ImageSource for SmartTagFramework\Images\DrillInto.png
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ContentLocators.ImageSourceFolderJpg">
+            <summary>
+            ImageSource for SmartTagFramework\Images\Folder.jpg
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ContentLocators.ImageSourceInfoPng">
+            <summary>
+            ImageSource for SmartTagFramework\Images\Info.Png
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ContentLocators.UriDesignerActionItemTemplatesXaml">
+            <summary>
+            Uri for SmartTagFramework\ThemeResources\Generic\DesignerActionItemTemplates.xaml
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ContentLocators.UriExpanderXaml">
+            <summary>
+            Uri for SmartTagFramework\ThemeResources\Generic\Expander.xaml
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ContentLocators.UriGenericXaml">
+            <summary>
+            Uri for Themes\generic.xaml
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ContentLocators.UriPropertyEditorsXaml">
+            <summary>
+            Uri for SmartTagFramework\ThemeResources\Generic\PropertyEditors.xaml
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.BooleanToVisibilityConverter">
+            <summary>
+            BooleanToVisibilityConverter
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.BooleanToVisibilityConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert.
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.BooleanToVisibilityConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert back.
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.BooleanValueConverter">
+            <summary>
+            BooleanValueConverter
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.BooleanValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.BooleanValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert back.
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.BrushValueConverter">
+            <summary>
+            Represents the converter that converts Brush values to and from String values.
+            </summary>    
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.BrushValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a Brush value to a System.String value.
+            </summary>
+            <param name="value">The Brush value to convert.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">This parameter is not used.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            System.Windows.Media.Colors predefined color's name if exists or the hexadecimal value of the color. 
+            If the method returns null, the string "{x:Null}" is used.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.BrushValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a System.String value to a Brush value.
+            </summary>
+            <param name="value">System.String value.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">This parameter is not used.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            A Brush value if the string can be converted; otherwise null.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.CursorValueConverter">
+            <summary>
+            Represents the converter that converts Cursor values to and from System.Object values.
+            </summary>     
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.CursorValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a Cursor value to a Cursor value.
+            </summary>
+            <param name="value">The Cursor value to convert.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">This parameter is not used.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            The cursor value.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.CursorValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a System.Object value to a Cursor value.
+            </summary>
+            <param name="value">System.Object value.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">This parameter is not used.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            A Cursor value if the object can be converted; otherwise null.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DoubleValueConverter">
+            <summary>
+            DoubleValueConverter
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DoubleValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.DoubleValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert back.
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.EnumTypeConverter">
+            <summary>
+            Represents the converter that converts an enumeration value to to its enumeration type's values.
+            </summary>    
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.EnumTypeConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts an enumeration value to to its enumeration type's values.
+            </summary>
+            <param name="value">The enumeration value to convert.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">This parameter is not used.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            The enumeration type's values.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.EnumTypeConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Not implemented yet.
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.GenericValueConverter">
+            <summary>
+            Represents the converter that converts System.Object value to specified system type.
+            </summary> 
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.GenericValueConverter.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.GenericValueConverter.#ctor(System.ComponentModel.TypeConverter,System.Type,System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.Design.SmartTagFramework.GenericValueConverter"/>
+            </summary>
+            <param name="converter">The typeconverter to use to perform the conversions</param>
+            <param name="sourceType">The source property type</param>
+            <param name="targetType">The property type of the target property</param>
+            <param name="convertFrom">True to perform a conversion in the convert method</param>
+            <param name="convertTo">True to perform a conversion in the convertback method</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.GenericValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Returns the same object.
+            </summary>
+            <param name="value">The Object value to convert.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">This parameter is not used.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            The same value.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.GenericValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts System.Object value to specified system type.
+            </summary>
+            <param name="value">The System.Object value to convert.</param>
+            <param name="targetType">The System.Type that the value will be converted to.</param>
+            <param name="parameter">This parameter is not used.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            A value of specified type.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.HexToColorConverter">
+            <summary>
+            HexToColorConverter
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.HexToColorConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.HexToColorConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert back
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ImageSourceValueConverter">
+            <summary>
+            Represents the converter that converts System.String values to and from ImageSource values.
+            </summary>      
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ImageSourceValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts an ImageSource to System.String
+            </summary>
+            <param name="value">The ImageSource value to convert.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">This parameter is not used.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            Resource relative path.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ImageSourceValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a resource relative path to a ImageSource.
+            </summary>
+            <param name="value">Resource relative path.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">This parameter can be null or the desired UriKind.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            A BitmapImage value if the image resource can be found; otherwise null.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.Int32ValueConverter">
+            <summary>
+            Int32ValueConverter
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Int32ValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Int32ValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Convert back.
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.NullableEnumItemTypeConverter">
+            <summary>
+            Represents the converter that converts a nullable enumeration value.
+            </summary>    
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.NullableEnumItemTypeConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts an enumeration value to to its enumeration type's values.
+            </summary>
+            <param name="value">The enumeration value to convert.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">This parameter is not used.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            The enumeration type's values.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.NullableEnumItemTypeConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Not implemented yet.
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.NullableEnumTypeConverter">
+            <summary>
+            Represents the converter that converts a nullable enumeration value to to its enumeration type's values.
+            </summary>    
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.NullableEnumTypeConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts an enumeration value to to its enumeration type's values.
+            </summary>
+            <param name="value">The enumeration value to convert.</param>
+            <param name="targetType">This parameter is not used.</param>
+            <param name="parameter">The Enum type.</param>
+            <param name="culture">This parameter is not used.</param>
+            <returns>
+            The enumeration type's values.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.NullableEnumTypeConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Not implemented yet.
+            </summary>
+            <param name="value"></param>
+            <param name="targetType"></param>
+            <param name="parameter"></param>
+            <param name="culture"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.NullOrEmptyStringConverter">
+            <summary>
+            Null or empty string converter.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.NullOrEmptyStringConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.NullOrEmptyStringConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.PointValueConverter">
+            <summary>
+            Cursor binding converter.
+            </summary>    
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.PointValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.PointValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.SizeValueConverter">
+            <summary>
+            Cursor binding converter.
+            </summary>    
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SizeValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SizeValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ThicknessValueConverter">
+            <summary>
+            Cursor binding converter.
+            </summary>    
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ThicknessValueConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ThicknessValueConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionItemTemplateSelector">
+            <summary>
+            Select a DesignerActionItem template
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignerActionPropertyItemTemplateSelector">
+            <summary>
+            Select a DesignerActionPropertyItem template
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.DesignResources">
+            <summary>
+            Exposes public properties used for localization 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_GenericAdorner_lblTitleContent">
+            <summary>
+            Returns a string that contains the localized resource for the GenericAdorner's title.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_GenericAdorner_btnCloseToolTip">
+            <summary>
+            Returns a string that contains the localized resource for the smart tag's close button's tooltip. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_GenericAdorner_btnCloseText">
+            <summary>
+            Returns a string that contains the localized resource for the smart tag's close button's title. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_ImageSourceEditor_lblTitleContent">
+            <summary>
+            Returns a string that contains the localized resource for the ImageSourceEditor title
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_TreeItemFileTemplate_lblTreeItemDescriptionContent">
+            <summary>
+            Returns a string that contains the localized resource for a file template description.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_TreeItemDirectoryTemplate_lblTreeItemDescriptionContent">
+            <summary>
+            Returns a string that contains the localized resource for a directory template description.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_TreeItemDirectoryTemplate_spTreeItemDirectoryTemplateToolTip">
+            <summary>
+            Returns a string that contains the localized resource for a ToolTip
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_GenericValueConverter_ConvertBackMSG">
+            <summary>
+            Returns a string that contains the localized resource for for a message from the GenericValueConverter class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_SmartButtonAdorner_tbtnSmartToolTip">
+            <summary>
+            Returns a string that contains the localized resource for a ToolTip message.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_GenericContextMenuProvider_GetCustomActionListMSG">
+            <summary>
+            Returns a string that contains the localized resource for a message from the GenericContextMenuProvider class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_DesignerActionObjectPropertyItemTemplate_btnToolTip">
+            <summary>
+            Returns a string that contains the localized resource for a ToolTip message.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_GenericAdorner_btnBackText">
+            <summary>
+            Returns a string that contains the localized resource.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_GenericAdorner_btnBackToolTip">
+            <summary>
+            Returns a string that contains the localized resource for a ToolTip message.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_ImageSourceEditor_NoResourcesFound">
+            <summary>
+            Returns a string that contains the localized resource for a message.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_ImageSourceEditor_ImageResourcesDefinedInProject">
+            <summary>
+            Returns a string that contains the localized resource for a description.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_ImageSourceEditor_btnResetText">
+            <summary>
+            Returns a string that contains the localized resource for button text.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_ImageSourceEditor_btnResetToolTip">
+            <summary>
+            Returns a string that contains the localized resource for a button tooltip.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.DesignResources.LST_SmartTagFramework_GenericAdorner_DragToolTip">
+            <summary>
+            Returns a string that contains the localized resource for a ToolTip message.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.EditorDataProvider">
+            <summary>
+            Provides data required by different UI editors.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.EditorDataProvider.DefaultFontStyles">
+            <summary>
+            Gets the default font styles.
+            </summary>
+            <value>The default font styles.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.EditorDataProvider.DefaultFontWeights">
+            <summary>
+            Gets the default font weights.
+            </summary>
+            <value>The default font weights.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.EditorDataProvider.DefaultFontStretches">
+            <summary>
+            Gets the default font stretches.
+            </summary>
+            <value>The default font stretches.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.EditorDataProvider.DefaultCursorNames">
+            <summary>
+            Gets the default cursor names.
+            </summary>
+            <value>The default cursor names.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.EditorDataProvider.DefaultColorNames">
+            <summary>
+            Gets the default color names.
+            </summary>
+            <value>The default color names.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.EditorDataProvider.DefaultLanguages">
+            <summary>
+            Gets the default languages.
+            </summary>
+            <value>The default languages.</value>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdorner">
+            <summary>
+            Represents an Adorner used as a smart tag panel
+            </summary>
+            <summary>
+            SmartTagAdorner
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdorner.#ctor(Infragistics.Windows.Design.SmartTagFramework.DesignerActionList,Microsoft.Windows.Design.Model.ModelItem,Microsoft.Windows.Design.EditingContext,System.Windows.Controls.Primitives.Popup)">
+            <summary>
+            Initializes a new instance of GenericAdorner
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdorner.OnIsKeyboardFocusWithinChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when the keyboard focus in a child element changes.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdorner.CloseGenericAdornerEvent">
+            <summary>
+            Event ID for the <see cref="F:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdorner.CloseGenericAdornerEvent"/> routed event
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdorner.RaiseCloseGenericAdornerEvent">
+            <summary>
+            This method raises the CloseGenericAdornerEvent
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdorner.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdorner.CurrentActionList">
+            <summary>
+            Gets the DesignerActionList for the current ActionListPage.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdorner.CloseGenericAdorner">
+            <summary>
+            Occurs when the popup for has closed up.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider">
+            <summary>
+            An adorner provider that will display actions/properties for the associated control that have been registered using the <see cref="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider.Register(System.Type,System.Action{Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder})"/> method.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider.OpenSmartTag(Microsoft.Windows.Design.Model.ModelItem)">
+            <summary>
+            Displays the adorner for the specified item.
+            </summary>
+            <param name="item">The item for which to open the smart tag.</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider.Register(System.Type,System.Action{Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder})">
+            <summary>
+            Registers a callback to be used to build an action list that is used to populate the smart tag for a given type.
+            </summary>
+            <param name="type">The type for which the callback should be used</param>
+            <param name="callback">The method that will create the action list information for this type.</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider.Activate(Microsoft.Windows.Design.Model.ModelItem)">
+            <summary>
+            The following method is called when the adorner is activated.
+            It creates the adorner control, sets up the adorner panel,
+            and attaches a ModelItem to the adorned control.
+            </summary>
+            <param name="item">A Microsoft.Windows.Design.Model.ModelItem representing the adorned element.</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider.Deactivate">
+            <summary>
+            Called when an adorner provider is about to be discarded by the designer.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider.CustomPropertyEditors">
+            <summary>
+            Returns/sets a resourceDictionary that contains custom property editors.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider.CustomActionList">
+            <summary>
+            Returns predefined DesignerActionList
+            </summary>        
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.LinkButton">
+            <summary>
+            The <see cref="T:Infragistics.Windows.Design.SmartTagFramework.LinkButton"/> class simulates some of the finctionalities of the well-known class with the same name in ASP.NET
+            </summary>
+            <summary>
+            LinkButton
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.LinkButton.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Infragistics.Windows.Design.SmartTagFramework.LinkButton"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LinkButton.CommandProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.LinkButton.Command"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LinkButton.CommandParameterProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.LinkButton.Command"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LinkButton.TextProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.LinkButton.Text"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LinkButton.ClickEvent">
+            <summary>
+            Event ID for the <see cref="E:Infragistics.Windows.Design.SmartTagFramework.LinkButton.Click"/> routed event
+            </summary>
+            <seealso cref="E:Infragistics.Windows.Design.SmartTagFramework.LinkButton.Click"/>
+            <seealso cref="M:Infragistics.Windows.Design.SmartTagFramework.LinkButton.OnClick(System.Windows.RoutedEventArgs)"/>
+            <seealso cref="T:System.Windows.RoutedEventArgs"/>
+            <seealso cref="T:System.Windows.RoutedEventHandler"/>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.LinkButton.OnClick(System.Windows.RoutedEventArgs)">
+            <summary>
+            Occurs when user click on the button
+            </summary>
+            <seealso cref="E:Infragistics.Windows.Design.SmartTagFramework.LinkButton.Click"/>
+            <seealso cref="F:Infragistics.Windows.Design.SmartTagFramework.LinkButton.ClickEvent"/>
+            <seealso cref="T:System.Windows.RoutedEventArgs"/>
+            <seealso cref="T:System.Windows.RoutedEventHandler"/>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.LinkButton.hyperLink_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Raise Click event
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.LinkButton.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.LinkButton.Command">
+            <summary>
+            Description
+            </summary>
+            <seealso cref="F:Infragistics.Windows.Design.SmartTagFramework.LinkButton.CommandProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.LinkButton.CommandParameter">
+            <summary>
+            Description
+            </summary>
+            <seealso cref="F:Infragistics.Windows.Design.SmartTagFramework.LinkButton.CommandParameterProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.LinkButton.Text">
+            <summary>
+            Description
+            </summary>
+            <seealso cref="F:Infragistics.Windows.Design.SmartTagFramework.LinkButton.TextProperty"/>
+        </member>
+        <member name="E:Infragistics.Windows.Design.SmartTagFramework.LinkButton.Click">
+            <summary>
+            Occurs when user click on the button
+            </summary>
+            <seealso cref="M:Infragistics.Windows.Design.SmartTagFramework.LinkButton.OnClick(System.Windows.RoutedEventArgs)"/>
+            <seealso cref="F:Infragistics.Windows.Design.SmartTagFramework.LinkButton.ClickEvent"/>
+            <seealso cref="T:System.Windows.RoutedEventArgs"/>
+            <seealso cref="T:System.Windows.RoutedEventHandler"/>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.NamedColor">
+            <summary>
+            Provides basic information for named colors.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.NamedColor.#ctor(System.String,System.Windows.Media.Color)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Windows.Design.SmartTagFramework.NamedColor"/> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="color">The color.</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.NamedColor.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.NamedColor.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.NamedColor.Color">
+            <summary>
+            Gets or sets the color.
+            </summary>
+            <value>The color.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.NamedColor.Brush">
+            <summary>
+            Gets or sets the brush.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="T:Infragistics.Design.SmartTagFramework.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Design.SmartTagFramework.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Design.SmartTagFramework.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.ResourceDictionaryLoader">
+            <summary>
+            ResourceDictionary that conditionally merges SmartTagFramework resource dictionaries for designer 4.0 projects only.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.ResourceDictionaryLoader.BeginInit">
+            <summary>
+            Starts the initialization of the dictionary.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.ResourceDictionaryLoader.EndInit">
+            <summary>
+            Ends the initialization of the dictionary.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ResourceType">
+            <summary>
+            Represents an resource in a project
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ResourceType.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the ResourceType class. 
+            </summary>
+            <param name="extension">File extension</param>
+            <param name="description">Resource description</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ResourceType.ToString">
+            <summary>
+            Returns a string representatioj of the ResourceType
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ResourceType.Equals(System.Object)">
+            <summary>
+            Returns true if the resource extension equals the specified object.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ResourceType.GetHashCode">
+            <summary>
+            Returns the instance's hashcode.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ResourceType.Extension">
+            <summary>
+            File extension
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ResourceType.Description">
+            <summary>
+            Resource description
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.Reveal">
+            <summary>
+            Modified arrangement in order the content could be stretched.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Reveal.#cctor">
+            <summary>
+            Initializes the <see cref="T:Infragistics.Windows.Design.SmartTagFramework.Reveal"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Reveal.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Measures the child element of a <see cref="T:System.Windows.Controls.Decorator"/> to prepare for arranging it during the <see cref="M:System.Windows.Controls.Decorator.ArrangeOverride(System.Windows.Size)"/> pass.
+            </summary>
+            <param name="constraint">An upper limit <see cref="T:System.Windows.Size"/> that should not be exceeded.</param>
+            <returns>
+            The target <see cref="T:System.Windows.Size"/> of the element.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Reveal.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Arranges the content of a <see cref="T:System.Windows.Controls.Decorator"/> element.
+            </summary>
+            <param name="arrangeSize">The <see cref="T:System.Windows.Size"/> this element uses to arrange its child content.</param>
+            <returns>
+            The <see cref="T:System.Windows.Size"/> that represents the arranged size of this <see cref="T:System.Windows.Controls.Decorator"/> element and its child.
+            </returns>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.Reveal.UseDesiredSizeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.UseDesiredSize"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.Reveal.IsExpandedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.IsExpanded"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.Reveal.DurationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.Duration"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.Reveal.HorizontalRevealProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.HorizontalReveal"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.Reveal.VerticalRevealProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.VerticalReveal"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.Reveal.AnimationProgressProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.AnimationProgress"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.UseDesiredSize">
+            <summary>
+            Gets or sets a value indicating whether arranged controls should use desired or decorator suggested size. This is a dependency property.
+            </summary>
+            <value><c>true</c> if the desired size should be used; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.IsExpanded">
+            <summary>
+                Whether the child is expanded or not.
+                Note that an animation may be in progress when the value changes.
+                This is not meant to be used with AnimationProgress and can overwrite any 
+                animation or values in that property.
+                This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.Duration">
+            <summary>
+                The duration in milliseconds of the reveal animation.
+                Will apply to the next animation that occurs (not to currently running animations).
+                This is a dependency property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.HorizontalReveal">
+            <summary>
+            Gets or sets the horizontal reveal mode.
+            </summary>
+            <value>The horizontal reveal mode.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.VerticalReveal">
+            <summary>
+            Gets or sets the vertical reveal mode.
+            </summary>
+            <value>The vertical reveal mode.</value>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.Reveal.AnimationProgress">
+            <summary>
+                Value between 0 and 1 (inclusive) to move the reveal along.
+                This is not meant to be used with IsExpanded.
+                This is a dependency property.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.HorizontalRevealMode">
+            <summary>
+            The horizontal reveal mode.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.HorizontalRevealMode.None">
+            <summary>
+                No horizontal reveal animation.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.HorizontalRevealMode.FromLeftToRight">
+            <summary>
+                Reveal from the left to the right.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.HorizontalRevealMode.FromRightToLeft">
+            <summary>
+                Reveal from the right to the left.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.HorizontalRevealMode.FromCenterToEdge">
+            <summary>
+                Reveal from the center to the bounding edge.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.VerticalRevealMode">
+            <summary>
+            The vertical reveal mode.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.VerticalRevealMode.None">
+            <summary>
+                No vertical reveal animation.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.VerticalRevealMode.FromTopToBottom">
+            <summary>
+                Reveal from top to bottom.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.VerticalRevealMode.FromBottomToTop">
+            <summary>
+                Reveal from bottom to top.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.VerticalRevealMode.FromCenterToEdge">
+            <summary>
+                Reveal from the center to the bounding edge.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.SmartButtonAdorner">
+            <summary>
+            Represents an Adorner used as a smart tag button
+            </summary>
+            <summary>
+            SmartButtonAdorner
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartButtonAdorner.#ctor">
+            <summary>
+            Initializes a new instance of SmartButtonAdorner
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.SmartButtonAdorner.ArrowOpacityProperty">
+            <summary>
+            Identifies the ArrowOpacity" attached dependency property
+            </summary>
+            <seealso cref="M:Infragistics.Windows.Design.SmartTagFramework.SmartButtonAdorner.GetArrowOpacity(System.Windows.DependencyObject)"/>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartButtonAdorner.GetArrowOpacity(System.Windows.DependencyObject)">
+            <summary>
+            Gets the value of the 'ArrowOpacity' attached property
+            </summary>
+            <seealso cref="F:Infragistics.Windows.Design.SmartTagFramework.SmartButtonAdorner.ArrowOpacityProperty"/>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.SmartButtonAdorner.tbtnSmart">
+            <summary>
+            tbtnSmart Name Field
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartButtonAdorner.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder">
+            <summary>
+            Class used to construct the action items to be displayed in the <see cref="T:Infragistics.Windows.Design.SmartTagFramework.SmartTagAdornerProvider"/> for an element.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.AddActionListProperty(System.String,System.String,System.String,System.Collections.Generic.IList{System.String},System.String)">
+            <summary>
+            Adds an item that will be used to drill into a subobject and have its information displayed as its own page of items in the smart tag.
+            </summary>
+            <param name="propertyName">The name of the property containing the subobject</param>
+            <param name="displayName">The text that should be displayed for the button that will navigate to the child action list.</param>
+            <param name="id">A string identifier used to uniquely identify the item</param>
+            <param name="itemsToShow">An optional list of string that will be provided to the build for the child action list that it might use to filter the items it creates/provides.</param>
+            <param name="alternateSmartTagTitle">An optional text that will be displayed for the child action list.</param>
+            <returns>Returns this object to allow chaining of calls while building the list of items.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.AddLabel(System.String,Infragistics.Windows.Design.SmartTagFramework.LabelWeight)">
+            <summary>
+            Adds a static label to the items.
+            </summary>
+            <param name="displayName">The text to display to the end user</param>
+            <param name="fontWeight">An enumeration used to indicate how/whether the text should be made bold</param>
+            <returns>Returns this object to allow chaining of calls while building the list of items.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.AddLabel(System.String,Infragistics.Windows.Design.SmartTagFramework.LabelWeight,System.Windows.Media.Brush)">
+            <summary>
+            Adds a static label to the items.
+            </summary>
+            <param name="displayName">The text to display to the end user</param>
+            <param name="fontWeight">An enumeration used to indicate how/whether the text should be made bold</param>
+            <param name="foreground">The color to use for the foreground</param>
+            <returns>Returns this object to allow chaining of calls while building the list of items.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.AddProperty(System.String[])">
+            <summary>
+            Adds one or more items to the list that represent properties defined on the associated ModelItem.
+            </summary>
+            <param name="propertyNames">One or more names of properties on the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.ModelItem"/> that should be displayed to the developer to be edited</param>
+            <returns>Returns this object to allow chaining of calls while building the list of items.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.AddMethod(System.String,System.Action{Infragistics.Windows.Design.SmartTagFramework.ActionListExecuteInfo},System.String)">
+            <summary>
+            Adds a button/action to the items that will perform some custom operation.
+            </summary>
+            <param name="displayName">The text to display to the end user for the action</param>
+            <param name="method">The callback to invoke when the action is triggered</param>
+            <param name="description">An optional string to display to the developer that provides additional information about the action</param>
+            <returns>Returns this object to allow chaining of calls while building the list of items.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.ShouldInclude(System.String)">
+            <summary>
+            Checks the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.ItemsToShow"/> to see if the specified category of items should be included.
+            </summary>
+            <param name="category">The text to look for in the <see cref="P:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.ItemsToShow"/></param>
+            <returns>Returns true if the ItemsToShow is null or contains the specified string.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.StartGroup(System.String,System.Boolean)">
+            <summary>
+            Creates a group that will be used to contain the subsequently added items.
+            </summary>
+            <param name="name">The text displayed to the end user for the group</param>
+            <param name="isExpanded">An optional parameter indicating whether the group should initially be expanded.</param>
+            <returns>Returns this object to allow chaining of calls while building the list of items.</returns>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.EditingContext">
+            <summary>
+            The EditingContext for the associated element
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.HasItems">
+            <summary>
+            Returns a boolean indicating if any items have been added.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.ItemsToShow">
+            <summary>
+            Returns a list of strings that can be used to identify the subset of items that the creator would like to see.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.ModelItem">
+            <summary>
+            Returns the ModelItem associated with the object being edited by the items.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder.Title">
+            <summary>
+            Returns the title of the smart tag adorner.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.LabelWeight">
+            <summary>
+            Enumeration used to define the font weight for the label of an <see cref="T:Infragistics.Windows.Design.SmartTagFramework.ActionListBuilder"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.Black">
+            <summary>
+            Black
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.Bold">
+            <summary>
+            Bold
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.ExtraBlack">
+            <summary>
+            ExtraBlack
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.ExtraLight">
+            <summary>
+            ExtraLight
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.Light">
+            <summary>
+            Light
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.Medium">
+            <summary>
+            Medium
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.Normal">
+            <summary>
+            Normal
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.SemiBold">
+            <summary>
+            SemiBold
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.SemiLight">
+            <summary>
+            SemiLight
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.LabelWeight.Thin">
+            <summary>
+            Thin
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.SmartTagContextMenuProvider">
+            <summary>
+            Custom context menu provider that displays an option to show the associated smart tag.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagContextMenuProvider.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.Design.SmartTagFramework.SmartTagContextMenuProvider"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagContextMenuProvider.CreateAction(System.String,System.Collections.Generic.IList{Microsoft.Windows.Design.Interaction.MenuBase},System.Action{Microsoft.Windows.Design.Interaction.MenuActionEventArgs},System.Action{Microsoft.Windows.Design.Interaction.MenuAction,Microsoft.Windows.Design.Interaction.MenuActionEventArgs})">
+            <summary>
+            Helper method for creating an action.
+            </summary>
+            <param name="displayName">The display name for the action.</param>
+            <param name="items">The collection to item should be added.</param>
+            <param name="execute">The method to invoke when the action is clicked.</param>
+            <param name="initialize">The method to invoke when the menu item is to be initialized.</param>
+            <returns>The MenuAction that was created in case additional initialization is needed.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.SmartTagContextMenuProvider.CreateGroup(System.String,System.Collections.Generic.IList{Microsoft.Windows.Design.Interaction.MenuBase},System.String,System.Action{Microsoft.Windows.Design.Interaction.MenuGroup,Microsoft.Windows.Design.Interaction.MenuActionEventArgs})">
+            <summary>
+            Helper method for creating an action.
+            </summary>
+            <param name="name">The name for the group.</param>
+            <param name="items">The collection to item should be added.</param>
+            <param name="dropDownText">The text to display if the items are displayed within a dropdown. If specified the HasDropDown will be set to true on the group.</param>
+            <param name="initialize">The method to invoke when the menu item is to be initialized.</param>
+            <returns>The MenuGroup that was created in case additional initialization is needed.</returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.SmartTagFrameworkCommands">
+            <summary>
+            Defines the commands used by the SmartTagFramework
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.SmartTagFrameworkCommands.ExecuteDesignerActionMethodItemCommand">
+            <summary>
+            Executes a method associated with the command
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.SmartTagFrameworkCommands.ExecuteDesignerActionObjectPropertyItemCommand">
+            <summary>
+            Drills into the property specified by a DesignerActionObjectPropertyItem.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.Design.SmartTagFramework.SmartTagFrameworkCommands.NavigateToPreviousActionListPageCommand">
+            <summary>
+            Navigates to the previous ActionListPage.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ActionListPage">
+            <summary>
+            Interaction logic for ActionListPage.xaml
+            </summary>
+            <summary>
+            ActionListPage
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListPage.#ctor">
+            <summary>
+            Creates an instance of an ActionListPage.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ActionListPage.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ImageSourceEditor">
+            <summary>
+            Provides functionalities for ImageSource editing
+            </summary>
+            <summary>
+            ImageSourceEditor
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ImageSourceEditor.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ImageSourceEditor.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.ThemeEditor">
+            <summary>
+            Interaction logic for ThemeEditor.xaml
+            </summary>
+            <summary>
+            ThemeEditor
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ThemeEditor.#ctor">
+            <summary>
+            ThemeEditor control.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.ThemeEditor.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.TreeItem">
+            <summary>
+            TreeItem represents an item from the current project's hierarchy
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.TreeItem.#ctor(System.String,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="originalPath"></param>
+            <param name="parentDirectoryPath"></param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.TreeItem.Equals(System.Object)">
+            <summary>
+            Returns true if the resource Path equal the specified object
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.TreeItem.GetHashCode">
+            <summary>
+            Returns the instance's hash code.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.TreeItem.ToString">
+            <summary>
+            Returns a string representation of the item.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.TreeItem.IsFile">
+            <summary>
+            Returns true if the item represents a file.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.TreeItem.IsDirectory">
+            <summary>
+            Returns true if the item represents a directory.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.TreeItem.Name">
+            <summary>
+            Returns the name of the item.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.TreeItem.OriginalPath">
+            <summary>
+            Returns the original path of the item.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.TreeItem.Path">
+            <summary>
+            Returns the path of the item.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.SmartTagFramework.TreeItem.ResourceType">
+            <summary>
+            Returns the resource type of the item.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.TreeItemTemplateSelector">
+            <summary>
+            Select a TreeItem template
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.SmartTagFramework.Utils">
+            <summary>
+            A static class containing common static methods. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.BuildEmbeddedResourceUri(System.Reflection.Assembly,System.String)">
+            <summary>
+            Creates a Uri for a resource embedded in an assembly
+            </summary>
+            <param name="assembly">The assembly that contains the resource</param>
+            <param name="resourcePath">The relative path to the resource (e.g. "Looks/Onyx.xaml")</param>
+            <returns>A Uri to the resource.</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.PropertyHelper(System.Type,System.String)">
+            <summary>
+            Helper method to retrieve control properties.     
+            </summary>
+            <param name="controlType">Control type</param>
+            <param name="propertyName">Property name</param>
+            <returns>PropertyDescriptor</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.MethodHelper(System.Type,System.String)">
+            <summary>
+            Creates an instace of MethodInfo for the specified Type and method name.
+            </summary>
+            <param name="currentType">Control type</param>
+            <param name="methodName">Method name</param>
+            <returns>MethodInfo</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.HexStringToColor(System.String)">
+            <summary>
+            Convert a hex string to a .NET Color object.
+            </summary>
+            <param name="hexColor">a hex string: "FFFFFFFF", "#00000000"</param>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.HexStringToBrush(System.String)">
+            <summary>
+            Convert a hex string to a .NET Brush object.
+            </summary>
+            <param name="hexColor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.StringToBrush(System.String)">
+            <summary>
+            Converts predefned Color name to .NET Brush object
+            </summary>
+            <param name="colorString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.ExtractHexDigits(System.String)">
+            <summary>
+            Extract only the hex digits from a string.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.FindResourceType(System.Uri,System.Collections.Generic.List{Infragistics.Windows.Design.SmartTagFramework.ResourceType})">
+            <summary>
+            Returns a ResourceType object of the resource
+            </summary>
+            <param name="uri">The Uri of the resource</param>
+            <param name="resourceTypes">List of requred resource types</param>
+            <returns>ResourceType object</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.GetImageTypes">
+            <summary>
+            Creates a list of all image types
+            </summary>
+            <returns>List of ResourceType objects</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Design.SmartTagFramework.Utils.GetDescriptionAttributeForProperty(System.Type,System.String)">
+            <summary>
+            Returns the Description attrinte for the specified property name on the specified owning Type
+            </summary>
+            <param name="owningType"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>

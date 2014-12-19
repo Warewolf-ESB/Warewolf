@@ -36,18 +36,6 @@
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.Design">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Editors.XamSlider.v14.2">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.Design">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.Design.dll</HintPath>
-    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.dll</HintPath>
     </Reference>
@@ -77,12 +65,6 @@
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.Design">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.Design.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Data.AnnotationsDataManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll</HintPath>
