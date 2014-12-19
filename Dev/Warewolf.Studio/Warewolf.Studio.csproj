@@ -50,6 +50,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Editors.v14.2.Design.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.OutlookBar.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.OutlookBar.v14.2.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Themes.Fall.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Themes.Fall.v14.2.dll</HintPath>
@@ -106,6 +110,8 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

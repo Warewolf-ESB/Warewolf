@@ -1,4 +1,5 @@
-﻿<Window x:Class="Warewolf.Studio.Shell"
+﻿<Window xmlns:igWPF="http://schemas.infragistics.com/xaml/wpf"  
+        x:Class="Warewolf.Studio.Shell"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dockManager="http://infragistics.com/DockManager"
