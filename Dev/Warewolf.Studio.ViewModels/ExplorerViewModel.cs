@@ -19,5 +19,9 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Environments);
             }
         }
+
+        public void Filter(string filter)
+        {
+        }
     }
 }

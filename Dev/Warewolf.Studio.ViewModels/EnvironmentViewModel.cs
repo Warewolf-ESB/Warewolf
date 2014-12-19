@@ -46,6 +46,10 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void Filter(string filter)
+        {
+        }
+
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
         IList<IExplorerItemViewModel> CreateExplorerItems(IList<IResource> explorerItems)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
