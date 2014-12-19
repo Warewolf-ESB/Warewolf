@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         Title="Warewolf Studio"
         WindowState="Maximized">
 
@@ -64,7 +65,7 @@
                                                      AllowInDocumentHost="False"
                                                      Header="Explorer"
                                                      IsPinned="True"
-                                                     regions:RegionManager.RegionName="Explorer" />
+                                                     regions:RegionManager.RegionName="{x:Static core:RegionNames.Explorer}" />
                             <dockManager:ContentPane x:Name="Toolbox"
                                                      AllowClose="False"
                                                      AllowInDocumentHost="False"

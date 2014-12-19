@@ -17,7 +17,7 @@ namespace Dev2.Studio.TO
     /// <summary>
     /// Provides information on deploy statistics in a bindable 
     /// </summary>
-    public class DeployStatsTO : INotifyPropertyChanged
+    public class DeployStatsTO : INotifyPropertyChanged, IDeployStatsTO
     {
         #region Events
 

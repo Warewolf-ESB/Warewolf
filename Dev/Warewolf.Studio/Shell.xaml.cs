@@ -12,10 +12,8 @@ namespace Warewolf.Studio
         public Shell()
         {
             InitializeComponent();
-            ThemeManager.ApplicationTheme = new LunaTheme();
-
+            ThemeManager.ApplicationTheme = new LunaTheme(); 
+            
         }
-
-
     }
 }

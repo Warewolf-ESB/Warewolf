@@ -47,14 +47,19 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ConnectControlViewModel_SelectedServer_WhenSet_ShouldNotBeNull()
         {
             //------------Setup for test--------------------------
+            var mockConnection = new Mock<IConnection>();
+            var connection = mockConnection.Object;
             var mockServer = new Mock<IServer>();
-            mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IConnection>());
+            mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IConnection> { connection });
             var server = mockServer.Object;
+            // ReSharper disable UseObjectOrCollectionInitializer
             var connectControlViewModel = new ConnectControlViewModel(server);
+            // ReSharper restore UseObjectOrCollectionInitializer
             
             //------------Execute Test---------------------------
-
+            connectControlViewModel.SelectedConnection = connection;
             //------------Assert Results-------------------------
+            Assert.IsNotNull(connectControlViewModel.SelectedConnection);
         }
     }
 
@@ -72,5 +77,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         public IServer Server { get; set; }
         public IList<IConnection> ServerConnections { get; set; }
+        public IConnection SelectedConnection { get; set; }
     }
 }

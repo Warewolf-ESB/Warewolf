@@ -34,29 +34,63 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InfragisticsWPF4.DataPresenter.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v14.2.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Data.AnnotationsDataManager.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataManager.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataVisualization.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.DataVisualization.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Editors.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Editors.v14.2.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.DragDrop.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Editors.v14.2.Design, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Editors.v14.2.Design.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.Math.Calculators.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Math.Calculators.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.OutlookBar.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.OutlookBar.v14.2.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.Math.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Math.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Themes.Fall.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Themes.Fall.v14.2.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.Persistence.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Persistence.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -110,8 +144,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="UIAutomationProvider" />
-    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -157,6 +189,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{f9fe2ce9-625e-4e7f-8f4c-fce28bb59510}</Project>
       <Name>Warewolf.Studio.Core</Name>

@@ -89,6 +89,7 @@ namespace Dev2.Common.Interfaces.Data
         string Outputs { get; set; }
         Permissions UserPermissions { get; set; }
         IList<IResource> Children { get; set; }
+        bool IsSelected { get; set; }
 
         /// <summary>
         ///     Gets the XML representation of this resource.
