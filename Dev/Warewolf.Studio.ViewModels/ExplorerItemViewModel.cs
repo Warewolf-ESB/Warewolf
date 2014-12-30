@@ -9,6 +9,7 @@ namespace Warewolf.Studio.ViewModels
     public class ExplorerItemViewModel : BindableBase,IExplorerItemViewModel
     {
         string _resourceName;
+        private bool _isVisible;
 
         public ExplorerItemViewModel()
         {
@@ -32,6 +33,20 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
+
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                if (_isVisible != value)
+                {
+                    _isVisible = value;
+                    OnPropertyChanged(() => IsVisible);
+                }
+            }
+        }
+
         public IResource Resource { get; set; }
     }
 }

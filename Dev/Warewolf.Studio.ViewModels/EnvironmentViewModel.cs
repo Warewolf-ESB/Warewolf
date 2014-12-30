@@ -47,7 +47,14 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public void Filter(string filter)
-        {            
+        {
+            foreach (var explorerItemViewModel in ExplorerItemViewModels)
+            {
+                if (explorerItemViewModel.ResourceName != null && explorerItemViewModel.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant()))
+                {
+                    explorerItemViewModel.IsVisible = true;
+                }
+            }
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
@@ -62,6 +69,7 @@ namespace Warewolf.Studio.ViewModels
                 explorerItemModels.Add(new ExplorerItemViewModel
                 {
                     Resource = explorerItem,
+                    ResourceName = explorerItem.ResourceName,
                     Children = CreateExplorerItems(explorerItem.Children)
                 });
             }
