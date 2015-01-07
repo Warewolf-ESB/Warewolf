@@ -39,13 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConflictPredicate.cs" />
-    <Compile Include="DeployStatsProvider.cs" />
-    <Compile Include="ExpectedForDeployPredicate.cs" />
-    <Compile Include="NewForDeployPredicate.cs" />
+    <Compile Include="Deploy\ConflictPredicate.cs" />
+    <Compile Include="Deploy\DeployConflictHandler.cs" />
+    <Compile Include="Deploy\DeployModel.cs" />
+    <Compile Include="Deploy\DeployStatsProvider.cs" />
+    <Compile Include="Deploy\ExpectedForDeployPredicate.cs" />
+    <Compile Include="Deploy\NewForDeployPredicate.cs" />
+    <Compile Include="Deploy\ResouceTypeAndPathPredicate.cs" />
+    <Compile Include="Deploy\SelectedForDeployPredicate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResouceTypeAndPathPredicate.cs" />
-    <Compile Include="SelectedForDeployPredicate.cs" />
+    <Compile Include="Toolbox\ToolDescriptorViewModel.cs" />
+    <Compile Include="WarewolfPermissionsException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
@@ -61,6 +65,7 @@
       <Name>Dev2.Studio</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

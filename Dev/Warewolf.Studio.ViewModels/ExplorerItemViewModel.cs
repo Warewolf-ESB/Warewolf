@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces.Data;
@@ -32,6 +33,9 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
+        public bool Checked { get; set; }
+        public Guid ResourceId { get; set; }
+        public ResourceType ResourceType { get; set; }
         public IResource Resource { get; set; }
     }
 }

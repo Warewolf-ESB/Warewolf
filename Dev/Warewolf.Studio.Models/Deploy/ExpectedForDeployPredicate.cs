@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Studio.TO;
 
-namespace Warewolf.Studio.Models
+namespace Warewolf.Studio.Models.Deploy
 {
     public class ExistingForDeployPredicate : IDeployPredicate
     {
@@ -15,9 +15,9 @@ namespace Warewolf.Studio.Models
 
         #region Implementation of IDeployPredicate
 
-        public bool Predicate(IResource resource, IList<IResource> selectedSourceResources, IList<IResource> destinationResources)
+        public bool Predicate(IExplorerItemViewModel resource, ICollection<IExplorerItemViewModel> selectedSourceResources, ICollection<IExplorerItemViewModel> destinationResources)
         {
-            return resource.IsSelected && destinationResources.Any(a => a.ResourceID == resource.ResourceID);
+            return resource.Checked && destinationResources.Any(a => a.ResourceId == resource.ResourceId);
         }
 
 

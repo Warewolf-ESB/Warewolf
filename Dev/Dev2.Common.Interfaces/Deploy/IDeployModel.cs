@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
-using Dev2.Common.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 
-namespace Dev2.Studio.TO
+namespace Dev2.Common.Interfaces.Deploy
 {
     public interface IDeployModel
     {
@@ -19,9 +21,9 @@ namespace Dev2.Studio.TO
         /// <summary>
         /// Get the dependencies of a resource
         /// </summary>
-        /// <param name="resource"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        IList<IResource> GetDependancies(IResource resource);
+        IList<IResource> GetDependancies(Guid id);
         /// <summary>
         /// Does the user have permissions to Deploy a resource
         /// </summary>
@@ -30,5 +32,9 @@ namespace Dev2.Studio.TO
         bool CanDeploy(IResource resource);
     }
 
-    
+    public interface IDeployModelFactory
+    {
+        IDeployModel Create(IServer server);
+    }
+
 }

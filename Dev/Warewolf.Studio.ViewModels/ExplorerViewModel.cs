@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -29,6 +31,15 @@ namespace Warewolf.Studio.ViewModels
                     environmentViewModel.Filter(filter);
                 }
             }
+        }
+
+        public event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
+        public IEnvironmentViewModel SelectedEnvironment { get; set; }
+        public IServer SelectedServer { get { return SelectedEnvironment.Server; }  }
+
+        public IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc)
+        {
+            return null;
         }
     }
 }

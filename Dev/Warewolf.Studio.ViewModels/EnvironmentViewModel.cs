@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
@@ -48,6 +49,24 @@ namespace Warewolf.Studio.ViewModels
 
         public void Filter(string filter)
         {            
+        }
+
+        public ICollection<IExplorerItemViewModel> AsList()
+        {
+            return AsList(ExplorerItemViewModels);
+        }
+        private ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection)
+        {
+            throw new Exception();
+
+        }
+        public void SetItemCheckedState(Guid id, bool state)
+        {
+           var resource= AsList().FirstOrDefault(a => a.ResourceId == id);
+            if(resource!=null)
+            {
+                resource.Checked = state;
+            }
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
