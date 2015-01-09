@@ -1,4 +1,3 @@
-using Warewolf.Studio.Themes.Luna;
 
 #region Using directives
 
@@ -17,11 +16,6 @@ using System.Security;
 
 
 [assembly: SecurityRules(SecurityRuleSet.Level1)]
-
-//[assembly: AssemblyResourceSetLoader(typeof(ThemeAssemblyResourceSetLoader))]
-
-//[assembly: XmlnsPrefix("http://infragistics.com/Themes/Luna", "igThemeLuna")]
-//[assembly: XmlnsDefinition("http://infragistics.com/Themes/Luna", "Warewolf.Studio.Themes.Luna")] 
 
 
 [assembly: ThemeInfo(
