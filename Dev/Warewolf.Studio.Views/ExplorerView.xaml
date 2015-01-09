@@ -10,8 +10,8 @@
 	x:Class="Warewolf.Studio.Views.ExplorerView"
 	d:DesignWidth="640" d:DesignHeight="480"
 	d:DataContext="{d:DesignInstance Type=dummyModels:DummyExplorerViewModel, IsDesignTimeCreatable=False}">
-	
-	<Grid x:Name="LayoutRoot">
+
+    <Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="25"/>
 			<RowDefinition Height="Auto"/>

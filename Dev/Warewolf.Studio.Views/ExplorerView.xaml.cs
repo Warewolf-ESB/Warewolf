@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Infragistics.Themes;
+using Warewolf.Studio.Themes.Luna;
 
 namespace Warewolf.Studio.Views
 {
@@ -20,7 +22,7 @@ namespace Warewolf.Studio.Views
 	{
 		public ExplorerView()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 	}
 }
