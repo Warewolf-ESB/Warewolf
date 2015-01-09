@@ -18,6 +18,7 @@
 /Dev/TestResults
 /bin
 /TestResults
+/Logs
 
 ####################################################################################
 # Server Build Output Folders
