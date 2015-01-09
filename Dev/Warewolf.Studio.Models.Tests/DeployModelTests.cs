@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Studio.Models.Deploy;
 
 namespace Warewolf.Studio.Models.Tests
 {
@@ -74,7 +75,7 @@ namespace Warewolf.Studio.Models.Tests
             //------------Execute Test---------------------------
     
             //------------Assert Results-------------------------
-            deployModel.GetDependancies(null);
+            deployModel.GetDependancies(Guid.Empty);
         }
 
         [TestMethod]
@@ -91,9 +92,9 @@ namespace Warewolf.Studio.Models.Tests
             var resGuid = Guid.NewGuid();
             res.Setup(a => a.ResourceID).Returns(resGuid);
             //------------Execute Test---------------------------
-            deployModel.GetDependancies(res.Object);
+            deployModel.GetDependancies(Guid.Empty);
             //------------Assert Results-------------------------
-            qm.Verify(a=>a.FetchDependencies(resGuid));
+            qm.Verify(a => a.FetchDependencies(Guid.Empty));
         }
 
         [TestMethod]
@@ -111,7 +112,7 @@ namespace Warewolf.Studio.Models.Tests
             res.Setup(a => a.ResourceID).Returns(resGuid);
             qm.Setup(a => a.FetchDependencies(resGuid)).Returns(new List<IResource>());
             //------------Execute Test---------------------------
-            deployModel.GetDependancies(res.Object);
+            deployModel.GetDependancies(Guid.Empty);
             //------------Assert Results-------------------------
            
         }

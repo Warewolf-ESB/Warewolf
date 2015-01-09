@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Studio.TO;
 
-namespace Warewolf.Studio.Models
+namespace Warewolf.Studio.Models.Deploy
 {
     public class ResouceTypeAndPathPredicate:IDeployPredicate
     {
@@ -15,7 +16,7 @@ namespace Warewolf.Studio.Models
 
         #region Implementation of IDeployPredicate
 
-        public bool Predicate(IResource resource, IList<IResource> selectedSourceResources, IList<IResource> destinationResources)
+        public bool Predicate(IExplorerItemViewModel resource, ICollection<IExplorerItemViewModel> selectedSourceResources, ICollection<IExplorerItemViewModel> destinationResources)
         {
             return (ResourceType.HasFlag(resource.ResourceType));
         }

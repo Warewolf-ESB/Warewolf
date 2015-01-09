@@ -65,6 +65,7 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -72,13 +73,20 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conflict.cs" />
+    <Compile Include="ConflictHandlerViewModel.cs" />
+    <Compile Include="DeployViewModel.cs" />
     <Compile Include="DummyModels\DummyExplorerViewModel.cs" />
+    <Compile Include="DummyModels\DummyToolboxViewModel.cs" />
     <Compile Include="EnvironmentViewModel.cs" />
     <Compile Include="ExplorerItemViewModel.cs" />
     <Compile Include="ExplorerViewModel.cs" />
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
+    <Compile Include="ToolBox\ToolboxViewModel.cs" />
+    <Compile Include="ToolBox\ToolDescriptorViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -93,6 +101,16 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
+      <Project>{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}</Project>
+      <Name>Warewolf.Studio.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="DummyModels\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

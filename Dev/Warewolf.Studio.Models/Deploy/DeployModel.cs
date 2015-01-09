@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Studio.TO;
 
-namespace Warewolf.Studio.Models.Tests
+namespace Warewolf.Studio.Models.Deploy
 {
     public class DeployModel : IDeployModel
     {
@@ -50,16 +51,15 @@ namespace Warewolf.Studio.Models.Tests
             }
         }
 
-        public IList<IResource> GetDependancies(IResource resource)
+        public IList<IResource> GetDependancies(Guid id)
         {
-            VerifyArgument.IsNotNull("resource",resource);
-            return _queryManager.FetchDependencies(resource.ResourceID);
+            VerifyArgument.IsNotNull("resource", id);
+            return _queryManager.FetchDependencies(id);
         }
 
         public bool CanDeploy(IResource resource)
         {
-            return resource.UserPermissions.HasFlag(Permissions.DeployFrom); &&
-            return false;
+            return resource.UserPermissions.HasFlag(Permissions.DeployFrom); 
         }
 
         #endregion

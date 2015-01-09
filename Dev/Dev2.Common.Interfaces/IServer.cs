@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Toolbox;
 
 namespace Dev2.Common.Interfaces
 {
@@ -8,5 +9,10 @@ namespace Dev2.Common.Interfaces
         bool Connect();
         IList<IResource> Load();
         IList<IConnection> GetServerConnections();
+        IList<IToolDescriptor> LoadTools();
+
+        bool IsConnected();
+
+        void ReloadTools();
     }
 }

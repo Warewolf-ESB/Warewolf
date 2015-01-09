@@ -51,6 +51,7 @@
     <Compile Include="AdminManagerProxy.cs" />
     <Compile Include="ExplorerUpdateManagerProxy.cs" />
     <Compile Include="LogManagerProxy.cs" />
+    <Compile Include="PluginProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyBase.cs" />
     <Compile Include="QueryManagerProxy.cs" />

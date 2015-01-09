@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Studio.Models.Deploy;
 
 namespace Warewolf.Studio.Models.Tests
 {
@@ -21,19 +23,19 @@ namespace Warewolf.Studio.Models.Tests
 
             var pred = new SelectedForDeployPredicate(new List<ResourceType>());
             var resourceIds = new List<Guid> {Guid.NewGuid(),Guid.NewGuid()};
-            var selected1 = new Mock<IResource>();
-            selected1.Setup(a => a.IsSelected).Returns(true);
-            selected1.Setup(a => a.ResourceID).Returns(resourceIds[1]);
+            var selected1 = new Mock<IExplorerItemViewModel>();
+            selected1.Setup(a => a.Checked).Returns(true);
+            selected1.Setup(a => a.ResourceId).Returns(resourceIds[1]);
             selected1.Setup(a => a.ResourceType).Returns(ResourceType.DbService);
-            var selected2 = new Mock<IResource>();
-            selected2.Setup(a => a.ResourceID).Returns(resourceIds[1]);
+            var selected2 = new Mock<IExplorerItemViewModel>();
+            selected2.Setup(a => a.ResourceId).Returns(resourceIds[1]);
             selected2.Setup(a => a.ResourceType).Returns(ResourceType.DbService);
-            var destination1 = new Mock<IResource>();
-            destination1.Setup(a => a.ResourceID).Returns(resourceIds[1]);
+            var destination1 = new Mock<IExplorerItemViewModel>();
+            destination1.Setup(a => a.ResourceId).Returns(resourceIds[1]);
             destination1.Setup(a => a.ResourceType).Returns(ResourceType.DbService);
 
             //------------Execute Test---------------------------
-            Assert.IsTrue(pred.Predicate(selected1.Object,new List<IResource>{selected1.Object,selected2.Object},new List<IResource>{destination1.Object} ));
+            Assert.IsTrue(pred.Predicate(selected1.Object, new List<IExplorerItemViewModel> { selected1.Object, selected2.Object }, new List<IExplorerItemViewModel> { destination1.Object }));
             //------------Assert Results-------------------------
 
         
@@ -69,19 +71,19 @@ namespace Warewolf.Studio.Models.Tests
 
             var pred = new SelectedForDeployPredicate(new List<ResourceType>());
             var resourceIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
-            var selected1 = new Mock<IResource>();
-            selected1.Setup(a => a.IsSelected).Returns(false);
-            selected1.Setup(a => a.ResourceID).Returns(resourceIds[1]);
+            var selected1 = new Mock<IExplorerItemViewModel>();
+            selected1.Setup(a => a.Checked).Returns(false);
+            selected1.Setup(a => a.ResourceId).Returns(resourceIds[1]);
             selected1.Setup(a => a.ResourceType).Returns(ResourceType.DbService);
-            var selected2 = new Mock<IResource>();
-            selected2.Setup(a => a.ResourceID).Returns(resourceIds[1]);
+            var selected2 = new Mock<IExplorerItemViewModel>();
+            selected2.Setup(a => a.ResourceId).Returns(resourceIds[1]);
             selected2.Setup(a => a.ResourceType).Returns(ResourceType.DbService);
-            var destination1 = new Mock<IResource>();
-            destination1.Setup(a => a.ResourceID).Returns(resourceIds[1]);
+            var destination1 = new Mock<IExplorerItemViewModel>();
+            destination1.Setup(a => a.ResourceId).Returns(resourceIds[1]);
             destination1.Setup(a => a.ResourceType).Returns(ResourceType.DbService);
 
             //------------Execute Test---------------------------
-            Assert.IsFalse(pred.Predicate(selected1.Object, new List<IResource> { selected1.Object, selected2.Object }, new List<IResource> { destination1.Object }));
+            Assert.IsFalse(pred.Predicate(selected1.Object, new List<IExplorerItemViewModel> { selected1.Object, selected2.Object }, new List<IExplorerItemViewModel> { destination1.Object }));
             //------------Assert Results-------------------------
 
 

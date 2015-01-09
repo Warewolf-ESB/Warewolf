@@ -44,7 +44,8 @@ using Dev2.Views.Deploy;
 namespace Dev2.Studio.ViewModels.Deploy
 // ReSharper restore CheckNamespace
 {
-    public class DeployViewModel : BaseWorkSurfaceViewModel,
+    public class 
+        DeployViewModel : BaseWorkSurfaceViewModel,
         IHandle<SelectItemInDeployMessage>,
         IHandle<EnvironmentDeletedMessage>
     {

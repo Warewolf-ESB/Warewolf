@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
@@ -71,6 +73,22 @@ namespace Warewolf.Studio.Specs
             return new List<IConnection>();
         }
 
+        public IList<IToolDescriptor> LoadTools()
+        {
+            return new List<IToolDescriptor>(); ;
+        }
+
+        public bool IsConnected()
+        {
+            return false;
+        }
+
+        public void ReloadTools()
+        {
+        }
+
         #endregion
+
+
     }
 }

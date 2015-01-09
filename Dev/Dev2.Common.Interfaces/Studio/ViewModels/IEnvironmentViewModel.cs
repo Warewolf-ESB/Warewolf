@@ -12,5 +12,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void Connect();
         void Load();
         void Filter(string filter);
+        ICollection<IExplorerItemViewModel> AsList();
+        void SetItemCheckedState(System.Guid id, bool state);
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 
 namespace Dev2.Studio.TO
 {
     public interface IDeployPredicate
     {
-        bool Predicate(IResource resource, IList<IResource> selectedSourceResources,
-            IList<IResource> destinationResources);
+        bool Predicate(IExplorerItemViewModel resource, ICollection<IExplorerItemViewModel> selectedSourceResources,
+            ICollection<IExplorerItemViewModel> destinationResources);
         string Name{get;}
     }
 }

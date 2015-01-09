@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Studio.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Studio.Models.Deploy;
 
 namespace Warewolf.Studio.Models.Tests
 {
@@ -22,7 +24,7 @@ namespace Warewolf.Studio.Models.Tests
         {
             //------------Setup for test--------------------------
             var deployStatsProvider = new DeployStatsProvider();
-            deployStatsProvider.CalculateStats(null, new List<IResource>(), new List<IDeployPredicate>());
+            deployStatsProvider.CalculateStats(null, new List<IExplorerItemViewModel>(), new List<IDeployPredicate>());
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -36,7 +38,7 @@ namespace Warewolf.Studio.Models.Tests
         {
             //------------Setup for test--------------------------
             var deployStatsProvider = new DeployStatsProvider();
-            deployStatsProvider.CalculateStats(new List<IResource>(), null, new List<IDeployPredicate>());
+            deployStatsProvider.CalculateStats(new List<IExplorerItemViewModel>(), null, new List<IDeployPredicate>());
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -50,7 +52,7 @@ namespace Warewolf.Studio.Models.Tests
         {
             //------------Setup for test--------------------------
             var deployStatsProvider = new DeployStatsProvider();
-            deployStatsProvider.CalculateStats(new List<IResource>(), new List<IResource>(), null);
+            deployStatsProvider.CalculateStats(new List<IExplorerItemViewModel>(), new List<IExplorerItemViewModel>(), null);
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
@@ -65,7 +67,7 @@ namespace Warewolf.Studio.Models.Tests
             //------------Setup for test--------------------------
             var deployStatsProvider = new DeployStatsProvider();
               //------------Execute Test---------------------------
-            var output = deployStatsProvider.CalculateStats(new List<IResource>(), new List<IResource>(), new List<IDeployPredicate>());
+            var output = deployStatsProvider.CalculateStats(new List<IExplorerItemViewModel>(), new List<IExplorerItemViewModel>(), new List<IDeployPredicate>());
          
             //------------Assert Results-------------------------
             Assert.IsNotNull(output);
@@ -81,10 +83,10 @@ namespace Warewolf.Studio.Models.Tests
             var deployStatsProvider = new DeployStatsProvider();
             var pred = new Mock<IDeployPredicate>();
             // ReSharper disable once MaximumChainedReferences
-            pred.Setup(a => a.Predicate(It.IsAny<IResource>(), It.IsAny<IList<IResource>>(), It.IsAny<IList<IResource>>())).Returns(true);
+            pred.Setup(a => a.Predicate(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IList<IExplorerItemViewModel>>(), It.IsAny<IList<IExplorerItemViewModel>>())).Returns(true);
             pred.Setup(a => a.Name).Returns("BobThePredicate");
             //------------Execute Test---------------------------
-            var output = deployStatsProvider.CalculateStats(new List<IResource> { new Mock<IResource>().Object }, new List<IResource> { new Mock<IResource>().Object }, new List<IDeployPredicate> {pred.Object});
+            var output = deployStatsProvider.CalculateStats(new List<IExplorerItemViewModel> { new Mock<IExplorerItemViewModel>().Object }, new List<IExplorerItemViewModel> { new Mock<IExplorerItemViewModel>().Object }, new List<IDeployPredicate> { pred.Object });
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(output);
@@ -101,15 +103,15 @@ namespace Warewolf.Studio.Models.Tests
             var deployStatsProvider = new DeployStatsProvider();
             var pred = new Mock<IDeployPredicate>();
             // ReSharper disable once MaximumChainedReferences
-            pred.Setup(a => a.Predicate(It.IsAny<IResource>(), It.IsAny<IList<IResource>>(), It.IsAny<IList<IResource>>())).Returns(true);
+            pred.Setup(a => a.Predicate(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IList<IExplorerItemViewModel>>(), It.IsAny<IList<IExplorerItemViewModel>>())).Returns(true);
             pred.Setup(a => a.Name).Returns("BobThePredicate");
 
             var pred2 = new Mock<IDeployPredicate>();
             // ReSharper disable once MaximumChainedReferences
-            pred2.Setup(a => a.Predicate(It.IsAny<IResource>(), It.IsAny<IList<IResource>>(), It.IsAny<IList<IResource>>())).Returns(false);
+            pred2.Setup(a => a.Predicate(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IList<IExplorerItemViewModel>>(), It.IsAny<IList<IExplorerItemViewModel>>())).Returns(false);
             pred2.Setup(a => a.Name).Returns("DoraThePredicate");
             //------------Execute Test---------------------------
-            var output = deployStatsProvider.CalculateStats(new List<IResource> { new Mock<IResource>().Object }, new List<IResource> { new Mock<IResource>().Object }, new List<IDeployPredicate> { pred.Object , pred2.Object });
+            var output = deployStatsProvider.CalculateStats(new List<IExplorerItemViewModel> { new Mock<IExplorerItemViewModel>().Object }, new List<IExplorerItemViewModel> { new Mock<IExplorerItemViewModel>().Object }, new List<IDeployPredicate> { pred.Object , pred2.Object });
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(output);
@@ -128,25 +130,25 @@ namespace Warewolf.Studio.Models.Tests
             var deployStatsProvider = new DeployStatsProvider();
             var pred = new Mock<IDeployPredicate>();
             var resourceIds = new List<Guid> {Guid.NewGuid(),Guid.NewGuid()};
-            var selected1 = new Mock<IResource>();
-            selected1.Setup(a => a.ResourceID).Returns(resourceIds[1]);
+            var selected1 = new Mock<IExplorerItemViewModel>();
+            selected1.Setup(a => a.ResourceId).Returns(resourceIds[1]);
             selected1.Setup(a => a.ResourceType).Returns(ResourceType.DbService);
-            var selected2 = new Mock<IResource>();
-            selected2.Setup(a => a.ResourceID).Returns(resourceIds[1]);
+            var selected2 = new Mock<IExplorerItemViewModel>();
+            selected2.Setup(a => a.ResourceId).Returns(resourceIds[1]);
             selected2.Setup(a => a.ResourceType).Returns(ResourceType.DbService);
-            var destination1 = new Mock<IResource>();
-            destination1.Setup(a => a.ResourceID).Returns(resourceIds[1]);
+            var destination1 = new Mock<IExplorerItemViewModel>();
+            destination1.Setup(a => a.ResourceId).Returns(resourceIds[1]);
             destination1.Setup(a => a.ResourceType).Returns(ResourceType.DbService);
             // ReSharper disable once MaximumChainedReferences
-            pred.Setup(a => a.Predicate(It.IsAny<IResource>(), It.IsAny<IList<IResource>>(), It.IsAny<IList<IResource>>())).Returns(true);
+            pred.Setup(a => a.Predicate(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IList<IExplorerItemViewModel>>(), It.IsAny<IList<IExplorerItemViewModel>>())).Returns(true);
             pred.Setup(a => a.Name).Returns("BobThePredicate");
 
             var pred2 = new Mock<IDeployPredicate>();
             // ReSharper disable once MaximumChainedReferences
-            pred2.Setup(a => a.Predicate(It.IsAny<IResource>(), It.IsAny<IList<IResource>>(), It.IsAny<IList<IResource>>())).Returns(false);
+            pred2.Setup(a => a.Predicate(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IList<IExplorerItemViewModel>>(), It.IsAny<IList<IExplorerItemViewModel>>())).Returns(false);
             pred2.Setup(a => a.Name).Returns("DoraThePredicate");
             //------------Execute Test---------------------------
-            var output = deployStatsProvider.CalculateStats(new List<IResource> { selected1.Object,selected2.Object}, new List<IResource> { destination1.Object }, new List<IDeployPredicate> { pred.Object, pred2.Object });
+            var output = deployStatsProvider.CalculateStats(new List<IExplorerItemViewModel> { selected1.Object,selected2.Object}, new List<IExplorerItemViewModel> { destination1.Object }, new List<IDeployPredicate> { pred.Object, pred2.Object });
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(output);

@@ -41,7 +41,9 @@
     <Reference Include="Moq">
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -56,19 +58,30 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DeployViewModelTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="ConnectControlViewModelTests.cs" />
+    <Compile Include="ToolBox\ToolboxViewModelTest.cs" />
+    <Compile Include="ToolBox\ToolDescriptorViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
+      <Project>{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}</Project>
+      <Name>Warewolf.Studio.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C870FE6D-5889-4DFC-90D9-68FA3E525BE2}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UnittestingUtils\Warewolf.UnittestingUtils.csproj">
+      <Project>{3E50D2EE-9FA9-4A23-8E6F-3493F47D05DC}</Project>
+      <Name>Warewolf.UnittestingUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
