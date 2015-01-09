@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -13,12 +13,14 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         readonly IToolboxModel _remoteModel;
         ICollection<IToolDescriptorViewModel> _tools;
         bool _isEnabled;
+        bool _isDesignerFocused;
 
-        public ToolboxViewModel(ICollection<IToolDescriptorViewModel> tools, IToolboxModel localModel,IToolboxModel remoteModel)
+        public ToolboxViewModel( IToolboxModel localModel,IToolboxModel remoteModel)
         {
+            VerifyArgument.AreNotNull(new Dictionary<string, object>{{"localModel",localModel},{"remoteModel",remoteModel}});
             _localModel = localModel;
             _remoteModel = remoteModel;
-            Tools = tools;
+            ClearFilter();
         }
 
         #region Implementation of IToolboxViewModel
@@ -46,12 +48,20 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             get
             {
-                return _isEnabled;
+                return IsDesignerFocused && _localModel.IsEnabled() && _remoteModel.IsEnabled(); 
+            }
+
+        }
+        public bool IsDesignerFocused
+        {
+            get
+            {
+                return _isDesignerFocused;
             }
             set
             {
+                _isDesignerFocused = value;
                 OnPropertyChanged("Tools");
-                _isEnabled = value;
             }
         }
 
@@ -69,6 +79,13 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             // ReSharper restore MaximumChainedReferences
         }
 
+        public void ClearFilter()
+        {
+            // not sure about this warning ofr pure methods.
+            // ReSharper disable MaximumChainedReferences
+            Tools = new ObservableCollection<IToolDescriptorViewModel>(_remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
+            // ReSharper restore MaximumChainedReferences
+        }
         #endregion
     }
 }

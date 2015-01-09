@@ -16,13 +16,20 @@ namespace Warewolf.UnittestingUtils
                 try
                 {
                     var parametersToUse = createParams(parameters, i);
+                    if (parameters[i].GetType().IsPrimitive || parameters[i].GetType().IsEnum)
+                    {
+                        thrown = true;
+                    }
+                    else
                     Activator.CreateInstance(type, parametersToUse);
+
                 }
                 catch (TargetInvocationException e)
                 {
                     if (null != e.InnerException as ArgumentNullException)
                         thrown = true;
                 }
+
                 Assert.IsTrue(thrown);
                 thrown = false;
             }

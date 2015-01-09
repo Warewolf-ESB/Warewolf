@@ -1,4 +1,6 @@
-﻿using Dev2.Common.Interfaces.Toolbox;
+﻿using System.Collections.Generic;
+using Dev2;
+using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels.ToolBox
@@ -10,6 +12,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         public ToolDescriptorViewModel(IToolDescriptor tool, bool isEnabled)
         {
+            VerifyArgument.AreNotNull(new Dictionary<string, object>{ {"tool",tool}});
             IsEnabled = isEnabled;
             Tool = tool;
         }

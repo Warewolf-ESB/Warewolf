@@ -217,6 +217,8 @@
     <Compile Include="IConnectedServerChangedEvent.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
+    <Compile Include="IEsbRequestResult.cs" />
+    <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Toolbox\IToolboxViewModel.cs" />
     <Compile Include="Toolbox\IToolDescriptor.cs" />
     <Compile Include="PopupController\IDev2MessageBoxViewModel.cs" />

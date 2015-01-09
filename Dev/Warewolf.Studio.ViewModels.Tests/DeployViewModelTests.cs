@@ -343,8 +343,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //------------Execute Test---------------------------
             var constructred = new DeployViewModel(expSource.Object, expDest.Object, prov.Object, new Collection<IDeployPredicate>(), conflictHandler.Object, deployFactory.Object);
-            constructred.SelectDependencies();
-            prov.Verify(a => a.CalculateStats(sourcevms, destvms, It.IsAny<ICollection<IDeployPredicate>>()));
+            constructred.SelectDependencies(new ExplorerItemViewModel { Checked = true, ResourceId = id });
         }
 
 

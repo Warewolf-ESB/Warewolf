@@ -107,4 +107,15 @@ namespace Dev2.Controller
         }
 
     }
+
+    public static class CommunicationsControllerExtensions
+    {
+        public static T ExecuteCommandWithErrorHandling<T>(this ICommunicationController controller, IEnvironmentConnection connection, Guid workspaceId)
+        {
+            var result = controller.ExecuteCommand<IEsbRequestResult<T>>(connection,workspaceId);
+            if (result.HasErrors)
+                throw result.Error;
+            return result.Value;
+        }
+    }
 }

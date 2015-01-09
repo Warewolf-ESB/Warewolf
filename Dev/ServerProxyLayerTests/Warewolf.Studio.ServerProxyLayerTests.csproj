@@ -51,6 +51,7 @@
     <Compile Include="AdminProxyTests.cs" />
     <Compile Include="ExplorerUpdateManagerTests.cs" />
     <Compile Include="LogManagerTests.cs" />
+    <Compile Include="PluginProxyTests.cs" />
     <Compile Include="ProxyImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyBaseTests.cs" />
@@ -70,6 +71,10 @@
     <ProjectReference Include="..\ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
       <Project>{97A827FF-65C4-4267-99D2-DCE6803B2348}</Project>
       <Name>Warewolf.Studio.ServerProxyLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.UnittestingUtils\Warewolf.UnittestingUtils.csproj">
+      <Project>{3E50D2EE-9FA9-4A23-8E6F-3493F47D05DC}</Project>
+      <Name>Warewolf.UnittestingUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
