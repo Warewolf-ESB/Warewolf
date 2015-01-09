@@ -249,6 +249,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UnittestingUtils", "Warewolf.UnittestingUtils\Warewolf.UnittestingUtils.csproj", "{3E50D2EE-9FA9-4A23-8E6F-3493F47D05DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Core.Test", "Warewolf.Studio.Core.Test\Warewolf.Studio.Core.Test.csproj", "{F7FD5C4A-FC59-4674-8547-FB3FDEE75202}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510} = {F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Core", "Warewolf.Core\Warewolf.Core.csproj", "{8FD23CE0-02BB-48E1-A914-BA467938CE78}"
 EndProject
