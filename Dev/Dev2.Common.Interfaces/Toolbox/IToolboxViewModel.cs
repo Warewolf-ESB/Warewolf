@@ -10,6 +10,11 @@ namespace Dev2.Common.Interfaces.Toolbox
         ICollection<IToolDescriptorViewModel> Tools { get; }
 
         /// <summary>
+        /// points to the active servers tools. unlike explorer, this only ever needs to look at one set of tools at a time
+        /// </summary>
+        ICollection<IToolboxCatergoryViewModel> CategorisedTools { get; }
+
+        /// <summary>
         /// the toolbox is only enabled when the active server is connected and the designer is in focus
         /// </summary>
         bool IsEnabled { get;  }

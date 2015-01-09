@@ -680,4 +680,70 @@ You need Administrator permission.</value>
   <data name="DragRemoteNotSupportedHeader" xml:space="preserve">
     <value>Invalid Designer Operation</value>
   </data>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete {0}?</value>
+  </data>
+  <data name="DeleteVersionMessage" xml:space="preserve">
+    <value>"Are you sure you want to delete {0}?"</value>
+  </data>
+  <data name="DeleteVersionMessageHeader" xml:space="preserve">
+    <value>Delete Version</value>
+  </data>
+  <data name="DidYouKnow" xml:space="preserve">
+    <value>Did you know?</value>
+  </data>
+  <data name="GenericConfirmation" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="InputVariablesTip" xml:space="preserve">
+    <value>You can pass variables into your workflow{0}by selecting the Input checkbox{0}in the Variables window.</value>
+  </data>
+  <data name="InvalidTextHeader" xml:space="preserve">
+    <value>"Invalid text"</value>
+  </data>
+  <data name="InvalidTextMessage" xml:space="preserve">
+    <value>"{0} is invalid. Warewolf only supports latin characters"</value>
+  </data>
+  <data name="RenameConflictDescription" xml:space="preserve">
+    <value>The following task has been renamed {0} -&gt; {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------" + "Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler.</value>
+  </data>
+  <data name="RenameConflictHeader" xml:space="preserve">
+    <value>Rename conflict</value>
+  </data>
+  <data name="RollbackHeader" xml:space="preserve">
+    <value>Make current version</value>
+  </data>
+  <data name="RollbackMessage" xml:space="preserve">
+    <value>"{0} will become the current version.{1}Do you want to proceed ?"</value>
+  </data>
+  <data name="SaveErrorHeader" xml:space="preserve">
+    <value>Saving Error</value>
+  </data>
+  <data name="SaveErrorMessage" xml:space="preserve">
+    <value>The following error occurred on save:</value>
+  </data>
+  <data name="SchedulerChangesDescription" xml:space="preserve">
+    <value>Scheduler Task has not been saved.{0}Would you like to save the Task? {0}-------------------------------------------------------------------Yes - Save the Task.{0}No - Discard your changes.{0}Cancel - Returns you to Scheduler.</value>
+  </data>
+  <data name="SchedulerChangesHeader" xml:space="preserve">
+    <value>Scheduler Task has changes</value>
+  </data>
+  <data name="ServerNotConnected" xml:space="preserve">
+    <value>Server is not connected</value>
+  </data>
+  <data name="ServerNotConnectedSettingsDescription" xml:space="preserve">
+    <value>You can not change the settings for a server that is offline.</value>
+  </data>
+  <data name="ServerUnreachableErrorHeader" xml:space="preserve">
+    <value>Server is unreachable</value>
+  </data>
+  <data name="ServerUnreachableHeaderMessage" xml:space="preserve">
+    <value>Unable to reach {0}: Connection timed out.{1} Make sure the remote computer is powered on.{1}{1} Would you like to re-try? {1}</value>
+  </data>
+  <data name="SettingsChangedDescription" xml:space="preserve">
+    <value>"ettings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings.</value>
+  </data>
+  <data name="SettingsChangedHeader" xml:space="preserve">
+    <value>Settings have changed</value>
+  </data>
 </root>

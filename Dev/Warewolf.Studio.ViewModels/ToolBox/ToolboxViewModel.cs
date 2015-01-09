@@ -12,7 +12,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         readonly IToolboxModel _localModel;
         readonly IToolboxModel _remoteModel;
         ICollection<IToolDescriptorViewModel> _tools;
-        bool _isEnabled;
         bool _isDesignerFocused;
 
         public ToolboxViewModel( IToolboxModel localModel,IToolboxModel remoteModel)
@@ -20,8 +19,12 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             VerifyArgument.AreNotNull(new Dictionary<string, object>{{"localModel",localModel},{"remoteModel",remoteModel}});
             _localModel = localModel;
             _remoteModel = remoteModel;
+            _localModel.OnserverDisconnected += _localModel_OnserverDisconnected;
+            _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
             ClearFilter();
         }
+
+
 
         #region Implementation of IToolboxViewModel
 
@@ -38,8 +41,22 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             private set
             {
                 OnPropertyChanged("Tools");
+                OnPropertyChanged("CategorisedTools");
                 _tools = value;
             }
+        }
+        /// <summary>
+        /// points to the active servers tools. unlike explorer, this only ever needs to look at one set of tools at a time
+        /// </summary>
+        public ICollection<IToolboxCatergoryViewModel> CategorisedTools
+        {
+            get
+            {
+
+                return new ObservableCollection<IToolboxCatergoryViewModel>(Tools.GroupBy(a=>a.Tool.Category)
+                .Select(b=> new ToolBoxCategoryViewModel(b.Key,new ObservableCollection<IToolDescriptorViewModel>(b))));
+            }
+
         }
         /// <summary>
         /// the toolbox is only enabled when the active server is connected and the designer is in focus
@@ -61,7 +78,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             set
             {
                 _isDesignerFocused = value;
-                OnPropertyChanged("Tools");
+                OnPropertyChanged("IsEnabled");
             }
         }
 
@@ -85,6 +102,16 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             // ReSharper disable MaximumChainedReferences
             Tools = new ObservableCollection<IToolDescriptorViewModel>(_remoteModel.GetTools().Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
             // ReSharper restore MaximumChainedReferences
+        }
+
+        void _remoteModel_OnserverDisconnected(object sender)
+        {
+            OnPropertyChanged("IsEnabled");
+        }
+
+        void _localModel_OnserverDisconnected(object sender)
+        {
+            OnPropertyChanged("IsEnabled");
         }
         #endregion
     }

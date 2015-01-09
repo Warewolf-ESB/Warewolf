@@ -92,6 +92,8 @@ namespace Warewolf.Studio.Models.Toolbox
             return Server.IsConnected() && _localServer.IsConnected(); 
         }
 
+        public event ServerDisconnected OnserverDisconnected;
+
         #endregion
     }
 }

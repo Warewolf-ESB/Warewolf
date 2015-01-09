@@ -2,6 +2,7 @@
 
 namespace Dev2.Common.Interfaces.Toolbox
 {
+    public delegate void ServerDisconnected(object sender);
     public interface IToolboxModel
     {
         //IServer Server{get;}
@@ -41,5 +42,8 @@ namespace Dev2.Common.Interfaces.Toolbox
         /// </summary>
         /// <returns></returns>
         bool IsEnabled();
+
+        event ServerDisconnected OnserverDisconnected;
+
     }
 }

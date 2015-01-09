@@ -65,9 +65,14 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\Binaries\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -85,6 +90,7 @@
     <Compile Include="ExplorerItemViewModel.cs" />
     <Compile Include="ExplorerViewModel.cs" />
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
+    <Compile Include="ToolBox\ToolBoxCategoryViewModel.cs" />
     <Compile Include="ToolBox\ToolboxViewModel.cs" />
     <Compile Include="ToolBox\ToolDescriptorViewModel.cs" />
   </ItemGroup>
