@@ -10,9 +10,9 @@ namespace Dev2.Common.Interfaces
         IList<IResource> Load();
         IList<IServer> GetServerConnections();
         IList<IToolDescriptor> LoadTools();
-
         bool IsConnected();
-
         void ReloadTools();
+        void Disconnect();
+        void Edit();
     }
 }

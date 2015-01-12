@@ -82,7 +82,73 @@ namespace Warewolf.Studio.ViewModels.Tests
             connectControlViewModel.Connect(connection);
             //------------Assert Results-------------------------
             mockConnection.Verify();
+        }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectControlViewModel_Disconnect")]
+        public void ConnectControlViewModel_Disconnect_GivenServer_ShouldCallDisconnectOnServer()
+        {
+            //------------Setup for test--------------------------
+            var mockConnection = new Mock<IServer>();
+            mockConnection.Setup(server1 => server1.Disconnect()).Verifiable();
+            var connection = mockConnection.Object;
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
+            var server = mockServer.Object;
+            // ReSharper disable UseObjectOrCollectionInitializer
+            var connectControlViewModel = new ConnectControlViewModel(server);
+            // ReSharper restore UseObjectOrCollectionInitializer
+            
+            //------------Execute Test---------------------------
+            connectControlViewModel.Disconnect(connection);
+            //------------Assert Results-------------------------
+            mockConnection.Verify();
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectControlViewModel_Refresh")]
+        public void ConnectControlViewModel_Refresh_ShouldRefreshSelectedServer()
+        {
+            //------------Setup for test--------------------------
+            var mockConnection = new Mock<IServer>();
+            var connection = mockConnection.Object;
+            mockConnection.Setup(server1 => server1.Load()).Verifiable();
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
+            var server = mockServer.Object;
+            // ReSharper disable UseObjectOrCollectionInitializer
+            var connectControlViewModel = new ConnectControlViewModel(server);
+            // ReSharper restore UseObjectOrCollectionInitializer
+            connectControlViewModel.SelectedConnection = connection;
+            //------------Execute Test---------------------------
+            connectControlViewModel.Refresh();
+            //------------Assert Results-------------------------
+            mockConnection.Verify();
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectControlViewModel_Refresh")]
+        public void ConnectControlViewModel_Edit_ShouldEditSelectedServer()
+        {
+            //------------Setup for test--------------------------
+            var mockConnection = new Mock<IServer>();
+            var connection = mockConnection.Object;
+            mockConnection.Setup(server1 => server1.Edit()).Verifiable();
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
+            var server = mockServer.Object;
+            // ReSharper disable UseObjectOrCollectionInitializer
+            var connectControlViewModel = new ConnectControlViewModel(server);
+            // ReSharper restore UseObjectOrCollectionInitializer
+            connectControlViewModel.SelectedConnection = connection;
+            //------------Execute Test---------------------------
+            connectControlViewModel.Edit();
+            //------------Assert Results-------------------------
+            mockConnection.Verify();
         }
     }
 }

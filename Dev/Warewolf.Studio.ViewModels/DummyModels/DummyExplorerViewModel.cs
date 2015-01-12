@@ -97,6 +97,14 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         {
         }
 
+        public void Disconnect()
+        {
+        }
+
+        public void Edit()
+        {
+        }
+
         #endregion
 
 

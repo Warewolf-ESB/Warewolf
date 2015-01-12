@@ -86,6 +86,14 @@ namespace Warewolf.Studio.Specs
         {
         }
 
+        public void Disconnect()
+        {
+        }
+
+        public void Edit()
+        {
+        }
+
         #endregion
 
 
