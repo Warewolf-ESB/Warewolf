@@ -175,6 +175,8 @@
     <Compile Include="Core\Graph\OutputFormats.cs" />
     <Compile Include="DataList\Contract\enTranslationDepth.cs" />
     <Compile Include="DataList\Contract\IBinaryDataListItem.cs" />
+    <Compile Include="DataList\IScalarDefinition.cs" />
+    <Compile Include="DataList\IStorageExpression.cs" />
     <Compile Include="Data\IDev2Definition.cs" />
     <Compile Include="Data\IInputOutputViewModel.cs" />
     <Compile Include="Data\IResource.cs" />
@@ -209,6 +211,8 @@
     <Compile Include="ErrorHandling\IWarewolfEventWriter.cs" />
     <Compile Include="ErrorHandling\WarewolfException.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
+    <Compile Include="Help\IHelpDescriptorViewModel.cs" />
+    <Compile Include="Help\IHelpWindowModel.cs" />
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
     <Compile Include="IAsyncWorker.cs" />
@@ -219,6 +223,7 @@
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
     <Compile Include="IEsbRequestResult.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
+    <Compile Include="Help\IHelpDescriptor.cs" />
     <Compile Include="Toolbox\IToolboxCatergoryViewModel.cs" />
     <Compile Include="Toolbox\IToolboxViewModel.cs" />
     <Compile Include="Toolbox\IToolDescriptor.cs" />

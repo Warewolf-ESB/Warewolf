@@ -33,5 +33,8 @@ namespace Dev2.Common.Interfaces.Toolbox
         /// Is the designer focused. This is used externally to disable the toolbox.
         /// </summary>
         bool IsDesignerFocused { get; set; }
+
+
+        IToolDescriptorViewModel SelectedTool { get; set; }
     }
 }

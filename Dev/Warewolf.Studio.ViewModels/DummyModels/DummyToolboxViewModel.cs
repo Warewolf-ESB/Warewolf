@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 using Moq;
@@ -16,6 +17,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
     {
         bool _isDesignerFocused;
         bool _isEnabled;
+        IToolDescriptorViewModel _selectedTool;
 
         #region Implementation of IToolboxViewModel
 
@@ -95,6 +97,17 @@ namespace Warewolf.Studio.ViewModels.DummyModels
             {
                 OnPropertyChanged("IsEnabled");
                 _isDesignerFocused = value;
+            }
+        }
+        public IToolDescriptorViewModel SelectedTool
+        {
+            get
+            {
+                return _selectedTool;
+            }
+            set
+            {
+                _selectedTool = value;
             }
         }
 

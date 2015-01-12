@@ -76,7 +76,7 @@ namespace Warewolf.Studio.ViewModels
             SelectedDestinationModel = DeployModelFactory.Create(Destination.SelectedServer);
             SelectedSourceModel = DeployModelFactory.Create(Source.SelectedServer);
             var itemsTodeploy = Source.FindItems(a => a.Checked && (a.Children == null || a.Children.Count == 0));
-            if (HandleConflicts(itemsTodeploy))
+            if (HandleConflicts())
                 foreach (var explorerItemModel in itemsTodeploy)
                 {
                     var item = Source.SelectedServer.Load().FirstOrDefault(a => a.ResourceID == explorerItemModel.ResourceId);
@@ -99,7 +99,7 @@ namespace Warewolf.Studio.ViewModels
            //todo: when refactoring the dependency tree 
         }
 
-        bool HandleConflicts(IList<IExplorerItemViewModel> itemsTodeploy)
+        bool HandleConflicts()
         {
             return ConflictHandlerViewModel.HandleConflicts(Source.SelectedEnvironment,Destination.SelectedEnvironment);
         }

@@ -85,10 +85,13 @@
     <Compile Include="ConflictHandlerViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
     <Compile Include="DummyModels\DummyExplorerViewModel.cs" />
+    <Compile Include="DummyModels\DummyHelpViewModel.cs" />
     <Compile Include="DummyModels\DummyToolboxViewModel.cs" />
     <Compile Include="EnvironmentViewModel.cs" />
     <Compile Include="ExplorerItemViewModel.cs" />
     <Compile Include="ExplorerViewModel.cs" />
+    <Compile Include="Help\HelpDescriptorViewModel.cs" />
+    <Compile Include="Help\HelpViewModel.cs" />
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModel.cs" />
     <Compile Include="ToolBox\ToolboxViewModel.cs" />

@@ -1,24 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {
-    public class ToolboxViewModel:BindableBase,IToolboxViewModel
+    public class ToolboxViewModel:BindableBase,IToolboxViewModel,IDisposable
     {
         readonly IToolboxModel _localModel;
         readonly IToolboxModel _remoteModel;
+        readonly IHelpWindowModel _help;
         ICollection<IToolDescriptorViewModel> _tools;
         bool _isDesignerFocused;
+        IToolDescriptorViewModel _selectedTool;
 
-        public ToolboxViewModel( IToolboxModel localModel,IToolboxModel remoteModel)
+        public ToolboxViewModel( IToolboxModel localModel,IToolboxModel remoteModel,IHelpWindowModel help)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object>{{"localModel",localModel},{"remoteModel",remoteModel}});
             _localModel = localModel;
             _remoteModel = remoteModel;
+            _help = help;
             _localModel.OnserverDisconnected += _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
             ClearFilter();
@@ -81,6 +86,24 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 OnPropertyChanged("IsEnabled");
             }
         }
+        public IToolDescriptorViewModel SelectedTool
+        {
+            get
+            {
+                return _selectedTool;
+            }
+            set
+            {
+                
+                // ReSharper disable once PossibleUnintendedReferenceComparison
+                if (value != _selectedTool)
+                {
+                    _help.SendHelpDescriptor(value.Tool.Helpdescriptor);
+                    _selectedTool = value;
+                    OnPropertyChanged("SelectedTool");
+                }
+            }
+        }
 
         /// <summary>
         /// filters the list of tools available to the user.
@@ -113,6 +136,27 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             OnPropertyChanged("IsEnabled");
         }
+        #endregion
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // ReSharper disable UnusedParameter.Local
+        void Dispose(bool disposing)
+            // ReSharper restore UnusedParameter.Local
+        {
+            _localModel.OnserverDisconnected -= _localModel_OnserverDisconnected;
+            _remoteModel.OnserverDisconnected -= _remoteModel_OnserverDisconnected;
+        }
+
         #endregion
     }
 }

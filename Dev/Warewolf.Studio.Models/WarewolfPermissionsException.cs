@@ -2,7 +2,7 @@
 
 namespace Warewolf.Studio.Models
 {
-    class WarewolfPermissionsException : Exception
+    public class WarewolfPermissionsException : Exception
     {
 
 

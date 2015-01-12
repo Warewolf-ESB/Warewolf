@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Media;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
