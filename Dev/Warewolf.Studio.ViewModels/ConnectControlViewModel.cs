@@ -19,5 +19,13 @@ namespace Warewolf.Studio.ViewModels
         public IServer Server { get; set; }
         public IList<IServer> Servers { get; set; }
         public IServer SelectedConnection { get; set; }
+
+        public void Connect(IServer connection)
+        {
+            if (connection != null)
+            {
+                connection.Connect();
+            }
+        }
     }
 }

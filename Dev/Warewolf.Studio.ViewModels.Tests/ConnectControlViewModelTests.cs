@@ -61,5 +61,28 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(connectControlViewModel.SelectedConnection);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectControlViewModel_Connect")]
+        public void ConnectControlViewModel_Connect_GivenServer_ShouldCallConnectOnServer()
+        {
+            //------------Setup for test--------------------------
+            var mockConnection = new Mock<IServer>();
+            mockConnection.Setup(server1 => server1.Connect()).Verifiable();
+            var connection = mockConnection.Object;
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
+            var server = mockServer.Object;
+            // ReSharper disable UseObjectOrCollectionInitializer
+            var connectControlViewModel = new ConnectControlViewModel(server);
+            // ReSharper restore UseObjectOrCollectionInitializer
+            
+            //------------Execute Test---------------------------
+            connectControlViewModel.Connect(connection);
+            //------------Assert Results-------------------------
+            mockConnection.Verify();
+
+        }
     }
 }
