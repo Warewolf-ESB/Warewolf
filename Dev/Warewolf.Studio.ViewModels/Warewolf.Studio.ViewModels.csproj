@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Conflict.cs" />
     <Compile Include="ConflictHandlerViewModel.cs" />
+    <Compile Include="ConnectControlViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
     <Compile Include="DummyModels\DummyExplorerViewModel.cs" />
     <Compile Include="DummyModels\DummyToolboxViewModel.cs" />

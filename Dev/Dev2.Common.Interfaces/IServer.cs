@@ -8,7 +8,7 @@ namespace Dev2.Common.Interfaces
     {
         bool Connect();
         IList<IResource> Load();
-        IList<IConnection> GetServerConnections();
+        IList<IServer> GetServerConnections();
         IList<IToolDescriptor> LoadTools();
 
         bool IsConnected();
