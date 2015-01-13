@@ -5,13 +5,14 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ig="http://schemas.infragistics.com/xaml"
 	xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
+	xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
 	mc:Ignorable="d"
     x:Name="ExplorerViewControl"
 	x:Class="Warewolf.Studio.Views.ExplorerView"
 	d:DesignWidth="640" d:DesignHeight="480"
-	d:DataContext="{d:DesignInstance Type=dummyModels:DummyExplorerViewModel, IsDesignTimeCreatable=False}">
+	d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type dummyModels:DummyExplorerViewModel}}">
 
-    <Grid x:Name="LayoutRoot">
+	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="25"/>
 			<RowDefinition Height="Auto"/>
@@ -20,12 +21,12 @@
 			<TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="587.467"/>
 			<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"/>
 		</StackPanel>
-        <ig:XamDataTree Grid.Row="1" ItemsSource="{Binding Environments}" DisplayMemberPath="DisplayName">
-            <ig:XamDataTree.GlobalNodeLayouts>
-                <ig:NodeLayout Key="ExplorerItemViewModels" DisplayMemberPath="ResourceName"/>
-                <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName"/>
-            </ig:XamDataTree.GlobalNodeLayouts>
-        </ig:XamDataTree>
+		<ig:XamDataTree Grid.Row="1" ItemsSource="{Binding Environments}" DisplayMemberPath="DisplayName">
+			<ig:XamDataTree.GlobalNodeLayouts>
+				<ig:NodeLayout Key="ExplorerItemViewModels" DisplayMemberPath="ResourceName"/>
+				<ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName"/>
+			</ig:XamDataTree.GlobalNodeLayouts>
+		</ig:XamDataTree>
 		
 	</Grid>
 </UserControl>
