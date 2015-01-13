@@ -27,5 +27,29 @@ namespace Warewolf.Studio.ViewModels
                 connection.Connect();
             }
         }
+
+        public void Disconnect(IServer connection)
+        {
+            if (connection != null)
+            {
+                connection.Disconnect();
+            }
+        }
+
+        public void Refresh()
+        {
+            if (SelectedConnection != null)
+            {
+                SelectedConnection.Load();
+            }
+        }
+
+        public void Edit()
+        {
+            if (SelectedConnection != null)
+            {
+                SelectedConnection.Edit();
+            }
+        }
     }
 }

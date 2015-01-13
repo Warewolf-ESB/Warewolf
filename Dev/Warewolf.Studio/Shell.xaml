@@ -1,93 +1,166 @@
-﻿<Window xmlns:igWpf="http://schemas.infragistics.com/xaml/wpf"  
-        x:Class="Warewolf.Studio.Shell"
+﻿<Window xmlns:igWpf="http://schemas.infragistics.com/xaml/wpf"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-        Title="Warewolf Studio"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"  
+        x:Class="Warewolf.Studio.Shell"
+        Title="Warewolf Studio" 
+        x:Name="MainWindow"
         WindowState="Maximized">
 
-    <Grid>
+	<Window.Resources>
+		<Style x:Key="ButtonFocusVisual">
+			<Setter Property="Control.Template">
+				<Setter.Value>
+					<ControlTemplate>
+						<Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<LinearGradientBrush x:Key="ButtonNormalBackground" EndPoint="0,1" StartPoint="0,0">
+			<GradientStop Color="#F3F3F3" Offset="0"/>
+			<GradientStop Color="#EBEBEB" Offset="0.5"/>
+			<GradientStop Color="#DDDDDD" Offset="0.5"/>
+			<GradientStop Color="#CDCDCD" Offset="1"/>
+		</LinearGradientBrush>
+		<SolidColorBrush x:Key="ButtonNormalBorder" Color="#FF707070"/>
+		<Style x:Key="MenuButtonStyle" TargetType="{x:Type Button}">
+			<Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+			<Setter Property="Background" Value="{StaticResource ButtonNormalBackground}"/>
+			<Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="Padding" Value="1"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Border Background="Black" BorderBrush="Black">
+							<ContentPresenter RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsKeyboardFocused" Value="true"/>
+							<Trigger Property="ToggleButton.IsChecked" Value="true"/>
+							<Trigger Property="IsEnabled" Value="false">
+								<Setter Property="Foreground" Value="#ADADAD"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<DataTemplate x:Key="HelpPaneHeaderTemplate">
+			<Border Background="#FFAEACAC">
+				<TextBlock>WHAT DOES THIS DO?</TextBlock>
+			</Border>
+		</DataTemplate>
+	</Window.Resources>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" />
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<Grid Grid.Column="0">
+				<dockManager:XamDockManager PaneDragStarting="DockManager_OnPaneDragStarting" LayoutMode="FillContainer" UnpinnedTabHoverAction="Flyout" FlyoutAnimation="Resize" AllowMaximizeFloatingWindows="True" AllowMinimizeFloatingWindows="True" x:Name="DockManager">
+					<dockManager:XamDockManager.Panes>
 
-            <Grid Grid.Column="1">
-                <dockManager:XamDockManager AllowMaximizeFloatingWindows="True" AllowMinimizeFloatingWindows="True">
-                    <dockManager:XamDockManager.Panes>
+						<dockManager:SplitPane SplitterOrientation="Horizontal" Width="220" dockManager:XamDockManager.InitialLocation="DockedLeft">
 
-                        <dockManager:SplitPane Width="80"
-                                               SplitterOrientation="Vertical"
-                                               dockManager:XamDockManager.InitialLocation="DockedLeft">
+							<dockManager:ContentPane Header="MENU" x:Name="Menu"
+								CloseButtonVisibility="Hidden"
+								WindowPositionMenuVisibility="Hidden"
+								PinButtonVisibility="Hidden"
+								AllowInDocumentHost="False"
+								AllowDocking="False"
+								AllowFloatingOnly="False"
+                                AllowClose="False"
+                                IsPinned="True"
+                                                     >
+								<StackPanel Orientation="Vertical">
+									<Button Style="{DynamicResource MenuButtonStyle}" Content="New"/>
+									<Button Content="Save" Style="{DynamicResource MenuButtonStyle}"/>
+									<Button Content="Deploy" Style="{DynamicResource MenuButtonStyle}" BorderThickness="0"/>
+									<Separator/>
+									<Button Content="Db Service" Style="{DynamicResource MenuButtonStyle}"/>
+									<Button Content="Plugin Service" Style="{DynamicResource MenuButtonStyle}"/>
+									<Button Content="Web Service" Style="{DynamicResource MenuButtonStyle}"/>
+									<Separator/>
+									<Button Content="Schedule" Style="{DynamicResource MenuButtonStyle}"/>
+									<Button Content="Debug" Style="{DynamicResource MenuButtonStyle}"/>
+									<Separator/>
+									<Button Content="Settings" Style="{DynamicResource MenuButtonStyle}"/>
+									<Separator/>
+									<Button Content="Help" Style="{DynamicResource MenuButtonStyle}"/>
+									<Separator/>
+									<Button VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Content="Pin" Style="{DynamicResource MenuButtonStyle}"/>
+								</StackPanel>
+                                    
+							</dockManager:ContentPane>
+						</dockManager:SplitPane>
 
-                            <dockManager:ContentPane x:Name="Menu"
-                                                     AllowClose="False"
-                                                     AllowInDocumentHost="False"
-                                                     IsPinned="True"
-                                                     regions:RegionManager.RegionName="Menu" />
-                        </dockManager:SplitPane>
-
-                        <dockManager:SplitPane Width="300"
-                                               SplitterOrientation="Horizontal"
-                                               dockManager:XamDockManager.InitialLocation="DockedRight">
+						<dockManager:SplitPane Width="300"
+							SplitterOrientation="Horizontal"
+							dockManager:XamDockManager.InitialLocation="DockedRight">
 
 
-                            <dockManager:ContentPane x:Name="Variables"
-                                                     AllowClose="False"
-                                                     AllowInDocumentHost="False"
-                                                     Header="Variables"
-                                                     IsPinned="True"
-                                                     regions:RegionManager.RegionName="Variables" />
+							<dockManager:ContentPane x:Name="Variables"
+								AllowClose="False"
+								AllowInDocumentHost="False"
+								Header="Variables"
+								IsPinned="True"
+								regions:RegionManager.RegionName="Variables" />
 
-                            <dockManager:ContentPane x:Name="OutputPane"
-                                                     AllowClose="False"
-                                                     AllowInDocumentHost="False"
-                                                     Header="Output"
-                                                     IsPinned="True"
-                                                     regions:RegionManager.RegionName="OutputPane" />
+							<dockManager:ContentPane x:Name="OutputPane"
+								AllowClose="False"
+								AllowInDocumentHost="False"
+								Header="Output"
+								IsPinned="True"
+								regions:RegionManager.RegionName="OutputPane" />
 
-                        </dockManager:SplitPane>
+						</dockManager:SplitPane>
 
-                        <dockManager:SplitPane Width="300"
-                                               SplitterOrientation="Horizontal"
-                                               dockManager:XamDockManager.InitialLocation="DockedLeft">
-                            <dockManager:ContentPane x:Name="Explorer"
-                                                     AllowClose="False"
-                                                     AllowInDocumentHost="False"
-                                                     Header="Explorer"
-                                                     IsPinned="True"
-                                                     regions:RegionManager.RegionName="{x:Static core:RegionNames.Explorer}" />
-                            <dockManager:ContentPane x:Name="Toolbox"
-                                                     AllowClose="False"
-                                                     AllowInDocumentHost="False"
-                                                     Header="Toolbox"
-                                                     IsPinned="True"
-                                                     regions:RegionManager.RegionName="Toolbox" />
-                            <dockManager:ContentPane x:Name="Help"
-                                                     AllowClose="False"
-                                                     AllowInDocumentHost="False"
-                                                     Header="Help"
-                                                     IsPinned="True"
-                                                     regions:RegionManager.RegionName="Help" />
-                        </dockManager:SplitPane>
-
-                    </dockManager:XamDockManager.Panes>
-                    <dockManager:DocumentContentHost>
-                        <dockManager:SplitPane>
-                            <dockManager:TabGroupPane regions:RegionManager.RegionName="Workflows" />
-                        </dockManager:SplitPane>
-                    </dockManager:DocumentContentHost>
-                </dockManager:XamDockManager>
-            </Grid>
-        </Grid>
-    </Grid>
+						<dockManager:SplitPane Width="300"
+							SplitterOrientation="Horizontal"
+							dockManager:XamDockManager.InitialLocation="DockedLeft">
+							<dockManager:ContentPane x:Name="Explorer"
+								AllowClose="False"
+								AllowInDocumentHost="False"
+								Header="Explorer"
+								IsPinned="True"
+								regions:RegionManager.RegionName="{x:Static core:RegionNames.Explorer}" />
+							<dockManager:ContentPane x:Name="Toolbox"
+								AllowClose="False"
+								AllowInDocumentHost="False"
+								Header="Toolbox"
+								IsPinned="True"
+								regions:RegionManager.RegionName="Toolbox" />
+							<dockManager:ContentPane x:Name="Help"
+								AllowClose="False"
+								AllowInDocumentHost="False"
+								WindowPositionMenuVisibility="Collapsed"
+								CloseButtonVisibility="Collapsed"
+								HeaderTemplate="{StaticResource HelpPaneHeaderTemplate}"
+								IsPinned="True"
+								regions:RegionManager.RegionName="Help" />
+						</dockManager:SplitPane>
+					</dockManager:XamDockManager.Panes>
+					<dockManager:DocumentContentHost>
+						<dockManager:SplitPane>
+							<dockManager:TabGroupPane regions:RegionManager.RegionName="Workflows" />
+						</dockManager:SplitPane>
+					</dockManager:DocumentContentHost>
+				</dockManager:XamDockManager>
+			</Grid>
+		</Grid>
+	</Grid>
 </Window>

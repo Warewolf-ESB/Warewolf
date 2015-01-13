@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Infragistics.Themes;
+using Infragistics.Windows.DockManager;
+using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.Themes.Luna;
 
 namespace Warewolf.Studio
@@ -14,6 +17,20 @@ namespace Warewolf.Studio
             InitializeComponent();
             ThemeManager.ApplicationTheme = new LunaTheme(); 
             
+        }
+
+        void DockManager_OnPaneDragStarting(object sender, PaneDragStartingEventArgs e)
+        {
+            var dragPane = e.RootPane as PaneHeaderPresenter;
+            if (dragPane != null)
+            {
+                var content = dragPane.Content as string;
+                if (!String.IsNullOrEmpty(content) && (content.ToLowerInvariant() == "menu" || content.ToLowerInvariant() == "help"))
+                {
+                    e.Handled = true;
+                    e.Cancel = true;
+                }
+            }
         }
     }
 }
