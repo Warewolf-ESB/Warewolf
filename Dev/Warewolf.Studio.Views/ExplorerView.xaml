@@ -5,12 +5,11 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ig="http://schemas.infragistics.com/xaml"
 	xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
-	xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
 	mc:Ignorable="d"
     x:Name="ExplorerViewControl"
 	x:Class="Warewolf.Studio.Views.ExplorerView"
 	d:DesignWidth="640" d:DesignHeight="480"
-	d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type dummyModels:DummyExplorerViewModel}}">
+	d:DataContext="{d:DesignInstance Type={x:Type dummyModels:DummyExplorerViewModel}}">
 
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>

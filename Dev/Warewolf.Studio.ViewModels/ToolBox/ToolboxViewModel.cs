@@ -98,7 +98,6 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 // ReSharper disable once PossibleUnintendedReferenceComparison
                 if (value != _selectedTool)
                 {
-                    _help.SendHelpDescriptor(value.Tool.Helpdescriptor);
                     _selectedTool = value;
                     OnPropertyChanged("SelectedTool");
                 }

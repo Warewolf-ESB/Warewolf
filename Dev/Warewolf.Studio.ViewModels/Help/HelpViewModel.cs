@@ -18,7 +18,7 @@ namespace Warewolf.Studio.ViewModels.Help
             _defaultViewModel = defaultViewModel;
             CurrentHelpText = _defaultViewModel;
             HelpModel = model;
-            model.OnHelpTextReceived += model_OnHelpTextReceived;
+            model.OnHelpTextReceived += OnHelpTextReceived;
         }
 
         public string HelpText
@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels.Help
             }
         }
 
-        void model_OnHelpTextReceived(object sender, IHelpDescriptor desc)
+        void OnHelpTextReceived(object sender, IHelpDescriptor desc)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.Help
             {
                 return _currentHelpText;
             }
-            private set
+            internal set
             {
                 _currentHelpText = value;
                 OnPropertyChanged(() => HelpName);
