@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="InfragisticsWPF4.DockManager.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v14.2.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v14.2.dll</HintPath>
@@ -67,17 +70,23 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class.cs" />
+    <Compile Include="Infragistics Prism Region Adapter\IDockAware.cs" />
+    <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionActiveAwareBehavior.cs" />
+    <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionAdapter.cs" />
     <Compile Include="Popup\PopupController.cs" />
     <Compile Include="Popup\PopupMessage.cs" />
     <Compile Include="Popup\PopupMessageBoxFactory.cs" />

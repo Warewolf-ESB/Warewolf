@@ -1,11 +1,10 @@
-﻿<Window xmlns:igWpf="http://schemas.infragistics.com/xaml/wpf"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"  
-        x:Class="Warewolf.Studio.Shell"
+    x:Class="Warewolf.Studio.Shell"
         Title="Warewolf Studio" 
         x:Name="MainWindow"
         WindowState="Maximized">
@@ -156,7 +155,7 @@
 					</dockManager:XamDockManager.Panes>
 					<dockManager:DocumentContentHost>
 						<dockManager:SplitPane>
-							<dockManager:TabGroupPane regions:RegionManager.RegionName="Workflows" />
+                            <dockManager:TabGroupPane x:Name="_workflows" regions:RegionManager.RegionName="{x:Static core:RegionNames.Workflows}" />
 						</dockManager:SplitPane>
 					</dockManager:DocumentContentHost>
 				</dockManager:XamDockManager>

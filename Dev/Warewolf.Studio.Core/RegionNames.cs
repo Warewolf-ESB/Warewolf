@@ -17,5 +17,13 @@
                 return "Toolbox";
             }
         }
+        
+        public static string Workflows
+        {
+            get
+            {
+                return "Workflows";
+            }
+        }
     }
 }
