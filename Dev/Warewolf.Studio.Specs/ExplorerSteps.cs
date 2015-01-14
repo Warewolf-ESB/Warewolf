@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Toolbox;
@@ -68,14 +67,14 @@ namespace Warewolf.Studio.Specs
             return new List<IResource>();
         }
 
-        public IList<IConnection> GetServerConnections()
+        public IList<IServer> GetServerConnections()
         {
-            return new List<IConnection>();
+            return new List<IServer>();
         }
 
         public IList<IToolDescriptor> LoadTools()
         {
-            return new List<IToolDescriptor>(); ;
+            return new List<IToolDescriptor>();
         }
 
         public bool IsConnected()
@@ -84,6 +83,14 @@ namespace Warewolf.Studio.Specs
         }
 
         public void ReloadTools()
+        {
+        }
+
+        public void Disconnect()
+        {
+        }
+
+        public void Edit()
         {
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -59,6 +60,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
         {
             //------------Setup for test--------------------------
             var localTools = new Mock<IToolboxModel>();
+            
             var tools = new[] { new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native) };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(true);
@@ -66,7 +68,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             localTools.Setup(a => a.GetTools()).Returns(tools);
             remoteTools.Setup(a => a.GetTools()).Returns(tools);
             //------------Execute Test---------------------------
-            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object ) { IsDesignerFocused = true };
             //------------Assert Results-------------------------
             Assert.AreEqual(true,vm.IsEnabled);
 
@@ -157,9 +159,35 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             //------------Execute Test---------------------------
             var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
             Assert.AreEqual(2, vm.Tools.Count);
+            Assert.AreEqual(1, vm.CategorisedTools.Count);
             vm.Filter("dz");
             //------------Assert Results-------------------------
             Assert.AreEqual(0, vm.Tools.Count);
+            Assert.AreEqual(0, vm.CategorisedTools.Count);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ToolBoxViewModel_Categories")]
+        public void ToolBoxViewModel_Categories_ReturnsTwo()
+        {
+            //------------Setup for test--------------------------
+            var localTools = new Mock<IToolboxModel>();
+            var tools = new[]
+            {
+                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native),
+                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "ded", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat2", ToolType.Native)
+            };
+            var remoteTools = new Mock<IToolboxModel>();
+            remoteTools.Setup(a => a.IsEnabled()).Returns(false);
+            localTools.Setup(a => a.IsEnabled()).Returns(true);
+            localTools.Setup(a => a.GetTools()).Returns(tools);
+            remoteTools.Setup(a => a.GetTools()).Returns(tools);
+            //------------Execute Test---------------------------
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
+            Assert.AreEqual(2, vm.Tools.Count);
+            Assert.AreEqual(2, vm.CategorisedTools.Count);
 
         }
 
@@ -191,6 +219,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             Assert.AreEqual(2, vm.Tools.Count);
 
         }
+
         // ReSharper restore InconsistentNaming
         // ReSharper restore CoVariantArrayConversion
     }

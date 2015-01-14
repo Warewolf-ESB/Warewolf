@@ -236,6 +236,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete {0}?.
+        /// </summary>
+        public static string DeleteConfirmation {
+            get {
+                return ResourceManager.GetString("DeleteConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Are you sure you want to delete {0}?&quot;.
+        /// </summary>
+        public static string DeleteVersionMessage {
+            get {
+                return ResourceManager.GetString("DeleteVersionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Version.
+        /// </summary>
+        public static string DeleteVersionMessageHeader {
+            get {
+                return ResourceManager.GetString("DeleteVersionMessageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TUW-DEVFS/dsfDev.
         /// </summary>
         public static string Dev_SPN_Endpoint_Identity {
@@ -409,6 +436,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DialogTitle_NotSaved {
             get {
                 return ResourceManager.GetString("DialogTitle_NotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Did you know?.
+        /// </summary>
+        public static string DidYouKnow {
+            get {
+                return ResourceManager.GetString("DidYouKnow", resourceCulture);
             }
         }
         
@@ -621,6 +657,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure?.
+        /// </summary>
+        public static string GenericConfirmation {
+            get {
+                return ResourceManager.GetString("GenericConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Provide a value for the case that you are creating. E.g If you want to do specific visual logic for Durban then you will provide Durban as a case value.
         /// </summary>
         public static string HelpContent_CaseValue {
@@ -644,6 +689,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Icon_Default_Path {
             get {
                 return ResourceManager.GetString("Icon_Default_Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can pass variables into your workflow{0}by selecting the Input checkbox{0}in the Variables window..
+        /// </summary>
+        public static string InputVariablesTip {
+            get {
+                return ResourceManager.GetString("InputVariablesTip", resourceCulture);
             }
         }
         
@@ -680,6 +734,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string InvalidResourceNameExceptionMessage {
             get {
                 return ResourceManager.GetString("InvalidResourceNameExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Invalid text&quot;.
+        /// </summary>
+        public static string InvalidTextHeader {
+            get {
+                return ResourceManager.GetString("InvalidTextHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;{0} is invalid. Warewolf only supports latin characters&quot;.
+        /// </summary>
+        public static string InvalidTextMessage {
+            get {
+                return ResourceManager.GetString("InvalidTextMessage", resourceCulture);
             }
         }
         
@@ -900,6 +972,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The following task has been renamed {0} -&gt; {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------&quot; + &quot;Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler..
+        /// </summary>
+        public static string RenameConflictDescription {
+            get {
+                return ResourceManager.GetString("RenameConflictDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename conflict.
+        /// </summary>
+        public static string RenameConflictHeader {
+            get {
+                return ResourceManager.GetString("RenameConflictHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is used by {1} workflow{2}. Please update their mappings..
         /// </summary>
         public static string Resource_Changed_MessageBody {
@@ -936,11 +1026,47 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Make current version.
+        /// </summary>
+        public static string RollbackHeader {
+            get {
+                return ResourceManager.GetString("RollbackHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;{0} will become the current version.{1}Do you want to proceed ?&quot;.
+        /// </summary>
+        public static string RollbackMessage {
+            get {
+                return ResourceManager.GetString("RollbackMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RuntimeConfigurationAssemblies.
         /// </summary>
         public static string RuntimeConfigurationAssemblyDirectory {
             get {
                 return ResourceManager.GetString("RuntimeConfigurationAssemblyDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving Error.
+        /// </summary>
+        public static string SaveErrorHeader {
+            get {
+                return ResourceManager.GetString("SaveErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following error occurred on save:.
+        /// </summary>
+        public static string SaveErrorMessage {
+            get {
+                return ResourceManager.GetString("SaveErrorMessage", resourceCulture);
             }
         }
         
@@ -995,6 +1121,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scheduler Task has not been saved.{0}Would you like to save the Task? {0}-------------------------------------------------------------------Yes - Save the Task.{0}No - Discard your changes.{0}Cancel - Returns you to Scheduler..
+        /// </summary>
+        public static string SchedulerChangesDescription {
+            get {
+                return ResourceManager.GetString("SchedulerChangesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduler Task has changes.
+        /// </summary>
+        public static string SchedulerChangesHeader {
+            get {
+                return ResourceManager.GetString("SchedulerChangesHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server: Version {1}
         ///
         ///Sofware development by: www.dev2.co.za
@@ -1003,6 +1147,42 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Server_About_Content {
             get {
                 return ResourceManager.GetString("Server_About_Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server is not connected.
+        /// </summary>
+        public static string ServerNotConnected {
+            get {
+                return ResourceManager.GetString("ServerNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can not change the settings for a server that is offline..
+        /// </summary>
+        public static string ServerNotConnectedSettingsDescription {
+            get {
+                return ResourceManager.GetString("ServerNotConnectedSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server is unreachable.
+        /// </summary>
+        public static string ServerUnreachableErrorHeader {
+            get {
+                return ResourceManager.GetString("ServerUnreachableErrorHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to reach {0}: Connection timed out.{1} Make sure the remote computer is powered on.{1}{1} Would you like to re-try? {1}.
+        /// </summary>
+        public static string ServerUnreachableHeaderMessage {
+            get {
+                return ResourceManager.GetString("ServerUnreachableHeaderMessage", resourceCulture);
             }
         }
         
@@ -1021,6 +1201,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Services_Delete_Resource {
             get {
                 return ResourceManager.GetString("Services_Delete_Resource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;ettings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings..
+        /// </summary>
+        public static string SettingsChangedDescription {
+            get {
+                return ResourceManager.GetString("SettingsChangedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings have changed.
+        /// </summary>
+        public static string SettingsChangedHeader {
+            get {
+                return ResourceManager.GetString("SettingsChangedHeader", resourceCulture);
             }
         }
         
@@ -1097,6 +1295,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TUW-DEVFS/dsfTest.
+        /// </summary>
+        public static string Test_SPN_Endpoint_Identity {
+            get {
+                return ResourceManager.GetString("Test_SPN_Endpoint_Identity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 80.
         /// </summary>
         public static string UI_Layout_Grid_Default_Height {
@@ -1129,6 +1336,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Uri_DownloadPage {
             get {
                 return ResourceManager.GetString("Uri_DownloadPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://www.google.co.za/.
+        /// </summary>
+        public static string Uri_Start_Page {
+            get {
+                return ResourceManager.GetString("Uri_Start_Page", resourceCulture);
             }
         }
         

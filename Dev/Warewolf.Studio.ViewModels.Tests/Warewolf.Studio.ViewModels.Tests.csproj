@@ -60,6 +60,8 @@
   <ItemGroup>
     <Compile Include="DeployViewModelTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
+    <Compile Include="Help\HelpDescriptoViewModelTests.cs" />
+    <Compile Include="Help\HelpViewModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="ConnectControlViewModelTests.cs" />
@@ -70,6 +72,10 @@
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
+      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
+      <Name>Dev2.Studio</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
       <Project>{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}</Project>
@@ -87,6 +93,7 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

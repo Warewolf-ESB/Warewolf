@@ -78,9 +78,9 @@ namespace Warewolf.Studio.ViewModels.DummyModels
             return new List<IResource>();
         }
 
-        public IList<IConnection> GetServerConnections()
+        public IList<IServer> GetServerConnections()
         {
-            return new List<IConnection>();
+            return new List<IServer>();
         }
 
         public IList<IToolDescriptor> LoadTools()
@@ -94,6 +94,14 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         }
 
         public void ReloadTools()
+        {
+        }
+
+        public void Disconnect()
+        {
+        }
+
+        public void Edit()
         {
         }
 

@@ -14,8 +14,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.OK,
-                Header = "Server is not connected",
-                Description = "You can not change the settings for a server that is offline.",
+                Header = Resources.Languages.Core.ServerNotConnected,
+                Description = Resources.Languages.Core.ServerNotConnectedSettingsDescription,
                 Image = MessageBoxImage.Error
             };
         }
@@ -25,8 +25,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons=MessageBoxButton.YesNo,
-                Header = "Are you sure?",
-                Description =  string.Format("Are you sure you want to delete {0}?", nameOfItemBeingDeleted),
+                Header = Resources.Languages.Core.GenericConfirmation,
+                Description = string.Format(Resources.Languages.Core.DeleteConfirmation, nameOfItemBeingDeleted),
                 Image = MessageBoxImage.Warning
             };
         }
@@ -36,8 +36,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.YesNoCancel,
-                Header = "Rename conflict",
-                Description = string.Format("The following task has been renamed {0} -> {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------" + "Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler.", oldName, newName, Environment.NewLine),
+                Header = Resources.Languages.Core.RenameConflictHeader,
+                Description = string.Format(Resources.Languages.Core.RenameConflictDescription, oldName, newName, Environment.NewLine),
                 Image = MessageBoxImage.Information
             };
         }
@@ -47,8 +47,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.YesNoCancel,
-                Header = "Settings have changed",
-                Description = string.Format("Settings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------" + "Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings.", Environment.NewLine),
+                Header = Resources.Languages.Core.SettingsChangedHeader,
+                Description =  string.Format(Resources.Languages.Core.SettingsChangedDescription, Environment.NewLine),
                 Image = MessageBoxImage.Information
             };
         }
@@ -58,8 +58,8 @@ namespace Warewolf.Studio.Core.Popup
              return new PopupMessage
             {
                 Buttons = MessageBoxButton.YesNoCancel,
-                Header = "Scheduler Task has changes",
-                Description = string.Format("Scheduler Task has not been saved.{0}Would you like to save the Task? {0}-------------------------------------------------------------------" + "Yes - Save the Task.{0}No - Discard your changes.{0}Cancel - Returns you to Scheduler.", Environment.NewLine),
+                Header = Resources.Languages.Core.SchedulerChangesHeader,
+                Description = string.Format(Resources.Languages.Core.SchedulerChangesHeader, Environment.NewLine),
                 Image = MessageBoxImage.Information
             };
         
@@ -70,8 +70,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.OK,
-                Header = "Did you know?",
-                Description = string.Format("You can pass variables into your workflow{0}by selecting the Input checkbox{0}in the Variables window.", Environment.NewLine),
+                Header = Resources.Languages.Core.DidYouKnow,
+                Description = string.Format(Resources.Languages.Core.InputVariablesTip, Environment.NewLine),
                 Image = MessageBoxImage.Information,
                 DontShowAgainKey = GlobalConstants.Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog
             };
@@ -82,9 +82,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.OK,
-                Header = "Saving Error",
-                Description = "The following error occurred on save:" + Environment.NewLine
-                              + errorMessage,
+                Header = Resources.Languages.Core.SaveErrorHeader,
+                Description = string.Format("{0}{1}{2}", Resources.Languages.Core.SaveErrorHeader, Environment.NewLine, errorMessage),
                 Image = MessageBoxImage.Error,
 
             };
@@ -95,8 +94,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.YesNo,
-                Header = "Server is unreachable",
-                Description = string.Format(" Unable to reach {0}: Connection timed out.{1} Make sure the remote computer is powered on.{1}{1} Would you like to re-try? {1}", serverName, Environment.NewLine),
+                Header = Resources.Languages.Core.ServerUnreachableErrorHeader,
+                Description = string.Format(Resources.Languages.Core.ServerUnreachableHeaderMessage, serverName, Environment.NewLine),
                 Image = MessageBoxImage.Error,
 
             };
@@ -107,8 +106,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.YesNo,
-                Header = "Delete Version",
-                Description = string.Format("Are you sure you want to delete {0}?", displayName),
+                Header = Resources.Languages.Core.DeleteVersionMessageHeader,
+                Description = string.Format(Resources.Languages.Core.DeleteVersionMessage, displayName),
                 Image = MessageBoxImage.Warning,
 
             };
@@ -119,8 +118,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.YesNo,
-                Header = "Make current version",
-                Description = string.Format("{0} will become the current version.{1}Do you want to proceed ?", displayName, Environment.NewLine),
+                Header = Resources.Languages.Core.RollbackHeader,
+                Description = string.Format(Resources.Languages.Core.RollbackMessage, displayName, Environment.NewLine),
                 Image = MessageBoxImage.Warning,
 
             };
@@ -131,8 +130,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.OK,
-                Header = "Invalid text",
-                Description = string.Format("{0} is invalid. Warewolf only supports latin characters", invalidText),
+                Header = Resources.Languages.Core.InvalidTextHeader,
+                Description = string.Format(Resources.Languages.Core.InvalidTextMessage, invalidText),
                 Image = MessageBoxImage.Warning,
 
             };

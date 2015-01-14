@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Media;
+using Dev2.Common.Interfaces.Help;
 
 namespace Dev2.Common.Interfaces.Toolbox
 {
@@ -62,12 +63,5 @@ namespace Dev2.Common.Interfaces.Toolbox
     {
         Native,
         User,
-    }
-
-    public interface IHelpDescriptor
-    {
-        string Name { get; }
-        string Description { get; }
-        string Icon { get; }
     }
 }

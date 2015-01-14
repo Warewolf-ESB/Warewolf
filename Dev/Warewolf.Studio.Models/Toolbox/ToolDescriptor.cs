@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using Dev2;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 
 namespace Warewolf.Studio.Models.Toolbox

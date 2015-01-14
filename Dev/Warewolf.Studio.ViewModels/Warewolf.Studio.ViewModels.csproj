@@ -67,10 +67,14 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\Binaries\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,15 +85,23 @@
   <ItemGroup>
     <Compile Include="Conflict.cs" />
     <Compile Include="ConflictHandlerViewModel.cs" />
+    <Compile Include="ConnectControlViewModel.cs" />
+    <Compile Include="VariableList\DataListViewRecordSet.cs" />
     <Compile Include="DeployViewModel.cs" />
     <Compile Include="DummyModels\DummyExplorerViewModel.cs" />
+    <Compile Include="DummyModels\DummyHelpViewModel.cs" />
     <Compile Include="DummyModels\DummyToolboxViewModel.cs" />
     <Compile Include="EnvironmentViewModel.cs" />
     <Compile Include="ExplorerItemViewModel.cs" />
     <Compile Include="ExplorerViewModel.cs" />
+    <Compile Include="Help\HelpDescriptorViewModel.cs" />
+    <Compile Include="Help\HelpViewModel.cs" />
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
+    <Compile Include="ToolBox\ToolBoxCategoryViewModel.cs" />
     <Compile Include="ToolBox\ToolboxViewModel.cs" />
     <Compile Include="ToolBox\ToolDescriptorViewModel.cs" />
+    <Compile Include="VariableList\VariableListViewModel.cs" />
+    <Compile Include="WarewolfInvalidTypeException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -110,10 +122,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="DummyModels\Icons.xaml">
+    <Resource Include="DummyModels\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
