@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using Dev2;
 using Dev2.Common.Interfaces.Help;
 using Microsoft.Practices.Prism.Mvvm;
@@ -18,6 +19,30 @@ namespace Warewolf.Studio.ViewModels.Help
             CurrentHelpText = _defaultViewModel;
             HelpModel = model;
             model.OnHelpTextReceived += model_OnHelpTextReceived;
+        }
+
+        public string HelpText
+        {
+            get
+            {
+                return CurrentHelpText.Description;
+            }
+        }
+
+        public string HelpName
+        {
+            get
+            {
+                return CurrentHelpText.Name;
+            }
+        }
+
+        public DrawingImage HelpImage
+        {
+            get
+            {
+                return CurrentHelpText.Icon;
+            }
         }
 
         void model_OnHelpTextReceived(object sender, IHelpDescriptor desc)
@@ -50,7 +75,9 @@ namespace Warewolf.Studio.ViewModels.Help
             private set
             {
                 _currentHelpText = value;
-                OnPropertyChanged("CurrentHelpText");
+                OnPropertyChanged(() => HelpName);
+                OnPropertyChanged(() => HelpText);
+                OnPropertyChanged(() => HelpImage);
             }
         }
 

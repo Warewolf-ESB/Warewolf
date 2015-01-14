@@ -20,21 +20,14 @@ namespace Warewolf.Studio.Models.Help
 
         private void FireOnHelpReceived(IHelpDescriptor obj)
         {
-            OnHelpTextReceived(this, obj);
+            if(OnHelpTextReceived != null)
+            {
+                OnHelpTextReceived(this, obj);
+            }
         }
 
         public event HelpTextReceived OnHelpTextReceived;
-        private readonly SubscriptionToken _token;
-
-        /// <summary>
-        /// Send Help descriptor to the Help window
-        /// </summary>
-        /// <param name="descriptor"></param>
-        public void SendHelpDescriptor(IHelpDescriptor descriptor)
-        {
-
-            _aggregator.GetEvent<HelpChangedEvent>().Publish(descriptor);
-        }
+        private readonly SubscriptionToken _token;     
 
         #endregion
 
