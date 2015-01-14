@@ -18,7 +18,7 @@ namespace Warewolf.Studio
         protected override void InitializeShell()
         {
             base.InitializeShell();
-            Window window = (Window)Shell;
+            var window = (Window)Shell;
 
             var regionManager = Container.Resolve<IRegionManager>();
             var explorerRegion = regionManager.Regions[RegionNames.Explorer];

@@ -3,66 +3,27 @@
 
     <!--  ********************************** THEME COLORS **********************************  -->
 
-    <!--  Core Colors  -->
-    <Color x:Key="WarewolfLightGrey">#C1C3C5</Color>
-    <Color x:Key="WarewolfDarkGrey">#7F7F7F</Color>
-    <Color x:Key="WarewolfOrange">#F3700D</Color>
-    <Color x:Key="WarewolfWhite">#FFFFFF</Color>
-    <Color x:Key="WarewolfBlack">#000000</Color>
+    <!--  New Warewolf Palette  -->
+    <Color x:Key="WarewolfMenuGrey">#FF2C2928</Color>
+    <Color x:Key="WarewolfHeaderGrey">#FFE7E4E0</Color>
+    <Color x:Key="WarewolfLineGrey">#FFE7E4E0</Color>
+    <Color x:Key="WarewolfSubHeaderGrey">#FFC2BEB9</Color>
+    <Color x:Key="WarewolfPanelGrey">#FFF4F2EE</Color>
+    <Color x:Key="WarewolfButtonGrey">#FF606160</Color>
+    <Color x:Key="WarewolfTileGrey">#FFF4F3ED</Color>
+    <Color x:Key="WarewolfScrollbarGrey">#FFE6E5E0</Color>
+    <Color x:Key="WarewolfWhite">#FFFFFFFF</Color>
+    <Color x:Key="WarewolfOrange">#FFF3700D</Color>
+    <Color x:Key="WarewolfBlack">#FF000000</Color>
+
+    <Color x:Key="WarewolfEnabledText">#FF2C2928</Color>
+    <Color x:Key="WarewolfDisabledText">#FF606160</Color>
 
 
-    <Color x:Key="Color_000b">#FF282828</Color>
-    <Color x:Key="Color_001b">#FF3F3F3F</Color>
-    <Color x:Key="Color_002b">#FF565656</Color>
-    <Color x:Key="Color_003b">#FF858585</Color>
-    <Color x:Key="Color_004b">#FFB9B9B9</Color>
-    <Color x:Key="Color_005b">#FFD7D7D7</Color>
-    <Color x:Key="Color_006b">#FFE7E7E7</Color>
-    <Color x:Key="Color_007b">#FFF4F4F4</Color>
-    <Color x:Key="Color_008b">#FFF9F9F9</Color>
-    <Color x:Key="Color_009b">#FFFFFFFF</Color>
-
-    <!--  Transparent and Whites with transparency  -->
-    <Color x:Key="Color_010b">#E5FFFFFF</Color>
-    <!--  90% White  -->
-    <Color x:Key="Color_011b">#BFFFFFFF</Color>
-    <!--  75% White  -->
-    <Color x:Key="Color_012b">#99FFFFFF</Color>
-    <!--  60% White  -->
-    <Color x:Key="Color_013b">#72FFFFFF</Color>
-    <!--  45% White  -->
-    <Color x:Key="Color_014b">#4CFFFFFF</Color>
-    <!--  30% White  -->
-    <Color x:Key="Color_016b">#00FFFFFF</Color>
-    <!--  0% White  -->
-
-    <Color x:Key="Color_018b">#72000000</Color>
-    <!--  45% Black  -->
-    <Color x:Key="Color_019b">#4C000000</Color>
-    <!--  30% Black  -->
-    <Color x:Key="Color_020b">#26000000</Color>
-    <!--  15% Black  -->
-    <Color x:Key="Color_021b">#00000000</Color>
-    <!--  0% Black  -->
-    <Color x:Key="Color_022b">#66E2E2E2</Color>
-
-    <!--  Theme Accent colors  -->
-    <Color x:Key="Color_023b">#FFF3700D</Color>
-    <Color x:Key="Color_024b">#FFff8613</Color>
-    <Color x:Key="Color_025b">#FFF19D5E</Color>
-    <Color x:Key="Color_026b">#FFF1CDB2</Color>
-    <Color x:Key="Color_027b">#26F3700D</Color>
-
-    <!--  Theme Error colors  -->
-    <Color x:Key="Color_028b">#FFA60013</Color>
-    <Color x:Key="Color_029b">#FFF55E7F</Color>
-    <Color x:Key="Color_030b">#FFFFCAD5</Color>
-
-    <!--  *********************************  COLORS  *********************************  -->
-
-    <!--  Base Colors  -->
+    <!--  Artifact Colors  -->
     <Color x:Key="Color_000">#FF282828</Color>
     <Color x:Key="Color_001">#FF3F3F3F</Color>
+
     <Color x:Key="Color_002">#FF565656</Color>
     <Color x:Key="Color_003">#FF858585</Color>
     <Color x:Key="Color_004">#FFB9B9B9</Color>
@@ -71,6 +32,7 @@
     <Color x:Key="Color_007">#FFF4F4F4</Color>
     <Color x:Key="Color_008">#FFF9F9F9</Color>
     <Color x:Key="Color_009">#FFFFFFFF</Color>
+
     <!--  Transparent and Whites with transparency  -->
     <Color x:Key="Color_010">#E5FFFFFF</Color>
     <!--  90% White  -->
@@ -84,7 +46,7 @@
     <!--  30% White  -->
     <Color x:Key="Color_016">#00FFFFFF</Color>
     <!--  0% White  -->
-    <!--  Blacks and grays with transparency  -->
+
     <Color x:Key="Color_018">#72000000</Color>
     <!--  45% Black  -->
     <Color x:Key="Color_019">#4C000000</Color>
@@ -94,17 +56,20 @@
     <Color x:Key="Color_021">#00000000</Color>
     <!--  0% Black  -->
     <Color x:Key="Color_022">#66E2E2E2</Color>
-    <!--  Blacks and grays with transparency  -->
+
     <!--  Theme Accent colors  -->
-    <Color x:Key="Color_023">#FF0086AF</Color>
-    <Color x:Key="Color_024">#FF00AADE</Color>
-    <Color x:Key="Color_025">#FF80D5EF</Color>
-    <Color x:Key="Color_026">#FFB2E1EF</Color>
-    <Color x:Key="Color_027">#2600AADE</Color>
+    <Color x:Key="Color_023">#FFF3700D</Color>
+    <Color x:Key="Color_024">#FFff8613</Color>
+    <Color x:Key="Color_025">#FFF19D5E</Color>
+    <Color x:Key="Color_026">#FFF1CDB2</Color>
+    <Color x:Key="Color_027">#26F3700D</Color>
+
     <!--  Theme Error colors  -->
-    <Color x:Key="Color_028">#FFD0284C</Color>
+    <Color x:Key="Color_028">#FFA60013</Color>
     <Color x:Key="Color_029">#FFF55E7F</Color>
     <Color x:Key="Color_030">#FFFFCAD5</Color>
+
+
     <Color x:Key="Color_031">#ffffffff</Color>
     <Color x:Key="Color_032">#FFF0F0F0</Color>
     <Color x:Key="Color_033">#FFA0A0A0</Color>

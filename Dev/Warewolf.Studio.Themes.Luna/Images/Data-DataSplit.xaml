@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<DrawingImage x:Key="Data-DataSplit">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<DrawingGroup ClipGeometry="F1 M 0,1.52588e-005L 755.907,1.52588e-005L 755.907,755.908L 0,755.908L 0,1.52588e-005 Z ">
+						<DrawingGroup.Children>
+							<GeometryDrawing Brush="#FF7F1769" Geometry="M 37.3268,327.055L 37.3268,324.489L 41.9935,329.622L 37.3268,334.757L 37.3268,332.19L 34.9935,332.19L 34.9935,327.055L 37.3268,327.055 Z "/>
+							<GeometryDrawing Brush="#FF7F1769" Geometry="M 31.7259,327.055L 31.7259,324.489L 27.0592,329.622L 31.7259,334.757L 31.7259,332.19L 34.0592,332.19L 34.0592,327.055L 31.7259,327.055 Z "/>
+						</DrawingGroup.Children>
+					</DrawingGroup>
+						</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+</DrawingImage>
+	</ResourceDictionary>

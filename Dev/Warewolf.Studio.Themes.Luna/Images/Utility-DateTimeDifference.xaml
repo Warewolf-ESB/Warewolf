@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<DrawingImage x:Key="Utility-DateTimeDifference">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<GeometryDrawing Brush="#FFFF8613" Geometry="M 44.0336,-275.654C 44.3883,-275.047 44.5736,-274.391 44.5736,-273.671C 44.5736,-272.951 44.3883,-272.286 44.0336,-271.679"/>
+					<GeometryDrawing Brush="#FFFF8613" Geometry="M 34.6991,-273.603L 32.3604,-275.893C 32.2671,-275.982 32.1604,-276.03 32.0391,-276.03"/>
+		</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+</DrawingImage>
+	</ResourceDictionary>

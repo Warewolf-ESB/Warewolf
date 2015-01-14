@@ -1,0 +1,593 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:ig="http://schemas.infragistics.com/xaml"
+                    xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    mc:Ignorable="d">
+
+    <!--  *********************************  COLORS  *********************************  -->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
+
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/TextBox.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ComboBox.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/CheckBox.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ScrollBar.xaml" />
+
+
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  *********************************  BRUSHES  *********************************  -->
+    <!--  Popup Resizer Brushes  -->
+    <SolidColorBrush x:Key="PopupResizerBorderBrush" Color="{StaticResource Color_004}" />
+
+    <!--
+        ******************************************************** SL-WPF SHARED RESOURCES ***********************************************************
+        ********************************************************************************************************************************************************************
+    -->
+
+    <!--  *********************************  Converters  *********************************  -->
+    <igPrim:ValueConverterGroup x:Key="boolToVisibility">
+        <!--  if true sets visibility to Visible  -->
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <system:Boolean>True</system:Boolean>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Visible</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+        <!--  if false sets visibility to Collapsed  -->
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Collapsed</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <!--  ******************************************* PopupResizer Style   *************************************  -->
+    <Style x:Key="PopupResizerStyle" TargetType="igPrim:PopupResizer">
+        <Setter Property="Background" Value="{StaticResource LightForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource PopupResizerBorderBrush}" />
+        <Setter Property="Height" Value="20" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="igPrim:PopupResizer">
+                    <Border Height="{TemplateBinding Height}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="FlowDirections">
+                                <VisualState x:Name="LTR" />
+                                <VisualState x:Name="RTL">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ResizeElem" Storyboard.TargetProperty="Cursor">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Cursor>SizeNESW</Cursor>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="AboveLTR">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ResizeElem" Storyboard.TargetProperty="Cursor">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Cursor>SizeNESW</Cursor>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="AboveRTL">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ResizeElem" Storyboard.TargetProperty="Cursor">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Cursor>SizeNWSE</Cursor>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="Position">
+                                <VisualState x:Name="Below" />
+                                <VisualState x:Name="Above">
+                                    <Storyboard>
+                                        <PointAnimationUsingKeyFrames Storyboard.TargetName="BelowPosition" Storyboard.TargetProperty="(UIElement.RenderTransformOrigin)">
+                                            <EasingPointKeyFrame KeyTime="0" Value="0.5,0.5" />
+                                        </PointAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="BelowPosition" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="-1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid>
+                            <Grid x:Name="BelowPosition" Margin="0">
+                                <Grid.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Grid.RenderTransform>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.ColumnSpan="2"
+                                        Margin="0 -2 0 0"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="1" />
+
+                                <Border x:Name="ResizeElem"
+                                        Grid.Column="1"
+                                        VerticalAlignment="Bottom"
+                                        Background="{StaticResource TransparentBrush}"
+                                        BorderThickness="1"
+                                        Cursor="SizeNWSE">
+                                    <Grid x:Name="BelowDots"
+                                          Width="7"
+                                          Height="7"
+                                          Margin="0,0,2,2"
+                                          VerticalAlignment="Bottom">
+                                        <Rectangle Width="2"
+                                                   Height="2"
+                                                   Margin="0,0,4,0"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Bottom"
+                                                   Fill="{StaticResource LightForegroundBrush}" />
+                                        <Rectangle Width="2"
+                                                   Height="2"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Bottom"
+                                                   Fill="{StaticResource LightForegroundBrush}" />
+                                        <Rectangle Width="2"
+                                                   Height="2"
+                                                   Margin="0,0,0,4"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Bottom"
+                                                   Fill="{StaticResource LightForegroundBrush}" />
+                                        <Rectangle Width="2"
+                                                   Height="2"
+                                                   Margin="0,0,5,1"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Bottom"
+                                                   Fill="{TemplateBinding BorderBrush}" />
+                                        <Rectangle Width="2"
+                                                   Height="2"
+                                                   Margin="0,0,1,1"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Bottom"
+                                                   Fill="{TemplateBinding BorderBrush}" />
+                                        <Rectangle Width="2"
+                                                   Height="2"
+                                                   Margin="0,0,1,5"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Bottom"
+                                                   Fill="{TemplateBinding BorderBrush}" />
+                                        <Rectangle x:Name="TouchableZone"
+                                                   Grid.Column="1"
+                                                   Margin="-20 -12 -12 -12"
+                                                   Fill="{StaticResource TransparentBrush}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  *********************************  ComboEditorItemControl Style  *********************************  -->
+    <Style x:Key="ComboEditorItemControlStyle" TargetType="ig:ComboEditorItemControl">
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="13.333" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Padding" Value="5 3" />
+        <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ig:ComboEditorItemControl">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ComboBoxItemHoverBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Stroke">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ComboBoxItemHoverBorderBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="SelectionStates">
+                                <VisualState x:Name="Unselected" />
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="selectedRectangle" Storyboard.TargetProperty="Opacity">
+                                            <SplineDoubleKeyFrame KeyTime="0" Value="1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="contentControl"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightForegroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="SelectionModeStates">
+                                <VisualState x:Name="CheckBox">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SelectedCheckbox" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Standard" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="Bd"
+                                   Fill="{TemplateBinding Background}"
+                                   Stroke="{TemplateBinding BorderBrush}"
+                                   StrokeThickness="{TemplateBinding BorderThickness}" />
+                        <Rectangle x:Name="selectedRectangle"
+                                   Fill="{StaticResource ComboBoxItemPressedBackgroundBrush}"
+                                   IsHitTestVisible="False"
+                                   Opacity="0"
+                                   Stroke="{StaticResource ComboBoxItemPressedBorderBrush}" />
+                        <StackPanel x:Name="content"
+                                    Margin="{TemplateBinding Padding}"
+                                    Orientation="Horizontal">
+                            <CheckBox x:Name="SelectedCheckbox"
+                                      VerticalAlignment="Center"
+                                      IsHitTestVisible="False"
+                                      Style="{StaticResource CheckBoxStyle}"
+                                      Visibility="Collapsed" />
+                            <ContentControl x:Name="contentControl" Foreground="{TemplateBinding Foreground}">
+                                <ContentPresenter x:Name="contentPresenter"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  VerticalAlignment="Center"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            </ContentControl>
+                        </StackPanel>
+                        <Rectangle x:Name="FocusedVisualElement"
+                                   Opacity="0"
+                                   Stroke="{StaticResource ComboBoxItemPressedBorderBrush}"
+                                   StrokeThickness="2" />
+                        <Rectangle x:Name="DisabledVisualElement"
+                                   Fill="{StaticResource DisabledVisualElement}"
+                                   Visibility="Collapsed" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource ComboEditorItemControlStyle}" TargetType="ig:ComboEditorItemControl" />
+
+    <!--  *********************************  TextBlock Style  *********************************  -->
+    <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="MinHeight" Value="30" />
+    </Style>
+
+    <!--  *********************************  XamComboEditor Style  *********************************  -->
+    <Style x:Key="XamComboEditorStyle" TargetType="ig:XamComboEditor">
+        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="Padding" Value="4,3" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource ComboBoxBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource ComboBoxBorderBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ig:XamComboEditor">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value=".55" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBoxPresenter" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Thickness>1,1,0,1</Thickness>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ModeStates">
+                                <VisualState x:Name="Selectable">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="contentControl" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Editable">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBoxPresenter" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MultiSelectContentPanel" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MultiSelectContentPanel" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Thickness>10,10,0,0</Thickness>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBoxPresenter" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Thickness>5,0,0,0</Thickness>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="WaterMarkStates">
+                                <VisualState x:Name="WaterMarkHidden" />
+                                <VisualState x:Name="WaterMarkVisible">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="WaterMark" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="DropDownStates">
+                                <VisualState x:Name="Closed" />
+                                <VisualState x:Name="Open">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Popup" Storyboard.TargetProperty="IsOpen">
+                                            <DiscreteObjectKeyFrame KeyTime="00:00:00">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <system:Boolean>True</system:Boolean>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="PositionStates">
+                                <VisualState x:Name="Below" />
+                                <VisualState x:Name="Above">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Resizer" Storyboard.TargetProperty="Position">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <igPrim:ResizerPosition>Above</igPrim:ResizerPosition>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Resizer" Storyboard.TargetProperty="(Grid.Row)">
+                                            <DiscreteObjectKeyFrame KeyTime="00:00:00">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <system:Int32>0</system:Int32>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="ContentPresenterBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid x:Name="gridLayout" ShowGridLines="False">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="32" />
+                                </Grid.ColumnDefinitions>
+                                <Popup x:Name="Popup"
+                                       Grid.ColumnSpan="2"
+                                       VerticalAlignment="Bottom"
+                                       IsOpen="False">
+                                    <Grid Background="{TemplateBinding BorderBrush}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Border x:Name="RootPopupElement"
+                                                Grid.Row="1"
+                                                Height="Auto"
+                                                MinHeight="30"
+                                                MaxWidth="{TemplateBinding MaxDropDownWidth}"
+                                                MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Top"
+                                                Background="{StaticResource PopupBackgroundBrush}"
+                                                BorderBrush="{StaticResource PopupBorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <igPrim:ItemsPanel x:Name="ItemsPanel"
+                                                                   Margin="1,0"
+                                                                   VerticalAlignment="Top" />
+                                                <ScrollBar x:Name="VerticalScrollBar"
+                                                           Grid.Row="0"
+                                                           Grid.Column="1"
+                                                           Width="20"
+                                                           Style="{StaticResource ScrollBarStyle}" />
+                                                <ScrollBar x:Name="HorizontalScrollBar"
+                                                           Grid.Row="1"
+                                                           Grid.Column="0"
+                                                           Height="20"
+                                                           Style="{StaticResource ScrollBarStyle}" />
+                                            </Grid>
+                                        </Border>
+                                        <igPrim:PopupResizer x:Name="Resizer"
+                                                             Grid.Row="2"
+                                                             Grid.ColumnSpan="2"
+                                                             Popup="{Binding ElementName=Popup}"
+                                                             ResizeElement="{Binding ElementName=RootPopupElement}"
+                                                             Style="{StaticResource PopupResizerStyle}"
+                                                             Visibility="{Binding Path=AllowDropDownResizing,
+                                                                                  Converter={StaticResource boolToVisibility},
+                                                                                  RelativeSource={RelativeSource TemplatedParent}}">
+                                            <igPrim:PopupResizer.RenderTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform />
+                                                    <SkewTransform />
+                                                    <RotateTransform />
+                                                    <TranslateTransform />
+                                                </TransformGroup>
+                                            </igPrim:PopupResizer.RenderTransform>
+                                        </igPrim:PopupResizer>
+                                    </Grid>
+                                </Popup>
+                                <ToggleButton x:Name="ToggleButton"
+                                              Grid.ColumnSpan="2"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalContentAlignment="Right"
+                                              IsChecked="{Binding IsDropDownOpen,
+                                                                  Mode=TwoWay,
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                              IsTabStop="False"
+                                              Style="{StaticResource ComboBoxToggleButtonStyle}" />
+                                <TextBlock x:Name="WaterMark"
+                                           Margin="3,1,0,1"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           IsHitTestVisible="False"
+                                           Padding="{TemplateBinding Padding}"
+                                           Style="{StaticResource TextBlockStyle}"
+                                           Text="{TemplateBinding EmptyText}"
+                                           Visibility="Collapsed" />
+                                <igPrim:SpecializedTextBox x:Name="TextBoxPresenter"
+                                                           Background="{StaticResource TransparentBrush}"
+                                                           BorderThickness="0"
+                                                           Foreground="{StaticResource ForegroundBrush}"
+                                                           IsTabStop="{TemplateBinding IsTabStop}"
+                                                           Style="{StaticResource TextBoxStyle}"
+                                                           Visibility="Collapsed" />
+                                <ContentControl x:Name="contentControl"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Center"
+                                                Foreground="{TemplateBinding Foreground}">
+                                    <Grid>
+                                        <StackPanel x:Name="MultiSelectContentPanel"
+                                                    Margin="10,0,0,0"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    Orientation="Horizontal" />
+                                    </Grid>
+                                </ContentControl>
+                            </Grid>
+                        </Border>
+                        <Border x:Name="FocusVisualElement"
+                                BorderBrush="{StaticResource ComboBoxFocusedBorderBrush}"
+                                BorderThickness="1"
+                                IsHitTestVisible="false"
+                                Visibility="Collapsed" />
+                        <Rectangle x:Name="DisabledVisualElement"
+                                   Fill="{StaticResource DisabledVisualElement}"
+                                   IsHitTestVisible="false"
+                                   Opacity="0" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource XamComboEditorStyle}" TargetType="ig:XamComboEditor" />
+</ResourceDictionary>

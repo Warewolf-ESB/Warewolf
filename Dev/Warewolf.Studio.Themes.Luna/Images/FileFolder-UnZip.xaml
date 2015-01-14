@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<DrawingImage x:Key="FileFolder-UnZip">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<GeometryDrawing Brush="#FF2BAEA4" Geometry="M 86.4436,-89.839C 86.397,-89.8003 86.3503,-89.7776 86.305,-89.7776C 86.257,-89.7776 86.2103,-89.8003 86.173,-89.839"/>
+		</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+</DrawingImage>
+	</ResourceDictionary>

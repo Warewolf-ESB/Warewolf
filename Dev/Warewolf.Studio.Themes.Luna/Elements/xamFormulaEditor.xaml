@@ -1,0 +1,1192 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:ig="http://schemas.infragistics.com/xaml"
+                    xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    mc:Ignorable="d">
+
+    <!--  *********************************  RESOURCES  *********************************  -->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
+
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/TextBox.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ListBox.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/Button.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ComboBox.xaml" />
+
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/xamDataTree.xaml" />
+
+
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  *********************************  BRUSHES  *********************************  -->
+    <!--  ContextualHelp Brushes  -->
+    <SolidColorBrush x:Key="ContextualHelpBackgroundBrush" Color="{StaticResource Color_009}" />
+    <SolidColorBrush x:Key="ContextualHelpBorderBrush" Color="{StaticResource Color_004}" />
+
+    <!--  FormulaEditor Brushes  -->
+    <SolidColorBrush x:Key="FunctionGlyphBackgroundBrush" Color="{StaticResource Color_001}" />
+
+    <SolidColorBrush x:Key="FormulaEditorBackgroundBrush" Color="{StaticResource Color_016}" />
+    <SolidColorBrush x:Key="FormulaEditorBorderBrush" Color="{StaticResource Color_016}" />
+
+    <SolidColorBrush x:Key="FormulaEditorDialogBackgroundBrush" Color="{StaticResource Color_009}" />
+
+    <SolidColorBrush x:Key="EditorAreaBackgroundBrush" Color="{StaticResource Color_009}" />
+    <SolidColorBrush x:Key="EditorAreaBorderBrush" Color="{StaticResource Color_004}" />
+
+    <SolidColorBrush x:Key="OperandsForegroundBrush" Color="{StaticResource Color_001}" />
+
+    <SolidColorBrush x:Key="DescriptionBackgroundBrush" Color="{StaticResource Color_007}" />
+    <SolidColorBrush x:Key="DescriptionBorderBrush" Color="{StaticResource Color_004}" />
+
+    <SolidColorBrush x:Key="SyntaxEditorValidationErrorBrush"
+                     igPrim:XamlHelper.IsExcludedFromWash="True"
+                     Color="{StaticResource Color_028}" />
+    <SolidColorBrush x:Key="SyntaxErrorBackgroundBrush"
+                     igPrim:XamlHelper.IsExcludedFromWash="True"
+                     Color="{StaticResource Color_030}" />
+
+    <!--
+        ****************************************************************** WPF SPECIFIC RESOURCES *******************************************************************
+        ******************************************************************************************************************************************************************
+    -->
+
+    <!--  *********************************  SimpleScrollViewer Style  *********************************  -->
+    <Style x:Key="SimpleScrollViewerStyle" TargetType="ScrollViewer">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
+    <!--  *********************************  FormulaEditorTextBox Style  *********************************  -->
+    <Style x:Key="FormulaEditorTextBoxStyle" TargetType="igPrim:FormulaEditorTextBox">
+        <Style.Resources>
+            <Style TargetType="{x:Type FlowDocument}">
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+            </Style>
+        </Style.Resources>
+        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <!--  Don't set the foreground so it can be inherited  -->
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="igPrim:FormulaEditorTextBox">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      Focusable="False"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      Style="{StaticResource SimpleScrollViewerStyle}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+        ****************************************************************** SL-WPF SHARED RESOURCES *******************************************************************
+        *******************************************************************************************************************************************************************
+    -->
+
+    <Thickness x:Key="OperandsButtonGroupMargin">16,0,1,0</Thickness>
+
+    <!--  ********************************** ValueConverters **********************************  -->
+    <igPrim:ValueConverterGroup x:Key="boolToVisibility">
+        <!--  if true sets visibility to Visible  -->
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.SourceValue>
+                <sys:Boolean>True</sys:Boolean>
+            </igPrim:FixedValueConverter.SourceValue>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Visible</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+
+        <!--  if false sets visibility to Collapsed  -->
+        <igPrim:FixedValueConverter>
+            <igPrim:FixedValueConverter.DestinationValue>
+                <Visibility>Collapsed</Visibility>
+            </igPrim:FixedValueConverter.DestinationValue>
+        </igPrim:FixedValueConverter>
+    </igPrim:ValueConverterGroup>
+
+    <igPrim:InverseBooleanConverter x:Key="inverseBoolean" />
+
+    <!--  *********************************  FunctionButton Style  *********************************  -->
+    <Style x:Key="FunctionButtonStyle" TargetType="Button">
+        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Padding" Value="8 1 8 3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonHoverBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Stroke">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonHoverBorderBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPressedBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="Stroke">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPressedBorderBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Symbol" Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightForegroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="Bd"
+                                   Fill="{StaticResource ButtonBackgroundBrush}"
+                                   Stroke="{StaticResource ButtonBorderBrush}"
+                                   StrokeThickness="1" />
+                        <Path x:Name="Symbol"
+                              Width="17.4"
+                              Height="18"
+                              Margin="0,0,0.014,-0.002"
+                              Data="M15.600863,8.0414972 C15.788081,8.0414972 15.940742,8.0943956 16.058844,8.2001925 C16.176947,8.3059893 16.235998,8.4354029 16.235998,8.5884333 C16.235998,8.7616882 16.140383,8.9121494 15.949152,9.0398169 C15.863566,9.0974598 15.608182,9.1397839 15.182999,9.1667929 C14.881549,9.182209 14.617965,9.2760162 14.392248,9.4482164 C14.011617,9.7426825 13.646471,10.164653 13.296808,10.714126 L13.724806,12.556517 C13.908013,13.380299 14.097325,13.985255 14.292744,14.371388 C14.488161,14.757522 14.723293,15.05151 14.998138,15.253355 C15.139679,15.357176 15.295542,15.409086 15.465727,15.409086 C15.691515,15.409086 15.858746,15.272327 15.967417,14.99881 C16.075031,14.728455 16.254648,14.593275 16.506268,14.593275 C16.638939,14.593275 16.752062,14.641449 16.845636,14.737791 C16.939209,14.834135 16.985996,14.95039 16.985996,15.086557 C16.985996,15.335108 16.845688,15.556402 16.565073,15.750441 C16.284456,15.944478 15.93152,16.041496 15.506268,16.041496 C15.044134,16.041496 14.605631,15.907259 14.19076,15.63878 C13.775887,15.370302 13.421633,14.947163 13.127995,14.369363 C12.834357,13.791563 12.584005,12.917583 12.376939,11.747426 C12.403473,11.839653 12.322849,12.011589 12.135068,12.263237 C11.558914,13.025094 11.106704,13.519577 10.778439,13.746685 C10.450172,13.973793 10.127467,14.087347 9.8103218,14.087347 C9.5779877,14.087347 9.3825169,14.024633 9.2239084,13.899204 C9.0653009,13.773777 8.9859972,13.619363 8.9859972,13.435964 C8.9859972,13.285437 9.0416174,13.153997 9.1528568,13.041645 C9.2640972,12.929294 9.3954144,12.873117 9.5468082,12.873117 C9.7098846,12.873117 9.8505802,12.944792 9.968894,13.088137 C10.075665,13.21462 10.153439,13.277861 10.202213,13.277861 C10.244303,13.277861 10.290439,13.26541 10.340621,13.240509 C10.441058,13.187874 10.581859,13.068705 10.763024,12.882999 C11.031958,12.610272 11.320246,12.360338 11.62789,12.133197 L12.1887,11.078948 L11.913784,9.9474258 C11.845512,9.644001 11.784245,9.4591846 11.72998,9.3929787 C11.675714,9.3267736 11.625918,9.2936707 11.580592,9.2936707 C11.541318,9.2936707 11.48744,9.312644 11.418958,9.3505888 C11.1363,9.5011148 10.859484,9.6697569 10.588511,9.8565168 L10.276538,9.4573069 C10.794485,9.0202188 11.234379,8.7116547 11.596217,8.5316153 C11.855577,8.3988094 12.055325,8.332406 12.195457,8.332406 C12.420049,8.332406 12.597343,8.4329329 12.727341,8.6339874 C12.887039,8.87852 13.020414,9.3555946 13.127467,10.065212 C13.56539,9.3241053 14.007956,8.8015432 14.45517,8.4975243 C14.902382,8.1935062 15.284281,8.0414972 15.600863,8.0414972 z M12.040485,0 C12.454538,9.5367432E-07 12.776803,0.089203835 13.007281,0.26760864 C13.237761,0.44601536 13.352999,0.66368151 13.352999,0.920609 C13.352999,1.1542745 13.270658,1.3494148 13.105976,1.5060296 C12.941296,1.6626453 12.728594,1.740953 12.467878,1.740953 C12.237068,1.740953 11.822113,1.676199 11.223013,1.5466914 C10.940078,1.4878235 10.725171,1.4583898 10.578293,1.4583898 C10.246367,1.4583898 9.9316721,1.6868091 9.6342115,2.1436486 C9.33675,2.6004882 9.0925055,3.2431145 8.9014769,4.0715284 L8.4497309,5.7879858 L10.864693,5.7879858 L10.681402,6.7997432 L8.2325449,6.7997432 L6.839139,12.478351 C6.387773,14.277316 5.6582904,15.647667 4.650692,16.589401 C3.6430931,17.531136 2.5425196,18.002003 1.3489723,18.002003 C0.92229176,18.002003 0.59079266,17.912918 0.35447598,17.734749 C0.11815834,17.55658 0,17.326643 0,17.044935 C0,16.7994 0.087942123,16.604332 0.26382732,16.459728 C0.43971157,16.315123 0.67685986,16.242819 0.97527027,16.242819 C1.1012616,16.242819 1.3188744,16.261715 1.628109,16.299503 C1.9964938,16.346786 2.374373,16.37043 2.7617464,16.37043 C3.3127098,16.37043 3.7094588,16.245121 3.9519949,15.99451 C4.1945305,15.743896 4.4489107,15.083228 4.7151351,14.012508 L6.5625658,6.7997432 L4.3841586,6.7997432 L4.5863905,5.7879858 L6.7630892,5.7879858 C7.1036544,4.344883 7.5118208,3.241477 7.9875884,2.4777679 C8.4633551,1.7140598 9.0854559,1.1101708 9.8538895,0.66610241 C10.622323,0.22203541 11.351189,9.5367432E-07 12.040485,0 z"
+                              Fill="{StaticResource FunctionGlyphBackgroundBrush}"
+                              RenderTransformOrigin="0.745201884958427,0.642678380970337"
+                              Stretch="Fill"
+                              UseLayoutRounding="False"
+                              d:LayoutOverrides="HorizontalAlignment, VerticalAlignment" />
+                        <Rectangle x:Name="FocusedVisualElement"
+                                   Stroke="{StaticResource ButtonPressedBorderBrush}"
+                                   StrokeThickness="2"
+                                   Visibility="Collapsed" />
+                        <Rectangle x:Name="DisabledElement"
+                                   Fill="{StaticResource DisabledVisualElement}"
+                                   Visibility="Collapsed" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  *********************************  TextBlock Style  *********************************  -->
+    <Style x:Key="LabelsStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!--  *********************************  ContextualHelpHost Style  *********************************  -->
+    <Style x:Key="ContextualHelpHostStyle" TargetType="igPrim:ContextualHelpHost">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="igPrim:ContextualHelpHost">
+                    <Canvas Name="PART_RootCanvas">
+                        <Canvas.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{StaticResource ContextualHelpBackgroundBrush}" />
+                                <Setter Property="BorderBrush" Value="{StaticResource ContextualHelpBorderBrush}" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="CornerRadius" Value="0" />
+                                <Setter Property="IsHitTestVisible" Value="False" />
+                                <Setter Property="Padding" Value="10" />
+                            </Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontFamily" Value="Segoe UI" />
+                                <Setter Property="FontSize" Value="13.333" />
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                            </Style>
+                        </Canvas.Resources>
+                        <Popup Name="PART_AutoCompleteListPopup">
+                            <igPrim:AutoCompleteList Name="PART_AutoCompleteList"
+                                                     MinWidth="100"
+                                                     ItemContainerStyle="{StaticResource ListBoxItemStyle}"
+                                                     SelectionMode="Single"
+                                                     Style="{StaticResource ListBoxStyle}">
+                                <igPrim:AutoCompleteList.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <igPrim:AutoCompleteListStackPanel />
+                                    </ItemsPanelTemplate>
+                                </igPrim:AutoCompleteList.ItemsPanel>
+                                <igPrim:AutoCompleteList.ItemTemplate>
+                                    <DataTemplate>
+                                        <igPrim:FormulaElementContentControl Content="{Binding}" Foreground="{StaticResource ForegroundBrush}">
+                                            <ig:Commanding.Command>
+                                                <igPrim:FormulaEditorCommandSource CommandType="AutoCompleteItem"
+                                                                                   EventName="MouseDoubleClick"
+                                                                                   ParameterBinding="{Binding}" />
+                                            </ig:Commanding.Command>
+                                        </igPrim:FormulaElementContentControl>
+                                    </DataTemplate>
+                                </igPrim:AutoCompleteList.ItemTemplate>
+                            </igPrim:AutoCompleteList>
+                        </Popup>
+                        <Popup Name="PART_AutoCompleteItemHelpPopup">
+                            <Border MaxWidth="485">
+                                <TextBlock Name="PART_AutoCompleteItemHelp" />
+                            </Border>
+                        </Popup>
+                        <Popup Name="PART_FunctionSignatureHelpPopup">
+                            <Border MaxWidth="600">
+                                <TextBlock Name="PART_FunctionSignatureHelp" />
+                            </Border>
+                        </Popup>
+                        <Popup Name="PART_MouseOverHelpPopup">
+                            <Border MaxWidth="600">
+                                <TextBlock Name="PART_MouseOverHelp" />
+                            </Border>
+                        </Popup>
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource ContextualHelpHostStyle}" TargetType="igPrim:ContextualHelpHost" />
+
+    <!--  *********************************  TransparentBackgroundButton Style  *********************************  -->
+    <Style x:Key="TransparentBackgroundButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TransparentBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="contentPresenter"
+                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                         To="0.867"
+                                                         d:IsOptimized="True" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="contentPresenter"
+                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                         To="0.867"
+                                                         d:IsOptimized="True" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="contentPresenter"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="0.4"
+                                                         d:IsOptimized="True" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused" />
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="Background"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              RenderTransformOrigin="0.5,0.5">
+                                <ContentPresenter.RenderTransform>
+                                    <ScaleTransform />
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  *********************************  OperatorsButton Style  *********************************  -->
+    <Style x:Key="OperatorsButtonStyle"
+           BasedOn="{StaticResource ButtonStyle}"
+           TargetType="Button">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="2,0" />
+        <Setter Property="Padding" Value="0 1 0 3" />
+        <Setter Property="MinWidth" Value="30" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Command">
+            <Setter.Value>
+                <igPrim:InsertOperatorCommand />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  *********************************  FormulaEditorDialog Style  *********************************  -->
+    <Style x:Key="FormulaEditorDialogStyle" TargetType="ig:FormulaEditorDialog">
+        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ig:FormulaEditorDialog">
+                    <Grid>
+                        <Grid.Resources>
+                            <Style BasedOn="{StaticResource ScrollBarStyle}" TargetType="ScrollBar" />
+                            <Style TargetType="ig:XamDataTree">
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.Background>
+                            <StaticResource ResourceKey="FormulaEditorDialogBackgroundBrush" />
+                        </Grid.Background>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="DisabledVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ErrorStates">
+                                <VisualState x:Name="Error">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="EditorInnerArea" Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SyntaxEditorValidationErrorBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SyntaxErrorArea" Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SyntaxEditorValidationErrorBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="NoError" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0"
+                                    Grid.ColumnSpan="3"
+                                    Margin="15">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border Name="EditorArea"
+                                        Grid.RowSpan="2"
+                                        Grid.ColumnSpan="3">
+                                    <StackPanel>
+                                        <Border>
+                                            <Grid>
+                                                <TextBlock Name="EditingAreaLabel"
+                                                           VerticalAlignment="Bottom"
+                                                           Style="{StaticResource LabelsStyle}"
+                                                           Text="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                          Path=LocalizedStrings[EditingAreaLabel],
+                                                                          Mode=OneWay}" />
+                                                <StackPanel HorizontalAlignment="Right"
+                                                            VerticalAlignment="Center"
+                                                            Orientation="Horizontal">
+                                                    <Button Name="UndoButton"
+                                                            Margin="0,2"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Command="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                              Path=UndoCommand,
+                                                                              Mode=OneWay}"
+                                                            Style="{StaticResource TransparentBackgroundButtonStyle}"
+                                                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                 Path=UndoRedoButtonVisibility,
+                                                                                 Mode=OneWay}">
+                                                        <Viewbox Width="18"
+                                                                 Height="18"
+                                                                 Margin="7">
+                                                            <Grid Background="Transparent">
+                                                                <Path Width="16"
+                                                                      Height="14"
+                                                                      Data="M8,0 L8,4.0030346 L8.2742844,4.0176902 C11.804886,4.2469378 14.241373,5.7013798 14.325656,10.635936 C14.333988,11.12381 14.396973,13.155839 14.03586,12.625405 C12.160639,9.8709135 10.315631,9.140789 8.1487923,8.9230146 L8,8.9092636 L8,13 L0,6.4126611 z"
+                                                                      Fill="{StaticResource GlyphBackgroundBrush}"
+                                                                      Stretch="Fill"
+                                                                      UseLayoutRounding="False" />
+                                                            </Grid>
+                                                        </Viewbox>
+                                                    </Button>
+                                                    <Button Name="RedoButton"
+                                                            Margin="5 2 0 2"
+                                                            VerticalAlignment="Center"
+                                                            Command="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                              Path=RedoCommand,
+                                                                              Mode=OneWay}"
+                                                            Style="{StaticResource TransparentBackgroundButtonStyle}"
+                                                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                 Path=UndoRedoButtonVisibility,
+                                                                                 Mode=OneWay}">
+                                                        <Viewbox Width="18"
+                                                                 Height="18"
+                                                                 Margin="7">
+                                                            <Grid Background="Transparent" RenderTransformOrigin="0.5,0.5">
+                                                                <Path Width="16"
+                                                                      Height="14"
+                                                                      VerticalAlignment="Center"
+                                                                      Data="M8,0 L8,4.0030346 L8.2742844,4.0176902 C11.804886,4.2469378 14.241373,5.7013798 14.325656,10.635936 C14.333988,11.12381 14.396973,13.155839 14.03586,12.625405 C12.160639,9.8709135 10.315631,9.140789 8.1487923,8.9230146 L8,8.9092636 L8,13 L0,6.4126611 z"
+                                                                      Fill="{StaticResource GlyphBackgroundBrush}"
+                                                                      RenderTransformOrigin="0.5,0.5"
+                                                                      Stretch="Fill"
+                                                                      UseLayoutRounding="False">
+                                                                    <Path.RenderTransform>
+                                                                        <ScaleTransform ScaleX="-1" />
+                                                                    </Path.RenderTransform>
+                                                                </Path>
+                                                            </Grid>
+                                                        </Viewbox>
+                                                    </Button>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                        <Border x:Name="EditorInnerArea"
+                                                Background="{StaticResource EditorAreaBackgroundBrush}"
+                                                BorderBrush="{StaticResource EditorAreaBorderBrush}"
+                                                BorderThickness="1">
+                                            <Grid>
+                                                <igPrim:ContextualHelpHost Name="PART_ContextualHelpHost" />
+                                                <igPrim:FormulaEditorTextBox Name="PART_FormulaTextBox"
+                                                                             Height="100"
+                                                                             Margin="5"
+                                                                             Foreground="{StaticResource ForegroundBrush}"
+                                                                             IsReadOnly="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                                  Path=IsEditable,
+                                                                                                  Converter={StaticResource inverseBoolean}}"
+                                                                             IsUndoEnabled="False"
+                                                                             Style="{StaticResource FormulaEditorTextBoxStyle}"
+                                                                             Text="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                            Path=Formula,
+                                                                                            Mode=TwoWay}" />
+                                                <Border x:Name="DisabledVisualElement"
+                                                        Background="{StaticResource DisabledVisualElement}"
+                                                        IsHitTestVisible="False"
+                                                        Opacity="0" />
+                                            </Grid>
+                                        </Border>
+                                        <Border Name="SyntaxErrorArea"
+                                                Background="{StaticResource LightForegroundBrush}"
+                                                BorderBrush="{StaticResource LightForegroundBrush}"
+                                                BorderThickness="1 0 1 1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border x:Name="ErrorBg"
+                                                        Grid.ColumnSpan="2"
+                                                        Background="{StaticResource SyntaxErrorBackgroundBrush}" />
+                                                <RichTextBox Name="SyntaxErrorLabel"
+                                                             Margin="5,0,0,0"
+                                                             VerticalAlignment="Center"
+                                                             Background="{StaticResource TransparentBrush}"
+                                                             BorderThickness="0"
+                                                             FontFamily="{TemplateBinding FontFamily}"
+                                                             Foreground="{StaticResource ForegroundBrush}"
+                                                             IsReadOnly="True"
+                                                             Visibility="{Binding Path=HasSyntaxError,
+                                                                                  RelativeSource={RelativeSource TemplatedParent},
+                                                                                  Converter={StaticResource ResourceKey=boolToVisibility},
+                                                                                  Mode=OneWay}"
+                                                             igPrim:SyntaxErrorInfo.DisplayedError="{Binding Path=CurrentSyntaxErrorInfo,
+                                                                                                             RelativeSource={RelativeSource TemplatedParent},
+                                                                                                             Mode=OneWay}" />
+                                                <StackPanel Grid.Column="1"
+                                                            Margin="0,5"
+                                                            Orientation="Horizontal"
+                                                            Visibility="{Binding Path=HasMultipleSyntaxErrors,
+                                                                                 RelativeSource={RelativeSource TemplatedParent},
+                                                                                 Converter={StaticResource ResourceKey=boolToVisibility},
+                                                                                 Mode=OneWay}">
+                                                    <TextBlock Name="MultipleSyntaxErrorsLabel"
+                                                               Margin="0,0,10,0"
+                                                               VerticalAlignment="Center"
+                                                               Foreground="{StaticResource ForegroundBrush}"
+                                                               Text="{Binding Path=MultipleSyntaxErrorsLabel,
+                                                                              RelativeSource={RelativeSource TemplatedParent},
+                                                                              Mode=OneWay}" />
+                                                    <Button Name="PreviousSyntaxErrorButton"
+                                                            Command="{Binding Path=PreviousSyntaxErrorCommand,
+                                                                              RelativeSource={RelativeSource TemplatedParent},
+                                                                              Mode=OneWay}"
+                                                            Style="{StaticResource ButtonStyle}">
+                                                        <Viewbox Width="14"
+                                                                 Height="14"
+                                                                 d:LayoutOverrides="Margin">
+                                                            <Grid Width="47" Height="47">
+                                                                <Path Width="18"
+                                                                      Height="26"
+                                                                      Margin="0,0,3,0"
+                                                                      HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"
+                                                                      Data="M18,0 L0,13 L18,26 z"
+                                                                      Fill="{StaticResource GlyphBackgroundBrush}"
+                                                                      Stretch="Fill"
+                                                                      UseLayoutRounding="False" />
+                                                            </Grid>
+                                                        </Viewbox>
+                                                    </Button>
+                                                    <Button Name="NextSyntaxErrorButton"
+                                                            Margin="5,0,10,0"
+                                                            Command="{Binding Path=NextSyntaxErrorCommand,
+                                                                              RelativeSource={RelativeSource TemplatedParent},
+                                                                              Mode=OneWay}"
+                                                            Style="{StaticResource ButtonStyle}">
+                                                        <Viewbox Width="14"
+                                                                 Height="14"
+                                                                 Margin="0,2">
+                                                            <Grid Width="47" Height="47">
+                                                                <Path Width="18"
+                                                                      Height="26"
+                                                                      Margin="3,0,0,0"
+                                                                      HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"
+                                                                      Data="M0,0 L18,13 L0,26 z"
+                                                                      Fill="{StaticResource GlyphBackgroundBrush}"
+                                                                      Stretch="Fill"
+                                                                      UseLayoutRounding="False" />
+                                                            </Grid>
+                                                        </Viewbox>
+                                                    </Button>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                                <Button Name="ClearButton"
+                                        Command="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                          Path=ClearCommand,
+                                                          Mode=OneWay}"
+                                        Content="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                          Path=LocalizedStrings[ClearButton],
+                                                          Mode=OneWay}"
+                                        Style="{StaticResource ButtonStyle}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Name="InsertOperatorAddButton"
+                                            Margin="{StaticResource OperandsButtonGroupMargin}"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_Add],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                    <Button Name="InsertOperatorSubtractButton"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_Subtract],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                    <Button Name="InsertOperatorMultiplyButton"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_Multiply],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                    <Button Name="InsertOperatorDivideButton"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_Divide],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                    <Button Name="InsertOperatorPowerButton"
+                                            Margin="{StaticResource OperandsButtonGroupMargin}"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_Power],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                    <Button Name="InsertOperatorPercentButton"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_Percent],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                    <Button Name="InsertOperatorGreaterThanButton"
+                                            Margin="{StaticResource OperandsButtonGroupMargin}"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_GreaterThan],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                    <Button Name="InsertOperatorLessThanButton"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_LessThan],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                    <Button Name="InsertOperatorEqualButton"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_Equal],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                    <Button Name="InsertOperatorNotEqualButton"
+                                            CommandParameter="{Binding}"
+                                            Content="{Binding DisplayText}"
+                                            DataContext="{Binding Path=Operators[Operator_NotEqual],
+                                                                  RelativeSource={RelativeSource TemplatedParent}}"
+                                            Style="{StaticResource OperatorsButtonStyle}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <Grid Grid.Row="1" Margin="15 0 15 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Margin="0,5,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="1"
+                                        Grid.ColumnSpan="2"
+                                        BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border x:Name="OperandsBd"
+                                                Grid.Column="0"
+                                                Margin="0,0,15,0">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Border x:Name="bgOperandsLabel">
+                                                    <TextBlock x:Name="OperandTreeLabel"
+                                                               Style="{StaticResource LabelsStyle}"
+                                                               Text="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                              Path=LocalizedStrings[OperandTreeLabel],
+                                                                              Mode=OneWay}" />
+                                                </Border>
+                                                <Border Grid.Row="1"
+                                                        Margin="0 0 0 5"
+                                                        Padding="0">
+                                                    <Grid Margin="0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Border Grid.ColumnSpan="2"
+                                                                Margin="0"
+                                                                Background="{StaticResource TextBoxBackgroundBrush}"
+                                                                BorderBrush="{StaticResource TextBoxBorderBrush}"
+                                                                BorderThickness="1"
+                                                                Padding="0" />
+                                                        <igPrim:EmbeddedTextBox Name="OperandSearchTextBox"
+                                                                                Margin="5,0,0,0"
+                                                                                VerticalAlignment="Center"
+                                                                                BorderThickness="0"
+                                                                                Foreground="{StaticResource ForegroundBrush}"
+                                                                                Text="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                               Path=OperandSearchText,
+                                                                                               Mode=TwoWay}"
+                                                                                igPrim:XamlHelper.UpdateBindingOnTextPropertyChanged="True" />
+                                                        <ComboBox Name="OperandSearchFilterComboBox"
+                                                                  Grid.Column="1"
+                                                                  BorderThickness="1"
+                                                                  DisplayMemberPath="Description"
+                                                                  ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                        Path=OperandSearchTypes}"
+                                                                  SelectedValue="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                          Path=OperandSearchType,
+                                                                                          Mode=TwoWay}"
+                                                                  SelectedValuePath="EnumValue"
+                                                                  Style="{StaticResource ComboBoxStyle}" />
+                                                    </Grid>
+                                                </Border>
+                                                <Border Grid.Row="2"
+                                                        Margin="0 5 0 0"
+                                                        Background="{StaticResource EditorAreaBackgroundBrush}"
+                                                        BorderBrush="{StaticResource EditorAreaBorderBrush}"
+                                                        BorderThickness="1">
+                                                    <ig:XamDataTree Name="OperandTree"
+                                                                    Background="{x:Null}"
+                                                                    ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                          Path=Operands}"
+                                                                    Style="{StaticResource XamDataTreeStyle}">
+
+                                                        <ig:Commanding.Command>
+                                                            <igPrim:FormulaEditorCommandSource Key="Enter"
+                                                                                               CommandType="InsertOperand"
+                                                                                               EventName="KeyDown"
+                                                                                               ParameterBinding="{Binding Path=SelectionSettings.SelectedNodes[0].Data}" />
+                                                        </ig:Commanding.Command>
+                                                        <ig:XamDataTree.GlobalNodeLayouts>
+                                                            <ig:NodeLayout Key="operands"
+                                                                           DisplayMemberPath="Name"
+                                                                           IsEnabledMemberPath="IsEnabled"
+                                                                           IsExpandedMemberPath="IsExpanded"
+                                                                           TargetTypeName="OperandInfo">
+                                                                <ig:NodeLayout.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <igPrim:FormulaElementContentControl>
+
+                                                                            <ig:Commanding.Command>
+                                                                                <igPrim:FormulaEditorCommandSource CommandType="InsertOperand"
+                                                                                                                   EventName="MouseDoubleClick"
+                                                                                                                   ParameterBinding="{Binding Path=Data}" />
+                                                                            </ig:Commanding.Command>
+                                                                            <StackPanel Orientation="Horizontal">
+                                                                                <TextBlock Name="OperandNameLabel"
+                                                                                           Foreground="{StaticResource ForegroundBrush}"
+                                                                                           Text="{Binding Path=Data.Name,
+                                                                                                          Mode=OneWay}" />
+                                                                                <Border Visibility="{Binding Path=Data.IsDataReference, Converter={StaticResource boolToVisibility}, Mode=OneWay}">
+                                                                                    <StackPanel Margin="10,0,0,0"
+                                                                                                Orientation="Horizontal"
+                                                                                                Visibility="{Binding Path=Node.IsActive,
+                                                                                                                     Converter={StaticResource boolToVisibility},
+                                                                                                                     Mode=OneWay}">
+                                                                                        <StackPanel.Resources>
+                                                                                            <Style TargetType="TextBlock">
+                                                                                                <Setter Property="FontFamily" Value="Segoe UI" />
+                                                                                                <Setter Property="Foreground" Value="{StaticResource OperandsForegroundBrush}" />
+                                                                                                <Setter Property="FontSize" Value="12" />
+                                                                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                                                                            </Style>
+                                                                                        </StackPanel.Resources>
+                                                                                        <TextBlock Name="OperandSignatureDescriptionLabel"
+                                                                                                   FontStyle="Italic"
+                                                                                                   Foreground="{StaticResource ForegroundBrush}"
+                                                                                                   Text="{Binding Path=Data.Dialog.LocalizedStrings[OperandSignatureLabel],
+                                                                                                                  Mode=OneWay}" />
+                                                                                        <TextBlock Name="OperandSignatureLabel"
+                                                                                                   Margin="5,0,0,0"
+                                                                                                   FontWeight="Bold"
+                                                                                                   Foreground="{StaticResource ForegroundBrush}"
+                                                                                                   Text="{Binding Path=Data.Signature,
+                                                                                                                  Mode=OneWay}" />
+                                                                                    </StackPanel>
+                                                                                </Border>
+                                                                            </StackPanel>
+                                                                        </igPrim:FormulaElementContentControl>
+                                                                    </DataTemplate>
+                                                                </ig:NodeLayout.ItemTemplate>
+                                                            </ig:NodeLayout>
+                                                        </ig:XamDataTree.GlobalNodeLayouts>
+                                                    </ig:XamDataTree>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                        <Border x:Name="FunctionsBd"
+                                                Grid.Column="1"
+                                                Margin="5,0,0,0">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <Border x:Name="bgFuntionLabel">
+                                                    <TextBlock x:Name="FunctionTreeLabel"
+                                                               Style="{StaticResource LabelsStyle}"
+                                                               Text="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                              Path=LocalizedStrings[FunctionTreeLabel],
+                                                                              Mode=OneWay}" />
+                                                </Border>
+                                                <Border Grid.Row="1"
+                                                        Height="30"
+                                                        Margin="0 0 0 5"
+                                                        VerticalAlignment="Center"
+                                                        BorderThickness="0"
+                                                        Padding="0">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <igPrim:EmbeddedTextBox Name="FunctionSearchTextBox"
+                                                                                Margin="5,0,0,0"
+                                                                                VerticalAlignment="Center"
+                                                                                BorderThickness="0"
+                                                                                Foreground="{StaticResource ForegroundBrush}"
+                                                                                Text="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                               Path=FunctionSearchText,
+                                                                                               Mode=TwoWay}"
+                                                                                igPrim:XamlHelper.UpdateBindingOnTextPropertyChanged="True" />
+                                                        <ComboBox Name="FunctionSearchFilterComboBox"
+                                                                  Grid.Column="1"
+                                                                  DisplayMemberPath="Description"
+                                                                  ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                        Path=FunctionSearchTypes}"
+                                                                  SelectedValue="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                          Path=FunctionSearchType,
+                                                                                          Mode=TwoWay}"
+                                                                  SelectedValuePath="EnumValue"
+                                                                  Style="{StaticResource ComboBoxStyle}" />
+                                                        <Border Grid.Row="1"
+                                                                Grid.ColumnSpan="2"
+                                                                Margin="0"
+                                                                Background="{StaticResource TextBoxBackgroundBrush}"
+                                                                BorderBrush="{StaticResource TextBoxBorderBrush}"
+                                                                BorderThickness="1"
+                                                                Padding="0" />
+                                                    </Grid>
+                                                </Border>
+                                                <Border Grid.Row="2"
+                                                        Margin="0 5 0 0"
+                                                        Background="{StaticResource EditorAreaBackgroundBrush}"
+                                                        BorderBrush="{StaticResource EditorAreaBorderBrush}"
+                                                        BorderThickness="1">
+                                                    <ig:XamDataTree Name="FunctionTree"
+                                                                    Background="{x:Null}"
+                                                                    ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                          Path=FunctionCategories}"
+                                                                    Style="{StaticResource XamDataTreeStyle}">
+
+                                                        <ig:Commanding.Command>
+                                                            <igPrim:FormulaEditorCommandSource Key="Enter"
+                                                                                               CommandType="InsertFunction"
+                                                                                               EventName="KeyDown"
+                                                                                               ParameterBinding="{Binding Path=SelectionSettings.SelectedNodes[0].Data}" />
+                                                        </ig:Commanding.Command>
+                                                        <ig:XamDataTree.GlobalNodeLayouts>
+                                                            <ig:NodeLayout Key="categories"
+                                                                           IsExpandedMemberPath="IsExpanded"
+                                                                           TargetTypeName="FunctionCategory">
+                                                                <ig:NodeLayout.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock Name="CategoryNameLabel">
+                                                                            <TextBlock.Inlines>
+                                                                                <Run Text="{Binding Path=Data.Name, Mode=OneWay}" />
+                                                                                <Run Text="{Binding Path=Data.Functions.Count, Mode=OneWay, StringFormat='({0})'}" />
+                                                                            </TextBlock.Inlines>
+                                                                        </TextBlock>
+                                                                    </DataTemplate>
+                                                                </ig:NodeLayout.ItemTemplate>
+                                                            </ig:NodeLayout>
+                                                            <ig:NodeLayout Key="functions" TargetTypeName="FunctionInfo">
+                                                                <ig:NodeLayout.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <igPrim:FormulaElementContentControl>
+
+                                                                            <ig:Commanding.Command>
+                                                                                <igPrim:FormulaEditorCommandSource CommandType="InsertFunction"
+                                                                                                                   EventName="MouseDoubleClick"
+                                                                                                                   ParameterBinding="{Binding Path=Data}" />
+                                                                            </ig:Commanding.Command>
+                                                                            <StackPanel Orientation="Horizontal">
+                                                                                <TextBlock Name="FunctionNameLabel"
+                                                                                           Foreground="{StaticResource ForegroundBrush}"
+                                                                                           Text="{Binding Path=Data.Name,
+                                                                                                          Mode=OneWay}" />
+                                                                                <StackPanel Margin="10,0,0,0"
+                                                                                            Orientation="Horizontal"
+                                                                                            Visibility="{Binding Path=Node.IsActive,
+                                                                                                                 Converter={StaticResource boolToVisibility},
+                                                                                                                 Mode=OneWay}">
+                                                                                    <StackPanel.Resources>
+                                                                                        <Style TargetType="TextBlock">
+                                                                                            <Setter Property="FontFamily" Value="Segoe UI" />
+                                                                                            <Setter Property="Foreground" Value="{StaticResource OperandsForegroundBrush}" />
+                                                                                            <Setter Property="FontSize" Value="12" />
+                                                                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                                                                        </Style>
+                                                                                    </StackPanel.Resources>
+                                                                                    <TextBlock Name="FunctionSignatureDescriptionLabel"
+                                                                                               FontStyle="Italic"
+                                                                                               Foreground="{StaticResource ForegroundBrush}"
+                                                                                               Text="{Binding Path=Data.Dialog.LocalizedStrings[FunctionSignatureLabel],
+                                                                                                              Mode=OneWay}" />
+                                                                                    <TextBlock Name="FunctionSignatureLabelNamePortion"
+                                                                                               Margin="5,0,0,0"
+                                                                                               FontWeight="Bold"
+                                                                                               Foreground="{StaticResource ForegroundBrush}"
+                                                                                               Text="{Binding Path=Data.Name,
+                                                                                                              Mode=OneWay}" />
+                                                                                    <TextBlock Name="FunctionSignatureLabelArgumentsPortion"
+                                                                                               Foreground="{StaticResource ForegroundBrush}"
+                                                                                               Text="{Binding Path=Data.Signature,
+                                                                                                              Mode=OneWay}" />
+                                                                                </StackPanel>
+                                                                            </StackPanel>
+                                                                        </igPrim:FormulaElementContentControl>
+                                                                    </DataTemplate>
+                                                                </ig:NodeLayout.ItemTemplate>
+                                                            </ig:NodeLayout>
+                                                        </ig:XamDataTree.GlobalNodeLayouts>
+                                                    </ig:XamDataTree>
+                                                </Border>
+                                                <Border Grid.Row="3"
+                                                        MinHeight="80"
+                                                        MaxHeight="120"
+                                                        Background="{StaticResource DescriptionBackgroundBrush}"
+                                                        BorderBrush="{StaticResource DescriptionBorderBrush}"
+                                                        BorderThickness="1 0 1 1">
+                                                    <TextBlock Name="SelectedFunctionDescription"
+                                                               Foreground="{StaticResource ForegroundBrush}"
+                                                               Padding="5"
+                                                               TextWrapping="Wrap">
+                                                        <TextBlock.Inlines>
+                                                            <Run FontFamily="Segoe UI Semibold"
+                                                                 FontSize="14.667"
+                                                                 Foreground="{StaticResource ForegroundBrush}"
+                                                                 Text="{Binding ElementName=FunctionTree,
+                                                                                Path=SelectionSettings.SelectedNodes[0].Data.Name,
+                                                                                Mode=OneWay}" />
+                                                            <LineBreak />
+                                                            <Run FontFamily="{TemplateBinding FontFamily}"
+                                                                 FontSize="13.333"
+                                                                 Foreground="{StaticResource ForegroundBrush}"
+                                                                 Text="{Binding ElementName=FunctionTree,
+                                                                                Path=SelectionSettings.SelectedNodes[0].Data.Description,
+                                                                                Mode=OneWay}" />
+                                                        </TextBlock.Inlines>
+                                                    </TextBlock>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                            <StackPanel Grid.Row="1"
+                                        Margin="5 10 0 10"
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding Path=ShowDialogButtons,
+                                                             RelativeSource={RelativeSource TemplatedParent},
+                                                             Converter={StaticResource ResourceKey=boolToVisibility},
+                                                             Mode=OneWay}">
+                                <Button Name="OKButton"
+                                        MinWidth="100"
+                                        Margin="8 0"
+                                        Command="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                          Path=CommitCommand,
+                                                          Mode=OneWay}"
+                                        Content="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                          Path=LocalizedStrings[OKButton],
+                                                          Mode=OneWay}"
+                                        Style="{StaticResource ButtonStyle}" />
+                                <Button Name="CancelButton"
+                                        MinWidth="100"
+                                        Margin="0"
+                                        Command="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                          Path=CancelCommand,
+                                                          Mode=OneWay}"
+                                        Content="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                          Path=LocalizedStrings[CancelButton],
+                                                          Mode=OneWay}"
+                                        Style="{StaticResource ButtonStyle}" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource FormulaEditorDialogStyle}" TargetType="ig:FormulaEditorDialog" />
+
+    <!--  *********************************  XamFormulaEditor Style  *********************************  -->
+    <Style x:Key="XamFormulaEditorStyle" TargetType="ig:XamFormulaEditor">
+        <Setter Property="Background" Value="{StaticResource FormulaEditorBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource FormulaEditorBorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="14.667" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="igPrim:XamlHelper.Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ig:XamFormulaEditor">
+                    <Border Name="EditorArea"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <Border.Resources>
+                            <Style BasedOn="{StaticResource ScrollBarStyle}" TargetType="ScrollBar" />
+                        </Border.Resources>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="DisabledVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ErrorStates">
+                                <VisualState x:Name="Error">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="EditorAreaBg" Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SyntaxEditorValidationErrorBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="NoError" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="EditorAreaBg"
+                                    Grid.ColumnSpan="3"
+                                    Background="{StaticResource EditorAreaBackgroundBrush}"
+                                    BorderBrush="{StaticResource EditorAreaBorderBrush}"
+                                    BorderThickness="1" />
+                            <Border x:Name="DisabledVisualElement"
+                                    Grid.ColumnSpan="2"
+                                    Background="{StaticResource DisabledVisualElement}"
+                                    IsHitTestVisible="False"
+                                    Opacity="0" />
+                            <Button Name="ShowDialogButton"
+                                    IsTabStop="False"
+                                    Style="{StaticResource FunctionButtonStyle}"
+                                    ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                     Path=LocalizedStrings[ShowDialogButtonToolTip]}"
+                                    igPrim:XamlHelper.Focusable="False">
+
+                                <ig:Commanding.Command>
+                                    <igPrim:FormulaEditorCommandSource CommandType="DisplayDialog" EventName="Click" />
+                                </ig:Commanding.Command>
+
+                            </Button>
+                            <igPrim:ContextualHelpHost Name="PART_ContextualHelpHost"
+                                                       Grid.Column="1"
+                                                       Margin="6,2" />
+                            <igPrim:FormulaEditorTextBox Name="PART_FormulaTextBox"
+                                                         Grid.Column="1"
+                                                         Margin="6,2"
+                                                         VerticalAlignment="Center"
+                                                         AcceptsReturn="False"
+                                                         Background="{x:Null}"
+                                                         IsReadOnly="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                              Path=IsEditable,
+                                                                              Converter={StaticResource inverseBoolean}}"
+                                                         IsUndoEnabled="False"
+                                                         MaxLineCount="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                Path=MaxLineCount,
+                                                                                Mode=OneWay}"
+                                                         MinLineCount="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                                Path=MinLineCount,
+                                                                                Mode=OneWay}"
+                                                         Style="{StaticResource FormulaEditorTextBoxStyle}"
+                                                         Text="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                        Path=Formula,
+                                                                        Mode=TwoWay}" />
+                            <Grid Grid.Column="2"
+                                  Width="30"
+                                  Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                       Path=HasSyntaxError,
+                                                       Converter={StaticResource boolToVisibility}}">
+                                <Border Name="PART_ErrorIndicator" Background="{StaticResource SyntaxEditorValidationErrorBrush}">
+                                    <ToolTipService.ToolTip>
+                                        <ToolTip Background="{StaticResource SyntaxErrorBackgroundBrush}" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SyntaxError}" />
+                                    </ToolTipService.ToolTip>
+                                    <Path Width="10"
+                                          Height="10"
+                                          Margin="3"
+                                          Data="M17.978895,14.4374 L14.459287,17.981174 L9.5024157,13.021268 L4.5621309,17.986851 L1.0009997,14.46541 L5.96099,9.4979582 L1.0248781,4.5379386 L4.544733,1.0159005 L9.5026722,5.9762726 L14.459279,0.99506438 L17.999273,4.5379333 L13.063161,9.5396385 z"
+                                          Fill="{StaticResource LightForegroundBrush}"
+                                          RenderTransformOrigin="0.5,0.5"
+                                          Stretch="Fill"
+                                          UseLayoutRounding="False">
+                                        <Path.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform />
+                                                <SkewTransform />
+                                                <RotateTransform />
+                                                <TranslateTransform />
+                                            </TransformGroup>
+                                        </Path.RenderTransform>
+                                    </Path>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource XamFormulaEditorStyle}" TargetType="ig:XamFormulaEditor" />
+
+</ResourceDictionary>

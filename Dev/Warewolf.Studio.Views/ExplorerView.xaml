@@ -1,31 +1,174 @@
-﻿<UserControl
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:ig="http://schemas.infragistics.com/xaml"
-	xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
-	mc:Ignorable="d"
-    x:Name="ExplorerViewControl"
-	x:Class="Warewolf.Studio.Views.ExplorerView"
-	d:DesignWidth="640" d:DesignHeight="480"
-	d:DataContext="{d:DesignInstance Type=dummyModels:DummyExplorerViewModel, IsDesignTimeCreatable=False}">
+﻿<UserControl x:Class="Warewolf.Studio.Views.ExplorerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="ExplorerViewControl"
+             d:DataContext="{d:DesignInstance Type=dummyModels:DummyExplorerViewModel,
+                                              IsDesignTimeCreatable=False}"
+             d:DesignHeight="480"
+             d:DesignWidth="640"
+             mc:Ignorable="d">
+
 
     <Grid x:Name="LayoutRoot">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="25"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-		<StackPanel Orientation="Horizontal" Grid.Row="0">
-			<TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="587.467"/>
-			<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50"/>
-		</StackPanel>
-        <ig:XamDataTree Grid.Row="1" ItemsSource="{Binding Environments}" DisplayMemberPath="DisplayName">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--SPACER-->
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <Image Width="5" Height="10" Source="{StaticResource System-Spacer}" />
+        </StackPanel>
+        
+        <!--URI LOOKUP-->
+        <StackPanel Grid.Row="1" Style="{StaticResource ExplorerStackPanel}">
+            <TextBox Text="Localhost" />
+
+            <Button Height="25" Width="25" Padding="4">
+                <Image Source="{StaticResource System-More-Inverted}" />
+            </Button>
+
+            <Button Height="25" Width="25" Padding="4">
+                <Image Source="{StaticResource System-Link-Inverted}" />
+            </Button>
+            
+        </StackPanel>
+
+        <!--SPACER-->
+        <StackPanel Grid.Row="2" Orientation="Vertical">
+            <Image Width="5" Height="15" Source="{StaticResource System-Spacer}" />
+        </StackPanel>
+
+        <!--SERVICE FILTER-->
+        <StackPanel Grid.Row="3" Style="{StaticResource ExplorerStackPanel}">
+            <TextBox Text="Filter" />
+
+            <Button Height="25" Width="25" Padding="4">
+                <Image Source="{StaticResource System-Filter-Inverted}" />
+            </Button>
+                      
+            <Button Height="25" Width="25" Padding="4">
+                <Image Source="{StaticResource System-Refresh-Inverted}" />
+            </Button>
+            
+        </StackPanel>
+
+        <!--SPACER-->
+        <StackPanel Grid.Row="4" Orientation="Vertical">
+            <Image Width="5" Height="10" Source="{StaticResource System-Spacer}" />
+        </StackPanel>
+
+        <!--URL FILTER-->
+        <StackPanel Grid.Row="5" Style="{StaticResource ExplorerStackPanel}">
+            <Label FontWeight="Medium" Content="Localhost" Margin="5,0,2,0" />
+            <Label FontWeight="Light" Content="(http://whereiswally:7262)" />
+        </StackPanel>
+
+        <!--SPACER-->
+        <StackPanel Grid.Row="6" Orientation="Vertical">
+            <Image Width="5" Height="5" Source="{StaticResource System-Spacer}" />
+        </StackPanel>
+
+        <ig:XamDataTree Grid.Row="7"
+                        DisplayMemberPath="DisplayName"
+                        ItemsSource="{Binding Environments}"
+                        NodeLineVisibility="Hidden">
+
             <ig:XamDataTree.GlobalNodeLayouts>
-                <ig:NodeLayout Key="ExplorerItemViewModels" DisplayMemberPath="ResourceName"/>
-                <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName"/>
+                <ig:NodeLayout Key="ExplorerItemViewModels"
+                               DisplayMemberPath="DisplayName"
+                               TargetTypeName="ResourceName">
+
+                    <ig:NodeLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="????" />
+                                <TextBlock Text=" [18]" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ig:NodeLayout.ItemTemplate>
+
+
+                </ig:NodeLayout>
+                <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName">
+
+                    <ig:NodeLayout.ItemTemplate>
+                        <DataTemplate>
+
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.60*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Image Grid.Column="0" Width="12" Height="12" Source="{StaticResource System-New}" />
+                                <Image Grid.Column="1" Width="12" Height="12" Source="{StaticResource System-Spacer}" />
+                                <TextBlock Grid.Column="2" Text="File and Folder" />
+                                <Image Grid.Column="3" Width="12" Height="12" Source="{StaticResource System-Spacer}" />
+                                <Image Grid.Column="4" Width="12" Height="12" Source="{StaticResource System-Executable-Disabled}" />
+                                <Image Grid.Column="5" Width="5" Height="12" Source="{StaticResource System-Spacer}" />
+                                <Image Grid.Column="6" Width="12" Height="12" Source="{StaticResource System-Security-Enabled}" />
+                            </Grid>
+
+                        </DataTemplate>
+                    </ig:NodeLayout.ItemTemplate>
+
+                </ig:NodeLayout>
+
             </ig:XamDataTree.GlobalNodeLayouts>
+
+            <!--
+                <ig:XamDataTree.GlobalNodeLayouts>
+                <ig:NodeLayout Key="ExplorerItemViewModels"
+                DisplayMemberPath="ResourceName">
+                <ig:NodeLayout.ExpandedIconTemplate>
+                <DataTemplate>
+                <Image Source="StaticResource System-DB}" />
+                </DataTemplate>
+                </ig:NodeLayout.ExpandedIconTemplate>
+                <ig:NodeLayout.CollapsedIconTemplate>
+                <DataTemplate>
+                <Image Source="StaticResource System-DB}" />
+                </DataTemplate>
+                </ig:NodeLayout.CollapsedIconTemplate>
+                </ig:NodeLayout>
+                <ig:NodeLayout Key="Children"
+                DisplayMemberPath="ResourceName">
+                <ig:NodeLayout.ExpandedIconTemplate>
+                <DataTemplate>
+                <Image Source="StaticResource Utility-Path}" />
+                </DataTemplate>
+                </ig:NodeLayout.ExpandedIconTemplate>
+                <ig:NodeLayout.CollapsedIconTemplate>
+                <DataTemplate>
+                <Image Source="StaticResource Utility-Path}" />
+                </DataTemplate>
+                </ig:NodeLayout.CollapsedIconTemplate>
+                </ig:NodeLayout>
+                </ig:XamDataTree.GlobalNodeLayouts>
+            -->
+
+
         </ig:XamDataTree>
-		
-	</Grid>
+
+    </Grid>
 </UserControl>

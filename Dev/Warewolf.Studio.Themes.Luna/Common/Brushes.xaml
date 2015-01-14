@@ -10,256 +10,77 @@
         <ResourceDictionary Source="Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <!--  ********************************** THEME BRUSHES - For Color Tuner **********************************  -->
-    <SolidColorBrush x:Key="Brush01b" Color="#FFF3700D" />
-    <SolidColorBrush x:Key="Brush02b" Color="White" />
-    <SolidColorBrush x:Key="Brush03b" Color="#FFC6C6C6" />
-    <SolidColorBrush x:Key="Brush04b" Color="#FF565656" />
-    <SolidColorBrush x:Key="Brush05b" Color="#FF333333" />
+    <!--  Warewolf Brushes  -->
+    <SolidColorBrush x:Key="WareWolfOrangeBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="WareWolfBackGroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="WarewolfPanelGreyBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="WareWolfBlackBrush" Color="{StaticResource WarewolfBlack}" />
+    <SolidColorBrush x:Key="WarewolfHeaderGreyBrush" Color="{StaticResource WarewolfHeaderGrey}" />
+    <SolidColorBrush x:Key="WareWolfLighkGreyBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="WareWolfButtonBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="WareWolfWhiteBrush" Color="{StaticResource WarewolfWhite}" />
 
+    
     <!--  ********************************** THEME BRUSHES - For Color Tuner **********************************  -->
-    <SolidColorBrush x:Key="Brush01" Color="#FF00AADE" />
-    <SolidColorBrush x:Key="Brush02" Color="White" />
-    <SolidColorBrush x:Key="Brush03" Color="#FFC6C6C6" />
-    <SolidColorBrush x:Key="Brush04" Color="#FF565656" />
-    <SolidColorBrush x:Key="Brush05" Color="#FF333333" />
+    <SolidColorBrush x:Key="Brush01" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="Brush02" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="Brush03" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="Brush04" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="Brush05" Color="{StaticResource WarewolfMenuGrey}" />
 
+
+
+    <!--  WORKFLOW BRUSHES  **********************************  -->
+
+    <SolidColorBrush x:Key="WorkflowBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="WorkflowSelectedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ShellBarViewBackground" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="DesignerBackground" Color="{StaticResource WarewolfHeaderGrey}" />
+    <SolidColorBrush x:Key="SolidWhite" Color="{StaticResource WarewolfWhite}" />
+
+
+    <!--  Standard Button Brushes  -->
+    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="ButtonHoverBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ButtonPressedBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
 
 
     <!--  *********************************  BRUSHES  *********************************  -->
 
-    <SolidColorBrush x:Key="BrushForeground" Color="{StaticResource Color_001}" />
-    <SolidColorBrush x:Key="BrushDarkForeground" Color="{StaticResource Color_000}" />
-    <SolidColorBrush x:Key="BrushTransparent" Color="{StaticResource Color_014}" />
-    <SolidColorBrush x:Key="BrushNearTransparent" Color="{StaticResource Color_051}" />
-    <SolidColorBrush x:Key="BrushDisabledForeground" Color="{StaticResource Color_004}" />
-    <SolidColorBrush x:Key="BrushLightForeground" Color="{StaticResource Color_009}" />
-    <SolidColorBrush x:Key="BrushHighlightedForeground" Color="{StaticResource Color_011}" />
-    <SolidColorBrush x:Key="BrushAccentColor" Color="{StaticResource Color_011}" />
-    <SolidColorBrush x:Key="BrushSelected" Color="{StaticResource Color_004}" />
-    <SolidColorBrush x:Key="BrushMouseOver" Color="{StaticResource Color_005}" />
+    <SolidColorBrush x:Key="BrushForeground" Color="{StaticResource WarewolfDisabledText}" />
+    <SolidColorBrush x:Key="BrushDarkForeground" Color="{StaticResource WarewolfEnabledText}" />
+    <SolidColorBrush x:Key="BrushTransparent" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="BrushNearTransparent" Color="{StaticResource WarewolfSubHeaderGrey}" />
+    <SolidColorBrush x:Key="BrushDisabledForeground" Color="{StaticResource WarewolfDisabledText}" />
+    <SolidColorBrush x:Key="BrushLightForeground" Color="{StaticResource WarewolfSubHeaderGrey}" />
+    <SolidColorBrush x:Key="BrushHighlightedForeground" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="BrushAccentColor" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="BrushSelected" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="BrushMouseOver" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="BrushSelectedBorder" Color="{StaticResource Color_002}" />
-    <SolidColorBrush x:Key="BrushMouseOverBorder" Color="{StaticResource Color_004}" />
-    <SolidColorBrush x:Key="ButtonNormalBorder" Color="{StaticResource Color_011}" />
-    <SolidColorBrush x:Key="BrushBackground" Color="{StaticResource Color_009}" />
-    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource Color_001}" />
-    <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource Color_009}" />
-    <SolidColorBrush x:Key="TransparentBrush" Color="{StaticResource Color_016}" />
-    <SolidColorBrush x:Key="DisabledVisualElement" Color="{StaticResource Color_012}" />
+    <SolidColorBrush x:Key="BrushMouseOverBorder" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ButtonNormalBorder" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="BrushBackground" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource WarewolfEnabledText}" />
+    <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource WarewolfDisabledText}" />
+    <SolidColorBrush x:Key="TransparentBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="DisabledVisualElement" Color="{StaticResource WarewolfDisabledText}" />
     <SolidColorBrush x:Key="ValidationErrorElement"
                      igPrim:XamlHelper.IsExcludedFromWash="True"
                      Color="{StaticResource Color_028}" />
 
-    <!--  Tab Control Button Brushes  -->
-    <SolidColorBrush x:Key="WarewolfLight" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="Warewolf-White" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="WarewolfWhi" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="WarewolfDark" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="WarewolfOr" Color="{StaticResource WarewolfOrange}" />
 
-    <!--  Scrollbar Brushes  -->
-    <SolidColorBrush x:Key="HScrollbarThumbBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="VScrollbarThumbBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="ScrollbarPageButtonArrowBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="ScrollbarPageButtonArrowPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="ScrollbarPageButtonArrowHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="ScrollbarPageButtonArrowDisabledBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="VScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="HScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="VScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="HScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="VScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="HScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="ScrollbarDisabledBackgroundBrush" Color="{StaticResource Color_007b}" />
-    <SolidColorBrush x:Key="ScrollbarBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="ScrollbarBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-
-    <!--  ComboBox Brushes  -->
-    <SolidColorBrush x:Key="ComboBoxBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="ComboBoxReadOnlyBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="ComboBoxHoverBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="ComboBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="ComboBoxFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="{StaticResource Color_006b}" />
-    <SolidColorBrush x:Key="ComboBoxReadOnlyBackgroundBrush" Color="{StaticResource Color_014b}" />
-    <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="PopupBorderBrush" Color="{StaticResource WarewolfOrange}" />
-
-    <!--  TextBox Brushes  -->
-    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <!--  DO NOT make TextBoxHoverBackgroundBrush transparent!  -->
-    <SolidColorBrush x:Key="TextBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
-
-    <!--  Button Brushes  -->
-    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="ButtonHoverBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="ButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="ButtonPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="ButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
-
-    <!--  ComboBoxItem Brushes  -->
-    <SolidColorBrush x:Key="ComboBoxItemHoverBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="ComboBoxItemHoverBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="ComboBoxItemPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="ComboBoxItemPressedBorderBrush" Color="{StaticResource WarewolfDarkGrey}" />
-
-    <!--  ComboBoxToggleButton Brushes  -->
-    <SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="ComboBoxToggleButtonDropDownSeparatorBackgroundBrush" Color="{StaticResource Color_006b}" />
-    <SolidColorBrush x:Key="ComboBoxToggleButtonPressedBorderBrush" Color="{StaticResource Color_024b}" />
-
-    <!--  ListBox Brushes  -->
-    <SolidColorBrush x:Key="ListBoxBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="ListBoxBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="ListBoxItemBackgroundBrush" Color="{StaticResource Color_016b}" />
-    <SolidColorBrush x:Key="ListBoxItemBorderBrush" Color="{StaticResource Color_016b}" />
-    <SolidColorBrush x:Key="ListBoxItemHoverBackgroundBrush" Color="{StaticResource Color_006b}" />
-    <SolidColorBrush x:Key="ListBoxItemHoverBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="ListBoxItemPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="ListBoxItemPressedBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundBrush" Color="{StaticResource Color_026b}" />
-    <SolidColorBrush x:Key="ListBoxItemSelectedBorderBrush" Color="{StaticResource Color_024b}" />
-
-    <!--  CheckBox Brushes  -->
-    <SolidColorBrush x:Key="CheckBoxBackgroundlBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="CheckBoxHoverBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="CheckBoxPressedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="CheckBoxFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="CheckBoxInvalidUnfocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="CheckBoxInvalidFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="CheckBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="CheckBoxPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="CheckBoxFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="CheckBoxInvalidUnfocusedBorderBrush" Color="{StaticResource Color_029b}" />
-    <SolidColorBrush x:Key="CheckBoxInvalidFocusedBorderBrush" Color="{StaticResource Color_028b}" />
-    <SolidColorBrush x:Key="CheckBoxIndeterminateCheckBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="CheckBoxCheckBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-
-    <!--  RadioButton Brushes  -->
-    <SolidColorBrush x:Key="RadioButtonBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="RadioButtonHoverBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="RadioButtonPressedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="RadioButtonFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="RadioButtonInvalidUnfocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="RadioButtonInvalidFocusedBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="RadioButtonBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
-    <SolidColorBrush x:Key="RadioButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="RadioButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="RadioButtonFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="RadioButtonInvalidUnfocusedBorderBrush" Color="{StaticResource Color_029b}" />
-    <SolidColorBrush x:Key="RadioButtonInvalidFocusedBorderBrush" Color="{StaticResource Color_028b}" />
-    <SolidColorBrush x:Key="RadioButtonCheckBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
 
     <!--  Visual Glyphs brushes  -->
-    <SolidColorBrush x:Key="GlyphBackgroundBrush" Color="{StaticResource Color_003}" />
-    <SolidColorBrush x:Key="GlyphHoverBackgroundBrush" Color="{StaticResource Color_002}" />
-    <SolidColorBrush x:Key="GlyphPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="GlyphDisabledBackgroundBrush" Color="{StaticResource Color_005}" />
-
-    <!--  ValidationToolTip Brushes  -->
-    <SolidColorBrush x:Key="ValidationToolTipTemplateShadowBrush" Color="{StaticResource Color_003}" />
+    <SolidColorBrush x:Key="GlyphBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="GlyphHoverBackgroundBrush" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="GlyphPressedBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="GlyphDisabledBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
 
 
-    <!--  Data Grid Button Brushes  -->
-    <SolidColorBrush x:Key="DataGridBackgroundBrush" Color="{StaticResource Color_021b}" />
-    <SolidColorBrush x:Key="DataGridBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="DataGridHoverBackgroundBrush" Color="{StaticResource Color_006b}" />
-    <SolidColorBrush x:Key="DataGridHoverBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="DataGridPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="DataGridPressedBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="DataGridSelectedBackgroundBrush" Color="{StaticResource Color_026b}" />
-    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrush" Color="#F0F0F0" />
 
-
-    <!--  Expander Brushes  -->
-    <SolidColorBrush x:Key="ExpanderButtonBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="ExpanderButtonBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="ExpanderButtonHoverBackgroundBrush" Color="{StaticResource Color_007b}" />
-    <SolidColorBrush x:Key="ExpanderButtonHoverBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="ExpanderButtonPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="ExpanderButtonPressedBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="ExpanderArrowHoverBorderBrush" Color="{StaticResource Color_002b}" />
-    <SolidColorBrush x:Key="ExpanderArrowPressedBorderBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="ExpanderDisabledForegroundBrush" Color="{StaticResource Color_007b}" />
-    <SolidColorBrush x:Key="ExpanderDisabledBackgroundBrush" Color="{StaticResource Color_007b}" />
-
-    <!--  GridSplitter Brushes  -->
-    <SolidColorBrush x:Key="GridSplitterBackgroundBrush" Color="{StaticResource Color_008b}" />
-    <SolidColorBrush x:Key="GridSplitterBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="GridSplitterHoverBackgroundBrush" Color="{StaticResource Color_006b}" />
-    <SolidColorBrush x:Key="GridSplitterHoverBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="GridSplitterPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="GridSplitterFocusedBorderBrush" Color="{StaticResource Color_024b}" />
-
-
-    <!--  GroupBox Brushes  -->
-    <SolidColorBrush x:Key="GroupBoxBorderBrush" Color="{StaticResource Color_003b}" />
-
-    <!--  PassWordBox Brushes  -->
-    <SolidColorBrush x:Key="PasswordBoxForegroundBrush" Color="{StaticResource Color_024b}" />
-
-    <!--  ProgressBar Brushes  -->
-    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="{StaticResource Color_005b}" />
-    <SolidColorBrush x:Key="ProgressBarForegroundBrush" Color="{StaticResource Color_024b}" />
-    <LinearGradientBrush x:Key="ProgressBarIndeterminateBackgroundBrush" MappingMode="Absolute" Opacity="0.8" SpreadMethod="Repeat" StartPoint="20,1" EndPoint="0,1">
-        <LinearGradientBrush.Transform>
-            <TransformGroup>
-                <TranslateTransform X="0" />
-                <SkewTransform AngleX="-30" />
-            </TransformGroup>
-        </LinearGradientBrush.Transform>
-        <GradientStop Offset="0.249" Color="{StaticResource Color_023b}" />
-        <GradientStop Offset=".25" Color="{StaticResource Color_024b}" />
-        <GradientStop Offset="0.75" Color="{StaticResource Color_024b}" />
-        <GradientStop Offset="0.751" Color="{StaticResource Color_023b}" />
-    </LinearGradientBrush>
-
-    <!--  Slider Brushes  -->
-    <SolidColorBrush x:Key="SliderThumbBackgroundBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="SliderThumbHoverBackgroundBrush" Color="{StaticResource Color_002b}" />
-    <SolidColorBrush x:Key="SliderThumbPressedBackgroundBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="SliderThumbDisabledBackgroundBrush" Color="{StaticResource Color_005b}" />
-    <SolidColorBrush x:Key="SliderTrackDisabledOverlayBackgroundBrush" Color="{StaticResource Color_008b}" />
-    <SolidColorBrush x:Key="SliderThumbFocusedBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="SliderTrackBackgroundBrush" Color="{StaticResource Color_005b}" />
-    <SolidColorBrush x:Key="SliderSelectionRangeBackgroundBrush" Color="{StaticResource Color_024b}" />
-
-    <!--  Tooltip Brushes  -->
-    <SolidColorBrush x:Key="TooltipBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="TooltipBorderBrush" Color="{StaticResource Color_004b}" />
-
-    <!--  TreeView Brushes  -->
-    <SolidColorBrush x:Key="TreeViewBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="TreeViewBorderBrush" Color="{StaticResource Color_004b}" />
-    <SolidColorBrush x:Key="TreeViewItemBackgroundBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="TreeViewItemBorderBrush" Color="{StaticResource Color_009b}" />
-    <SolidColorBrush x:Key="TreeViewItemHoverBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="TreeViewItemHoverBorderBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="TreeViewItemPressedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="TreeViewItemPressedBorderBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="TreeViewItemSelectedBackgroundBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="TreeViewItemSelectedBorderBrush" Color="{StaticResource WarewolfDarkGrey}" />
-    <SolidColorBrush x:Key="TreeViewArrowBackgroundBrush" Color="{StaticResource Color_050}" />
-    <SolidColorBrush x:Key="TreeViewArrowBorderBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="TreeViewArrowCheckedBackgroundBrush" Color="{StaticResource Color_003b}" />
-    <SolidColorBrush x:Key="TreeViewArrowCheckedBorderBrush" Color="{StaticResource Color_001b}" />
-    <SolidColorBrush x:Key="TreeViewArrowHoverBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="TreeViewArrowHoverBackgroundBrush" Color="{StaticResource Color_050}" />
-    <SolidColorBrush x:Key="TreeViewArrowHoverCheckedBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="TreeViewArrowHoverCheckedBackgroundBrush" Color="{StaticResource Color_006b}" />
-    <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z" />
-
-
-    <!--  ListBox Brushes  -->
-    <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource Color_024b}" />
-    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#ffffff" />
 
 </ResourceDictionary>

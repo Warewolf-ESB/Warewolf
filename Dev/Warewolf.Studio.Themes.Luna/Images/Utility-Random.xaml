@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<DrawingImage x:Key="Utility-Random">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<GeometryDrawing Brush="#FFFF8613" Geometry="M 122.065,-315.643C 121.798,-315.014 121.584,-314.505 121.416,-314.155"/>
+		</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+</DrawingImage>
+	</ResourceDictionary>

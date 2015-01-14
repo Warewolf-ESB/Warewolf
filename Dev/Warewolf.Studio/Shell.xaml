@@ -8,8 +8,8 @@
         Title="Warewolf Studio"
         WindowState="Maximized">
 
+    
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -33,6 +33,9 @@
                                                      AllowClose="False"
                                                      AllowInDocumentHost="False"
                                                      IsPinned="True"
+                                                     WindowPositionMenuVisibility="Hidden"
+                                                     CloseButtonVisibility="Hidden"
+                                                     PinButtonVisibility="Hidden"
                                                      regions:RegionManager.RegionName="Menu" />
                         </dockManager:SplitPane>
 
@@ -46,6 +49,7 @@
                                                      AllowInDocumentHost="False"
                                                      Header="Variables"
                                                      IsPinned="True"
+                                                     WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="Variables" />
 
                             <dockManager:ContentPane x:Name="OutputPane"
@@ -53,6 +57,7 @@
                                                      AllowInDocumentHost="False"
                                                      Header="Output"
                                                      IsPinned="True"
+                                                     WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="OutputPane" />
 
                         </dockManager:SplitPane>
@@ -65,18 +70,23 @@
                                                      AllowInDocumentHost="False"
                                                      Header="Explorer"
                                                      IsPinned="True"
+                                                     WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Explorer}" />
                             <dockManager:ContentPane x:Name="Toolbox"
                                                      AllowClose="False"
                                                      AllowInDocumentHost="False"
                                                      Header="Toolbox"
                                                      IsPinned="True"
+                                                     WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="Toolbox" />
                             <dockManager:ContentPane x:Name="Help"
                                                      AllowClose="False"
                                                      AllowInDocumentHost="False"
-                                                     Header="Help"
+                                                     Header="What does this do?"
                                                      IsPinned="True"
+                                                     AllowDocking="False"
+                                                     
+                                                     WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="Help" />
                         </dockManager:SplitPane>
 
