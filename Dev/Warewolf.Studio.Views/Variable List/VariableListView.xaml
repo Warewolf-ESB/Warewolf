@@ -37,7 +37,16 @@
             <Label Grid.Column="1">Input</Label>
             <Label Grid.Column="2">Output</Label>
         </Grid>
-           
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0">Variable Name</Label>
+            <Label Grid.Column="1">Input</Label>
+            <Label Grid.Column="2">Output</Label>
+        </Grid>
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
