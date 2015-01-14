@@ -9,5 +9,13 @@
                 return "Explorer";
             }
         }
+        
+        public static string Toolbox
+        {
+            get
+            {
+                return "Toolbox";
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Media;
 using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
@@ -31,6 +32,23 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 _tool = value;
             }
         }
+
+        public string Name
+        {
+            get
+            {
+                return Tool.Name;
+            }
+        }
+
+        public DrawingImage Icon
+        {
+            get
+            {
+                return Tool.Icon;
+            }
+        }
+
         public bool IsEnabled
         {
             get

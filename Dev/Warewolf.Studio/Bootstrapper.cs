@@ -24,8 +24,14 @@ namespace Warewolf.Studio
             var explorerRegion = regionManager.Regions[RegionNames.Explorer];
             var explorerView = new ExplorerView();
             explorerView.DataContext = new DummyExplorerViewModel();
-            explorerRegion.Add(explorerView, "Explorer");
+            explorerRegion.Add(explorerView, RegionNames.Explorer);
             explorerRegion.Activate(explorerView);
+
+            var toolboxRegion = regionManager.Regions[RegionNames.Toolbox];
+            var toolBoxView = new ToolboxView { DataContext = new DummyToolboxViewModel() };
+            toolboxRegion.Add(toolBoxView, RegionNames.Toolbox);
+            toolboxRegion.Activate(toolBoxView);
+
             window.Show();
 
         }

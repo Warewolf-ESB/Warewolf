@@ -143,7 +143,7 @@
 								AllowInDocumentHost="False"
 								Header="Toolbox"
 								IsPinned="True"
-								regions:RegionManager.RegionName="Toolbox" />
+								regions:RegionManager.RegionName="{x:Static core:RegionNames.Toolbox}" />
 							<dockManager:ContentPane x:Name="Help"
 								AllowClose="False"
 								AllowInDocumentHost="False"

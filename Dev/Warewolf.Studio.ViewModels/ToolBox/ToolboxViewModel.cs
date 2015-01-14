@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
-using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -13,20 +12,17 @@ namespace Warewolf.Studio.ViewModels.ToolBox
     {
         readonly IToolboxModel _localModel;
         readonly IToolboxModel _remoteModel;
-        readonly IHelpWindowModel _help;
         ICollection<IToolDescriptorViewModel> _tools;
         bool _isDesignerFocused;
         IToolDescriptorViewModel _selectedTool;
 
-        public ToolboxViewModel( IToolboxModel localModel,IToolboxModel remoteModel,IHelpWindowModel help)
+        public ToolboxViewModel( IToolboxModel localModel,IToolboxModel remoteModel)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object>{{"localModel",localModel},{"remoteModel",remoteModel}});
             _localModel = localModel;
             _remoteModel = remoteModel;
-            _help = help;
             _localModel.OnserverDisconnected += _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
-            ClearFilter();
         }
 
 
@@ -43,7 +39,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
                 return _tools;
             }
-            private set
+            protected set
             {
                 OnPropertyChanged("Tools");
                 OnPropertyChanged("CategorisedTools");
@@ -57,11 +53,10 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             get
             {
-
-                return new ObservableCollection<IToolboxCatergoryViewModel>(Tools.GroupBy(a=>a.Tool.Category)
-                .Select(b=> new ToolBoxCategoryViewModel(b.Key,new ObservableCollection<IToolDescriptorViewModel>(b))));
+                var toolboxCatergoryViewModels = new ObservableCollection<IToolboxCatergoryViewModel>(Tools.GroupBy(a=>a.Tool.Category)
+                    .Select(b=> new ToolBoxCategoryViewModel(b.Key,new ObservableCollection<IToolDescriptorViewModel>(b))));
+                return toolboxCatergoryViewModels;
             }
-
         }
         /// <summary>
         /// the toolbox is only enabled when the active server is connected and the designer is in focus

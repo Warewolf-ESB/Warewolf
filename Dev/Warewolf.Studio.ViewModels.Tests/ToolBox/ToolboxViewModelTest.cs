@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             localTools.Setup(a => a.GetTools()).Returns(tools);
             remoteTools.Setup(a => a.GetTools()).Returns(tools);
             //------------Execute Test---------------------------
-            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object, new Mock<IHelpWindowModel>().Object);
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object);
 
             //------------Assert Results-------------------------
             localTools.Verify(a => a.GetTools());
@@ -68,7 +68,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             localTools.Setup(a => a.GetTools()).Returns(tools);
             remoteTools.Setup(a => a.GetTools()).Returns(tools);
             //------------Execute Test---------------------------
-            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object , new Mock<IHelpWindowModel>().Object) { IsDesignerFocused = true };
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object ) { IsDesignerFocused = true };
             //------------Assert Results-------------------------
             Assert.AreEqual(true,vm.IsEnabled);
 
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             localTools.Setup(a => a.GetTools()).Returns(tools);
             remoteTools.Setup(a => a.GetTools()).Returns(tools);
             //------------Execute Test---------------------------
-            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object, new Mock<IHelpWindowModel>().Object) { IsDesignerFocused = true };
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
             //------------Assert Results-------------------------
             Assert.AreEqual(false, vm.IsEnabled);
         }
@@ -108,7 +108,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             localTools.Setup(a => a.GetTools()).Returns(tools);
             remoteTools.Setup(a => a.GetTools()).Returns(tools);
             //------------Execute Test---------------------------
-            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object, new Mock<IHelpWindowModel>().Object) { IsDesignerFocused = true };
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
             //------------Assert Results-------------------------
             Assert.AreEqual(false, vm.IsEnabled);
         }
@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             localTools.Setup(a => a.GetTools()).Returns(tools);
             remoteTools.Setup(a => a.GetTools()).Returns(tools);
             //------------Execute Test---------------------------
-            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object, new Mock<IHelpWindowModel>().Object) { IsDesignerFocused = true };
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
             Assert.AreEqual(2, vm.Tools.Count);
             vm.Filter("d");
             //------------Assert Results-------------------------
@@ -157,7 +157,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             localTools.Setup(a => a.GetTools()).Returns(tools);
             remoteTools.Setup(a => a.GetTools()).Returns(tools);
             //------------Execute Test---------------------------
-            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object, new Mock<IHelpWindowModel>().Object) { IsDesignerFocused = true };
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
             Assert.AreEqual(2, vm.Tools.Count);
             Assert.AreEqual(1, vm.CategorisedTools.Count);
             vm.Filter("dz");
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             localTools.Setup(a => a.GetTools()).Returns(tools);
             remoteTools.Setup(a => a.GetTools()).Returns(tools);
             //------------Execute Test---------------------------
-            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object, new Mock<IHelpWindowModel>().Object) { IsDesignerFocused = true };
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
             Assert.AreEqual(2, vm.Tools.Count);
             Assert.AreEqual(2, vm.CategorisedTools.Count);
 
@@ -209,7 +209,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             localTools.Setup(a => a.GetTools()).Returns(tools);
             remoteTools.Setup(a => a.GetTools()).Returns(tools);
             //------------Execute Test---------------------------
-            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object, new Mock<IHelpWindowModel>().Object) { IsDesignerFocused = true };
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
             Assert.AreEqual(2, vm.Tools.Count);
             vm.Filter("dz");
             //------------Assert Results-------------------------
