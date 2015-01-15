@@ -110,6 +110,7 @@
         <ResourceDictionary Source="Elements/TextBox.xaml" />
         <ResourceDictionary Source="Elements/ToggleButton.xaml" />
         <ResourceDictionary Source="Elements/ToolTip.xaml" />
+
         <ResourceDictionary Source="Elements/TreeView.xaml" />
         <ResourceDictionary Source="Elements/Window.xaml" />
         <ResourceDictionary Source="Elements/TabControl.xaml" />
@@ -117,7 +118,8 @@
         <ResourceDictionary Source="Elements/StackPanel.xaml" />
 
         <!--  CUSTOMISED THEME ELEMENTS  -->
-        <ResourceDictionary Source="Elements/DockManager/DockManager.xaml" />
+        <ResourceDictionary Source="Elements/ToolBar/ToolBar.xaml" />
+        <ResourceDictionary Source="Elements/DockManager/MainDockManager.xaml" />
 
 
 

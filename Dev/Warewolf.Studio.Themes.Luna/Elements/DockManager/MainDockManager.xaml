@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:igDock="http://infragistics.com/DockManager"
+                    xmlns:igWinThemes="http://infragistics.com/Themes"
+                    xmlns:igWindows="http://infragistics.com/Windows"
+                    xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework"
+                    xmlns:presentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+
+    <!--  *********************************  RESOURCES  *********************************  -->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
+        <!--  IMAGES  -->
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Images/System-Pin.xaml" />
+
+
+        <!--  <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/DockManager/DockManagerBrushes.xaml" />  -->
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/DockManager/DockManagerGeneric.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+
+
+</ResourceDictionary>
