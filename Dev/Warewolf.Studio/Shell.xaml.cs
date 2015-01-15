@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using Infragistics.Themes;
+using Infragistics.Windows;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.Themes.Luna;
@@ -23,6 +26,33 @@ namespace Warewolf.Studio
             
         }
 
+        private void ContentPane_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var contentPane = sender as ContentPane;
+            if(contentPane != null)
+            {
+                contentPane.ExecuteCommand(ContentPaneCommands.FlyIn);
+            }
+        }
+
+        private void PaneTabItem_Loaded(object sender, RoutedEventArgs e)
+        {
+            var paneTabItem = sender as PaneTabItem;
+            if(paneTabItem != null)
+            {
+                paneTabItem.Margin = new Thickness(0, 12, 0, 0);
+            }
+        }
+
+        private void UnpinnedTabArea_Loaded(object sender, RoutedEventArgs e)
+        {
+            var repeatButton = Utilities.GetDescendantFromName(sender as DependencyObject, "PART_ScrollDown") as RepeatButton;
+            if(repeatButton != null)
+            {
+                repeatButton.Visibility = System.Windows.Visibility.Collapsed;
+            }
+        }
+
         void DockManager_OnPaneDragStarting(object sender, PaneDragStartingEventArgs e)
         {
             var dragPane = e.RootPane as PaneHeaderPresenter;
@@ -35,6 +65,11 @@ namespace Warewolf.Studio
                     e.Cancel = true;
                 }
             }
+        }
+
+        void PaneResize(object sender, MouseButtonEventArgs e)
+        {
+            //e.Handled = true;
         }
     }
 }

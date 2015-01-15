@@ -18,11 +18,19 @@
             }
         }
         
-        public static string Workflows
+        public static string Menu
         {
             get
             {
-                return "Workflows";
+                return "Menu";
+            }
+        }
+        
+        public static string Workspace
+        {
+            get
+            {
+                return "Workspace";
             }
         }
     }

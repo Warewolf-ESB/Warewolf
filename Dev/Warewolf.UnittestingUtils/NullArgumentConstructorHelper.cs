@@ -15,7 +15,7 @@ namespace Warewolf.UnittestingUtils
             {
                 try
                 {
-                    var parametersToUse = createParams(parameters, i);
+                    var parametersToUse = CreateParams(parameters, i);
                     if (parameters[i].GetType().IsPrimitive || parameters[i].GetType().IsEnum)
                     {
                         thrown = true;
@@ -26,7 +26,7 @@ namespace Warewolf.UnittestingUtils
                 }
                 catch (TargetInvocationException e)
                 {
-                    if (null != e.InnerException as ArgumentNullException)
+                    if (e.InnerException is ArgumentNullException)
                         thrown = true;
                 }
 
@@ -35,7 +35,7 @@ namespace Warewolf.UnittestingUtils
             }
         }
 
-        static object[] createParams(object[] parameters, int i)
+        static object[] CreateParams(object[] parameters, int i)
         {
             object[] val = parameters.Clone() as object[];
             Debug.Assert(val != null, "val != null");

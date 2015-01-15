@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class.cs" />
+    <Compile Include="Converters\HeightConverter.cs" />
     <Compile Include="Infragistics Prism Region Adapter\IDockAware.cs" />
     <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionActiveAwareBehavior.cs" />
     <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionAdapter.cs" />

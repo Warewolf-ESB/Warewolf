@@ -4,18 +4,33 @@
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        xmlns:converters="clr-namespace:Warewolf.Studio.Core.Converters;assembly=Warewolf.Studio.Core"
+        xmlns:igWindows="http://infragistics.com/Windows"
         x:Name="MainWindow"
         Title="Warewolf Studio"
         WindowState="Maximized">
 
     <Window.Resources>
 
+            <Style TargetType="{x:Type igWindows:XamPager}">
+                <EventSetter Event="Loaded" Handler="UnpinnedTabArea_Loaded"/>
+            </Style>
+            <converters:HeightConverter x:Key="HeightConverter"/>
+            <Style TargetType="{x:Type dockManager:ContentPane}">
+                <EventSetter Event="MouseLeave" Handler="ContentPane_MouseLeave"/>
+            </Style>
+            <Style TargetType="{x:Type dockManager:PaneTabItem}">
+                <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type dockManager:UnpinnedTabItemPanel}}, Path=ActualHeight, Converter={StaticResource HeightConverter}}"/>
+                <EventSetter Event="Loaded" Handler="PaneTabItem_Loaded"/>
+                <Setter Property="Width" Value="1"/>
+            </Style>
+            <Style TargetType="dockManager:UnpinnedTabFlyoutSplitter">
+                <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
+            </Style>
+            <Style TargetType="dockManager:DockedPaneSplitter">
+                <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
+            </Style>
 
-        <DataTemplate x:Key="HelpPaneHeaderTemplate">
-            <Border Background="#FFAEACAC">
-                <TextBlock>WHAT DOES THIS DO?</TextBlock>
-            </Border>
-        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -36,48 +51,25 @@
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
-                        <dockManager:SplitPane Width="220"
+                        <dockManager:SplitPane Width="22"                                                
                                                SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedLeft">
-
-                            <dockManager:ContentPane x:Name="Menu"
-                                                     AllowClose="False"
-                                                     AllowDocking="False"
-                                                     AllowFloatingOnly="False"
-                                                     AllowInDocumentHost="False"
+                            <dockManager:ContentPane x:Name="Menu"  
+                                Style="{DynamicResource DockmangerMenuPaneStyle}"
                                                      CloseButtonVisibility="Hidden"
-                                                     Header="MENU"
-                                                     IsPinned="True"
-                                                     PinButtonVisibility="Hidden"
-                                                     Style="{DynamicResource DockmangerMenuPaneStyle}"
-                                                     WindowPositionMenuVisibility="Hidden">
-                                <StackPanel Orientation="Vertical">
-                                    <Button Content="New" Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Button Content="Save" Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Button BorderThickness="0"
-                                            Content="Deploy"
-                                            Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Separator />
-                                    <Button Content="Db Service" Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Button Content="Plugin Service" Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Button Content="Web Service" Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Separator />
-                                    <Button Content="Schedule" Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Button Content="Debug" Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Separator />
-                                    <Button Content="Settings" Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Separator />
-                                    <Button Content="Help" Style="{DynamicResource MainMenuButtonStyle}" />
-                                    <Separator />
-                                    <Button VerticalAlignment="Bottom"
-                                            HorizontalContentAlignment="Center"
-                                            VerticalContentAlignment="Bottom"
-                                            Content="Pin"
-                                            Style="{DynamicResource MainMenuButtonStyle}" />
-                                </StackPanel>
-
-                            </dockManager:ContentPane>
+								WindowPositionMenuVisibility="Hidden"
+								PinButtonVisibility="Hidden"
+								AllowInDocumentHost="False"
+								AllowDocking="False"
+								AllowFloatingOnly="False"
+                                IsPinned="True"
+                                                     HorizontalContentAlignment="Stretch"
+                                                     VerticalContentAlignment="Stretch"
+                                regions:RegionManager.RegionName="{x:Static core:RegionNames.Menu}" ScrollViewer.VerticalScrollBarVisibility="Disabled" />
                         </dockManager:SplitPane>
+                        
+                        
+          
 
                         <dockManager:SplitPane Width="300"
                                                SplitterOrientation="Horizontal"
@@ -143,7 +135,7 @@
                     </dockManager:XamDockManager.Panes>
                     <dockManager:DocumentContentHost>
                         <dockManager:SplitPane>
-                            <dockManager:TabGroupPane x:Name="_workflows" regions:RegionManager.RegionName="{x:Static core:RegionNames.Workflows}" />
+                            <dockManager:TabGroupPane x:Name="Workspace" regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>
