@@ -1,24 +1,23 @@
-﻿<Window
+﻿<Window x:Class="Warewolf.Studio.Shell"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
-        xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-    x:Class="Warewolf.Studio.Shell"
-        Title="Warewolf Studio" 
+        xmlns:converters="clr-namespace:Warewolf.Studio.Core.Converters;assembly=Warewolf.Studio.Core"
         x:Name="MainWindow"
+        Title="Warewolf Studio"
         WindowState="Maximized">
 
     <Window.Resources>
         <Style TargetType="{x:Type dockManager:ContentPane}">
             <EventSetter Event="MouseLeave" Handler="ContentPane_MouseLeave"/>
         </Style>
-
-        <DataTemplate x:Key="HelpPaneHeaderTemplate">
-            <Border Background="#FFAEACAC">
-                <TextBlock>WHAT DOES THIS DO?</TextBlock>
-            </Border>
-        </DataTemplate>
+        <converters:HeightConverter x:Key="heightConverter"/>
+        <Style TargetType="{x:Type dockManager:PaneTabItem}">
+            <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type dockManager:UnpinnedTabItemPanel}}, Path=ActualHeight, Converter={StaticResource heightConverter}}"/>
+            <!--<Setter Property="Margin" Value="0"/>-->
+        </Style>       
     </Window.Resources>
 
     <Grid>
@@ -30,10 +29,18 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <dockManager:XamDockManager PaneDragStarting="DockManager_OnPaneDragStarting" LayoutMode="FillContainer" UnpinnedTabHoverAction="Flyout" FlyoutAnimation="Resize" AllowMaximizeFloatingWindows="True" AllowMinimizeFloatingWindows="True" x:Name="DockManager">
+                <dockManager:XamDockManager x:Name="DockManager"
+                                            AllowMaximizeFloatingWindows="True"
+                                            AllowMinimizeFloatingWindows="True"
+                                            FlyoutAnimation="Resize"
+                                            LayoutMode="FillContainer"
+                                            PaneDragStarting="DockManager_OnPaneDragStarting"
+                                            UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
-                        <dockManager:SplitPane SplitterOrientation="Horizontal" Width="220" dockManager:XamDockManager.InitialLocation="DockedLeft">
+                        <dockManager:SplitPane Width="220"
+                                               SplitterOrientation="Horizontal"
+                                               dockManager:XamDockManager.InitialLocation="DockedLeft">
 
                             <dockManager:ContentPane Header="MENU" x:Name="Menu" 
 								CloseButtonVisibility="Hidden"
@@ -42,29 +49,32 @@
 								AllowInDocumentHost="False"
 								AllowDocking="False"
 								AllowFloatingOnly="False"
-                                AllowClose="False"
                                 IsPinned="True"
+                                Style="{DynamicResource DockmangerMenuPaneStyle}"
                                                      >
                                 <StackPanel Orientation="Vertical">
-                                    <Button Style="{DynamicResource MenuButtonStyle}" Content="New"/>
-                                    <Button Content="Save" Style="{DynamicResource MenuButtonStyle}"/>
-                                    <Button Content="Deploy" Style="{DynamicResource MenuButtonStyle}" BorderThickness="0"/>
-                                    <Separator/>
-                                    <Button Content="Db Service" Style="{DynamicResource MenuButtonStyle}"/>
-                                    <Button Content="Plugin Service" Style="{DynamicResource MenuButtonStyle}"/>
-                                    <Button Content="Web Service" Style="{DynamicResource MenuButtonStyle}"/>
-                                    <Separator/>
-                                    <Button Content="Schedule" Style="{DynamicResource MenuButtonStyle}"/>
-                                    <Button Content="Debug" Style="{DynamicResource MenuButtonStyle}"/>
-                                    <Separator/>
-                                    <Button Content="Settings" Style="{DynamicResource MenuButtonStyle}"/>
-                                    <Separator/>
-                                    <Button Content="Help" Style="{DynamicResource MenuButtonStyle}"/>
-                                    <Separator/>
-                                    <Button VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" 
+                                    <Button Content="New" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button Content="Save" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button BorderThickness="0"
+                                            Content="Deploy"
+                                            Style="{DynamicResource MenuButtonStyle}" />
+                                    <Separator />
+                                    <Button Content="Db Service" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button Content="Plugin Service" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button Content="Web Service" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Separator />
+                                    <Button Content="Schedule" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button Content="Debug" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Separator />
+                                    <Button Content="Settings" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Separator />
+                                    <Button Content="Help" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Separator />
+                                    <Button VerticalAlignment="Bottom"
                                             HorizontalContentAlignment="Center" 
+                                            VerticalContentAlignment="Bottom"
                                             Content="Pin" 
-                                            Style="{DynamicResource MenuButtonStyle}"/>
+                                            Style="{DynamicResource MenuButtonStyle}" />
                                 </StackPanel>
 
                             </dockManager:ContentPane>
@@ -76,22 +86,23 @@
 
 
                             <dockManager:ContentPane x:Name="Variables"
-                                Style="{DynamicResource DockmangerToolPaneStyle}" 
-                                WindowPositionMenuVisibility="Hidden"
-								CloseButtonVisibility="Hidden"
 								AllowClose="False"
 								AllowInDocumentHost="False"
-								Header="Variables"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="VARIABLES"
 								IsPinned="True"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
 								regions:RegionManager.RegionName="Variables" />
 
                             <dockManager:ContentPane x:Name="OutputPane"
 								AllowClose="False"
-                                WindowPositionMenuVisibility="Hidden"
+                                                     AllowInDocumentHost="False"
 								CloseButtonVisibility="Hidden"
-								AllowInDocumentHost="False"
-								Header="Output"
+                                                     Header="OUTPUT"
 								IsPinned="True"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
 								regions:RegionManager.RegionName="OutputPane" />
 
                         </dockManager:SplitPane>
@@ -101,30 +112,33 @@
 							dockManager:XamDockManager.InitialLocation="DockedLeft">
                             <dockManager:ContentPane x:Name="Explorer"
 								AllowClose="False"
-								WindowPositionMenuVisibility="Hidden"
+                                                     AllowInDocumentHost="False"
 								CloseButtonVisibility="Hidden"
-								AllowInDocumentHost="False"
-								Header="Explorer"
+                                                     Header="EXPLORER"
 								IsPinned="True"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
 								regions:RegionManager.RegionName="{x:Static core:RegionNames.Explorer}" />
                             <dockManager:ContentPane x:Name="Toolbox"
 								AllowInDocumentHost="False"
-								Header="Toolbox" 
-                                WindowPositionMenuVisibility="Hidden"
 								CloseButtonVisibility="Hidden"
+                                                     Header="TOOL BOX"
                                 IsPinned="True"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
 								regions:RegionManager.RegionName="{x:Static core:RegionNames.Toolbox}" />
                             <dockManager:ContentPane x:Name="Help"
-								HeaderTemplate="{StaticResource HelpPaneHeaderTemplate}"
+                                                     Height="400"
+                                                     AllowClose="False"
                                 AllowDocking="False"
 								AllowFloatingOnly="False"
-                                AllowClose="False"
                                 AllowInDocumentHost="False"
-								WindowPositionMenuVisibility="Hidden"
 								CloseButtonVisibility="Hidden"
+                                                     Header="WHAT DOES THIS DO?"
+                                                     IsPinned="True"
                                 PinButtonVisibility="Hidden"
-								IsPinned="True"
-                                                     Height="400"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
 								regions:RegionManager.RegionName="Help" />
                         </dockManager:SplitPane>
                     </dockManager:XamDockManager.Panes>
