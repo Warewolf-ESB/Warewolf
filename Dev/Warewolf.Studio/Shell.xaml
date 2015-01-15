@@ -13,7 +13,6 @@
         <converters:HeightConverter x:Key="HeightConverter"/>
         <Style TargetType="{x:Type dockManager:ContentPane}">
             <EventSetter Event="MouseLeave" Handler="ContentPane_MouseLeave"/>
-            <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type dockManager:PaneTabItem}}, Path=ActualHeight, Converter={StaticResource HeightConverter}}"/>
         </Style>
         <Style TargetType="{x:Type dockManager:PaneTabItem}">
             <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type dockManager:UnpinnedTabItemPanel}}, Path=ActualHeight, Converter={StaticResource HeightConverter}}"/>
