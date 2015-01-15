@@ -33,7 +33,7 @@
 
                         <dockManager:SplitPane SplitterOrientation="Horizontal" Width="220" dockManager:XamDockManager.InitialLocation="DockedLeft">
 
-                            <dockManager:ContentPane Header="MENU" x:Name="Menu"
+                            <dockManager:ContentPane Header="MENU" x:Name="Menu" Style="{DynamicResource DockmangerMenuPaneStyle}" 
 								CloseButtonVisibility="Hidden"
 								WindowPositionMenuVisibility="Hidden"
 								PinButtonVisibility="Hidden"
@@ -74,6 +74,7 @@
 
 
                             <dockManager:ContentPane x:Name="Variables"
+                                Style="{DynamicResource DockmangerToolPaneStyle}" 
                                 WindowPositionMenuVisibility="Hidden"
 								CloseButtonVisibility="Hidden"
 								AllowClose="False"
@@ -121,7 +122,7 @@
 								CloseButtonVisibility="Hidden"
                                 PinButtonVisibility="Hidden"
 								IsPinned="True"
-                                Height="400"
+                                                     Height="400"
 								regions:RegionManager.RegionName="Help" />
                         </dockManager:SplitPane>
                     </dockManager:XamDockManager.Panes>

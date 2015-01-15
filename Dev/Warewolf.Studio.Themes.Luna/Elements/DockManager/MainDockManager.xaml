@@ -16,9 +16,28 @@
 
 
         <!--  <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/DockManager/DockManagerBrushes.xaml" />  -->
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/DockManager/DockManagerGeneric.xaml" />
+        <!--  <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/DockManager/DockManagerGeneric.xaml" />  -->
     </ResourceDictionary.MergedDictionaries>
 
+    <!--  MAIN MENU DOCK MANAGER STYLING  -->
+    <Style x:Key="DockmangerMenuPaneStyle" TargetType="{x:Type igDock:ContentPane}">
+        <Style.Resources>
+            <Style TargetType="{x:Type igDock:PaneHeaderPresenter}">
+                <Setter Property="MinHeight" Value="0" />
+                <Setter Property="MaxHeight" Value="0" />
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <!--  TOOL WINDOW DOCK MANAGER STYLING  -->
+    <Style x:Key="DockmangerToolPaneStyle" TargetType="{x:Type igDock:ContentPane}">
+        <Style.Resources>
+            <Style TargetType="{x:Type igDock:PaneHeaderPresenter}">
+                <Setter Property="Height" Value="100" />
+                
+            </Style>
+        </Style.Resources>
+    </Style>
 
 
 </ResourceDictionary>

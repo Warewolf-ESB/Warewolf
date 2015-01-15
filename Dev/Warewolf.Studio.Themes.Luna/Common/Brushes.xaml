@@ -20,7 +20,7 @@
     <SolidColorBrush x:Key="WareWolfButtonBrush" Color="{StaticResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="WareWolfWhiteBrush" Color="{StaticResource WarewolfWhite}" />
 
-    
+
     <!--  ********************************** THEME BRUSHES - For Color Tuner **********************************  -->
     <SolidColorBrush x:Key="Brush01" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="Brush02" Color="{StaticResource WarewolfWhite}" />

@@ -14,7 +14,7 @@
 
 
     <Grid x:Name="LayoutRoot">
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
             <RowDefinition Height="25" />
@@ -26,58 +26,76 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!--SPACER-->
+        <!--  SPACER  -->
         <StackPanel Grid.Row="0" Orientation="Vertical">
-            <Image Width="5" Height="10" Source="{StaticResource System-Spacer}" />
+            <Image Width="5"
+                   Height="10"
+                   Source="{StaticResource System-Spacer}" />
         </StackPanel>
-        
-        <!--URI LOOKUP-->
+
+        <!--  URI LOOKUP  -->
         <StackPanel Grid.Row="1" Style="{StaticResource ExplorerStackPanel}">
             <TextBox Text="Localhost" />
 
-            <Button Height="25" Width="25" Padding="4">
+            <Button Width="25"
+                    Height="25"
+                    Padding="4">
                 <Image Source="{StaticResource System-More-Inverted}" />
             </Button>
 
-            <Button Height="25" Width="25" Padding="4">
+            <Button Width="25"
+                    Height="25"
+                    Padding="4">
                 <Image Source="{StaticResource System-Link-Inverted}" />
             </Button>
-            
+
         </StackPanel>
 
-        <!--SPACER-->
+        <!--  SPACER  -->
         <StackPanel Grid.Row="2" Orientation="Vertical">
-            <Image Width="5" Height="15" Source="{StaticResource System-Spacer}" />
+            <Image Width="5"
+                   Height="15"
+                   Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
-        <!--SERVICE FILTER-->
+        <!--  SERVICE FILTER  -->
         <StackPanel Grid.Row="3" Style="{StaticResource ExplorerStackPanel}">
             <TextBox Text="Filter" />
 
-            <Button Height="25" Width="25" Padding="4">
+            <Button Width="25"
+                    Height="25"
+                    Padding="4">
                 <Image Source="{StaticResource System-Filter-Inverted}" />
             </Button>
-                      
-            <Button Height="25" Width="25" Padding="4">
+
+            <Button Width="25"
+                    Height="25"
+                    Padding="4">
                 <Image Source="{StaticResource System-Refresh-Inverted}" />
             </Button>
-            
+
         </StackPanel>
 
-        <!--SPACER-->
+        <!--  SPACER  -->
         <StackPanel Grid.Row="4" Orientation="Vertical">
-            <Image Width="5" Height="10" Source="{StaticResource System-Spacer}" />
+            <Image Width="5"
+                   Height="10"
+                   Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
-        <!--URL FILTER-->
+        <!--  URL FILTER  -->
         <StackPanel Grid.Row="5" Style="{StaticResource ExplorerStackPanel}">
-            <Label FontWeight="Medium" Content="Localhost" Margin="5,0,2,0" />
-            <Label FontWeight="Light" Content="(http://whereiswally:7262)" />
+            <Label Margin="5,0,2,0"
+                   Content="Localhost"
+                   FontWeight="Medium" />
+            <Label Content="(http://whereiswally:7262)" FontWeight="Light" />
         </StackPanel>
 
-        <!--SPACER-->
+        <!--  SPACER  -->
         <StackPanel Grid.Row="6" Orientation="Vertical">
-            <Image Width="5" Height="5" Source="{StaticResource System-Spacer}" />
+            <Image Width="5"
+                   Height="5"
+                   Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
         <ig:XamDataTree Grid.Row="7"
@@ -120,13 +138,31 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <Image Grid.Column="0" Width="12" Height="12" Source="{StaticResource System-New}" />
-                                <Image Grid.Column="1" Width="12" Height="12" Source="{StaticResource System-Spacer}" />
+                                <Image Grid.Column="0"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-New}" />
+                                <Image Grid.Column="1"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-Spacer}" />
                                 <TextBlock Grid.Column="2" Text="File and Folder" />
-                                <Image Grid.Column="3" Width="12" Height="12" Source="{StaticResource System-Spacer}" />
-                                <Image Grid.Column="4" Width="12" Height="12" Source="{StaticResource System-Executable-Disabled}" />
-                                <Image Grid.Column="5" Width="5" Height="12" Source="{StaticResource System-Spacer}" />
-                                <Image Grid.Column="6" Width="12" Height="12" Source="{StaticResource System-Security-Enabled}" />
+                                <Image Grid.Column="3"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-Spacer}" />
+                                <Image Grid.Column="4"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-Executable-Disabled}" />
+                                <Image Grid.Column="5"
+                                       Width="5"
+                                       Height="12"
+                                       Source="{StaticResource System-Spacer}" />
+                                <Image Grid.Column="6"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-Security-Enabled}" />
                             </Grid>
 
                         </DataTemplate>
