@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="Data-Assign">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <DrawingGroup ClipGeometry="F1 M 0,1.52588e-005L 755.907,1.52588e-005L 755.907,755.908L 0,755.908L 0,1.52588e-005 Z ">
+                        <DrawingGroup.Children>
+                            <GeometryDrawing Brush="#FF7F1769" Geometry="M 28.944,282.95L 41.0413,282.95C 41.8253,282.95 42.46,283.584 42.46,284.368L 42.46,285.264C 42.46,286.048 41.8253,286.684 41.0413,286.684L 28.944,286.684C 28.16,286.684 27.5253,286.048 27.5253,285.264L 27.5253,284.368C 27.5253,283.584 28.16,282.95 28.944,282.95 Z " />
+                            <GeometryDrawing Brush="#FF7F1769" Geometry="M 28.944,288.551L 41.0413,288.551C 41.8253,288.551 42.46,289.185 42.46,289.969L 42.46,290.865C 42.46,291.651 41.8253,292.284 41.0413,292.284L 28.944,292.284C 28.16,292.284 27.5253,291.651 27.5253,290.865L 27.5253,289.969C 27.5253,289.185 28.16,288.551 28.944,288.551 Z " />
+                        </DrawingGroup.Children>
+                    </DrawingGroup>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>

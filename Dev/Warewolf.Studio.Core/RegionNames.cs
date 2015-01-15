@@ -9,5 +9,29 @@
                 return "Explorer";
             }
         }
+        
+        public static string Toolbox
+        {
+            get
+            {
+                return "Toolbox";
+            }
+        }
+        
+        public static string Menu
+        {
+            get
+            {
+                return "Menu";
+            }
+        }
+        
+        public static string Workflows
+        {
+            get
+            {
+                return "Workflows";
+            }
+        }
     }
 }

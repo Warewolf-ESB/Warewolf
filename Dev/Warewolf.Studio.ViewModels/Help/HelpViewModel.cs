@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using Dev2;
 using Dev2.Common.Interfaces.Help;
 using Microsoft.Practices.Prism.Mvvm;
@@ -17,10 +18,34 @@ namespace Warewolf.Studio.ViewModels.Help
             _defaultViewModel = defaultViewModel;
             CurrentHelpText = _defaultViewModel;
             HelpModel = model;
-            model.OnHelpTextReceived += model_OnHelpTextReceived;
+            model.OnHelpTextReceived += OnHelpTextReceived;
         }
 
-        void model_OnHelpTextReceived(object sender, IHelpDescriptor desc)
+        public string HelpText
+        {
+            get
+            {
+                return CurrentHelpText.Description;
+            }
+        }
+
+        public string HelpName
+        {
+            get
+            {
+                return CurrentHelpText.Name;
+            }
+        }
+
+        public DrawingImage HelpImage
+        {
+            get
+            {
+                return CurrentHelpText.Icon;
+            }
+        }
+
+        void OnHelpTextReceived(object sender, IHelpDescriptor desc)
         {
             try
             {
@@ -47,10 +72,12 @@ namespace Warewolf.Studio.ViewModels.Help
             {
                 return _currentHelpText;
             }
-            private set
+            internal set
             {
                 _currentHelpText = value;
-                OnPropertyChanged("CurrentHelpText");
+                OnPropertyChanged(() => HelpName);
+                OnPropertyChanged(() => HelpText);
+                OnPropertyChanged(() => HelpImage);
             }
         }
 
@@ -70,7 +97,7 @@ namespace Warewolf.Studio.ViewModels.Help
         // ReSharper disable once UnusedParameter.Local
         void Dispose(bool disposing)
         {
-            HelpModel.OnHelpTextReceived -= model_OnHelpTextReceived;
+            HelpModel.OnHelpTextReceived -= OnHelpTextReceived;
         }
 
         #endregion

@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="ControlFlow-Switch">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFFDBE09" Geometry="M 86.9999,-725.198C 86.6639,-725.538 86.1132,-725.538 85.7719,-725.198L 82.4492,-721.87C 82.1079,-721.53 82.1079,-720.978 82.4492,-720.638L 85.7719,-717.31C 86.1132,-716.97 86.6639,-716.97 86.9999,-717.31L 90.3226,-720.638C 90.6639,-720.978 90.6639,-721.53 90.3226,-721.87M 80.4519,-725.198C 80.1106,-725.538 79.5599,-725.538 79.2239,-725.198L 75.9012,-721.87C 75.5599,-721.53 75.5599,-720.978 75.9012,-720.638L 79.2239,-717.31C 79.5599,-716.97 80.1106,-716.97 80.4519,-717.31L 82.7199,-719.578L 81.6652,-720.638C 81.3239,-720.978 81.3239,-721.53 81.6652,-721.87L 82.7199,-722.929L 80.4519,-725.198 Z " />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>

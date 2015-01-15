@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <DrawingImage x:Key="Utility-SystemInformation">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<GeometryDrawing Brush="#FFFF8613" Geometry="M 124.649,-266.199C 128.776,-266.199 132.118,-269.542 132.118,-273.667C 132.118,-277.792 128.776,-281.135 124.649,-281.135"/>
+		</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+  </DrawingImage>
+</ResourceDictionary>

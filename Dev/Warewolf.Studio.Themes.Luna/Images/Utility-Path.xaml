@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<DrawingImage x:Key="Utility-Path">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<DrawingGroup ClipGeometry="F1 M 0,1.52588e-005L 755.907,1.52588e-005L 755.907,755.908L 0,755.908L 0,1.52588e-005 Z ">
+						<DrawingGroup.Children>
+							<GeometryDrawing Brush="#FFFF8613" Geometry="M 161.102,482.558L 163.37,478.04L 161.194,478.04L 159.92,480.784L 158.6,478.04L 156.486,478.04L 158.712,482.367L 156.34,486.909L 158.498,486.909L 159.907,484.136L 161.335,486.909L 163.542,486.909L 161.102,482.558 Z "/>
+							<GeometryDrawing Brush="#FFFF8613" Geometry="M 167.981,478.041L 165.806,478.041L 163.589,486.908L 165.745,486.908L 167.981,478.041 Z "/>
+							<GeometryDrawing Brush="#FFFF8613" Geometry="M 171.276,478.041L 169.101,478.041L 166.879,486.908L 169.035,486.908L 171.276,478.041 Z "/>
+							<GeometryDrawing Brush="#FFC2BEBA" Geometry="M 13.0573,9.44936L 183.877,9.44936L 183.877,22.0521L 13.0573,22.0521L 13.0573,9.44936 Z "/>
+						</DrawingGroup.Children>
+					</DrawingGroup>
+		</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+</DrawingImage>
+	</ResourceDictionary>

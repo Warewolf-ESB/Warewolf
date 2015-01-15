@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/interactivedesigner/2006"
+                    xmlns:igDock="http://infragistics.com/DockManager"
+                    xmlns:igEditors="http://infragistics.com/Editors"
+                    xmlns:igThemes="http://infragistics.com/Themes"
+                    xmlns:igWindows="http://infragistics.com/Windows"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
+
+        <igThemes:ResourceSetLoader Locator="{x:Static igThemes:DockManagerMetroDark.Location}" />
+
+
+        <igThemes:ResourceWasher AutoWash="True" WashMode="HueSaturationReplacement">
+            <igThemes:ResourceWasher.SourceDictionary>
+                <igThemes:DockManagerWashBaseLight />
+            </igThemes:ResourceWasher.SourceDictionary>
+            <igThemes:ResourceWasher.WashGroups>
+                <igThemes:WashGroupCollection>
+                    <igThemes:WashGroup Name="ThemeColor" WashColor="{StaticResource Color_003}" />
+                    <igThemes:WashGroup Name="AlternateColor" WashColor="{StaticResource Color_004}" />
+                </igThemes:WashGroupCollection>
+            </igThemes:ResourceWasher.WashGroups>
+        </igThemes:ResourceWasher>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

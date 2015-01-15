@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<DrawingImage x:Key="Data-DataMerge">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<DrawingGroup ClipGeometry="F1 M 0,1.52588e-005L 755.907,1.52588e-005L 755.907,755.908L 0,755.908L 0,1.52588e-005 Z ">
+						<DrawingGroup.Children>
+							<GeometryDrawing Brush="#FF7F1769" Geometry="M 157.741,285.517L 157.741,282.949L 162.408,288.084L 157.741,293.217L 157.741,290.652L 154.94,290.652L 154.94,285.517L 157.741,285.517 Z "/>
+							<GeometryDrawing Brush="#FF7F1769" Geometry="M 167.075,285.517L 167.075,282.949L 162.407,288.084L 167.075,293.217L 167.075,290.652L 169.875,290.652L 169.875,285.517L 167.075,285.517 Z "/>
+						</DrawingGroup.Children>
+					</DrawingGroup>
+					</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+</DrawingImage>
+	</ResourceDictionary>

@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<DrawingImage x:Key="Execution-TransactionScope">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<GeometryDrawing Brush="#FFD01F3C" Geometry="M 34.9046,-616.573L 44.5099,-616.573L 44.5099,-626.178L 34.9046,-626.178M 47.1739,-613.908L 47.1739,-620.306L 45.5739,-620.306L 45.5739,-615.509L 41.3072,-615.509L 41.3072,-613.908M 32.2392,-613.908L 38.1059,-613.908L 38.1059,-615.509L 33.8392,-615.509L 33.8392,-620.306L 32.2392,-620.306M 47.1739,-628.842L 41.3072,-628.842L 41.3072,-627.242L 45.5739,-627.242L 45.5739,-622.444L 47.1739,-622.444M 32.2392,-628.842L 32.2392,-622.444L 33.8392,-622.444L 33.8392,-627.242L 38.1059,-627.242L 38.1059,-628.842L 32.2392,-628.842 Z "/>
+				</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+		</DrawingImage>
+	</ResourceDictionary>
