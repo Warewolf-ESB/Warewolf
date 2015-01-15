@@ -46,7 +46,7 @@
         </StackPanel>
 
         <!--  URI LOOKUP  -->
-        <StackPanel Grid.Row="1" Style="{StaticResource ExplorerStackPanel}">
+        <StackPanel Grid.Row="1" >
             <TextBox Text="Localhost" />
 
             <Button Width="25"
@@ -71,7 +71,7 @@
         </StackPanel>
 
         <!--  SERVICE FILTER  -->
-        <StackPanel Grid.Row="3" Style="{StaticResource ExplorerStackPanel}">
+        <StackPanel Grid.Row="3" >
             <TextBox Text="Filter" />
 
             <Button Width="25"
@@ -96,7 +96,7 @@
         </StackPanel>
 
         <!--  URL FILTER  -->
-        <StackPanel Grid.Row="5" Style="{StaticResource ExplorerStackPanel}">
+        <StackPanel Grid.Row="5" >
             <Label Margin="5,0,2,0"
                    Content="Localhost"
                    FontWeight="Medium" />

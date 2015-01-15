@@ -58,7 +58,7 @@
 								AllowInDocumentHost="False"
 								AllowDocking="False"
 								AllowFloatingOnly="False"
-                                IsPinned="False"
+                                IsPinned="True"
                                                      HorizontalContentAlignment="Stretch"
                                                      VerticalContentAlignment="Stretch"
                                 regions:RegionManager.RegionName="{x:Static core:RegionNames.Menu}" ScrollViewer.VerticalScrollBarVisibility="Disabled" />
