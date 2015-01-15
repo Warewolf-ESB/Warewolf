@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Practices.Prism.Commands;
 
 namespace Dev2.Common.Interfaces.DataList.DatalistView
 {
@@ -8,11 +9,16 @@ namespace Dev2.Common.Interfaces.DataList.DatalistView
         /// <summary>
         /// The list of scalars visible in the designer variable list window
         /// </summary>
-        IList<IDataListViewScalar> Scalars { get; }
+        IList<IVariableListViewScalar> Scalars { get; }
         /// <summary>
         /// The list of record sets visible in the studio variable list
         /// </summary>
-        IList<IDatalistViewRecordSet> RecordSets { get; }
+        IList<IVariablelistViewRecordSet> RecordSets { get; }
+
+        /// <summary>
+        /// The Expression that is currently filtering the variable list
+        /// </summary>
+        string FilterExpression { get; set; }
         /// <summary>
         /// Enabled. This is disable if not connected or if the user is not editing a workflow.
         /// </summary>
@@ -35,12 +41,12 @@ namespace Dev2.Common.Interfaces.DataList.DatalistView
         /// Add a scalar 
         /// </summary>
         /// <param name="scalar"></param>
-        void AddScalar(IDataListViewScalar scalar);
+        void AddScalar(IVariableListViewScalar scalar);
         /// <summary>
         /// Add a recordset
         /// </summary>
         /// <param name="recset"></param>
-        void AddRecordSet(IDatalistViewRecordSet recset);
+        void AddRecordSet(IVariablelistViewRecordSet recset);
         /// <summary>
         /// refresh from the selected workflow.
         /// </summary>
@@ -50,24 +56,32 @@ namespace Dev2.Common.Interfaces.DataList.DatalistView
         /// <summary>
         /// Add a column to the variable list. This should add the respective record set if it does not exist
         /// </summary>
-        /// <param name="dataListViewColumn"></param>
-        void AddColumn(IDataListViewColumn dataListViewColumn);
+        /// <param name="variableListViewColumn"></param>
+        void AddColumn(IVariableListViewColumn variableListViewColumn);
 
-        /// <summary>
-        /// Mark an Item as an input
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="isInput"></param>
-        void MarkAsInput(IDataListViewItem item,bool isInput);
 
 
         /// <summary>
-        /// Mark an Item as an Output
+        /// Delete an Item
         /// </summary>
         /// <param name="item"></param>
-        /// <param name="isInput"></param>
-        void MarkAsOutput(IDataListViewItem item, bool isInput);
 
+        void Delete(IVariableListViewItem item);
+
+        /// <summary>
+        /// View calls this command to Filter
+        /// </summary>
+        DelegateCommand FilterCommand { get; }
+
+        /// <summary>
+        /// View calls this command to Sort
+        /// </summary>
+        DelegateCommand SortCommand { get; }
+
+        /// <summary>
+        /// View calls this command to Delete Unused.
+        /// </summary>
+        DelegateCommand DeleteUnusedCommand { get; }
 
     }
 }

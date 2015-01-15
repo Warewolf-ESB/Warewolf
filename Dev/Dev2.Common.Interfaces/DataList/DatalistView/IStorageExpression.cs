@@ -10,7 +10,7 @@ namespace Dev2.Common.Interfaces.DataList.DatalistView
 
     public interface IDatalistViewExpressionConvertor
     {
-        IDataListViewItem Create(IDataExpression expr);
+        IVariableListViewItem Create(IDataExpression expr);
     }
     public interface IWorkflowExressionList:IList<IDataExpression>{};
 }
