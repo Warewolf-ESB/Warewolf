@@ -5,6 +5,7 @@
  */
 
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Infragistics.Windows.DockManager;
@@ -64,7 +65,7 @@ namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
                 var item = e.NewValue;
 
                 //are we dealing with a ContentPane directly
-                if (Region.Views.Contains(item) && !this.Region.ActiveViews.Contains(item))
+                if (Region.Views.Contains(item) && !Region.ActiveViews.Contains(item))
                 {
                     Region.Activate(item);
                 }
@@ -75,7 +76,7 @@ namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
                     if (contentControl != null)
                     {
                         var injectedView = contentControl.Content;
-                        if (Region.Views.Contains(injectedView) && !this.Region.ActiveViews.Contains(injectedView))
+                        if (Region.Views.Contains(injectedView) && !Region.ActiveViews.Contains(injectedView))
                             Region.Activate(injectedView);
                     }
                 }
@@ -90,9 +91,7 @@ namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
                 FrameworkElement frameworkElement = e.NewItems[0] as FrameworkElement;
                 if (frameworkElement != null)
                 {
-                    ContentPane contentPane = frameworkElement as ContentPane;
-                    if (contentPane == null)
-                        contentPane = frameworkElement.Parent as ContentPane;
+                    ContentPane contentPane = frameworkElement as ContentPane ?? frameworkElement.Parent as ContentPane;
 
                     if (contentPane != null && !contentPane.IsActivePane)
                         contentPane.Activate();
@@ -111,13 +110,7 @@ namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
         ContentPane GetContentPaneFromFromViewModel(object viewModel)
         {
             var panes = XamDockManager.GetDockManager(_hostControl).GetPanes(PaneNavigationOrder.VisibleOrder);
-            foreach (ContentPane contentPane in panes)
-            {
-                if (contentPane.DataContext == viewModel)
-                    return contentPane;                
-            }
-
-            return null;
+            return panes.FirstOrDefault(contentPane => contentPane.DataContext == viewModel);
         }
     }
 }

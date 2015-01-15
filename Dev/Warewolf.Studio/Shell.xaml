@@ -10,7 +10,9 @@
         WindowState="Maximized">
 
     <Window.Resources>
-
+        <Style TargetType="{x:Type dockManager:ContentPane}">
+            <EventSetter Event="MouseLeave" Handler="ContentPane_MouseLeave"/>
+        </Style>
 
         <DataTemplate x:Key="HelpPaneHeaderTemplate">
             <Border Background="#FFAEACAC">
@@ -33,7 +35,7 @@
 
                         <dockManager:SplitPane SplitterOrientation="Horizontal" Width="220" dockManager:XamDockManager.InitialLocation="DockedLeft">
 
-                            <dockManager:ContentPane Header="MENU" x:Name="Menu" Style="{DynamicResource DockmangerMenuPaneStyle}" 
+                            <dockManager:ContentPane Header="MENU" x:Name="Menu" 
 								CloseButtonVisibility="Hidden"
 								WindowPositionMenuVisibility="Hidden"
 								PinButtonVisibility="Hidden"
