@@ -11,8 +11,20 @@
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
-
-
+    <UserControl.Resources>
+<ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Filter.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Spacer.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-More.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Link.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Refresh.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-New.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Executable.xaml" />
+            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Security.xaml" />
+        </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+    </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
 
         <Grid.RowDefinitions>

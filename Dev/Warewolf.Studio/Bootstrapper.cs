@@ -31,7 +31,12 @@ namespace Warewolf.Studio
             var toolboxRegion = regionManager.Regions[RegionNames.Toolbox];
             var toolBoxView = new ToolboxView { DataContext = new DummyToolboxViewModel() };
             toolboxRegion.Add(toolBoxView, RegionNames.Toolbox);
-            toolboxRegion.Activate(toolBoxView);
+            toolboxRegion.Activate(toolBoxView); 
+            
+            var menuRegion = regionManager.Regions[RegionNames.Menu];
+            var menuView = new MenuView();
+            menuRegion.Add(menuView, RegionNames.Menu);
+            menuRegion.Activate(menuView);
 
             window.Show();
 
