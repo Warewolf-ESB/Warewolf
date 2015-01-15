@@ -49,7 +49,7 @@ namespace Warewolf.Studio
             var repeatButton = Utilities.GetDescendantFromName(sender as DependencyObject, "PART_ScrollDown") as RepeatButton;
             if(repeatButton != null)
             {
-                repeatButton.Visibility = System.Windows.Visibility.Collapsed;
+                repeatButton.Visibility = Visibility.Collapsed;
             }
         }
 
