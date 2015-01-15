@@ -370,7 +370,7 @@
 
                     <!--Dev2-->
                     <ContentPresenter x:Name="Content" TextBlock.FontFamily="{StaticResource DefaultFontFamily}"
-						TextBlock.FontSize="{StaticResource DefaultFontSize}" TextBlock.Foreground="{StaticResource BrushForeground}" ContentSource="Header" Margin="8,4,8,4"/>
+						TextBlock.FontSize="{StaticResource FontSize-Normal}" TextBlock.Foreground="{StaticResource BrushForeground}" ContentSource="Header" Margin="8,4,8,4"/>
                     <!--Dev2-->
                     
                 </Grid>
@@ -1232,7 +1232,7 @@
         <Setter Property="Foreground" Value="{StaticResource BrushForeground}"/>
        
         <!--Dev2-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}"/>
         <!--Dev2-->
         
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
@@ -1358,7 +1358,7 @@
     <!-- ================================ -->
     <Style TargetType="{x:Type igDock:ContentPane}">
         <!--Dev2 modified-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}"/>
         <Setter Property="BorderThickness" Value="0"/>
         
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
@@ -1432,7 +1432,7 @@
         <Setter Property="TextBlock.TextTrimming" Value="CharacterEllipsis" />
         
         <!--Dev2-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         
         <!--Dev2-->
         <Setter Property="Height" Value="24" />
@@ -1965,7 +1965,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
 
         <!--Dev2 added-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="BorderThickness" Value="0"/>
         
@@ -2013,7 +2013,7 @@
         <Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.XamDockManagerBackgroundFillKey}}"/>
 
         <!--Dev2-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
@@ -2289,7 +2289,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneNavigatorOuterBorderFillKey}}" />
 
         <!--Dev2-->
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}"/>
         
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}"/>
         <Setter Property="BorderThickness" Value="2,2,2,2" />
@@ -2437,7 +2437,7 @@
 
                                     <!--Dev2-->
                                     <TextBlock Foreground="{StaticResource BrushHighlightedForeground}" 
-                                               x:Name="activeToolWindowsLabel" Margin="14,7,0,0" FontSize="{StaticResource DefaultFontSize}" />
+                                               x:Name="activeToolWindowsLabel" Margin="14,7,0,0" FontSize="{StaticResource FontSize-Normal}" />
                                     <!--Text="{Binding Path=Value, Source={x:Static igDock:ResourcesDockManager.PaneNavigatorActiveToolWindowsLabel}}"-->
                                     <TextBlock Foreground="{StaticResource BrushHighlightedForeground}" x:Name="documentsLabel" Grid.Column ="1" Margin="8,7,0,0" FontSize="16" />
                                     <!--Text="{Binding Path=Value, Source={x:Static igDock:ResourcesDockManager.PaneNavigatorActiveFilesLabel}}"-->
@@ -2503,7 +2503,7 @@
                                     <ContentControl
 									TextBlock.Foreground="{StaticResource BrushForeground}"
                                        
-									TextBlock.FontSize="{StaticResource DefaultFontSize}"
+									TextBlock.FontSize="{StaticResource FontSize-Normal}"
 
                                         TextBlock.FontFamily="{StaticResource DefaultFontFamily}"
 									x:Name="selectedPaneDescription" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"

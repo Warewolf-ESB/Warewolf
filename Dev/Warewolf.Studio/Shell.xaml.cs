@@ -15,7 +15,11 @@ namespace Warewolf.Studio
         public Shell()
         {
             InitializeComponent();
-            ThemeManager.ApplicationTheme = new LunaTheme(); 
+            ThemeManager.ApplicationTheme = new LunaTheme();
+            //StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata
+            //{
+            //    DefaultValue = FindResource(typeof(Window))
+            //});
             
         }
 

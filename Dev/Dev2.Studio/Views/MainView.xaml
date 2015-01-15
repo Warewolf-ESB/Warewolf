@@ -532,7 +532,7 @@
 
         <Style x:Key="TextBlockStyleRibbon" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+            <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
             <Setter Property="TextWrapping" Value="NoWrap" />
             <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -565,7 +565,7 @@
         <Style x:Key="TextBlockStyleRibbonHeader"
                BasedOn="{StaticResource TextBlockStyleRibbon}"
                TargetType="{x:Type TextBlock}">
-            <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+            <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Margin" Value="0,-2,0,0" />
             <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />

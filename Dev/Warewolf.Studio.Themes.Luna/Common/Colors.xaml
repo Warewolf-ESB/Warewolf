@@ -10,8 +10,10 @@
     <Color x:Key="WarewolfSubHeaderGrey">#FFC2BEB9</Color>
     <Color x:Key="WarewolfPanelGrey">#FFF4F2EE</Color>
     <Color x:Key="WarewolfButtonGrey">#FF606160</Color>
+    <Color x:Key="WarewolfHeaderButtonGrey">#72606160</Color>
     <Color x:Key="WarewolfTileGrey">#FFF4F3ED</Color>
-    <Color x:Key="WarewolfScrollbarGrey">#FFE6E5E0</Color>
+    <Color x:Key="WarewolfScrollbarGrey">#FFC2BEB9</Color>
+    <Color x:Key="WarewolfScrollbarBorderGrey">#00C2BEB9</Color>
     <Color x:Key="WarewolfWhite">#FFFFFFFF</Color>
     <Color x:Key="WarewolfOrange">#FFF3700D</Color>
     <Color x:Key="WarewolfBlack">#FF000000</Color>

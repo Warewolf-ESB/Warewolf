@@ -52,28 +52,28 @@
                                                      Style="{DynamicResource DockmangerMenuPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden">
                                 <StackPanel Orientation="Vertical">
-                                    <Button Content="New" Style="{DynamicResource MenuButtonStyle}" />
-                                    <Button Content="Save" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button Content="New" Style="{DynamicResource MainMenuButtonStyle}" />
+                                    <Button Content="Save" Style="{DynamicResource MainMenuButtonStyle}" />
                                     <Button BorderThickness="0"
                                             Content="Deploy"
-                                            Style="{DynamicResource MenuButtonStyle}" />
+                                            Style="{DynamicResource MainMenuButtonStyle}" />
                                     <Separator />
-                                    <Button Content="Db Service" Style="{DynamicResource MenuButtonStyle}" />
-                                    <Button Content="Plugin Service" Style="{DynamicResource MenuButtonStyle}" />
-                                    <Button Content="Web Service" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button Content="Db Service" Style="{DynamicResource MainMenuButtonStyle}" />
+                                    <Button Content="Plugin Service" Style="{DynamicResource MainMenuButtonStyle}" />
+                                    <Button Content="Web Service" Style="{DynamicResource MainMenuButtonStyle}" />
                                     <Separator />
-                                    <Button Content="Schedule" Style="{DynamicResource MenuButtonStyle}" />
-                                    <Button Content="Debug" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button Content="Schedule" Style="{DynamicResource MainMenuButtonStyle}" />
+                                    <Button Content="Debug" Style="{DynamicResource MainMenuButtonStyle}" />
                                     <Separator />
-                                    <Button Content="Settings" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button Content="Settings" Style="{DynamicResource MainMenuButtonStyle}" />
                                     <Separator />
-                                    <Button Content="Help" Style="{DynamicResource MenuButtonStyle}" />
+                                    <Button Content="Help" Style="{DynamicResource MainMenuButtonStyle}" />
                                     <Separator />
                                     <Button VerticalAlignment="Bottom"
                                             HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Bottom"
                                             Content="Pin"
-                                            Style="{DynamicResource MenuButtonStyle}" />
+                                            Style="{DynamicResource MainMenuButtonStyle}" />
                                 </StackPanel>
 
                             </dockManager:ContentPane>

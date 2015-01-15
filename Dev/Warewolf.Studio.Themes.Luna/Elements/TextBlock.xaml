@@ -8,7 +8,7 @@
 
     <!--  *********************************  TextBlock Style  *********************************  -->
     <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Validation.ErrorTemplate">

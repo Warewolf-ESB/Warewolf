@@ -11,7 +11,7 @@
         <Setter Property="Foreground"
                 Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize"
-                Value="{StaticResource DefaultFontSize}" />
+                Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily"
                 Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="Background"

@@ -1,104 +1,74 @@
 ﻿<UserControl x:Class="Dev2.Settings.Security.SecurityView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Dev2.Settings.Security"
-             xmlns:security="clr-namespace:Dev2.Services.Security;assembly=Dev2.Infrastructure"
              xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core;assembly=Dev2.Activities.Designers"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:help="clr-namespace:Dev2.Help"
              xmlns:help1="clr-namespace:Dev2.Activities.Designers2.Core.Help;assembly=Dev2.Activities.Designers"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:Dev2.Settings.Security"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:security="clr-namespace:Dev2.Services.Security;assembly=Dev2.Infrastructure"
+             d:DataContext="{d:DesignInstance local:SecurityViewModel}"
              d:DesignHeight="300"
              d:DesignWidth="300"
-             mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance local:SecurityViewModel}">
+             mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style x:Key="PermissionsGridStyle"
-               TargetType="{x:Type DataGrid}">
-            <Setter Property="GridLinesVisibility"
-                    Value="All" />
-            <Setter Property="HorizontalGridLinesBrush"
-                    Value="{StaticResource DataGridBorderBrush}" />
-            <Setter Property="VerticalGridLinesBrush"
-                    Value="{StaticResource DataGridBorderBrush}" />
-            <Setter Property="HeadersVisibility"
-                    Value="Column" />
-            <Setter Property="BorderThickness"
-                    Value="1,1,0,0" />
-            <Setter Property="BorderBrush"
-                    Value="{StaticResource DataGridBorderBrush}" />
-            <Setter Property="AutoGenerateColumns"
-                    Value="False" />
-            <Setter Property="CanUserAddRows"
-                    Value="False" />
-            <Setter Property="CanUserDeleteRows"
-                    Value="False" />
-            <Setter Property="CanUserReorderColumns"
-                    Value="False" />
-            <Setter Property="CanUserResizeColumns"
-                    Value="True" />
-            <Setter Property="CanUserResizeRows"
-                    Value="False" />
-            <Setter Property="CanUserSortColumns"
-                    Value="True" />
-            <Setter Property="Background"
-                    Value="#C1C3C5" />
+        <Style x:Key="PermissionsGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="GridLinesVisibility" Value="All" />
+            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}" />
+            <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="BorderThickness" Value="1,1,0,0" />
+            <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserDeleteRows" Value="False" />
+            <Setter Property="CanUserReorderColumns" Value="False" />
+            <Setter Property="CanUserResizeColumns" Value="True" />
+            <Setter Property="CanUserResizeRows" Value="False" />
+            <Setter Property="CanUserSortColumns" Value="True" />
+            <Setter Property="Background" Value="#C1C3C5" />
         </Style>
 
-        <Style x:Key="PermissionsGridHeaderStyle"
-               TargetType="{x:Type DataGridColumnHeader}">
-            <Setter Property="Background"
-                    Value="{StaticResource ShellBarViewBackground}" />
-            <Setter Property="VerticalContentAlignment"
-                    Value="Center" />
-            <Setter Property="Padding"
-                    Value="3,0" />
-            <Setter Property="BorderThickness"
-                    Value="0,0,1,1" />
-            <Setter Property="BorderBrush"
-                    Value="{StaticResource DataGridBorderBrush}" />
-            <Setter Property="Foreground"
-                    Value="{StaticResource BrushDarkForeground}" />
-            <Setter Property="HorizontalContentAlignment"
-                    Value="Center" />
-            <Setter Property="FontWeight"
-                    Value="SemiBold" />
-            <Setter Property="Height"
-                    Value="Auto" />
+        <Style x:Key="PermissionsGridHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="{StaticResource ShellBarViewBackground}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="3,0" />
+            <Setter Property="BorderThickness" Value="0,0,1,1" />
+            <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Height" Value="Auto" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                         Value="True">
-                    <Setter Property="Cursor"
-                            Value="Hand" />
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="PermissionsGridCheckBoxHeaderStyle"
-               TargetType="{x:Type DataGridColumnHeader}"
-               BasedOn="{StaticResource PermissionsGridHeaderStyle}">
-            <Setter Property="Width"
-                    Value="83" />
-            <Setter Property="MinWidth"
-                    Value="83" />
+               BasedOn="{StaticResource PermissionsGridHeaderStyle}"
+               TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Width" Value="83" />
+            <Setter Property="MinWidth" Value="83" />
         </Style>
 
-        <Style x:Key="PermissionsGridRowStyle"
-               TargetType="{x:Type DataGridRow}">
+        <Style x:Key="PermissionsGridRowStyle" TargetType="{x:Type DataGridRow}">
             <Setter Property="AutomationProperties.AutomationId">
-              <Setter.Value>
-                <MultiBinding StringFormat="UI_PermissionsGrid_Row_{0}_AutoID">
-                  <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
-                </MultiBinding>
-              </Setter.Value>
+                <Setter.Value>
+                    <MultiBinding StringFormat="UI_PermissionsGrid_Row_{0}_AutoID">
+                        <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
+                    </MultiBinding>
+                </Setter.Value>
             </Setter>
         </Style>
 
         <Style x:Key="PermissionsGridRowServerStyle"
-               TargetType="{x:Type DataGridRow}"
-               BasedOn="{StaticResource PermissionsGridRowStyle}">
+               BasedOn="{StaticResource PermissionsGridRowStyle}"
+               TargetType="{x:Type DataGridRow}">
             <Style.Triggers>
                 <DataTrigger Value="0">
                     <DataTrigger.Binding>
@@ -107,22 +77,21 @@
                             <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
                         </MultiBinding>
                     </DataTrigger.Binding>
-                    <Setter Property="IsEnabled"
-                            Value="False" />
-                </DataTrigger>                
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
             </Style.Triggers>
             <Setter Property="AutomationProperties.AutomationId">
-              <Setter.Value>
-                <MultiBinding StringFormat="UI_ServerPermissionsGrid_Row_{0}_AutoID">
-                  <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
-                </MultiBinding>
-              </Setter.Value>
+                <Setter.Value>
+                    <MultiBinding StringFormat="UI_ServerPermissionsGrid_Row_{0}_AutoID">
+                        <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
+                    </MultiBinding>
+                </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="PermissionsGridCellServerStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Style.Triggers>
                 <DataTrigger Value="1">
                     <DataTrigger.Binding>
@@ -131,9 +100,8 @@
                             <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
                         </MultiBinding>
                     </DataTrigger.Binding>
-                    <Setter Property="IsEnabled"
-                            Value="False" /> 
-                </DataTrigger>            
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
             </Style.Triggers>
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
@@ -143,10 +111,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="ResourceColumnCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ResourcePermissionsColumn_Row_{0}_Cell_AutoID">
@@ -155,10 +123,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="ResourceWindowsGroupColumnCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ResourcePermissionsWindowsGroupColumn_Row_{0}_Cell_AutoID">
@@ -169,8 +137,8 @@
         </Style>
 
         <Style x:Key="ServerPermissionsDeployToCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ServerDeployToPermissions_Row_{0}_Cell_AutoID">
@@ -181,8 +149,8 @@
         </Style>
 
         <Style x:Key="ServerPermissionsDeployFromCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ServerDeployFromPermissions_Row_{0}_Cell_AutoID">
@@ -193,8 +161,8 @@
         </Style>
 
         <Style x:Key="ServerPermissionsAdministratorCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ServerAdministratorPermissions_Row_{0}_Cell_AutoID">
@@ -205,8 +173,8 @@
         </Style>
 
         <Style x:Key="ServerPermissionsViewCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ServerViewPermissions_Row_{0}_Cell_AutoID">
@@ -217,8 +185,8 @@
         </Style>
 
         <Style x:Key="ServerPermissionsExecuteCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ServerExecutePermissions_Row_{0}_Cell_AutoID">
@@ -229,8 +197,8 @@
         </Style>
 
         <Style x:Key="ServerPermissionsContributeCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ServerContributePermissions_Row_{0}_Cell_AutoID">
@@ -241,8 +209,8 @@
         </Style>
 
         <Style x:Key="ServerPermissionsRemoveRowCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ServerPermissionsRemoveRow_Row_{0}_Cell_AutoID">
@@ -253,8 +221,8 @@
         </Style>
 
         <Style x:Key="ResourcePermissionsRemoveRowCellStyle"
-               TargetType="{x:Type DataGridCell}"
-               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+               BasedOn="{StaticResource DefaultDataGridCellStyle}"
+               TargetType="{x:Type DataGridCell}">
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
                     <MultiBinding StringFormat="UI_ResourcePermissionsRemoveRow_Row_{0}_Cell_AutoID">
@@ -263,65 +231,46 @@
                 </Setter.Value>
             </Setter>
         </Style>
-       
+
         <Style x:Key="PermissionsGridTextBlockStyle"
-               TargetType="{x:Type TextBlock}"
-               BasedOn="{StaticResource TextBlockStyle}">
-            <Setter Property="FontSize"
-                    Value="{StaticResource DefaultFontSize}" />
-            <Setter Property="FontWeight"
-                    Value="{StaticResource DefaultFontWeight}" />
-            <Setter Property="FontFamily"
-                    Value="{StaticResource DefaultFontFamily}" />
-            <Setter Property="VerticalAlignment"
-                    Value="Center" />
-            <Setter Property="Padding"
-                    Value="3,1,3,1" />
+               BasedOn="{StaticResource TextBlockStyle}"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+            <Setter Property="FontWeight" Value="{StaticResource DefaultFontWeight}" />
+            <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="3,1,3,1" />
         </Style>
 
         <Style x:Key="PermissionsGridTextBoxStyle"
-               TargetType="{x:Type TextBox}"
-               BasedOn="{StaticResource TextBoxStyle}">
-            <Setter Property="FontSize"
-                    Value="{StaticResource DefaultFontSize}" />
-            <Setter Property="FontWeight"
-                    Value="{StaticResource DefaultFontWeight}" />
-            <Setter Property="FontFamily"
-                    Value="{StaticResource DefaultFontFamily}" />
-            <Setter Property="BorderThickness"
-                    Value="0" />
-            <Setter Property="VerticalAlignment"
-                    Value="Center" />
-            <Setter Property="AcceptsReturn"
-                    Value="False" />
-            <Setter Property="Width"
-                    Value="Auto" />
+               BasedOn="{StaticResource TextBoxStyle}"
+               TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+            <Setter Property="FontWeight" Value="{StaticResource DefaultFontWeight}" />
+            <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="AcceptsReturn" Value="False" />
+            <Setter Property="Width" Value="Auto" />
         </Style>
 
         <Style x:Key="PermissionsGridCheckBoxStyle"
-               TargetType="{x:Type CheckBox}"
-               BasedOn="{StaticResource CheckBoxStyle}">
-            <Setter Property="VerticalAlignment"
-                    Value="Center" />
-            <Setter Property="HorizontalAlignment"
-                    Value="Center" />
+               BasedOn="{StaticResource CheckBoxStyle}"
+               TargetType="{x:Type CheckBox}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
 
         <Style x:Key="PermissionsGridWindowsGroupButtonStyle"
-               TargetType="{x:Type Button}"
-               BasedOn="{StaticResource ButtonStyle}">
-            <Setter Property="Content"
-                    Value="..." />
-            <Setter Property="Margin"
-                    Value="1" />
-            <Setter Property="Command"
-                    Value="{Binding DataContext.PickWindowsGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-            <Setter Property="CommandParameter"
-                    Value="{Binding}" />
+               BasedOn="{StaticResource ButtonStyle}"
+               TargetType="{x:Type Button}">
+            <Setter Property="Content" Value="..." />
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="Command" Value="{Binding DataContext.PickWindowsGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="CommandParameter" Value="{Binding}" />
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
-                    <MultiBinding StringFormat="UI_Security_Row{1}_PickWindowsGroupButton"
-                                  Converter="{StaticResource DataGridRowNumberConverter}">
+                    <MultiBinding Converter="{StaticResource DataGridRowNumberConverter}" StringFormat="UI_Security_Row{1}_PickWindowsGroupButton">
                         <Binding />
                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
                     </MultiBinding>
@@ -330,20 +279,15 @@
         </Style>
 
         <Style x:Key="PermissionsGridResourceButtonStyle"
-               TargetType="{x:Type Button}"
-               BasedOn="{StaticResource ButtonStyle}">
-            <Setter Property="Content"
-                    Value="..." />
-            <Setter Property="Margin"
-                    Value="1" />
-            <Setter Property="Command"
-                    Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-            <Setter Property="CommandParameter"
-                    Value="{Binding}" />
+               BasedOn="{StaticResource ButtonStyle}"
+               TargetType="{x:Type Button}">
+            <Setter Property="Content" Value="..." />
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="Command" Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="CommandParameter" Value="{Binding}" />
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
-                    <MultiBinding StringFormat="UI_Security_Row{1}_PickResourceButton"
-                                  Converter="{StaticResource DataGridRowNumberConverter}">
+                    <MultiBinding Converter="{StaticResource DataGridRowNumberConverter}" StringFormat="UI_Security_Row{1}_PickResourceButton">
                         <Binding />
                         <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
                     </MultiBinding>
@@ -359,53 +303,52 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"
-                           MinHeight="150" />
+            <RowDefinition Height="*" MinHeight="150" />
             <RowDefinition Height="8" />
-            <RowDefinition Height="*"
-                           MinHeight="150" />
+            <RowDefinition Height="*" MinHeight="150" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0"
-              Grid.Column="0">
+        <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Text="Server Permissions"
-                       HorizontalAlignment="Left"
+            <TextBlock Grid.Row="0"
                        Margin="5,0,0,0"
-                       Grid.Row="0"
-                       Style="{StaticResource Dev2HeadingTextBlockStyle}" />
+                       HorizontalAlignment="Left"
+                       Style="{StaticResource Dev2HeadingTextBlockStyle}"
+                       Text="Server Permissions" />
 
             <core:ActivityDesignerToggleButton x:Name="ServerHelpToggleButton"
                                                Grid.Row="0"
                                                Width="20"
                                                Height="20"
+                                               Margin="0,0,0,1"
                                                HorizontalAlignment="Right"
                                                VerticalAlignment="Bottom"
-                                               Margin="0,0,0,1"
-                                               ToolTip="{Binding ServerHelpToggle.ToolTip}"
-                                               IsChecked="{Binding ServerHelpToggle.IsChecked, Mode=TwoWay}"
-                                               Content="{Binding ServerHelpToggle.Image, Mode=TwoWay}"
-                                               Style="{StaticResource ActivityToggleButtonStyle}" />
+                                               Content="{Binding ServerHelpToggle.Image,
+                                                                 Mode=TwoWay}"
+                                               IsChecked="{Binding ServerHelpToggle.IsChecked,
+                                                                   Mode=TwoWay}"
+                                               Style="{StaticResource ActivityToggleButtonStyle}"
+                                               ToolTip="{Binding ServerHelpToggle.ToolTip}" />
 
-            <DataGrid Grid.Row="1"
-                      x:Name="ServerPermissionsDataGrid"
-                      ItemsSource="{Binding ServerPermissions}"
-                      Style="{StaticResource PermissionsGridStyle}"
-                      RowStyle="{StaticResource PermissionsGridRowServerStyle}"
+            <DataGrid x:Name="ServerPermissionsDataGrid"
+                      Grid.Row="1"
                       Height="Auto"
+                      ItemsSource="{Binding ServerPermissions}"
+                      LoadingRow="DataGrid_LoadingRow"
+                      RowStyle="{StaticResource PermissionsGridRowServerStyle}"
                       Sorting="OnDataGridSorting"
-                      LoadingRow="DataGrid_LoadingRow">
+                      Style="{StaticResource PermissionsGridStyle}">
                 <DataGrid.Columns>
 
-                    <DataGridTemplateColumn Header="Windows Group"
+                    <DataGridTemplateColumn Width="*"
+                                            CellStyle="{StaticResource PermissionsGridCellServerStyle}"
+                                            Header="Windows Group"
+                                            HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"
                                             SortMemberPath="WindowsGroup"
-                                            Width="*"
-                                            HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"                                            
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource PermissionsGridCellServerStyle}">
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -413,551 +356,296 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                             IsEnabled="{Binding EnableCellEditing}"
+                                    <TextBox IsEnabled="{Binding EnableCellEditing}"
                                              Style="{StaticResource PermissionsGridTextBoxStyle}"
+                                             Text="{Binding WindowsGroup,
+                                                            Mode=TwoWay,
+                                                            UpdateSourceTrigger=LostFocus}"
                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}">
-                                        <!--<i:Interaction.Behaviors>
+                                        <!--
+                                            <i:Interaction.Behaviors>
                                             <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpWindowsGroup}"
-                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>-->
+                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                        -->
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddWindowsGroupTextBox_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                         FallbackValue="New" />
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                     </TextBox>
+                                    <Path Grid.ColumnSpan="2"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                                     <Button Grid.Column="1"
-                                            Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
                                             IsEnabled="{Binding EnableCellEditing}"
+                                            Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipWindowsGroup}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddWindowsGroupButton_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                         FallbackValue="New" />
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                     </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="83"
+                                            CanUserResize="False"
+                                            CellStyle="{StaticResource ServerPermissionsDeployToCellStyle}"
+                                            Header="Deploy To"
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            SortMemberPath="DeployTo"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding DeployTo,
+                                                                  Mode=TwoWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding EnableCellEditing}"
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployTo}">
+                                        <!--
+                                            <i:Interaction.Behaviors>
+                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployTo}"
+                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                        -->
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_DeployToPermissionCheckBox_AutoID">
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </CheckBox>
                                     <Path Grid.ColumnSpan="2"
-                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                           Data="M0,0.5 L1,0.5"
                                           Stretch="Fill"
                                           Stroke="Red"
-                                          StrokeThickness="1" />
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Deploy To"
-                                            SortMemberPath="DeployTo"
+                    <DataGridTemplateColumn Width="83"
                                             CanUserResize="False"
-                                            Width="83"
+                                            CellStyle="{StaticResource ServerPermissionsDeployFromCellStyle}"
+                                            Header="Deploy From"
                                             HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource ServerPermissionsDeployToCellStyle}">
+                                            SortMemberPath="DeployFrom"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <CheckBox IsChecked="{Binding DeployTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                    <CheckBox IsChecked="{Binding DeployFrom,
+                                                                  Mode=TwoWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployTo}">
-                                        <!--<i:Interaction.Behaviors>
-                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployTo}"
-                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>-->
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployFrom}">
+                                        <!--
+                                            <i:Interaction.Behaviors>
+                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployFrom}"
+                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                        -->
                                         <AutomationProperties.AutomationId>
-                                            <MultiBinding StringFormat="UI_{0}_DeployToPermissionCheckBox_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                         FallbackValue="New" />
+                                            <MultiBinding StringFormat="UI_{0}_DeployFromPermissionCheckBox_AutoID">
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                     </CheckBox>
                                     <Path Grid.ColumnSpan="2"
-                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                              Data="M0,0.5 L1,0.5"
-                                              Stretch="Fill"
-                                              Stroke="Red"
-                                              StrokeThickness="1"/>
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Deploy From"
-                                            SortMemberPath="DeployFrom"
+                    <DataGridTemplateColumn Width="83"
                                             CanUserResize="False"
-                                            Width="83"
+                                            CellStyle="{StaticResource ServerPermissionsAdministratorCellStyle}"
+                                            Header="Administrator"
                                             HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource ServerPermissionsDeployFromCellStyle}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <CheckBox IsChecked="{Binding DeployFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
-                                              IsEnabled="{Binding EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipDeployFrom}">
-                                        <!--<i:Interaction.Behaviors>
-                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpDeployFrom}"
-                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>-->
-                                        <AutomationProperties.AutomationId>
-                                            <MultiBinding StringFormat="UI_{0}_DeployFromPermissionCheckBox_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                            FallbackValue="New" />
-                                            </MultiBinding>
-                                        </AutomationProperties.AutomationId>
-                                    </CheckBox>
-                                <Path Grid.ColumnSpan="2"
-                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                              Data="M0,0.5 L1,0.5"
-                                              Stretch="Fill"
-                                              Stroke="Red"
-                                              StrokeThickness="1"/>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Administrator"
                                             SortMemberPath="Administrator"
-                                            CanUserResize="False"
-                                            Width="83"
-                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource ServerPermissionsAdministratorCellStyle}">
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <CheckBox IsChecked="{Binding Administrator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                    <CheckBox IsChecked="{Binding Administrator,
+                                                                  Mode=TwoWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding EnableCellEditing}"
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
                                               ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipAdministrator}">
                                         <i:Interaction.Behaviors>
-                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpAdministrator}"
-                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            <help1:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpAdministrator}" />
                                         </i:Interaction.Behaviors>
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AdministratorPermissionCheckBox_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                            FallbackValue="New" />
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                     </CheckBox>
-                                <Path Grid.ColumnSpan="2"
-                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                              Data="M0,0.5 L1,0.5"
-                                              Stretch="Fill"
-                                              Stroke="Red"
-                                              StrokeThickness="1"/>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="View"
-                                            SortMemberPath="View"
-                                            CanUserResize="False"
-                                            Width="83"
-                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource ServerPermissionsViewCellStyle}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{StaticResource PermissionsGridCheckBoxStyle}"
-                                          IsEnabled="{Binding EnableCellEditing}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipView}">
-                                    <!--<i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpView}"
-                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>-->
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_ViewPermissionCheckBox_AutoID">
-                                            <Binding Path="WindowsGroup"
-                                                        FallbackValue="New" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </CheckBox>
-                                <Path Grid.ColumnSpan="2"
-                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                              Data="M0,0.5 L1,0.5"
-                                              Stretch="Fill"
-                                              Stroke="Red"
-                                              StrokeThickness="1"/>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Execute"
-                                            SortMemberPath="Execute"
-                                            CanUserResize="False"
-                                            Width="83"
-                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource ServerPermissionsExecuteCellStyle}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{StaticResource PermissionsGridCheckBoxStyle}"
-                                          IsEnabled="{Binding EnableCellEditing}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipExecute}">
-                                    <!--<i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpExecute}"
-                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>-->
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_ExecutePermissionCheckBox_AutoID">
-                                            <Binding Path="WindowsGroup"
-                                                        FallbackValue="New" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </CheckBox>
-                                <Path Grid.ColumnSpan="2"
-                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                              Data="M0,0.5 L1,0.5"
-                                              Stretch="Fill"
-                                              Stroke="Red"
-                                              StrokeThickness="1"/>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Contribute"
-                                            SortMemberPath="Contribute"
-                                            CanUserResize="False"
-                                            Width="83"
-                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource ServerPermissionsContributeCellStyle}">
-                        <DataGridTemplateColumn.CellTemplate>                            
-                            <DataTemplate>
-                                <Grid>
-                                <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{StaticResource PermissionsGridCheckBoxStyle}"
-                                          IsEnabled="{Binding EnableCellEditing}"
-                                          ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipContribute}">
-                                    <i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpContribute}"
-                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_ContributePermissionCheckBox_AutoID">
-                                            <Binding Path="WindowsGroup"
-                                                        FallbackValue="New" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                </CheckBox>
-                                <Path Grid.ColumnSpan="2"
-                                              Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                              Data="M0,0.5 L1,0.5"
-                                              Stretch="Fill"
-                                              Stroke="Red"
-                                              StrokeThickness="1"/>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    
-                     <DataGridTemplateColumn CellStyle="{StaticResource ServerPermissionsRemoveRowCellStyle}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Grid.Column="1"
-                                        AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
-                                        Margin="0,0,2,0"
-                                        Command="{Binding RemoveRow}"
-                                        ToolTip="Removes Permissions">
-                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
-                                           Height="15"
-                                           Width="15" />
-                                </Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    
-
-                </DataGrid.Columns>
-
-            </DataGrid>
-        </Grid>
-
-        <GridSplitter Grid.Row="1"
-                      Grid.Column="0"
-                      Grid.ColumnSpan="2"
-                      Background="#C1C3C5"
-                      HorizontalAlignment=" Stretch"
-                      VerticalAlignment="Center"
-                      Height="8" />
-
-        <Grid Grid.Row="2"
-              Grid.Column="0"
-              Margin="0,10,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <TextBlock Text="Resource Permissions"
-                       Grid.Row="0"
-                       Margin="5,0,0,0"
-                       Style="{StaticResource Dev2HeadingTextBlockStyle}" />
-
-            <core:ActivityDesignerToggleButton x:Name="ResourceHelpToggleButton"
-                                               Grid.Row="0"
-                                               Width="20"
-                                               Height="20"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Bottom"
-                                               Margin="0,0,0,1"
-                                               ToolTip="{Binding ResourceHelpToggle.ToolTip}"
-                                               IsChecked="{Binding ResourceHelpToggle.IsChecked, Mode=TwoWay}"
-                                               Content="{Binding ResourceHelpToggle.Image, Mode=TwoWay}"
-                                               Style="{StaticResource ActivityToggleButtonStyle}" />
-
-            <DataGrid Grid.Row="1"
-                      x:Name="ResourcePermissionsDataGrid"
-                      ItemsSource="{Binding ResourcePermissions}"
-                      Style="{StaticResource PermissionsGridStyle}"
-                      RowStyle="{StaticResource PermissionsGridRowStyle}"
-                      Height="Auto"
-                      Sorting="OnDataGridSorting"
-                      LoadingRow="DataGrid_LoadingRow">
-
-                <DataGrid.Columns>
-
-                    <DataGridTemplateColumn Header="Resources"
-                                            SortMemberPath="ResourceName"
-                                            MinWidth="100"
-                                            Width="*"
-                                            HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            AutomationProperties.AutomationId="UI_ResourcePermissionsCell_AutoID"
-                                            CellStyle="{StaticResource ResourceColumnCellStyle}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0"
-                                               Text="{Binding ResourceName, Mode=TwoWay}"
-                                               Style="{StaticResource PermissionsGridTextBlockStyle}"
-                                               ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
-                                      <i:Interaction.Behaviors>
-                                        <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpResource}"
-                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                    </i:Interaction.Behaviors>
-                                    <AutomationProperties.AutomationId>
-                                        <MultiBinding StringFormat="UI_{0}_AddResourceTextBox_AutoID">
-                                            <Binding Path="ResourceName"
-                                                     FallbackValue="New" />
-                                        </MultiBinding>
-                                    </AutomationProperties.AutomationId>
-                                    </TextBlock>
-                                    <Button Grid.Column="1"
-                                            Style="{StaticResource PermissionsGridResourceButtonStyle}"
-                                            IsEnabled="{Binding EnableCellEditing}"
-                                            ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
-                                        <AutomationProperties.AutomationId>
-                                            <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
-                                                <Binding Path="ResourceName"
-                                                         FallbackValue="New" />
-                                            </MultiBinding>
-                                        </AutomationProperties.AutomationId>
-                                    </Button>
                                     <Path Grid.ColumnSpan="2"
-                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                           Data="M0,0.5 L1,0.5"
                                           Stretch="Fill"
                                           Stroke="Red"
-                                          StrokeThickness="1" />
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Windows Group"
-                                            SortMemberPath="WindowsGroup"
-                                            MinWidth="100"
-                                            Width="*"
-                                            HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            AutomationProperties.AutomationId="UI_WindowsGroupsCell_AutoID"
-                                            CellStyle="{StaticResource ResourceWindowsGroupColumnCellStyle}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox Text="{Binding WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                             Style="{StaticResource PermissionsGridTextBoxStyle}"
-                                             IsEnabled="{Binding EnableCellEditing}"
-                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}">
-                                        <i:Interaction.Behaviors>
-                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpWindowsGroup}"
-                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
-                                        <AutomationProperties.AutomationId>
-                                            <MultiBinding StringFormat="UI_{0}_AddWindowsGroupsTextBox_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                         FallbackValue="New" />
-                                            </MultiBinding>
-                                        </AutomationProperties.AutomationId>
-                                    </TextBox>
-                                    <Button Grid.Column="1"
-                                            Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
-                                            IsEnabled="{Binding EnableCellEditing}"
-                                            ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}">
-                                        <AutomationProperties.AutomationId>
-                                            <MultiBinding StringFormat="UI_{0}_AddWindowsGroupsButton_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                         FallbackValue="New" />
-                                            </MultiBinding>
-                                        </AutomationProperties.AutomationId>
-                                    </Button>
-                                    <Path Grid.ColumnSpan="2"
-                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                          Data="M0,0.5 L1,0.5"
-                                          Stretch="Fill"
-                                          Stroke="Red"
-                                          StrokeThickness="1" />
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="View"
-                                            SortMemberPath="View"
+                    <DataGridTemplateColumn Width="83"
                                             CanUserResize="False"
-                                            Width="83"
+                                            CellStyle="{StaticResource ServerPermissionsViewCellStyle}"
+                                            Header="View"
                                             HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource ServerPermissionsViewCellStyle}">
+                                            SortMemberPath="View"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <CheckBox IsChecked="{Binding View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    <CheckBox IsChecked="{Binding View,
+                                                                  Mode=TwoWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding EnableCellEditing}"
                                               Style="{StaticResource PermissionsGridCheckBoxStyle}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipView}">
-                                        <i:Interaction.Behaviors>
-                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpView}"
-                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipView}">
+                                        <!--
+                                            <i:Interaction.Behaviors>
+                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpView}"
+                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                        -->
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_ViewPermissionCheckBox_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                            FallbackValue="New" />
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                     </CheckBox>
                                     <Path Grid.ColumnSpan="2"
-                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                           Data="M0,0.5 L1,0.5"
                                           Stretch="Fill"
                                           Stroke="Red"
-                                          StrokeThickness="1" />
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Execute"
-                                            SortMemberPath="Execute"
+                    <DataGridTemplateColumn Width="83"
                                             CanUserResize="False"
-                                            Width="83"
+                                            CellStyle="{StaticResource ServerPermissionsExecuteCellStyle}"
+                                            Header="Execute"
                                             HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource ServerPermissionsExecuteCellStyle}">
+                                            SortMemberPath="Execute"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <CheckBox IsChecked="{Binding Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                    <CheckBox IsChecked="{Binding Execute,
+                                                                  Mode=TwoWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipExecute}">
-                                        <i:Interaction.Behaviors>
-                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpExecute}"
-                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                        </i:Interaction.Behaviors>
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipExecute}">
+                                        <!--
+                                            <i:Interaction.Behaviors>
+                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpExecute}"
+                                            DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                        -->
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_ExecutePermissionCheckBox_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                            FallbackValue="New" />
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                     </CheckBox>
                                     <Path Grid.ColumnSpan="2"
-                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                           Data="M0,0.5 L1,0.5"
                                           Stretch="Fill"
                                           Stroke="Red"
-                                          StrokeThickness="1" />
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="Contribute"
-                                            SortMemberPath="Contribute"
+                    <DataGridTemplateColumn Width="83"
                                             CanUserResize="False"
-                                            Width="83"
+                                            CellStyle="{StaticResource ServerPermissionsContributeCellStyle}"
+                                            Header="Contribute"
                                             HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}"
-                                            CellStyle="{StaticResource ServerPermissionsContributeCellStyle}">
+                                            SortMemberPath="Contribute"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <CheckBox IsChecked="{Binding Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                    <CheckBox IsChecked="{Binding Contribute,
+                                                                  Mode=TwoWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{Binding EnableCellEditing}"
-                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipContribute}">
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityServerToolTipContribute}">
                                         <i:Interaction.Behaviors>
-                                            <help1:HelpSetter Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpContribute}"
-                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            <help1:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" Text="{x:Static help:HelpTextResources.SettingsSecurityServerHelpContribute}" />
                                         </i:Interaction.Behaviors>
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_ContributePermissionCheckBox_AutoID">
-                                                <Binding Path="WindowsGroup"
-                                                            FallbackValue="New" />
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                     </CheckBox>
                                     <Path Grid.ColumnSpan="2"
-                                          Visibility="{Binding IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                                           Data="M0,0.5 L1,0.5"
                                           Stretch="Fill"
                                           Stroke="Red"
-                                          StrokeThickness="1" />
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    
-                    <DataGridTemplateColumn CellStyle="{StaticResource ResourcePermissionsRemoveRowCellStyle}">
+
+                    <DataGridTemplateColumn CellStyle="{StaticResource ServerPermissionsRemoveRowCellStyle}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1"
-                                        AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
                                         Margin="0,0,2,0"
+                                        AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
                                         Command="{Binding RemoveRow}"
                                         ToolTip="Removes Permissions">
-                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
+                                    <Image Width="15"
                                            Height="15"
-                                           Width="15" />
+                                           Source="{StaticResource RemoveUnusedVariable-32}" />
                                 </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+
 
                 </DataGrid.Columns>
 
@@ -966,15 +654,299 @@
 
         <help:HelpControl Grid.Row="0"
                           Grid.Column="1"
-                          VerticalAlignment="Top"
                           Width="175"
-                          Visibility="{Binding IsServerHelpVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                          VerticalAlignment="Top"
+                          Visibility="{Binding IsServerHelpVisible,
+                                               Mode=TwoWay,
+                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+
+        <GridSplitter Grid.Row="1"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Height="8"
+                      HorizontalAlignment=" Stretch"
+                      VerticalAlignment="Center"
+                      Background="#C1C3C5" />
+
+        <Grid Grid.Row="2"
+              Grid.Column="0"
+              Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Margin="5,0,0,0"
+                       Style="{StaticResource Dev2HeadingTextBlockStyle}"
+                       Text="Resource Permissions" />
+
+            <core:ActivityDesignerToggleButton x:Name="ResourceHelpToggleButton"
+                                               Grid.Row="0"
+                                               Width="20"
+                                               Height="20"
+                                               Margin="0,0,0,1"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Bottom"
+                                               Content="{Binding ResourceHelpToggle.Image,
+                                                                 Mode=TwoWay}"
+                                               IsChecked="{Binding ResourceHelpToggle.IsChecked,
+                                                                   Mode=TwoWay}"
+                                               Style="{StaticResource ActivityToggleButtonStyle}"
+                                               ToolTip="{Binding ResourceHelpToggle.ToolTip}" />
+
+            <DataGrid x:Name="ResourcePermissionsDataGrid"
+                      Grid.Row="1"
+                      Height="Auto"
+                      ItemsSource="{Binding ResourcePermissions}"
+                      LoadingRow="DataGrid_LoadingRow"
+                      RowStyle="{StaticResource PermissionsGridRowStyle}"
+                      Sorting="OnDataGridSorting"
+                      Style="{StaticResource PermissionsGridStyle}">
+
+                <DataGrid.Columns>
+
+                    <DataGridTemplateColumn Width="*"
+                                            MinWidth="100"
+                                            AutomationProperties.AutomationId="UI_ResourcePermissionsCell_AutoID"
+                                            CellStyle="{StaticResource ResourceColumnCellStyle}"
+                                            Header="Resources"
+                                            HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"
+                                            SortMemberPath="ResourceName"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Path Grid.ColumnSpan="2"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                                    <TextBlock Grid.Column="0"
+                                               Style="{StaticResource PermissionsGridTextBlockStyle}"
+                                               Text="{Binding ResourceName,
+                                                              Mode=TwoWay}"
+                                               ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
+                                        <i:Interaction.Behaviors>
+                                            <help1:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpResource}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddResourceTextBox_AutoID">
+                                                <Binding FallbackValue="New" Path="ResourceName" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </TextBlock>
+                                    <Button Grid.Column="1"
+                                            IsEnabled="{Binding EnableCellEditing}"
+                                            Style="{StaticResource PermissionsGridResourceButtonStyle}"
+                                            ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipResource}">
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
+                                                <Binding FallbackValue="New" Path="ResourceName" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="*"
+                                            MinWidth="100"
+                                            AutomationProperties.AutomationId="UI_WindowsGroupsCell_AutoID"
+                                            CellStyle="{StaticResource ResourceWindowsGroupColumnCellStyle}"
+                                            Header="Windows Group"
+                                            HeaderStyle="{StaticResource PermissionsGridHeaderStyle}"
+                                            SortMemberPath="WindowsGroup"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox IsEnabled="{Binding EnableCellEditing}"
+                                             Style="{StaticResource PermissionsGridTextBoxStyle}"
+                                             Text="{Binding WindowsGroup,
+                                                            Mode=TwoWay,
+                                                            UpdateSourceTrigger=LostFocus}"
+                                             ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}">
+                                        <i:Interaction.Behaviors>
+                                            <help1:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpWindowsGroup}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddWindowsGroupsTextBox_AutoID">
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </TextBox>
+                                    <Path Grid.ColumnSpan="2"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                                    <Button Grid.Column="1"
+                                            IsEnabled="{Binding EnableCellEditing}"
+                                            Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
+                                            ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipWindowsGroup}">
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddWindowsGroupsButton_AutoID">
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="83"
+                                            CanUserResize="False"
+                                            CellStyle="{StaticResource ServerPermissionsViewCellStyle}"
+                                            Header="View"
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            SortMemberPath="View"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding View,
+                                                                  Mode=TwoWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding EnableCellEditing}"
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipView}">
+                                        <i:Interaction.Behaviors>
+                                            <help1:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpView}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_ViewPermissionCheckBox_AutoID">
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </CheckBox>
+                                    <Path Grid.ColumnSpan="2"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="83"
+                                            CanUserResize="False"
+                                            CellStyle="{StaticResource ServerPermissionsExecuteCellStyle}"
+                                            Header="Execute"
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            SortMemberPath="Execute"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding Execute,
+                                                                  Mode=TwoWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding EnableCellEditing}"
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipExecute}">
+                                        <i:Interaction.Behaviors>
+                                            <help1:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpExecute}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_ExecutePermissionCheckBox_AutoID">
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </CheckBox>
+                                    <Path Grid.ColumnSpan="2"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="83"
+                                            CanUserResize="False"
+                                            CellStyle="{StaticResource ServerPermissionsContributeCellStyle}"
+                                            Header="Contribute"
+                                            HeaderStyle="{StaticResource PermissionsGridCheckBoxHeaderStyle}"
+                                            SortMemberPath="Contribute"
+                                            d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding Contribute,
+                                                                  Mode=TwoWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding EnableCellEditing}"
+                                              Style="{StaticResource PermissionsGridCheckBoxStyle}"
+                                              ToolTip="{x:Static help:HelpTextResources.SettingsSecurityResourceToolTipContribute}">
+                                        <i:Interaction.Behaviors>
+                                            <help1:HelpSetter DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" Text="{x:Static help:HelpTextResources.SettingsSecurityResourceHelpContribute}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_ContributePermissionCheckBox_AutoID">
+                                                <Binding FallbackValue="New" Path="WindowsGroup" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </CheckBox>
+                                    <Path Grid.ColumnSpan="2"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"
+                                          Visibility="{Binding IsDeleted,
+                                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn CellStyle="{StaticResource ResourcePermissionsRemoveRowCellStyle}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Grid.Column="1"
+                                        Margin="0,0,2,0"
+                                        AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
+                                        Command="{Binding RemoveRow}"
+                                        ToolTip="Removes Permissions">
+                                    <Image Width="15"
+                                           Height="15"
+                                           Source="{StaticResource RemoveUnusedVariable-32}" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </Grid>
 
         <help:HelpControl Grid.Row="2"
                           Grid.Column="1"
-                          VerticalAlignment="Top"
                           Width="175"
-                          Visibility="{Binding IsResourceHelpVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                          VerticalAlignment="Top"
+                          Visibility="{Binding IsResourceHelpVisible,
+                                               Mode=TwoWay,
+                                               Converter={StaticResource BoolToVisibilityConverterPositive}}" />
 
     </Grid>
 </UserControl>

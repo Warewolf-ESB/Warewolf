@@ -11,7 +11,7 @@
     <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
         <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="MinHeight" Value="24" />
         <Setter Property="Padding" Value="3,1,3,1" />
