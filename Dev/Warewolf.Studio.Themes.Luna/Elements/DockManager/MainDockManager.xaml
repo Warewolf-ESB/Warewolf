@@ -19,6 +19,13 @@
         <!--  <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/DockManager/DockManagerGeneric.xaml" />  -->
     </ResourceDictionary.MergedDictionaries>
 
+    <!--BRUSHES-->
+
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionFillKey}" presentationOptions:Freeze="true" Color="{StaticResource WarewolfHeaderGrey}" />
+    <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneHeaderNotActiveTextFillKey}" presentationOptions:Freeze="true" Color="{StaticResource WarewolfMenuGrey}" />
+
+
+
     <!--  MAIN MENU DOCK MANAGER STYLING  -->
     <Style x:Key="DockmangerMenuPaneStyle" TargetType="{x:Type igDock:ContentPane}">
         <Style.Resources>
@@ -33,9 +40,126 @@
     <Style x:Key="DockmangerToolPaneStyle" TargetType="{x:Type igDock:ContentPane}">
         <Style.Resources>
             <Style TargetType="{x:Type igDock:PaneHeaderPresenter}">
-                <Setter Property="Height" Value="100" />
-                
+                <Setter Property="Height" Value="35" />
+                <Setter Property="Foreground" Value="{StaticResource WareWolfButtonBrush}" />
+                <Setter Property="Background" Value="{StaticResource WarewolfHeaderGreyBrush}" />
+                <Setter Property="Padding" Value="0,0,0,0" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type igDock:PaneHeaderPresenter}">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}"
+                    SnapsToDevicePixels="True"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+
+                                    <DockPanel Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <Button x:Name="closeBtn"
+                                  DockPanel.Dock="Right"
+                                  Visibility="{Binding Path=Pane.CloseButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                  Command="{x:Static igDock:ContentPaneCommands.Close}"
+                                  CommandParameter="{TemplateBinding Pane}"
+                                  Style="{DynamicResource {x:Static igDock:PaneHeaderPresenter.CloseButtonStyleKey}}" 
+                                  />
+                                        <!-- AS 6/24/11 FloatingWindowCaptionSource -->
+                                        <Button x:Name="maxBtn" 
+                                  DockPanel.Dock="Right"
+                                  Visibility="Collapsed"
+                                  Command="{x:Static igWindows:ToolWindow.MaximizeCommand}"
+                                  CommandTarget="{Binding Path=(igWindows:ToolWindow.ToolWindow), RelativeSource={RelativeSource Self}}"
+                                  Style="{DynamicResource {x:Static igDock:PaneHeaderPresenter.MaximizeButtonStyleKey}}" 
+                                  />
+                                        <!-- AS 6/24/11 FloatingWindowCaptionSource -->
+                                        <Button x:Name="minBtn" 
+                                  DockPanel.Dock="Right"
+                                  Visibility="Collapsed"
+                                  Command="{x:Static igWindows:ToolWindow.MinimizeCommand}"
+                                  CommandTarget="{Binding Path=(igWindows:ToolWindow.ToolWindow), RelativeSource={RelativeSource Self}}"
+                                  Style="{DynamicResource {x:Static igDock:PaneHeaderPresenter.MinimizeButtonStyleKey}}" 
+                                  />
+                                        <!--<Menu x:Name="positionMenu" 
+                                    Visibility="{Binding Path=Pane.WindowPositionMenuVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                    VerticalAlignment="Top" 
+                                    DockPanel.Dock="Right" 
+                                    Style="{StaticResource RootMenuStyle}">
+                                    <MenuItem x:Name="PART_PositionMenuItem"
+                                    Style="{DynamicResource {x:Static igDock:PaneHeaderPresenter.PositionMenuItemStyleKey}}" />
+                                </Menu>-->
+
+                                        <Button x:Name="unpinBtn" 
+                                  DockPanel.Dock="Right"
+                                  Visibility="{Binding Path=Pane.PinButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                  Command="{x:Static igDock:ContentPaneCommands.TogglePinnedState}"
+                                  CommandParameter="{TemplateBinding Pane}"
+                                  Style="{DynamicResource {x:Static igDock:PaneHeaderPresenter.PinButtonStyleKey}}" 
+                                  />
+
+                                        <ContentPresenter 
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                   />
+                                    </DockPanel>
+                                </Border>
+                                <Border x:Name="innerBorderHighlight" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionInnerBorderFillKey}}" />
+                            </Grid>
+                            <!--<ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=Pane.IsActivePane, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneActiveCaptionFillKey}}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}}" />
+                            <Setter TargetName="innerBorderHighlight" Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneActiveCaptionInnerBorderFillKey}}" />
+
+                            -->
+                            <!-- AS 4/7/08 BR31678
+                                 Foreground is an inherited property so we don't have to set it on the buttons themselves. Doing so
+                                 is actually leading to an exception in the wpf framework.
+                            <Setter Property="Foreground" TargetName="closeBtn" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}}" />
+                            <Setter Property="Foreground" TargetName="unpinBtn" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}}" />
+                            <Setter Property="Foreground" TargetName="PART_PositionMenuItem" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}}" />
+                            -->
+                            <!--
+                        </DataTrigger>
+
+                        -->
+                            <!-- AS 6/24/11 FloatingWindowCaptionSource -->
+                            <!--
+                        <DataTrigger Binding="{Binding Path=Pane.IsProvidingFloatingWindowCaption, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
+                            <Setter TargetName="maxBtn" Property="Visibility" Value="{Binding Path=(igWindows:ToolWindow.ToolWindow).MaximizeButtonVisibility, RelativeSource={x:Static RelativeSource.Self}}" />
+                            <Setter TargetName="minBtn" Property="Visibility" Value="{Binding Path=(igWindows:ToolWindow.ToolWindow).MinimizeButtonVisibility, RelativeSource={x:Static RelativeSource.Self}}" />
+                        </DataTrigger>
+                        <Trigger Property="igDock:XamDockManager.PaneLocation"  Value="FloatingOnly">
+                            <Setter TargetName="unpinBtn" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="igDock:XamDockManager.PaneLocation"  Value="Floating">
+                            <Setter TargetName="unpinBtn" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        -->
+                            <!-- AS 1/4/12 TFS85418 -->
+                            <!--
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Path=Pane.IsProvidingFloatingWindowCaption, RelativeSource={x:Static RelativeSource.Self}}" Value="True" />
+                                <Condition Binding="{Binding Path=(igWindows:ToolWindow.ToolWindow).WindowState, RelativeSource={x:Static RelativeSource.Self}}" Value="Minimized" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="closeBtn" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="unpinBtn" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="maxBtn" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="minBtn" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="positionMenu" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="positionMenu" Property="Visibility" Value="Collapsed" />
+                        </MultiDataTrigger>
+                        <DataTrigger Binding="{Binding Path=(igWindows:ToolWindow.ToolWindow).WindowState, RelativeSource={x:Static RelativeSource.Self}}" Value="Minimized">
+                            <Setter TargetName="minBtn" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=(igWindows:ToolWindow.ToolWindow).WindowState, RelativeSource={x:Static RelativeSource.Self}}" Value="Maximized">
+                            <Setter TargetName="maxBtn" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>-->
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
+
         </Style.Resources>
     </Style>
 
