@@ -26,11 +26,11 @@
             }
         }
         
-        public static string Workflows
+        public static string Workspace
         {
             get
             {
-                return "Workflows";
+                return "Workspace";
             }
         }
     }
