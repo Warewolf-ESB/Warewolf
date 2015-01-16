@@ -24,7 +24,7 @@
         <Setter Property="MinWidth" Value="30" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="Button" x:Name="OldStyleButton">
+                <ControlTemplate x:Name="OldStyleButton" TargetType="Button">
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">

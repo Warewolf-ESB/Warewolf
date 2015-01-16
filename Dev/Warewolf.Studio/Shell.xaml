@@ -1,28 +1,30 @@
 ﻿<Window x:Class="Warewolf.Studio.Shell"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:Warewolf.Studio.Core.Converters;assembly=Warewolf.Studio.Core"
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         xmlns:dockManager="http://infragistics.com/DockManager"
-        xmlns:regions="http://www.codeplex.com/CompositeWPF"
-        xmlns:converters="clr-namespace:Warewolf.Studio.Core.Converters;assembly=Warewolf.Studio.Core"
         xmlns:igWindows="http://infragistics.com/Windows"
+        xmlns:regions="http://www.codeplex.com/CompositeWPF"
         x:Name="MainWindow"
         Title="Warewolf Studio"
         WindowState="Maximized">
 
+
+
     <Window.Resources>
 
             <Style TargetType="{x:Type igWindows:XamPager}">
-                <EventSetter Event="Loaded" Handler="UnpinnedTabArea_Loaded"/>
+            <EventSetter Event="Loaded" Handler="UnpinnedTabArea_Loaded" />
             </Style>
-            <converters:HeightConverter x:Key="HeightConverter"/>
+        <converters:HeightConverter x:Key="HeightConverter" />
             <Style TargetType="{x:Type dockManager:ContentPane}">
-                <EventSetter Event="MouseLeave" Handler="ContentPane_MouseLeave"/>
+            <EventSetter Event="MouseLeave" Handler="ContentPane_MouseLeave" />
             </Style>
             <Style TargetType="{x:Type dockManager:PaneTabItem}">
-                <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type dockManager:UnpinnedTabItemPanel}}, Path=ActualHeight, Converter={StaticResource HeightConverter}}"/>
-                <EventSetter Event="Loaded" Handler="PaneTabItem_Loaded"/>
-                <Setter Property="Width" Value="1"/>
+            <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type dockManager:UnpinnedTabItemPanel}}, Path=ActualHeight, Converter={StaticResource HeightConverter}}" />
+            <EventSetter Event="Loaded" Handler="PaneTabItem_Loaded" />
+            <Setter Property="Width" Value="1" />
             </Style>
             <Style TargetType="dockManager:UnpinnedTabFlyoutSplitter">
                 <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
@@ -30,6 +32,7 @@
             <Style TargetType="dockManager:DockedPaneSplitter">
                 <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
             </Style>
+
 
     </Window.Resources>
 
@@ -55,18 +58,18 @@
                                                SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedLeft">
                             <dockManager:ContentPane x:Name="Menu"  
-                                                     Height="Auto"
-                                Style="{DynamicResource DockmangerMenuPaneStyle}"
-                                                     CloseButtonVisibility="Hidden"
-								WindowPositionMenuVisibility="Hidden"
-								PinButtonVisibility="Hidden"
-								AllowInDocumentHost="False"
-								AllowDocking="False"
-								AllowFloatingOnly="False"
-                                IsPinned="True"
                                                      HorizontalContentAlignment="Stretch"
                                                      VerticalContentAlignment="Stretch"
-                                regions:RegionManager.RegionName="{x:Static core:RegionNames.Menu}" ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+								AllowDocking="False"
+								AllowFloatingOnly="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                IsPinned="True"
+                                                     PinButtonVisibility="Hidden"
+                                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                     Style="{DynamicResource DockmangerMenuPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
+                                                     regions:RegionManager.RegionName="{x:Static core:RegionNames.Menu}" />
                         </dockManager:SplitPane>
                         
                         

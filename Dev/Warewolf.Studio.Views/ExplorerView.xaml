@@ -2,10 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dockManager="http://infragistics.com/DockManager"
              xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:dockManager="http://infragistics.com/DockManager"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=dummyModels:DummyExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -14,7 +14,7 @@
              mc:Ignorable="d">
 
 
-    <Grid x:Name="LayoutRoot" >
+    <Grid x:Name="LayoutRoot">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -28,19 +28,23 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <!--  SPACER  -->
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" >
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    Orientation="Vertical">
             <Image Width="5"
                    Height="10"
                    Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
         <!--  URI LOOKUP  -->
-        <StackPanel Grid.Row="1"  Grid.Column="1" Style="{StaticResource ExplorerStackPanel}">
-                    
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Style="{StaticResource ExplorerStackPanel}">
+
             <TextBox Text="Localhost" />
 
             <Button Width="25"
@@ -58,14 +62,18 @@
         </StackPanel>
 
         <!--  SPACER  -->
-        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical">
+        <StackPanel Grid.Row="2"
+                    Grid.Column="1"
+                    Orientation="Vertical">
             <Image Width="5"
                    Height="15"
                    Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
         <!--  SERVICE FILTER  -->
-        <StackPanel Grid.Row="3" Grid.Column="1" Style="{StaticResource ExplorerStackPanel}">
+        <StackPanel Grid.Row="3"
+                    Grid.Column="1"
+                    Style="{StaticResource ExplorerStackPanel}">
             <TextBox Text="Filter" />
 
             <Button Width="25"
@@ -83,14 +91,18 @@
         </StackPanel>
 
         <!--  SPACER  -->
-        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Vertical">
+        <StackPanel Grid.Row="4"
+                    Grid.Column="1"
+                    Orientation="Vertical">
             <Image Width="5"
                    Height="10"
                    Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
         <!--  URL FILTER  -->
-        <StackPanel Grid.Row="5" Grid.Column="1" Style="{StaticResource ExplorerStackPanel}">
+        <StackPanel Grid.Row="5"
+                    Grid.Column="1"
+                    Style="{StaticResource ExplorerStackPanel}">
             <Label Margin="5,0,2,0"
                    Content="Localhost"
                    FontWeight="Medium" />
@@ -98,13 +110,16 @@
         </StackPanel>
 
         <!--  SPACER  -->
-        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Vertical">
+        <StackPanel Grid.Row="6"
+                    Grid.Column="1"
+                    Orientation="Vertical">
             <Image Width="5"
                    Height="5"
                    Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
-        <ig:XamDataTree Grid.Row="7" Grid.Column="1"
+        <ig:XamDataTree Grid.Row="7"
+                        Grid.Column="1"
                         DisplayMemberPath="DisplayName"
                         ItemsSource="{Binding Environments}"
                         NodeLineVisibility="Hidden">
