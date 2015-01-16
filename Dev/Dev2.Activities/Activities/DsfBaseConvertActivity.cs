@@ -145,11 +145,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // current append indexes are alright ;)
                             nonFramedTokens.Add(item.ToExpression);
                         }
-<<<<<<< HEAD
-
-=======
-                       
->>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
                         IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
                         var fieldName = item.FromExpression;
                         fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
@@ -202,11 +197,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     }
-<<<<<<< HEAD
-                                    toUpsert.Add(expression, val);
-=======
-                                    toUpsert.Add(expression, val);                                   
->>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
+                                toUpsert.Add(expression, val);
                                 }
                             }
                         }
