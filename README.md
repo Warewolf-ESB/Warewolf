@@ -1,5 +1,7 @@
 ![warewolf logo](http://www.warewolf.io/images/warewolf-logo.png)
 
+**NOTE:** Warewolf is currently under going some major code changes as well as a [Studio redesign](http://warewolf.io/ESB-blog/big-ui-changes-coming-to-warewolf-studio/). For that reason we have set the default branch to development-stable as it the last stable point in the code base before the overhaul began. Please use that branch if you need a stable build. If you want to see how things are progressing with the redesign feel free to grab the development branch.
+
 **What is Warewolf ESB all about?**
 
 Tired of complicated ESBs? Join the pack! 
