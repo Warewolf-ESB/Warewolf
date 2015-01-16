@@ -2,9 +2,12 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using Infragistics.Themes;
 using Infragistics.Windows;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
+using Warewolf.Studio.Themes.Luna;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio
 {
@@ -13,11 +16,21 @@ namespace Warewolf.Studio
     /// </summary>
     public partial class Shell : Window
     {
-        public Shell()
+        public Shell(ShellViewModel shellViewModel)
         {
             InitializeComponent();
+            ThemeManager.ApplicationTheme = new LunaTheme(); 
+            DataContext = shellViewModel;            
+            Loaded+=OnLoaded;
+        }
             
-            
+        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var viewModel = DataContext as ShellViewModel;
+            if(viewModel != null)
+            {
+                viewModel.Initialize();
+            }
         }
 
         private void ContentPane_MouseLeave(object sender, MouseEventArgs e)
