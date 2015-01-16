@@ -6,6 +6,8 @@
         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:igWindows="http://infragistics.com/Windows"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+        xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
         x:Name="MainWindow"
         Title="Warewolf Studio"
         WindowState="Maximized">
@@ -32,8 +34,9 @@
             <Style TargetType="dockManager:DockedPaneSplitter">
                 <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
             </Style>
-
-
+        <DataTemplate DataType="{x:Type interfaces:IServiceDesignerViewModel}">
+            <views:ServiceDesignerView/>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>

@@ -170,6 +170,9 @@
     <Compile Include="Variable List\VariableListView.xaml.cs">
       <DependentUpon>VariableListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesignerView.xaml.cs">
+      <DependentUpon>ServiceDesignerView.xaml</DependentUpon>
+    </Compile>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -198,6 +201,10 @@
     <Page Include="Variable List\VariableListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ServiceDesignerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

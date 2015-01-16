@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio;
@@ -184,6 +185,46 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             get;
             set;
+        }
+        /// <summary>
+        /// Should the hyperlink to execute the service in browser
+        /// </summary>
+        public bool IsServiceLinkVisible
+        {
+            get
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// Command to execute when the hyperlink is clicked
+        /// </summary>
+        public ICommand OpenWorkflowLinkCommand
+        {
+            get
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// The hyperlink text shown
+        /// </summary>
+        public string DisplayWorkflowLink
+        {
+            get
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// The designer for the resource
+        /// </summary>
+        public IDesignerView DesignerView
+        {
+            get
+            {
+                return null;
+            }
         }
 
         #endregion

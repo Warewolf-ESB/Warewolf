@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Warewolf.Studio.Views.ServiceDesignerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+             AutomationProperties.AutomationId="UI_WorkflowDesigner_AutoID"
+             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type interfaces:IServiceDesignerViewModel}}">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                               TextWrapping="Wrap"
+                               VerticalAlignment="Top"
+                               Visibility="{Binding IsServiceLinkVisible, Converter={StaticResource BoolToVisibilityConverter}}"
+                               HorizontalAlignment="Center">
+                                <Hyperlink Command="{Binding Path=OpenWorkflowLinkCommand}"
+                                           CommandParameter="{Binding}">
+                                    <Run Text="{Binding Path=DisplayWorkflowLink,Mode=OneWay}" />
+                                </Hyperlink>
+            </TextBlock>
+            <ContentControl Grid.Row="1"
+                                    Content="{Binding Path=DesignerView}"
+                                   >
+            </ContentControl>
+        </Grid>
+</UserControl>
