@@ -34,19 +34,27 @@
 
     <!--  MAIN MENU DOCK MANAGER STYLING  -->
 
-    <!--MAIN MENU BUTTON STYLE-->
+    <!--  MAIN MENU BUTTON STYLE  -->
+
+    <LinearGradientBrush x:Key="DarkBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Offset="0.0" Color="#FFF" />
+                <GradientStop Offset="1.0" Color="#AAA" />
+            </GradientStopCollection>
+        </GradientBrush.GradientStops>
+    </LinearGradientBrush>
 
     <Style x:Key="MainMenuButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="30" />
         <Setter Property="Height" Value="30" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Margin" Value="3,3,3,3" />
-        <Setter Property="Background" Value="Olive"/>
+        <Setter Property="Background" Value="Olive" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Grid>
-                    </Grid>
+                    <Grid />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -59,14 +67,19 @@
                 <Setter Property="MinHeight" Value="0" />
                 <Setter Property="MaxHeight" Value="0" />
                 <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Background" Value="Black" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type igDock:PaneHeaderPresenter}">
                             <Grid>
 
+                                <DockPanel Height="400"
+                                           Margin="{TemplateBinding Padding}"
+                                           Background="{StaticResource WareWolfHeaderButtonBrush}"
+                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
                             </Grid>
+
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -76,7 +89,7 @@
 
     <!--  TOOL WINDOW DOCK MANAGER STYLING  -->
     <Style x:Key="DockmangerToolPaneStyle" TargetType="{x:Type igDock:ContentPane}">
-        <Setter Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}"/>
+        <Setter Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}" />
         <Style.Resources>
             <Style TargetType="{x:Type igDock:PaneHeaderPresenter}">
                 <Setter Property="Height" Value="35" />

@@ -2,11 +2,9 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using Infragistics.Themes;
 using Infragistics.Windows;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
-using Warewolf.Studio.Themes.Luna;
 
 namespace Warewolf.Studio
 {
@@ -18,11 +16,7 @@ namespace Warewolf.Studio
         public Shell()
         {
             InitializeComponent();
-            ThemeManager.ApplicationTheme = new LunaTheme();
-            //StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata
-            //{
-            //    DefaultValue = FindResource(typeof(Window))
-            //});
+            
             
         }
 

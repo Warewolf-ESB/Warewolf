@@ -2,12 +2,14 @@
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Infragistics.Themes;
 using Infragistics.Windows.DockManager;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.Core.View_Interfaces;
+using Warewolf.Studio.Themes.Luna;
 using Warewolf.Studio.ViewModels.DummyModels;
 using Warewolf.Studio.Views;
 
@@ -29,6 +31,7 @@ namespace Warewolf.Studio
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
+            ThemeManager.ApplicationTheme = new LunaTheme();
             Container.RegisterInstance<IExplorerViewModel>(new DummyExplorerViewModel());
             Container.RegisterInstance<IToolboxViewModel>(new DummyToolboxViewModel());
             Container.RegisterInstance<IMenuViewModel>(new DummyMenuViewModel());
