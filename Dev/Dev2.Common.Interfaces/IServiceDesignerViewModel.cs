@@ -1,14 +1,11 @@
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IServiceDesignerViewModel
+    public interface IWorkflowServiceDesignerViewModel : IServiceDesignerViewModel
     {
-        /// <summary>
-        /// The resource that is being represented
-        /// </summary>
-        IResource Resource { get; set; }
         /// <summary>
         /// Should the hyperlink to execute the service in browser
         /// </summary>
@@ -21,6 +18,14 @@ namespace Dev2.Common.Interfaces
         /// The hyperlink text shown
         /// </summary>
         string DisplayWorkflowLink { get; }
+    }
+
+    public interface IServiceDesignerViewModel
+    {
+        /// <summary>
+        /// The resource that is being represented
+        /// </summary>
+        IResource Resource { get; set; }
         /// <summary>
         /// The designer for the resource
         /// </summary>
@@ -29,5 +34,6 @@ namespace Dev2.Common.Interfaces
 
     public interface IDesignerView
     {
+        UIElement Designer { get; set; }
     }
 }

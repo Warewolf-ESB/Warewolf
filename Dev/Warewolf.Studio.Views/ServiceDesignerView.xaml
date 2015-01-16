@@ -8,27 +8,10 @@
              AutomationProperties.AutomationId="UI_WorkflowDesigner_AutoID"
              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type interfaces:IServiceDesignerViewModel}}">
 
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-    </UserControl.Resources>
+   
     <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                               TextWrapping="Wrap"
-                               VerticalAlignment="Top"
-                               Visibility="{Binding IsServiceLinkVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                               HorizontalAlignment="Center">
-                                <Hyperlink Command="{Binding Path=OpenWorkflowLinkCommand}"
-                                           CommandParameter="{Binding}">
-                                    <Run Text="{Binding Path=DisplayWorkflowLink,Mode=OneWay}" />
-                                </Hyperlink>
-            </TextBlock>
-            <ContentControl Grid.Row="1"
-                                    Content="{Binding Path=DesignerView}"
-                                   >
+            
+            <ContentControl Content="{Binding Path=DesignerView}">
             </ContentControl>
         </Grid>
 </UserControl>

@@ -104,6 +104,7 @@
     <Compile Include="ToolBox\ToolDescriptorViewModel.cs" />
     <Compile Include="VariableList\VariableListViewModel.cs" />
     <Compile Include="WarewolfInvalidTypeException.cs" />
+    <Compile Include="WorkflowServiceDesignerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

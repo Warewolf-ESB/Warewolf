@@ -173,6 +173,9 @@
     <Compile Include="ServiceDesignerView.xaml.cs">
       <DependentUpon>ServiceDesignerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkflowDesignerView.xaml.cs">
+      <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
+    </Compile>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -205,6 +208,10 @@
     <Page Include="ServiceDesignerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WorkflowDesignerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
