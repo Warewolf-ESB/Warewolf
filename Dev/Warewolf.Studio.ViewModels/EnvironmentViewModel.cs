@@ -10,9 +10,13 @@ namespace Warewolf.Studio.ViewModels
 {
     public class EnvironmentViewModel:BindableBase, IEnvironmentViewModel
     {
-        public EnvironmentViewModel(IServer server)
+        readonly IShellViewModel _shellViewModel;
+
+        public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
             if(server==null) throw new ArgumentNullException("server");
+            if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
+            _shellViewModel = shellViewModel;
             Server = server;
         }
 
@@ -55,9 +59,11 @@ namespace Warewolf.Studio.ViewModels
         {
             return AsList(ExplorerItemViewModels);
         }
+
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         private ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection)
         {
-            throw new Exception();
+            return rootCollection.ToList();
 
         }
         public void SetItemCheckedState(Guid id, bool state)
@@ -78,7 +84,7 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
-                explorerItemModels.Add(new ExplorerItemViewModel
+                explorerItemModels.Add(new ExplorerItemViewModel(_shellViewModel)
                 {
                     Resource = explorerItem,
                     Children = CreateExplorerItems(explorerItem.Children)

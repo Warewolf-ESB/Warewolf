@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
 using Infragistics.Themes;
 using Infragistics.Windows;
 using Infragistics.Windows.DockManager;
@@ -16,7 +17,7 @@ namespace Warewolf.Studio
     /// </summary>
     public partial class Shell : Window
     {
-        public Shell(ShellViewModel shellViewModel)
+        public Shell(IShellViewModel shellViewModel)
         {
             InitializeComponent();
             ThemeManager.ApplicationTheme = new LunaTheme(); 

@@ -4,7 +4,7 @@
   <Deployment enabled="false" />  
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution>
-    <Timeouts testTimeout="0" />
+    <Timeouts testTimeout="30000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>

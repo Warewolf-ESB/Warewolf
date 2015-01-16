@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Security.Cryptography;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
@@ -106,7 +104,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             expSource.Setup(a => a.SelectedServer).Returns(expSourceEnv.Object);
             expSource.Setup(a => a.SelectedEnvironment).Returns(expdSourceEnvVm.Object);
 
-            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel>{new ExplorerItemViewModel {Checked = true,ResourceId = Guid.NewGuid()}};
+            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel>{new ExplorerItemViewModel(new Mock<IShellViewModel>().Object) {Checked = true,ResourceId = Guid.NewGuid()}};
             expSource.Setup(a => a.FindItems(It.IsAny<Func<IExplorerItemViewModel, bool>>())).Returns(items);
             var sourceModel = new Mock<IDeployModel>();
 
@@ -149,7 +147,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             expSource.Setup(a => a.SelectedServer).Returns(expSourceEnv.Object);
             expSource.Setup(a => a.SelectedEnvironment).Returns(expdSourceEnvVm.Object);
             expSourceEnv.Setup(a => a.Load()).Returns(new List<IResource> { resourceToDeploy.Object});
-            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel { Checked = true, ResourceId = id } };
+            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel(new Mock<IShellViewModel>().Object) { Checked = true, ResourceId = id } };
             expSource.Setup(a => a.FindItems(It.IsAny<Func<IExplorerItemViewModel, bool>>())).Returns(items);
             var sourceModel = new Mock<IDeployModel>();
 
@@ -191,7 +189,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             expSource.Setup(a => a.SelectedServer).Returns(expSourceEnv.Object);
             expSource.Setup(a => a.SelectedEnvironment).Returns(expdSourceEnvVm.Object);
             expSourceEnv.Setup(a => a.Load()).Returns(new List<IResource> { resourceToDeploy.Object });
-            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel { Checked = true, ResourceId = id } };
+            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel(new Mock<IShellViewModel>().Object) { Checked = true, ResourceId = id } };
             expSource.Setup(a => a.FindItems(It.IsAny<Func<IExplorerItemViewModel, bool>>())).Returns(items);
             var sourceModel = new Mock<IDeployModel>();
             sourceModel.Setup(a => a.CanDeploy(It.IsAny<IResource>())).Returns(true);
@@ -233,7 +231,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             expSource.Setup(a => a.SelectedServer).Returns(expSourceEnv.Object);
             expSource.Setup(a => a.SelectedEnvironment).Returns(expdSourceEnvVm.Object);
             expSourceEnv.Setup(a => a.Load()).Returns(new List<IResource> { resourceToDeploy.Object });
-            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel { Checked = true, ResourceId = id } };
+            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel(new Mock<IShellViewModel>().Object) { Checked = true, ResourceId = id } };
             expSource.Setup(a => a.FindItems(It.IsAny<Func<IExplorerItemViewModel, bool>>())).Returns(items);
             var sourceModel = new Mock<IDeployModel>();
             sourceModel.Setup(a => a.CanDeploy(It.IsAny<IResource>())).Returns(true);
@@ -281,7 +279,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             expSource.Setup(a => a.SelectedServer).Returns(expSourceEnv.Object);
             expSource.Setup(a => a.SelectedEnvironment).Returns(expdSourceEnvVm.Object);
             expSourceEnv.Setup(a => a.Load()).Returns(new List<IResource> { resourceToDeploy.Object });
-            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel { Checked = true, ResourceId = id } };
+            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel(new Mock<IShellViewModel>().Object) { Checked = true, ResourceId = id } };
             expSource.Setup(a => a.FindItems(It.IsAny<Func<IExplorerItemViewModel, bool>>())).Returns(items);
             var sourceModel = new Mock<IDeployModel>();
             sourceModel.Setup(a => a.CanDeploy(It.IsAny<IResource>())).Returns(true);
@@ -328,7 +326,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             expSource.Setup(a => a.SelectedServer).Returns(expSourceEnv.Object);
             expSource.Setup(a => a.SelectedEnvironment).Returns(expdSourceEnvVm.Object);
             expSourceEnv.Setup(a => a.Load()).Returns(new List<IResource> { resourceToDeploy.Object });
-            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel { Checked = true, ResourceId = id } };
+            IList<IExplorerItemViewModel> items = new List<IExplorerItemViewModel> { new ExplorerItemViewModel(new Mock<IShellViewModel>().Object) { Checked = true, ResourceId = id } };
             expSource.Setup(a => a.FindItems(It.IsAny<Func<IExplorerItemViewModel, bool>>())).Returns(items);
             var sourceModel = new Mock<IDeployModel>();
             sourceModel.Setup(a => a.CanDeploy(It.IsAny<IResource>())).Returns(true);
@@ -343,7 +341,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //------------Execute Test---------------------------
             var constructred = new DeployViewModel(expSource.Object, expDest.Object, prov.Object, new Collection<IDeployPredicate>(), conflictHandler.Object, deployFactory.Object);
-            constructred.SelectDependencies(new ExplorerItemViewModel { Checked = true, ResourceId = id });
+            constructred.SelectDependencies(new ExplorerItemViewModel(new Mock<IShellViewModel>().Object) { Checked = true, ResourceId = id });
         }
 
 

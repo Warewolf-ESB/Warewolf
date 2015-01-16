@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
@@ -10,6 +11,7 @@ using Microsoft.Practices.Unity;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Themes.Luna;
+using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.ViewModels.DummyModels;
 using Warewolf.Studio.Views;
 
@@ -32,7 +34,8 @@ namespace Warewolf.Studio
         {
             base.ConfigureContainer();
             ThemeManager.ApplicationTheme = new LunaTheme();
-            Container.RegisterInstance<IExplorerViewModel>(new DummyExplorerViewModel());
+            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container,Container.Resolve<IRegionManager>()));
+            Container.RegisterInstance<IExplorerViewModel>(new DummyExplorerViewModel(Container.Resolve<IShellViewModel>()));
             Container.RegisterInstance<IToolboxViewModel>(new DummyToolboxViewModel());
             Container.RegisterInstance<IMenuViewModel>(new DummyMenuViewModel());
 
@@ -46,6 +49,7 @@ namespace Warewolf.Studio
         protected override void InitializeShell()
         {
             base.InitializeShell();
+
             var window = (Window)Shell;
             window.Show();
 

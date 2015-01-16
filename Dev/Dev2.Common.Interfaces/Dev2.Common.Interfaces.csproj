@@ -229,6 +229,8 @@
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
     <Compile Include="IEsbRequestResult.cs" />
+    <Compile Include="IServiceDesignerViewModel.cs" />
+    <Compile Include="IShellViewModel.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />

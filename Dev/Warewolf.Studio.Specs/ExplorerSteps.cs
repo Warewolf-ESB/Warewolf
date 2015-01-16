@@ -14,7 +14,7 @@ namespace Warewolf.Studio.Specs
         [Given(@"I have connected to localhost")]
         public void GivenIHaveConnectedToLocalhost()
         {
-            var localHostEnvironment = new EnvironmentViewModel(new Server(null))
+            var localHostEnvironment = new EnvironmentViewModel(new Server(null),null)
             {
                 DisplayName = "localhost"                
             };
