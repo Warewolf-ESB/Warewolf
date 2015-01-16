@@ -14,7 +14,7 @@ using Warewolf.Studio.Core.View_Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ShellViewModel
+    public class ShellViewModel:IShellViewModel
     {
         readonly IUnityContainer _unityContainer;
         readonly IRegionManager _regionManager;
