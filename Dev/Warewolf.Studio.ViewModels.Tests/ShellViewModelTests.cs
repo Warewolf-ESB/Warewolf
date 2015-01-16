@@ -167,6 +167,30 @@ namespace Warewolf.Studio.ViewModels.Tests
             var viewsCollection = shellViewModel.GetRegionViews("Workspace");
             Assert.AreEqual(2,viewsCollection.Count());
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ShellViewModel_AddService")]
+        public void ShellViewModel_AddService_WorkflowResource_ShouldAddIWorkflowServiceDesignerViewModel()
+        {
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
+            testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
+            var testRegionManager = new RegionManager();
+            testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            var mockResource = new Mock<IResource>();
+            mockResource.Setup(resource => resource.ResourceType).Returns(ResourceType.WorkflowService);
+            //------------Execute Test---------------------------
+            shellViewModel.AddService(mockResource.Object);
+            //------------Assert Results-------------------------
+            var viewsCollection = shellViewModel.GetRegionViews("Workspace");
+            Assert.AreEqual(1,viewsCollection.Count());
+            var workflowView = viewsCollection.FirstOrDefault();
+            Assert.IsNotNull(workflowView);
+            Assert.IsInstanceOfType(workflowView,typeof(IWorkflowServiceDesignerViewModel));
+        }
     }
 
     internal class MockServiceDesignerViewModel : IServiceDesignerViewModel
@@ -175,6 +199,67 @@ namespace Warewolf.Studio.ViewModels.Tests
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
         public MockServiceDesignerViewModel(IResource resource)
+        {
+            Resource = resource;
+        }
+
+        #region Implementation of IServiceDesignerViewModel
+
+        public IResource Resource
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Should the hyperlink to execute the service in browser
+        /// </summary>
+        public bool IsServiceLinkVisible
+        {
+            get
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// Command to execute when the hyperlink is clicked
+        /// </summary>
+        public ICommand OpenWorkflowLinkCommand
+        {
+            get
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// The hyperlink text shown
+        /// </summary>
+        public string DisplayWorkflowLink
+        {
+            get
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// The designer for the resource
+        /// </summary>
+        public IDesignerView DesignerView
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        #endregion
+    }
+    
+    internal class MockWorkflowServiceDesignerViewModel : IWorkflowServiceDesignerViewModel
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public MockWorkflowServiceDesignerViewModel(IResource resource)
         {
             Resource = resource;
         }
