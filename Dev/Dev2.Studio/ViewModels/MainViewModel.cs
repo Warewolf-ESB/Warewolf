@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -26,6 +25,7 @@ using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
+using Dev2.Data.ServiceModel;
 using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -53,8 +53,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
-using Dev2.Studio.Feedback;
-using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
@@ -64,9 +62,12 @@ using Dev2.Studio.Views;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Threading;
 using Dev2.Utils;
+using Dev2.Views.DropBox;
 using Dev2.Webs;
+using Dev2.Webs.Callbacks;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
+using ServiceStack.Common;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels
@@ -126,17 +127,11 @@ namespace Dev2.Studio.ViewModels
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
-        public IFeedbackInvoker FeedbackInvoker { get; set; }
-
-        public IFeedBackRecorder FeedBackRecorder { get; set; }
-
         public IFrameworkRepository<UserInterfaceLayoutModel> UserInterfaceLayoutRepository { get; set; }
 
         #endregion imports
 
         public bool CloseCurrent { get; set; }
-
-        public static bool IsBusy { get; set; }
 
         public ExplorerViewModel ExplorerViewModel
         {
@@ -381,7 +376,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null, IStudioResourceRepository studioResourceRepository = null, IConnectControlSingleton connectControlSingleton = null, IConnectControlViewModel connectControlViewModel = null)
+            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IStudioResourceRepository studioResourceRepository = null, IConnectControlSingleton connectControlSingleton = null, IConnectControlViewModel connectControlViewModel = null)
             : base(eventPublisher)
         {
             if(environmentRepository == null)
@@ -403,7 +398,6 @@ namespace Dev2.Studio.ViewModels
             PopupProvider = popupController ?? new PopupController();
             WindowManager = windowManager ?? new WindowManager();
             WebController = webController ?? new WebController();
-            FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
             EnvironmentRepository = environmentRepository;
             FlowController = new FlowController(PopupProvider);
 
@@ -474,6 +468,7 @@ namespace Dev2.Studio.ViewModels
                     actionToDoOnDelete();
                 }
             }
+            ExplorerViewModel.NavigationViewModel.UpdateSearchFilter();
         }
 
         public void Handle(SetActiveEnvironmentMessage message)
@@ -707,6 +702,10 @@ namespace Dev2.Studio.ViewModels
                     View.ClearToolboxSearch();
                 }
             }
+            else if(resourceType=="DropboxSource")
+            {
+                CreateOAuthType(ActiveEnvironment, resourceType, resourcePath);
+            }
             else
             {
                 var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
@@ -716,9 +715,57 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void CreateOAuthType(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, bool shouldAuthorise = true)
+        {
+            var resource =  ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
+            SaveDropBoxSource(activeEnvironment, resourceType, resourcePath, resource,shouldAuthorise);
+        }
+
+        public IDropboxFactory DropboxFactory
+        {
+            get{return _dropboxFactory??new DropboxFactory();}
+            set{_dropboxFactory = value;}
+        }
+        void SaveDropBoxSource(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath, IContextualResourceModel resource, bool shouldAuthorise)
+        {
+            DropBoxViewWindow drop = new DropBoxViewWindow();
+            DropBoxHelper helper = new DropBoxHelper(drop, activeEnvironment, resourceType, resourcePath);
+            DropBoxSourceViewModel vm = new DropBoxSourceViewModel(new NetworkHelper(), helper, DropboxFactory,shouldAuthorise) { Resource = resource };
+            drop.DataContext = vm;
+            var showDialog = ShowDropboxAction(drop,vm);
+            if(showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID == Guid.Empty)
+            {
+                ShowSaveDialog(vm.Resource, activeEnvironment, vm.Key, vm.Secret);
+            }
+            else if (showDialog != null && showDialog.Value && vm.HasAuthenticated && vm.Resource.ID != Guid.Empty)
+            {
+
+                // ReSharper disable once MaximumChainedReferences
+                var dropBoxSource = new OauthSource { Key = vm.Key, Secret = vm.Secret, ResourceName = vm.Resource.ResourceName, ResourcePath = vm.Resource.Category, IsNewResource = true, ResourceID = vm.Resource.ID }.ToStringBuilder();
+                ActiveEnvironment.ResourceRepository.SaveResource(ActiveEnvironment, dropBoxSource, GlobalConstants.ServerWorkspaceID);
+ 
+            }
+        }
+
+        public System.Action<IContextualResourceModel, IEnvironmentModel, string, string> ShowSaveDialog
+        {
+            get { return _showSaveDialog ?? RootWebSite.ShowNewOAuthsourceSaveDialog; }
+            set { _showSaveDialog = value; }
+        }
+        public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> ShowDropboxAction
+        {
+            get { return _showDropAction ?? ((drop,vm) => drop.ShowDialog()); }
+            set{_showDropAction = value;}
+       
+        }
         private void ShowEditResourceWizard(object resourceModelToEdit)
         {
             var resourceModel = resourceModelToEdit as IContextualResourceModel;
+            if (resourceModel != null && resourceModel.ServerResourceType.EqualsIgnoreCase("OauthSource"))
+            {
+                SaveDropBoxSource(ActiveEnvironment, "DropboxSource", resourceModel.Category, resourceModel,true);
+            }
+            else
             DisplayResourceWizard(resourceModel, true);
         }
 
@@ -729,6 +776,7 @@ namespace Dev2.Studio.ViewModels
 
         public virtual async void ShowStartPage()
         {
+
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if(workSurfaceContextViewModel != null)
@@ -754,8 +802,26 @@ namespace Dev2.Studio.ViewModels
 
         protected MainView View { get; set; }
 
+        public void UpdatePane(IContextualResourceModel model)
+        {
+            // workflows only
+            // Workflow that has this resource open
+            // 
+
+            if (model.ResourceType == ResourceType.WorkflowService)
+            {
+
+                var resourcename = model.ResourceName;
+                var resourceID = model.ID;
+                
+                
+
+            }
+        }
+
         public void ClearToolboxSelection()
         {
+            
             if(View != null)
             {
                 View.ClearToolboxSelection();
@@ -835,11 +901,6 @@ namespace Dev2.Studio.ViewModels
             {
                 await ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
             }
-        }
-
-        public void StartFeedback()
-        {
-            FeedbackInvoker.InvokeFeedback(new EmailFeedbackAction(new Dictionary<string, string>(), ActiveEnvironment), new RecorderFeedbackAction());
         }
 
         #endregion
@@ -1565,6 +1626,9 @@ namespace Dev2.Studio.ViewModels
         }
 
         public Func<bool> IsBusyDownloadingInstaller;
+        public Func<DropBoxViewWindow, DropBoxSourceViewModel, bool?> _showDropAction;
+        Action<IContextualResourceModel, IEnvironmentModel, string, string> _showSaveDialog;
+        IDropboxFactory _dropboxFactory;
 
         public bool IsDownloading()
         {

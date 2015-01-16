@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -19,7 +18,6 @@ namespace Dev2.Data.Interfaces
 {
     public interface IDev2ReplaceOperation
     {
-
         /// <summary>
         /// Replaces a value in and entry with a new value.
         /// </summary>
@@ -31,6 +29,7 @@ namespace Dev2.Data.Interfaces
         /// <param name="payloadBuilder">The payload builder.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="ReplaceCount">The replace count.</param>
+        /// <param name="entryToReplaceIn"></param>
         /// <returns></returns>
         IDev2DataListUpsertPayloadBuilder<string> Replace(Guid exIdx,
             string expression,

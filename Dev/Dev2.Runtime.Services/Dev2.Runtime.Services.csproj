@@ -20,7 +20,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -167,6 +167,8 @@
     <Compile Include="ESB\Management\Services\GetServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetVersion.cs" />
     <Compile Include="ESB\Management\Services\GetVersions.cs" />
+    <Compile Include="ESB\Management\Services\LoggingSettingsRead.cs" />
+    <Compile Include="ESB\Management\Services\LoggingSettingsWrite.cs" />
     <Compile Include="ESB\Management\Services\MoveItemService.cs" />
     <Compile Include="ESB\Management\Services\RenameFolderService.cs" />
     <Compile Include="ESB\Management\Services\RenameItemService.cs" />

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -147,7 +146,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         serviceMethod.Parameters.Add(
                             new MethodParameter
                             {
-                                DefaultValue = parameterInfo.DefaultValue.ToString(),
+                                DefaultValue = parameterInfo.DefaultValue==null ? string.Empty : parameterInfo.DefaultValue.ToString(),
                                 EmptyToNull = false,
                                 IsRequired = true,
                                 Name = parameterInfo.Name,

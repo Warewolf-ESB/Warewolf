@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,26 +43,25 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-            Dev2Logger.Log.Info("Fetch Server Log Started");
-            var result = new ExecuteMessage { HasError = false };
-            if(File.Exists(_serverLogPath))
-            {
-                var lines = File.ReadLines(_serverLogPath);
-
-                foreach (var line in lines)
+                Dev2Logger.Log.Info("Fetch Server Log Started");
+                var result = new ExecuteMessage { HasError = false };
+                if (File.Exists(_serverLogPath))
                 {
-                    result.Message.Append(line);
+                    var fileStream = File.Open(_serverLogPath, FileMode.Open, FileAccess.Read,FileShare.Read);
+                    using (var streamReader = new StreamReader(fileStream))
+                    {
+                        while(!streamReader.EndOfStream)
+                        {
+                            result.Message.Append(streamReader.ReadLine());    
+                        }
+                    }
                 }
-
-                File.Delete(_serverLogPath);
-            }
-
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(result);
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(result);
             }
             catch (Exception err)
             {
-                Dev2Logger.Log.Error("Fetch Server Log Error",err);
+                Dev2Logger.Log.Error("Fetch Server Log Error", err);
                 throw;
             }
         }

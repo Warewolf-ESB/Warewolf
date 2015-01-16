@@ -8,16 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Microsoft.Win32.TaskScheduler;
-using Action = Microsoft.Win32.TaskScheduler.Action;
 
 namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 {
-    public interface IAction : IDisposable, IWrappedObject<Action>
+    public interface IAction : IDisposable, IWrappedObject<Microsoft.Win32.TaskScheduler.Action>
     {
         /// <summary>
         ///     Gets the type of the action.

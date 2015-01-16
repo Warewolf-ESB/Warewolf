@@ -9,7 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Mail;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
@@ -18,11 +22,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Mail;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
@@ -321,8 +320,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("SendEmail_Execute")]
         public void SendEmail_Execute_FromAccount_EmailSourceIsCorrect()
         {
-            Verify_Execute_FromAccount_EmailSourceIsCorrect(isFromAccountGiven: true);
-            Verify_Execute_FromAccount_EmailSourceIsCorrect(isFromAccountGiven: false);
+            Verify_Execute_FromAccount_EmailSourceIsCorrect(true);
+            Verify_Execute_FromAccount_EmailSourceIsCorrect(false);
         }
 
         void Verify_Execute_FromAccount_EmailSourceIsCorrect(bool isFromAccountGiven)

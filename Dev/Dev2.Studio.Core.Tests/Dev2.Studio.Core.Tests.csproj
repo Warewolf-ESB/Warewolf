@@ -28,7 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -89,6 +89,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
     </Reference>
+    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\DropNet.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v12.1.dll</HintPath>
@@ -96,6 +100,10 @@
     <Reference Include="InfragisticsWPF4.v12.1, Version=12.1.20121.2059, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -192,6 +200,7 @@
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
+    <Compile Include="AppResources\Converters\SimpleEnumToBoolConverterTests.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
     <Compile Include="DeployNavigationViewModelTest.cs" />
@@ -264,6 +273,7 @@
     <Compile Include="Settings\ClientScheduledResourceTests.cs" />
     <Compile Include="Settings\SchedulerViewModelTests.cs" />
     <Compile Include="ProviderExtensionsTest.cs" />
+    <Compile Include="Settings\LogSettingsViewModelTests.cs" />
     <Compile Include="ShareTests.cs" />
     <Compile Include="TestUtil.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
@@ -295,10 +305,6 @@
     <Compile Include="Environments\TestServerProvider.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="Factories\DsfActivityFactoryTests.cs" />
-    <Compile Include="Feedback\Actions\RecorderFeedbackActionTests.cs" />
-    <Compile Include="Feedback\Actions\EmailFeedbackActionTests.cs" />
-    <Compile Include="Feedback\FeedbackInvokerTests.cs" />
-    <Compile Include="Feedback\FeedbackRecorderTests.cs" />
     <Compile Include="Helpers\LatestWebGetterTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />
     <Compile Include="Helpers\VersionCheckerTestClass.cs" />
@@ -336,6 +342,8 @@
     <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
     <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
+    <Compile Include="ViewModelTests\DropboxHelperTests.cs" />
+    <Compile Include="ViewModelTests\DropBoxSourceViewModelTests.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\TestUtils.cs" />
     <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
@@ -356,10 +364,10 @@
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
     <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
-    <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WebActivityTests.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />
+    <Compile Include="Webs\DropboxSourceCallbackHandlerTests.cs" />
     <Compile Include="Webs\RootWebSiteTest.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerMock.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerTests.cs" />

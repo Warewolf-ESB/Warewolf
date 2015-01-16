@@ -9,18 +9,17 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -106,7 +105,6 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
-        //2013.02.13: Ashley Lewis - Bug 8725, Task 8836 DONE
         [TestMethod]
         public void BaseConvertScalarNumberToBase64ExpectedStringToBase64()
         {
@@ -197,7 +195,6 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
-        [Ignore] // See Bug 12497
         public void Scalar_To_Base64_Back_To_Text_Expect_Original()
         {
 
@@ -217,6 +214,55 @@ namespace ActivityUnitTests.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual("data", actual, "Got " + actual);
+        }
+
+        [TestMethod]
+        public void Recset_To_Base64_Back_To_Text_Expect_Original()
+        {
+
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[test().my]]", "Text", "Base 64", "[[test().my]]", 1), new BaseConvertTO("[[test().my]]", "Base 64", "Text", "[[test().my]]", 2) };
+            SetupArguments(
+                @"<root><test><my>data</my></test></root>"
+              , @"<root><test><my></my></test></root>"
+              , convertCollection
+              );
+            IDSFDataObject result = ExecuteProcess();
+
+            string error;
+            IList<IBinaryDataListItem> actual;
+            GetRecordSetFieldValueFromDataList(result.DataListID, "test","my", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual("data", actual[0].TheValue, "Got " + actual);
+            Assert.AreEqual("data", actual[2].TheValue, "Got " + actual);
+        }
+        [TestMethod]
+        public void Recset_MultipleColumns_To_Base64_Back_To_Text_Expect_Original()
+        {
+
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[test().my]]", "Text", "Base 64", "[[test().my]]", 1), new BaseConvertTO("[[test().check]]", "Text", "Base 64", "[[test().check]]", 2), new BaseConvertTO("[[test().my]]", "Base 64", "Text", "[[test().my]]", 3), new BaseConvertTO("[[test().check]]", "Base 64", "Text", "[[test().check]]", 4) };
+            SetupArguments(
+                @"<root><test><my>data</my><check>work</check></test></root>"
+              , @"<root><test><my></my><check></check></test></root>"
+              , convertCollection
+              );
+            IDSFDataObject result = ExecuteProcess();
+
+            string error;
+            IList<IBinaryDataListItem> actualMy;
+            GetRecordSetFieldValueFromDataList(result.DataListID, "test", "my", out actualMy, out error);
+            IList<IBinaryDataListItem> actualCheck;
+            GetRecordSetFieldValueFromDataList(result.DataListID, "test", "check", out actualCheck, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.AreEqual("data", actualMy[0].TheValue, "Got " + actualMy);
+            Assert.AreEqual("data", actualMy[2].TheValue, "Got " + actualMy);
+            Assert.AreEqual("work", actualCheck[0].TheValue, "Got " + actualMy);
+            Assert.AreEqual("work", actualCheck[2].TheValue, "Got " + actualMy);
         }
 
         #endregion Language Tests

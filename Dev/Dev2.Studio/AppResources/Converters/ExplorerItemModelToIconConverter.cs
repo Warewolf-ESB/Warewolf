@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Globalization;
 using System.Windows.Data;
@@ -73,6 +72,9 @@ namespace Dev2.AppResources.Converters
                     uri = isExpanded ? new Uri("pack://application:,,,/Warewolf Studio;component/Images/ExplorerFolderOpen-32.png") :
                                        new Uri("pack://application:,,,/Warewolf Studio;component/Images/ExplorerFolder-32.png");
 
+                    return new BitmapImage(uri);
+                case ResourceType.OauthSource :
+                     uri = new Uri("pack://application:,,,/Warewolf Studio;component/Images/dropbox-windows.png");
                     return new BitmapImage(uri);
                 default:
                     uri = new Uri("pack://application:,,,/Warewolf Studio;component/Images/Workflow-32.png");

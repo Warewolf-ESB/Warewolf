@@ -528,8 +528,7 @@
                 </DrawingGroup.Children>
             </DrawingGroup>
         </DrawingImage.Drawing>
-    </DrawingImage>
-
+    </DrawingImage> 
     <DrawingImage x:Key="HelpAskQuestion-32">
         <DrawingImage.Drawing>
             <DrawingGroup>
@@ -1984,7 +1983,25 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
-
+    <BitmapImage x:Key="ToolDropBoxPng-32" UriSource="../Images/dropbox-windows.png" />
+    <DrawingImage x:Key="ToolDropBox-32">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF21B6A8"
+                                     Geometry="F1 M 3.33333,0C 3.33333,0 0,0 0,3.33334L 0,39.3333C 0,39.3333 0,42.6667 3.33333,42.6667L 39.3333,42.6667C 39.3333,42.6667 42.6667,42.6667 42.6667,39.3333L 42.6667,3.33334C 42.6667,3.33334 42.6667,0 39.3333,0L 3.33333,0 Z " />
+                    <GeometryDrawing Brush="#FFFFFFFF"
+                                     Geometry="F1 M 39.5287,30.3685C 39.5287,30.5232 39.4927,30.6739 39.4247,30.8125L 29.1647,19.2472L 39.326,11.6819C 39.454,11.8672 39.5287,12.0779 39.5287,12.2979L 39.5287,30.3685 Z " />
+                    <GeometryDrawing Brush="#FFFFFFFF"
+                                     Geometry="F1 M 37.8073,10.9408L 26.9247,19.3595C 26.9247,19.3595 24.326,21.3355 21.4887,21.3355L 21.334,21.3355C 18.498,21.3355 15.8967,19.3595 15.8967,19.3595L 5.01,10.9368L 37.6567,10.9368C 37.7073,10.9368 37.7567,10.9368 37.8073,10.9408 Z " />
+                    <GeometryDrawing Brush="#FFFFFFFF"
+                                     Geometry="F1 M 37.6563,31.7305L 5.01093,31.7305L 15.1896,20.3865C 15.1896,20.3865 18.0243,22.4505 21.3323,22.4505L 21.4883,22.4505C 24.7976,22.4505 27.6323,20.3865 27.6323,20.3865L 27.7643,20.2892L 37.9363,31.6225L 37.9416,31.7145C 37.8483,31.7252 37.7536,31.7305 37.6563,31.7305 Z " />
+                    <GeometryDrawing Brush="#FFFFFFFF"
+                                     Geometry="F1 M 3.39587,31.0585C 3.23187,30.8572 3.13853,30.6212 3.13853,30.3679L 3.13853,12.2985C 3.13853,12.0465 3.23187,11.8092 3.39587,11.6079L 13.7905,19.3439L 3.39587,31.0585 Z " />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
     <!--<DrawingImage x:Key="ToolSequence-32">
         <DrawingImage.Drawing>
             <DrawingGroup>

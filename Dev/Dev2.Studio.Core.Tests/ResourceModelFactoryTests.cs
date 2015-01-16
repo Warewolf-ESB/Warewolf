@@ -9,14 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
@@ -46,7 +45,16 @@ namespace Dev2.Core.Tests
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "WorkflowService", "displayName"), ResourceType.WorkflowService, "displayName", "", "WorkflowService");
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "WorkflowService", "resourceName", "displayName"), ResourceType.WorkflowService, "displayName", "resourceName", "WorkflowService");
         }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceModelFactory_CreateResourceModel")]
+        public void ResourceModelFactory_CreateResourceModel_OauthSource()
+        {
+            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, ResourceType.Source, "iconPath", "displayName"), ResourceType.Source, "displayName", null, null);
+            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource"), ResourceType.Source, "DropboxSource", "", "DropboxSource");
+            Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "DropboxSource", "OauthSource"), ResourceType.Source, "OauthSource", "", "DropboxSource");
 
+        }
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModelFactory_CreateResourceModel")]

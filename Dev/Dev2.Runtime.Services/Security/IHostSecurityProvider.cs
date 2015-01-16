@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Net;
 using System.Text;
@@ -44,7 +43,8 @@ namespace Dev2.Runtime.Security
         /// Ensures SSL support with self-signed cert.
         /// </summary>
         /// <param name="certPath">The cert path.</param>
+        /// <param name="endPoint"></param>
         /// <returns></returns>
-        bool EnsureSSL(string certPath, IPEndPoint endPoint);
+        bool EnsureSsl(string certPath, IPEndPoint endPoint);
     }
 }

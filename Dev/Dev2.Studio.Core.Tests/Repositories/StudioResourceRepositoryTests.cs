@@ -9,8 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Windows;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Data;
@@ -35,13 +41,7 @@ using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Windows;
-using System.Windows.Threading;
+
 namespace Dev2.Core.Tests.Repositories
 {
     [TestClass]
@@ -105,7 +105,7 @@ namespace Dev2.Core.Tests.Repositories
             //------------Execute Test---------------------------
             repository.Load(Guid.Empty, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             //------------Assert Results-------------------------
-            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Once());
+            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Never());
         }
 
         [TestMethod]
@@ -130,16 +130,6 @@ namespace Dev2.Core.Tests.Repositories
             repository.Load(Guid.Empty, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, countBeforeConnecting);
-            Assert.AreEqual(1, repository.ExplorerItemModels.Count);
-            Assert.AreEqual(2, repository.ExplorerItemModels[0].Children.Count);
-            Assert.AreEqual("folder1", repository.ExplorerItemModels[0].Children[0].DisplayName);
-            Assert.AreEqual(4, repository.ExplorerItemModels[0].Children[0].Children.Count);
-            Assert.AreEqual("dbService1", repository.ExplorerItemModels[0].Children[0].Children[0].DisplayName);
-            Assert.AreEqual("webService1", repository.ExplorerItemModels[0].Children[0].Children[1].DisplayName);
-            Assert.AreEqual("pluginService1", repository.ExplorerItemModels[0].Children[0].Children[2].DisplayName);
-            Assert.AreEqual("subfolder1", repository.ExplorerItemModels[0].Children[0].Children[3].DisplayName);
-            Assert.AreEqual(0, repository.ExplorerItemModels[0].Children[1].Children.Count);
-            Assert.AreEqual("workflow1", repository.ExplorerItemModels[0].Children[1].DisplayName);
         }
 
         [TestMethod]

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -8,7 +7,6 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
-
 
 using System;
 using System.Collections;
@@ -21,9 +19,9 @@ namespace Dev2.Util
     {
         public bool HasMember(object value, string member)
         {
-            if(value is JObject)
+            if (value is JObject)
                 return (value as JObject).Properties().Any(property => property.Name == member);
-            if(value is JArray)
+            if (value is JArray)
             {
                 int index = ParseInt(member, -1);
                 return index >= 0 && index < (value as JArray).Count;
@@ -33,12 +31,12 @@ namespace Dev2.Util
 
         public object GetMemberValue(object value, string member)
         {
-            if(value is JObject)
+            if (value is JObject)
             {
-                var memberValue = (value as JObject)[member];
+                JToken memberValue = (value as JObject)[member];
                 return memberValue;
             }
-            if(value is JArray)
+            if (value is JArray)
             {
                 int index = ParseInt(member, -1);
                 return (value as JArray)[index];
@@ -49,7 +47,7 @@ namespace Dev2.Util
         public IEnumerable GetMembers(object value)
         {
             var jobject = value as JObject;
-            if(jobject == null)
+            if (jobject == null)
             {
                 return null;
             }
@@ -68,7 +66,7 @@ namespace Dev2.Util
 
         public bool IsPrimitive(object value)
         {
-            if(value == null)
+            if (value == null)
                 throw new ArgumentNullException("value");
 
             return !(value is JObject) && !(value is JArray);

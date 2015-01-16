@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
@@ -46,7 +45,7 @@ namespace Dev2.Data.ServiceModel
                     break;
 
                 case TypeSource:
-                    resourceTypes = new[] { ResourceType.Server, ResourceType.DbSource, ResourceType.PluginSource, ResourceType.WebSource, ResourceType.EmailSource, ResourceType.ServerSource };
+                    resourceTypes = new[] { ResourceType.Server, ResourceType.DbSource, ResourceType.PluginSource, ResourceType.WebSource, ResourceType.EmailSource,ResourceType.OauthSource, ResourceType.ServerSource  };
                     break;
 
                 case TypeReservedService:
@@ -91,6 +90,7 @@ namespace Dev2.Data.ServiceModel
                 case ResourceType.EmailSource:
                 case ResourceType.WebSource:
                 case ResourceType.ServerSource:
+                case ResourceType.OauthSource:
                     return TypeSource;
 
                 case ResourceType.PluginService:
@@ -103,7 +103,6 @@ namespace Dev2.Data.ServiceModel
 
                 case ResourceType.ReservedService:
                     return TypeReservedService;
-
                 default:
                     return TypeWildcard;
             }
@@ -141,6 +140,9 @@ namespace Dev2.Data.ServiceModel
 
                 case enSourceType.WebService:
                     resourceType = ResourceType.WebService;
+                    break;
+                case enSourceType.OauthSource:
+                    resourceType = ResourceType.OauthSource;
                     break;
             }
             return resourceType;

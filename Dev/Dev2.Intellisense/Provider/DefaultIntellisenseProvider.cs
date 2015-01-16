@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -108,48 +107,51 @@ namespace Dev2.Studio.InterfaceImplementors
             ObservableCollection<IDataListItemModel> dataList = null;
 
             var activeDataList = DataListSingleton.ActiveDataList;
-            var activeDataListViewModels = activeDataList.DataList;
-
-            if(activeDataList != null && activeDataListViewModels != null)
+            if(activeDataList != null)
             {
-                dataList = activeDataListViewModels;
-            }
+                var activeDataListViewModels = activeDataList.DataList;
 
-            if(dataList != null)
-            {
-                if(!HasCachedDatalist || IsUpdated)
+                if(activeDataList != null && activeDataListViewModels != null)
                 {
-                    HasCachedDatalist = true;
-                    IsUpdated = false;
+                    dataList = activeDataListViewModels;
                 }
-            }
 
-            result.Append("</ADL>");
-
-            if(activeDataList != null && activeDataList.Resource != null && activeDataList.Resource.DataList != null)
-            {
-                if(activeDataList.HasErrors)
+                if(dataList != null)
                 {
-                    if(activeDataListViewModels != null && results != null)
+                    if(!HasCachedDatalist || IsUpdated)
                     {
-                        var error = activeDataListViewModels
-                            .FirstOrDefault(d => d.HasError && input.Contains(d.DisplayName.Replace("()", "")));
-
-                        if(error != null)
-                        {
-                            results.Add(IntellisenseFactory.CreateErrorResult(1, 1, null, error.ErrorMessage, enIntellisenseErrorCode.SyntaxError, true));
-                        }
-                        else
-                        {
-                            CachedDataList = activeDataList.Resource.DataList;
-                            succeeded = true;
-                        }
+                        HasCachedDatalist = true;
+                        IsUpdated = false;
                     }
                 }
-                else
+
+                result.Append("</ADL>");
+
+                if(activeDataList.Resource != null && activeDataList.Resource.DataList != null)
                 {
-                    CachedDataList = activeDataList.Resource.DataList;
-                    succeeded = true;
+                    if(activeDataList.HasErrors)
+                    {
+                        if(activeDataListViewModels != null && results != null)
+                        {
+                            var error = activeDataListViewModels
+                                .FirstOrDefault(d => d.HasError && input.Contains(d.DisplayName.Replace("()", "")));
+
+                            if(error != null)
+                            {
+                                results.Add(IntellisenseFactory.CreateErrorResult(1, 1, null, error.ErrorMessage, enIntellisenseErrorCode.SyntaxError, true));
+                            }
+                            else
+                            {
+                                CachedDataList = activeDataList.Resource.DataList;
+                                succeeded = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        CachedDataList = activeDataList.Resource.DataList;
+                        succeeded = true;
+                    }
                 }
             }
 

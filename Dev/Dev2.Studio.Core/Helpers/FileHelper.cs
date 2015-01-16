@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.IO;
 using System.Net;
@@ -38,8 +37,7 @@ namespace Dev2.Studio.Core.Helpers
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 StringResources.App_Data_Directory,
-                StringResources.Feedback_Recordings_Directory,
-                Guid.NewGuid().ToString() + extension
+                Guid.NewGuid() + extension
             });
             return path;
         }

@@ -16,7 +16,7 @@
                       MouseEnter="DsfBaseConvertActivityDesigner_OnMouseEnter"
                       MouseLeave="DsfBaseConvertActivityDesigner_OnMouseLeave"
                       PreviewDragEnter="DsfBaseConvertActivityDesigner_OnPreviewDragEnter"
-                      ContextMenuOpening="ContextMenu_ContextMenuOpening"
+                      ContextMenuOpening="ContextMenuContextMenuOpening"
                       PreviewMouseDoubleClick="DsfBaseConvertActivityDesigner_OnPreviewMouseDoubleClick">
     <i:Interaction.Behaviors>
         <behavior:ActualSizeBindingBehavior x:Name="ActualSizeBindingBehavior" HorizontalOffset="1"/>
@@ -66,15 +66,14 @@
                 </DataTemplate>
             </local:ActivityDesignerAugmentationBehavior.TopTemplate>
             <local:ActivityDesignerAugmentationBehavior.BottomTemplate>
-                <DataTemplate>
-                </DataTemplate>
+                <DataTemplate />
             </local:ActivityDesignerAugmentationBehavior.BottomTemplate>
         </local:ActivityDesignerAugmentationBehavior>
     </i:Interaction.Behaviors>
     <sap:ActivityDesigner.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Insert Row" Click="InsertRow_MenuItem_Click"  IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            <MenuItem Header="Delete Row" Click="DeleteRow_MenuItem_Click" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <MenuItem Header="Delete Row" Click="DeleteRowMenuItemClick" IsEnabled="{Binding ShowRightClickOptions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         </ContextMenu>
     </sap:ActivityDesigner.ContextMenu>
     <sap:ActivityDesigner.Icon>
@@ -82,10 +81,10 @@
             <DrawingBrush.Drawing>
                 <ImageDrawing>
                     <ImageDrawing.Rect>
-                        <Rect Location="0,0" Size="16,16" ></Rect>
+                        <Rect Location="0,0" Size="16,16" />
                     </ImageDrawing.Rect>
                     <ImageDrawing.ImageSource>
-                        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ToolBaseConversion-32.png"  ></BitmapImage>
+                        <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ToolBaseConversion-32.png" />
                     </ImageDrawing.ImageSource>
                 </ImageDrawing>
             </DrawingBrush.Drawing>
@@ -113,15 +112,14 @@
             <DataGridTemplateColumn Header="" Width="25"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding Path=IndexNumber,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                        </Label>
+                        <Label Content="{Binding Path=IndexNumber,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             <DataGridTemplateColumn Header="Results" Width="100"  IsReadOnly="False">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox AllowUserInsertLine="False" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxt_KeyUp" MaxHeight="39">
+                        <ui:IntellisenseTextBox AllowUserInsertLine="False" DefaultText="{Binding WatermarkTextVariable}" WrapInBrackets="False" Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyUp="SetValuetxtKeyUp" MaxHeight="39">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FromExpressiontxt_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />

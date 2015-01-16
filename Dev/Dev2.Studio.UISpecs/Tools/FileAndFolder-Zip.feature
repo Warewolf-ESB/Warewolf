@@ -7,6 +7,7 @@
 Scenario:Zip Tool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
 	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging zip Tool From Tool Box
@@ -19,12 +20,12 @@ Scenario:Zip Tool Large View And Invalid Variables Expected Error On Done Button
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Zip(ZipDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
 	Given "WORKSURFACE,UI_Error1_AutoID" is visible
-	Given "WORKSURFACE,UI_Error2_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error2_AutoID" is visible
 	#Correcting Zip Name Field bad variable and expected no error on done button
 	Given I type "[[rec(1).a]]" in "WORKSURFACE,Zip(ZipDesigner),LargeViewContent,UI__FileOrFoldertxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Zip(ZipDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
-	Given "WORKSURFACE,UI_Error1_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error1_AutoID" is visible
 	#Passing Invalid Recordset Variable in  Destination Field And Expected Validation on Done button
     Given I type "[[rec(1).%a]]" in "WORKSURFACE,Zip(ZipDesigner),LargeViewContent,UI__ZipNametxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Zip(ZipDesigner),DoneButton"
@@ -55,9 +56,16 @@ Scenario:Zip Tool Large View And Invalid Variables Expected Error On Done Button
 	Given "WORKSURFACE,Zip(ZipDesigner),SmallViewContent" is visible
 	
 
+<<<<<<< HEAD
 Scenario:Zip Tool Testing Tab Order and UiRepondingFine as expected
 	Given I have Warewolf running
 	And all tabs are closed	
+=======
+Scenario: Zip Tool Testing Tab Order and UiRepondingFine as expected
+	Given I have Warewolf running
+	And all tabs are closed	
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
 	Given I click "EXPLORERCONNECTCONTROL"
 	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"

@@ -19,8 +19,8 @@ REM * set TestDeploymentDir=C:\Users\INTEGR~1\AppData\Local\VSEQT\QTAgent\54371B
 REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
-taskkill /im "Warewolf Studio.exe"
+REM Stop Server:
 sc STOP "Warewolf Server"
-%DeploymentDirectory%\ServerbinDebug\Dev2.Server.exe -x
-taskkill /im "Warewolf Server.exe"
+taskkill /im "Warewolf*" /T /F
+IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf*" /T /F
 exit 0

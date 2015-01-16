@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
@@ -30,14 +29,16 @@ using Dev2.Util.ExtensionMethods;
 using Dev2.Utilities;
 using Dev2.ViewModels.QuickVariableInput;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+    // ReSharper restore CheckNamespace
 {
     public partial class DsfBaseConvertActivityDesigner : IDisposable
     {
 
         #region Fields
 
-        ModelItem activity;
+        ModelItem _activity;
         dynamic _convertCollection;
         Point _mousedownPoint = new Point(0, 0);
         bool _startManualDrag;
@@ -86,12 +87,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public static readonly DependencyProperty ShowAdornersProperty =
             DependencyProperty.Register("ShowAdorners", typeof(bool), typeof(DsfBaseConvertActivityDesigner), new PropertyMetadata(false));
 
-
-
-        public bool ShowQuickVariableInput
-        {
-            get { return (bool)GetValue(ShowQuickVariableInputProperty); }
-            set { SetValue(ShowQuickVariableInputProperty, value); }
+        bool ShowQuickVariableInput
+        { set { SetValue(ShowQuickVariableInputProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for ShowQuickVariableInput.  This enables animation, styling, binding, etc...
@@ -117,25 +114,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Context.Items.Subscribe<Selection>(SelectionChanged);
 
             _convertCollection = newItem;
-            activity = newItem as ModelItem;
+            _activity = newItem as ModelItem;
 
             if(_convertCollection.ConvertCollection == null || _convertCollection.ConvertCollection.Count <= 0)
             {
                 _convertCollection.ConvertCollection.Add(new BaseConvertTO("", "Text", "Base 64", "", 1));
                 _convertCollection.ConvertCollection.Add(new BaseConvertTO("", "Text", "Base 64", "", 2));
             }
-            activity.Properties["DisplayName"].SetValue(createDisplayName());
-
-            ModelItem parent = activity.Parent;
-
-            while(parent != null)
+            if(_activity != null)
             {
-                if(parent.Properties["Argument"] != null)
+                var modelProperty = _activity.Properties["DisplayName"];
+                if(modelProperty != null)
                 {
-                    break;
+                    modelProperty.SetValue(CreateDisplayName());
                 }
 
-                parent = parent.Parent;
+                ModelItem parent = _activity.Parent;
+
+                while(parent != null)
+                {
+                    if(parent.Properties["Argument"] != null)
+                    {
+                        break;
+                    }
+
+                    parent = parent.Parent;
+                }
             }
 
             ICollectionActivity modelItemActivity = ModelItem.GetCurrentValue() as ICollectionActivity;
@@ -156,22 +160,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        string createDisplayName()
+        string CreateDisplayName()
         {
-            string currentName = activity.Properties["DisplayName"].ComputedValue as string;
-            if(currentName.Contains("(") && currentName.Contains(")"))
+            var modelProperty = _activity.Properties["DisplayName"];
+            if(modelProperty != null)
             {
-                if(currentName.Contains(" ("))
+                string currentName = modelProperty.ComputedValue as string;
+                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                    if(currentName.Contains(" ("))
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf(" ("));
+                    }
+                    else
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf("("));
+                    }
                 }
-                else
-                {
-                    currentName = currentName.Remove(currentName.IndexOf("("));
-                }
+                currentName = currentName + " (" + (_convertCollection.ConvertCollection.Count - 1) + ")";
+                return currentName;
             }
-            currentName = currentName + " (" + (_convertCollection.ConvertCollection.Count - 1) + ")";
-            return currentName;
+            return null;
         }
 
         #endregion
@@ -189,29 +198,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ActivityHelper.HandleDragEnter(e);
         }
 
-        private void SetValuetxt_KeyUp(object sender, KeyEventArgs e)
+        void SetValuetxtKeyUp(object sender, KeyEventArgs e)
         {
-            List<BaseConvertTO> collection = ModelItem.Properties["ConvertCollection"].ComputedValue as List<BaseConvertTO>;
-            if(collection != null)
+            var modelProperty = ModelItem.Properties["ConvertCollection"];
+            if(modelProperty != null)
             {
-                int result = -1;
-                BaseConvertTO lastItem = collection.LastOrDefault(c => c.FromExpression != string.Empty);
-                if(lastItem != null)
+                List<BaseConvertTO> collection = modelProperty.ComputedValue as List<BaseConvertTO>;
+                if(collection != null)
                 {
-                    result = collection.IndexOf(lastItem) + 2;
-
-                    if(result > -1)
+                    BaseConvertTO lastItem = collection.LastOrDefault(c => c.FromExpression != string.Empty);
+                    if(lastItem != null)
                     {
-                        while(collection.Count > result)
+                        int result = collection.IndexOf(lastItem) + 2;
+
+                        if(result > -1)
                         {
-                            Resultsdg.RemoveRow(collection.Count - 1);
+                            while(collection.Count > result)
+                            {
+                                Resultsdg.RemoveRow(collection.Count - 1);
+                            }
                         }
                     }
                 }
             }
 
             Resultsdg.AddRow();
-            ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
+            var property = ModelItem.Properties["DisplayName"];
+            if(property != null)
+            {
+                property.SetValue(CreateDisplayName());
+            }
         }
 
         void CbxLoad(object sender, RoutedEventArgs e)
@@ -226,19 +242,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void DeleteRow_MenuItem_Click(object sender, RoutedEventArgs e)
+        void DeleteRowMenuItemClick(object sender, RoutedEventArgs e)
         {
             Resultsdg.RemoveRow(Resultsdg.SelectedIndex);
-            ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
+            var modelProperty = ModelItem.Properties["DisplayName"];
+            if(modelProperty != null)
+            {
+                modelProperty.SetValue(CreateDisplayName());
+            }
         }
 
         void InsertRow_MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Resultsdg.InsertRow(Resultsdg.SelectedIndex);
-            ModelItem.Properties["DisplayName"].SetValue(createDisplayName());
+            ModelProperty modelProperty = ModelItem.Properties["DisplayName"];
+            if(modelProperty != null)
+            {
+                modelProperty.SetValue(CreateDisplayName());
+            }
         }
 
-        void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        void ContextMenuContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             if(e.Source.GetType() == typeof(Dev2DataGrid))
             {
@@ -343,6 +367,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     fElement.BringToFront();
                 }
             }
+                // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
             }

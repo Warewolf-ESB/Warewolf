@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Collections.Generic;
 
 namespace Dev2.Services.Security
@@ -24,7 +23,9 @@ namespace Dev2.Services.Security
         /// <returns>
         /// true if the specified objects are equal; otherwise, false.
         /// </returns>
+        // ReSharper disable CSharpWarnings::CS1584
         /// <param name="x">The first object of type <paramref name="T"/> to compare.</param><param name="y">The second object of type <paramref name="T"/> to compare.</param>
+        // ReSharper restore CSharpWarnings::CS1584
         public bool Equals(WindowsGroupPermission x, WindowsGroupPermission y)
         {
             var isEqual = x.Permissions.Equals(y.Permissions) && x.ResourceID.Equals(y.ResourceID);

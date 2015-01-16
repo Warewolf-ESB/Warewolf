@@ -9,11 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Hosting;
 using Owin;
@@ -52,9 +53,8 @@ namespace Dev2.Runtime.WebServer
         public void Configuration(IAppBuilder app)
         {
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
-            listener.AuthenticationSchemes = AuthenticationSchemes.Ntlm;  // Enable NTLM auth
+            listener.AuthenticationSchemeSelectorDelegate+=AuthenticationSchemeSelectorDelegate;
             listener.IgnoreWriteExceptions = true;  // ignore errors written to disconnected clients.
-
             // Enable cross-domain calls
             app.UseCors(CorsOptions.AllowAll);
 
@@ -74,5 +74,47 @@ namespace Dev2.Runtime.WebServer
             app.UseWebApi(config);
         }
 
+        AuthenticationSchemes AuthenticationSchemeSelectorDelegate(HttpListenerRequest httpRequest)
+        {
+            if (httpRequest.RawUrl.StartsWith("/public/"))
+            {
+                return AuthenticationSchemes.Anonymous;
+            }
+            return AuthenticationSchemes.Negotiate;
+        }
+    }
+
+    public class AuthenticationMiddleware : OwinMiddleware
+    {
+        public AuthenticationMiddleware(OwinMiddleware next) :
+            base(next)
+        {           
+        }
+
+        #region Overrides of OwinMiddleware
+
+        /// <summary>
+        /// Process an individual request.
+        /// </summary>
+        /// <param name="context"/>
+        /// <returns/>
+        public override Task Invoke(IOwinContext context)
+        {
+            if (context.Request.User != null)
+            {
+                return Next.Invoke(context);
+            }
+            context.Response.Headers["WWW-Authenticate"] = "Negotiate,Anonymous,Basic realm=\"\"";
+//            context.Response.OnSendingHeaders(state =>
+//            {
+//                var resp = (OwinResponse)state;
+//
+//                if (resp.StatusCode == 401)
+//                    resp.Headers["WWW-Authenticate"] = "Negotiate,Anonymous,Basic realm=\"\"";
+//            }, context.Request);
+            return Task.FromResult(0);
+        }
+
+        #endregion
     }
 }

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
@@ -81,11 +80,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         // ReSharper restore RedundantOverridenMember
 
-
+        private readonly IList<string> nonFramedTokens = new List<string>();
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary>       
+        // ReSharper disable MethodTooLong
+        // ReSharper disable FunctionComplexityOverflow
         protected override void OnExecute(NativeActivityContext context)
+            // ReSharper restore MethodTooLong
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
@@ -112,10 +114,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         _indexCounter++;
                         // Travis.Frisinger - This needs to be in the ViewModel not here ;)
-                        if(item.ToExpression == string.Empty)
+                        if (item.ToExpression == string.Empty)
                         {
                             item.ToExpression = item.FromExpression;
                         }
+                        if (nonFramedTokens.Contains(item.ToExpression))
+                        {
+                            // reset the framing ;)
+                            nonFramedTokens.Clear();
+                            nonFramedTokens.Add(item.ToExpression);
+
+                            compiler.Upsert(executionId, toUpsert, out errors);
+                            allErrors.MergeErrors(errors);
+
+                            if (!allErrors.HasErrors() && toUpsert != null)
+                            {
+                                var outIndex = 1;
+                                foreach (var debugOutputTo in toUpsert.DebugOutputs)
+                                {
+                                    var debugItem = new DebugItem();
+                                    AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                                    AddDebugItem(new DebugItemVariableParams(debugOutputTo), debugItem);
+                                    _debugOutputs.Add(debugItem);
+                                    outIndex++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // current append indexes are alright ;)
+                            nonFramedTokens.Add(item.ToExpression);
+                        }
+                       
                         IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
                         var fieldName = item.FromExpression;
                         fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
@@ -159,15 +189,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 foreach(IBinaryDataListItem c in cols)
                                 {
                                     // set up live flushing iterator details
-                                    if(c.IsDeferredRead)
-                                    {
-                                        if(toUpsert != null)
-                                        {
-                                            toUpsert.HasLiveFlushing = true;
-                                            toUpsert.LiveFlushingLocation = executionId;
-                                        }
-                                    }
-
                                     int indexToUpsertTo = c.ItemCollectionIndex;
 
                                     string val = string.IsNullOrEmpty(c.TheValue) ? "" : broker.Convert(c.TheValue);
@@ -177,12 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     }
-                                    toUpsert.Add(expression, val);
-                                    if(toUpsert != null && toUpsert.HasLiveFlushing)
-                                    {
-                                        toUpsert.FlushIterationFrame();
-                                        toUpsert = null;
-                                    }
+                                    toUpsert.Add(expression, val);                                   
                                 }
                             }
                         }
@@ -201,29 +217,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                 }
+                compiler.Upsert(executionId, toUpsert, out errors);
+                allErrors.MergeErrors(errors);
 
-                if(toUpsert != null && toUpsert.HasLiveFlushing)
-                {
-                    try
-                    {
-                        toUpsert.FlushIterationFrame();
-                    }
-                    catch(Exception e)
-                    {
-                        Dev2Logger.Log.Error("DSFBaseConvert", e);
-                        allErrors.AddError(e.Message);
-                    }
-                }
-                else
-                {
-                    compiler.Upsert(executionId, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
-                }
-
-                if(!allErrors.HasErrors() && toUpsert != null)
+                if (!allErrors.HasErrors() && toUpsert != null)
                 {
                     var outIndex = 1;
-                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                    foreach (var debugOutputTo in toUpsert.DebugOutputs)
                     {
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);

@@ -9,18 +9,19 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Connections;
 using Dev2.Dialogs;
+using Dev2.Services.Security;
 using Dev2.Settings;
+using Dev2.Settings.Logging;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Moq;
-using System.Windows.Forms;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -43,9 +44,15 @@ namespace Dev2.Core.Tests.Settings
         }
 
         public SecurityViewModel TheSecurityViewModel { get; set; }
+        public LogSettingsViewModel TheLogSettingsViewModel { get; set; }
         protected override SecurityViewModel CreateSecurityViewModel()
         {
             return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+        }
+
+        protected override LogSettingsViewModel CreateLoggingViewModel()
+        {
+            return TheLogSettingsViewModel ?? new LogSettingsViewModel(new LoggingSettingsTo(), new Mock<IEnvironmentModel>().Object);
         }
 
         public void CallDeactivate()

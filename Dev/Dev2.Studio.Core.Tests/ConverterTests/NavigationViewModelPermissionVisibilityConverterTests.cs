@@ -9,11 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Globalization;
 using System.Windows;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -72,16 +70,16 @@ namespace Dev2.Core.Tests.ConverterTests
         [TestCategory("NavigationViewModelPermissionVisibilityConverter_Convert")]
         public void NavigationViewModelPermissionVisibilityConverter_Convert_RequiredPermissionIsNoneAndUserPermissionIsViewOrExecute_Collapsed()
         {
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.View, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.Execute, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.Contribute, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.Administrator, expected: Visibility.Collapsed);
+            Verify_Convert(Permissions.None, Permissions.View, Visibility.Collapsed);
+            Verify_Convert(Permissions.None, Permissions.Execute, Visibility.Collapsed);
+            Verify_Convert(Permissions.None, Permissions.Contribute, Visibility.Collapsed);
+            Verify_Convert(Permissions.None, Permissions.Administrator, Visibility.Collapsed);
 
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.View | Permissions.Execute, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.View | Permissions.DeployTo, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.View | Permissions.DeployFrom, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.Execute | Permissions.DeployTo, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.Execute | Permissions.DeployFrom, expected: Visibility.Collapsed);
+            Verify_Convert(Permissions.None, Permissions.View | Permissions.Execute, Visibility.Collapsed);
+            Verify_Convert(Permissions.None, Permissions.View | Permissions.DeployTo, Visibility.Collapsed);
+            Verify_Convert(Permissions.None, Permissions.View | Permissions.DeployFrom, Visibility.Collapsed);
+            Verify_Convert(Permissions.None, Permissions.Execute | Permissions.DeployTo, Visibility.Collapsed);
+            Verify_Convert(Permissions.None, Permissions.Execute | Permissions.DeployFrom, Visibility.Collapsed);
         }
 
         [TestMethod]
@@ -89,9 +87,9 @@ namespace Dev2.Core.Tests.ConverterTests
         [TestCategory("NavigationViewModelPermissionVisibilityConverter_Convert")]
         public void NavigationViewModelPermissionVisibilityConverter_Convert_RequiredPermissionIsNoneAndUserPermissionIsNotViewOrExecute_Visible()
         {
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.None, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.DeployFrom, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.None, userPermissions: Permissions.DeployTo, expected: Visibility.Visible);
+            Verify_Convert(Permissions.None, Permissions.None, Visibility.Visible);
+            Verify_Convert(Permissions.None, Permissions.DeployFrom, Visibility.Visible);
+            Verify_Convert(Permissions.None, Permissions.DeployTo, Visibility.Visible);
         }
 
         [TestMethod]
@@ -99,13 +97,13 @@ namespace Dev2.Core.Tests.ConverterTests
         [TestCategory("NavigationViewModelPermissionVisibilityConverter_Convert")]
         public void NavigationViewModelPermissionVisibilityConverter_Convert_RequiredPermissionIsViewAndUserPermissionIsView_Visible()
         {
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.View, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.Contribute, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.Administrator, expected: Visibility.Visible);
+            Verify_Convert(Permissions.View, Permissions.View, Visibility.Visible);
+            Verify_Convert(Permissions.View, Permissions.Contribute, Visibility.Visible);
+            Verify_Convert(Permissions.View, Permissions.Administrator, Visibility.Visible);
 
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.View | Permissions.Execute, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.View | Permissions.DeployTo, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.View | Permissions.DeployFrom, expected: Visibility.Visible);
+            Verify_Convert(Permissions.View, Permissions.View | Permissions.Execute, Visibility.Visible);
+            Verify_Convert(Permissions.View, Permissions.View | Permissions.DeployTo, Visibility.Visible);
+            Verify_Convert(Permissions.View, Permissions.View | Permissions.DeployFrom, Visibility.Visible);
         }
 
         [TestMethod]
@@ -113,10 +111,10 @@ namespace Dev2.Core.Tests.ConverterTests
         [TestCategory("NavigationViewModelPermissionVisibilityConverter_Convert")]
         public void NavigationViewModelPermissionVisibilityConverter_Convert_RequiredPermissionIsViewAndUserPermissionIsNotView_Collapsed()
         {
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.None, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.Execute, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.DeployFrom, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.View, userPermissions: Permissions.DeployTo, expected: Visibility.Collapsed);
+            Verify_Convert(Permissions.View, Permissions.None, Visibility.Collapsed);
+            Verify_Convert(Permissions.View, Permissions.Execute, Visibility.Collapsed);
+            Verify_Convert(Permissions.View, Permissions.DeployFrom, Visibility.Collapsed);
+            Verify_Convert(Permissions.View, Permissions.DeployTo, Visibility.Collapsed);
         }
 
         [TestMethod]
@@ -124,13 +122,13 @@ namespace Dev2.Core.Tests.ConverterTests
         [TestCategory("NavigationExecuteModelPermissionVisibilityConverter_Convert")]
         public void NavigationViewModelPermissionVisibilityConverter_Convert_RequiredPermissionIsExecuteAndUserPermissionIsExecute_Visible()
         {
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.Execute, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.Contribute, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.Administrator, expected: Visibility.Visible);
+            Verify_Convert(Permissions.Execute, Permissions.Execute, Visibility.Visible);
+            Verify_Convert(Permissions.Execute, Permissions.Contribute, Visibility.Visible);
+            Verify_Convert(Permissions.Execute, Permissions.Administrator, Visibility.Visible);
 
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.Execute | Permissions.View, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.Execute | Permissions.DeployTo, expected: Visibility.Visible);
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.Execute | Permissions.DeployFrom, expected: Visibility.Visible);
+            Verify_Convert(Permissions.Execute, Permissions.Execute | Permissions.View, Visibility.Visible);
+            Verify_Convert(Permissions.Execute, Permissions.Execute | Permissions.DeployTo, Visibility.Visible);
+            Verify_Convert(Permissions.Execute, Permissions.Execute | Permissions.DeployFrom, Visibility.Visible);
         }
 
         [TestMethod]
@@ -138,10 +136,10 @@ namespace Dev2.Core.Tests.ConverterTests
         [TestCategory("NavigationExecuteModelPermissionVisibilityConverter_Convert")]
         public void NavigationViewModelPermissionVisibilityConverter_Convert_RequiredPermissionIsExecuteAndUserPermissionIsNotExecute_Collapsed()
         {
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.None, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.View, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.DeployFrom, expected: Visibility.Collapsed);
-            Verify_Convert(requiredPermission: Permissions.Execute, userPermissions: Permissions.DeployTo, expected: Visibility.Collapsed);
+            Verify_Convert(Permissions.Execute, Permissions.None, Visibility.Collapsed);
+            Verify_Convert(Permissions.Execute, Permissions.View, Visibility.Collapsed);
+            Verify_Convert(Permissions.Execute, Permissions.DeployFrom, Visibility.Collapsed);
+            Verify_Convert(Permissions.Execute, Permissions.DeployTo, Visibility.Collapsed);
         }
 
         static void Verify_Convert(Permissions requiredPermission, Permissions userPermissions, Visibility expected)

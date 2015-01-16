@@ -157,115 +157,6 @@
   <data name="StringWindow_SwitchWindowTitle" xml:space="preserve">
     <value>Provide the identifier to switch on</value>
   </data>
-  <data name="Uri_Application_Image_Assert" xml:space="preserve">
-    <value>assert.png</value>
-  </data>
-  <data name="Uri_Application_Image_Assign" xml:space="preserve">
-    <value>assign.png</value>
-  </data>
-  <data name="Uri_Application_Image_Build" xml:space="preserve">
-    <value>build.png</value>
-  </data>
-  <data name="Uri_Application_Image_Checkpoint" xml:space="preserve">
-    <value>checkpoint.png</value>
-  </data>
-  <data name="Uri_Application_Image_Comment" xml:space="preserve">
-    <value>comment.png</value>
-  </data>
-  <data name="Uri_Application_Image_Datasource" xml:space="preserve">
-    <value>datasource.png</value>
-  </data>
-  <data name="Uri_Application_Image_Decision" xml:space="preserve">
-    <value>decision.png</value>
-  </data>
-  <data name="Uri_Application_Image_Dependency" xml:space="preserve">
-    <value>DependencyGraph-16.png</value>
-  </data>
-  <data name="Uri_Application_Image_DSFCLI" xml:space="preserve">
-    <value>dsfcli.png</value>
-  </data>
-  <data name="Uri_Application_Image_Edit" xml:space="preserve">
-    <value>edit.png</value>
-  </data>
-  <data name="Uri_Application_Image_Explorer" xml:space="preserve">
-    <value>explorer.png</value>
-  </data>
-  <data name="Uri_Application_Image_FlowSwitch" xml:space="preserve">
-    <value>flowswitch.png</value>
-    <comment>http://tuw-ukiis01:1994/dsf/</comment>
-  </data>
-  <data name="Uri_Application_Image_Folder" xml:space="preserve">
-    <value>ExplorerFolder-32.png</value>
-    <comment>net.tcp://tuw-ukiis01:2094/dsfmanager/</comment>
-  </data>
-  <data name="Uri_Application_Image_ForEach" xml:space="preserve">
-    <value>foreach.png</value>
-    <comment>http://tuw-ukiis01:1995/dsf/</comment>
-  </data>
-  <data name="Uri_Application_Image_FTP" xml:space="preserve">
-    <value>ftp.png</value>
-    <comment>net.tcp://tuw-ukiis01:2095/dsfmanager/</comment>
-  </data>
-  <data name="Uri_Application_Image_Home" xml:space="preserve">
-    <value>home.ico</value>
-    <comment>http://tuw-ukiis01:1996/dsf/</comment>
-  </data>
-  <data name="Uri_Application_Image_Log" xml:space="preserve">
-    <value>log.png</value>
-    <comment>net.tcp://tuw-ukiis01:2096/dsfmanager/</comment>
-  </data>
-  <data name="Uri_Application_Image_NewActivity" xml:space="preserve">
-    <value>newdsfactivity.png</value>
-  </data>
-  <data name="Uri_Application_Image_NewService" xml:space="preserve">
-    <value>newdsfservice.png</value>
-  </data>
-  <data name="Uri_Application_Image_NewService32" xml:space="preserve">
-    <value>newdsfservice32.png</value>
-  </data>
-  <data name="Uri_Application_Image_Output" xml:space="preserve">
-    <value>output.png</value>
-    <comment>http://localhost:786/dsf</comment>
-  </data>
-  <data name="Uri_Application_Image_Refresh" xml:space="preserve">
-    <value>Refresh-16.png</value>
-    <comment>net.tcp://localhost:78/dsfmanager</comment>
-  </data>
-  <data name="Uri_Application_Image_Run" xml:space="preserve">
-    <value>play.png</value>
-  </data>
-  <data name="Uri_Application_Image_Run2" xml:space="preserve">
-    <value>run.png</value>
-    <comment>http://tuw-devfs:1994/dsfDev/</comment>
-  </data>
-  <data name="Uri_Application_Image_Search" xml:space="preserve">
-    <value>search.png</value>
-    <comment>net.tcp://sameeraw:78/dsfmanager</comment>
-  </data>
-  <data name="Uri_Application_Image_Sequence" xml:space="preserve">
-    <value>sequence.png</value>
-    <comment>net.tcp://rsaklfsvrgendev:7658/dsfmanager</comment>
-  </data>
-  <data name="Uri_Application_Image_Source" xml:space="preserve">
-    <value>ExplorerSources-32.png</value>
-    <comment>net.tcp://localhost:786/dsf</comment>
-  </data>
-  <data name="Uri_Application_Image_Toolbox" xml:space="preserve">
-    <value>toolbox.png</value>
-    <comment>net.tcp://10.0.34.1:2094/dsfmanager/</comment>
-  </data>
-  <data name="Uri_Application_Image_Website" xml:space="preserve">
-    <value>http://localhost/businessdesignstudio/images/</value>
-    <comment>http://localhost:77/dsf</comment>
-  </data>
-  <data name="Uri_Application_Image_WorkerService" xml:space="preserve">
-    <value>workerservice.png</value>
-    <comment>http://sameeraw:1994/dsfDev/</comment>
-  </data>
-  <data name="Uri_Application_Image_WorklflowService" xml:space="preserve">
-    <value>workflowservice2.png</value>
-    <comment>net.tcp://sameeraw:2094/dsfDevmanager/</comment>
-  </data>
   <data name="Uri_Start_Page" xml:space="preserve">
     <value>http://www.google.co.za/</value>
     <comment>http://tuw-hubps/Pages/Business%20Design%20Studio.aspx</comment>
@@ -337,18 +228,6 @@
   <data name="Supported_WebResource_Folders" xml:space="preserve">
     <value>css,images,js</value>
   </data>
-  <data name="Website_Supported_Webparts" xml:space="preserve">
-    <value>image,label,dev2verticalmenu,dev2horizontalmenu</value>
-  </data>
-  <data name="Error_Supported_Webparts_Not_Set" xml:space="preserve">
-    <value>Supported Webparts for websites has not been configured correctly</value>
-  </data>
-  <data name="Error_Website_Resource_Exists" xml:space="preserve">
-    <value>The website resource selected already exists!</value>
-  </data>
-  <data name="Website_BootStrap_Service" xml:space="preserve">
-    <value>BootStrapWebsite</value>
-  </data>
   <data name="Navigation_Folder_Icon_Pack_Uri" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolder-32.png</value>
   </data>
@@ -408,7 +287,6 @@ Sofware development by: www.dev2.co.za
 Sofware development by: www.dev2.co.za
 </value>
   </data>
-  
   <data name="About_Header_Text" xml:space="preserve">
     <value>About</value>
   </data>
@@ -489,7 +367,9 @@ Would you like to start the setup now?</value>
     <value>Workflow not saved...</value>
   </data>
   <data name="DialogBody_ConfirmDelete" xml:space="preserve">
-    <value>Are you sure you wish to delete the {0} {1}?</value>
+    <value>Are you sure you wish to delete the {0} {1}?
+
+Version History will also be deleted.</value>
   </data>
   <data name="DialogBody_ConfirmFolderDelete" xml:space="preserve">
     <value>Are you sure you wish to delete {0} folder and all its contents?</value>
@@ -793,5 +673,11 @@ You need Administrator permission.</value>
     <value>There are duplicate server permissions, 
     i.e Server permissions have been setup up with the same group twice. 
     Please clear the duplicates before saving.</value>
+  </data>
+  <data name="DragRemoteNotSupported" xml:space="preserve">
+    <value>You are not allowed to drag remote workflows onto a remote service designer.</value>
+  </data>
+  <data name="DragRemoteNotSupportedHeader" xml:space="preserve">
+    <value>Invalid Designer Operation</value>
   </data>
 </root>

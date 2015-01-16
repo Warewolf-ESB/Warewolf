@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Windows;
 using Dev2.Common;
@@ -54,7 +53,7 @@ namespace Dev2.Studio
                 IPopupController popup = CustomContainer.Get<IPopupController>();
                 popup.Show("You have pasted text which contins tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces. "
                     + Environment.NewLine + Environment.NewLine +
-                    "Please note that tabs are fully supported but the runtime, in variables and when reading from files.",
+                    "Please note that tabs are fully supported at runtime, in variables and when reading from files.",
                     "Tabs Pasted", MessageBoxButton.OK, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxDesignSurfaceTabPasteDialog);
             }), null);
         }

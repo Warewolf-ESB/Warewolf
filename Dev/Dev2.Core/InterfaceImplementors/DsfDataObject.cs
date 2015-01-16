@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Persistence;
 using System.Collections.Generic;
@@ -17,10 +16,10 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics.Logging;
 using Dev2.DynamicServices.Objects;
 using Dev2.Web;
 
@@ -265,7 +264,7 @@ namespace Dev2.DynamicServices
         public string RemoteInvokerID { get; set; }
         public IList<IDebugState> RemoteDebugItems { get; set; }
         public string RemoteServiceType { get; set; }
-
+    
         public int ParentThreadID { get; set; }
 
         public bool WorkflowResumeable { get; set; }
@@ -291,8 +290,6 @@ namespace Dev2.DynamicServices
 
         public bool IsDataListScoped { get; set; }
         public bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
-
-        public bool IsWebpage { get; set; }
 
         #endregion Properties
 
@@ -328,7 +325,6 @@ namespace Dev2.DynamicServices
             result.IsDebug = IsDebug;
             result.IsOnDemandSimulation = IsOnDemandSimulation;
             result.IsFromWebServer = IsFromWebServer;
-            result.IsWebpage = IsWebpage;
             result.NumberOfSteps = NumberOfSteps;
             result.OriginalInstanceID = OriginalInstanceID;
             result.ParentInstanceID = ParentInstanceID;
@@ -360,7 +356,7 @@ namespace Dev2.DynamicServices
 
         public bool IsDebugMode()
         {
-            return (IsDebug || Dev2Logger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
+            return (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
         }
 
         #endregion

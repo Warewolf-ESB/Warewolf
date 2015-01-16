@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -41,8 +40,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_LiteralsPassedToFunction_EvaluationReturnsCorrectly()
         {
             string expression = @"Sum(10, 10)";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
             _eval = MathOpsFactory.CreateFunctionEvaluator();
             bool hasSuceeded = _eval.TryEvaluateFunction(expression, out result, out error);
@@ -64,8 +63,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_InvalidExpression_ErrorPopulatedAndReturned()
         {
             string expression = @"Sum(10, 10,asdasd)";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
             _eval = MathOpsFactory.CreateFunctionEvaluator();
             bool hasSuceeded = _eval.TryEvaluateFunction(expression, out result, out error);
@@ -87,8 +86,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_NoExpression_ErrorPopulatedAndReturnedWithErrorDetailingProblem()
         {
             string expression = @"(10, 10,asdasd)";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
 
             bool hasSuceeded = _eval.TryEvaluateFunction(expression, out result, out error);
@@ -111,8 +110,8 @@ namespace Dev2.Tests.MathOperationTest
         {
             string expression = @"10 + 10 - 10";
 
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
 
@@ -130,8 +129,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_MixedUnaryAndFunctions_Expected_EvaluationSucessful()
         {
             string expression = @"Average(10 + 10, 20*2, 30/2)";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
 
@@ -153,8 +152,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_FunctionDoesNotExist_Expected_ErrorResponseStatingFunctionNotExist()
         {
             string expression = @"thisDoesNotExist(12,1234,567)";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
 
@@ -176,9 +175,9 @@ namespace Dev2.Tests.MathOperationTest
         {
             DateTime date = new DateTime(2012, 2, 2);
             string expression = @"Date(2012,2,2)";
-            string actual = string.Empty;
+            string actual;
             string expected = date.ToShortDateString();
-            string error = string.Empty;
+            string error;
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out actual, out error);
 
@@ -200,8 +199,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_YearFunction_Expected_EvaluationOfDateCorrect()
         {
             string expression = @"Year(""1989/02/01"")";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
 
@@ -223,8 +222,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_ImSqrt_Expected_EvaluatioReturnsCorrectResult()
         {
             string expression = @"Imsqrt(-1)";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
 
@@ -246,8 +245,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_Oct2Dec_Expected_EvaluationReturnsCorrectResult()
         {
             string expression = @"Oct2Dec(764)";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
 
@@ -266,8 +265,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateFunction_ComplexCalculation_Expected_EvaluatioReturnsCorrectResult()
         {
             string expression = @"Sum(Average(Abs(-100), Min(10,20,2,30,200)), Max(200,300,400)) + 250";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out result, out error);
 
@@ -293,8 +292,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateAtomicFunction_ComplexCalculation_Expected_EvaluatioReturnsCorrectResult()
         {
             string expression = @"Sum(Average(Abs(-100), Min(10,20,2,30,200)), Max(200,300,400)) + 250";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
             bool hasSucceeded = new FunctionEvaluator().TryEvaluateAtomicFunction(expression, out result, out error);
 
 
@@ -316,8 +315,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateAtomicFunction_EmptyFunction_Expected_EvaluatioReturnsCorrectResult()
         {
             string expression = @"";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
             bool hasSucceeded = new FunctionEvaluator().TryEvaluateAtomicFunction(expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error));
@@ -331,8 +330,8 @@ namespace Dev2.Tests.MathOperationTest
         public void TryEvaluateAtomicFunction_InvalidFunction_Expected_EvaluatioReturnsCorrectResult()
         {
             string expression = @"abcdefg";
-            string result = string.Empty;
-            string error = string.Empty;
+            string result;
+            string error;
             bool hasSucceeded = new FunctionEvaluator().TryEvaluateAtomicFunction(expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error));
@@ -352,9 +351,9 @@ namespace Dev2.Tests.MathOperationTest
         {
             string expression = @"Sum";
             List<int> values = new List<int> { 10, 20, 30 };
-            string result = string.Empty;
-            string error = string.Empty;
-            bool hasSucceeded = _eval.TryEvaluateFunction<int>(values, expression, out result, out error);
+            string result;
+            string error;
+            bool hasSucceeded = _eval.TryEvaluateFunction(values, expression, out result, out error);
 
             if(hasSucceeded)
             {
@@ -375,9 +374,9 @@ namespace Dev2.Tests.MathOperationTest
         {
             string expression = @"";
             List<int> values = new List<int> { 10, 20, 30 };
-            string result = string.Empty;
-            string error = string.Empty;
-            bool hasSucceeded = _eval.TryEvaluateFunction<int>(values, expression, out result, out error);
+            string result;
+            string error;
+            bool hasSucceeded = _eval.TryEvaluateFunction(values, expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error) && !hasSucceeded);
 
@@ -391,9 +390,9 @@ namespace Dev2.Tests.MathOperationTest
         {
             string expression = @"abcdefg";
             List<int> values = new List<int> { 10, 20, 30 };
-            string result = string.Empty;
-            string error = string.Empty;
-            bool hasSucceeded = _eval.TryEvaluateFunction<int>(values, expression, out result, out error);
+            string result;
+            string error;
+            bool hasSucceeded = _eval.TryEvaluateFunction(values, expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error) && !hasSucceeded);
 
@@ -407,9 +406,9 @@ namespace Dev2.Tests.MathOperationTest
         {
             string expression = @"Sum";
             List<int> values = new List<int>();
-            string result = string.Empty;
-            string error = string.Empty;
-            bool hasSucceeded = _eval.TryEvaluateFunction<int>(values, expression, out result, out error);
+            string result;
+            string error;
+            bool hasSucceeded = _eval.TryEvaluateFunction(values, expression, out result, out error);
 
             Assert.IsTrue(!string.IsNullOrEmpty(error) & !hasSucceeded);
 

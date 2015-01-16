@@ -7,8 +7,8 @@
 Scenario: Creating Scheduler Task Without password and expected error
      Given I have Warewolf running
      Given all tabs are closed
-	 And I click "EXPLORERFILTERCLEARBUTTON"
-	 And I click "EXPLORER,UI_localhost_AutoID" 
+	 Given I click "EXPLORERCONNECTCONTROL"
+	 Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	 #Opening Schedule Tab 
 	 And I click "RIBBONSCHEDULE" 
 	 #Creating New Schedule  

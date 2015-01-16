@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -62,11 +61,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 case enDsfActivityType.Workflow:
                     ImageSource = "Workflow-32";
-                    Title = "Select A Workflow";
+                    Title = "Select A Service";
                     break;
                 case enDsfActivityType.Service:
                     ImageSource = "ToolService-32";
-                    Title = "Select A Service";
+                    Title = "Select A Data Connector";
                     break;
                 default:
                     ImageSource = "ExplorerWarewolfConnection-32";
@@ -86,8 +85,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         public enDsfActivityType ActivityType { get; private set; }
 
         public INavigationViewModel NavigationViewModel { get; private set; }
-
-        public string SelectedResourceName { get; set; }
 
         public IContextualResourceModel SelectedResourceModel
         {
@@ -193,12 +190,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public IExplorerItemModel SelectedExplorerItemModel { get; set; }
+        internal IExplorerItemModel SelectedExplorerItemModel { get; private set; }
 
         /// <summary>
         /// Used for canceling the drop of t    he design surface
         /// </summary>
-        public void Cancel()
+        void Cancel()
         {
             RequestClose(ViewModelDialogResults.Cancel);
         }

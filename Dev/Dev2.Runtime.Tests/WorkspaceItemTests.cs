@@ -16,9 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.Hosting;
-using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -31,11 +29,6 @@ namespace Dev2.DynamicServices.Test
     [ExcludeFromCodeCoverage]
     public class WorkspaceItemTests
     {
-        static readonly Guid TestWorkspaceID = new Guid("B1890C86-95D8-4612-A7C3-953250ED237A");
-
-        static readonly XElement TestWorkspaceItemXml = XmlResource.Fetch("WorkspaceItem");
-
-
         const int VersionNo = 9999;
 
         const string ServiceName = "Calculate_RecordSet_Subtract";
@@ -52,13 +45,9 @@ namespace Dev2.DynamicServices.Test
 
         public const string ServerConnection1Name = "ServerConnection1";
 
-        public const string ServerConnection1ResourceName = "MyDevServer";
-
         public const string ServerConnection1ID = "68F5B4FE-4573-442A-BA0C-5303F828344F";
 
         public const string ServerConnection2Name = "ServerConnection2";
-
-        public const string ServerConnection2ResourceName = "MySecondDevServer";
 
         public const string ServerConnection2ID = "70238921-FDC7-4F7A-9651-3104EEDA1211";
 

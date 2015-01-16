@@ -28,6 +28,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 namespace Dev2.Activities.Specs.BaseTypes
@@ -141,16 +142,32 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         void CreateSourceFileWithSomeDummyData()
         {
-            var broker = ActivityIOFactory.CreateOperationsBroker();
-            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(ActualSourceHolder),
-                            ScenarioContext.Current.Get<string>(SourceUsernameHolder),
-                            ScenarioContext.Current.Get<string>(SourcePasswordHolder),
-                            true);
-            var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, Guid.NewGuid().ToString());
-            IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-            if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
+            try
             {
-                broker.PutRaw(sourceEndPoint, ops);
+                Dev2Logger.Log.Debug(string.Format("Source File: {0}", ScenarioContext.Current.Get<string>(ActualSourceHolder)));
+                var broker = ActivityIOFactory.CreateOperationsBroker();
+                IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(ActualSourceHolder),
+                    ScenarioContext.Current.Get<string>(SourceUsernameHolder),
+                    ScenarioContext.Current.Get<string>(SourcePasswordHolder),
+                    true);
+                var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, Guid.NewGuid().ToString());
+                IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+                if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
+                {
+                    var result =  broker.PutRaw(sourceEndPoint, ops);
+                    if (result != "Success")
+                    {
+                        result = broker.PutRaw(sourceEndPoint, ops);
+                        if (result != "Success")
+                        {
+                            Dev2Logger.Log.Debug("Create Source File for file op test error");
+                        }
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Log.Debug("Create Source File for file op test error",e);               
             }
 
         }

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -410,8 +409,8 @@ namespace Dev2.Models
             {
                 _isConnected = value;
                 OnPropertyChanged();
-                ConnectCommand.RaiseCanExecuteChanged();
-                DisconnectCommand.RaiseCanExecuteChanged();
+               // ConnectCommand.RaiseCanExecuteChanged();
+               // DisconnectCommand.RaiseCanExecuteChanged();
                 
             }
         }
@@ -1189,7 +1188,8 @@ namespace Dev2.Models
                     {
                         for(int i = folderList.Count - 1; i >= 0; i--)
                         {
-                            if(folderList[i].ResourceType == ResourceType.Folder && (folderList[i].Children.Count == 0 || folderList[i].Children.All(c => c.ResourceType == ResourceType.Folder)))
+                            var folder = _studioResourceRepository.FindItem(a => a.ResourcePath == folderList[i].ResourcePath && a.ResourceType == ResourceType.Folder);
+                            if (folder != null && (folder.Children.Count == 0 || folder.Children.All(c => c.ResourceType == ResourceType.Folder)))
                             {
                                 _studioResourceRepository.DeleteFolder(folderList[i]);
                             }

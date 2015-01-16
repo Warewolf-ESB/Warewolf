@@ -63,8 +63,8 @@ namespace Dev2.Studio.UI.Specs
         
         //Tools
         //Control Flow
-        static readonly string ToolDecision = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowDecision";
-        static readonly string ToolSwitch = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowSwitch`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]";
+        static readonly string ToolDecision = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowDecision*";
+        static readonly string ToolSwitch = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowSwitch*";
         static readonly string ToolSequence = Toolbox + ",PART_Tools,Control Flow,Dev2.Activities.DsfSequenceActivity";
         //Loop Constructs
         static readonly string ToolForEach = Toolbox + ",PART_Tools,Loop Constructs,Unlimited.Applications.BusinessDesignStudio.Activities.DsfForEachActivity";
@@ -230,9 +230,6 @@ namespace Dev2.Studio.UI.Specs
         {
             try
             {
-                //Playback.Initialize();
-                //Playback.PlaybackError += PlaybackPlaybackError;
-
                 Playback.PlaybackSettings.ContinueOnError = false;
                 Playback.PlaybackSettings.ShouldSearchFailFast = true;
                 Playback.PlaybackSettings.SearchTimeout = 1000;
@@ -245,7 +242,6 @@ namespace Dev2.Studio.UI.Specs
                 // make the mouse quick ;)
                 Mouse.MouseMoveSpeed = 20000;
                 Mouse.MouseDragSpeed = 20000;
-               
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch
@@ -264,7 +260,8 @@ namespace Dev2.Studio.UI.Specs
             {
                 Bootstrap.Teardown(true);
                 Playback.Cleanup();
-                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation, Bootstrap.StudioTimeOut);
+                RunSpecifiedFileWithUserNameAndPassword(string.Empty, string.Empty, Bootstrap.StudioLocation, 0);
+                WaitForUIControlExistance(typeof(UIStudioWindow), Bootstrap.StudioTimeOut);
                 Playback.Initialize();
             }
         }
@@ -655,6 +652,7 @@ namespace Dev2.Studio.UI.Specs
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
             var newServerAutoId = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...";
+            GivenIClick("EXPLORERCONNECTCONTROL");
             GivenIClick(newServerAutoId);
             ThenIsVisibleWithinSeconds("WebBrowserWindow", 10);
             var window = GetAControlStrict("WebBrowserWindow");
@@ -768,8 +766,28 @@ namespace Dev2.Studio.UI.Specs
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown(true);
             Playback.Cleanup();
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation, Bootstrap.StudioTimeOut);
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation, 0);
+            WaitForUIControlExistance(typeof(UIStudioWindow), Bootstrap.StudioTimeOut);
             Playback.Initialize();
+        }
+
+        static void WaitForUIControlExistance(Type T, int timeout)
+        {
+            var count = 0;
+            const int resolution = 1000;
+            while(count < timeout)
+            {
+                var newControl = Activator.CreateInstance(T);
+                if(newControl == null)
+                {
+                    count = count + resolution;
+                    Playback.Wait(resolution);
+                }
+                else
+                {
+                    count = timeout;
+                }
+            }
         }
 
         static void RunSpecifiedFileWithUserNameAndPassword(string userName, string password, string fileLocation, int timeOut)
@@ -911,6 +929,11 @@ namespace Dev2.Studio.UI.Specs
             {
                 string message = string.Format("{0} - Was not visible within {1} seconds", itemToFindAutoIds, seconds);
                 Assert.Fail(message);
+            }
+            if(itemToFindAutoIds == "WebBrowserWindow")
+            {
+                //Give the web browser window a second to fully render
+                Playback.Wait(1000);
             }
         }
 

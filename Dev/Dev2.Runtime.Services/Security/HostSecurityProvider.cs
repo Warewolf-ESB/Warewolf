@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.IO;
 using System.Net;
@@ -265,7 +264,7 @@ namespace Dev2.Runtime.Security
         #endregion
 
         #region EnsureSSL
-        public bool EnsureSSL(string certPath, IPEndPoint endPoint)
+        public bool EnsureSsl(string certPath, IPEndPoint endPoint)
         {
             bool result = false;
 

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -51,8 +50,9 @@ namespace Dev2.Settings
         readonly IWin32Window _parentWindow;
 
         SecurityViewModel _securityViewModel;
-        LoggingViewModel _loggingViewModel;
+        LogSettingsViewModel _logSettingsViewModel;
         IConnectControlViewModel _connectControlViewModel;
+        private bool _showLog;
 
         public SettingsViewModel()
             : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow, null)
@@ -209,6 +209,21 @@ namespace Dev2.Settings
                 NotifyOfPropertyChange(() => ShowSecurity);
             }
         }
+        
+        public bool ShowLog
+        {
+            get { return _showLog; }
+            set
+            {
+                if (value.Equals(_showLog))
+                {
+                    return;
+                }
+                _showLog = value;
+                OnSelectionChanged();
+                NotifyOfPropertyChange(() => ShowLog);
+            }
+        }
 
         public Data.Settings.Settings Settings { get; private set; }
 
@@ -226,24 +241,44 @@ namespace Dev2.Settings
             }
         }
 
-        public LoggingViewModel LoggingViewModel
+        public LogSettingsViewModel LogSettingsViewModel
         {
-            get { return _loggingViewModel; }
+            get { return _logSettingsViewModel; }
             private set
             {
-                if(Equals(value, _loggingViewModel))
+                if(Equals(value, _logSettingsViewModel))
                 {
                     return;
                 }
-                _loggingViewModel = value;
-                NotifyOfPropertyChange(() => LoggingViewModel);
+                _logSettingsViewModel = value;
+                NotifyOfPropertyChange(() => LogSettingsViewModel);
+                NotifyOfPropertyChange(() => HasLogSettings);
             }
         }
         public string SecurityHeader
         {
             get
             {
-                return IsDirty ? "Security *" : "Security";
+                return SecurityViewModel != null && SecurityViewModel.IsDirty ? "Security *" : "Security";
+            }
+        }
+        public string LogHeader
+        {
+            get
+            {
+                return LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? "Logging *" : "Logging";
+            }
+        }
+        public bool HasLogSettings
+        {
+            get
+            {
+                var hasLogSettings = LogSettingsViewModel!=null && CurrentEnvironment.IsConnected;
+                if (!hasLogSettings)
+                {
+                    ShowSecurity = true;
+                }
+                return hasLogSettings;
             }
         }
 
@@ -258,17 +293,21 @@ namespace Dev2.Settings
             switch(propertyName)
             {
                 case "ShowLogging":
-                    ShowSecurity = !ShowLogging;
+                    if (Settings == null || Settings.Logging == null)
+                    {
+                        ShowLogging = false;
+                        ShowSecurity = true;
+                    }
+                    else
+                    {
+                        ShowLogging = true;
+                        ShowSecurity = !ShowLogging;
+                    }
                     break;
 
                 case "ShowSecurity":
-                    // TODO: Remove this when logging is enabled!
-                    if(!ShowSecurity)
-                    {
-                        ShowSecurity = true;
-                    }
-                    // TODO: Add this when logging is enabled!
-                    //ShowLogging = !ShowSecurity;
+                    ShowSecurity = true;
+                    ShowLogging = !ShowSecurity;
                     break;
             }
             _selectionChanging = false;
@@ -310,7 +349,7 @@ namespace Dev2.Settings
             {
                 IsLoading = false;
                 SecurityViewModel = CreateSecurityViewModel();
-                LoggingViewModel = CreateLoggingViewModel();
+                LogSettingsViewModel = CreateLoggingViewModel();
 
                 AddPropertyChangedHandlers();
 
@@ -318,7 +357,7 @@ namespace Dev2.Settings
                 {
                     ShowError("Load Error", Settings.Error);
                 }
-            });
+            });            
         }
 
         protected virtual SecurityViewModel CreateSecurityViewModel()
@@ -326,18 +365,30 @@ namespace Dev2.Settings
             return new SecurityViewModel(Settings.Security, _parentWindow, CurrentEnvironment);
         }
 
-        protected virtual LoggingViewModel CreateLoggingViewModel()
+        protected virtual LogSettingsViewModel CreateLoggingViewModel()
         {
-            return new LoggingViewModel();
+            if(Settings.Logging != null)
+            {
+                return new LogSettingsViewModel(Settings.Logging, CurrentEnvironment);
+            }
+            return null;
         }
 
         void AddPropertyChangedHandlers()
         {
             var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(SettingsItemViewModel.IsDirtyProperty, typeof(SettingsItemViewModel));
-            isDirtyProperty.AddValueChanged(LoggingViewModel, OnIsDirtyPropertyChanged);
+            isDirtyProperty.AddValueChanged(LogSettingsViewModel, OnIsDirtyPropertyChanged);
+            isDirtyProperty.AddValueChanged(SecurityViewModel, OnIsDirtyPropertyChanged);
             SecurityViewModel.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "IsDirty")
+                if (args.PropertyName == "IsDirty")
+                {
+                    OnIsDirtyPropertyChanged(null, new EventArgs());
+                }
+            };
+            LogSettingsViewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "IsDirty")
                 {
                     OnIsDirtyPropertyChanged(null, new EventArgs());
                 }
@@ -346,8 +397,9 @@ namespace Dev2.Settings
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
-            IsDirty = SecurityViewModel.IsDirty;
+            IsDirty = SecurityViewModel.IsDirty || LogSettingsViewModel.IsDirty;
             NotifyOfPropertyChange(() => SecurityHeader);
+            NotifyOfPropertyChange(() => LogHeader);
             ClearErrors();
         }
 
@@ -357,6 +409,11 @@ namespace Dev2.Settings
             {
                 SecurityViewModel.IsDirty = false;
                 NotifyOfPropertyChange(() => SecurityHeader);
+            }
+            if (LogSettingsViewModel != null)
+            {
+                LogSettingsViewModel.IsDirty = false;
+                NotifyOfPropertyChange(() => LogHeader);
             }
         }
 
@@ -387,11 +444,11 @@ namespace Dev2.Settings
 
         MessageBoxResult GetSaveResult()
         {
-            if(_popupController != null && SecurityViewModel.IsDirty)
+            if(_popupController != null && IsDirty)
             {
                 return _popupController.ShowSettingsCloseConfirmation();
             }
-            return !SecurityViewModel.IsDirty ? MessageBoxResult.No : MessageBoxResult.None;
+            return !IsDirty ? MessageBoxResult.No : MessageBoxResult.None;
         }
 
         #endregion
@@ -429,7 +486,10 @@ namespace Dev2.Settings
                         return false;
                     }
                     SecurityViewModel.Save(Settings.Security);
-
+                    if (LogSettingsViewModel.IsDirty)
+                    {
+                        LogSettingsViewModel.Save(Settings.Logging);
+                    }
                     var isWritten = WriteSettings();
                     if(isWritten)
                     {

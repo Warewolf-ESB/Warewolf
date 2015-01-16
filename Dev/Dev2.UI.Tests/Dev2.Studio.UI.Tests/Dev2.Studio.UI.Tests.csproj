@@ -169,7 +169,6 @@
     <Compile Include="DeployUITests.cs" />
     <Compile Include="DesignTimeErrorHandlingTests.cs" />
     <Compile Include="FormatNumberUITests.cs" />
-    <Compile Include="ExplorerUITests.cs" />
     <Compile Include="Utils\KeyboardCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UIMap.cs" />

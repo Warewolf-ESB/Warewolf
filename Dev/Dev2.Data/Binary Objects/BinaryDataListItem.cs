@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -29,8 +28,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         #endregion
 
         #region Properties
-
-
+        
         public string TheValue
         {
             get

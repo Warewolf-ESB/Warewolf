@@ -23,7 +23,6 @@ namespace Dev2.Studio.Views.Diagnostics
     /// </summary>
     public partial class DebugOutputView
     {
-
         public DebugOutputView()
         {
             InitializeComponent();

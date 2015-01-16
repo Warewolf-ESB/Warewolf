@@ -7,7 +7,8 @@
 Scenario: Data Split Large view Invalid Variables Expected Validation on Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging DataSplit Tool From Tool Box
 	Given I send "Data" to "TOOLBOX,PART_SearchBox"
@@ -43,3 +44,31 @@ Scenario: Data Split Large view Invalid Variables Expected Validation on Done Bu
 	And "VARIABLESCALAR,UI_Variable_a_AutoID" is visible within "2" seconds
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Split (1)(DataSplitDesigner),DoneButton"
 	Given "TOOLDATASPLITSMALLVIEW" is visible
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

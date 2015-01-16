@@ -7,7 +7,9 @@
 Scenario:WriteTool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging Write Tool From Tool Box
 	And I send "Write" to "TOOLBOX,PART_SearchBox"

@@ -2469,53 +2469,6 @@ namespace Dev2.Tests.Activities {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to method=&quot;post&quot; onsubmit=&quot;return checkRequired()&quot; id=&quot;uiForm&quot; enctype=&quot;application/x-www-form-urlencoded&quot;&gt;
-        ///          &lt;table&gt;
-        ///            &lt;tr&gt;
-        ///              &lt;td&gt;&amp;amp;amp;amp;lt;div&amp;amp;amp;amp;gt; this is test text&amp;amp;amp;amp;lt;/div&amp;amp;amp;amp;gt;&lt;/td&gt;
-        ///              &lt;td&gt;&lt;/td&gt;
-        ///              &lt;td&gt;&lt;/td&gt;
-        ///              &lt;td&gt;&lt;/td&gt;
-        ///              &lt;td&gt;&lt;/td&gt;
-        ///            &lt;/tr&gt;
-        ///            &lt;tr&gt;
-        ///              &lt;td&gt;&lt;/td&gt;
-        ///              &lt;td&gt;&lt;/td&gt;
-        ///              &lt;td&gt;&lt;/td&gt;
-        ///              &lt;td&gt;&lt;/td&gt;
-        ///              &lt;td&gt; [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string webpageMagicString {
-            get {
-                return ResourceManager.GetString("webpageMagicString", resourceCulture);
-            }
-        }
         
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;sr&gt;
-        ///  &lt;sr&gt;
-        ///    &lt;XmlData&gt;
-        ///      &lt;XmlData&gt;
-        ///        &lt;XmlData&gt;
-        ///          &lt;Dev2ServiceInput&gt;
-        ///            &lt;WebXMLConfiguration&gt;
-        ///              &lt;WebPart&gt;
-        ///                &lt;WebPartServiceName&gt;HtmlWidget&lt;/WebPartServiceName&gt;
-        ///                &lt;ColumnIndex&gt;0&lt;/ColumnIndex&gt;
-        ///                &lt;RowIndex&gt;0&lt;/RowIndex&gt;
-        ///                &lt;Dev2XMLResult&gt;
-        ///                  &lt;sr&gt;
-        ///                    &lt;sr&gt;
-        ///                      &lt;XmlData&gt;
-        ///                        &lt;Dev2ResumeData&gt;
-        ///                          &lt;XmlData&gt;
-        ///        [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string webpartTemplate {
-            get {
-                return ResourceManager.GetString("webpartTemplate", resourceCulture);
-            }
-        }
     }
 }

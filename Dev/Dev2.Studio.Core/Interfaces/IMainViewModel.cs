@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Windows.Input;
 using Dev2.Security;
 using Dev2.Studio.Core.Interfaces;
@@ -27,5 +26,8 @@ namespace Dev2.Interfaces
         bool IsWorkFlowOpened(IContextualResourceModel resource);
         void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath);
         void ClearToolboxSelection();
+        void UpdatePane(IContextualResourceModel model);
+
+        void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
     }
 }

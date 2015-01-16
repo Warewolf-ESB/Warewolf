@@ -140,7 +140,8 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         Dev2Server,
 
         EmailSource,
-        WebSource
+        WebSource,
+        OauthSource
     }
 
     /// <summary>

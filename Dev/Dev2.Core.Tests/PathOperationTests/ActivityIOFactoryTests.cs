@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -26,12 +25,6 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
     [ExcludeFromCodeCoverage]
     public class ActivityIOFactoryTests
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:

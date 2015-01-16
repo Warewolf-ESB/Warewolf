@@ -6,6 +6,7 @@
 @Unzip
 Scenario:Unzip Tool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
 	And all tabs are closed	
 	Given I click "EXPLORERCONNECTCONTROL"
 	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
@@ -20,12 +21,12 @@ Scenario:Unzip Tool Large View And Invalid Variables Expected Error On Done Butt
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Unzip(UnzipDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
 	Given "WORKSURFACE,UI_Error1_AutoID" is visible
-	Given "WORKSURFACE,UI_Error2_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error2_AutoID" is visible
 	#Correcting Zip Name Field bad variable and expected no error on done button
 	Given I type "[[rec(1).a]]" in "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__ZipNametxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Unzip(UnzipDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
-	Given "WORKSURFACE,UI_Error1_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error1_AutoID" is visible
 	#Passing Invalid Recordset Variable in  Destination Field And Expected Validation on Done button
     Given I type "[[rec(1).%a]]" in "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__Destinationtxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Unzip(UnzipDesigner),DoneButton"
@@ -81,6 +82,7 @@ Scenario:Unzip Tool Testing Tab Order and UiRepondingFine as expected
 	Given "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
 
 	
+<<<<<<< HEAD
 Scenario:Unzip Tool Testing Tab Order and UiRepondingFine as expected
 	Given I have Warewolf running
 	And all tabs are closed	
@@ -104,6 +106,8 @@ Scenario:Unzip Tool Testing Tab Order and UiRepondingFine as expected
 	Given "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
 
 
+=======
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
 
 
 

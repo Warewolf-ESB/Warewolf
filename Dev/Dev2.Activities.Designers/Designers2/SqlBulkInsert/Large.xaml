@@ -12,6 +12,7 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dto="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                               xmlns:common="clr-namespace:System.Data.Common;assembly=System.Data"
                                Width="350"
                                MinWidth="350"
                                MinHeight="400"
@@ -35,8 +36,7 @@
                                      Margin="0,0,9,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
-                                     Style="{StaticResource ActivityDesignerButtonStyle}">
-        </core:ActivityDesignerButton>
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
     </core:ActivityDesignerTemplate.RightButtons>
 
     <Grid>
@@ -123,7 +123,7 @@
                                         MinWidth="125"
                                         Header="Input Data or [[Variable]]"
                                         HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                        d:DataContext="{d:DesignInstance Type=local:DataColumnMapping}">
+                                        d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"

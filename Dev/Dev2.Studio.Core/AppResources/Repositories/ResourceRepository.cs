@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -338,7 +337,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 AddResourceToStudioResourceRepository(instanceObj, executeMessage);
             }
-
+            if (ItemAdded != null)
+            {
+                ItemAdded(instanceObj, null);
+            }
             return executeMessage;
         }
 
@@ -642,6 +644,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Dev2Logger.Log.Warn("Loading Resources - Start");
             var comsController = new CommunicationController { ServiceName = "FindResourceService" };
             comsController.AddPayloadArgument("ResourceName", "*");
+            comsController.AddPayloadArgument("ResourceId", "*");
             comsController.AddPayloadArgument("ResourceType", string.Empty);
 
             var con = _environmentModel.Connection;
@@ -906,10 +909,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 return new List<string>();
             }
 
-            List<string> resourceNames = resourceModels.Select(contextualResourceModel => contextualResourceModel.Category).ToList();
+            List<string> resourceNames = resourceModels.Select(contextualResourceModel => contextualResourceModel.ID.ToString()).ToList();
 
             var comsController = new CommunicationController { ServiceName = "GetDependanciesOnListService" };
-            comsController.AddPayloadArgument("ResourceNames", JsonConvert.SerializeObject(resourceNames));
+            comsController.AddPayloadArgument("ResourceIds", JsonConvert.SerializeObject(resourceNames));
             comsController.AddPayloadArgument("GetDependsOnMe", getDependsOnMe.ToString());
 
             var result = comsController.ExecuteCommand<List<string>>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
@@ -931,7 +934,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             var comsController = new CommunicationController { ServiceName = "FindDependencyService" };
-            comsController.AddPayloadArgument("ResourceName", resourceModel.Category);
+            comsController.AddPayloadArgument("ResourceId", resourceModel.ID.ToString());
             comsController.AddPayloadArgument("GetDependsOnMe", getDependsOnMe.ToString());
 
             var workspaceId = (resourceModel.Environment.Connection).WorkspaceID;

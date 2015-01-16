@@ -169,6 +169,7 @@
     <Compile Include="Services\WebCommunicationService.cs" />
     <Compile Include="Settings\BackupSettings.cs" />
     <Compile Include="Settings\LoggingSettings.cs" />
+    <Compile Include="Settings\LogSettings.cs" />
     <Compile Include="Settings\SecuritySettings.cs" />
     <Compile Include="Settings\Configuration.cs" />
     <Compile Include="Settings\SettingsBase.cs" />

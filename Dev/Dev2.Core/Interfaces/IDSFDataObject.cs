@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -66,9 +65,6 @@ namespace Dev2
         string RemoteInvokerID { get; set; }
         IList<IDebugState> RemoteDebugItems { get; set; }
         string RemoteServiceType { get; set; }
-
-        // Massimo.Guerrera :15-04-2013 - Added for the detection of webpages in the webserver so that the system tags dont get striped
-        bool IsWebpage { get; set; }
 
         ExecutionOrigin ExecutionOrigin { get; set; }
         string ExecutionOriginDescription { get; set; }

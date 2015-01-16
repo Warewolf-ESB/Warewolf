@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Common.Interfaces.Wrappers;
@@ -51,6 +50,16 @@ namespace Dev2.Common.Wrappers
         public void Copy(string source, string destination)
         {
             File.Copy(source, destination);
+        }
+
+        public byte[] ReadAllBytes(string path)
+        {
+            return File.ReadAllBytes(path);
+        }
+
+        public void WriteAllBytes(string path, byte[] contents)
+        {
+             File.WriteAllBytes(path, contents);
         }
     }
 }

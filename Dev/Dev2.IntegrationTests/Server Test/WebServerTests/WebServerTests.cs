@@ -27,10 +27,10 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
     {
         const string AssertNotNull = "AssertNotNull";
 
-        const string WebServerTestSmall = "Integration Test Resources/WebServerTestSmallString";
-        const string WebServerTestLarge = "Integration Test Resources/WebServerTestLargeString";
+        const string WebServerTestSmall = "Acceptance Testing Resources/WebServerTestSmallString";
+        const string WebServerTestLarge = "Acceptance Testing Resources/WebServerTestLargeString";
 
-        const string WebServerTest = "Integration Test Resources/WebServerTest";
+        const string WebServerTest = "Acceptance Testing Resources/WebServerTest";
         const string WebServerTestExpectedXml = "<DataList><Text>Of resolve to gravity thought my prepare chamber so</Text><Args></Args></DataList>";
         const string WebServerTestExpectedJson = "{\"Text\":\"Of resolve to gravity thought my prepare chamber so\",\"Args\":\"\"}";
 
@@ -102,7 +102,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         {
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
-                new Tuple<string, string, AssertType>("Integration Test Resources/CaseSP", @"<InnerError>Can only execute workflows from web browser</InnerError>", AssertType.Contains)
+                new Tuple<string, string, AssertType>("Acceptance Testing Resources/CaseSP", @"<InnerError>Can only execute workflows from web browser</InnerError>", AssertType.Contains)
             });
         }
 
@@ -114,7 +114,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
             const string Expected = "{ \"FatalError\": \"An internal error occurred while executing the service request\",\"errors\": [ \"Can only execute workflows from web browser\"]}";
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
-                new Tuple<string, string, AssertType>("Integration Test Resources/CaseSP.json", Expected, AssertType.Equals)
+                new Tuple<string, string, AssertType>("Acceptance Testing Resources/CaseSP.json", Expected, AssertType.Equals)
             });
         }
 

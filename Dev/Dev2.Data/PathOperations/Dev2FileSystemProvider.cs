@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -150,9 +149,9 @@ namespace Dev2.PathOperations
                         dst = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + dst.Path, dst.Username, dst.Password);
                     }
                 }
-                _fileLock.EnterWriteLock();
+                if ((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
                 {
-                    if ((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
+                    _fileLock.EnterWriteLock();
                     try{
                         if (!RequiresAuth(dst))
                         {

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -171,7 +170,6 @@ namespace Dev2.Tests
             dataObject.IsDebug = true;
             dataObject.IsFromWebServer = true;
             dataObject.IsOnDemandSimulation = true;
-            dataObject.IsWebpage = false;
             dataObject.NumberOfSteps = 2;
             dataObject.OriginalInstanceID = Guid.NewGuid();
             dataObject.ParentInstanceID = "1211";
@@ -208,7 +206,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(51, properties.Length);
+            Assert.AreEqual(50, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -236,7 +234,6 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsOnDemandSimulation, clonedObject.IsOnDemandSimulation);
             Assert.AreEqual(dataObject.IsRemoteInvoke, clonedObject.IsRemoteInvoke);
             Assert.AreEqual(dataObject.IsRemoteInvokeOverridden, clonedObject.IsRemoteInvokeOverridden);
-            Assert.AreEqual(dataObject.IsWebpage, clonedObject.IsWebpage);
             Assert.AreEqual(dataObject.NumberOfSteps, clonedObject.NumberOfSteps);
             Assert.AreEqual(dataObject.OriginalInstanceID, clonedObject.OriginalInstanceID);
             Assert.AreEqual(dataObject.ParentInstanceID, clonedObject.ParentInstanceID);

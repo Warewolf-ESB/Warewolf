@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,7 +115,6 @@ namespace Dev2.Services.Security
         {
             if(oldPermissions != null && newPermissions != null)
             {
-               // var permissionsDiff = newPermissions.Except(oldPermissions, new WindowsGroupPermissionEqualityComparer());
                 RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions.ToList()));
             }
         }

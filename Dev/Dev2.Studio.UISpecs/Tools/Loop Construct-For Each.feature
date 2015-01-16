@@ -7,11 +7,12 @@
 Scenario: For Each containing calculate tool Exectuing 1k times within expected time
 	Given I have Warewolf running
     And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	#Opening New Design Surface
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
+	##ToolDesigners_ForEach_DraggingNonDecision_Allowed
 	#Dragging Assign Tool
 	And I send "Assign" to ""
 	And I drag "TOOLASSIGN" onto "WORKSURFACE,StartSymbol"
@@ -44,8 +45,9 @@ Scenario: For Each containing calculate tool Exectuing 1k times within expected 
 Scenario: For Each Exectuing Workflow in it and debug output is generating within expected time
     Given I have Warewolf running
     And all tabs are closed
-	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
+	Given I click "EXPLORERCONNECTCONTROL"
+	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
 	#Opening New Design Surface
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
@@ -74,7 +76,11 @@ Scenario: For Each Exectuing Workflow in it and debug output is generating withi
 
 
 	
+<<<<<<< HEAD
 Scenario:Testing Decision and switch is alowing in foreach
+=======
+Scenario:Drag Decision and switch into foreach and expected not allowed
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
     ###DragADecisionSwitchIntoForEachExpectNotAddedToForEach
 	###DragSequenceIntoForEachAndExpectedAddedToForEach
 	Given I have Warewolf running
@@ -97,12 +103,15 @@ Scenario:Testing Decision and switch is alowing in foreach
     And I send "Sequence" to ""
 	And I drag "TOOLSEQUENCE" to point "130,80" on "WORKSURFACE,For Each(ForeachDesigner)"
 	Then "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Sequence(SequenceDesigner)" is visible within "1" seconds
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
 
 
 

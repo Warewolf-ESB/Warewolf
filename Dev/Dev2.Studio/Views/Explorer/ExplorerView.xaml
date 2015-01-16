@@ -171,22 +171,22 @@
                                           Visibility="{Binding CanCreateNewFolder, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewFolderCommand}"
                                           AutomationProperties.AutomationId ="UI_NewFolderContextMenuItem_AutoID"/>
-                                <MenuItem Header="New Workflow Service   (Ctrl+W)"
+                                <MenuItem Header="New Service   (Ctrl+W)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="Workflow"
                                           AutomationProperties.AutomationId ="UI_NewWorkflowContextMenuItem_AutoID"/>
-                                <MenuItem Header="New Database Procedure Service   (Ctrl+Shift+D)"
+                                <MenuItem Header="New Database Connector   (Ctrl+Shift+D)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="DatabaseService"
                                           AutomationProperties.AutomationId ="UI_NewDatabaseServiceContextMenuItem_AutoID" />
-                                <MenuItem Header="New Plugin Service   (Ctrl+Shift+P)"
+                                <MenuItem Header="New Plugin Connector   (Ctrl+Shift+P)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="ResourceService"
                                           AutomationProperties.AutomationId ="UI_NewPluginServiceContextMenuItem_AutoID" />
-                                <MenuItem Header="New Web Service   (Ctrl+Shift+W)"
+                                <MenuItem Header="New Web Service Connector   (Ctrl+Shift+W)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="WebService"
@@ -217,6 +217,13 @@
                                           Command="{Binding NewResourceCommand}"
                                           CommandParameter="EmailSource"
                                           AutomationProperties.AutomationId ="UI_NewEmailSourceContextMenuItem_AutoID" />
+                                <MenuItem Header="New Dropbox Source"
+                                          Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
+                                          Command="{Binding NewResourceCommand}"
+                                          CommandParameter="DropboxSource"
+                                          AutomationProperties.AutomationId ="UI_NewEmailSourceContextMenuItem_AutoID" />
+
+
                                 <Separator Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Build"
                                           Command="{Binding BuildCommand}"
@@ -294,13 +301,12 @@
                                         </Image.Source>
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="PreviewMouseDown">
-                                                <i:InvokeCommandAction Command="{Binding RefreshCommand}"></i:InvokeCommandAction>
+                                                <i:InvokeCommandAction Command="{Binding RefreshCommand}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Image>
                                     <Button Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}"
-                                            Style="{StaticResource AuthButtonStyle}">
-                                    </Button>
+                                            Style="{StaticResource AuthButtonStyle}" />
                                     <Button Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}"
                                             ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipView}"
                                             Style="{StaticResource AuthButtonStyle}"
@@ -339,7 +345,7 @@
                                 <StackPanel Style="{StaticResource UnauthorizedTreeViewStackPanelStyle}">
                                     <Image Style="{StaticResource AuthNoneIconRibbonStyle}" />
                                     <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
-                                               Text="{x:Static help:HelpTextResources.ExplorerSecurityServerUnauthorized}"></TextBlock>
+                                               Text="{x:Static help:HelpTextResources.ExplorerSecurityServerUnauthorized}" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>

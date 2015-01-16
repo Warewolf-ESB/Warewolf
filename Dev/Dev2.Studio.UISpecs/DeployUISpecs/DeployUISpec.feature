@@ -3,33 +3,34 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@DeployTab
+ @DeployTab
 Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled12
 	   Given I have Warewolf running
-	   Given I start Studio as "" with password ""
-	   Given I click "RIBBONDEPLOY"
+	   And all tabs are closed
+	   And I click "EXPLORERFILTERCLEARBUTTON"   
+	   And I click "RIBBONDEPLOY"
 	   ##Checking Validation Message When Source and Destination Servers Are Same
-	   Given "DEPLOYERROR" is visible
+	   And "DEPLOYERROR" is visible
 	   ##Checking Deploy Button Disabled When Nothing Selected To Deploy
-	   Given "DEPLOYBUTTON" is disabled
+	   And "DEPLOYBUTTON" is disabled
 	   ##Checking Deploy Button Disabled When Source and Destination Servers are Same
-	   Given I type "Decision Testing" in "DEPLOYSOURCEFILTER"
-	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
-	   Given "DEPLOYBUTTON" is disabled
+	   And I type "Decision Testing" in "DEPLOYSOURCEFILTER"
+	   And I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
+	   And "DEPLOYBUTTON" is disabled
 	  ##  And I click "DEPLOYSOURCEFILTERCLEAR"
-	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID,Expander"
+	   And I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,Expander"
 	   ##Selecting Remote Server In Destination Connect Control Dropdown
-	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
+	   And I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
 	   Given I create a new remote connection as "Deployrem" in Deploy Destination 
-       | Address                  | AuthType | UserName      | Password |
-       | http://TST7X64W:3142/dsf | User     | Administrator |          |
+       | Address                      | AuthType | UserName          | Password |
+       | http://SANDBOX-DEV2:3142/dsf | User     | IntegrationTester | I73573r0 |  
 	   ##Checking Deploy Button Enabled When Resource Selected in Source Server
-	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_Integration Test Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
-       Given "DEPLOYBUTTON" is enabled
+	   And I click "DEPLOYSOURCE,UI_SourceServer_UI_Acceptance Testing Resources_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
+       And "DEPLOYBUTTON" is enabled
        ## Given "DEPLOYERROR" is not visible
 	  ##Cleanup (Deleting the created server)
 	   Given I click "EXPLORER,UI_localhost_AutoID" 
-	   Given I click "EXPLORER,UI_Deployrem (http://tst7x64w:3142/)_AutoID" 
+	   Given I click "EXPLORER,UI_Deployrem (http://sandbox-dev2:3142/)_AutoID" 
 	   Given I click "EXPLORERCONNECTBUTTON"
 	   Given I click "EXPLORER,UI_SourceServerRefreshbtn_AutoID"
        Given I send "Deployrem" to "EXPLORERFILTER"

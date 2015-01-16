@@ -7,6 +7,7 @@
 Scenario:Rename Tool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
+	Given I click "EXPLORERFILTERCLEARBUTTON"  
 	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging Rename Tool From Tool Box
@@ -19,12 +20,12 @@ Scenario:Rename Tool Large View And Invalid Variables Expected Error On Done But
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Rename(RenameDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
 	Given "WORKSURFACE,UI_Error1_AutoID" is visible
-	Given "WORKSURFACE,UI_Error2_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error2_AutoID" is visible
 	#Correcting File or Folder Field bad variable and expected no error on done button
 	Given I type "[[rec(1).a]]" in "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__FileOrFoldertxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Rename(RenameDesigner),DoneButton"
 	Given "WORKSURFACE,UI_Error0_AutoID" is visible
-	Given "WORKSURFACE,UI_Error1_AutoID" is visible
+	#Given "WORKSURFACE,UI_Error1_AutoID" is visible
 	#Passing Invalid Recordset Variable in  Destination Field And Expected Validation on Done button
     Given I type "[[rec(1).%a]]" in "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__NewNametxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Rename(RenameDesigner),DoneButton"
@@ -74,4 +75,8 @@ Scenario:Rename Tool Testing Tab Order and UiRepondingFine as expected
 	And I send "Destination{TAB}" to ""
     And I send "Password{TAB}{SPACE}{TAB}" to ""
 	And I send "[[Result]]" to ""
+<<<<<<< HEAD
 	Given "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
+=======
+	Given "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a

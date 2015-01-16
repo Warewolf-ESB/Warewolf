@@ -26,9 +26,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
     {
         private readonly string _webserverUri = ServerSettings.DsfAddress;
 
-        public TestContext TestContext { get; set; }
-
-
         [TestMethod]
         public void DeleteWorkflowExpectsSuccessResponse()
         {

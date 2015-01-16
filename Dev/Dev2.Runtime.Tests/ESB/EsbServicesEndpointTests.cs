@@ -11,9 +11,16 @@
 
 
 using System;
+using System.Collections.Generic;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Communication;
+using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
+using Dev2.Runtime.Hosting;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -52,6 +59,38 @@ namespace Dev2.Tests.Runtime.ESB
             Assert.IsTrue(isLocalInvoke);
 
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EsbServicesEndpoint_ExecuteSubRequest")]
+        public void EsbServicesEndpoint_ExecuteSubRequest_SetServiceName()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.EnvironmentID = Guid.NewGuid();
+            dataObject.IsRemoteInvokeOverridden = false;
+
+            dataObject.EnvironmentID = Guid.NewGuid();
+            var invoker = new Mock<IEsbServiceInvoker>();
+            var resource = new SerializableResource(){ResourceName = "bob" ,ResourceType = ResourceType.WorkflowService,DataList = "bobthebuilder" ,ResourceCategory="bob"};
+            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var retvalue = ser.Serialize(new List<SerializableResource>{ resource});
+            invoker.Setup(i => i.GenerateInvokeContainer(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<Guid>())).Callback(
+                (IDSFDataObject pDataObject, string pServiceName, bool pIsLocal, Guid pMasterDataListID) =>
+                { }).Returns(new RemoteWorkflowExecutionContainerMock(new ServiceAction(), new DsfDataObject("",Guid.NewGuid()),new Workspace(Guid.NewGuid()),new EsbServicesEndpointMock(invoker.Object),new Mock<IResourceCatalog>().Object   ){GetRequestRespsonse = retvalue });
+
+            var endpoint = new EsbServicesEndpointMock(invoker.Object);
+            ErrorResultTO errors;
+
+            //------------Execute Test---------------------------
+            endpoint.ExecuteSubRequest(dataObject, It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("bob",dataObject.ServiceName);
+
+        }
+
+
 
         [TestMethod]
         [Owner("Travis Frisinger")]

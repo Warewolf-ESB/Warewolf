@@ -9,8 +9,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -29,6 +35,7 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -38,14 +45,6 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Xml.Linq;
-using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -583,7 +582,6 @@ namespace BusinessDesignStudio.Unit.Tests
             var model = new Mock<IResourceModel>();
             model.SetupGet(p => p.ResourceName).Returns("My WF");
             model.SetupGet(p => p.Category).Returns("Root");
-            model.Setup(c => c.ResourceType).Returns(ResourceType.HumanInterfaceProcess);
 
             var conn = SetupConnection();
 

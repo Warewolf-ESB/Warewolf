@@ -12,20 +12,20 @@
             <sadt:ToolboxControl.ToolTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Path=BitmapName}" Height="18" Width="18" AutomationProperties.AutomationId="UI_Icon_AutoID" >
-                        </Image>
+                        <Image Source="{Binding Path=BitmapName}" Height="18" Width="18" AutomationProperties.AutomationId="UI_Icon_AutoID" />
                         <Label Content="{Binding Path=DisplayName}" AutomationProperties.AutomationId="{Binding Path=DisplayName}"/>
                     </StackPanel>
                 </DataTemplate>
             </sadt:ToolboxControl.ToolTemplate>
-            <sadt:ToolboxCategory CategoryName="Control Flow"></sadt:ToolboxCategory>            
-            <sadt:ToolboxCategory CategoryName="Loop Constructs"></sadt:ToolboxCategory>            
-            <sadt:ToolboxCategory CategoryName="Recordset"></sadt:ToolboxCategory>
-            <sadt:ToolboxCategory CategoryName="Data"></sadt:ToolboxCategory>
-            <sadt:ToolboxCategory CategoryName="Resources"></sadt:ToolboxCategory>
-            <sadt:ToolboxCategory CategoryName="Utility"></sadt:ToolboxCategory>
-            <sadt:ToolboxCategory CategoryName="File and Folder"></sadt:ToolboxCategory>
-            <sadt:ToolboxCategory CategoryName="Scripting"></sadt:ToolboxCategory>
+            <sadt:ToolboxCategory CategoryName="Control Flow" />
+            <sadt:ToolboxCategory CategoryName="Loop Constructs" />
+            <sadt:ToolboxCategory CategoryName="Recordset" />
+            <sadt:ToolboxCategory CategoryName="Data" />
+            <sadt:ToolboxCategory CategoryName="Resources" />
+            <sadt:ToolboxCategory CategoryName="Utility" />
+            <sadt:ToolboxCategory CategoryName="File and Folder" />
+            <sadt:ToolboxCategory CategoryName="Scripting" />
+            <sadt:ToolboxCategory CategoryName="Connectors" />
         </sadt:ToolboxControl> 
     </Grid>
 </UserControl>

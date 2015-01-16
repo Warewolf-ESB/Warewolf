@@ -64,7 +64,7 @@
                      cal:Message.Attach="[Event LostFocus] = [Action RefreshDirectory]">
                 <i:Interaction.Triggers>
                     <trigger:DelayTextChangedEventTrigger DelayInMilliSeconds="2000">
-                        <cal:ActionMessage MethodName="RefreshDirectory"></cal:ActionMessage>
+                        <cal:ActionMessage MethodName="RefreshDirectory" />
                     </trigger:DelayTextChangedEventTrigger>
                 </i:Interaction.Triggers>
                 <i:Interaction.Behaviors>
@@ -125,8 +125,8 @@
         <Label x:Name="SelectedLogFile_Title" 
                Grid.Column="3" Grid.Row="0"
                VerticalAlignment="Center"
-               FontWeight="Bold"></Label>
-        
+               FontWeight="Bold" />
+
         <ContentControl x:Name="DebugOutput" 
                         Grid.Row="1" Grid.RowSpan="3" Grid.Column="3"/>
 

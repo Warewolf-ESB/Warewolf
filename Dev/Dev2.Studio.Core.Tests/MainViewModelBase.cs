@@ -9,7 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Security;
@@ -27,7 +33,6 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Workspaces;
-using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
 using Dev2.Threading;
 using Dev2.Webs;
@@ -35,13 +40,6 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Windows;
 
 namespace Dev2.Core.Tests
 {
@@ -58,7 +56,6 @@ namespace Dev2.Core.Tests
         protected Mock<IEnvironmentModel> EnvironmentModel;
         protected IEnvironmentRepository EnvironmentRepo;
         protected Mock<IEventAggregator> EventAggregator;
-        protected Mock<IFeedbackInvoker> FeedbackInvoker;
         protected Mock<IContextualResourceModel> FirstResource;
         protected MainViewModel MainViewModel;
         protected Mock<IWorkspaceItemRepository> MockWorkspaceRepo;
@@ -91,11 +88,9 @@ namespace Dev2.Core.Tests
 
             EventAggregator = new Mock<IEventAggregator>();
             PopupController = new Mock<IPopupController>();
-            FeedbackInvoker = new Mock<IFeedbackInvoker>();
             WebController = new Mock<IWebController>();
             WindowManager = new Mock<IWindowManager>();
             MockStudioResourceRepository = new Mock<IStudioResourceRepository>();
-            SetupDefaultMef(FeedbackInvoker);
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
             // ReSharper disable ObjectCreationAsStatement
@@ -103,7 +98,7 @@ namespace Dev2.Core.Tests
             // ReSharper restore ObjectCreationAsStatement
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object,
-                WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
+                WindowManager.Object, WebController.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
         }
 
         protected void CreateFullExportsAndVm()
@@ -113,13 +108,11 @@ namespace Dev2.Core.Tests
             EventAggregator = new Mock<IEventAggregator>();
             EventPublishers.Aggregator = EventAggregator.Object;
             PopupController = new Mock<IPopupController>();
-            FeedbackInvoker = new Mock<IFeedbackInvoker>();
             WebController = new Mock<IWebController>();
             WindowManager = new Mock<IWindowManager>();
             CustomContainer.Register(WindowManager.Object);
             BrowserPopupController = new Mock<IBrowserPopupController>();
             MockStudioResourceRepository = new Mock<IStudioResourceRepository>();
-            SetupDefaultMef(FeedbackInvoker);
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
             // ReSharper disable ObjectCreationAsStatement
@@ -129,7 +122,7 @@ namespace Dev2.Core.Tests
             Mock<IConnectControlViewModel> mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object
-                , WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, mockConnectControlViewModel.Object);
+                , WindowManager.Object, WebController.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, mockConnectControlViewModel.Object);
             ActiveEnvironment = new Mock<IEnvironmentModel>();
             AuthorizationService = new Mock<IAuthorizationService>();
             ActiveEnvironment.Setup(e => e.AuthorizationService).Returns(AuthorizationService.Object);
@@ -296,7 +289,6 @@ namespace Dev2.Core.Tests
                     Assert.AreEqual(EnvironmentModel.Object, removeMsg.EnvironmentModel);
                 })
                 .Verifiable();
-            SetupDefaultMef();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false, connectControlSingleton: new Mock<IConnectControlSingleton>().Object);
             SetupForDelete();
@@ -309,19 +301,6 @@ namespace Dev2.Core.Tests
                 .Returns(new Uri(TestResourceStringsTest.ResourceToHydrateActualAppUri));
             EnvironmentModel.Setup(r => r.Connection).Returns(EnvironmentConnection.Object);
             return mock;
-        }
-
-        protected void SetupDefaultMef()
-        {
-            SetupDefaultMef(new Mock<IFeedbackInvoker>());
-        }
-
-        protected static void SetupDefaultMef(Mock<IFeedbackInvoker> feedbackInvoker)
-        {
-            CustomContainer.Register<IPopupController>(new Mock<IPopupController>().Object);
-            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
-            CustomContainer.Register<IFeedBackRecorder>(new FeedbackRecorder());
-            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
         }
 
         #endregion Methods used by tests

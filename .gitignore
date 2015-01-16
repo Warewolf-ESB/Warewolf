@@ -9,11 +9,17 @@
 *.uws
 *.suo
 *.user
+*.ide
 
+####################################################################################
+# Build working directories
+####################################################################################
 /Dev/packages
 /Dev/TestResults
 /bin
 /TestResults
+/Logs
+
 ####################################################################################
 # Server Build Output Folders
 ####################################################################################
@@ -22,7 +28,7 @@
 /Dev/Dev2.Server/bin/x64
 /Dev/Dev2.Server/bin/Release
 
-####### Server bin/Debug is used to manage resources for CI to test against ########
+####### /Dev/Dev2.Server/bin/Debug is used to manage resources for CI to test against ########
 /Dev/Dev2.Server/bin/Debug/Workspaces
 /Dev/Dev2.Server/bin/Debug/ActiveDirectory
 /Dev/Dev2.Server/bin/Debug/CefSharp
@@ -153,6 +159,24 @@
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
 /Dev/SFTPServer/bin
 /Dev/SFTPServer/obj
+/Dev/Studio.UI.Load.Specs/bin
+/Dev/Studio.UI.Load.Specs/obj
+/Dev/Example Shipper/Example Shipper/bin
+/Dev/Example Shipper/Example Shipper/obj
+/Dev/Warewolf.Studio/bin
+/Dev/Warewolf.Studio/obj
+/Dev/Warewolf.Studio.Core/bin
+/Dev/Warewolf.Studio.Core/obj
+/Dev/Warewolf.Studio.Resources/bin
+/Dev/Warewolf.Studio.Resources/obj
+/Dev/Warewolf.Studio.Specs/bin
+/Dev/Warewolf.Studio.Specs/obj
+/Dev/Warewolf.Studio.ViewModels/bin
+/Dev/Warewolf.Studio.ViewModels/obj
+/Dev/Warewolf.Studio.ViewModels.Tests/bin
+/Dev/Warewolf.Studio.ViewModels.Tests/obj
+/Dev/Warewolf.Studio.Views/bin
+/Dev/Warewolf.Studio.Views/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -251,11 +250,8 @@ namespace Dev2.Activities
                 _process.StartInfo = processStartInfo;
                 var processStarted = _process.Start();
 
-                //_process.BeginOutputReadLine();
 
                 StringBuilder reader = outputReader;
-                //DataReceivedEventHandler a = (sender, args) => reader.AppendLine(args.Data);
-                //_process.OutputDataReceived += a;
                 errorReader = _process.StandardError;
 
                 if (!ProcessHasStarted(processStarted, _process))
@@ -357,7 +353,6 @@ namespace Dev2.Activities
             }
 
             ProcessStartInfo psi;
-
             if(val.StartsWith("\""))
             {
                 // we have a quoted string for the cmd portion
@@ -440,8 +435,14 @@ namespace Dev2.Activities
             _fullPath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".bat");
             File.Create(_fullPath).Close();
             File.WriteAllText(_fullPath, val);
-            var psi = new ProcessStartInfo("cmd.exe", "/Q /C " + _fullPath);
-            return psi;
+            if (File.Exists(_fullPath))
+            {
+                var psi = new ProcessStartInfo("cmd.exe", "/Q /C " + _fullPath);
+                return psi;
+            }
+            val = val.Replace(Environment.NewLine, " & ");
+            var commandPsi = new ProcessStartInfo("cmd.exe", "/Q /C " + val);
+            return commandPsi;
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)

@@ -35,7 +35,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void DataMergeRecordsetsUsingStarAndCharMerge()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/DataMergeRecordsetsUsingStarAndCharMerge");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/DataMergeRecordsetsUsingStarAndCharMerge");
             const string expected = @"<res>Wallis's surname name is Buchan
 Barney's surname name is Buchan
 Trevor's surname name is Williams-Ros
@@ -56,7 +56,7 @@ Michael's surname name is Cullen
         [TestMethod]
         public void DataMergeWithScalarsAndTabMerge()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/DataMergeWithScalarsAndTabMerge");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Acceptance Testing Resources/DataMergeWithScalarsAndTabMerge");
             const string expected = @"<res>Dev2	0317641234</res>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);

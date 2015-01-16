@@ -282,7 +282,7 @@ namespace Dev2.Runtime.ESB.Execution
             return new Connection(xe);
         }
 
-        public SerializableResource FetchRemoteResource(string serviceName)
+        public SerializableResource FetchRemoteResource(Guid serviceId, string serviceName)
         {
             var connection = GetConnection(DataObject.EnvironmentID);
             if (connection == null)
@@ -291,7 +291,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             try
             {
-                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}", "TypeWorkflowService", serviceName));
+                var returnData = ExecuteGetRequest(connection, "FindResourceService", string.Format("ResourceType={0}&ResourceName={1}&ResourceId={2}", "TypeWorkflowService", serviceName, serviceId));
                 if (!string.IsNullOrEmpty(returnData))
                 {
                     Dev2JsonSerializer serializer = new Dev2JsonSerializer();

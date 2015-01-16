@@ -9,7 +9,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -32,11 +36,6 @@ using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -799,10 +798,10 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DeployViewModel_CanDeploy_IsAuthorizedToDeployToFrom_Correct()
         {
-            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: false, isAuthorizedDeployFrom: false, isAuthorizedDeployTo: false);
-            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: false, isAuthorizedDeployFrom: false, isAuthorizedDeployTo: true);
-            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: false, isAuthorizedDeployFrom: true, isAuthorizedDeployTo: false);
-            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: true, isAuthorizedDeployFrom: true, isAuthorizedDeployTo: true);
+            Verify_CanDeploy_IsAuthorized(false, false, false);
+            Verify_CanDeploy_IsAuthorized(false, false, true);
+            Verify_CanDeploy_IsAuthorized(false, true, false);
+            Verify_CanDeploy_IsAuthorized(true, true, true);
         }
 
 
@@ -813,8 +812,8 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DeployViewModel_CanSelectAllDependencies_IsAuthorizedToDeployFrom_Correct()
         {
-            Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: false, isAuthorizedDeployFrom: false);
-            Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: true, isAuthorizedDeployFrom: true);
+            Verify_CanSelectAllDependencies_IsAuthorized(false, false);
+            Verify_CanSelectAllDependencies_IsAuthorized(true, true);
         }
 
         void Verify_CanSelectAllDependencies_IsAuthorized(bool expectedCanSelect, bool isAuthorizedDeployFrom)
@@ -1214,6 +1213,45 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].IsChecked.GetValueOrDefault(false));
             Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].Children[0].IsChecked.GetValueOrDefault(false));
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_SelectDependencies")]
+        public void DeployViewModel_SelectDependencies_DependencyFound_Selected_ServerNotLocalHost()
+        {
+            //------------Setup for test--------------------------
+            IExplorerItemModel explorerItemModel;
+            IEnvironmentModel environmentModel;
+            StudioResourceRepository studioResourceRepository = CreateModels(false, out environmentModel, out explorerItemModel);
+     
+            explorerItemModel.IsChecked = true;
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
+            mockResource.Setup(model => model.ResourceName).Returns("resource");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
+            mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            var sourceID = Guid.NewGuid();
+            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
+            
+            explorerItemModel.EnvironmentId = sourceID;
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.Source.ExplorerItemModels = studioResourceRepository.ExplorerItemModels;
+            //------------Execute Test---------------------------
+            deployViewModel.SelectDependencies(new List<IExplorerItemModel> { explorerItemModel });
+            //------------Assert Results-------------------------
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].Children[0].IsChecked.GetValueOrDefault(false));
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

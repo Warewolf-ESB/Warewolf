@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +28,6 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Factory;
-using Dev2.Studio.Feedback;
 using Dev2.Studio.StartupResources;
 using Dev2.Studio.ViewModels;
 
@@ -70,9 +68,7 @@ namespace Dev2
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
             CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
-            CustomContainer.Register<IFeedBackRecorder>(new FeedbackRecorder());
             CustomContainer.Register<IPopupController>(new PopupController());
-            CustomContainer.Register<IFeedbackInvoker>(new FeedbackInvoker());
             CustomContainer.Register<IMainViewModel>(new MainViewModel());
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
             CustomContainer.Register<IDialogViewModelFactory>(new DialogViewModelFactory());

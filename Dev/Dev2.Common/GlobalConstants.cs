@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -31,6 +30,19 @@ namespace Dev2.Common
                  // ReSharper disable once ConvertToLambdaExpression
                  CultureInfo.CurrentCulture.ClearCachedData();
              };
+
+             /**********************************************************
+              * Hear ye Hear ye
+              * The event below allows warewolf to react to changes in regional settings by clearing the Culture cache.
+              * The method below is not tested using integration tests because it is difficult to change regional settings without restarting explorer.exe
+              * If a good way is found to do this, then please add integration tests. 
+              * Dont delete this method
+              */
+             SystemEvents.UserPreferenceChanged += (sender, args) =>
+             {
+                 // ReSharper disable once ConvertToLambdaExpression
+                 CultureInfo.CurrentCulture.ClearCachedData();
+             };
             
          }
         // ReSharper disable InconsistentNaming
@@ -38,6 +50,58 @@ namespace Dev2.Common
         // ReSharper disable UnusedMember.Global
         public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
         // ReSharper restore UnusedMember.Global
+
+        public static string DefaultServerLogFileConfig = "<log4net>" +
+                                             "<appender name=\"LogFileAppender\" type=\"log4net.Appender.RollingFileAppender\">"+
+                                            "<file type=\"log4net.Util.PatternString\" value=\"wareWolf-Server.log\" />"+
+    "<!-- Example using environment variables in params -->"+
+    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->"+
+    "<appendToFile value=\"true\" />"+
+    "<rollingStyle value=\"Size\" />"+
+    "<maxSizeRollBackups value=\"1\" />"+
+    "<maximumFileSize value=\"200MB\" />"+
+    "<!-- An alternate output encoding can be specified -->"+
+    "<!-- <encoding value=\"unicodeFFFE\" /> -->"+
+    "<layout type=\"log4net.Layout.PatternLayout\">"+
+    "<header value=\"[Header]&#xD;&#xA;\" />" +
+                                             "<footer value=\"[Footer]&#xD;&#xA;\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level %type{3} - %message%newline\" />" +
+                                             "</layout>" +
+                                             "<!-- Alternate layout using XML			" +
+                                             "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
+                                             "</appender>" +
+                                             "<!-- Setup the root category, add the appenders and set the default level -->" +
+                                             "<root>" +
+                                             "<level value=\"DEBUG\" />" +
+                                             "<appender-ref ref=\"LogFileAppender\" />" +
+                                             "</root>" +
+                                             "</log4net>";
+
+        public static string DefaultStudioLogFileConfig = "<log4net>" +
+                                             "<appender name=\"LogFileAppender\" type=\"log4net.Appender.RollingFileAppender\">"+
+                                            "<file type=\"log4net.Util.PatternString\" value=\"${LOCALAPPDATA}\\Warewolf\\Studio Logs\\Warewolf Studio.log\" />"+
+    "<!-- Example using environment variables in params -->"+
+    "<!-- <file value=\"${TMP}\\log-file.txt\" /> -->"+
+    "<appendToFile value=\"true\" />"+
+    "<rollingStyle value=\"Size\" />"+
+    "<maxSizeRollBackups value=\"1\" />"+
+    "<maximumFileSize value=\"200MB\" />"+
+    "<!-- An alternate output encoding can be specified -->"+
+    "<!-- <encoding value=\"unicodeFFFE\" /> -->"+
+    "<layout type=\"log4net.Layout.PatternLayout\">"+
+    "<header value=\"[Header]&#xD;&#xA;\" />" +
+                                             "<footer value=\"[Footer]&#xD;&#xA;\" />" +
+                                             "<conversionPattern value=\"%date [%thread] %-5level %type{3} - %message%newline\" />" +
+                                             "</layout>" +
+                                             "<!-- Alternate layout using XML			" +
+                                             "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
+                                             "</appender>" +
+                                             "<!-- Setup the root category, add the appenders and set the default level -->" +
+                                             "<root>" +
+                                             "<level value=\"DEBUG\" />" +
+                                             "<appender-ref ref=\"LogFileAppender\" />" +
+                                             "</root>" +
+                                             "</log4net>";
 
         // Max String Size
         // ReSharper disable InconsistentNaming
@@ -87,9 +151,6 @@ namespace Dev2.Common
         public const string CalculateTextConvertFormat = CalculateTextConvertPrefix + "{0}" + CalculateTextConvertSuffix;
 
         // Website constants
-        public const string MetaTagsHolder = @"<Dev2HTML Type=""Meta""/>";
-        public const string WebpageCellContainer = "Webpart";
-        public const string WebpartRenderError = "<Fragement>Error executing webpart's service</Fragment>";
         public const string WebserverReplaceTag = "[[Dev2WebServer]]";
 
         // JSON constants
@@ -348,9 +409,11 @@ or type_desc LIKE '%Procedure%'";
         public static int MaxWorkflowsToExecute = 1010;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
+        public static string DropBoxApiKey = "l6vuufdy2psuyif";
+        public static string DropBoxAppSecret = "tqtil4c1ibja8dn";
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
-
+        public static int AddPopupTimeDelay = 2000;
         // ReSharper restore InconsistentNaming
     }
     // ReSharper restore UnusedMember.Global

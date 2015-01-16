@@ -93,11 +93,11 @@ namespace Dev2.Activities.Specs.Permissions
             while(!environmentModel.IsConnected)
             {
                 environmentModel.Connect();
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
                 i++;
-                if (i == 100)
+                if (i == 30)
                 {
-                    Assert.Fail("Server {0} did not start within 10 secs", environmentModel.DisplayName);
+                    Assert.Fail("Server {0} did not connect within 30 secs{1}", environmentModel.DisplayName,DateTime.Now);
                 }
             }
         }
@@ -127,6 +127,14 @@ namespace Dev2.Activities.Specs.Permissions
                 CreateLocalWindowsAccount("SpecsUser", "T35t3r!@#", userGroup);
             }
             var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#")) { Name = "Other Connection" };
+            try
+            {
+                reconnectModel.Connect();
+            }
+            catch(UnauthorizedAccessException)
+            {
+                Assert.Fail("Connection unauthorized when connecting to local Warewolf server as user who is part of '" + userGroup + "' user group.");
+            }
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
         }
 

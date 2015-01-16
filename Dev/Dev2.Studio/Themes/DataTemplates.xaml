@@ -20,11 +20,10 @@
                    Source="{Binding Path=ErrorType, Converter={StaticResource ErrorTypeToImageConverter}}"
                    Margin="2"
                    Height="16"
-                   Width="16">
-            </Image>
+                   Width="16" />
             <TextBlock Grid.Column="1"
                        Margin="2"
-                       Text="{Binding Path=Message}"></TextBlock>
+                       Text="{Binding Path=Message}" />
         </Grid>
     </DataTemplate>    
 

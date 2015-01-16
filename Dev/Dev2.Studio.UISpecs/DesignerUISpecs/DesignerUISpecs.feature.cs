@@ -90,8 +90,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.And("I send \"InnerWF\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.And("I double click \"EXPLORERFOLDERS,UI_Integration Test Resources_AutoID,UI_InnerWF_A" +
-                    "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I double click \"EXPLORERFOLDERS,UI_Acceptance Testing Resources_AutoID,UI_InnerWF" +
+                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
  testRunner.And("I click \"VARIABLESCALAR,UI_Variable_result_AutoID,UI_IsInputCheckbox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
@@ -125,50 +125,48 @@ this.ScenarioSetup(scenarioInfo);
 #line 36
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 37
- testRunner.Then("restart the Studio and Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 38
  testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
+#line 38
  testRunner.And("I click \"RIBBONNEWENDPOINT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
+#line 39
  testRunner.And("I double click \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 40
  testRunner.And("I send \"Assign\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
+#line 41
  testRunner.And("I drag \"TOOLASSIGN\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 42
  testRunner.And("\"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_Ac" +
                     "tivityGridRow_0_AutoID,UI_TextBox_AutoID\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 44
  testRunner.Given("I type \"Delete1\" in \"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent" +
                     ",SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI_TextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 46
+#line 45
  testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 46
  testRunner.And("\"VARIABLESCALAR,UI_Variable_Delete1_AutoID,UI_NameTextBox_AutoID\" is visible with" +
                     "in \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 47
  testRunner.And("I send \"ROW1\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 49
  testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 50
  testRunner.And("I send \"Delete2{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 51
  testRunner.And("I send \"Row2{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 53
  testRunner.Given(@"I right click ""UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,Unsaved 1(FlowchartDesigner),Assign (2)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[2]""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 55
+#line 54
  testRunner.And("I send \"{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 56
  testRunner.Given("\"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_Ac" +
                     "tivityGridRow_0_AutoID,UI_TextBox_AutoID\" contains text \"Delete2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 59
+#line 58
  testRunner.Given(@"I right click ""UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[2]""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 59
  testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 60
  testRunner.Given("\"UI_DeleteRowMenuItem_AutoID\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 62
+#line 61
  testRunner.Then("\"UI_InsertRowMenuItem_AutoID\" is disabled within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -182,55 +180,55 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag resource multiple times from explorer and expected mappings are not changing" +
                     "", ((string[])(null)));
-#line 66
+#line 65
 this.ScenarioSetup(scenarioInfo);
-#line 67
+#line 66
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
+#line 67
  testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 68
  testRunner.And("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 69
  testRunner.And("\"EXPLORER,UI_localhost_AutoID\" is visible within \"5\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 70
  testRunner.And("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 71
  testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 72
  testRunner.And("I send \"Utility - Assign\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 73
  testRunner.Given("I drag \"EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoI" +
                     "D\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 75
+#line 74
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner),LargeViewContent\" is visi" +
                     "ble", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 77
+#line 76
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsD" +
                     "ataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1]\" contains text \"[[" +
                     "rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 79
+#line 78
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsD" +
                     "ataGrid,UI_ActivityGridRow_1_AutoID,UI_DataGridCell_AutoID[1]\" contains text \"[[" +
                     "hero().pushups]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 81
+#line 80
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsD" +
                     "ataGrid,UI_ActivityGridRow_2_AutoID,UI_DataGridCell_AutoID[1]\" contains text \"[[" +
                     "hero().name]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 82
+#line 81
  testRunner.Given("I drag \"EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoI" +
                     "D\" onto \"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 83
+#line 82
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)[1],LargeViewContent\" is v" +
                     "isible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 85
+#line 84
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)[1],LargeViewContent,Outpu" +
                     "tsDataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1]\" contains text " +
                     "\"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 87
+#line 86
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)[1],LargeViewContent,Outpu" +
                     "tsDataGrid,UI_ActivityGridRow_1_AutoID,UI_DataGridCell_AutoID[1]\" contains text " +
                     "\"[[hero().pushups]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 89
+#line 88
  testRunner.Given("\"WORKSURFACE,Examples\\Utility - Assign(ServiceDesigner)[1],LargeViewContent,Outpu" +
                     "tsDataGrid,UI_ActivityGridRow_2_AutoID,UI_DataGridCell_AutoID[1]\" contains text " +
                     "\"[[hero().name]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -239,11 +237,45 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+<<<<<<< HEAD
+=======
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Draging out the TAB is expected not to shutdown the studio")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Designer")]
+        public virtual void DragingOutTheTABIsExpectedNotToShutdownTheStudio()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Draging out the TAB is expected not to shutdown the studio", ((string[])(null)));
+#line 91
+this.ScenarioSetup(scenarioInfo);
+#line 92
+ testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 93
+ testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 94
+ testRunner.And("\"EXPLORER,UI_localhost_AutoID\" is visible within \"20\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 95
+ testRunner.And("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 96
+ testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 98
+ testRunner.And("I double click point \"968,51\" on \"MouseOverBorder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 100
+ testRunner.Given("I send \"Hello World\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 101
+ testRunner.And("I double click \"EXPLORERFOLDERS,UI_Hello World_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+ testRunner.Then("\"RIBBONNEWENDPOINT\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Testing NewWorkflow ShortcutKey Works as Expected")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Designer")]
         public virtual void TestingNewWorkflowShortcutKeyWorksAsExpected()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testing NewWorkflow ShortcutKey Works as Expected", ((string[])(null)));
+<<<<<<< HEAD
 #line 110
 this.ScenarioSetup(scenarioInfo);
 #line 112
@@ -283,6 +315,47 @@ this.ScenarioSetup(scenarioInfo);
 #line 129
  testRunner.Given("I send \"{CTRL}D\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 130
+=======
+#line 108
+this.ScenarioSetup(scenarioInfo);
+#line 110
+ testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 111
+ testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 112
+ testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 113
+    testRunner.Given("I send \"{CTRL}W\" to \"WORKSURFACE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 114
+ testRunner.Then("\"WORKFLOWDESIGNER,Unsaved 2(FlowchartDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 115
+    testRunner.Given("I send \"{CTRL}{SHIFT}W\" to \"WORKFLOWDESIGNER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 116
+ testRunner.Then("\"WebBrowserWindow\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 117
+ testRunner.Given("I send \"{ESC}\" to \"WebBrowserWindow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 118
+    testRunner.Given("I send \"{CTRL}{SHIFT}D\" to \"WORKFLOWDESIGNER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 119
+ testRunner.Then("\"WebBrowserWindow\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 120
+ testRunner.Given("I send \"{ESC}\" to \"WebBrowserWindow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 121
+ testRunner.Given("I send \"{CTRL}{SHIFT}P\" to \"WORKFLOWDESIGNER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 122
+ testRunner.Then("\"WebBrowserWindow\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 123
+ testRunner.Given("I send \"{ESC}\" to \"WebBrowserWindow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 124
+ testRunner.Given("I send \"{CTRL}S\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 125
+ testRunner.Then("\"WebBrowserWindow\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 126
+ testRunner.Given("I send \"{ESC}\" to \"WebBrowserWindow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 127
+ testRunner.Given("I send \"{CTRL}D\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 128
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
  testRunner.Then("\"DEPLOYSOURCE\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

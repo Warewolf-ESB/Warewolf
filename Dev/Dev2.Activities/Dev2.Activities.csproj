@@ -78,6 +78,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DropNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\DropNet.dll</HintPath>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
@@ -94,6 +98,10 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RestSharp, Version=102.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
@@ -121,6 +129,8 @@
     </Compile>
     <Compile Include="Activities\DebugCopyException.cs" />
     <Compile Include="Activities\Debug\DebugTOParams.cs" />
+    <Compile Include="Activities\DsfBaseActivity.cs" />
+    <Compile Include="Activities\DsfDropBoxFileActivity.cs" />
     <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
     <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
     <Compile Include="Activities\Debug\DebugItemVariableParams.cs" />
@@ -159,7 +169,6 @@
     <Compile Include="Activities\DsfSqlBulkInsertActivity.cs" />
     <Compile Include="Activities\DsfUniqueActivity.cs" />
     <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
-    <Compile Include="Activities\DsfWebPageActivity.cs" />
     <Compile Include="Activities\DsfCommentActivity.cs" />
     <Compile Include="Activities\DsfWebserviceActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
@@ -176,7 +185,6 @@
     <Compile Include="Activities\PathOperations\DsfAbstractMultipleFilesActivity.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingActivity.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingJavaScriptActivity.cs" />
-    <Compile Include="Activities\DsfWebSiteActivity.cs" />
     <Compile Include="Activities\DsfActivityAbstract.cs" />
     <Compile Include="Activities\PathOperations\DsfAbstractFileActivity.cs" />
     <Compile Include="Activities\PathOperations\DsfPathCreate.cs" />
@@ -291,9 +299,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\website.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Rename.png" />

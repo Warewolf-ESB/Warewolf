@@ -167,6 +167,7 @@
     <Compile Include="Persistence\StorageSettingsManagerTest.cs" />
     <Compile Include="Persistence\BinaryDataListRowEqualityComparerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerExplorerItemSerialisation.cs" />
     <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
     <Compile Include="SystemTemplates\DecisionTest.cs" />
     <Compile Include="TestStrings.Designer.cs">

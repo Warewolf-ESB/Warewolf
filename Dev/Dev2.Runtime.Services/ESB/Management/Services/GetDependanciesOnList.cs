@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,13 +54,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             List<string> dependancyNames = new List<string>();
 
             bool dependsOnMe = false;
-            string resourceNamesString = string.Empty;
+            string resourceIdsString = string.Empty;
             string dependsOnMeString = string.Empty;
             StringBuilder tmp;
-            values.TryGetValue("ResourceNames", out tmp);
+            values.TryGetValue("ResourceIds", out tmp);
             if(tmp != null)
             {
-                resourceNamesString = tmp.ToString();
+                resourceIdsString = tmp.ToString();
             }
             values.TryGetValue("GetDependsOnMe", out tmp);
             if(tmp != null)
@@ -69,8 +68,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 dependsOnMeString = tmp.ToString();
             }
 
-            List<string> resourceNames = JsonConvert.DeserializeObject<List<string>>(resourceNamesString);
-            Dev2Logger.Log.Info("Get Dependencies On List. "+resourceNamesString);
+            IEnumerable<Guid> resourceIds = JsonConvert.DeserializeObject<List<string>>(resourceIdsString).Select(Guid.Parse);
+            Dev2Logger.Log.Info("Get Dependencies On List. " + resourceIdsString);
             if(!string.IsNullOrEmpty(dependsOnMeString))
             {
                 if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
@@ -84,13 +83,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                foreach(string resourceName in resourceNames)
+                foreach (var resourceId in resourceIds)
                 {
-                    var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceName);
-                    if(resource != null)
-                    {
-                        dependancyNames.AddRange(FetchRecursiveDependancies(resource.ResourceID, theWorkspace.ID));
-                    }
+
+                    dependancyNames.AddRange(FetchRecursiveDependancies(resourceId, theWorkspace.ID));
+
                 }
             }
 
