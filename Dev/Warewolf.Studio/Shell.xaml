@@ -55,6 +55,7 @@
                                                SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedLeft">
                             <dockManager:ContentPane x:Name="Menu"  
+                                                     Height="Auto"
                                 Style="{DynamicResource DockmangerMenuPaneStyle}"
                                                      CloseButtonVisibility="Hidden"
 								WindowPositionMenuVisibility="Hidden"

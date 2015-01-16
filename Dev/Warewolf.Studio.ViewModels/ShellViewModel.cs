@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
@@ -47,13 +49,24 @@ namespace Warewolf.Studio.ViewModels
 
         public bool RegionHasView(string regionName)
         {
+           return GetRegionViews(regionName).Any();
+        }
+
+        public IViewsCollection GetRegionViews(string regionName)
+        {
+            var region = GetRegion(regionName);
+            return region.Views;
+        }
+
+        IRegion GetRegion(string regionName)
+        {
             var region = _regionManager.Regions[regionName]; //get the region
-            return region.Views.Any();
+            return region;
         }
 
         public bool RegionViewHasDataContext(string regionName)
         {
-            var region = _regionManager.Regions[regionName]; //get the region
+            var region = GetRegion(regionName);
             var view = region.GetView(regionName);
             var userView = view as IView;
             if (userView != null)
@@ -61,6 +74,26 @@ namespace Warewolf.Studio.ViewModels
                 return userView.DataContext != null;
             }
             return false;
+        }
+
+        public void AddService(IResource resource)
+        {
+            var region = GetRegion(RegionNames.Workspace);
+            var foundViewModel = region.Views.FirstOrDefault(o =>
+            {
+                var viewModel = o as IServiceDesignerViewModel;
+                if (viewModel == null)
+                {
+                    return false;
+                }
+                return Equals(viewModel.Resource, resource);
+            });
+            if(foundViewModel==null)
+            {
+                foundViewModel = _unityContainer.Resolve<IServiceDesignerViewModel>(new ParameterOverrides{{"resource",resource}});
+                region.Add(foundViewModel); //add the viewModel
+            }
+            region.Activate(foundViewModel); //active the viewModel
         }
     }
 }

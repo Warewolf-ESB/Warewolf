@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
@@ -43,8 +46,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ShellViewModel_Constructor")]
-        public void ShellViewModel_Constructor_Should_AddViewsToRegions()
+        [TestCategory("ShellViewModel_Initialize")]
+        public void ShellViewModel_Initialize_Should_AddViewsToRegions()
         {
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
@@ -52,13 +55,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testRegionManager.Regions.Add("Explorer",new Region());
             testRegionManager.Regions.Add("Toolbox",new Region());
             testRegionManager.Regions.Add("Menu",new Region());
-            testContainer.RegisterInstance<IExplorerView>(new Mock<IExplorerView>().Object);
-            testContainer.RegisterInstance<IToolboxView>(new Mock<IToolboxView>().Object);
-            testContainer.RegisterInstance<IMenuView>(new Mock<IMenuView>().Object);
-
-            testContainer.RegisterInstance<IExplorerViewModel>(new Mock<IExplorerViewModel>().Object);
-            testContainer.RegisterInstance<IToolboxViewModel>(new Mock<IToolboxViewModel>().Object);
-            testContainer.RegisterInstance<IMenuViewModel>(new Mock<IMenuViewModel>().Object);
+            SetupContainer(testContainer);
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
             //------------Execute Test---------------------------
             shellViewModel.Initialize();
@@ -69,10 +66,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(shellViewModel.RegionHasView("Menu"));
         }
 
+        static void SetupContainer(UnityContainer testContainer)
+        {
+            testContainer.RegisterInstance<IExplorerView>(new Mock<IExplorerView>().Object);
+            testContainer.RegisterInstance<IToolboxView>(new Mock<IToolboxView>().Object);
+            testContainer.RegisterInstance<IMenuView>(new Mock<IMenuView>().Object);
+
+            testContainer.RegisterInstance<IExplorerViewModel>(new Mock<IExplorerViewModel>().Object);
+            testContainer.RegisterInstance<IToolboxViewModel>(new Mock<IToolboxViewModel>().Object);
+            testContainer.RegisterInstance<IMenuViewModel>(new Mock<IMenuViewModel>().Object);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("ShellViewModel_Constructor")]
-        public void ShellViewModel_Constructor_Should_SetViewModelAsDataContextForRegionViews()
+        [TestCategory("ShellViewModel_Initialize")]
+        public void ShellViewModel_Initialize_Should_SetViewModelAsDataContextForRegionViews()
         {
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
@@ -102,5 +110,82 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(shellViewModel.RegionViewHasDataContext("Toolbox"));
             Assert.IsTrue(shellViewModel.RegionViewHasDataContext("Menu"));
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ShellViewModel_AddService")]
+        public void ShellViewModel_AddService_WhenNotInTab_ShouldAddServiceViewModelToTab()
+        {
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
+            var testRegionManager = new RegionManager();
+            testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            //------------Execute Test---------------------------
+            shellViewModel.AddService(new Mock<IResource>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(shellViewModel.RegionHasView("Workspace"));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ShellViewModel_AddService")]
+        public void ShellViewModel_AddService_SameResource_ShouldNotAddAnotherTab()
+        {
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
+            var testRegionManager = new RegionManager();
+            testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            var resource = new Mock<IResource>().Object;
+            shellViewModel.AddService(resource);
+            //------------Execute Test---------------------------
+            shellViewModel.AddService(resource);
+            //------------Assert Results-------------------------
+            var viewsCollection = shellViewModel.GetRegionViews("Workspace");
+            Assert.AreEqual(1,viewsCollection.Count());
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ShellViewModel_AddService")]
+        public void ShellViewModel_AddService_DifferentResource_ShouldAddAnotherTab()
+        {
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
+            var testRegionManager = new RegionManager();
+            testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            shellViewModel.AddService(new Mock<IResource>().Object);
+            //------------Execute Test---------------------------
+            shellViewModel.AddService(new Mock<IResource>().Object);
+            //------------Assert Results-------------------------
+            var viewsCollection = shellViewModel.GetRegionViews("Workspace");
+            Assert.AreEqual(2,viewsCollection.Count());
+        }
+    }
+
+    internal class MockServiceDesignerViewModel : IServiceDesignerViewModel
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public MockServiceDesignerViewModel(IResource resource)
+        {
+            Resource = resource;
+        }
+
+        #region Implementation of IServiceDesignerViewModel
+
+        public IResource Resource
+        {
+            get;
+            set;
+        }
+
+        #endregion
     }
 }
