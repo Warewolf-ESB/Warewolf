@@ -36,15 +36,6 @@
 
     <!--  MAIN MENU BUTTON STYLE  -->
 
-    <LinearGradientBrush x:Key="DarkBrush" StartPoint="0,0" EndPoint="0,1">
-        <GradientBrush.GradientStops>
-            <GradientStopCollection>
-                <GradientStop Offset="0.0" Color="#FFF" />
-                <GradientStop Offset="1.0" Color="#AAA" />
-            </GradientStopCollection>
-        </GradientBrush.GradientStops>
-    </LinearGradientBrush>
-
     <Style x:Key="MainMenuButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="30" />
         <Setter Property="Height" Value="30" />

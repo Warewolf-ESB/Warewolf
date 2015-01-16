@@ -60,6 +60,7 @@
         <ResourceDictionary Source="Images/System-Filter.xaml" />
         <ResourceDictionary Source="Images/System-Help.xaml" />
         <ResourceDictionary Source="Images/System-Link.xaml" />
+        <ResourceDictionary Source="Images/System-Logo.xaml" />
         <ResourceDictionary Source="Images/System-Spacer.xaml" />
         <ResourceDictionary Source="Images/System-Lock.xaml" />
         <ResourceDictionary Source="Images/System-More.xaml" />
@@ -69,6 +70,7 @@
         <ResourceDictionary Source="Images/System-Settings.xaml" />
         <ResourceDictionary Source="Images/System-StartNode.xaml" />
         <ResourceDictionary Source="Images/System-Security.xaml" />
+        <ResourceDictionary Source="Images/System-Save.xaml" />
         <ResourceDictionary Source="Images/System-Executable.xaml" />
         <ResourceDictionary Source="Images/System-Task.xaml" />
         <ResourceDictionary Source="Images/System-Unlink.xaml" />

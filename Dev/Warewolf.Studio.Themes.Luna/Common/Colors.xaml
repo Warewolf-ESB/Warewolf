@@ -4,7 +4,7 @@
     <!--  ********************************** THEME COLORS **********************************  -->
 
     <!--  New Warewolf Palette  -->
-    <Color x:Key="WarewolfMenuGrey">#FF2C2928</Color>
+    <Color x:Key="WarewolfMenuGrey">#FF2B2726</Color>
     <Color x:Key="WarewolfHeaderGrey">#FFE7E4E0</Color>
     <Color x:Key="WarewolfLineGrey">#FFE7E4E0</Color>
     <Color x:Key="WarewolfSubHeaderGrey">#FFC2BEB9</Color>
@@ -20,6 +20,9 @@
 
     <Color x:Key="WarewolfEnabledText">#FF2C2928</Color>
     <Color x:Key="WarewolfDisabledText">#FF606160</Color>
+
+    <Color x:Key="wtf">#FF232323</Color>
+    <Color x:Key="wtf1">#FFC2BEB9</Color>
 
 
     <!--  Artifact Colors  -->

@@ -9,6 +9,36 @@
     </ResourceDictionary.MergedDictionaries>
 
 
+    <Style x:Key="MenuSeparator" TargetType="{x:Type Separator}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Separator}">
+                    <Grid SnapsToDevicePixels="true" Margin="0,6,0,4">
+                        <Rectangle Height="2"
+                               Margin="0,0,1,2"
+                               Fill="#72000000"/>
+                        <Rectangle Height="2"
+                               Margin="0,2,1,0"
+                               Fill="#FF2C2928"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+
+
+    <LinearGradientBrush  x:Key="MenuPanelGradient" EndPoint="1,1" StartPoint="0,1">
+        <GradientStop Offset="0.003" Color="#FF2B2726" />
+        <GradientStop Offset="0.876" Color="#FF2B2726" />
+        <GradientStop Offset="1" Color="#FF2B2726" />
+        <GradientStop Offset="0.994" Color="#FF171718" />
+        <GradientStop Offset="0.939" Color="#FF232323" />
+    </LinearGradientBrush>
+    
+
+
+
 
     <Style x:Key="ButtonFocusVisual">
         <Setter Property="Control.Template">
@@ -23,6 +53,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <LinearGradientBrush x:Key="ButtonNormalBackground" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Offset="0" Color="#F3F3F3" />
         <GradientStop Offset="0.5" Color="#EBEBEB" />
@@ -31,6 +62,8 @@
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="ButtonNormalBorder" Color="#FF707070" />
+
+
     <Style x:Key="MenuButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}" />
