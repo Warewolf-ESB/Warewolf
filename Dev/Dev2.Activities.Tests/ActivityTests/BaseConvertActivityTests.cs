@@ -230,7 +230,11 @@ namespace ActivityUnitTests.ActivityTests
 
             string error;
             IList<IBinaryDataListItem> actual;
+<<<<<<< HEAD
             GetRecordSetFieldValueFromDataList(result.DataListID, "test", "my", out actual, out error);
+=======
+            GetRecordSetFieldValueFromDataList(result.DataListID, "test","my", out actual, out error);
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);

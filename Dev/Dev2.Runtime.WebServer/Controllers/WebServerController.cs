@@ -166,7 +166,8 @@ namespace Dev2.Runtime.WebServer.Controllers
             return Request.Method == HttpMethod.Post
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables)
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
-        }
+        } 
+        
 
 
         [HttpGet]
@@ -174,10 +175,17 @@ namespace Dev2.Runtime.WebServer.Controllers
         [Route("Secure/{*__name__}")]
         public HttpResponseMessage ExecuteSecureWorkflow(string __name__)
         {
+<<<<<<< HEAD
             return ExecuteWorkflow(__name__);
         }
 
 
+=======
+          return ExecuteWorkflow(__name__);
+        }  
+        
+        
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
         [HttpGet]
         [HttpPost]
         [Route("Public/{*__name__}")]
