@@ -19,11 +19,11 @@ namespace Warewolf.Studio
         public Shell(ShellViewModel shellViewModel)
         {
             InitializeComponent();
-            ThemeManager.ApplicationTheme = new LunaTheme();
+            ThemeManager.ApplicationTheme = new LunaTheme(); 
             DataContext = shellViewModel;            
             Loaded+=OnLoaded;
         }
-
+            
         void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             var viewModel = DataContext as ShellViewModel;

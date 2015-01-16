@@ -5,30 +5,19 @@
              xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dockManager="http://infragistics.com/DockManager"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=dummyModels:DummyExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
-    <UserControl.Resources>
-<ResourceDictionary>
-        <ResourceDictionary.MergedDictionaries>
-            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Filter.xaml" />
-            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Spacer.xaml" />
-            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-More.xaml" />
-            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Link.xaml" />
-            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Refresh.xaml" />
-            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-New.xaml" />
-            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Executable.xaml" />
-            <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-Security.xaml" />
-        </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-    </UserControl.Resources>
-    <Grid x:Name="LayoutRoot">
+
+
+    <Grid x:Name="LayoutRoot" >
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
+            <RowDefinition Height="20" />
             <RowDefinition Height="25" />
             <RowDefinition Height="10" />
             <RowDefinition Height="25" />
@@ -37,16 +26,21 @@
             <RowDefinition Height="10" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         <!--  SPACER  -->
-        <StackPanel Grid.Row="0" Orientation="Vertical">
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" >
             <Image Width="5"
                    Height="10"
                    Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
         <!--  URI LOOKUP  -->
-        <StackPanel Grid.Row="1" >
+        <StackPanel Grid.Row="1"  Grid.Column="1" Style="{StaticResource ExplorerStackPanel}">
+                    
             <TextBox Text="Localhost" />
 
             <Button Width="25"
@@ -64,14 +58,14 @@
         </StackPanel>
 
         <!--  SPACER  -->
-        <StackPanel Grid.Row="2" Orientation="Vertical">
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical">
             <Image Width="5"
                    Height="15"
                    Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
         <!--  SERVICE FILTER  -->
-        <StackPanel Grid.Row="3" >
+        <StackPanel Grid.Row="3" Grid.Column="1" Style="{StaticResource ExplorerStackPanel}">
             <TextBox Text="Filter" />
 
             <Button Width="25"
@@ -89,14 +83,14 @@
         </StackPanel>
 
         <!--  SPACER  -->
-        <StackPanel Grid.Row="4" Orientation="Vertical">
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Vertical">
             <Image Width="5"
                    Height="10"
                    Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
         <!--  URL FILTER  -->
-        <StackPanel Grid.Row="5" >
+        <StackPanel Grid.Row="5" Grid.Column="1" Style="{StaticResource ExplorerStackPanel}">
             <Label Margin="5,0,2,0"
                    Content="Localhost"
                    FontWeight="Medium" />
@@ -104,13 +98,13 @@
         </StackPanel>
 
         <!--  SPACER  -->
-        <StackPanel Grid.Row="6" Orientation="Vertical">
+        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Vertical">
             <Image Width="5"
                    Height="5"
                    Source="{StaticResource System-Spacer}" />
         </StackPanel>
 
-        <ig:XamDataTree Grid.Row="7"
+        <ig:XamDataTree Grid.Row="7" Grid.Column="1"
                         DisplayMemberPath="DisplayName"
                         ItemsSource="{Binding Environments}"
                         NodeLineVisibility="Hidden">
