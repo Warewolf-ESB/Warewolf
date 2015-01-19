@@ -3345,7 +3345,7 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_SetIsChecked")]
         public void ExplorerItemModel_SetIsChecked_ExpectNULLSet()
@@ -3424,7 +3424,7 @@ namespace Dev2.Core.Tests.ModelTests
             connectControlSingleton.Verify(c => c.Remove(It.IsAny<Guid>()), Times.Once());
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_SetIsChecked")]
         public void ExplorerItemModel_SetIsChecked_ExpectChildrenUpdated()
@@ -3439,7 +3439,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_SetIsChecked")]
         public void ExplorerItemModel_SetIsChecked_ExpectParentOverwriteChanged()

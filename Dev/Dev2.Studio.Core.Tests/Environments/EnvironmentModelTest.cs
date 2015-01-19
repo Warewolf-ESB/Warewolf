@@ -9,11 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using System.Network;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -21,6 +16,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Communication;
+using Dev2.Core.Tests.Utils;
 using Dev2.Network;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
@@ -31,6 +27,11 @@ using Dev2.Threading;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net;
+using System.Network;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Environments
@@ -746,7 +747,7 @@ namespace Dev2.Core.Tests.Environments
     public class TestEqualityConnection : ServerProxy
     {
         public TestEqualityConnection(Guid serverID, string serverUri)
-            : base(serverUri, CredentialCache.DefaultCredentials, new AsyncWorker())
+            : base(serverUri, CredentialCache.DefaultCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)
         {
             ServerID = serverID;
         }
