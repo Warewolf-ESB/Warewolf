@@ -28,8 +28,6 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
-
-
         public string ResourceName
         {
             get
