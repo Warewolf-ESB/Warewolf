@@ -125,7 +125,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsNotNull(subscription);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerProxy_Constructor")]
         public void ServerProxy_HandleItemAdded()
@@ -158,7 +158,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsNotNull(subscription);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerProxy_Connect")]
         public void ServerProxy_ConnectSetsId()
@@ -183,7 +183,7 @@ namespace Dev2.Core.Tests.Network
             Assert.AreEqual(x,serverProxy.ID);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerProxy_Wait")]
         public void ServerProxy_Wait_TaskThrowsHttpRequestException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsFalse()
@@ -211,7 +211,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsFalse(serverProxy.IsConnected);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerProxy_Wait")]
         public void ServerProxy_Wait_TaskThrowsHttpClientException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
@@ -239,7 +239,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsTrue(serverProxy.IsConnected);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerProxy_Wait")]
         public void ServerProxy_Wait_TaskThrowsException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
@@ -267,7 +267,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsTrue(serverProxy.IsConnected);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerProxy_Wait")]
         public void ServerProxy_Wait_TaskThrowsReconnectingBeforeInvocationInvalidOperationException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()

@@ -46,7 +46,7 @@ namespace Dev2.Core.Tests.Utils
             Assert.IsFalse(onerrorWorkIsCalled);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AsyncWorker_Start")]
         public async Task AsyncWorker_Start_BackgroundWorkerThrowAnException_ErrorWorkIsCalled()
