@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Activities.Presentation;
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -10,6 +12,30 @@ namespace Warewolf.Studio.ViewModels
 {
     public class WorkflowServiceDesignerViewModel : BindableBase, IWorkflowServiceDesignerViewModel, IActiveAware, IDockAware
     {
+        bool _isActive;
+        string _header;
+        readonly WorkflowDesigner _wd;
+
+        public WorkflowServiceDesignerViewModel(IXamlResource resource)
+        {
+            if(resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
+            Resource = resource;
+            _wd = new WorkflowDesigner();
+            DesignerView = _wd.View;
+            if (resource.Xaml == null)
+            {
+                IsNewWorkflow = true;
+            }
+            else
+            {
+                IsNewWorkflow = false;
+                _wd.Text = resource.Xaml.ToString();
+            }
+        }
+
         /// <summary>
         /// The resource that is being represented
         /// </summary>
@@ -51,12 +77,10 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// The designer for the resource
         /// </summary>
-        public IDesignerView DesignerView
+        public UIElement DesignerView
         {
-            get
-            {
-                return null;
-            }
+            get;
+            private set;
         }
 
         #region Implementation of IActiveAware
@@ -71,10 +95,12 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return false;
+                return _isActive;
             }
             set
             {
+                _isActive = value;
+                OnPropertyChanged(() => IsActive);
             }
         }
         public event EventHandler IsActiveChanged;
@@ -87,10 +113,21 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return null;
+                return _header;
             }
             set
             {
+                _header = value;
+                OnPropertyChanged(() => Header);
+            }
+        }
+
+        public bool IsNewWorkflow { get; set; }
+        public string DesignerText
+        {
+            get
+            {
+                return _wd.Text;
             }
         }
 

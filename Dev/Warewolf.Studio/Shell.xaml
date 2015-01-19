@@ -34,8 +34,8 @@
             <Style TargetType="dockManager:DockedPaneSplitter">
                 <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
             </Style>
-        <DataTemplate DataType="{x:Type interfaces:IServiceDesignerViewModel}">
-            <views:ServiceDesignerView/>
+        <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
+            <views:WorkflowDesignerView/>
         </DataTemplate>
     </Window.Resources>
 

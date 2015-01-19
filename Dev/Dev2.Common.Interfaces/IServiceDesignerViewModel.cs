@@ -18,6 +18,11 @@ namespace Dev2.Common.Interfaces
         /// The hyperlink text shown
         /// </summary>
         string DisplayWorkflowLink { get; }
+        /// <summary>
+        /// The designer for the resource
+        /// </summary>
+        UIElement DesignerView { get; }
+        bool IsNewWorkflow { get; set; }
     }
 
     public interface IServiceDesignerViewModel
@@ -25,15 +30,7 @@ namespace Dev2.Common.Interfaces
         /// <summary>
         /// The resource that is being represented
         /// </summary>
-        IResource Resource { get; set; }
-        /// <summary>
-        /// The designer for the resource
-        /// </summary>
-        IDesignerView DesignerView { get; }
+        IResource Resource { get; set; }       
     }
 
-    public interface IDesignerView
-    {
-        UIElement Designer { get; set; }
-    }
 }

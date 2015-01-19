@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:views="clr-namespace:Warewolf.Studio.Views"
-             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+    xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type interfaces:IWorkflowServiceDesignerViewModel}}">
@@ -21,11 +20,10 @@
                                VerticalAlignment="Top"
                                Visibility="{Binding IsServiceLinkVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                                HorizontalAlignment="Center">
-                                <Hyperlink Command="{Binding Path=OpenWorkflowLinkCommand}"
-                                           CommandParameter="{Binding}">
+                                <Hyperlink Command="{Binding Path=OpenWorkflowLinkCommand}">
                                     <Run Text="{Binding Path=DisplayWorkflowLink,Mode=OneWay}" />
                                 </Hyperlink>
         </TextBlock>
-        <ContentPresenter Content="{Binding (views:WorkflowDesignerView.Designer)}"></ContentPresenter>  
+        <ContentPresenter Content="{Binding DesignerView}"></ContentPresenter>  
     </Grid>
 </UserControl>

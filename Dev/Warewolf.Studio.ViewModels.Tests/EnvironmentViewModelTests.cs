@@ -192,7 +192,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.Connect()).Returns(true);
             server.Setup(server1 => server1.Load()).Returns(new List<IResource> { resourceWithNoChildren.Object, resourceWithOneLevelChildren.Object, resourceWithMultipleLevelChildren .Object}).Verifiable();
-            var environmentViewModel = new EnvironmentViewModel(server.Object);
+            var environmentViewModel = new EnvironmentViewModel(server.Object,new Mock<IShellViewModel>().Object);
             environmentViewModel.Connect();
             environmentViewModel.Load();
             //------------Assert Preconditions-------------------
