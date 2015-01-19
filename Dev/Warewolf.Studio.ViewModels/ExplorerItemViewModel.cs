@@ -28,8 +28,6 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
-
-
         public string ResourceName
         {
             get
@@ -47,7 +45,6 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
-<<<<<<< HEAD
         public bool Checked { get; set; }
         public Guid ResourceId { get; set; }
         public ResourceType ResourceType { get; set; }
@@ -55,7 +52,6 @@ namespace Warewolf.Studio.ViewModels
         {
             get; set;
         }
-=======
 
         public bool IsVisible
         {
@@ -70,7 +66,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
->>>>>>> 31df4453e6dab038a2c50d93aa17db590e988de6
         public IResource Resource { get; set; }
     }
 }
