@@ -10,7 +10,7 @@ namespace Warewolf.Studio.Views
 	{
 		public ToolboxView()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 	}
 }

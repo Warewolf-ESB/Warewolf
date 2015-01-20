@@ -17,89 +17,75 @@
     <Grid x:Name="LayoutRoot">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="25" />
             <RowDefinition Height="10" />
+            <RowDefinition Height="29" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="29" />
+            <RowDefinition Height="5" />
             <RowDefinition Height="25" />
-            <RowDefinition Height="10" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="10" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
 
-        <!--  SPACER  -->
-        <StackPanel Grid.Row="0"
-                    Grid.Column="1"
-                    Orientation="Vertical">
-            <Image Width="5"
-                   Height="10"
-                   Source="{StaticResource System-Spacer}" />
-        </StackPanel>
 
         <!--  URI LOOKUP  -->
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1"
-                    Style="{StaticResource ExplorerStackPanel}">
+        <Grid Grid.Row="1"  Grid.Column="1">
 
-            <TextBox Text="Localhost" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="29"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="30" />
+            </Grid.ColumnDefinitions>
 
-            <Button Width="25"
+            <TextBox Grid.Column="0" Grid.Row="0"  Text="Localhost" />
+            <Button Width="25"  Grid.Column="1" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
                     Height="25"
                     Padding="4">
                 <Image Source="{StaticResource System-More-Inverted}" />
             </Button>
-
-            <Button Width="25"
+            <Button Width="25" Grid.Column="2" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
                     Height="25"
                     Padding="4">
                 <Image Source="{StaticResource System-Link-Inverted}" />
             </Button>
-
-        </StackPanel>
-
-        <!--  SPACER  -->
-        <StackPanel Grid.Row="2"
-                    Grid.Column="1"
-                    Orientation="Vertical">
-            <Image Width="5"
-                   Height="15"
-                   Source="{StaticResource System-Spacer}" />
-        </StackPanel>
+        </Grid>
 
         <!--  SERVICE FILTER  -->
-        <StackPanel Grid.Row="3"
-                    Grid.Column="1"
-                    Style="{StaticResource ExplorerStackPanel}">
-            <TextBox Text="Filter" />
 
-            <Button Width="25"
+        <Grid Grid.Row="3" Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="29"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="30" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" Grid.Row="0"  Text="Filter" />
+            <Button Width="25"  Grid.Column="1" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
                     Height="25"
                     Padding="4">
                 <Image Source="{StaticResource System-Filter-Inverted}" />
             </Button>
-
-            <Button Width="25"
+            <Button Width="25" Grid.Column="2" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
                     Height="25"
                     Padding="4">
                 <Image Source="{StaticResource System-Refresh-Inverted}" />
             </Button>
+        </Grid>
 
-        </StackPanel>
 
-        <!--  SPACER  -->
-        <StackPanel Grid.Row="4"
-                    Grid.Column="1"
-                    Orientation="Vertical">
-            <Image Width="5"
-                   Height="10"
-                   Source="{StaticResource System-Spacer}" />
-        </StackPanel>
 
-        <!--  URL FILTER  -->
+        <!--  URL Display  -->
         <StackPanel Grid.Row="5"
                     Grid.Column="1"
                     Style="{StaticResource ExplorerStackPanel}">
@@ -109,18 +95,11 @@
             <Label Content="(http://whereiswally:7262)" FontWeight="Light" />
         </StackPanel>
 
-        <!--  SPACER  -->
-        <StackPanel Grid.Row="6"
-                    Grid.Column="1"
-                    Orientation="Vertical">
-            <Image Width="5"
-                   Height="5"
-                   Source="{StaticResource System-Spacer}" />
-        </StackPanel>
 
-        <ig:XamDataTree Grid.Row="7"
-                        Grid.Column="1"
-                        DisplayMemberPath="DisplayName"
+        <ig:XamDataTree 
+         Grid.Row="6"
+         Grid.Column="1"
+                DisplayMemberPath="DisplayName"
                         ItemsSource="{Binding Environments}"
                         NodeLineVisibility="Hidden">
 
@@ -226,6 +205,8 @@
 
 
         </ig:XamDataTree>
+
+
 
     </Grid>
 </UserControl>
