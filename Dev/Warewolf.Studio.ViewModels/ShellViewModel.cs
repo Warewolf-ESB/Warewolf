@@ -1,21 +1,16 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.DataList.DatalistView;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
-using Moq;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.View_Interfaces;
-using Warewolf.Studio.ViewModels.DummyModels;
-using Warewolf.Studio.ViewModels.VariableList;
 
 namespace Warewolf.Studio.ViewModels
 {
