@@ -170,6 +170,12 @@
     <Compile Include="Variable List\VariableListView.xaml.cs">
       <DependentUpon>VariableListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesignerView.xaml.cs">
+      <DependentUpon>ServiceDesignerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkflowDesignerView.xaml.cs">
+      <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
+    </Compile>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -199,11 +205,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ServiceDesignerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WorkflowDesignerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
+      <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>

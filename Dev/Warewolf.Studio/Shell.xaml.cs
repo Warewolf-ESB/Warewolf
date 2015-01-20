@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
 using Infragistics.Themes;
+using Infragistics.Windows;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.Themes.Luna;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio
 {
@@ -13,11 +17,21 @@ namespace Warewolf.Studio
     /// </summary>
     public partial class Shell : Window
     {
-        public Shell()
+        public Shell(IShellViewModel shellViewModel)
         {
             InitializeComponent();
             ThemeManager.ApplicationTheme = new LunaTheme(); 
+            DataContext = shellViewModel;            
+            Loaded+=OnLoaded;
+        }
             
+        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var viewModel = DataContext as ShellViewModel;
+            if(viewModel != null)
+            {
+                viewModel.Initialize();
+            }
         }
 
         private void ContentPane_MouseLeave(object sender, MouseEventArgs e)
@@ -26,6 +40,24 @@ namespace Warewolf.Studio
             if(contentPane != null)
             {
                 contentPane.ExecuteCommand(ContentPaneCommands.FlyIn);
+            }
+        }
+
+        private void PaneTabItem_Loaded(object sender, RoutedEventArgs e)
+        {
+            var paneTabItem = sender as PaneTabItem;
+            if(paneTabItem != null)
+            {
+                paneTabItem.Margin = new Thickness(0, 12, 0, 0);
+            }
+        }
+
+        private void UnpinnedTabArea_Loaded(object sender, RoutedEventArgs e)
+        {
+            var repeatButton = Utilities.GetDescendantFromName(sender as DependencyObject, "PART_ScrollDown") as RepeatButton;
+            if(repeatButton != null)
+            {
+                repeatButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -41,6 +73,11 @@ namespace Warewolf.Studio
                     e.Cancel = true;
                 }
             }
+        }
+
+        void PaneResize(object sender, MouseButtonEventArgs e)
+        {
+            //e.Handled = true;
         }
     }
 }

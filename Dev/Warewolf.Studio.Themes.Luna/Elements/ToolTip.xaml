@@ -14,7 +14,7 @@
     <Style x:Key="ToolTipStyle" TargetType="{x:Type ToolTip}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource TooltipBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TooltipBorderBrush}" />

@@ -9,7 +9,7 @@
     <!-- ********************************** CheckBoxStyle **********************************-->
     <Style x:Key="CheckBoxStyle" TargetType="CheckBox">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />

@@ -1119,7 +1119,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var hashTable = new Hashtable
                 {
                     {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
-                    {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["DefaultFontSize"]},
+                    {WorkflowDesignerColors.FontSizeKey, Application.Current.Resources["FontSize-Normal"]},
                     {WorkflowDesignerColors.FontWeightKey, Application.Current.Resources["DefaultFontWeight"]},
                     {WorkflowDesignerColors.RubberBandRectangleColorKey, Application.Current.Resources["DesignerBackground"]},
                     {WorkflowDesignerColors.WorkflowViewElementBackgroundColorKey, Application.Current.Resources["WorkflowBackgroundBrush"]},

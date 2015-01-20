@@ -8,50 +8,50 @@ namespace Warewolf.Studio.ViewModels.DummyModels
 {
     public class DummyExplorerViewModel:ExplorerViewModel
     {
-        public DummyExplorerViewModel()
+        public DummyExplorerViewModel(IShellViewModel shellViewModel)
         {
-            Environments = CreateEnvironments();
+            Environments = CreateEnvironments(shellViewModel);
         }
 
-        static List<IEnvironmentViewModel> CreateEnvironments()
+        static List<IEnvironmentViewModel> CreateEnvironments(IShellViewModel shellViewModel)
         {
-            var oneLevelDeep = new ExplorerItemViewModel
+            var oneLevelDeep = new ExplorerItemViewModel(shellViewModel)
             {
                 ResourceName = "One Level Deep",
             };
-            oneLevelDeep.Children.Add(new ExplorerItemViewModel
+            oneLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel)
             {
                 ResourceName = "Resource One Level Deep"
             });
-            var multiLevelDeep = new ExplorerItemViewModel
+            var multiLevelDeep = new ExplorerItemViewModel(shellViewModel)
             {
                 ResourceName = "Multi Level Deep"
             };
-            multiLevelDeep.Children.Add(new ExplorerItemViewModel
+            multiLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel)
             {
                 ResourceName = "No children"
             });
-            var childHasChildren = new ExplorerItemViewModel
+            var childHasChildren = new ExplorerItemViewModel(shellViewModel)
             {
                 ResourceName = "Has One Chid"
             };
             multiLevelDeep.Children.Add(childHasChildren);
-            childHasChildren.Children.Add(new ExplorerItemViewModel
+            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel)
             {
                 ResourceName = "Is child of child"
             });
-            childHasChildren.Children.Add(new ExplorerItemViewModel
+            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel)
             {
                 ResourceName = "Is Another child of a child"
             });
             return new List<IEnvironmentViewModel>
             {
-                new EnvironmentViewModel(new DummyServer())
+                new EnvironmentViewModel(new DummyServer(),shellViewModel)
                 {
                     DisplayName = "Test1",
                     ExplorerItemViewModels = new List<IExplorerItemViewModel>
                     {
-                        new ExplorerItemViewModel
+                        new ExplorerItemViewModel(shellViewModel)
                         {
                             ResourceName = "SingleLevel"
                         },
@@ -59,7 +59,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
                         multiLevelDeep
                     }
                 }, 
-                new EnvironmentViewModel(new DummyServer()) { DisplayName = "Test4" }
+                new EnvironmentViewModel(new DummyServer(),shellViewModel) { DisplayName = "Test4" }
             };
         }
     }

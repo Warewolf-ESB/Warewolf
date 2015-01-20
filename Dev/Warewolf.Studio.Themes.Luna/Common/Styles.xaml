@@ -12,20 +12,22 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!--  *********************************  FONTS   *********************************  -->
-    <system:Double x:Key="HeaderFontSize">18</system:Double>
-    <system:Double x:Key="DefaultFontSize">12</system:Double>
-    <system:Double x:Key="ExplorerFontSize">14</system:Double>
-    <FontFamily x:Key="DefaultFontFamily">Segoe UI</FontFamily>
+
+    
+    <FontFamily x:Key="DefaultFontFamily">Source Sans Pro</FontFamily>
+    
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
 
-
-
-
-
-
-
+    <system:Double x:Key="FontSize-Smallest">8</system:Double>
+    <system:Double x:Key="FontSize-Smaller">12</system:Double>
+    <system:Double x:Key="FontSize-Normal">13.333</system:Double>
+    <system:Double x:Key="FontSize-Large">16</system:Double>
+    <system:Double x:Key="FontSize-Larger">20</system:Double>
+    <system:Double x:Key="ExplorerFontSize">14</system:Double>
 
 
 
 
 </ResourceDictionary>
+
+    

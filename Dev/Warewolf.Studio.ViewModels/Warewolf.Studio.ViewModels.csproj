@@ -73,6 +73,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -89,6 +90,8 @@
     <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
     <Compile Include="VariableList\VariableListColumnViewModel.cs" />
     <Compile Include="VariableList\VariableListViewRecordSetViewModel.cs" />
+    <Compile Include="DummyModels\DummyMenuViewModel.cs" />
+    <Compile Include="ShellViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
     <Compile Include="DummyModels\DummyExplorerViewModel.cs" />
     <Compile Include="DummyModels\DummyHelpViewModel.cs" />
@@ -105,12 +108,17 @@
     <Compile Include="VariableList\DatalistViewScalarViewModel.cs" />
     <Compile Include="VariableList\VariableListViewModel.cs" />
     <Compile Include="WarewolfInvalidTypeException.cs" />
+    <Compile Include="WorkflowServiceDesignerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
@@ -118,6 +126,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
+      <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
       <Project>{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}</Project>

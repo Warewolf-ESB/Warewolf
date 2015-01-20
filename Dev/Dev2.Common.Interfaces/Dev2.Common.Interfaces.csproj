@@ -233,8 +233,13 @@
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
     <Compile Include="IEsbRequestResult.cs" />
+    <Compile Include="IServiceDesignerViewModel.cs" />
+    <Compile Include="IShellViewModel.cs" />
+    <Compile Include="IXamlResource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />
+    <Compile Include="Studio\IMenuViewModel.cs" />
+    <Compile Include="Studio\IVariableListViewModel.cs" />
     <Compile Include="Toolbox\IToolboxCatergoryViewModel.cs" />
     <Compile Include="Toolbox\IToolboxViewModel.cs" />
     <Compile Include="Toolbox\IToolDescriptor.cs" />

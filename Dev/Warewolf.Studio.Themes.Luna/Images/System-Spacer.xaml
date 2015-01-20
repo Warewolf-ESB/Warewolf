@@ -8,4 +8,6 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
+
+    <!--  *********************************  Implicit Styles  *********************************  -->
 </ResourceDictionary>

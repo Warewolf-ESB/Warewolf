@@ -41,7 +41,7 @@
             <Setter Property="Foreground"
                     Value="White" />
             <Setter Property="FontSize"
-                    Value="{StaticResource HeaderFontSize}" />
+                    Value="{StaticResource FontSize-Larger}" />
             <Setter Property="FontWeight"
                     Value="Bold" />
         </Style>

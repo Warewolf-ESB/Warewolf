@@ -2352,7 +2352,7 @@
 	<Style x:Key="{x:Static igDock:XamDockManager.ContextMenuStyleKey}" TargetType="{x:Type ContextMenu}">
 		<Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.MenuItemCenterFillKey}}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
 		<Setter Property="FontStyle" Value="Normal" />
 		<Setter Property="FontWeight" Value="Normal" />
 		<Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />

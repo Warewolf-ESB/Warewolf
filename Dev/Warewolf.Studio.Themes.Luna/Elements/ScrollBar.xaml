@@ -15,19 +15,20 @@
     <!--  Scrollbar Brushes  -->
     <SolidColorBrush x:Key="HScrollbarThumbBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
     <SolidColorBrush x:Key="VScrollbarThumbBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
+
     <SolidColorBrush x:Key="ScrollbarPageButtonArrowBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
     <SolidColorBrush x:Key="ScrollbarPageButtonArrowPressedBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
     <SolidColorBrush x:Key="ScrollbarPageButtonArrowHoverBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
     <SolidColorBrush x:Key="ScrollbarPageButtonArrowDisabledBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
-    <SolidColorBrush x:Key="VScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
-    <SolidColorBrush x:Key="HScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
-    <SolidColorBrush x:Key="VScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
-    <SolidColorBrush x:Key="HScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
-    <SolidColorBrush x:Key="VScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="HScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="ScrollbarDisabledBackgroundBrush" Color="{StaticResource Color_007}" />
-    <SolidColorBrush x:Key="ScrollbarBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="ScrollbarBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="HScrollbarThumbHoverBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="HScrollbarThumbPressedBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="VScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="HScrollbarThumbDisabledBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="ScrollbarDisabledBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ScrollbarBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ScrollbarBorderBrush" Color="{StaticResource WarewolfOrange}" />
 
 
 
@@ -80,7 +81,7 @@
                               Width="10"
                               Height="6"
                               Margin="{TemplateBinding Padding}"
-                              Data="F1 M 541.537,173.589L 531.107,173.589L 536.322,167.49L 541.537,173.589 Z "
+                              Data=""
                               Fill="{StaticResource ScrollbarPageButtonArrowBackgroundBrush}"
                               Stretch="Uniform" />
                     </Grid>

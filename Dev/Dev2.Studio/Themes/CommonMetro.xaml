@@ -51,8 +51,8 @@
         </Grid>
     </ControlTemplate>
     
-    <system:Double x:Key="HeaderFontSize">18</system:Double>
-    <system:Double x:Key="DefaultFontSize">12</system:Double>
+    <system:Double x:Key="FontSize-Larger">18</system:Double>
+    <system:Double x:Key="FontSize-Normal">12</system:Double>
     <FontFamily x:Key="DefaultFontFamily">Sans Serif MS</FontFamily>
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
     <SolidColorBrush x:Key="WorkflowBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />

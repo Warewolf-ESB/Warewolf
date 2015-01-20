@@ -166,8 +166,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             return Request.Method == HttpMethod.Post
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables)
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
-        }
-
+        } 
 
         [HttpGet]
         [HttpPost]
@@ -176,7 +175,6 @@ namespace Dev2.Runtime.WebServer.Controllers
         {
             return ExecuteWorkflow(__name__);
         }
-
 
         [HttpGet]
         [HttpPost]
