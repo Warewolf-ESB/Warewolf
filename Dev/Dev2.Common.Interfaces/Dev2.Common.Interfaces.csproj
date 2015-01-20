@@ -187,6 +187,7 @@
     <Compile Include="DataList\DatalistView\IEmptyExpression.cs" />
     <Compile Include="DataList\DatalistView\IStorageExpression.cs" />
     <Compile Include="DataList\DatalistView\IValiableListViewModel.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListViewScalarViewModel.cs" />
     <Compile Include="Data\IDev2Definition.cs" />
     <Compile Include="Data\IInputOutputViewModel.cs" />
     <Compile Include="Data\IResource.cs" />
