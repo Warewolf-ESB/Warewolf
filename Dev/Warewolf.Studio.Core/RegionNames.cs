@@ -9,7 +9,13 @@
                 return "Explorer";
             }
         }
-        
+        public static string VariableList
+        {
+            get
+            {
+                return "Variables";
+            }
+        }
         public static string Toolbox
         {
             get

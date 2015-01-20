@@ -1,4 +1,5 @@
-﻿using Dev2.Common.Interfaces.DataList.DatalistView;
+﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces.DataList.DatalistView;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.ViewModels.VariableList;
@@ -18,7 +19,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
             //------------Execute Test---------------------------
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { "", new Mock<IVariableListViewModel>().Object }, typeof(VariableListViewScalarViewModel));
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { "", new Mock<IVariableListViewModel>().Object }, typeof(VariableListItemViewScalarViewModel));
             //------------Assert Results-------------------------
         }
 
@@ -28,7 +29,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DatalistViewScalarViewModel_Ctor_ValidValues_ExpectPropertiesSetAndCommandsNotNull()
         {
             //------------Setup for test--------------------------
-            var dataListViewRecordSetViewModel = new VariableListViewScalarViewModel("bob", new Mock<IVariableListViewModel>().Object);
+            var dataListViewRecordSetViewModel = new VariableListItemViewScalarViewModel("bob", new Mock<IVariableListViewModel>().Object, new List<IVariableListViewScalarViewModel>());
             Assert.AreEqual("bob", dataListViewRecordSetViewModel.Name);
             Assert.IsFalse(dataListViewRecordSetViewModel.DeleteVisible);
             Assert.IsFalse(dataListViewRecordSetViewModel.Input);
@@ -47,7 +48,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DatalistViewScalarViewModel_Ctor_Visibilities()
         {
             //------------Setup for test--------------------------
-            var dataListViewRecordSetViewModel = new VariableListViewScalarViewModel("bob",  new Mock<IVariableListViewModel>().Object) { DeleteVisible = true };
+            var dataListViewRecordSetViewModel = new VariableListItemViewScalarViewModel("bob", new Mock<IVariableListViewModel>().Object, new List<IVariableListViewScalarViewModel>()) { DeleteVisible = true };
 
             Assert.IsTrue(dataListViewRecordSetViewModel.DeleteVisible);
             Assert.IsFalse(dataListViewRecordSetViewModel.InputVisible);
@@ -71,8 +72,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DatalistViewScalarViewModel_Properties_GetsAndSets()
         {
             //------------Setup for test--------------------------
-    
-            var dataListViewRecordSetViewModel = new VariableListViewScalarViewModel("bob",  new Mock<IVariableListViewModel>().Object) { Notes = "moocow" };
+
+            var dataListViewRecordSetViewModel = new VariableListItemViewScalarViewModel("bob", new Mock<IVariableListViewModel>().Object, new List<IVariableListViewScalarViewModel>()) { Notes = "moocow" };
 
             Assert.AreEqual("moocow", dataListViewRecordSetViewModel.Notes);
             dataListViewRecordSetViewModel.Used = true;
@@ -99,7 +100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var mockItem = new Mock<IVariableListViewModel>();
-            var val = new VariableListViewScalarViewModel("bob",  mockItem.Object);
+            var val = new VariableListItemViewScalarViewModel("bob", mockItem.Object, new List<IVariableListViewScalarViewModel>());
             
             val.Delete.Execute();
             mockItem.Verify(a => a.Delete(val));
@@ -121,12 +122,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var mockItem = new Mock<IVariableListViewModel>();
-            var a = new VariableListViewScalarViewModel("bob",  mockItem.Object);
-            var b = new VariableListViewScalarViewModel("bob",  mockItem.Object);
+            var a = new VariableListItemViewScalarViewModel("bob", mockItem.Object, new List<IVariableListViewScalarViewModel>());
+            var b = new VariableListItemViewScalarViewModel("bob", mockItem.Object, new List<IVariableListViewScalarViewModel>());
 
-            var d = new VariableListViewScalarViewModel("dave",  mockItem.Object);
+            var d = new VariableListItemViewScalarViewModel("dave", mockItem.Object, new List<IVariableListViewScalarViewModel>());
             Assert.AreNotEqual(a, null);
-            Assert.AreNotEqual(a, (IVariablelistViewRecordSet)null);
+            Assert.AreNotEqual(a, (IVariablelistViewRecordSetViewModel)null);
             Assert.AreEqual(a, a as object);
             Assert.AreEqual(a, a);
             Assert.AreNotEqual(a, 3);

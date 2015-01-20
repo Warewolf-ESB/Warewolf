@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces.DataList.DatalistView;
@@ -8,7 +9,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels.VariableList
 {
-    public class DataListViewRecodSetViewModel : BindableBase, IVariableListViewRecodSetViewModel, IVariablelistViewRecordSet, IEquatable<DataListViewRecodSetViewModel>
+    public class VariableListViewRecordSetViewModel : BindableBase,  IVariablelistViewRecordSetViewModel, IEquatable<VariableListViewRecordSetViewModel>
     {
 
         string _name;
@@ -17,7 +18,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
         string _notes;
         bool _used;
         // ReSharper disable FieldCanBeMadeReadOnly.Local
-        IList<IVariableListViewColumn> _columns;
+        ICollection<IVariableListViewColumnViewModel> _columns;
         readonly IVariableListViewModel _parent;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
         string _recordsetName;
@@ -27,13 +28,17 @@ namespace Warewolf.Studio.ViewModels.VariableList
         string _toolTip;
         bool _isValid;
         bool _deleteVisible;
+        ICollection<IVariablelistViewRecordSetViewModel> _parentCollection;
 
-        public DataListViewRecodSetViewModel(string recsetName, IList<IVariableListViewColumn> dataListViewColumns,IVariableListViewModel parent)
+        // ReSharper disable once TooManyDependencies
+        public VariableListViewRecordSetViewModel(string recsetName, ICollection<IVariableListViewColumnViewModel> dataListViewColumns, IVariableListViewModel parent, ICollection<IVariablelistViewRecordSetViewModel> parentCollection)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "recsetName", recsetName }, { "dataListViewColumns", dataListViewColumns }, { "parent", parent } });
             _name = recsetName;
             _columns = dataListViewColumns;
             _parent = parent;
+            _parentCollection = parentCollection;
+
             _notes = "";
             InputVisible = true;
             OutputVisible = true;
@@ -55,6 +60,10 @@ namespace Warewolf.Studio.ViewModels.VariableList
             set
             {
                 _name = value;
+                if(ReferenceEquals( ParentCollection.Last(),this))
+                {
+                    ParentCollection.Add(new VariableListViewRecordSetViewModel("", new ObservableCollection<IVariableListViewColumnViewModel>(),  _parent, _parentCollection));
+                }
                 OnPropertyChanged("Name");
             }
         }
@@ -130,7 +139,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
 
         #region Implementation of IDatalistViewRecordSet
 
-        public IList<IVariableListViewColumn> Columns
+        public ICollection<IVariableListViewColumnViewModel> Columns
         {
             get
             {
@@ -138,13 +147,13 @@ namespace Warewolf.Studio.ViewModels.VariableList
             }
         }
 
-        public void AddColumn(IVariableListViewColumn variableListViewColumn)
+        public void AddColumn(IVariableListViewColumnViewModel variableListViewColumn)
         {
             if(!Columns.Contains(variableListViewColumn))
             Columns.Add(variableListViewColumn);
         }
 
-        public void RemoveColumn(IVariableListViewColumn variableListViewColumn)
+        public void RemoveColumn(IVariableListViewColumnViewModel variableListViewColumn)
         {
 
             if (Columns.Contains(variableListViewColumn))
@@ -153,7 +162,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
 
         #endregion
 
-        public bool Equals(DataListViewRecodSetViewModel other)
+        public bool Equals(VariableListViewRecordSetViewModel other)
         {
             if(ReferenceEquals(null, other))
             {
@@ -191,7 +200,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
             {
                 return false;
             }
-            return Equals((DataListViewRecodSetViewModel)obj);
+            return Equals((VariableListViewRecordSetViewModel)obj);
         }
 
         #endregion
@@ -209,17 +218,17 @@ namespace Warewolf.Studio.ViewModels.VariableList
             unchecked
             {
                 // ReSharper disable NonReadonlyFieldInGetHashCode
-                return ((_name != null ? _name.GetHashCode() : 0) * 397) ^ (_columns != null ? _columns.Select(a => a != null ? a.GetHashCode() : 0).Aggregate((a, b) => a ^ b.GetHashCode()) : 0);
+                return ((_name != null ? _name.GetHashCode() : 0) * 397);
                 // ReSharper restore NonReadonlyFieldInGetHashCode
             }
         }
 
-        public static bool operator ==(DataListViewRecodSetViewModel left, DataListViewRecodSetViewModel right)
+        public static bool operator ==(VariableListViewRecordSetViewModel left, VariableListViewRecordSetViewModel right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(DataListViewRecodSetViewModel left, DataListViewRecodSetViewModel right)
+        public static bool operator !=(VariableListViewRecordSetViewModel left, VariableListViewRecordSetViewModel right)
         {
             return !Equals(left, right);
         }
@@ -305,6 +314,13 @@ namespace Warewolf.Studio.ViewModels.VariableList
             {
                 _isValid = value;
                 OnPropertyChanged(() => IsValid);
+            }
+        }
+        public ICollection<IVariablelistViewRecordSetViewModel> ParentCollection
+        {
+            get
+            {
+                return _parentCollection;
             }
         }
 

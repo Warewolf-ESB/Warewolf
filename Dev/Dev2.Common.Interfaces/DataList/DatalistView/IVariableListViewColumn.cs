@@ -5,6 +5,4 @@
         string ColumnName { get; set; }
         string RecordsetName { get; set; }
     }
-
-
 }

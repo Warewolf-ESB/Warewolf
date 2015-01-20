@@ -7,6 +7,6 @@
         bool Output { get; set; }
         string Notes { get; set; }
         bool Used { get; set; }
-        bool Visible { get; set; }
+
     }
 }

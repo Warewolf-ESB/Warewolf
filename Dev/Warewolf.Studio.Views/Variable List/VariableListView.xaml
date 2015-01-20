@@ -6,6 +6,7 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:datalistView="clr-namespace:Dev2.Common.Interfaces.DataList.DatalistView;assembly=Dev2.Common.Interfaces"
              xmlns:variableList="clr-namespace:Warewolf.Studio.ViewModels.VariableList;assembly=Warewolf.Studio.ViewModels"
+             xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" >
     <UserControl.Resources>
@@ -16,19 +17,24 @@
                     <ColumnDefinition Width="25"></ColumnDefinition>
                     <ColumnDefinition Width="25"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Text="{Binding (datalistView:IVariableListViewItem.Name)}"></TextBox>
-                <Button Grid.Column="1" Command="{Binding Delete}"></Button>
-                <Button Grid.Column="2" Command="{Binding AddNotes}"></Button>
+                <TextBox Grid.Column="0" Width="150" Text="{Binding Mode=TwoWay, Path=Data.Name}" ></TextBox>
+                <Button Grid.Column="1" Width="25" Visibility="{Binding Path=Data.DeleteVisible, Converter={StaticResource BoolToVis}}">delete</Button>
+                <Button Grid.Column="2" Width="25">notes</Button>
+                
             </Grid>
         </ControlTemplate>
+        <igPrim:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <Style TargetType="{x:Type ig:XamDataTreeNodeControl}" x:Key="NodeStyle">
+            <Setter Property="Visibility" Value="{Binding Data.Visible, Converter={StaticResource BoolToVisibility}}" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
          </Grid.RowDefinitions>
@@ -40,9 +46,9 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0" Grid.Row="0" x:Name="FilterTextBox" Text="{Binding FilterExpression}"></TextBox>
-            <Button Grid.Column="1" Grid.Row="0"  Command="{Binding FilterCommand}"></Button>
-            <Button Grid.Column="2" Grid.Row="0" Command="{Binding DeleteUnusedCommand}"></Button>
-            <Button Grid.Column="3" Grid.Row="0" Command="{Binding SortCommand}"></Button>
+            <Button Grid.Column="1" Grid.Row="0"  Command="{Binding FilterCommand}">Filter</Button>
+            <Button Grid.Column="2" Grid.Row="0" Command="{Binding DeleteUnusedCommand}">Delete</Button>
+            <Button Grid.Column="3" Grid.Row="0" Command="{Binding SortCommand}">Sort</Button>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -57,21 +63,21 @@
 
         <Grid Grid.Row="2">
             <ig:XamDataTree
-             ItemsSource="{Binding (datalistView:IVariableListViewModel.Scalars)}">
+             ItemsSource="{Binding Scalars}" NodeLineVisibility="Hidden" Visibility="{Binding Path=Data.Visible, Converter={StaticResource BoolToVis}}">
                     <ig:XamDataTree.GlobalNodeLayouts>
-                        <ig:NodeLayout Key="Scalars" DisplayMemberPath="Name">
-                            <ig:NodeLayout.ItemTemplate>
-                            <DataTemplate DataType="datalistView:IVariableListViewScalar">
-                                    <Grid>
+                    <ig:NodeLayout Key="Scalars" TargetTypeName="IVariableListViewScalarViewModel" NodeStyle="{StaticResource NodeStyle}">
+                        <ig:NodeLayout.ItemTemplate>
+                                <DataTemplate>
+                                <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition></ColumnDefinition>
-                                            <ColumnDefinition></ColumnDefinition>
-                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Template="{StaticResource VariableItemTemplate}" Text="{Binding Name}"></TextBox>
-                                    <CheckBox Grid.Column="1" Checked="{Binding Input}"></CheckBox>
-                                    <CheckBox Grid.Column="2" Checked="{Binding Output}"></CheckBox>
-                                    </Grid>
+                                        <TextBox Grid.Column="0" Template="{StaticResource VariableItemTemplate}"></TextBox>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding Mode=TwoWay, Path=Data.Input}" Visibility="{Binding Path=Data.InputVisible , Converter={StaticResource BoolToVis}}"></CheckBox>
+                                    <CheckBox Grid.Column="2" IsChecked="{Binding Mode=TwoWay, Path=Data.Output}" Visibility="{Binding Path=Data.OutputVisible , Converter={StaticResource BoolToVis}}"></CheckBox>
+                                </Grid>
                                 </DataTemplate>
                             </ig:NodeLayout.ItemTemplate>
                         </ig:NodeLayout>
@@ -91,39 +97,38 @@
         </Grid>
         <Grid Grid.Row="4">
             <ig:XamDataTree
-             ItemsSource="{Binding (datalistView:IVariableListViewModel.RecordSets)}">
+             ItemsSource="{Binding RecordSets}" NodeLineVisibility="Hidden">
                 <ig:XamDataTree.GlobalNodeLayouts>
-                    <ig:NodeLayout Key="DataSets" DisplayMemberPath="Name">
+                    <ig:NodeLayout Key="RecordSets" TargetTypeName="IVariablelistViewRecordSetViewModel">
                         <ig:NodeLayout.ItemTemplate>
-                            <DataTemplate DataType="datalistView:IVariablelistViewRecordSet">
+                            <DataTemplate >
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Template="{StaticResource VariableItemTemplate}" Grid.Column="0" Text="{Binding Name}"></TextBox>
-                                    <CheckBox Grid.Column="1" Checked="{Binding Input}"></CheckBox>
-                                    <CheckBox Grid.Column="2" Checked="{Binding Output}"></CheckBox>
+                                    <TextBox Grid.Column="0" Template="{StaticResource VariableItemTemplate}">
+                                    </TextBox>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding Mode=TwoWay, Path=Data.Input}"></CheckBox>
+                                    <CheckBox Grid.Column="2" IsChecked="{Binding Mode=TwoWay, Path=Data.Output}"></CheckBox>
                                 </Grid>
                             </DataTemplate>
                         </ig:NodeLayout.ItemTemplate>
-                       
                     </ig:NodeLayout>
-                    <ig:NodeLayout Key="Columns">
+                    <ig:NodeLayout Key="Columns" TargetTypeName="IVariableListViewColumnViewModel">
                         <ig:NodeLayout.ItemTemplate>
-                            <DataTemplate DataType="datalistView:IVariableListViewColumn">
+                            <DataTemplate >
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <Image Grid.Column="0"/>
-                                    <TextBox Template="{StaticResource VariableItemTemplate}" Grid.Column="1" Text="{Binding Name}"></TextBox>
-                                    <CheckBox Grid.Column="2" Checked="{Binding Input}"></CheckBox>
-                                    <CheckBox Grid.Column="3" Checked="{Binding Output}"></CheckBox>
+                                    <TextBox Grid.Column="0" Template="{StaticResource VariableItemTemplate}">
+                                    </TextBox>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding Mode=TwoWay, Path=Data.Input}"></CheckBox>
+                                    <CheckBox Grid.Column="2" IsChecked="{Binding Mode=TwoWay, Path=Data.Output}"></CheckBox>
                                 </Grid>
                             </DataTemplate>
                         </ig:NodeLayout.ItemTemplate>

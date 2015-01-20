@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces.DataList.DatalistView;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -20,7 +21,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
 
             
             //------------Execute Test---------------------------
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { "", new IVariableListViewColumn[0] , new Mock<IVariableListViewModel>().Object}, typeof(DataListViewRecodSetViewModel));
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { "", new IVariableListViewColumn[0] , new Mock<IVariableListViewModel>().Object}, typeof(VariableListViewRecordSetViewModel));
             //------------Assert Results-------------------------
         }
 
@@ -30,7 +31,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
         public void DataListViewRecordSetViewModel_Ctor_ValidValues_ExpectPropertiesSetAndCommandsNotNull()
         {
             //------------Setup for test--------------------------
-            var dataListViewRecordSetViewModel = new DataListViewRecodSetViewModel("bob", new IVariableListViewColumn[0], new Mock<IVariableListViewModel>().Object);
+            var dataListViewRecordSetViewModel = new VariableListViewRecordSetViewModel("bob", new IVariableListViewColumnViewModel[0], new Mock<IVariableListViewModel>().Object, new List<IVariablelistViewRecordSetViewModel>());
             Assert.AreEqual("bob", dataListViewRecordSetViewModel.Name);
             Assert.IsFalse(dataListViewRecordSetViewModel.DeleteVisible);
             Assert.IsFalse(dataListViewRecordSetViewModel.Input);
@@ -49,7 +50,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
         public void DataListViewRecordSetViewModel_Ctor_Visibilities()
         {
             //------------Setup for test--------------------------
-            var dataListViewRecordSetViewModel = new DataListViewRecodSetViewModel("bob", new IVariableListViewColumn[0], new Mock<IVariableListViewModel>().Object);
+            var dataListViewRecordSetViewModel = new VariableListViewRecordSetViewModel("bob", new IVariableListViewColumnViewModel[0], new Mock<IVariableListViewModel>().Object, new List<IVariablelistViewRecordSetViewModel>());
 
             dataListViewRecordSetViewModel.DeleteVisible = true;
             Assert.IsTrue(dataListViewRecordSetViewModel.DeleteVisible);
@@ -74,8 +75,8 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
         public void DataListViewRecordSetViewModel_Properties_GetsAndSets()
         {
             //------------Setup for test--------------------------
-            var cols = new IVariableListViewColumn[0];
-            var dataListViewRecordSetViewModel = new DataListViewRecodSetViewModel("bob", cols, new Mock<IVariableListViewModel>().Object);
+            var cols = new IVariableListViewColumnViewModel[0];
+            var dataListViewRecordSetViewModel = new VariableListViewRecordSetViewModel("bob", cols, new Mock<IVariableListViewModel>().Object, new List<IVariablelistViewRecordSetViewModel>());
 
             dataListViewRecordSetViewModel.Notes = "moocow";
             Assert.AreEqual("moocow",dataListViewRecordSetViewModel.Notes);
@@ -104,7 +105,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
         {
             //------------Setup for test--------------------------
            var mockItem =new Mock<IVariableListViewModel>();
-           var dataListViewRecordSetViewModel = new DataListViewRecodSetViewModel("bob", new IVariableListViewColumn[0], mockItem.Object);
+           var dataListViewRecordSetViewModel = new VariableListViewRecordSetViewModel("bob", new IVariableListViewColumnViewModel[0], mockItem.Object, new List<IVariablelistViewRecordSetViewModel>());
            dataListViewRecordSetViewModel.Delete.Execute();
            mockItem.Verify(a => a.Delete(dataListViewRecordSetViewModel));
 
@@ -119,7 +120,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
         {
             //------------Setup for test--------------------------
             var mockItem = new Mock<IVariableListViewModel>();
-            var dataListViewRecordSetViewModel = new DataListViewRecodSetViewModel("bob", new IVariableListViewColumn[0], mockItem.Object);
+            var dataListViewRecordSetViewModel = new VariableListViewRecordSetViewModel("bob", new IVariableListViewColumnViewModel[0], mockItem.Object, new List<IVariablelistViewRecordSetViewModel>());
             dataListViewRecordSetViewModel.Delete.Execute();
             mockItem.Verify(a => a.Delete(dataListViewRecordSetViewModel));
 
@@ -134,10 +135,10 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
         {
             //------------Setup for test--------------------------
             var mockItem = new Mock<IVariableListViewModel>();
-            var dataListViewRecordSetViewModel = new DataListViewRecodSetViewModel("bob", new List<IVariableListViewColumn>(), mockItem.Object);
-            var coll = new Mock<IVariableListViewColumn>().Object;
+            var dataListViewRecordSetViewModel = new VariableListViewRecordSetViewModel("bob", new List<IVariableListViewColumnViewModel>(), mockItem.Object, new List<IVariablelistViewRecordSetViewModel>());
+            var coll = new Mock<IVariableListViewColumnViewModel>().Object;
             dataListViewRecordSetViewModel.AddColumn(coll);
-            Assert.AreEqual(dataListViewRecordSetViewModel.Columns[0],coll);
+            Assert.AreEqual(dataListViewRecordSetViewModel.Columns.ToArray()[0],coll);
 
 
 
@@ -150,12 +151,12 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
         {
             //------------Setup for test--------------------------
             var mockItem = new Mock<IVariableListViewModel>();
-            var dataListViewRecordSetViewModel = new DataListViewRecodSetViewModel("bob", new List<IVariableListViewColumn>(), mockItem.Object);
-            var coll = new Mock<IVariableListViewColumn>().Object;
+            var dataListViewRecordSetViewModel = new VariableListViewRecordSetViewModel("bob", new List<IVariableListViewColumnViewModel>(), mockItem.Object, new List<IVariablelistViewRecordSetViewModel>());
+            var coll = new Mock<IVariableListViewColumnViewModel>().Object;
             dataListViewRecordSetViewModel.AddColumn(coll);
             dataListViewRecordSetViewModel.AddColumn(coll);
             Assert.AreEqual(1,dataListViewRecordSetViewModel.Columns.Count);
-            Assert.AreEqual(dataListViewRecordSetViewModel.Columns[0], coll);
+            Assert.AreEqual(dataListViewRecordSetViewModel.Columns.ToArray()[0], coll);
 
         }
 
@@ -167,10 +168,10 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
         {
             //------------Setup for test--------------------------
             var mockItem = new Mock<IVariableListViewModel>();
-            var dataListViewRecordSetViewModel = new DataListViewRecodSetViewModel("bob", new List<IVariableListViewColumn>(), mockItem.Object);
-            var coll = new Mock<IVariableListViewColumn>().Object;
+            var dataListViewRecordSetViewModel = new VariableListViewRecordSetViewModel("bob", new List<IVariableListViewColumnViewModel>(), mockItem.Object, new List<IVariablelistViewRecordSetViewModel>());
+            var coll = new Mock<IVariableListViewColumnViewModel>().Object;
             dataListViewRecordSetViewModel.AddColumn(coll);
-            Assert.AreEqual(dataListViewRecordSetViewModel.Columns[0], coll);
+            Assert.AreEqual(dataListViewRecordSetViewModel.Columns.ToArray()[0], coll);
             dataListViewRecordSetViewModel.RemoveColumn(coll);
             Assert.AreEqual(0, dataListViewRecordSetViewModel.Columns.Count);
            
@@ -183,13 +184,13 @@ namespace Warewolf.Studio.ViewModels.Tests.Variable_List
         {
             //------------Setup for test--------------------------
             var mockItem = new Mock<IVariableListViewModel>();
-            var items =  new[]{new Mock<IVariableListViewColumn>().Object};
-            var a = new DataListViewRecodSetViewModel("bob",items,mockItem.Object);
-            var b = new DataListViewRecodSetViewModel("bob", items, mockItem.Object);
-            var c = new DataListViewRecodSetViewModel("bob", new[]{new Mock<IVariableListViewColumn>().Object}, mockItem.Object);
-            var d = new DataListViewRecodSetViewModel("dave", items, mockItem.Object);
+            var items = new[] { new Mock<IVariableListViewColumnViewModel>().Object };
+            var a = new VariableListViewRecordSetViewModel("bob", items, mockItem.Object, new List<IVariablelistViewRecordSetViewModel>());
+            var b = new VariableListViewRecordSetViewModel("bob", items, mockItem.Object, new List<IVariablelistViewRecordSetViewModel>());
+            var c = new VariableListViewRecordSetViewModel("bob", new[] { new Mock<IVariableListViewColumnViewModel>().Object }, mockItem.Object, new List<IVariablelistViewRecordSetViewModel>());
+            var d = new VariableListViewRecordSetViewModel("dave", items, mockItem.Object, new List<IVariablelistViewRecordSetViewModel>());
             Assert.AreNotEqual(a,null);
-            Assert.AreNotEqual(a, (IVariablelistViewRecordSet)null);
+            Assert.AreNotEqual(a, (IVariablelistViewRecordSetViewModel)null);
             Assert.AreEqual(a,a as object);
             Assert.AreEqual(a,a);
             Assert.AreNotEqual(a,3);

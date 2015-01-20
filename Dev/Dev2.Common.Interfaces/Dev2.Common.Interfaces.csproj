@@ -177,9 +177,13 @@
     <Compile Include="Core\Graph\OutputFormats.cs" />
     <Compile Include="DataList\Contract\enTranslationDepth.cs" />
     <Compile Include="DataList\Contract\IBinaryDataListItem.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListItemViewModel.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListViewColumnViewModel.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListViewModelFactory.cs" />
     <Compile Include="DataList\DatalistView\IVariablelistViewRecordSet.cs" />
     <Compile Include="DataList\DatalistView\IVariableListViewColumn.cs" />
     <Compile Include="DataList\DatalistView\IVariableListViewItem.cs" />
+    <Compile Include="DataList\DatalistView\IVariablelistViewRecordSetViewModel.cs" />
     <Compile Include="DataList\DatalistView\IVariableListViewScalar.cs" />
     <Compile Include="DataList\DatalistView\IEmptyExpression.cs" />
     <Compile Include="DataList\DatalistView\IStorageExpression.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces.DataList.DatalistView;
@@ -11,8 +12,8 @@ namespace Warewolf.Studio.ViewModels.VariableList
 {
     public class VariableListViewModel:BindableBase, IVariableListViewModel
     {
-        IList<IVariableListViewScalar> _scalars;
-        IList<IVariablelistViewRecordSet> _recordSets;
+        ICollection<IVariableListViewScalarViewModel> _scalars;
+        ICollection<IVariablelistViewRecordSetViewModel> _recordSets;
         IList<IDataExpression> _workflowExpressions;
         readonly IDatalistViewExpressionConvertor _convertor;
         bool _enabled;
@@ -24,11 +25,14 @@ namespace Warewolf.Studio.ViewModels.VariableList
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "workflowExpressions", workflowExpressions }, { "convertor", convertor } });
             _workflowExpressions = workflowExpressions;
             _convertor = convertor;
-            RecordSets = new List<IVariablelistViewRecordSet>();
-            Scalars = new List<IVariableListViewScalar>();
+            RecordSets = new ObservableCollection<IVariablelistViewRecordSetViewModel>();
+
+            Scalars = new ObservableCollection<IVariableListViewScalarViewModel>();
             CreateItemsToBindToFromToolExpressions();
+            Scalars.Add(new VariableListItemViewScalarViewModel("", this, Scalars));
+            RecordSets.Add(new VariableListViewRecordSetViewModel("",new ObservableCollection<IVariableListViewColumnViewModel>(),this,RecordSets ));
             FilterCommand = new DelegateCommand(() => Filter(_filterExpression));
-            DeleteUnusedCommand = new DelegateCommand(()=>ClearUnused(_workflowExpressions));
+            DeleteUnusedCommand = new DelegateCommand(ClearUnused);
             SortCommand = new DelegateCommand(Sort);
         }
 
@@ -39,20 +43,20 @@ namespace Warewolf.Studio.ViewModels.VariableList
             {
                 if(dataListViewItem != null)
                 {
-                    if (dataListViewItem is IVariablelistViewRecordSet)
+                    if (dataListViewItem is IVariablelistViewRecordSetViewModel)
                     {
                         // ReSharper disable SuspiciousTypeConversion.Global
-                        AddRecordSet(dataListViewItem as IVariablelistViewRecordSet);
+                        AddRecordSet(dataListViewItem as IVariablelistViewRecordSetViewModel);
                         
                     }
-                    else if (dataListViewItem is IVariableListViewScalar)
+                    else if (dataListViewItem is IVariableListViewScalarViewModel)
                     {
-                        AddScalar(dataListViewItem as IVariableListViewScalar);
+                        AddScalar(dataListViewItem as IVariableListViewScalarViewModel);
 
                     }
                     else if (dataListViewItem is IVariableListViewColumn)
                     {
-                        AddColumn(dataListViewItem as IVariableListViewColumn);
+                        AddColumn(dataListViewItem as IVariableListViewColumnViewModel);
                         // ReSharper restore SuspiciousTypeConversion.Global
                     }
                     else
@@ -64,9 +68,9 @@ namespace Warewolf.Studio.ViewModels.VariableList
 
         }
 
-        public void AddColumn(IVariableListViewColumn variableListViewColumn)
+        public void AddColumn(IVariableListViewColumnViewModel variableListViewColumn)
         {
-            var recset = new DataListViewRecodSetViewModel(variableListViewColumn.RecordsetName, new List<IVariableListViewColumn> { variableListViewColumn },this);
+            var recset = new VariableListViewRecordSetViewModel(variableListViewColumn.RecordsetName, new ObservableCollection<IVariableListViewColumnViewModel> { variableListViewColumn }, this, new ObservableCollection<IVariablelistViewRecordSetViewModel>());
             if(RecordSets.Any(a=>a.Name==recset.Name))
             {
                 // ReSharper disable CSharpWarnings::CS0252
@@ -117,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
         /// <summary>
         /// The list of scalars visible in the designer variable list window
         /// </summary>
-        public IList<IVariableListViewScalar> Scalars
+        public ICollection<IVariableListViewScalarViewModel> Scalars
         {
             get
             {
@@ -132,7 +136,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
         /// <summary>
         /// The list of record sets visible in the studio variable list
         /// </summary>
-        public IList<IVariablelistViewRecordSet> RecordSets
+        public ICollection<IVariablelistViewRecordSetViewModel> RecordSets
         {
             get
             {
@@ -182,7 +186,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
         public void ClearUnused(IList<IDataExpression> expressions)
         {
 
-            var allExpressions = RecordSets.SelectMany(a => a.Columns ?? new List<IVariableListViewColumn>()) as IEnumerable<IVariableListViewItem>;
+            var allExpressions = RecordSets.SelectMany(a => a.Columns ) as IEnumerable<IVariableListViewItem>;
             allExpressions = allExpressions.Union(Scalars);
             allExpressions = allExpressions.Union(RecordSets);
             var unusedviewExpressions =allExpressions.Except( expressions.Select(_convertor.Create)).ToArray();
@@ -194,16 +198,27 @@ namespace Warewolf.Studio.ViewModels.VariableList
             CreateItemsToBindToFromToolExpressions();
         }
 
+        /// <summary>
+        /// Remove Unused variables
+        /// </summary>
+        public void ClearUnused()
+        {
+
+            Scalars = new ObservableCollection<IVariableListViewScalarViewModel>(Scalars.Where(a => a.Used));
+            OnPropertyChanged(()=>Scalars);
+
+        }
+
         void RemoveExpression(IVariableListViewItem variableListViewItem)
         {
             if (Scalars.Contains(variableListViewItem))
             {
-                Scalars.Remove(variableListViewItem as IVariableListViewScalar);
+                Scalars.Remove(variableListViewItem as IVariableListViewScalarViewModel);
                 OnPropertyChanged("Scalars");
             }
-            if (variableListViewItem is IVariablelistViewRecordSet)
+            if (variableListViewItem is IVariablelistViewRecordSetViewModel)
             {
-                RecordSets.Remove(variableListViewItem as IVariablelistViewRecordSet);
+                RecordSets.Remove(variableListViewItem as IVariablelistViewRecordSetViewModel);
                 OnPropertyChanged("RecordSets");
             }
             if (variableListViewItem is IVariableListViewColumn)
@@ -211,7 +226,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
                 var datalistViewRecordSet = RecordSets.FirstOrDefault(a => a.Name == variableListViewItem.Name);
                 if(datalistViewRecordSet != null)
                 {
-                    datalistViewRecordSet.RemoveColumn(variableListViewItem as IVariableListViewColumn);
+                    datalistViewRecordSet.RemoveColumn(variableListViewItem as IVariableListViewColumnViewModel);
                     OnPropertyChanged("RecordSets");
                 }
             }
@@ -225,13 +240,13 @@ namespace Warewolf.Studio.ViewModels.VariableList
         {
             if (_asc)
             {
-                RecordSets = RecordSets.OrderBy(a => a.Name).ToList();
-                Scalars = Scalars.OrderBy(a => a.Name).ToList();
+                RecordSets = new ObservableCollection<IVariablelistViewRecordSetViewModel>( RecordSets.OrderBy(a => String.IsNullOrEmpty(a.Name)? "zzzzz":a.Name));
+                Scalars = new ObservableCollection<IVariableListViewScalarViewModel>(Scalars.OrderBy(a => String.IsNullOrEmpty(a.Name) ? "zzzzz" : a.Name));
             }
             else
             {
-                RecordSets = RecordSets.OrderBy(a => a.Name).Reverse().ToList();
-                Scalars = Scalars.OrderBy(a => a.Name).Reverse().ToList();
+                RecordSets = new ObservableCollection<IVariablelistViewRecordSetViewModel>(RecordSets.OrderBy(a => String.IsNullOrEmpty(a.Name) ? "aaaa" : a.Name).Reverse());
+                Scalars = new ObservableCollection<IVariableListViewScalarViewModel>(Scalars.OrderBy(a => String.IsNullOrEmpty(a.Name) ? "aaaa" : a.Name).Reverse());
             }
             _asc = !_asc;
         }
@@ -252,7 +267,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
         /// Add a scalar 
         /// </summary>
         /// <param name="scalar"></param>
-        public void AddScalar(IVariableListViewScalar scalar)
+        public void AddScalar(IVariableListViewScalarViewModel scalar)
         {
             if (!Scalars.Contains(scalar))
             {
@@ -264,7 +279,7 @@ namespace Warewolf.Studio.ViewModels.VariableList
         /// Add a recordset
         /// </summary>
         /// <param name="recset"></param>
-        public void AddRecordSet(IVariablelistViewRecordSet recset)
+        public void AddRecordSet(IVariablelistViewRecordSetViewModel recset)
         {
             if(!RecordSets.Contains(recset))
             {

@@ -86,7 +86,9 @@
     <Compile Include="Conflict.cs" />
     <Compile Include="ConflictHandlerViewModel.cs" />
     <Compile Include="ConnectControlViewModel.cs" />
-    <Compile Include="VariableList\DataListViewRecordSetViewModel.cs" />
+    <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
+    <Compile Include="VariableList\VariableListColumnViewModel.cs" />
+    <Compile Include="VariableList\VariableListViewRecordSetViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
     <Compile Include="DummyModels\DummyExplorerViewModel.cs" />
     <Compile Include="DummyModels\DummyHelpViewModel.cs" />

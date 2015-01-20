@@ -9,11 +9,11 @@ namespace Dev2.Common.Interfaces.DataList.DatalistView
         /// <summary>
         /// The list of scalars visible in the designer variable list window
         /// </summary>
-        IList<IVariableListViewScalar> Scalars { get; }
+        ICollection<IVariableListViewScalarViewModel> Scalars { get; }
         /// <summary>
         /// The list of record sets visible in the studio variable list
         /// </summary>
-        IList<IVariablelistViewRecordSet> RecordSets { get; }
+        ICollection<IVariablelistViewRecordSetViewModel> RecordSets { get; }
 
         /// <summary>
         /// The Expression that is currently filtering the variable list
@@ -41,12 +41,12 @@ namespace Dev2.Common.Interfaces.DataList.DatalistView
         /// Add a scalar 
         /// </summary>
         /// <param name="scalar"></param>
-        void AddScalar(IVariableListViewScalar scalar);
+        void AddScalar(IVariableListViewScalarViewModel scalar);
         /// <summary>
         /// Add a recordset
         /// </summary>
         /// <param name="recset"></param>
-        void AddRecordSet(IVariablelistViewRecordSet recset);
+        void AddRecordSet(IVariablelistViewRecordSetViewModel recset);
         /// <summary>
         /// refresh from the selected workflow.
         /// </summary>
@@ -57,7 +57,7 @@ namespace Dev2.Common.Interfaces.DataList.DatalistView
         /// Add a column to the variable list. This should add the respective record set if it does not exist
         /// </summary>
         /// <param name="variableListViewColumn"></param>
-        void AddColumn(IVariableListViewColumn variableListViewColumn);
+        void AddColumn(IVariableListViewColumnViewModel variableListViewColumn);
 
 
 
