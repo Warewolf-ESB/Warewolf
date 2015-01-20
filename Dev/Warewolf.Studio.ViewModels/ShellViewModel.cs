@@ -110,5 +110,9 @@ namespace Warewolf.Studio.ViewModels
             }
             region.Activate(foundViewModel); //active the viewModel
         }
+
+        public void NewResource(ResourceType? type)
+        {
+        }
     }
 }

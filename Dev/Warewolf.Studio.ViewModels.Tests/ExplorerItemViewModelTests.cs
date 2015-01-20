@@ -35,7 +35,24 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             explorerViewModel.OpenCommand.Execute(null);
             shellViewModelMock.Verify(model => model.AddService(It.IsAny<IResource>()),Times.Once());
+        }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExplorerItemViewModel_Constructor")]
+        public void ExplorerItemViewModel_Constructor_NewCommandHasResourceTypeParameter()
+        {
+            //------------Setup for test--------------------------
+            ResourceType? resourceTypeParameter = null;
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(model => model.NewResource(It.IsAny<ResourceType?>())).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object);
+            //------------Assert Results-------------------------
+            explorerViewModel.NewCommand.Execute(ResourceType.DbService);
+            shellViewModelMock.Verify(model => model.NewResource(It.IsAny<ResourceType>()), Times.Once());
+            Assert.IsNotNull(resourceTypeParameter);
+            Assert.AreEqual(ResourceType.DbService,resourceTypeParameter);
         }
     }
 }
