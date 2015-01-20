@@ -5,7 +5,7 @@ using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels
 {
-    public interface IExplorerItemViewModel
+    public interface IExplorerItemViewModel : IExplorerTreeItem
     {
         string ResourceName { get; set; }
         ICollection<IExplorerItemViewModel> Children { get; set; }
@@ -13,8 +13,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         Guid ResourceId { get; set; }
         ResourceType ResourceType { get; set; }
         ICommand OpenCommand { get; set; }
-        ICommand NewCommand { get; set; }
-        ICommand DeployCommand { get; set; }
         bool IsVisible { get; set; }
     }
 

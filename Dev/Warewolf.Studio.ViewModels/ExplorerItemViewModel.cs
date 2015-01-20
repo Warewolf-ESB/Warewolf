@@ -24,6 +24,9 @@ namespace Warewolf.Studio.ViewModels
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
             NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
+            CanCreateDbService = true;
+            CanRename = true;
+            CanCreatePluginService = true;
         }
 
         public string ResourceName
@@ -52,6 +55,15 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICommand NewCommand { get; set; }
         public ICommand DeployCommand { get; set; }
+        public bool CanCreateDbService { get; set; }
+        public bool CanCreateDbSource { get; set; }
+        public bool CanCreateWebService { get; set; }
+        public bool CanCreateWebSource { get; set; }
+        public bool CanCreatePluginService { get; set; }
+        public bool CanCreatePluginSource { get; set; }
+        public bool CanRename { get; set; }
+        public bool CanDelete { get; set; }
+        public bool CanDeploy { get; set; }
 
         public bool IsVisible
         {
