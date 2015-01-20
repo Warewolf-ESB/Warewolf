@@ -90,7 +90,14 @@ namespace Warewolf.Studio.ViewModels
             });
             if(foundViewModel==null)
             {
-                foundViewModel = _unityContainer.Resolve<IServiceDesignerViewModel>(new ParameterOverrides{{"resource",resource}});
+                if (resource.ResourceType == ResourceType.WorkflowService)
+                {
+                    foundViewModel = _unityContainer.Resolve<IWorkflowServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
+                }
+                else
+                {
+                    foundViewModel = _unityContainer.Resolve<IServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
+                }
                 region.Add(foundViewModel); //add the viewModel
             }
             region.Activate(foundViewModel); //active the viewModel

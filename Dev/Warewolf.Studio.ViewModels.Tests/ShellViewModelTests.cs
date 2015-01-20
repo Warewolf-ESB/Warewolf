@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -240,16 +241,6 @@ namespace Warewolf.Studio.ViewModels.Tests
                 return null;
             }
         }
-        /// <summary>
-        /// The designer for the resource
-        /// </summary>
-        public IDesignerView DesignerView
-        {
-            get
-            {
-                return null;
-            }
-        }
 
         #endregion
     }
@@ -304,11 +295,21 @@ namespace Warewolf.Studio.ViewModels.Tests
         /// <summary>
         /// The designer for the resource
         /// </summary>
-        public IDesignerView DesignerView
+        public UIElement DesignerView
         {
             get
             {
                 return null;
+            }
+        }
+        public bool IsNewWorkflow
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
             }
         }
 

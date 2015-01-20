@@ -13,5 +13,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         Guid ResourceId { get; set; }
         ResourceType ResourceType { get; set; }
         ICommand OpenCommand { get; set; }
+        bool IsVisible { get; set; }
     }
 }

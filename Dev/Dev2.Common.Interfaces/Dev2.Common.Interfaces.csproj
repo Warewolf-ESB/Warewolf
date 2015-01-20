@@ -231,6 +231,7 @@
     <Compile Include="IEsbRequestResult.cs" />
     <Compile Include="IServiceDesignerViewModel.cs" />
     <Compile Include="IShellViewModel.cs" />
+    <Compile Include="IXamlResource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />
