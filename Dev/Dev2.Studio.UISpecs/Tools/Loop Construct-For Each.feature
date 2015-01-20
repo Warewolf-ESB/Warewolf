@@ -76,7 +76,11 @@ Scenario: For Each Exectuing Workflow in it and debug output is generating withi
 
 
 	
+<<<<<<< HEAD
+Scenario:Testing Decision and switch is alowing in foreach
+=======
 Scenario:Drag Decision and switch into foreach and expected not allowed
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
     ###DragADecisionSwitchIntoForEachExpectNotAddedToForEach
 	###DragSequenceIntoForEachAndExpectedAddedToForEach
 	Given I have Warewolf running
@@ -99,6 +103,15 @@ Scenario:Drag Decision and switch into foreach and expected not allowed
     And I send "Sequence" to ""
 	And I drag "TOOLSEQUENCE" to point "130,80" on "WORKSURFACE,For Each(ForeachDesigner)"
 	Then "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Sequence(SequenceDesigner)" is visible within "1" seconds
+<<<<<<< HEAD
+
+
+
+
+
+
+=======
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
 
 
 

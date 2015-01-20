@@ -75,4 +75,8 @@ Scenario:Rename Tool Testing Tab Order and UiRepondingFine as expected
 	And I send "Destination{TAB}" to ""
     And I send "Password{TAB}{SPACE}{TAB}" to ""
 	And I send "[[Result]]" to ""
+<<<<<<< HEAD
 	Given "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
+=======
+	Given "WORKSURFACE,Rename(RenameDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a

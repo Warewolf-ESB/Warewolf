@@ -321,8 +321,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 148
  testRunner.Then("\"EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_R-e-n-a-m-e_AutoID\" is invisible within \"1\"" +
                     " seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+<<<<<<< HEAD
+=======
 #line 149
  testRunner.And("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+>>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
 #line hidden
             this.ScenarioCleanup();
         }
