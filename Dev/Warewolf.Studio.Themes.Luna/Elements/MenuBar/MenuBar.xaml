@@ -37,9 +37,6 @@
     </LinearGradientBrush>
     
 
-
-
-
     <Style x:Key="ButtonFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>

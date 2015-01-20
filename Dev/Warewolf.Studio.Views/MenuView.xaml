@@ -4,151 +4,191 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              ScrollViewer.VerticalScrollBarVisibility="Disabled"
+             Width="60"
              mc:Ignorable="d">
 
     <Grid x:Name="Menu"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch"
           Background="{StaticResource MenuPanelGradient}">
-        <Grid.Resources>
-            <ResourceDictionary>
-                <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Images/System-New.xaml" />
-                </ResourceDictionary.MergedDictionaries>
-            </ResourceDictionary>
-        </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.7*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="0.15*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.25*" />
+
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.25*" />
+
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.25*" />
+
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.25*" />
+
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.25*" />
+
+            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.25*" />
+
+            <RowDefinition Height="*" />
+            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="0.5*" />
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="0.5*" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="0.5*" />
         </Grid.ColumnDefinitions>
 
-
-        <StackPanel Grid.Row="0"
-                    Grid.Column="1"
-                    Height="120"
+        <Image 
+                Grid.Row="0"   Grid.ColumnSpan="3"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{StaticResource WareWolfMenuBrush}"
-                    Orientation="Vertical">
-            <Image Width="70"
-                   Height="70"
-                   Margin="0,40,0,0"
+                Width="5"
+                   Height="5"
+                   Source="{StaticResource System-Spacer}" />
+
+        <Image 
+                Grid.Row="1"   Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                Width="40"
+                   Height="40"
+                   Margin="0,0,0,0"
                    Source="{StaticResource System-Logo}" />
 
-        </StackPanel>
-
-
-
-        <Separator Grid.Row="1"
+        <Separator Grid.Row="2"
                    Grid.ColumnSpan="3"
                    Style="{StaticResource MenuSeparator}" />
-
-        <Button Grid.Row="2"
-                Grid.Column="1"
-                Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="30"
-                   Height="30"
-                   Source="{StaticResource Menu-System-New}" />
-        </Button>
 
         <Button Grid.Row="3"
                 Grid.Column="1"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="30"
-                   Height="30"
-                   Source="{StaticResource Menu-System-Save}" />
+            <Image Width="20"
+                   Height="20"
+                   Source="{StaticResource Menu-System-New}" />
         </Button>
 
         <Button Grid.Row="4"
                 Grid.Column="1"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="30"
-                   Height="30"
+            <Image Width="20"
+                   Height="20"
+                   Source="{StaticResource Menu-System-Save}" />
+        </Button>
+
+        <Button Grid.Row="5"
+                Grid.Column="1"
+                Style="{StaticResource SideMenuButtonStyle}">
+            <Image Width="20"
+                   Height="20"
                    Source="{StaticResource Menu-System-Deploy}" />
         </Button>
 
-        <Separator Grid.Row="5"
+        <Separator Grid.Row="6"
                    Grid.ColumnSpan="3"
                    Style="{StaticResource MenuSeparator}" />
-
-        <Button Grid.Row="6"
-                Grid.Column="1"
-                Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="30"
-                   Height="30"
-                   Source="{StaticResource Menu-System-DB}" />
-        </Button>
 
         <Button Grid.Row="7"
                 Grid.Column="1"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="30"
-                   Height="30"
-                   Source="{StaticResource Menu-System-DLL}" />
+            <Image Width="20"
+                   Height="20"
+                   Source="{StaticResource Menu-System-DB}" />
         </Button>
 
         <Button Grid.Row="8"
                 Grid.Column="1"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="30"
-                   Height="30"
+            <Image Width="20"
+                   Height="20"
+                   Source="{StaticResource Menu-System-DLL}" />
+        </Button>
+
+        <Button Grid.Row="9"
+                Grid.Column="1"
+                Style="{StaticResource SideMenuButtonStyle}">
+            <Image Width="20"
+                   Height="20"
                    Source="{StaticResource Menu-System-WebService}" />
         </Button>
 
-        <Separator Grid.Row="9"
+        <Separator Grid.Row="10"
                    Grid.ColumnSpan="3"
                    Style="{StaticResource MenuSeparator}" />
-
-        <Button Grid.Row="10"
-                Grid.Column="1"
-                Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="30"
-                   Height="30"
-                   Source="{StaticResource Menu-System-Task}" />
-        </Button>
 
         <Button Grid.Row="11"
                 Grid.Column="1"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="30"
-                   Height="30"
+            <Image Width="20"
+                   Height="20"
+                   Source="{StaticResource Menu-System-Task}" />
+        </Button>
+
+        <Button Grid.Row="12"
+                Grid.Column="1"
+                Style="{StaticResource SideMenuButtonStyle}">
+            <Image Width="20"
+                   Height="20"
                    Source="{StaticResource Menu-System-Debug}" />
         </Button>
 
-        <Separator Grid.Row="12"
+        <Separator Grid.Row="13"
                    Grid.ColumnSpan="3"
                    Style="{StaticResource MenuSeparator}" />
 
-        <Button Grid.Row="13"
+        <Button Grid.Row="14"
                 Grid.Column="1"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="30"
-                   Height="30"
+            <Image Width="20"
+                   Height="20"
                    Source="{StaticResource Menu-System-Settings}" />
         </Button>
 
-        <Separator Grid.Row="14"
+        <Separator Grid.Row="15"
                    Grid.ColumnSpan="3"
                    Style="{StaticResource MenuSeparator}" />
 
+        <Button Grid.Row="16"
+                Grid.Column="1"
+                Style="{StaticResource SideMenuButtonStyle}">
+            <Image Width="20"
+                   Height="20"
+                   Source="{StaticResource Menu-System-Help}" />
+        </Button>
+
+        <Separator Grid.Row="17"
+                   Grid.ColumnSpan="3"
+                   Style="{StaticResource MenuSeparator}" />
+
+        <Image 
+                Grid.Row="18"
+                Grid.Column="1"
+                Width="20"
+                 VerticalAlignment="Bottom"
+                   Height="20"
+                   Source="{StaticResource System-Expand}" />
+
+
+        <Separator Grid.Row="19"
+                   Grid.ColumnSpan="3"
+                   Style="{StaticResource MenuSeparator}" />
+
+
+        <Button Grid.Row="20"
+                Grid.Column="1"
+                VerticalAlignment="Top"
+                Style="{StaticResource SideMenuButtonStyle}">
+            <Image Width="20"
+                   Height="20"
+                   Source="{StaticResource Menu-System-Lock}" />
+        </Button>
     </Grid>
 </UserControl>

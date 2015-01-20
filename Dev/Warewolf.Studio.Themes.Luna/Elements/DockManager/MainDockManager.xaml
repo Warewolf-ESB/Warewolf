@@ -60,6 +60,7 @@
                 <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
                 <Setter Property="Background" Value="Black" />
                 <Setter Property="Template">
+
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type igDock:PaneHeaderPresenter}">
                             <Grid>
@@ -70,7 +71,6 @@
                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
                             </Grid>
-
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -78,27 +78,45 @@
         </Style.Resources>
     </Style>
 
-    <!--  TOOL WINDOW DOCK MANAGER STYLING  -->
+        <!--  TOOL WINDOW DOCK MANAGER STYLING  -->
     <Style x:Key="DockmangerToolPaneStyle" TargetType="{x:Type igDock:ContentPane}">
         <Setter Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel x:Name="CustomPanelHeader"  
+                                HorizontalAlignment="Left"  
+                                VerticalAlignment="Center" 
+                                Orientation="Horizontal" 
+                                Background="{StaticResource WarewolfHeaderGreyBrush}">
+                        <TextBlock Text="{Binding }" 
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize-Large}"
+                                   FontFamily="{StaticResource DefaultFontFamily}"
+                                   FontWeight="DemiBold"
+                                   Background="{StaticResource WarewolfHeaderGreyBrush}"
+                                   />
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
         <Style.Resources>
             <Style TargetType="{x:Type igDock:PaneHeaderPresenter}">
-                <Setter Property="Height" Value="35" />
+                <Setter Property="Height" Value="50" />
                 <Setter Property="Foreground" Value="{StaticResource WareWolfButtonBrush}" />
                 <Setter Property="Background" Value="{StaticResource WarewolfHeaderGreyBrush}" />
-                <Setter Property="FontWeight" Value="DemiBold" />
-
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type igDock:PaneHeaderPresenter}">
                             <Grid>
                                 <Border Background="{TemplateBinding Background}"
                                         BorderBrush="{StaticResource WarewolfHeaderGreyBrush}"
-                                        BorderThickness="10"
+                                        BorderThickness="15"
                                         SnapsToDevicePixels="True">
-
-                                    <DockPanel Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-
+                                    <DockPanel  
+                                        Margin="{TemplateBinding Padding}" 
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" >
                                         <Button x:Name="unpinBtn"
                                                 Command="{x:Static igDock:ContentPaneCommands.TogglePinnedState}"
                                                 CommandParameter="{TemplateBinding Pane}"
@@ -107,9 +125,12 @@
                                                 Visibility="{Binding Path=Pane.PinButtonVisibility,
                                                                      RelativeSource={RelativeSource TemplatedParent}}" />
 
-                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                        <ContentPresenter 
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                                     </DockPanel>
                                 </Border>
+                                
                                 <Border x:Name="innerBorderHighlight"
                                         BorderBrush="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionInnerBorderFillKey}}"
                                         BorderThickness="1,1,1,0" />
