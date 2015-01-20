@@ -23,7 +23,6 @@ namespace Warewolf.Studio.ViewModels
             }
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
-            DeployCommand = new DelegateCommand(()=>shellViewModel.);
         }
 
         void NewItem(ResourceType type)
