@@ -81,34 +81,6 @@ Scenario:Unzip Tool Testing Tab Order and UiRepondingFine as expected
 	And I send "[[Result]]" to ""
 	Given "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
 
-	
-<<<<<<< HEAD
-Scenario:Unzip Tool Testing Tab Order and UiRepondingFine as expected
-	Given I have Warewolf running
-	And all tabs are closed	
-	Given I click "EXPLORERCONNECTCONTROL"
-	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
-	And I click "RIBBONNEWENDPOINT"
-	#Dragging UNZIP Tool From Tool Box
-	Given I send "Unzip" to "TOOLBOX,PART_SearchBox"
-    Given I drag "TOOLUNZIP" onto "WORKSURFACE,StartSymbol"
-	##Opening UNZIP Large View
-	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Unzip(UnzipDesigner)"
-	##Passing Data Into the tool by using Tabs
-    And I send "[[rec(1).a]]{TAB}" to "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__ZipNametxt_AutoID"
-	And I send "Source@Username{TAB}" to ""
-    And I send "Password{TAB}" to ""
-	And I send "[[rec(2).a]]{TAB}" to ""
-	And I send "Destination{TAB}" to ""
-    And I send "Password{TAB}{SPACE}{TAB}" to ""
-	And I send "[[Archieve]]{TAB}" to ""
-	And I send "[[Result]]" to ""
-	Given "WORKSURFACE,Unzip(UnzipDesigner),LargeViewContent,UI__Resulttxt_AutoID" contains text "[[Result]]" 
-
-
-=======
->>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
-
 
 
 

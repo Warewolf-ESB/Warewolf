@@ -145,9 +145,4 @@ Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Exp
 	Then "EXPLORERFOLDERS,UI_RENAME1_AutoID" is invisible within "1" seconds
 	And I click "EXPLORERFILTERCLEARBUTTON"
 	When I send "R-e-n-a-m-e" to "EXPLORERFILTER"
-<<<<<<< HEAD
 	Then "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_R-e-n-a-m-e_AutoID" is invisible within "1" seconds
-=======
-	Then "EXPLORERFOLDERS,UI_RENAME1_AutoID,UI_R-e-n-a-m-e_AutoID" is invisible within "1" seconds
-	And I click "EXPLORERFILTERCLEARBUTTON"
->>>>>>> 459effa35dccdfffb38ec2c7290c97ac9f70a89a
