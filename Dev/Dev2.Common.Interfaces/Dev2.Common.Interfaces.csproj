@@ -184,7 +184,6 @@
     <Compile Include="DataList\DatalistView\IVariableListViewColumn.cs" />
     <Compile Include="DataList\DatalistView\IVariableListViewItem.cs" />
     <Compile Include="DataList\DatalistView\IVariablelistViewRecordSetViewModel.cs" />
-    <Compile Include="DataList\DatalistView\IVariableListViewScalar.cs" />
     <Compile Include="DataList\DatalistView\IEmptyExpression.cs" />
     <Compile Include="DataList\DatalistView\IStorageExpression.cs" />
     <Compile Include="DataList\DatalistView\IValiableListViewModel.cs" />
