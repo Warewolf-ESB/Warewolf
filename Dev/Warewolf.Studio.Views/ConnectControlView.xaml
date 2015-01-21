@@ -5,10 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance Type=interfaces:IConnectControlViewModel,
-                                              IsDesignTimeCreatable=False}">
+             d:DesignHeight="300" d:DesignWidth="300" 
+             d:DataContext="{d:DesignInstance Type=interfaces:IConnectControlViewModel, IsDesignTimeCreatable=False}">
     <StackPanel Orientation="Horizontal">
-        <ComboBox ItemsSource="{Binding Servers}" SelectedItem="{Binding SelectedConnection}"/>
+        <ComboBox ItemsSource="{Binding Servers}" SelectedItem="{Binding SelectedConnection}">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+            </ComboBox>
         <Button Width="25" Style="{StaticResource ExplorerButtonStyle}"
                     Height="25"
                     Padding="4" Command="{Binding EditConnectionCommand}">

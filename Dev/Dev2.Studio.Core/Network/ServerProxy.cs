@@ -215,6 +215,7 @@ namespace Dev2.Network
             }
             catch (AggregateException aex)
             {
+                aex.Flatten();
                 return false;
 //                aex.Flatten();
 //                aex.Handle(ex =>

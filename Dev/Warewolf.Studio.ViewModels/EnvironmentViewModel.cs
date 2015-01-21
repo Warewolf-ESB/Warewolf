@@ -60,7 +60,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Connect()
         {
-            IsConnected = Server.Connect();
+            IsConnected = Server.Connect().Result;
         }
 
         public void Load()

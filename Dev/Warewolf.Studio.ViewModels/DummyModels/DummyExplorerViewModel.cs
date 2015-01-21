@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Runtime.ServiceModel.Data;
 using Moq;
 
 namespace Warewolf.Studio.ViewModels.DummyModels
@@ -73,13 +75,13 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         }
     }
 
-    internal class DummyServer : IServer
+    internal class DummyServer : Resource,IServer
     {
         #region Implementation of IServer
 
-        public bool Connect()
+        public Task<bool> Connect()
         {
-            return true;
+            return new Task<bool>(() => true);
         }
 
         public IList<IResource> Load()
@@ -89,7 +91,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
 
         public IList<IServer> GetServerConnections()
         {
-            return new List<IServer>();
+            return new List<IServer>{new DummyServer{ResourceName = "Localhost"},new DummyServer{ResourceName = "Remote Server"}};
         }
 
         public IList<IToolDescriptor> LoadTools()
@@ -114,9 +116,22 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         {
         }
 
+
         #endregion
 
+        #region Overrides of Resource
 
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return ResourceName;
+        }
 
+        #endregion
     }
 }

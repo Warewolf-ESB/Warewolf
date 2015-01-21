@@ -9,13 +9,14 @@ using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Controller;
 using Dev2.Network;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Threading;
 using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
 {
 
-    public class Server : IServer
+    public class Server : Resource,IServer
     {
         readonly ServerProxy _environmentConnection;
         readonly Guid _serverId;
@@ -49,6 +50,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IList<IResource> Load()
         {
+            _proxyLayer.QueryManagerProxy.Load();
             return null;
         }
 
