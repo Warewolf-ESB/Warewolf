@@ -102,7 +102,14 @@
                 DisplayMemberPath="DisplayName"
                         ItemsSource="{Binding Environments}"
                         NodeLineVisibility="Hidden">
-
+            <ig:XamDataTree.EditingSettings>
+                <ig:TreeEditingSettings
+                    AllowDeletion="False"
+                    AllowEditing="{Binding Path=AllowEditing}"
+                    IsEnterKeyEditingEnabled="False"
+                    IsF2EditingEnabled="True"
+                    IsOnNodeActiveEditingEnabled="False" />
+            </ig:XamDataTree.EditingSettings>
             <ig:XamDataTree.GlobalNodeLayouts>
                 <ig:NodeLayout Key="ExplorerItemViewModels"
                                DisplayMemberPath="DisplayName"
@@ -116,7 +123,11 @@
                             </StackPanel>
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
-
+                    <ig:NodeLayout.EditorTemplate>
+                        <DataTemplate>
+                            <TextBox></TextBox>
+                        </DataTemplate>
+                    </ig:NodeLayout.EditorTemplate>
 
                 </ig:NodeLayout>
                 <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName">

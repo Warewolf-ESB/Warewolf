@@ -57,5 +57,11 @@ namespace Dev2.Common.Interfaces.Deploy
         /// <param name="item"></param>
         void SelectDependencies(IExplorerItemViewModel item);
 
+        /// <summary>
+        /// select an item the explorer for deploy. This will clear other selected items and aslo set the connected source server to the selected item server
+        /// </summary>
+        /// <param name="item"></param>
+        void SelectSourceItem(IExplorerItemViewModel item);
+
     }
 }

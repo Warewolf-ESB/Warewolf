@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Mvvm;
+using Moq;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -45,7 +46,7 @@ namespace Warewolf.Studio.ViewModels
             if (IsConnected)
             {
                 var explorerItems = Server.Load();
-                var explorerItemViewModels = CreateExplorerItems(explorerItems);
+                var explorerItemViewModels = CreateExplorerItems(explorerItems,Server);
                 ExplorerItemViewModels = explorerItemViewModels;
                 IsLoaded = true;
             }
@@ -83,7 +84,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        IList<IExplorerItemViewModel> CreateExplorerItems(IList<IResource> explorerItems)
+        IList<IExplorerItemViewModel> CreateExplorerItems(IList<IResource> explorerItems, IServer server)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if(explorerItems==null) return new List<IExplorerItemViewModel>();
@@ -91,11 +92,11 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
-                explorerItemModels.Add(new ExplorerItemViewModel(_shellViewModel)
+                explorerItemModels.Add(new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
                 {
                     Resource = explorerItem,
                     ResourceName = explorerItem.ResourceName,
-                    Children = CreateExplorerItems(explorerItem.Children)
+                    Children = CreateExplorerItems(explorerItem.Children,server)
                 });
             }
             return  explorerItemModels;

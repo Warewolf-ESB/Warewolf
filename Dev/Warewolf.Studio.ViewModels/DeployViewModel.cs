@@ -99,6 +99,14 @@ namespace Warewolf.Studio.ViewModels
            //todo: when refactoring the dependency tree 
         }
 
+        /// <summary>
+        /// select an item the explorer for deploy. This will clear other selected items and aslo set the connected source server to the selected item server
+        /// </summary>
+        /// <param name="item"></param>
+        public void SelectSourceItem(IExplorerItemViewModel item)
+        {
+        }
+
         bool HandleConflicts()
         {
             return ConflictHandlerViewModel.HandleConflicts(Source.SelectedEnvironment,Destination.SelectedEnvironment);

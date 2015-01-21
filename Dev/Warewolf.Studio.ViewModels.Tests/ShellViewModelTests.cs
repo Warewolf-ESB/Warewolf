@@ -2,16 +2,20 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.Core.View_Interfaces;
+using Warewolf.Studio.Models.Help;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod
 
@@ -24,12 +28,15 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Hagashen Naidu")]
         [TestCategory("ShellViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
+
+        // ReSharper disable InconsistentNaming
         public void ShellViewModel_Constructor_NullContainer_NullExceptionThrown()
+
         {
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            new ShellViewModel(null, new Mock<IRegionManager>().Object);
+            new ShellViewModel(null, new Mock<IRegionManager>().Object,new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
         } 
         
@@ -42,7 +49,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            new ShellViewModel(new Mock<IUnityContainer>().Object, null);
+            new ShellViewModel(new Mock<IUnityContainer>().Object, null,new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
         }
 
@@ -58,7 +65,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testRegionManager.Regions.Add("Toolbox",new Region());
             testRegionManager.Regions.Add("Menu",new Region());
             SetupContainer(testContainer);
-            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             //------------Execute Test---------------------------
             shellViewModel.Initialize();
             //------------Assert Results-------------------------
@@ -103,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockMenuView = new Mock<IMenuView>();
             mockMenuView.SetupProperty(view => view.DataContext);
             testContainer.RegisterInstance<IMenuView>(mockMenuView.Object);
-            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             //------------Execute Test---------------------------
             shellViewModel.Initialize();
             //------------Assert Results-------------------------
@@ -123,7 +130,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
-            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             //------------Execute Test---------------------------
             shellViewModel.AddService(new Mock<IResource>().Object);
             //------------Assert Results-------------------------
@@ -140,7 +147,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
-            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             var resource = new Mock<IResource>().Object;
             shellViewModel.AddService(resource);
             //------------Execute Test---------------------------
@@ -160,7 +167,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
-            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             shellViewModel.AddService(new Mock<IResource>().Object);
             //------------Execute Test---------------------------
             shellViewModel.AddService(new Mock<IResource>().Object);
@@ -180,7 +187,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
-            var shellViewModel = new ShellViewModel(testContainer, testRegionManager);
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             var mockResource = new Mock<IResource>();
             mockResource.Setup(resource => resource.ResourceType).Returns(ResourceType.WorkflowService);
             //------------Execute Test---------------------------
@@ -192,6 +199,155 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(workflowView);
             Assert.IsInstanceOfType(workflowView,typeof(IWorkflowServiceDesignerViewModel));
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ShellViewModel_DeployItem")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ShellViewModel_DeployItem_NullItem_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
+            testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
+            var testRegionManager = new RegionManager();
+            testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
+            
+            //------------Execute Test---------------------------
+            shellViewModel.DeployService(null);
+            //------------Assert Results-------------------------
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ShellViewModel_DeployItem")]
+        public void ShellViewModel_DeployItem_ValidItem_DeployNotOpened_ExpectSet()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+
+            var dep = new Mock<IDeployViewModel>();
+            testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
+            testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
+            var testRegionManager = new RegionManager();
+            var region = new SingleActiveRegion(){};
+            region.Add(dep.Object,"Deploy");
+            testRegionManager.Regions.Add("Workspace",region );
+            
+
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
+
+            //------------Execute Test---------------------------
+            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            shellViewModel.DeployService(shell);
+            //------------Assert Results-------------------------
+            dep.Verify(a=>a.SelectSourceItem(shell));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ShellViewModel_DeployItem")]
+        public void ShellViewModel_DeployItem_ValidItem_DeployOpened_ExpectSet()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+
+            var dep = new Mock<IDeployViewModel>();
+            testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
+            testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
+            var testRegionManager = new RegionManager();
+            testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
+
+            //------------Execute Test---------------------------
+            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            shellViewModel.DeployService(shell);
+            //------------Assert Results-------------------------
+            dep.Verify(a => a.SelectSourceItem(shell));
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ShellViewModel_UpdateHelpDescriptor")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ShellViewModel_UpdateHelpDescriptor_NullExpectException()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+
+            var dep = new Mock<IDeployViewModel>();
+            testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
+            testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
+            var testRegionManager = new RegionManager();
+            testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager, new Mock<IEventAggregator>().Object);
+
+            //------------Execute Test---------------------------
+            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            shellViewModel.UpdateHelpDescriptor(null);
+
+
+        }
+
+
+
+        //[TestMethod]
+        //[Owner("Leon Rajindrapersadh")]
+        //[TestCategory("ShellViewModel_UpdateHelpDescriptor")]
+        //public void ShellViewModel_UpdateHelpDescriptor_Valid_FiresEventAggregator()
+        //{
+        //    //------------Setup for test--------------------------
+        //    //------------Setup for test--------------------------
+        //    var testContainer = new UnityContainer();
+
+        //    var dep = new Mock<IDeployViewModel>();
+        //    testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
+        //    testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
+        //    var testRegionManager = new RegionManager();
+        //    testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
+        //    var shellViewModel = new ShellViewModel(testContainer, testRegionManager, new Mock<IEventAggregator>().Object);
+
+        //    //------------Execute Test---------------------------
+        //    var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+        //    shellViewModel.UpdateHelpDescriptor(null);
+
+
+        //}
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ShellViewModel_UpdateHelpDescriptor")]
+        public void ShellViewModel_UpdateHelpDescriptor_Valid_FiresEventAggregator()
+        {
+            //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+
+            var dep = new Mock<IDeployViewModel>();
+            testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
+            testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
+            var testRegionManager = new RegionManager();
+            testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
+            var aggregator =new Mock<IEventAggregator>();
+            aggregator.Setup(a=>a.GetEvent<HelpChangedEvent>()).Returns(new HelpChangedEvent());
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager, aggregator.Object);
+
+            //------------Execute Test---------------------------
+            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            shellViewModel.UpdateHelpDescriptor(new HelpDescriptor("bob","the",new DrawingImage()));
+            aggregator.Verify(a=>a.GetEvent<HelpChangedEvent>());
+
+        }
+        // ReSharper restore InconsistentNaming
     }
 
     internal class MockServiceDesignerViewModel : IServiceDesignerViewModel
