@@ -16,6 +16,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isVisible;
         IServer _server;
         bool _allowEditing;
+        bool _isRenaming;
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
@@ -25,18 +26,39 @@ namespace Warewolf.Studio.ViewModels
             }
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
-            OpenCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
+            DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
+            RenameCommand = new DelegateCommand(()=>IsRenaming=true);
             ItemSelectedCommand = new DelegateCommand(()=>shellViewModel.UpdateHelpDescriptor(builder.Build(this,ExplorerEventContext.Selected)));
             Server = server;
-        }
-
-
             NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
             CanCreateDbService = true;
             CanRename = true;
             CanCreatePluginService = true;
         }
 
+        public bool IsRenaming
+        {
+            get
+            {
+                return _isRenaming;
+            }
+            set
+            {
+
+                _isRenaming = value;
+                OnPropertyChanged(() => IsRenaming);
+                OnPropertyChanged(() => IsNotRenaming);
+            }
+        }
+
+        public bool IsNotRenaming
+        {
+            get
+            {
+                return !_isRenaming;
+            }
+    
+        }
         public string ResourceName
         {
             get
@@ -63,6 +85,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICommand NewCommand { get; set; }
         public ICommand DeployCommand { get; set; }
+        public ICommand RenameCommand { get; set; }
         public bool CanCreateDbService { get; set; }
         public bool CanCreateDbSource { get; set; }
         public bool CanCreateWebService { get; set; }

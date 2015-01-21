@@ -21,7 +21,7 @@ namespace Warewolf.Studio.ViewModels
             if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
             _shellViewModel = shellViewModel;
             Server = server;
-            NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.AddService);
+            NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
         }
 
         public IServer Server { get; set; }

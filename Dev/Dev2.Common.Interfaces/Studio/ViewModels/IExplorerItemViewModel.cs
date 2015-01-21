@@ -14,8 +14,10 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         Guid ResourceId { get; set; }
         ResourceType ResourceType { get; set; }
         ICommand OpenCommand { get; set; }
-        ICommand NewCommand { get; set; }
-        ICommand DeployCommand { get; set; }
+        ICommand RenameCommand { get; set; }
+        
+        bool IsRenaming{ get; set; }
+        bool IsNotRenaming { get;  }
         ICommand ItemSelectedCommand { get; set; }
         bool IsVisible { get; set; }
         bool AllowEditing { get; set; }

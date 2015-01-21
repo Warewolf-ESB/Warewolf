@@ -303,7 +303,7 @@
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="ServerProxyLayer\IAdminManager.cs" />
     <Compile Include="ServerProxyLayer\IAdminProxyFactory.cs" />
-    <Compile Include="ServerProxyLayer\IExplorerQueryManager.cs" />
+    <Compile Include="ServerProxyLayer\IExplorerUpdateManager.cs" />
     <Compile Include="ServerProxyLayer\ILoggingManager.cs" />
     <Compile Include="ServerProxyLayer\IQueryManager.cs" />
     <Compile Include="ServerProxyLayer\ISecurityManager.cs" />
