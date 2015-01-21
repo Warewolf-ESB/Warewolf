@@ -13,15 +13,15 @@
 
     <!--  *********************************  FONTS   *********************************  -->
 
-    
-    <FontFamily x:Key="DefaultFontFamily">Source Sans Pro</FontFamily>    
-	<FontFamily x:Key="IconFont">FontAwesome</FontFamily>
-    
+
+    <FontFamily x:Key="DefaultFontFamily">Source Sans Pro</FontFamily>
+    <FontFamily x:Key="IconFont">FontAwesome</FontFamily>
+
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
 
     <system:Double x:Key="FontSize-Smallest">8</system:Double>
-    <system:Double x:Key="FontSize-Smaller">12</system:Double>
-    <system:Double x:Key="FontSize-Normal">13.333</system:Double>
+    <system:Double x:Key="FontSize-Smaller">10</system:Double>
+    <system:Double x:Key="FontSize-Normal">12</system:Double>
     <system:Double x:Key="FontSize-Large">16</system:Double>
     <system:Double x:Key="FontSize-Larger">40</system:Double>
     <system:Double x:Key="ExplorerFontSize">14</system:Double>
@@ -31,4 +31,3 @@
 
 </ResourceDictionary>
 
-    

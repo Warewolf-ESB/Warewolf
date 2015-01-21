@@ -2,49 +2,96 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
              xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
-             xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
-             xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
+
+
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <ContextMenu x:Key="TreeNodeContextMenu">
             <ContextMenu.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical"/>
+                    <VirtualizingStackPanel Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </ContextMenu.ItemsPanel>
-            <MenuItem Name="NewDataBaseService" Header="New Database Service" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.DbService}" Visibility="{Binding Path=Data.CanCreateDbService, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewDataBaseSource" Header="New Database Source" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.DbSource}" Visibility="{Binding Path=Data.CanCreateDbSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewWebService" Header="New Web Service" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.WebService}" Visibility="{Binding Path=Data.CanCreateWebService, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewWebSource" Header="New Web Source" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.WebSource}" Visibility="{Binding Path=Data.CanCreateWebSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewPluginService" Header="New Plugin Service" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.PluginService}" Visibility="{Binding Path=Data.CanCreatePluginService, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewPluginSource" Header="New Plugin Source" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.PluginSource}" Visibility="{Binding Path=Data.CanCreatePluginSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <Separator></Separator>
-            <MenuItem Name="Rename" Header="Rename" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.RenameCommand}"
-                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanRename, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="Delete" Header="Delete" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeleteCommand}"
-                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="Deploy" Header="Deploy" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeployCommand}"
-                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="NewDataBaseService"
+                      Command="{Binding Path=Data.NewCommand}"
+                      CommandParameter="{x:Static data:ResourceType.DbService}"
+                      Header="New Database Service"
+                      Visibility="{Binding Path=Data.CanCreateDbService,
+                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="NewDataBaseSource"
+                      Command="{Binding Path=Data.NewCommand}"
+                      CommandParameter="{x:Static data:ResourceType.DbSource}"
+                      Header="New Database Source"
+                      Visibility="{Binding Path=Data.CanCreateDbSource,
+                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="NewWebService"
+                      Command="{Binding Path=Data.NewCommand}"
+                      CommandParameter="{x:Static data:ResourceType.WebService}"
+                      Header="New Web Service"
+                      Visibility="{Binding Path=Data.CanCreateWebService,
+                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="NewWebSource"
+                      Command="{Binding Path=Data.NewCommand}"
+                      CommandParameter="{x:Static data:ResourceType.WebSource}"
+                      Header="New Web Source"
+                      Visibility="{Binding Path=Data.CanCreateWebSource,
+                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="NewPluginService"
+                      Command="{Binding Path=Data.NewCommand}"
+                      CommandParameter="{x:Static data:ResourceType.PluginService}"
+                      Header="New Plugin Service"
+                      Visibility="{Binding Path=Data.CanCreatePluginService,
+                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="NewPluginSource"
+                      Command="{Binding Path=Data.NewCommand}"
+                      CommandParameter="{x:Static data:ResourceType.PluginSource}"
+                      Header="New Plugin Source"
+                      Visibility="{Binding Path=Data.CanCreatePluginSource,
+                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+            <Separator />
+            <MenuItem Name="Rename"
+                      Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
+                                        Path=DataContext.RenameCommand}"
+                      CommandParameter="{Binding Data}"
+                      Header="Rename"
+                      Visibility="{Binding Path=Data.CanRename,
+                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="Delete"
+                      Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
+                                        Path=DataContext.DeleteCommand}"
+                      CommandParameter="{Binding Data}"
+                      Header="Delete"
+                      Visibility="{Binding Path=Data.CanDelete,
+                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="Deploy"
+                      Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
+                                        Path=DataContext.DeployCommand}"
+                      CommandParameter="{Binding Data}"
+                      Header="Deploy"
+                      Visibility="{Binding Path=Data.CanDeploy,
+                                           Converter={StaticResource BoolToVisibilityConverter}}" />
         </ContextMenu>
         <Style TargetType="{x:Type ig:XamDataTreeNodeControl}">
-            <Setter Property="ContextMenu" Value="{StaticResource TreeNodeContextMenu}"/>
+            <Setter Property="ContextMenu" Value="{StaticResource TreeNodeContextMenu}" />
         </Style>
+
+
     </UserControl.Resources>
+
+
     <Grid x:Name="LayoutRoot">
 
         <Grid.RowDefinitions>
@@ -52,8 +99,7 @@
             <RowDefinition Height="29" />
             <RowDefinition Height="5" />
             <RowDefinition Height="29" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="25" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -64,10 +110,10 @@
 
 
         <!--  URI LOOKUP  -->
-        <Grid Grid.Row="1"  Grid.Column="1">
+        <Grid Grid.Row="1" Grid.Column="1">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="29"/>
+                <RowDefinition Height="29" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -75,15 +121,24 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Grid.Row="0"  Text="Localhost" />
-            <Button Width="25"  Grid.Column="1" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
+            <TextBox Grid.Row="0"
+                     Grid.Column="0"
+                    customControls:TextBoxHelper.Watermark="LocalHost" 
+                     customControls:TextBoxHelper.ShowWatermark="True"/>
+            <Button Grid.Row="0"
+                    Grid.Column="1"
+                    Width="25"
                     Height="25"
-                    Padding="4">
+                    Padding="4"
+                    Style="{StaticResource ExplorerButtonStyle}">
                 <Image Source="{StaticResource System-More-Inverted}" />
             </Button>
-            <Button Width="25" Grid.Column="2" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
+            <Button Grid.Row="0"
+                    Grid.Column="2"
+                    Width="25"
                     Height="25"
-                    Padding="4">
+                    Padding="4"
+                    Style="{StaticResource ExplorerButtonStyle}">
                 <Image Source="{StaticResource System-Link-Inverted}" />
             </Button>
         </Grid>
@@ -93,59 +148,53 @@
         <Grid Grid.Row="3" Grid.Column="1">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="29"/>
+                <RowDefinition Height="29" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-
-            <TextBox Grid.Column="0" Grid.Row="0"  Text="Filter" />
-            <Button Width="25"  Grid.Column="1" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
+            <TextBox Grid.Row="0"
+                     Grid.Column="0"
+                     customControls:TextBoxHelper.Watermark="Filter" 
+                     customControls:TextBoxHelper.ShowWatermark="True"/>
+            <Button Grid.Row="0"
+                    Grid.Column="1"
+                    Width="25"
                     Height="25"
-                    Padding="4">
+                    Padding="4"
+                    Style="{StaticResource ExplorerButtonStyle}">
                 <Image Source="{StaticResource System-Filter-Inverted}" />
             </Button>
-            <Button Width="25" Grid.Column="2" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
+            <Button Grid.Row="0"
+                    Grid.Column="2"
+                    Width="25"
                     Height="25"
-                    Padding="4">
+                    Padding="4"
+                    Style="{StaticResource ExplorerButtonStyle}">
                 <Image Source="{StaticResource System-Refresh-Inverted}" />
             </Button>
         </Grid>
 
 
 
-        <!--  URL Display  -->
-        <StackPanel Grid.Row="5"
-                    Grid.Column="1"
-                    Style="{StaticResource ExplorerStackPanel}">
-            <Label Margin="5,0,2,0"
-                   Content="Localhost"
-                   FontWeight="Medium" />
-            <Label Content="(http://whereiswally:7262)" FontWeight="Light" />
-        </StackPanel>
-
-
-        <ig:XamDataTree   
-            x:Name="ExplorerTree"
-            
-         Grid.Row="6"
-         Grid.Column="1"
-                DisplayMemberPath="DisplayName"
+        <!--  DATA TREE  -->
+        <ig:XamDataTree x:Name="ExplorerTree"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        DisplayMemberPath="DisplayName"
                         ItemsSource="{Binding Environments}"
                         NodeLineVisibility="Hidden">
-            
+
             <ig:XamDataTree.GlobalNodeLayouts>
-                <ig:NodeLayout Key="ExplorerItemViewModels"
-                               DisplayMemberPath="DisplayName"
-                              >                    
+                <ig:NodeLayout Key="ExplorerItemViewModels" DisplayMemberPath="DisplayName">
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate DataType="viewModels:IExplorerItemViewModel">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Data.ResourceName}" />
-                                <TextBlock Text="{Binding Data.Children.Count}" />                               
-                            </StackPanel>                            
+                                <TextBlock Text="{Binding Data.Children.Count}" />
+                            </StackPanel>
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
 
@@ -153,7 +202,7 @@
                 </ig:NodeLayout>
                 <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName">
 
-                    <ig:NodeLayout.ItemTemplate >
+                    <ig:NodeLayout.ItemTemplate>
                         <DataTemplate DataType="viewModels:IExplorerItemViewModel">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -169,18 +218,20 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Image Grid.Column="0"
-                                       Width="12"
-                                       Height="12"
-                                       Source="{StaticResource System-New}" />
+                                       Width="18"
+                                       Height="18"
+                                       Source="{StaticResource System-Logo-Mono}" />
                                 <Image Grid.Column="1"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-Spacer}" />
-                                <TextBlock Grid.Column="2" Text="{Binding Data.ResourceName}" >
+                                <TextBlock Grid.Column="2" Text="{Binding Data.ResourceName}">
                                     <TextBlock.InputBindings>
-                                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Data.OpenCommand}" CommandParameter="{Binding Data}"></MouseBinding>
+                                        <MouseBinding Command="{Binding Data.OpenCommand}"
+                                                      CommandParameter="{Binding Data}"
+                                                      MouseAction="LeftDoubleClick" />
                                     </TextBlock.InputBindings>
-                                    </TextBlock>
+                                </TextBlock>
                                 <Image Grid.Column="3"
                                        Width="12"
                                        Height="12"
@@ -188,7 +239,7 @@
                                 <Image Grid.Column="4"
                                        Width="12"
                                        Height="12"
-                                       Source="{StaticResource System-Executable-Disabled}" />
+                                       Source="{StaticResource System-Explorer-Run-Disabled}" />
                                 <Image Grid.Column="5"
                                        Width="5"
                                        Height="12"
@@ -196,9 +247,9 @@
                                 <Image Grid.Column="6"
                                        Width="12"
                                        Height="12"
-                                       Source="{StaticResource System-Security-Enabled}" />
+                                       Source="{StaticResource System-Explorer-Permission-Disbled}" />
                             </Grid>
-                                
+
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
 
