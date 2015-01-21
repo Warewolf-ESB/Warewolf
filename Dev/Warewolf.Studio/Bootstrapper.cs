@@ -13,7 +13,6 @@ using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 using Moq;
-using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Themes.Luna;

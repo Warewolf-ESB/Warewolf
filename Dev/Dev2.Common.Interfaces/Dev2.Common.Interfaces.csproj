@@ -229,6 +229,7 @@
     <Compile Include="IAsyncWorker.cs" />
     <Compile Include="IConnectControlEnvironment.cs" />
     <Compile Include="IConnectControlSingleton.cs" />
+    <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IConnectedServerChangedEvent.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />

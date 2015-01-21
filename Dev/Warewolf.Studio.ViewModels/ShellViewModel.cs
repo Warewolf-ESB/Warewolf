@@ -14,6 +14,7 @@ using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.View_Interfaces;
+using Warewolf.Studio.ViewModels.DummyModels;
 using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
@@ -29,6 +30,7 @@ namespace Warewolf.Studio.ViewModels
             _unityContainer = unityContainer;
             _regionManager = regionManager;
             _aggregator = aggregator;
+            LocalhostServer = new DummyServer();
         }
 
         public void Initialize()
@@ -150,5 +152,7 @@ namespace Warewolf.Studio.ViewModels
         public void NewResource(ResourceType? type)
         {
         }
+
+        public IServer LocalhostServer { get; set; }
     }
 }

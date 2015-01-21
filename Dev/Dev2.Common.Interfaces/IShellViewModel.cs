@@ -12,5 +12,6 @@ namespace Dev2.Common.Interfaces
 
         void UpdateHelpDescriptor(IHelpDescriptor helpDescriptor);
         void NewResource(ResourceType? type);
+        IServer LocalhostServer { get; set; }
     }
 }

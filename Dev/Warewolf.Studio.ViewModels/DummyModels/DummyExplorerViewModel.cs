@@ -10,6 +10,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
     public class DummyExplorerViewModel:ExplorerViewModel
     {
         public DummyExplorerViewModel(IShellViewModel shellViewModel)
+            : base(shellViewModel)
         {
             Environments = CreateEnvironments(shellViewModel);
         }

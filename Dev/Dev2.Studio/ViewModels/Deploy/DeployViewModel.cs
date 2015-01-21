@@ -106,7 +106,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <param name="resourceID"> resource id</param>
         /// <param name="environmentID">environment id</param>
         /// <param name="connectControlSingleton">connect control</param>
-        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IConnectControlViewModel sourceConnectControlVm, IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null,IConnectControlSingleton connectControlSingleton = null)
+        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, Dev2.CustomControls.Connections.IConnectControlViewModel sourceConnectControlVm, Dev2.CustomControls.Connections.IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null,IConnectControlSingleton connectControlSingleton = null)
             // ReSharper restore TooManyDependencies
             : base(eventAggregator)
         {
@@ -171,7 +171,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// source connection
         /// </summary>
-        public IConnectControlViewModel SourceConnectControlViewModel
+        public Dev2.CustomControls.Connections.IConnectControlViewModel SourceConnectControlViewModel
         {
             get
             {
@@ -191,7 +191,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// target connection
         /// </summary>
-        public IConnectControlViewModel TargetConnectControlViewModel
+        public Dev2.CustomControls.Connections.IConnectControlViewModel TargetConnectControlViewModel
         {
             get
             {
@@ -921,8 +921,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         };
         bool _destinationServerHasDropped;
         bool _sourceServerHasDropped;
-        IConnectControlViewModel _sourceconnectControlViewModel;
-        IConnectControlViewModel _targetConnectControlViewModel;
+        Dev2.CustomControls.Connections.IConnectControlViewModel _sourceconnectControlViewModel;
+        Dev2.CustomControls.Connections.IConnectControlViewModel _targetConnectControlViewModel;
 
         /// <summary>
         /// Loads an environment for the source navigation manager

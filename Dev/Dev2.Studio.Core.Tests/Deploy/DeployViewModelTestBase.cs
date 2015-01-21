@@ -54,7 +54,7 @@ namespace Dev2.Core.Tests.Deploy
             IExplorerItemModel resourceVm;
             var studioResourceRepository = CreateModels(false, source.Object, out resourceVm);
 
-            deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, deployStatsCalculator)
+            deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, deployStatsCalculator)
             {
                 SelectedSourceServer = source.Object,
                 SelectedDestinationServer = destination.Object
@@ -159,7 +159,7 @@ namespace Dev2.Core.Tests.Deploy
             statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<IExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
             var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, envRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, statsCalc.Object) { Source = { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() }, Target = { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() } };
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, envRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, statsCalc.Object) { Source = { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() }, Target = { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() } };
 
             return deployViewModel;
         }
@@ -181,7 +181,7 @@ namespace Dev2.Core.Tests.Deploy
             }
             var studioResourceRepository = new Mock<IStudioResourceRepository>();
             studioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
-            vm = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo.Object, mockEventAggregator.Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object);
+            vm = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo.Object, mockEventAggregator.Object, studioResourceRepository.Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object);
             return envId;
         }
 

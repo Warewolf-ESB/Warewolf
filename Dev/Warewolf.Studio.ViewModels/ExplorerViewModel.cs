@@ -8,6 +8,15 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerViewModel:BindableBase,IExplorerViewModel
     {
+        public ExplorerViewModel(IShellViewModel shellViewModel)
+        {
+            if(shellViewModel == null)
+            {
+                throw new ArgumentNullException("shellViewModel");
+            }
+            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer);
+        }
+
         ICollection<IEnvironmentViewModel> _environments;
         public ICollection<IEnvironmentViewModel> Environments
         {
@@ -36,6 +45,7 @@ namespace Warewolf.Studio.ViewModels
         public event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
         public IEnvironmentViewModel SelectedEnvironment { get; set; }
         public IServer SelectedServer { get { return SelectedEnvironment.Server; }  }
+        public IConnectControlViewModel ConnectControlViewModel { get; private set; }
 
         public IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc)
         {

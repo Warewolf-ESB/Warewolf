@@ -73,7 +73,7 @@ namespace Dev2.Core.Tests
                     var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
                     _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object,
                                                                  versionChecker.Object, false, null, null, null, null, new Mock<IStudioResourceRepository>().Object,
-                                                                 new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
+                                                                 new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object);
                 }
                 return _mockMainViewModel;
             }
