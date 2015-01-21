@@ -81,7 +81,7 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Grid.Row="0"  Text="Filter" />
+            <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SearchText, Delay=300}" />
             <Button Width="25"  Grid.Column="1" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
                     Height="25"
                     Padding="4">
