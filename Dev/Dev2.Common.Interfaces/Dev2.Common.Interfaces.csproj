@@ -222,6 +222,7 @@
     <Compile Include="ErrorHandling\IWarewolfEventWriter.cs" />
     <Compile Include="ErrorHandling\WarewolfException.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
+    <Compile Include="Explorer\IExplorerRepository.cs" />
     <Compile Include="Help\IHelpDescriptorViewModel.cs" />
     <Compile Include="Help\IHelpWindowModel.cs" />
     <Compile Include="Hosting\ExecStatus.cs" />

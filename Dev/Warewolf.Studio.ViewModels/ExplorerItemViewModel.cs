@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -14,10 +15,9 @@ namespace Warewolf.Studio.ViewModels
     {
         string _resourceName;
         private bool _isVisible;
-        IServer _server;
         bool _allowEditing;
         bool _isRenaming;
-
+        private IExplorerRepository _explorerRepository;
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
             if(shellViewModel == null)
@@ -34,6 +34,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbService = true;
             CanRename = true;
             CanCreatePluginService = true;
+            _explorerRepository = server.ExplorerRepository;
         }
 
         public bool IsRenaming
@@ -46,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
             {
 
                 _isRenaming = value;
+               
                 OnPropertyChanged(() => IsRenaming);
                 OnPropertyChanged(() => IsNotRenaming);
             }
@@ -67,7 +69,12 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _resourceName = value;
+                if (_explorerRepository.Rename(this, value))
+                {
+                    _resourceName = value;
+                }
+            
+                IsRenaming = false;
                 OnPropertyChanged(() => ResourceName);
             }
         }
@@ -121,17 +128,7 @@ namespace Warewolf.Studio.ViewModels
                 _allowEditing = value;
             }
         }
-        public IServer Server
-        {
-            get
-            {
-                return _server;
-            }
-            private set
-            {
-                _server = value;
-            }
-        }
+        public IServer Server { get; private set; }
 
         public IResource Resource { get; set; }
     }
@@ -167,8 +164,8 @@ namespace Warewolf.Studio.ViewModels
     }
     public class DeployItemMessage : IDeployItemMessage 
     {
-        IExplorerItemViewModel _item;
-        IExplorerItemViewModel _sourceServer;
+        readonly IExplorerItemViewModel _item;
+        readonly IExplorerItemViewModel _sourceServer;
 
         public DeployItemMessage(IExplorerItemViewModel item, IExplorerItemViewModel sourceServer)
         {

@@ -4,12 +4,15 @@ using System.Net;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Controller;
 using Dev2.Network;
 using Dev2.Threading;
+using Warewolf.Core;
 using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -83,7 +86,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         #endregion
     }
 
-    public class StudioServerProxy
+    public class StudioServerProxy:IExplorerRepository
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -99,8 +102,30 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 throw new ArgumentNullException("environmentConnection");
             }
             QueryManagerProxy = new QueryManagerProxy(controllerFactory, environmentConnection);
+            UpdateManagerProxy = new ExplorerUpdateManagerProxy(controllerFactory,environmentConnection);
         }
 
         public QueryManagerProxy QueryManagerProxy { get; set; }
+        public ExplorerUpdateManagerProxy UpdateManagerProxy { get; set; }
+
+        #region Implementation of IExplorerRepository
+
+        public bool Rename(IExplorerItemViewModel vm, string newName)
+        {
+            try
+            {
+                UpdateManagerProxy.Rename(vm.ResourceId, newName);
+                return false;
+            }
+            catch(Exception err)
+            {
+                //todo:log
+                return false;
+               
+            }
+            
+        }
+
+        #endregion
     }
 }

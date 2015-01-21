@@ -59,6 +59,13 @@
       <Project>{97A827FF-65C4-4267-99D2-DCE6803B2348}</Project>
       <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

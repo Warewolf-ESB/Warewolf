@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
 using Moq;
@@ -75,11 +77,18 @@ namespace Warewolf.Studio.ViewModels.DummyModels
 
     internal class DummyServer : IServer
     {
+        IExplorerRepository _explorerRepository;
+
         #region Implementation of IServer
 
         public bool Connect()
         {
             return true;
+        }
+
+        Task<bool> IServer.Connect()
+        {
+            return null;
         }
 
         public IList<IResource> Load()
@@ -95,6 +104,14 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         public IList<IToolDescriptor> LoadTools()
         {
             return null;
+        }
+
+        public IExplorerRepository ExplorerRepository
+        {
+            get
+            {
+                return _explorerRepository;
+            }
         }
 
         public bool IsConnected()

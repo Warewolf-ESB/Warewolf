@@ -34,7 +34,7 @@
             <MenuItem Name="NewPluginSource" Header="New Plugin Source" Command="{Binding Path=Data.NewCommand}"
                           CommandParameter="{x:Static data:ResourceType.PluginSource}" Visibility="{Binding Path=Data.CanCreatePluginSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <Separator></Separator>
-            <MenuItem Name="Rename" Header="Rename" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.RenameCommand}"
+            <MenuItem Name="Rename" Header="Rename" Command="{Binding Path=Data.RenameCommand}"
                           CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanRename, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <MenuItem Name="Delete" Header="Delete" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeleteCommand}"
                           CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -153,49 +153,53 @@
 
                     <ig:NodeLayout.ItemTemplate >
                         <DataTemplate DataType="viewModels:IExplorerItemViewModel">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.10*" />
-                                    <ColumnDefinition Width="0.10*" />
-                                    <ColumnDefinition Width="0.60*" />
-                                    <ColumnDefinition Width="0.10*" />
-                                    <ColumnDefinition Width="0.10*" />
-                                    <ColumnDefinition Width="0.10*" />
-                                    <ColumnDefinition Width="0.10*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Image Grid.Column="0"
+                            <StackPanel>
+
+                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}"></TextBox>
+                                <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVis}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.60*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Column="0"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-New}" />
-                                <Image Grid.Column="1"
+                                    <Image Grid.Column="1"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-Spacer}" />
-                                <TextBlock Grid.Column="2" Text="{Binding Data.ResourceName}" >
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Data.OpenCommand}" CommandParameter="{Binding Data}"></MouseBinding>
-                                    </TextBlock.InputBindings>
+                                    <TextBlock Grid.Column="2" Text="{Binding Data.ResourceName}" >
+                                        <TextBlock.InputBindings>
+                                            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Data.OpenCommand}" CommandParameter="{Binding Data}"></MouseBinding>
+                                        </TextBlock.InputBindings>
                                     </TextBlock>
-                                <Image Grid.Column="3"
+                                    <Image Grid.Column="3"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-Spacer}" />
-                                <Image Grid.Column="4"
+                                    <Image Grid.Column="4"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-Executable-Disabled}" />
-                                <Image Grid.Column="5"
+                                    <Image Grid.Column="5"
                                        Width="5"
                                        Height="12"
                                        Source="{StaticResource System-Spacer}" />
-                                <Image Grid.Column="6"
+                                    <Image Grid.Column="6"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-Security-Enabled}" />
-                            </Grid>
+                                </Grid>
+                            </StackPanel>
 
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>

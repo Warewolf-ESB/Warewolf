@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Toolbox;
 
 namespace Dev2.Common.Interfaces
@@ -11,6 +12,7 @@ namespace Dev2.Common.Interfaces
         IList<IResource> Load();
         IList<IServer> GetServerConnections();
         IList<IToolDescriptor> LoadTools();
+        IExplorerRepository ExplorerRepository { get; }
         bool IsConnected();
         void ReloadTools();
         void Disconnect();
