@@ -189,11 +189,9 @@
                             <ScrollBar x:Name="VerticalScrollBar"
                                        Grid.Row="0"
                                        Grid.Column="1"
-                                       Width="20"
                                        Style="{StaticResource ScrollBarStyle}" />
                             <ScrollBar x:Name="HorizontalScrollBar"
                                        Grid.Row="2"
-                                       Height="20"
                                        Style="{StaticResource ScrollBarStyle}" />
                         </Grid>
                     </Border>
