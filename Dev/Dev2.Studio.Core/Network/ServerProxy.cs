@@ -198,6 +198,53 @@ namespace Dev2.Network
         public string Alias { get; set; }
         public string DisplayName { get; set; }
 
+
+        public async Task<bool> ConnectAsync(Guid id)
+        {
+            ID = id;
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                await HubConnection.Start();
+                if (HubConnection.State == ConnectionState.Connected)
+                {
+                    IsConnected = true;
+                    return true;
+                }
+
+            }
+            catch (AggregateException aex)
+            {
+                return false;
+//                aex.Flatten();
+//                aex.Handle(ex =>
+//                {
+//                    Dev2Logger.Log.Error(this, aex);
+//                    var hex = ex as HttpClientException;
+//                    if (hex != null)
+//                    {
+//                        switch (hex.Response.StatusCode)
+//                        {
+//                            case HttpStatusCode.Unauthorized:
+//                            case HttpStatusCode.Forbidden:
+//                                UpdateIsAuthorized(false);
+//                                throw new UnauthorizedAccessException();
+//                        }
+//                    }
+//                    throw new NotConnectedException();
+//                });
+            }
+//            catch (NotConnectedException)
+//            {
+//                throw;
+//            }
+//            catch (Exception e)
+//            {
+//                HandleConnectError(e);
+//            }
+            return false;
+        }
+
         public void Connect(Guid id)
         {
             ID = id;
