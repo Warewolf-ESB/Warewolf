@@ -6,5 +6,6 @@ namespace Dev2.Common.Interfaces
     {
         void AddService(IResource resource);
         void NewResource(ResourceType? type);
+        IServer LocalhostServer { get; set; }
     }
 }

@@ -87,7 +87,7 @@ namespace Dev2.Settings.Scheduler
         string _connectionError;
         bool _hasConnectionError;
         IEnvironmentModel _currentEnvironment;
-        IConnectControlViewModel _connectControlViewModel;
+        CustomControls.Connections.IConnectControlViewModel _connectControlViewModel;
 
         #endregion
 
@@ -99,7 +99,7 @@ namespace Dev2.Settings.Scheduler
         }
 
 
-        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IConnectControlViewModel connectControlViewModel)
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, CustomControls.Connections.IConnectControlViewModel connectControlViewModel)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
@@ -182,7 +182,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public IConnectControlViewModel ConnectControlViewModel
+        public CustomControls.Connections.IConnectControlViewModel ConnectControlViewModel
         {
             get
             {

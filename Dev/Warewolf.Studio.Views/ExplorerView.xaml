@@ -6,7 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
              xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
-             xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+             xmlns:views="clr-namespace:Warewolf.Studio.Views"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -65,27 +65,7 @@
 
         <!--  URI LOOKUP  -->
         <Grid Grid.Row="1"  Grid.Column="1">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="29"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="30" />
-                <ColumnDefinition Width="30" />
-            </Grid.ColumnDefinitions>
-
-            <TextBox Grid.Column="0" Grid.Row="0"  Text="Localhost" />
-            <Button Width="25"  Grid.Column="1" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
-                    Height="25"
-                    Padding="4">
-                <Image Source="{StaticResource System-More-Inverted}" />
-            </Button>
-            <Button Width="25" Grid.Column="2" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
-                    Height="25"
-                    Padding="4">
-                <Image Source="{StaticResource System-Link-Inverted}" />
-            </Button>
+            <views:ConnectControlView DataContext="{Binding ConnectControlViewModel}"/>
         </Grid>
 
         <!--  SERVICE FILTER  -->
