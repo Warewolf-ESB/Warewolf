@@ -132,7 +132,7 @@
                               >                    
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate DataType="viewModels:IExplorerItemViewModel"   >
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Text="{Binding Data.ResourceName}" />
                                 <TextBlock Text="{Binding Data.Children.Count}" />                               
                             </StackPanel>
@@ -140,8 +140,8 @@
                     </ig:NodeLayout.ItemTemplate>
                    <ig:NodeLayout.EditorTemplate >
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}">
-                                <TextBox Text="{Binding Path=Data.DisplayName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}"></TextBox>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBox Text="{Binding Path=Data.DisplayName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
                                 <TextBlock Text="{Binding Data.ResourceName}" />
                                 <TextBlock Text="{Binding Data.Children.Count}" />
                             </StackPanel>
@@ -153,7 +153,7 @@
 
                     <ig:NodeLayout.ItemTemplate >
                         <DataTemplate DataType="viewModels:IExplorerItemViewModel">
-                            <Grid>
+                            <Grid Visibility="{Binding Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0.10*" />
                                     <ColumnDefinition Width="0.10*" />
@@ -202,9 +202,9 @@
                     <ig:NodeLayout.EditorTemplate>
                         <DataTemplate >
                             <StackPanel>
-                           
-                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}"></TextBox>
-                                <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVis}}">
+
+                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
+                                <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="0.10*" />
                                         <ColumnDefinition Width="0.10*" />

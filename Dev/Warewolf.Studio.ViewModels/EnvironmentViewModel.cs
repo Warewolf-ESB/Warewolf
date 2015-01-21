@@ -80,7 +80,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (explorerItemViewModel.ResourceName != null && explorerItemViewModel.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant()))
                 {
-                    explorerItemViewModel.IsVisible = true;
+                    explorerItemViewModel.IsVisible = true;                    
+                }
+                else
+                {
+                    explorerItemViewModel.IsVisible = false;
                 }
             }
         }
