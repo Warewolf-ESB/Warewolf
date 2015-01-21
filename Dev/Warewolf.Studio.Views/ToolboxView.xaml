@@ -5,13 +5,14 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:toolbox="clr-namespace:Dev2.Common.Interfaces.Toolbox;assembly=Dev2.Common.Interfaces"
 	xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
+	xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
 	mc:Ignorable="d"
 	x:Class="Warewolf.Studio.Views.ToolboxView"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="480"
     d:DataContext="{d:DesignInstance Type={x:Type dummyModels:DummyToolboxViewModel}}">
     <UserControl.Resources>
-        
+
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -21,7 +22,7 @@
             <RowDefinition Height="5" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
@@ -42,7 +43,12 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Grid.Row="0"  Text="Filter" />
+            <TextBox 
+                Grid.Column="0" 
+                Grid.Row="0"  
+                    customControls:TextBoxHelper.Watermark="Filter" 
+                     customControls:TextBoxHelper.ShowWatermark="True"
+                />
             <Button Width="25"  Grid.Column="1" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
                     Height="25"
                     Padding="4">
@@ -54,7 +60,7 @@
                 <Image Source="{StaticResource System-Refresh-Inverted}" />
             </Button>
         </Grid>
-        
+
         <!--TOOL BUTTONS-->
         <ListBox ItemTemplate="{DynamicResource ToolboxItemTemplate}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding CategorisedTools}">
             <!-- This style is used as a way to disable the selection for this list box which represents the category -->

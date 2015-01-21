@@ -1,10 +1,22 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <DrawingImage x:Key="System-Explorer-Run">
+    <DrawingImage x:Key="System-Explorer-Run-Enabled">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
                     <GeometryDrawing Brush="#FFEC6300" Geometry="M 330.985,-610.84C 330.985,-613.178 332.875,-615.078 335.21,-615.078C 337.541,-615.078 339.43,-613.178 339.43,-610.84C 339.43,-608.5 337.541,-606.605 335.21,-606.605C 332.875,-606.605 330.985,-608.5 330.985,-610.84 Z "/>
-                    <GeometryDrawing Brush="#FF333333" Geometry="M 333.825,-612.957L 337.341,-610.839L 333.825,-608.722L 333.825,-612.957 Z "/>
+                    <GeometryDrawing Brush="#FFF4F2EE" Geometry="M 333.825,-612.957L 337.341,-610.839L 333.825,-608.722L 333.825,-612.957 Z "/>
+
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="System-Explorer-Run-Disabled">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFC2BEB9" Geometry="M 330.985,-610.84C 330.985,-613.178 332.875,-615.078 335.21,-615.078C 337.541,-615.078 339.43,-613.178 339.43,-610.84C 339.43,-608.5 337.541,-606.605 335.21,-606.605C 332.875,-606.605 330.985,-608.5 330.985,-610.84 Z "/>
+                    <GeometryDrawing Brush="#FFF4F2EE" Geometry="M 333.825,-612.957L 337.341,-610.839L 333.825,-608.722L 333.825,-612.957 Z "/>
 
                 </DrawingGroup.Children>
             </DrawingGroup>
