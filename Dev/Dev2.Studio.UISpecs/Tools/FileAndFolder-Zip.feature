@@ -55,7 +55,6 @@ Scenario:Zip Tool Large View And Invalid Variables Expected Error On Done Button
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Zip(ZipDesigner),DoneButton"
 	Given "WORKSURFACE,Zip(ZipDesigner),SmallViewContent" is visible
 	
-
 Scenario: Zip Tool Testing Tab Order and UiRepondingFine as expected
 	Given I have Warewolf running
 	And all tabs are closed	
