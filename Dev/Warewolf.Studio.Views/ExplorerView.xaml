@@ -89,7 +89,7 @@
             </Button>
             <Button Width="25" Grid.Column="2" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
                     Height="25"
-                    Padding="4">
+                    Padding="4" Command="{Binding RefreshCommand}">
                 <Image Source="{StaticResource System-Refresh-Inverted}" />
             </Button>
         </Grid>
@@ -186,7 +186,9 @@
                                 <Image Grid.Column="4"
                                        Width="12"
                                        Height="12"
-                                       Source="{StaticResource System-Executable-Disabled}" />
+                                       Source="{StaticResource System-Executable-Disabled}" 
+                                       Visibility="{Binding Data.CanExecute, Converter={StaticResource BoolToVisibilityConverter}}"
+                                       />
                                 <Image Grid.Column="5"
                                        Width="5"
                                        Height="12"
@@ -194,6 +196,7 @@
                                 <Image Grid.Column="6"
                                        Width="12"
                                        Height="12"
+                                       Visibility="{Binding Data.CanView, Converter={StaticResource BoolToVisibilityConverter}}"
                                        Source="{StaticResource System-Security-Enabled}" />
                             </Grid>
 

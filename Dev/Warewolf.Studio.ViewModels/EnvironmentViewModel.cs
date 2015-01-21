@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Moq;
@@ -78,14 +79,16 @@ namespace Warewolf.Studio.ViewModels
         {
             foreach (var explorerItemViewModel in ExplorerItemViewModels)
             {
-                if (explorerItemViewModel.ResourceName != null && explorerItemViewModel.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant()))
+                explorerItemViewModel.Children.ForEach(model => model.Filter(filter));
+                if ((String.IsNullOrEmpty(filter) || explorerItemViewModel.Children.Any(model => model.IsVisible)) || (explorerItemViewModel.ResourceName != null && explorerItemViewModel.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant())))
                 {
-                    explorerItemViewModel.IsVisible = true;                    
+                    explorerItemViewModel.IsVisible = true;             
                 }
                 else
                 {
                     explorerItemViewModel.IsVisible = false;
                 }
+                OnPropertyChanged(() => ExplorerItemViewModels);
             }
         }
 

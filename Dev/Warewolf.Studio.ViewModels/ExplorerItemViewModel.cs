@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -17,6 +19,9 @@ namespace Warewolf.Studio.ViewModels
         IServer _server;
         bool _allowEditing;
         bool _isRenaming;
+        bool _canExecute;
+        bool _canEdit;
+        bool _canView;
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
@@ -96,7 +101,51 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDelete { get; set; }
         public bool CanDeploy { get; set; }
         public ICommand ItemSelectedCommand { get; set; }
-
+        public bool CanExecute
+        {
+            get
+            {
+                return _canExecute;
+            }
+            set
+            {
+                if (_canExecute != value)
+                {
+                    _canExecute = value;
+                    OnPropertyChanged(() => CanExecute);
+                }
+            }
+        }
+        public bool CanEdit
+        {
+            get
+            {
+                return _canEdit;
+            }
+            set
+            {
+                if (_canEdit != value)
+                {
+                    _canEdit = value;
+                    OnPropertyChanged(() => CanEdit);
+                }
+            }
+        }
+        public bool CanView
+        {
+            get
+            {
+                return _canView;
+            }
+            set
+            {
+                if (_canView != value)
+                {
+                    _canView = value;
+                    OnPropertyChanged(() => CanView);
+                }
+            }
+        }
         public bool IsVisible
         {
             get { return _isVisible; }
@@ -130,6 +179,23 @@ namespace Warewolf.Studio.ViewModels
             private set
             {
                 _server = value;
+            }
+        }
+
+        public void Filter(string filter)
+        {
+            foreach (var explorerItemViewModel in Children)
+            {
+                explorerItemViewModel.Children.ForEach(model => model.Filter(filter));
+                if (String.IsNullOrEmpty(filter) || explorerItemViewModel.Children.Any(model => model.IsVisible))
+                {
+                    explorerItemViewModel.IsVisible = true;
+                }
+                else
+                {
+                    explorerItemViewModel.IsVisible = false;
+                }
+                OnPropertyChanged(() => Children);
             }
         }
 

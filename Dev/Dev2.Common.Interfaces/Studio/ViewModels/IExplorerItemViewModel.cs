@@ -22,6 +22,11 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool IsVisible { get; set; }
         bool AllowEditing { get; set; }
         IServer Server { get; }
+        bool CanExecute { get; set; }
+        bool CanEdit { get; set; }
+        bool CanView { get; set; }
+
+        void Filter(string filter);
     }
     public interface IExplorerHelpDescriptorBuilder
     {

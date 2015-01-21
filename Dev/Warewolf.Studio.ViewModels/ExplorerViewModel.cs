@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -15,8 +18,21 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException("shellViewModel");
             }
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer);
+            RefreshCommand = new DelegateCommand(Refresh);
         }
 
+        void Refresh()
+        {
+            Environments.ForEach(model =>
+            {
+                if (model.IsConnected)
+                {
+                    model.Load();
+                }
+            });
+        }
+
+        public ICommand RefreshCommand { get; set; }
         ICollection<IEnvironmentViewModel> _environments;
         string _searchText;
         public ICollection<IEnvironmentViewModel> Environments
@@ -40,6 +56,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     environmentViewModel.Filter(filter);
                 }
+                OnPropertyChanged(() => Environments);
             }
         }
 
