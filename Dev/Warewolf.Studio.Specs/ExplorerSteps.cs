@@ -96,6 +96,8 @@ namespace Warewolf.Studio.Specs
         {
         }
 
+        public event PermissionsChanged PermissionsChanged;
+
         #endregion
 
 

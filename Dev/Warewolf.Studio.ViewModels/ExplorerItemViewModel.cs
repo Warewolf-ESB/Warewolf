@@ -39,6 +39,28 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbService = true;
             CanRename = true;
             CanCreatePluginService = true;
+            Server.PermissionsChanged += UpdatePermissions;
+        }
+
+        void UpdatePermissions(PermissionsChangedArgs args)
+        {
+            var resourcePermission = args.Permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
+            if (resourcePermission != null)
+            {
+                CanEdit = resourcePermission.Contribute;
+                CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
+                CanView = resourcePermission.View || resourcePermission.Contribute;
+            }
+            else
+            {
+                var serverPermission = args.Permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID==Guid.Empty);
+                if (serverPermission != null)
+                {
+                    CanEdit = serverPermission.Contribute;
+                    CanExecute = serverPermission.Contribute || serverPermission.Execute;
+                    CanView = serverPermission.View || serverPermission.Contribute;
+                }
+            }
         }
 
         public bool IsRenaming

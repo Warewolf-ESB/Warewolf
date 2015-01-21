@@ -116,6 +116,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         {
         }
 
+        public event PermissionsChanged PermissionsChanged;
 
         #endregion
 
