@@ -3,6 +3,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Moq;
 
 namespace Warewolf.Studio.ViewModels.DummyModels
 {
@@ -16,32 +17,32 @@ namespace Warewolf.Studio.ViewModels.DummyModels
 
         static List<IEnvironmentViewModel> CreateEnvironments(IShellViewModel shellViewModel)
         {
-            var oneLevelDeep = new ExplorerItemViewModel(shellViewModel)
+            var oneLevelDeep = new ExplorerItemViewModel(shellViewModel,new DummyServer(),new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "One Level Deep",
             };
-            oneLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel)
+            oneLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Resource One Level Deep"
             });
-            var multiLevelDeep = new ExplorerItemViewModel(shellViewModel)
+            var multiLevelDeep = new ExplorerItemViewModel(shellViewModel, new DummyServer(),new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Multi Level Deep"
             };
-            multiLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel)
+            multiLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "No children"
             });
-            var childHasChildren = new ExplorerItemViewModel(shellViewModel)
+            var childHasChildren = new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Has One Chid"
             };
             multiLevelDeep.Children.Add(childHasChildren);
-            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel)
+            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Is child of child"
             });
-            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel)
+            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Is Another child of a child"
             });
@@ -52,7 +53,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
                     DisplayName = "Test1",
                     ExplorerItemViewModels = new List<IExplorerItemViewModel>
                     {
-                        new ExplorerItemViewModel(shellViewModel)
+                        new ExplorerItemViewModel(shellViewModel,new DummyServer(),new Mock<IExplorerHelpDescriptorBuilder>().Object)
                         {
                             ResourceName = "SingleLevel"
                         },

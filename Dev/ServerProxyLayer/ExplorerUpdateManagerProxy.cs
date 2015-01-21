@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
@@ -79,6 +80,8 @@ namespace Warewolf.Studio.ServerProxyLayer
             controller.AddPayloadArgument("newPath", newPath);
             controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
         }
+
+
 
         #endregion
     }

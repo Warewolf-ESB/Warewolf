@@ -107,28 +107,46 @@
         </StackPanel>
 
 
-        <ig:XamDataTree   
+        <ig:XamDataTree 
             x:Name="ExplorerTree"
-            
          Grid.Row="6"
          Grid.Column="1"
-                DisplayMemberPath="DisplayName"
-                        ItemsSource="{Binding Environments}"
-                        NodeLineVisibility="Hidden">
-            
-            <ig:XamDataTree.GlobalNodeLayouts>
+         DisplayMemberPath="DisplayName"
+         ActiveDataItem="{Binding Path=Environments}"
+         ItemsSource="{Binding Environments}"
+         NodeLineVisibility="Hidden">
+            <ig:XamDataTree.EditingSettings>
+                <ig:TreeEditingSettings
+                    AllowDeletion="False"
+                    AllowEditing="True"
+                    IsMouseActionEditingEnabled="None"
+                    IsEnterKeyEditingEnabled="True"
+                    IsF2EditingEnabled="True"
+                    IsOnNodeActiveEditingEnabled="True"
+                    />
+            </ig:XamDataTree.EditingSettings>
+            <ig:XamDataTree.GlobalNodeLayouts >
                 <ig:NodeLayout Key="ExplorerItemViewModels"
                                DisplayMemberPath="DisplayName"
+                               
                               >                    
                     <ig:NodeLayout.ItemTemplate>
-                        <DataTemplate DataType="viewModels:IExplorerItemViewModel">
+                        <DataTemplate DataType="viewModels:IExplorerItemViewModel"   >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Data.ResourceName}" />
                                 <TextBlock Text="{Binding Data.Children.Count}" />                               
-                            </StackPanel>                            
+                            </StackPanel>
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
-
+                   <ig:NodeLayout.EditorTemplate >
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}">
+                                <TextBox Text="{Binding Path=Data.DisplayName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}"></TextBox>
+                                <TextBlock Text="{Binding Data.ResourceName}" />
+                                <TextBlock Text="{Binding Data.Children.Count}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ig:NodeLayout.EditorTemplate>
 
                 </ig:NodeLayout>
                 <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName">
@@ -178,10 +196,60 @@
                                        Height="12"
                                        Source="{StaticResource System-Security-Enabled}" />
                             </Grid>
-                                
+
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
-
+                    <ig:NodeLayout.EditorTemplate>
+                        <DataTemplate >
+                            <StackPanel>
+                           
+                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}"></TextBox>
+                                <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVis}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.60*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                        <ColumnDefinition Width="0.10*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Image Grid.Column="0"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-New}" />
+                                    <Image Grid.Column="1"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-Spacer}" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Data.ResourceName}" >
+                                        <TextBlock.InputBindings>
+                                            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Data.OpenCommand}" CommandParameter="{Binding Data}"></MouseBinding>
+                                        </TextBlock.InputBindings>
+                                    </TextBlock>
+                                    <Image Grid.Column="3"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-Spacer}" />
+                                    <Image Grid.Column="4"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-Executable-Disabled}" />
+                                    <Image Grid.Column="5"
+                                       Width="5"
+                                       Height="12"
+                                       Source="{StaticResource System-Spacer}" />
+                                    <Image Grid.Column="6"
+                                       Width="12"
+                                       Height="12"
+                                       Source="{StaticResource System-Security-Enabled}" />
+                                </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ig:NodeLayout.EditorTemplate>
                 </ig:NodeLayout>
 
             </ig:XamDataTree.GlobalNodeLayouts>

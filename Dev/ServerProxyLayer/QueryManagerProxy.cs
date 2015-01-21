@@ -82,6 +82,19 @@ namespace Warewolf.Studio.ServerProxyLayer
             return result;
         }
 
+        /// <summary>
+        /// Loads the Tree.
+        /// </summary>
+        /// <returns></returns>
+        public IExplorerItem Load()
+        {
+            var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
+
+            var workspaceId = Connection.WorkspaceID;
+            var payload = comsController.ExecuteCommand<IExplorerItem>(Connection, workspaceId);
+
+            return payload;
+        }
         #endregion
     }
          

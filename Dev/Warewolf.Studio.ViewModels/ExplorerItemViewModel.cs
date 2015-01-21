@@ -14,8 +14,11 @@ namespace Warewolf.Studio.ViewModels
     {
         string _resourceName;
         private bool _isVisible;
+        IServer _server;
+        bool _allowEditing;
+        bool _isRenaming;
 
-        public ExplorerItemViewModel(IShellViewModel shellViewModel)
+        public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
             if(shellViewModel == null)
             {
@@ -23,12 +26,39 @@ namespace Warewolf.Studio.ViewModels
             }
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
+            DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
+            RenameCommand = new DelegateCommand(()=>IsRenaming=true);
+            ItemSelectedCommand = new DelegateCommand(()=>shellViewModel.UpdateHelpDescriptor(builder.Build(this,ExplorerEventContext.Selected)));
+            Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
             CanCreateDbService = true;
             CanRename = true;
             CanCreatePluginService = true;
         }
 
+        public bool IsRenaming
+        {
+            get
+            {
+                return _isRenaming;
+            }
+            set
+            {
+
+                _isRenaming = value;
+                OnPropertyChanged(() => IsRenaming);
+                OnPropertyChanged(() => IsNotRenaming);
+            }
+        }
+
+        public bool IsNotRenaming
+        {
+            get
+            {
+                return !_isRenaming;
+            }
+    
+        }
         public string ResourceName
         {
             get
@@ -55,6 +85,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICommand NewCommand { get; set; }
         public ICommand DeployCommand { get; set; }
+        public ICommand RenameCommand { get; set; }
         public bool CanCreateDbService { get; set; }
         public bool CanCreateDbSource { get; set; }
         public bool CanCreateWebService { get; set; }
@@ -64,6 +95,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanRename { get; set; }
         public bool CanDelete { get; set; }
         public bool CanDeploy { get; set; }
+        public ICommand ItemSelectedCommand { get; set; }
 
         public bool IsVisible
         {
@@ -77,7 +109,90 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+        public bool AllowEditing
+        {
+            get
+            {
+                return _allowEditing;
+            }
+            set
+            {
+                OnPropertyChanged(()=>AllowEditing);
+                _allowEditing = value;
+            }
+        }
+        public IServer Server
+        {
+            get
+            {
+                return _server;
+            }
+            private set
+            {
+                _server = value;
+            }
+        }
 
         public IResource Resource { get; set; }
+    }
+
+    public class NewItemMessage : INewItemMessage {
+        readonly IExplorerItemViewModel _parent;
+        readonly ResourceType _type;
+
+        public NewItemMessage(ResourceType type, IExplorerItemViewModel parent)
+        {
+            _type = type;
+            _parent = parent;
+        }
+
+        #region Implementation of INewItemMessage
+
+        public IExplorerItemViewModel Parent
+        {
+            get
+            {
+                return _parent;
+            }
+        }
+        public ResourceType Type
+        {
+            get
+            {
+                return _type;
+            }
+        }
+
+        #endregion
+    }
+    public class DeployItemMessage : IDeployItemMessage 
+    {
+        IExplorerItemViewModel _item;
+        IExplorerItemViewModel _sourceServer;
+
+        public DeployItemMessage(IExplorerItemViewModel item, IExplorerItemViewModel sourceServer)
+        {
+            _item = item;
+            _sourceServer = sourceServer;
+        }
+
+        #region Implementation of IDeployItemMessage
+
+        public IExplorerItemViewModel Item
+        {
+            get
+            {
+                return _item;
+            }
+        }
+        public IExplorerItemViewModel SourceServer
+        {
+            get
+            {
+                return _sourceServer;
+            }
+        }
+
+        #endregion
     }
 }
