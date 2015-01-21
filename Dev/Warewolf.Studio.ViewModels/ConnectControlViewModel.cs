@@ -19,6 +19,10 @@ namespace Warewolf.Studio.ViewModels
             EditConnectionCommand = new DelegateCommand(Edit);
             ToggleConnectionStateCommand = new DelegateCommand(() =>
             {
+                if(SelectedConnection == null)
+                {
+                    return;
+                }
                 if (SelectedConnection.IsConnected())
                 {
                     SelectedConnection.Disconnect();
