@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="System-Explorer-Close">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF333333" Geometry="M 318.238,-614.096C 318.238,-614.202 318.275,-614.299 318.355,-614.38L 318.993,-615.011C 319.073,-615.09 319.166,-615.126 319.278,-615.126C 319.381,-615.126 319.474,-615.089 319.553,-615.009L 321.473,-613.082L 323.399,-614.992C 323.469,-615.07 323.569,-615.108 323.675,-615.106C 323.787,-615.106 323.879,-615.069 323.959,-614.989L 324.591,-614.352C 324.67,-614.271 324.715,-614.173 324.715,-614.066C 324.714,-613.964 324.669,-613.87 324.589,-613.782L 321.738,-610.957C 321.658,-610.888 321.565,-610.842 321.453,-610.842C 321.346,-610.842 321.247,-610.889 321.178,-610.959L 318.353,-613.81C 318.274,-613.9 318.238,-613.993 318.238,-614.096 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>

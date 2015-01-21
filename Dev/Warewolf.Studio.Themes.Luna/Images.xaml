@@ -79,6 +79,11 @@
         <ResourceDictionary Source="Images/System-WebService-Add.xaml" />
         <ResourceDictionary Source="Images/System-WebService-Debug.xaml" />
         <ResourceDictionary Source="Images/System-WebService.xaml" />
+        <ResourceDictionary Source="Images/System-Explorer-Close.xaml" />
+        <ResourceDictionary Source="Images/System-Explorer-Open.xaml" />
+        <ResourceDictionary Source="Images/System-Explorer-Run.xaml" />
+        <ResourceDictionary Source="Images/System-Explorer-Permission.xaml" />
+        <ResourceDictionary Source="Images/System-Scrollbar-End.xaml" />
         <ResourceDictionary Source="Images/Utility-Calculate.xaml" />
         <ResourceDictionary Source="Images/Utility-Comment.xaml" />
         <ResourceDictionary Source="Images/Utility-DateTime.xaml" />

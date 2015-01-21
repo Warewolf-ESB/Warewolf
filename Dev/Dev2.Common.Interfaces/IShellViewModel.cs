@@ -11,5 +11,6 @@ namespace Dev2.Common.Interfaces
         void DeployService(IExplorerItemViewModel resourceToDeploy);
 
         void UpdateHelpDescriptor(IHelpDescriptor helpDescriptor);
+        void NewResource(ResourceType? type);
     }
 }

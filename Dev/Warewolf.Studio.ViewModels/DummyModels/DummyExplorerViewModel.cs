@@ -60,7 +60,14 @@ namespace Warewolf.Studio.ViewModels.DummyModels
                         multiLevelDeep
                     }
                 }, 
-                new EnvironmentViewModel(new DummyServer(),shellViewModel) { DisplayName = "Test4" }
+                new EnvironmentViewModel(new DummyServer(),shellViewModel)
+                {
+                    DisplayName = "Test4",
+                    ExplorerItemViewModels = new List<IExplorerItemViewModel>
+                    {
+                        multiLevelDeep
+                    }
+                }
             };
         }
     }

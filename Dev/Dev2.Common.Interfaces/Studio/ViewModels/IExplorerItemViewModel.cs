@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Help;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels
 {
-    public interface IExplorerItemViewModel
+    public interface IExplorerItemViewModel : IExplorerTreeItem
     {
         string ResourceName { get; set; }
         ICollection<IExplorerItemViewModel> Children { get; set; }

@@ -56,11 +56,9 @@
     <Reference Include="InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2">
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2, Version=14.2.20142.2024, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll</HintPath>
@@ -136,6 +134,7 @@
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />

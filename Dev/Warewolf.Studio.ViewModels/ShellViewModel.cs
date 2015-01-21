@@ -146,5 +146,9 @@ namespace Warewolf.Studio.ViewModels
               _aggregator.GetEvent<HelpChangedEvent>().Publish(helpDescriptor);
             
         }
+
+        public void NewResource(ResourceType? type)
+        {
+        }
     }
 }
