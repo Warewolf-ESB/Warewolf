@@ -13,6 +13,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
         IEnvironmentViewModel SelectedEnvironment { get; set; }
         IServer SelectedServer { get;  }
-        IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc);
+	    IConnectControlViewModel ConnectControlViewModel { get; }
+        string SearchText { get; set; }
+
+	    IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc);
 	}
 }

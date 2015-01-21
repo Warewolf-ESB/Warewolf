@@ -1,46 +1,50 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Runtime.ServiceModel.Data;
+using Moq;
 
 namespace Warewolf.Studio.ViewModels.DummyModels
 {
     public class DummyExplorerViewModel:ExplorerViewModel
     {
         public DummyExplorerViewModel(IShellViewModel shellViewModel)
+            : base(shellViewModel)
         {
             Environments = CreateEnvironments(shellViewModel);
         }
 
         static List<IEnvironmentViewModel> CreateEnvironments(IShellViewModel shellViewModel)
         {
-            var oneLevelDeep = new ExplorerItemViewModel(shellViewModel)
+            var oneLevelDeep = new ExplorerItemViewModel(shellViewModel,new DummyServer(),new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "One Level Deep",
             };
-            oneLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel)
+            oneLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Resource One Level Deep"
             });
-            var multiLevelDeep = new ExplorerItemViewModel(shellViewModel)
+            var multiLevelDeep = new ExplorerItemViewModel(shellViewModel, new DummyServer(),new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Multi Level Deep"
             };
-            multiLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel)
+            multiLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "No children"
             });
-            var childHasChildren = new ExplorerItemViewModel(shellViewModel)
+            var childHasChildren = new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Has One Chid"
             };
             multiLevelDeep.Children.Add(childHasChildren);
-            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel)
+            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Is child of child"
             });
-            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel)
+            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Is Another child of a child"
             });
@@ -51,7 +55,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
                     DisplayName = "Test1",
                     ExplorerItemViewModels = new List<IExplorerItemViewModel>
                     {
-                        new ExplorerItemViewModel(shellViewModel)
+                        new ExplorerItemViewModel(shellViewModel,new DummyServer(),new Mock<IExplorerHelpDescriptorBuilder>().Object)
                         {
                             ResourceName = "SingleLevel"
                         },
@@ -59,18 +63,25 @@ namespace Warewolf.Studio.ViewModels.DummyModels
                         multiLevelDeep
                     }
                 }, 
-                new EnvironmentViewModel(new DummyServer(),shellViewModel) { DisplayName = "Test4" }
+                new EnvironmentViewModel(new DummyServer(),shellViewModel)
+                {
+                    DisplayName = "Test4",
+                    ExplorerItemViewModels = new List<IExplorerItemViewModel>
+                    {
+                        multiLevelDeep
+                    }
+                }
             };
         }
     }
 
-    internal class DummyServer : IServer
+    internal class DummyServer : Resource,IServer
     {
         #region Implementation of IServer
 
-        public bool Connect()
+        public Task<bool> Connect()
         {
-            return true;
+            return new Task<bool>(() => true);
         }
 
         public IList<IResource> Load()
@@ -80,7 +91,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
 
         public IList<IServer> GetServerConnections()
         {
-            return new List<IServer>();
+            return new List<IServer>{new DummyServer{ResourceName = "Localhost"},new DummyServer{ResourceName = "Remote Server"}};
         }
 
         public IList<IToolDescriptor> LoadTools()
@@ -105,9 +116,22 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         {
         }
 
+
         #endregion
 
+        #region Overrides of Resource
 
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return ResourceName;
+        }
 
+        #endregion
     }
 }

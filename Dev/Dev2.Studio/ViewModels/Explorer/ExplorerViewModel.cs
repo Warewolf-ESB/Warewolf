@@ -33,13 +33,13 @@ namespace Dev2.Studio.ViewModels.Explorer
     {
         #region Class Members
         private Guid? _context;
-        IConnectControlViewModel _connectControlViewModel;
+        Dev2.CustomControls.Connections.IConnectControlViewModel _connectControlViewModel;
 
         #endregion Class Members
 
         #region Constructor
 
-        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton,IMainViewModel mainViewModel, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action updateWorkSpaceItems = null, IConnectControlViewModel connectControlViewModel = null)
+        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton,IMainViewModel mainViewModel, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action updateWorkSpaceItems = null, Dev2.CustomControls.Connections.IConnectControlViewModel connectControlViewModel = null)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -74,7 +74,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
 
-        public IConnectControlViewModel ConnectControlViewModel
+        public Dev2.CustomControls.Connections.IConnectControlViewModel ConnectControlViewModel
         {
             get
             {

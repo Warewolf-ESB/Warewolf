@@ -14,7 +14,8 @@
     <!--  *********************************  FONTS   *********************************  -->
 
     
-    <FontFamily x:Key="DefaultFontFamily">Source Sans Pro</FontFamily>
+    <FontFamily x:Key="DefaultFontFamily">Source Sans Pro</FontFamily>    
+	<FontFamily x:Key="IconFont">FontAwesome</FontFamily>
     
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
 

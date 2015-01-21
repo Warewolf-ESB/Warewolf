@@ -98,7 +98,7 @@ namespace Dev2.Core.Tests
             // ReSharper restore ObjectCreationAsStatement
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object,
-                WindowManager.Object, WebController.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
+                WindowManager.Object, WebController.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, new Mock<CustomControls.Connections.IConnectControlViewModel>().Object);
         }
 
         protected void CreateFullExportsAndVm()
@@ -119,7 +119,7 @@ namespace Dev2.Core.Tests
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
             FindCefSharpWpfDll();//Ashley: Load Xaml references manually...
-            Mock<IConnectControlViewModel> mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
+            Mock<CustomControls.Connections.IConnectControlViewModel> mockConnectControlViewModel = new Mock<CustomControls.Connections.IConnectControlViewModel>();
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object
                 , WindowManager.Object, WebController.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, mockConnectControlViewModel.Object);

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.31010.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -263,6 +263,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Localisation", "Test.Localisation\Test.Localisation.csproj", "{6728A692-14A8-471A-B6E2-2E6FFE1D0D2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.ServerProxyLayer", "ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj", "{97A827FF-65C4-4267-99D2-DCE6803B2348}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.AntiCorruptionLayer", "Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj", "{CC1B89CD-3222-4019-A0D1-58664F92CC47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2568,6 +2570,42 @@ Global
 		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Trial|Mixed Platforms.Build.0 = Release|Any CPU
 		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Trial|x64.ActiveCfg = Release|Any CPU
 		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Trial|x86.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Beta|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Beta|Mixed Platforms.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Beta|x64.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Beta|x86.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.CTP|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.CTP|Any CPU.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.CTP|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.CTP|Mixed Platforms.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.CTP|x64.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.CTP|x86.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Japan|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Japan|Any CPU.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Japan|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Japan|Mixed Platforms.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Japan|x64.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Japan|x86.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Release|x64.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Release|x86.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Trial|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Trial|Any CPU.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Trial|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Trial|Mixed Platforms.Build.0 = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Trial|x64.ActiveCfg = Release|Any CPU
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47}.Trial|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

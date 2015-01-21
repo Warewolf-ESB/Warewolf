@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Network;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -53,6 +54,7 @@ namespace Dev2.Common.Interfaces.Studio.Core
         string DisplayName { get; set; }
 
         void Connect(Guid Id);
+        Task<bool> ConnectAsync(Guid Id);
         void Disconnect();
 
         // BUG 9634 - 2013.07.17 - TWR : added

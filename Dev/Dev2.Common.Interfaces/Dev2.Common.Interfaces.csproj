@@ -229,6 +229,7 @@
     <Compile Include="IAsyncWorker.cs" />
     <Compile Include="IConnectControlEnvironment.cs" />
     <Compile Include="IConnectControlSingleton.cs" />
+    <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IConnectedServerChangedEvent.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
@@ -303,7 +304,7 @@
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="ServerProxyLayer\IAdminManager.cs" />
     <Compile Include="ServerProxyLayer\IAdminProxyFactory.cs" />
-    <Compile Include="ServerProxyLayer\IExplorerQueryManager.cs" />
+    <Compile Include="ServerProxyLayer\IExplorerUpdateManager.cs" />
     <Compile Include="ServerProxyLayer\ILoggingManager.cs" />
     <Compile Include="ServerProxyLayer\IQueryManager.cs" />
     <Compile Include="ServerProxyLayer\ISecurityManager.cs" />

@@ -18,22 +18,17 @@
             HorizontalAlignment="Left" Margin="0"
             VerticalAlignment="Top" IsExpanded="True" 
             Style="{DynamicResource ExpanderStyleWithHiddenExpandButton}">
-
-
-            <ScrollViewer Width="300"   x:Name="MyScrollViewer" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
                 <ListBox  Height="1000"  
                      ItemTemplate="{DynamicResource ToolboxCategoryItemTemplate}" 
                      ItemsSource="{Binding Tools}" 
                      ItemsPanel="{DynamicResource HorizontalStackingTools}"
                      />
-            </ScrollViewer>
-
         </Expander>
     </DataTemplate>
 
     <ItemsPanelTemplate x:Key="HorizontalStackingTools">
         <WrapPanel  
-             Width="{Binding ElementName=MyScrollViewer, Path=ViewportWidth}"
+             Width="290"
             Height="1000"
             VerticalAlignment="Top"
             FlowDirection="LeftToRight" 
