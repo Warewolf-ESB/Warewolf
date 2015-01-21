@@ -93,6 +93,27 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(environmentViewModel.IsConnected);
         }
 
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentViewModel_Constructor")]
+        public void EnvironmentViewModel_Constructor_NewCommandHasResourceTypeParameter()
+        {
+            //------------Setup for test--------------------------
+            ResourceType? resourceTypeParameter = null;
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            shellViewModelMock.Setup(model => model.NewResource(It.IsAny<ResourceType?>())).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
+            //------------Execute Test---------------------------
+            var environmentViewModel = new EnvironmentViewModel(server.Object,shellViewModelMock.Object);
+            //------------Assert Results-------------------------
+            environmentViewModel.NewCommand.Execute(ResourceType.DbService);
+            shellViewModelMock.Verify(model => model.NewResource(It.IsAny<ResourceType>()), Times.Once());
+            Assert.IsNotNull(resourceTypeParameter);
+            Assert.AreEqual(ResourceType.DbService, resourceTypeParameter);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("EnvironmentViewModel_Load")]
@@ -205,8 +226,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var filteredList = environmentViewModel.ExplorerItemViewModels.ToList();
             Assert.IsTrue(filteredList[0].IsVisible);
             Assert.IsFalse(filteredList[1].IsVisible);
-            Assert.IsTrue(filteredList[1].Children.ToList()[0].IsVisible);
-            Assert.IsFalse(filteredList[2].IsVisible);
             
          }
     }

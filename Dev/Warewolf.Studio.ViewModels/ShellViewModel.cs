@@ -45,6 +45,14 @@ namespace Warewolf.Studio.ViewModels
             menuView.DataContext = _unityContainer.Resolve<IMenuViewModel>();
             menuRegion.Add(menuView, RegionNames.Menu);
             menuRegion.Activate(menuView);
+
+
+            var variableListRegion = _regionManager.Regions[RegionNames.VariableList];
+
+            var variableList = _unityContainer.Resolve<IVariableListView>();
+            variableList.DataContext = _unityContainer.Resolve<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>();
+            variableListRegion.Add(variableList, RegionNames.VariableList);
+
         }
 
         public bool RegionHasView(string regionName)
@@ -101,6 +109,10 @@ namespace Warewolf.Studio.ViewModels
                 region.Add(foundViewModel); //add the viewModel
             }
             region.Activate(foundViewModel); //active the viewModel
+        }
+
+        public void NewResource(ResourceType? type)
+        {
         }
     }
 }

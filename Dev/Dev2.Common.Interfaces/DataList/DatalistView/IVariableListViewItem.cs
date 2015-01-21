@@ -1,12 +1,12 @@
 ﻿namespace Dev2.Common.Interfaces.DataList.DatalistView
 {
-    public interface IDataListViewItem
+    public interface IVariableListViewItem
     {
-        string Name { get; }
+        string Name { get; set; }
         bool Input { get; set; }
         bool Output { get; set; }
-        string Notes { get; }
+        string Notes { get; set; }
         bool Used { get; set; }
-        bool Visible { get; set; }
+
     }
 }

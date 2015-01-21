@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -18,6 +20,7 @@ namespace Warewolf.Studio.ViewModels
             if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
             _shellViewModel = shellViewModel;
             Server = server;
+            NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
         }
 
         public IServer Server { get; set; }
@@ -27,6 +30,25 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
+        public ICommand NewCommand
+        {
+            get;
+            set;
+        }
+        public ICommand DeployCommand
+        {
+            get;
+            set;
+        }
+        public bool CanCreateDbService { get; set; }
+        public bool CanCreateDbSource { get; set; }
+        public bool CanCreateWebService { get; set; }
+        public bool CanCreateWebSource { get; set; }
+        public bool CanCreatePluginService { get; set; }
+        public bool CanCreatePluginSource { get; set; }
+        public bool CanRename { get; set; }
+        public bool CanDelete { get; set; }
+        public bool CanDeploy { get; set; }
         public string DisplayName
         {
             get;
