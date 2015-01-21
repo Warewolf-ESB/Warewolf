@@ -13,11 +13,9 @@ using Dev2.Common.Interfaces.Studio.Core.Controller;
 
 namespace Dev2.Controller
 {
-
-
     public class CommunicationControllerFactory : ICommunicationControllerFactory
     {
-        public Common.Interfaces.Studio.Core.Controller.ICommunicationController CreateController(string serviceName)
+        public ICommunicationController CreateController(string serviceName)
         {
             return new CommunicationController { ServiceName = serviceName };
         }

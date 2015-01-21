@@ -377,7 +377,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IStudioResourceRepository studioResourceRepository = null, IConnectControlSingleton connectControlSingleton = null, IConnectControlViewModel connectControlViewModel = null)
+            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IStudioResourceRepository studioResourceRepository = null, IConnectControlSingleton connectControlSingleton = null, Dev2.CustomControls.Connections.IConnectControlViewModel connectControlViewModel = null)
             : base(eventPublisher)
         {
             if(environmentRepository == null)

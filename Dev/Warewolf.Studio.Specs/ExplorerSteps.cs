@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
@@ -43,7 +45,7 @@ namespace Warewolf.Studio.Specs
         }
     }
 
-    public class Server : IServer
+    public class Server : Resource,IServer
     {
         readonly IStudioResourceRepository _resourceRepository;
 
@@ -57,9 +59,9 @@ namespace Warewolf.Studio.Specs
             _resourceRepository = resourceRepository;
         }
 
-        public bool Connect()
+        public Task<bool> Connect()
         {
-            return true;
+            return new Task<bool>(() => true);
         }
 
         public IList<IResource> Load()

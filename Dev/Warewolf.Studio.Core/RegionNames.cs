@@ -2,6 +2,7 @@
 {
     public static class RegionNames
     {
+        static string _help;
         public static string Explorer
         {
             get
@@ -38,6 +39,14 @@
             {
                 return "Workspace";
             }
+        }
+        public static string Help
+        {
+            get
+            {
+                return "Help";
+            }
+     
         }
     }
 }

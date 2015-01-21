@@ -8,11 +8,11 @@ using Dev2.Common.Interfaces.Toolbox;
 using Infragistics.Themes;
 using Dev2.Common.Interfaces.DataList.DatalistView;
 using Infragistics.Windows.DockManager;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 using Moq;
-using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Themes.Luna;
@@ -40,7 +40,7 @@ namespace Warewolf.Studio
         {
             base.ConfigureContainer();
             ThemeManager.ApplicationTheme = new LunaTheme();
-            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container,Container.Resolve<IRegionManager>()));
+            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container,Container.Resolve<IRegionManager>(),new Mock<IEventAggregator>().Object));
             Container.RegisterInstance<IExplorerViewModel>(new DummyExplorerViewModel(Container.Resolve<IShellViewModel>()));
             Container.RegisterInstance<IToolboxViewModel>(new DummyToolboxViewModel());
             Container.RegisterInstance<IMenuViewModel>(new DummyMenuViewModel());

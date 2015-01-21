@@ -25,13 +25,13 @@ namespace Dev2.Core.Tests
     {
         public MainViewModelPersistenceMock(IEnvironmentRepository environmentRepository, bool createDesigners = true)
             : base(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, environmentRepository, new VersionChecker(), createDesigners,
-            studioResourceRepository: new Mock<IStudioResourceRepository>().Object, connectControlSingleton: new Mock<IConnectControlSingleton>().Object, connectControlViewModel: new Mock<IConnectControlViewModel>().Object)
+            studioResourceRepository: new Mock<IStudioResourceRepository>().Object, connectControlSingleton: new Mock<IConnectControlSingleton>().Object, connectControlViewModel: new Mock<CustomControls.Connections.IConnectControlViewModel>().Object)
         {
         }  
         
         public MainViewModelPersistenceMock(IEnvironmentRepository environmentRepository,IAsyncWorker asyncWorker, bool createDesigners = true)
             : base(new Mock<IEventAggregator>().Object, asyncWorker, environmentRepository, new VersionChecker(), createDesigners,
-            studioResourceRepository: new Mock<IStudioResourceRepository>().Object, connectControlSingleton: new Mock<IConnectControlSingleton>().Object, connectControlViewModel: new Mock<IConnectControlViewModel>().Object)
+            studioResourceRepository: new Mock<IStudioResourceRepository>().Object, connectControlSingleton: new Mock<IConnectControlSingleton>().Object, connectControlViewModel: new Mock<CustomControls.Connections.IConnectControlViewModel>().Object)
         {
         }
 

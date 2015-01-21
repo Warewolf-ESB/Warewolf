@@ -1,6 +1,7 @@
 ﻿using System;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -18,7 +19,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            new ExplorerItemViewModel(null);
+            new ExplorerItemViewModel(null,null,null);
             //------------Assert Results-------------------------
         }
 
@@ -31,7 +32,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             shellViewModelMock.Setup(model => model.AddService(It.IsAny<IResource>())).Verifiable();
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object,new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
             //------------Assert Results-------------------------
             explorerViewModel.OpenCommand.Execute(null);
             shellViewModelMock.Verify(model => model.AddService(It.IsAny<IResource>()),Times.Once());
@@ -47,7 +48,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             shellViewModelMock.Setup(model => model.NewResource(It.IsAny<ResourceType?>())).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
             //------------Assert Results-------------------------
             explorerViewModel.NewCommand.Execute(ResourceType.DbService);
             shellViewModelMock.Verify(model => model.NewResource(It.IsAny<ResourceType>()), Times.Once());

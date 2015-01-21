@@ -38,5 +38,13 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <returns></returns>
         IList<IDbTable> FetchTables(Guid sourceId);
 
+
+
+        /// <summary>
+        /// Loads the Tree.
+        /// </summary>
+        /// <returns></returns>
+        IExplorerItem Load();
+
     }
 }

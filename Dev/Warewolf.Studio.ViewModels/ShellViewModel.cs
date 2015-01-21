@@ -3,14 +3,19 @@ using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.View_Interfaces;
+using Warewolf.Studio.ViewModels.DummyModels;
+using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -18,12 +23,14 @@ namespace Warewolf.Studio.ViewModels
     {
         readonly IUnityContainer _unityContainer;
         readonly IRegionManager _regionManager;
-
-        public ShellViewModel(IUnityContainer unityContainer, IRegionManager regionManager)
+        readonly IEventAggregator _aggregator;
+        public ShellViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator aggregator)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "unityContainer", unityContainer }, { "regionManager", regionManager } });
             _unityContainer = unityContainer;
             _regionManager = regionManager;
+            _aggregator = aggregator;
+            LocalhostServer = new DummyServer();
         }
 
         public void Initialize()
@@ -111,8 +118,41 @@ namespace Warewolf.Studio.ViewModels
             region.Activate(foundViewModel); //active the viewModel
         }
 
+
+        public void DeployService(IExplorerItemViewModel resourceToDeploy)
+        {
+            VerifyArgument.IsNotNull("resourceToDeploy",resourceToDeploy);
+            var region = GetRegion(RegionNames.Workspace);
+            var vm = region.Views.FirstOrDefault(a=>a is IDeployViewModel);
+
+            if (vm == null)
+            {
+                var deployVm = _unityContainer.Resolve<IDeployViewModel>();
+                deployVm.SelectSourceItem(resourceToDeploy);
+                region.Add(deployVm);
+                region.Activate(deployVm); 
+            }
+            else
+            {
+                var deploy = vm as IDeployViewModel;
+                // ReSharper disable once PossibleNullReferenceException
+                deploy.SelectSourceItem(resourceToDeploy);
+                region.Activate(deploy); //active the viewModel
+            }
+            
+        }
+
+        public void UpdateHelpDescriptor(IHelpDescriptor helpDescriptor)
+        {
+             VerifyArgument.IsNotNull("helpDescriptor", helpDescriptor);
+              _aggregator.GetEvent<HelpChangedEvent>().Publish(helpDescriptor);
+            
+        }
+
         public void NewResource(ResourceType? type)
         {
         }
+
+        public IServer LocalhostServer { get; set; }
     }
 }
