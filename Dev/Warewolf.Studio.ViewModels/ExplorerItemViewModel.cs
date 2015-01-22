@@ -1,29 +1,41 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.Core.Popup;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModel : BindableBase,IExplorerItemViewModel
     {
+        readonly IShellViewModel _shellViewModel;
         string _resourceName;
         private bool _isVisible;
-        IServer _server;
         bool _allowEditing;
         bool _isRenaming;
+        private IExplorerRepository _explorerRepository;
+        bool _canRename;
+        string _path;
+        bool _canExecute;
+        bool _canEdit;
+        bool _canView;
+        bool _canDelete;
+        ICommand _deleteCommand;
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
-            if(shellViewModel == null)
-            {
-                throw new ArgumentNullException("shellViewModel");
-            }
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel" ,shellViewModel}, {"server",server }, {"builder",builder } });
+            _shellViewModel = shellViewModel;
+          
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
@@ -32,10 +44,59 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
             CanCreateDbService = true;
-            CanRename = true;
+            CanRename = true; //todo:remove
+            CanDelete = true; //todo:remove
             CanCreatePluginService = true;
+            _explorerRepository = server.ExplorerRepository;
+            Server.PermissionsChanged += UpdatePermissions;
+            DeleteCommand = new DelegateCommand(Delete);
         }
 
+        void Delete()
+        {
+            if (_shellViewModel.ShowPopup(PopupMessages.GetDeleteConfirmation(ResourceName)))
+            {
+                _explorerRepository.Delete(this);
+                _shellViewModel.RemoveServiceFromExplorer(this);
+            }
+        }
+
+        void UpdatePermissions(PermissionsChangedArgs args)
+        {
+            var resourcePermission = args.Permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
+            if (resourcePermission != null)
+            {
+                CanEdit = resourcePermission.Contribute;
+                CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
+                CanView = resourcePermission.View || resourcePermission.Contribute;
+                CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
+                CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
+            }
+            else
+            {
+                var serverPermission = args.Permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID==Guid.Empty);
+                if (serverPermission != null)
+                {
+                    CanEdit = serverPermission.Contribute;
+                    CanExecute = serverPermission.Contribute || serverPermission.Execute;
+                    CanView = serverPermission.View || serverPermission.Contribute;
+                    CanRename = serverPermission.Contribute || serverPermission.Administrator;
+                    CanDelete = serverPermission.Contribute || serverPermission.Administrator;
+                }
+            }
+        }
+
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                return _deleteCommand;  
+            }
+            set
+            {
+                _deleteCommand = value;
+            }
+        }
         public bool IsRenaming
         {
             get
@@ -46,6 +107,7 @@ namespace Warewolf.Studio.ViewModels
             {
 
                 _isRenaming = value;
+               
                 OnPropertyChanged(() => IsRenaming);
                 OnPropertyChanged(() => IsNotRenaming);
             }
@@ -67,7 +129,15 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if (IsRenaming && _explorerRepository.Rename(this, value)  )
+                {
                 _resourceName = value;
+                }
+                if (!IsRenaming)
+                {
+                    _resourceName = value;
+                }
+                IsRenaming = false;
                 OnPropertyChanged(() => ResourceName);
             }
         }
@@ -92,11 +162,77 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
-        public bool CanRename { get; set; }
-        public bool CanDelete { get; set; }
+        public bool CanRename
+        {
+            get
+            {
+                return _canRename;
+            }
+            set
+            {
+                OnPropertyChanged(()=>CanRename);
+                _canRename = value;
+            }
+        }
+        public bool CanDelete
+        {
+            get
+            {
+                return _canDelete;
+            }
+            set
+            {
+                OnPropertyChanged(()=>CanDelete);
+                _canDelete = value;
+            }
+        }
         public bool CanDeploy { get; set; }
         public ICommand ItemSelectedCommand { get; set; }
-
+        public bool CanExecute
+        {
+            get
+            {
+                return _canExecute;
+            }
+            set
+            {
+                if (_canExecute != value)
+                {
+                    _canExecute = value;
+                    OnPropertyChanged(() => CanExecute);
+                }
+            }
+        }
+        public bool CanEdit
+        {
+            get
+            {
+                return _canEdit;
+            }
+            set
+            {
+                if (_canEdit != value)
+                {
+                    _canEdit = value;
+                    OnPropertyChanged(() => CanEdit);
+                }
+            }
+        }
+        public bool CanView
+        {
+            get
+            {
+                return _canView;
+            }
+            set
+            {
+                if (_canView != value)
+                {
+                    _canView = value;
+                    OnPropertyChanged(() => CanView);
+                }
+            }
+        }
         public bool IsVisible
         {
             get { return _isVisible; }
@@ -121,15 +257,44 @@ namespace Warewolf.Studio.ViewModels
                 _allowEditing = value;
             }
         }
-        public IServer Server
+        public IServer Server { get; private set; }
+        public string Path
         {
             get
             {
-                return _server;
+                return _path;
             }
-            private set
+            }
+
+        public bool Move(IExplorerItemViewModel destination)
+        {
+            try
             {
-                _server = value;
+
+                 _explorerRepository.Move(this, destination);
+                 return true;
+            }
+            catch(Exception err)
+            {
+                _shellViewModel.Handle(err);
+                return false;
+            }
+        }
+
+        public void Filter(string filter)
+        {
+            foreach (var explorerItemViewModel in Children)
+            {
+                explorerItemViewModel.Children.ForEach(model => model.Filter(filter));
+                if (String.IsNullOrEmpty(filter) || explorerItemViewModel.Children.Any(model => model.IsVisible))
+                {
+                    explorerItemViewModel.IsVisible = true;
+                }
+                else
+                {
+                    explorerItemViewModel.IsVisible = false;
+                }
+                OnPropertyChanged(() => Children);
             }
         }
 
@@ -167,8 +332,8 @@ namespace Warewolf.Studio.ViewModels
     }
     public class DeployItemMessage : IDeployItemMessage 
     {
-        IExplorerItemViewModel _item;
-        IExplorerItemViewModel _sourceServer;
+        readonly IExplorerItemViewModel _item;
+        readonly IExplorerItemViewModel _sourceServer;
 
         public DeployItemMessage(IExplorerItemViewModel item, IExplorerItemViewModel sourceServer)
         {

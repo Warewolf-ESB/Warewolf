@@ -729,6 +729,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;Invalid text&quot;.
+        /// </summary>
+        public static string InvalidPermissionHeader {
+            get {
+                return ResourceManager.GetString("InvalidPermissionHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;{0} is invalid. Warewolf only supports latin characters&quot;.
+        /// </summary>
+        public static string InvalidPermissionMessage {
+            get {
+                return ResourceManager.GetString("InvalidPermissionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid resource name.
         /// </summary>
         public static string InvalidResourceNameExceptionMessage {

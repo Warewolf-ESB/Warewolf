@@ -16,7 +16,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ExplorerViewModel_Filter_NullEnvironments_ShouldNotCallFilterOnEachEnvironment()
         {
             //------------Setup for test--------------------------
-            IExplorerViewModel explorerViewModel = new ExplorerViewModel(new Mock<IShellViewModel>().Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
+            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
             var mockEnv2 = new Mock<IEnvironmentViewModel>();
@@ -35,7 +37,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ExplorerViewModel_Filter_ShouldCallFilterOnEachEnvironment()
         {
             //------------Setup for test--------------------------
-            IExplorerViewModel explorerViewModel = new ExplorerViewModel(new Mock<IShellViewModel>().Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
+            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
             var environment1 = mockEnv1.Object;
@@ -56,7 +60,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ExplorerViewModel_SearchText_WhenUpdate_ShouldCallFilter()
         {
             //------------Setup for test--------------------------
-            ExplorerViewModel explorerViewModel = new ExplorerViewModel(new Mock<IShellViewModel>().Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
+            ExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
             var environment1 = mockEnv1.Object;
@@ -86,7 +92,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ExplorerViewModel_SearchText_WhenNotUpdated_ShouldCallFilter()
         {
             //------------Setup for test--------------------------
-            ExplorerViewModel explorerViewModel = new ExplorerViewModel(new Mock<IShellViewModel>().Object);
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
+            ExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
             var environment1 = mockEnv1.Object;
@@ -110,6 +118,56 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockEnv1.Verify(model => model.Filter(It.IsAny<string>()),Times.Once());
             mockEnv2.Verify(model => model.Filter(It.IsAny<string>()), Times.Once());
             Assert.IsFalse(propertyChangedFired);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExplorerViewModel_RefreshCommand")]
+        public void ExplorerViewModel_RefreshCommand_Execute_CallsLoadOnEachEnvironment()
+        {
+            //------------Setup for test--------------------------
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
+            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
+            var mockEnv1 = new Mock<IEnvironmentViewModel>();
+            mockEnv1.Setup(model => model.IsConnected).Returns(true);
+            mockEnv1.Setup(model => model.Load()).Verifiable();
+            var environment1 = mockEnv1.Object;
+            var mockEnv2 = new Mock<IEnvironmentViewModel>();
+            mockEnv2.Setup(model => model.IsConnected).Returns(true);
+            mockEnv2.Setup(model => model.Load()).Verifiable();
+            var environment2 = mockEnv2.Object;
+            explorerViewModel.Environments = new List<IEnvironmentViewModel> { environment1, environment2 };
+            //------------Execute Test---------------------------
+            explorerViewModel.RefreshCommand.Execute(null);
+            //------------Assert Results-------------------------
+            mockEnv1.Verify();
+            mockEnv2.Verify();
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExplorerViewModel_RefreshCommand")]
+        public void ExplorerViewModel_RefreshCommand_Execute_CallsLoadOnEachConnectedEnvironment()
+        {
+            //------------Setup for test--------------------------
+            var mockShellViewModel = new Mock<IShellViewModel>();
+            mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
+            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
+            var mockEnv1 = new Mock<IEnvironmentViewModel>();
+            mockEnv1.Setup(model => model.IsConnected).Returns(true);
+            mockEnv1.Setup(model => model.Load()).Verifiable();
+            var environment1 = mockEnv1.Object;
+            var mockEnv2 = new Mock<IEnvironmentViewModel>();
+            mockEnv2.Setup(model => model.IsConnected).Returns(false);
+            mockEnv2.Setup(model => model.Load()).Verifiable();
+            var environment2 = mockEnv2.Object;
+            explorerViewModel.Environments = new List<IEnvironmentViewModel> { environment1, environment2 };
+            //------------Execute Test---------------------------
+            explorerViewModel.RefreshCommand.Execute(null);
+            //------------Assert Results-------------------------
+            mockEnv1.Verify();
+            mockEnv2.Verify(model => model.Load(),Times.Never());
         }
     }
 }

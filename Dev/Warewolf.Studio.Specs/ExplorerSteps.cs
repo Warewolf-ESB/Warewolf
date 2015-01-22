@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -48,6 +49,7 @@ namespace Warewolf.Studio.Specs
     public class Server : Resource,IServer
     {
         readonly IStudioResourceRepository _resourceRepository;
+        IExplorerRepository _explorerRepository;
 
         #region Implementation of IServer
 
@@ -64,9 +66,14 @@ namespace Warewolf.Studio.Specs
             return new Task<bool>(() => true);
         }
 
-        public IList<IResource> Load()
+        public List<IResource> Load()
         {
             return new List<IResource>();
+        }
+
+        public Task<IExplorerItem> LoadExplorer()
+        {
+            return new Task<IExplorerItem>(() => null);
         }
 
         public IList<IServer> GetServerConnections()
@@ -77,6 +84,14 @@ namespace Warewolf.Studio.Specs
         public IList<IToolDescriptor> LoadTools()
         {
             return new List<IToolDescriptor>();
+        }
+
+        public IExplorerRepository ExplorerRepository
+        {
+            get
+            {
+                return _explorerRepository;
+            }
         }
 
         public bool IsConnected()
@@ -95,6 +110,8 @@ namespace Warewolf.Studio.Specs
         public void Edit()
         {
         }
+
+        public event PermissionsChanged PermissionsChanged;
 
         #endregion
 

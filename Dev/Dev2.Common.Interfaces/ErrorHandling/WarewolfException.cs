@@ -21,6 +21,7 @@ namespace Dev2.Common.Interfaces.ErrorHandling
     {
         Critical,
         Error,
+        User,
         Etc
     }
 

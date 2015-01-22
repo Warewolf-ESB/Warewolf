@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Moq;
@@ -14,6 +17,7 @@ namespace Warewolf.Studio.ViewModels
     public class EnvironmentViewModel:BindableBase, IEnvironmentViewModel
     {
         readonly IShellViewModel _shellViewModel;
+        ICollection<IExplorerItemViewModel> _explorerItemViewModels;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -22,14 +26,22 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
+            DisplayName = server.ResourceName;
         }
 
         public IServer Server { get; set; }
 
         public ICollection<IExplorerItemViewModel> ExplorerItemViewModels
         {
-            get;
-            set;
+            get
+            {
+                return _explorerItemViewModels;
+            }
+            set
+            {
+                _explorerItemViewModels = value;
+                OnPropertyChanged(() => ExplorerItemViewModels);
+            }
         }
         public ICommand NewCommand
         {
@@ -58,17 +70,18 @@ namespace Warewolf.Studio.ViewModels
         public bool IsConnected { get; private set; }
         public bool IsLoaded { get; private set; }
 
-        public void Connect()
+        public async void Connect()
         {
-            IsConnected = Server.Connect().Result;
+            IsConnected = await Server.Connect();
+            Load();
         }
 
-        public void Load()
+        public async void Load()
         {
             if (IsConnected)
             {
-                var explorerItems = Server.Load();
-                var explorerItemViewModels = CreateExplorerItems(explorerItems,Server);
+                var explorerItems = await Server.LoadExplorer();
+                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children,Server);
                 ExplorerItemViewModels = explorerItemViewModels;
                 IsLoaded = true;
             }
@@ -78,14 +91,16 @@ namespace Warewolf.Studio.ViewModels
         {
             foreach (var explorerItemViewModel in ExplorerItemViewModels)
             {
-                if (explorerItemViewModel.ResourceName != null && explorerItemViewModel.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant()))
+                explorerItemViewModel.Children.ForEach(model => model.Filter(filter));
+                if ((String.IsNullOrEmpty(filter) || explorerItemViewModel.Children.Any(model => model.IsVisible)) || (explorerItemViewModel.ResourceName != null && explorerItemViewModel.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant())))
                 {
-                    explorerItemViewModel.IsVisible = true;                    
+                    explorerItemViewModel.IsVisible = true;             
                 }
                 else
                 {
                     explorerItemViewModel.IsVisible = false;
                 }
+                OnPropertyChanged(() => ExplorerItemViewModels);
             }
         }
 
@@ -109,19 +124,33 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void RemoveItem(IExplorerItemViewModel vm)
+        {
+            if(vm.ResourceType != ResourceType.Server)
+            {
+                var res = AsList(ExplorerItemViewModels).FirstOrDefault(a => a.Children!= null && a.Children.Any(b=>b.ResourceId==vm.ResourceId));
+                if(res != null)
+                {
+                    res.Children.Remove(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
+                    OnPropertyChanged(()=>ExplorerItemViewModels);
+                }
+            }
+        }
+
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        IList<IExplorerItemViewModel> CreateExplorerItems(IList<IResource> explorerItems, IServer server)
+        ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
-            if(explorerItems==null) return new List<IExplorerItemViewModel>();
-            IList<IExplorerItemViewModel> explorerItemModels = new List<IExplorerItemViewModel>();
+            if (explorerItems == null) return new ObservableCollection<IExplorerItemViewModel>();
+            var explorerItemModels = new ObservableCollection<IExplorerItemViewModel>();
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
                 explorerItemModels.Add(new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
                 {
-                    Resource = explorerItem,
-                    ResourceName = explorerItem.ResourceName,
+                    ResourceName = explorerItem.DisplayName,
+                    ResourceId = explorerItem.ResourceId,
+                    ResourceType = explorerItem.ResourceType,
                     Children = CreateExplorerItems(explorerItem.Children,server)
                 });
             }

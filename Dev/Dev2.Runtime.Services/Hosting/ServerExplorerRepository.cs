@@ -31,7 +31,7 @@ namespace Dev2.Runtime.Hosting
         IExplorerRepositorySync _sync;
         readonly IFile _file;
         public static IExplorerServerResourceRepository Instance { get; private set; }
-
+        private IExplorerItem _root;
         static ServerExplorerRepository()
         {
             Instance = new ServerExplorerRepository
@@ -71,7 +71,9 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem Load(Guid workSpaceId)
         {
-            return ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
+            if (_root == null)
+            _root= ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
+            return _root;
         }
 
         public IExplorerItem Load(ResourceType type, Guid workSpaceId)
@@ -161,6 +163,22 @@ namespace Dev2.Runtime.Hosting
         {
             VerifyArgument.IsNotNull("sync", sync);
             _sync = sync;
+        }
+
+        public IExplorerItem Find(Guid id)
+        {
+            var items = Load("");
+            return Find(items, id);
+        }
+        public IExplorerItem Find(IExplorerItem item,Guid itemToFind)
+        {
+            if (item.ResourceId == itemToFind)
+                return item;
+            if (item.Children == null || item.Children.Count == 0)
+            {
+                return null;
+            }
+            return item.Children.Select(child => Find(child, itemToFind)).FirstOrDefault(found => found != null);
         }
 
         public IExplorerRepositoryResult DeleteItem(IExplorerItem itemToDelete, Guid workSpaceId)

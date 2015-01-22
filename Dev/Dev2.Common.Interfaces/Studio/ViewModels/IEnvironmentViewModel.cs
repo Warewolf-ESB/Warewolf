@@ -22,7 +22,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
     {
         IServer Server { get; set; }
         ICollection<IExplorerItemViewModel> ExplorerItemViewModels { get; set; }
-       
         string DisplayName { get; set; }
         bool IsConnected { get; }
         bool IsLoaded { get; }
@@ -31,5 +30,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void Filter(string filter);
         ICollection<IExplorerItemViewModel> AsList();
         void SetItemCheckedState(System.Guid id, bool state);
+        void RemoveItem(IExplorerItemViewModel vm);
     }
 }

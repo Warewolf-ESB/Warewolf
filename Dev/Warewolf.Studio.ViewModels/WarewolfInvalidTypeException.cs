@@ -13,4 +13,14 @@ namespace Warewolf.Studio.ViewModels
 
         }
     }
+    public class WarewolfInvalidPermissionsException: WarewolfException
+    {
+        // ReSharper disable TooManyDependencies
+        public WarewolfInvalidPermissionsException(string message, Exception innerException)
+            // ReSharper restore TooManyDependencies
+            : base(message, innerException, ExceptionType.Execution, ExceptionSeverity.User)
+        {
+
+        }
+    }
 }

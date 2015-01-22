@@ -137,10 +137,10 @@ namespace ServerProxyLayerTests
 
             // ReSharper restore MaximumChainedReferences
             factory.Setup(a => a.CreateController("MoveItemService")).Returns(controller.Object);
-            manager.MoveItem(id, "bob");
+            manager.MoveItem(id, Guid.Empty);
             controller.Verify(a => a.ExecuteCommand<IExplorerRepositoryResult>(connection.Object, GlobalConstants.ServerWorkspaceID), Times.Once());
             controller.Verify(a => a.AddPayloadArgument("itemToMove", id.ToString()), Times.Once());
-            controller.Verify(a => a.AddPayloadArgument("newPath", "bob"), Times.Once());
+            controller.Verify(a => a.AddPayloadArgument("newPath", Guid.Empty.ToString()), Times.Once());
             controller.Verify(a => a.ExecuteCommand<IExplorerRepositoryResult>(connection.Object, GlobalConstants.ServerWorkspaceID));
 
         }

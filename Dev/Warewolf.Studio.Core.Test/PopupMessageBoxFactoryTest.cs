@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common.Interfaces.PopupController;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Warewolf.Studio.Core.Popup;
 
 namespace Warewolf.Studio.Core.Test
@@ -12,10 +14,11 @@ namespace Warewolf.Studio.Core.Test
         public void PopupMessageBoxFactory_Create_CorrectPropertySet_ExpectWellFormedObject()
         {
             //------------Setup for test--------------------------
+            var mockPopupWindow = new Mock<IPopupWindow>();
             var popupMessageBoxFactory = new PopupMessageBoxFactory();
-            var msg = new PopupMessages().GetNotConnected();
+            var msg =  PopupMessages.GetNotConnected();
             //------------Execute Test---------------------------
-            var x = popupMessageBoxFactory.Create(msg);
+            var x = popupMessageBoxFactory.Create(msg,mockPopupWindow.Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(msg,x.Message);
             Assert.IsFalse(x.FocusCancel);

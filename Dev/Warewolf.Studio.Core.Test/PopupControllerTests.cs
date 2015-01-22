@@ -16,16 +16,17 @@ namespace Warewolf.Studio.Core.Test
         {
             //------------Setup for test--------------------------
             var factory = new Mock<IPopupMessageBoxFactory>();
+            var mockPopupWindow = new Mock<IPopupWindow>();
             var vm = new Mock<IDev2MessageBoxViewModel>();
-            factory.Setup(a => a.Create(It.IsAny<IPopupMessage>())).Returns(vm.Object);
-            var popupController = new PopupController(factory.Object);
+            factory.Setup(a => a.Create(It.IsAny<IPopupMessage>(),It.IsAny<IPopupWindow>())).Returns(vm.Object);
+            var popupController = new PopupController(factory.Object,mockPopupWindow.Object);
             
             //------------Execute Test---------------------------
-            popupController.Show(new PopupMessages().GetDeleteConfirmation("bob"));
+            popupController.Show( PopupMessages.GetDeleteConfirmation("bob"));
 
             //------------Assert Results-------------------------
             vm.Verify(a=>a.Show(),Times.Once());
-            factory.Verify(a=>a.Create(It.IsAny<IPopupMessage>()));
+            factory.Verify(a => a.Create(It.IsAny<IPopupMessage>(), It.IsAny<IPopupWindow>()));
         }
 
         [TestMethod]
@@ -35,7 +36,7 @@ namespace Warewolf.Studio.Core.Test
         public void PopupController_Ctor_Null()
         {
 
-            var popupController = new PopupController(null);
+            var popupController = new PopupController(null,null);
 
 
 

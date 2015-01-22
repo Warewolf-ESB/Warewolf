@@ -1,20 +1,25 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Util;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Warewolf.Studio.Core;
+using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
-using Warewolf.Studio.ViewModels.DummyModels;
 using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
@@ -24,13 +29,18 @@ namespace Warewolf.Studio.ViewModels
         readonly IUnityContainer _unityContainer;
         readonly IRegionManager _regionManager;
         readonly IEventAggregator _aggregator;
+        IExceptionHandler _handler;
+        IPopupController _popupController;
         public ShellViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator aggregator)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "unityContainer", unityContainer }, { "regionManager", regionManager } });
             _unityContainer = unityContainer;
             _regionManager = regionManager;
             _aggregator = aggregator;
-            LocalhostServer = new DummyServer();
+            var localHostString = AppSettings.LocalHost;
+            var localhostUri = new Uri(localHostString);
+            LocalhostServer = unityContainer.Resolve<IServer>(new ParameterOverrides { { "uri", localhostUri } });
+            LocalhostServer.ResourceName = "localhost (" + localHostString + ")";
         }
 
         public void Initialize()
@@ -52,8 +62,9 @@ namespace Warewolf.Studio.ViewModels
             menuView.DataContext = _unityContainer.Resolve<IMenuViewModel>();
             menuRegion.Add(menuView, RegionNames.Menu);
             menuRegion.Activate(menuView);
-
-
+            _handler = _unityContainer.Resolve<IExceptionHandler>();
+            _popupController = _unityContainer.Resolve<IPopupController>();
+            _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => { _popupController.Show(PopupMessages.GetInvalidPermissionException()); });
             var variableListRegion = _regionManager.Regions[RegionNames.VariableList];
 
             var variableList = _unityContainer.Resolve<IVariableListView>();
@@ -144,15 +155,37 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(IHelpDescriptor helpDescriptor)
         {
+            //!!!!!!!/// Reviewer please note this could go either way here. Used the event aggregator to ensure order of events... but could go the other way as well cos the shell view model owns this
              VerifyArgument.IsNotNull("helpDescriptor", helpDescriptor);
               _aggregator.GetEvent<HelpChangedEvent>().Publish(helpDescriptor);
             
         }
+       
 
         public void NewResource(ResourceType? type)
         {
         }
 
         public IServer LocalhostServer { get; set; }
+
+        public void Handle(Exception err)
+        {
+            _handler.Handle(err);
+        }
+
+        public bool ShowPopup(IPopupMessage msg)
+        {
+            var res = _popupController.Show(msg);
+            return res == MessageBoxResult.OK || res == MessageBoxResult.Yes;
+        }
+
+        public void RemoveServiceFromExplorer(IExplorerItemViewModel explorerItemViewModel)
+        {
+
+            var explorervm = _unityContainer.Resolve<IExplorerViewModel>();
+            explorervm.RemoveItem(explorerItemViewModel);
+        }
+
+  
     }
 }

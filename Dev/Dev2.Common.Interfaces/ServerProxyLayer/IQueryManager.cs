@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -44,7 +45,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// Loads the Tree.
         /// </summary>
         /// <returns></returns>
-        IExplorerItem Load();
+        Task<IExplorerItem> Load();
 
     }
 }

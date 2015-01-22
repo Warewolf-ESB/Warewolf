@@ -154,13 +154,21 @@ namespace Dev2.Runtime.Hosting
             return String.Format("v.{0}  {1}  {2}", parts[1], new DateTime(long.Parse(parts[2])), parts[3].Replace(".xml", ""));
         }
 
-        static string GetDirectoryFromResource(IResource resource)
+        public static string GetDirectoryFromResource(IResource resource)
         {
-            if(resource.ResourcePath.Contains("\\"))
-                return resource.ResourcePath.Substring(0, resource.ResourcePath.LastIndexOf('\\'));
+            string path = resource.ResourcePath;
+            return GetDirectoryFromString(path);
+        }
+
+        public static string GetDirectoryFromString(string path)
+        {
+            if(path.Contains("\\"))
+            {
+                return path.Substring(0, path.LastIndexOf('\\'));
+            }
             return "";
         }
-        
+
         public IExplorerItem GetLatestVersionNumber(Guid resourceId)
         {
             return null;

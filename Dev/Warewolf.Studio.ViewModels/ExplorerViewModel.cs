@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -15,8 +20,29 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException("shellViewModel");
             }
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer);
+            RefreshCommand = new DelegateCommand(Refresh);
+            var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer,shellViewModel);
+            Environments = new ObservableCollection<IEnvironmentViewModel>{localhostEnvironment};
+            localhostEnvironment.Connect();
         }
 
+        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server,IShellViewModel shellViewModel)
+        {
+            return new EnvironmentViewModel(server, shellViewModel);
+        }
+
+        void Refresh()
+        {
+            Environments.ForEach(model =>
+            {
+                if (model.IsConnected)
+                {
+                    model.Load();
+                }
+            });
+        }
+
+        public ICommand RefreshCommand { get; set; }
         ICollection<IEnvironmentViewModel> _environments;
         string _searchText;
         public ICollection<IEnvironmentViewModel> Environments
@@ -40,6 +66,20 @@ namespace Warewolf.Studio.ViewModels
                 {
                     environmentViewModel.Filter(filter);
                 }
+                OnPropertyChanged(() => Environments);
+            }
+        }
+
+        public void RemoveItem(IExplorerItemViewModel item)
+        {
+            if (Environments != null)
+            {
+                var env = Environments.FirstOrDefault(a => a.Server == item.Server);
+                if(env!= null)
+                {
+                    env.RemoveItem(item);
+                }
+                OnPropertyChanged(() => Environments);
             }
         }
 

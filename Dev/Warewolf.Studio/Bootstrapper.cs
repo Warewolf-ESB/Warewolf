@@ -1,19 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Windows;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DataList.DatalistView;
+using Dev2.Common.Interfaces.ErrorHandling;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Util;
 using Infragistics.Themes;
-using Dev2.Common.Interfaces.DataList.DatalistView;
 using Infragistics.Windows.DockManager;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 using Moq;
+using Warewolf.Core;
+using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
+using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Themes.Luna;
 using Warewolf.Studio.ViewModels;
@@ -39,18 +47,20 @@ namespace Warewolf.Studio
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
+            AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
             ThemeManager.ApplicationTheme = new LunaTheme();
-            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container,Container.Resolve<IRegionManager>(),new Mock<IEventAggregator>().Object));
-            Container.RegisterInstance<IExplorerViewModel>(new DummyExplorerViewModel(Container.Resolve<IShellViewModel>()));
+            Container.RegisterType<IServer, Server>(new InjectionConstructor(typeof(Uri)));
+            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
+            Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>()));
             Container.RegisterInstance<IToolboxViewModel>(new DummyToolboxViewModel());
             Container.RegisterInstance<IMenuViewModel>(new DummyMenuViewModel());
 
             Container.RegisterInstance<IExplorerView>(new ExplorerView());
             Container.RegisterInstance<IToolboxView>(new ToolboxView());
             Container.RegisterInstance<IMenuView>(new MenuView());
-         
+            Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
 
-     
+
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();
             colls.Add(new VariableListColumnViewModel("col", "bob", new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, colls) { Input = true });
 
@@ -67,7 +77,10 @@ namespace Warewolf.Studio
             Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel vm = new VariableListViewModel(expressions, convertor.Object);
             var variableList = new VariableListView { DataContext = vm };
             Container.RegisterInstance<IVariableListView>(new VariableListView());
-            Container.RegisterInstance<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>(vm);
+            Container.RegisterInstance(vm);
+            var popup =  new Mock<IPopupWindow>();
+            popup.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.OK);
+            Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory(),popup.Object));
         }
 
         #endregion
