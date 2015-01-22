@@ -704,6 +704,12 @@ You need Administrator permission.</value>
   <data name="InvalidTextMessage" xml:space="preserve">
     <value>"{0} is invalid. Warewolf only supports latin characters"</value>
   </data>
+  <data name="InvalidPermissionHeader" xml:space="preserve">
+    <value>"Invalid text"</value>
+  </data>
+  <data name="InvalidPermissionMessage" xml:space="preserve">
+    <value>"{0} is invalid. Warewolf only supports latin characters"</value>
+  </data>
   <data name="RenameConflictDescription" xml:space="preserve">
     <value>The following task has been renamed {0} -&gt; {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------" + "Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler.</value>
   </data>

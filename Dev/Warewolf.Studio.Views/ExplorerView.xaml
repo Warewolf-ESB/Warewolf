@@ -157,8 +157,8 @@
                         <DataTemplate DataType="viewModels:IExplorerItemViewModel">
                             <StackPanel>
 
-                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}"></TextBox>
-                                <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVis}}">
+                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
+                                <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0.10*" />
                                     <ColumnDefinition Width="0.10*" />

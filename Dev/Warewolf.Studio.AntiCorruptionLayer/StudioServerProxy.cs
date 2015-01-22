@@ -13,7 +13,6 @@ using Dev2.Controller;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Threading;
-using Warewolf.Core;
 using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -94,6 +93,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
         }
 
+        public event PermissionsChanged PermissionsChanged;
+
         #endregion
     }
 
@@ -139,18 +140,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public bool Move(IExplorerItemViewModel explorerItemViewModel, IExplorerItemViewModel destination)
         {
-            try
-            {
-                if(explorerItemViewModel.)
+   
+              
                 UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId,destination.ResourceId);
                 return true;
-            }
-            catch (Exception err)
-            {
-                //todo:log
-                return false;
 
-            }
         }
 
         #endregion

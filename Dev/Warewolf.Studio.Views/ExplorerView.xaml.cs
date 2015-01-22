@@ -30,7 +30,10 @@ namespace Warewolf.Studio.Views
                     var source = node.Data as IExplorerItemViewModel;
                     if(source!=null&&destination!= null)
                     {
-                        source.Move(destination);
+                       if( !source.Move(destination))
+                       {
+                           e.Handled = true;
+                       }
                     }
 	            }
 	           

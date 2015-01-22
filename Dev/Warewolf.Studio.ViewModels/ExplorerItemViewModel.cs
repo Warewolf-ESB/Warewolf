@@ -15,6 +15,7 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModel : BindableBase,IExplorerItemViewModel
     {
+        readonly IShellViewModel _shellViewModel;
         string _resourceName;
         private bool _isVisible;
         bool _allowEditing;
@@ -28,6 +29,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
+            _shellViewModel = shellViewModel;
             if(shellViewModel == null)
             {
                 throw new ArgumentNullException("shellViewModel");
@@ -54,6 +56,8 @@ namespace Warewolf.Studio.ViewModels
                 CanEdit = resourcePermission.Contribute;
                 CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
                 CanView = resourcePermission.View || resourcePermission.Contribute;
+                CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
+                
             }
             else
             {
@@ -226,8 +230,18 @@ namespace Warewolf.Studio.ViewModels
             }
 
         public bool Move(IExplorerItemViewModel destination)
+        {
+            try
             {
-            return  _explorerRepository.Move(this, destination);
+
+                 _explorerRepository.Move(this, destination);
+                 return true;
+            }
+            catch(Exception err)
+            {
+                _shellViewModel.Handle(err);
+                return false;
+            }
         }
 
         public void Filter(string filter)

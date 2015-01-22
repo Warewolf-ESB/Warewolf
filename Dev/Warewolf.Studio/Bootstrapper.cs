@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
@@ -13,6 +15,7 @@ using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 using Moq;
+using Warewolf.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Themes.Luna;
@@ -48,7 +51,7 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IExplorerView>(new ExplorerView());
             Container.RegisterInstance<IToolboxView>(new ToolboxView());
             Container.RegisterInstance<IMenuView>(new MenuView());
-         
+            Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
 
      
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();
