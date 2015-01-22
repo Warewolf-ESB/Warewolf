@@ -18,7 +18,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         readonly ServerProxy _environmentConnection;
         readonly Guid _serverId;
         StudioServerProxy _proxyLayer;
-        IExplorerRepository _explorerRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -35,8 +34,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public Server(string uri,ICredentials credentials)
         {
             _environmentConnection = new ServerProxy(uri,credentials,new AsyncWorker());
+            _environmentConnection.Connect(Guid.NewGuid()); // todo: temp id to ge
             _serverId = Guid.NewGuid();
             _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), _environmentConnection);
+
         }
 
         #region Implementation of IServer
@@ -72,7 +73,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             get
             {
-                return _explorerRepository;
+                return _proxyLayer;
             }
         }
 

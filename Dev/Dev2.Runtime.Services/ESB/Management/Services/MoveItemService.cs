@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -58,9 +59,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var itemToMoveId = Guid.Parse(itemToBeRenamed.ToString());
                 var destination = Guid.Parse(newPath.ToString());
                 var itemToMove = ServerExplorerRepo.Find(itemToMoveId);
-                var itemLocation = ServerExplorerRepo.Find(destination).ResourcePath;
+                var itemLocation = ServerExplorerRepo.Find(destination);
+                string location = itemLocation.ResourcePath;
+                if (itemLocation.ResourceType < ResourceType.Folder)
+                    location = ServerVersionRepository.GetDirectoryFromString(itemLocation.ResourcePath);
                 Dev2Logger.Log.Info(String.Format("Move Item. Path:{0} NewPath:{1}", itemToMove, itemLocation));
-                item = ServerExplorerRepo.MoveItem(itemToMove, itemLocation, GlobalConstants.ServerWorkspaceID);
+                item = ServerExplorerRepo.MoveItem(itemToMove, location, GlobalConstants.ServerWorkspaceID);
             }
             catch (Exception e)
             {

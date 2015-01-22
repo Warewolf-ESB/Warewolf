@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -7,6 +9,7 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Moq;
+using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Warewolf.Studio.ViewModels.DummyModels
 {
@@ -20,32 +23,38 @@ namespace Warewolf.Studio.ViewModels.DummyModels
 
         static List<IEnvironmentViewModel> CreateEnvironments(IShellViewModel shellViewModel)
         {
-            var oneLevelDeep = new ExplorerItemViewModel(shellViewModel,new DummyServer(),new Mock<IExplorerHelpDescriptorBuilder>().Object)
+            var server = new Server(new Uri( @"http://localhost:3142"));//,new NetworkCredential(@"dev2\leon.rajindrapersadh","33Damyanti"));
+            var oneLevelDeep = new ExplorerItemViewModel(shellViewModel,server,new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "One Level Deep",
             };
-            oneLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
+            oneLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel,server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
-                ResourceName = "Resource One Level Deep"
+                ResourceName = "Resource One Level Deep",
+                ResourceId = Guid.Parse("0bdc3207-ff6b-4c01-a5eb-c7060222f75d")
             });
-            var multiLevelDeep = new ExplorerItemViewModel(shellViewModel, new DummyServer(),new Mock<IExplorerHelpDescriptorBuilder>().Object)
+            var multiLevelDeep = new ExplorerItemViewModel(shellViewModel, server,new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
-                ResourceName = "Multi Level Deep"
+                ResourceName = "Multi Level Deep",
+                ResourceId = Guid.Parse("0bdc3207-ff6b-4c01-a5eb-c7060222f75d")
             };
-            multiLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
+            multiLevelDeep.Children.Add(new ExplorerItemViewModel(shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
-                ResourceName = "No children"
+                ResourceName = "No children",
+                ResourceId = Guid.Parse("0bdc3207-ff6b-4c01-a5eb-c7060222f75d")
             });
-            var childHasChildren = new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
+            var childHasChildren = new ExplorerItemViewModel(shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
-                ResourceName = "Has One Chid"
+                ResourceName = "Has One Chid",
+                ResourceId = Guid.Parse("acb75027-ddeb-47d7-814e-a54c37247ec1")
+               
             };
             multiLevelDeep.Children.Add(childHasChildren);
-            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
+            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Is child of child"
             });
-            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel, new DummyServer(), new Mock<IExplorerHelpDescriptorBuilder>().Object)
+            childHasChildren.Children.Add(new ExplorerItemViewModel(shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
             {
                 ResourceName = "Is Another child of a child"
             });
@@ -56,15 +65,16 @@ namespace Warewolf.Studio.ViewModels.DummyModels
                     DisplayName = "Test1",
                     ExplorerItemViewModels = new List<IExplorerItemViewModel>
                     {
-                        new ExplorerItemViewModel(shellViewModel,new DummyServer(),new Mock<IExplorerHelpDescriptorBuilder>().Object)
+                        new ExplorerItemViewModel(shellViewModel,server,new Mock<IExplorerHelpDescriptorBuilder>().Object)
                         {
                             ResourceName = "SingleLevel"
+
                         },
                         oneLevelDeep,
                         multiLevelDeep
                     }
                 }, 
-                new EnvironmentViewModel(new DummyServer(),shellViewModel)
+                new EnvironmentViewModel(server,shellViewModel)
                 {
                     DisplayName = "Test4",
                     ExplorerItemViewModels = new List<IExplorerItemViewModel>

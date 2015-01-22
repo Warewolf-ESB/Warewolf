@@ -113,6 +113,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void RemoveItem(IExplorerItemViewModel vm)
+        {
+            if(vm.ResourceType != ResourceType.Server)
+            {
+                var res = AsList(ExplorerItemViewModels).FirstOrDefault(a => a.Children!= null && a.Children.Any(b=>b.ResourceId==vm.ResourceId));
+                if(res != null)
+                {
+                    res.Children.Remove(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
+                }
+            }
+        }
+
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
         IList<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local

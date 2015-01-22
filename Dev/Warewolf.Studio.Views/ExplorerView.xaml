@@ -36,7 +36,7 @@
             <Separator></Separator>
             <MenuItem Name="Rename" Header="Rename" Command="{Binding Path=Data.RenameCommand}"
                           CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanRename, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="Delete" Header="Delete" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeleteCommand}"
+            <MenuItem Name="Delete" Header="Delete" Command="{Binding Path=Data.DeleteCommand}"
                           CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <MenuItem Name="Deploy" Header="Deploy" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeployCommand}"
                           CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}"/>

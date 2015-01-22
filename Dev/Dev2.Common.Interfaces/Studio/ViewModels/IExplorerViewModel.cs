@@ -11,6 +11,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
 	{
 		ICollection<IEnvironmentViewModel> Environments {get;set;}
         void Filter(string filter);
+        void RemoveItem(IExplorerItemViewModel item);
         event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
         IEnvironmentViewModel SelectedEnvironment { get; set; }
         IServer SelectedServer { get;  }
