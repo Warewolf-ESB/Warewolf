@@ -8,16 +8,18 @@ namespace Warewolf.Studio.Core.Popup
     {
         #region Implementation of IPopupController
         private readonly IPopupMessageBoxFactory _popupMessageBoxFactory;
+        readonly IPopupWindow _popupWindow;
 
-        public PopupController(IPopupMessageBoxFactory popupMessageBoxFactory)
+        public PopupController(IPopupMessageBoxFactory popupMessageBoxFactory,IPopupWindow popupWindow)
         {
             VerifyArgument.IsNotNull("popupMessageBoxFactory",popupMessageBoxFactory);
             _popupMessageBoxFactory = popupMessageBoxFactory;
+            _popupWindow = popupWindow;
         }
 
         public MessageBoxResult Show(IPopupMessage message)
         {
-            var window = _popupMessageBoxFactory.Create(message);
+            var window = _popupMessageBoxFactory.Create(message, _popupWindow);
             var result = window.Show();
             return result;
         }

@@ -49,7 +49,7 @@ namespace Warewolf.Studio
             base.ConfigureContainer();
             AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
             ThemeManager.ApplicationTheme = new LunaTheme();
-            Container.RegisterType<IServer, Server>();
+            Container.RegisterType<IServer, Server>(new InjectionConstructor(typeof(Uri)));
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>()));
             Container.RegisterInstance<IToolboxViewModel>(new DummyToolboxViewModel());
@@ -78,7 +78,7 @@ namespace Warewolf.Studio
             var variableList = new VariableListView { DataContext = vm };
             Container.RegisterInstance<IVariableListView>(new VariableListView());
             Container.RegisterInstance(vm);
-            Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory()));
+            Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory(),new Mock<IPopupWindow>().Object));
         }
 
         #endregion
