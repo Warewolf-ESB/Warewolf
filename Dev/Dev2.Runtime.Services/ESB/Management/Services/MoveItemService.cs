@@ -55,9 +55,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentException("newName value not supplied.");
                 }
 
-                var itemToMove = serializer.Deserialize<ServerExplorerItem>(itemToBeRenamed);
-                Dev2Logger.Log.Info(String.Format("Move Item. Path:{0} NewPath:{1}", itemToBeRenamed, newPath));
-                item = ServerExplorerRepo.MoveItem(itemToMove, newPath.ToString(), GlobalConstants.ServerWorkspaceID);
+                var itemToMoveId = Guid.Parse(itemToBeRenamed.ToString());
+                var destination = Guid.Parse(newPath.ToString());
+                var itemToMove = ServerExplorerRepo.Find(itemToMoveId);
+                var itemLocation = ServerExplorerRepo.Find(destination).ResourcePath;
+                Dev2Logger.Log.Info(String.Format("Move Item. Path:{0} NewPath:{1}", itemToMove, itemLocation));
+                item = ServerExplorerRepo.MoveItem(itemToMove, itemLocation, GlobalConstants.ServerWorkspaceID);
             }
             catch (Exception e)
             {
