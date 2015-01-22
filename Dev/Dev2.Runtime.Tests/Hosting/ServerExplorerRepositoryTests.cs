@@ -136,6 +136,101 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(root.Children[1].DisplayName, "Bobs");
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerExplorerRepository_Load")]
+        public void ServerExplorerRepository_Find_FindAtRootLevel_ExpectFolder()
+        {
+            //------------Setup for test--------------------------
+            var catalogue = new Mock<IResourceCatalog>();
+            var factory = new Mock<IExplorerItemFactory>();
+            var dir = new Mock<IDirectory>();
+            var id = Guid.NewGuid();
+            var explorerItem = new ServerExplorerItem(
+                "d", Guid.NewGuid(),
+                ResourceType.Folder,
+                new List<IExplorerItem>
+                    {
+                        new ServerExplorerItem("Services", id, ResourceType.Folder,
+                                               new List<IExplorerItem>(), Permissions.Administrator, "bob"),
+                        new ServerExplorerItem("Bobs", Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(),
+                                               Permissions.Administrator, "bob")
+
+                    }
+                , Permissions.Administrator, "bob"
+                );
+            var sync = new Mock<IExplorerRepositorySync>();
+            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
+            factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
+            //------------Execute Test---------------------------
+            var root = serverExplorerRepository.Find(id);
+            Assert.AreEqual(root, explorerItem.Children[0]);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerExplorerRepository_Load")]
+        public void ServerExplorerRepository_Find_NotFound_ExpectNull()
+        {
+            //------------Setup for test--------------------------
+            var catalogue = new Mock<IResourceCatalog>();
+            var factory = new Mock<IExplorerItemFactory>();
+            var dir = new Mock<IDirectory>();
+            var id = Guid.NewGuid();
+            var explorerItem = new ServerExplorerItem(
+                "d", Guid.NewGuid(),
+                ResourceType.Folder,
+                new List<IExplorerItem>
+                    {
+                        new ServerExplorerItem("Services", id, ResourceType.Folder,
+                                               new List<IExplorerItem>(), Permissions.Administrator, "bob"),
+                        new ServerExplorerItem("Bobs", Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(),
+                                               Permissions.Administrator, "bob")
+
+                    }
+                , Permissions.Administrator, "bob"
+                );
+            var sync = new Mock<IExplorerRepositorySync>();
+            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
+            factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
+            //------------Execute Test---------------------------
+            var root = serverExplorerRepository.Find(Guid.NewGuid());
+            Assert.IsNull( root);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerExplorerRepository_Load")]
+        public void ServerExplorerRepository_Find_ItemIsRoot_ExpectItemNull()
+        {
+            //------------Setup for test--------------------------
+            var catalogue = new Mock<IResourceCatalog>();
+            var factory = new Mock<IExplorerItemFactory>();
+            var dir = new Mock<IDirectory>();
+            var id = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            var explorerItem = new ServerExplorerItem(
+                "d", id2,
+                ResourceType.Folder,
+                new List<IExplorerItem>
+                    {
+                        new ServerExplorerItem("Services", id, ResourceType.Folder,
+                                               new List<IExplorerItem>(), Permissions.Administrator, "bob"),
+                        new ServerExplorerItem("Bobs", Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(),
+                                               Permissions.Administrator, "bob")
+
+                    }
+                , Permissions.Administrator, "bob"
+                );
+            var sync = new Mock<IExplorerRepositorySync>();
+            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper());
+            factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
+            //------------Execute Test---------------------------
+            var root = serverExplorerRepository.Find(id2);
+            Assert.AreEqual(root, explorerItem);
+        }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerExplorerRepository_Load")]
