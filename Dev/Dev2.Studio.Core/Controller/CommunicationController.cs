@@ -73,7 +73,7 @@ namespace Dev2.Controller
         /// <returns></returns>
         public Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId)
         {
-            return new Task<T>(() => ExecuteCommand<T>(connection,workspaceId));
+            return Task.FromResult(ExecuteCommand<T>(connection,workspaceId));
         }
 
         /// <summary>
