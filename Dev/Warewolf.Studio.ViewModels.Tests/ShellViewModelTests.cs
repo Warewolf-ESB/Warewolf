@@ -10,8 +10,10 @@ using System.Xml.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
@@ -23,6 +25,7 @@ using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Core;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Help;
 
@@ -76,6 +79,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
             testContainer.RegisterType<IServer, MockServer>();
+            testContainer.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
+            testContainer.RegisterInstance<IPopupController>(new Mock<IPopupController>().Object);
+            testContainer.RegisterType<IServer, MockServer>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Explorer",new Region());
             testRegionManager.Regions.Add("Toolbox",new Region());
@@ -122,7 +128,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             testContainer.RegisterInstance<IToolboxViewModel>(new Mock<IToolboxViewModel>().Object);
             testContainer.RegisterInstance<IMenuViewModel>(new Mock<IMenuViewModel>().Object);
             testContainer.RegisterInstance<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>(new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object);
-
+            testContainer.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
+            testContainer.RegisterInstance<IPopupController>(new Mock<IPopupController>().Object);
             var mockExplorerView = new Mock<IExplorerView>();
             mockExplorerView.SetupProperty(view => view.DataContext);
             testContainer.RegisterInstance<IExplorerView>(mockExplorerView.Object);

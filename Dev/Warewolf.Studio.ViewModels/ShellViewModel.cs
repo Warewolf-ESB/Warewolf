@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels
             _aggregator = aggregator;
             var localHostString = AppSettings.LocalHost;
             var localhostUri = new Uri(localHostString);
-            LocalhostServer = unityContainer.Resolve<IServer>(new ParameterOverrides { { "serverUri", localhostUri } });
+            LocalhostServer = unityContainer.Resolve<IServer>(new ParameterOverrides { { "uri", localhostUri } });
             LocalhostServer.ResourceName = "localhost (" + localHostString + ")";
         }
 
@@ -181,6 +181,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void RemoveServiceFromExplorer(IExplorerItemViewModel explorerItemViewModel)
         {
+
+            var explorervm = _unityContainer.Resolve<IExplorerViewModel>();
+            explorervm.RemoveItem(explorerItemViewModel);
         }
 
   

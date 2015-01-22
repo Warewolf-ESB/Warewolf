@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -32,11 +33,9 @@ namespace Warewolf.Studio.ViewModels
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel" ,shellViewModel}, {"server",server }, {"builder",builder } });
             _shellViewModel = shellViewModel;
-            if(shellViewModel == null)
-            {
-                throw new ArgumentNullException("shellViewModel");
-            }
+          
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));

@@ -132,6 +132,7 @@ namespace Warewolf.Studio.ViewModels
                 if(res != null)
                 {
                     res.Children.Remove(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
+                    OnPropertyChanged(()=>ExplorerItemViewModels);
                 }
             }
         }
