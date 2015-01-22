@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Controller;
 using Dev2.Network;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Threading;
 using Warewolf.Core;
 using Warewolf.Studio.ServerProxyLayer;
@@ -18,11 +19,12 @@ using Warewolf.Studio.ServerProxyLayer;
 namespace Warewolf.Studio.AntiCorruptionLayer
 {
 
-    public class Server : IServer
+    public class Server : Resource,IServer
     {
         readonly ServerProxy _environmentConnection;
         readonly Guid _serverId;
         StudioServerProxy _proxyLayer;
+        IExplorerRepository _explorerRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -52,6 +54,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IList<IResource> Load()
         {
+            _proxyLayer.QueryManagerProxy.Load();
             return null;
         }
 
@@ -63,6 +66,14 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public IList<IToolDescriptor> LoadTools()
         {
             return null;
+        }
+
+        public IExplorerRepository ExplorerRepository
+        {
+            get
+            {
+                return _explorerRepository;
+            }
         }
 
         public bool IsConnected()
@@ -124,6 +135,22 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                
             }
             
+        }
+
+        public bool Move(IExplorerItemViewModel explorerItemViewModel, IExplorerItemViewModel destination)
+        {
+            try
+            {
+                if(explorerItemViewModel.)
+                UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId,destination.ResourceId);
+                return true;
+            }
+            catch (Exception err)
+            {
+                //todo:log
+                return false;
+
+            }
         }
 
         #endregion

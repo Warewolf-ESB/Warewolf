@@ -15,13 +15,13 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ResourceType ResourceType { get; set; }
         ICommand OpenCommand { get; set; }
         ICommand RenameCommand { get; set; }
-        
         bool IsRenaming{ get; set; }
         bool IsNotRenaming { get;  }
         ICommand ItemSelectedCommand { get; set; }
         bool IsVisible { get; set; }
         bool AllowEditing { get; set; }
         IServer Server { get; }
+        bool Move(IExplorerItemViewModel destination);
     }
     public interface IExplorerHelpDescriptorBuilder
     {

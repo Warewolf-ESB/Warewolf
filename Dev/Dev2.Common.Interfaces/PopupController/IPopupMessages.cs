@@ -12,7 +12,6 @@
         IPopupMessage GetConnectionTimeoutConfirmation(string serverName);
         IPopupMessage GetDeleteVersionMessage(string displayName);
         IPopupMessage GetRollbackVersionMessage(string displayName);
-
         IPopupMessage GetInvalidCharacterMessage(string invalidText);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
@@ -72,12 +71,12 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// Move a resource to another folder
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="newPath"></param>
-        public void MoveItem(Guid id, string newPath)
+        /// <param name="destinationid"></param>
+        public void MoveItem(Guid id, Guid destinationid)
         {
             var controller = CommunicationControllerFactory.CreateController("MoveItemService");
             controller.AddPayloadArgument("itemToMove", id.ToString());
-            controller.AddPayloadArgument("newPath", newPath);
+            controller.AddPayloadArgument("newPath", destinationid.ToString());
             controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
         }
 

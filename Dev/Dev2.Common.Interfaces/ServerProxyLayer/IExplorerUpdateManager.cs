@@ -1,5 +1,4 @@
 ﻿using System;
-using Dev2.Common.Interfaces.Explorer;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
 {
@@ -27,14 +26,14 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// Rename a resource
         /// </summary>
         /// <param name="id">the resource id</param>
-        /// <param name="newName">the new name</param>
+        /// <param name="destination">the new name</param>
         void Rename(Guid id, string newName);
         /// <summary>
         /// Move a resource to another folder
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="newPath"></param>
-        void MoveItem(Guid id, string newPath);
+        /// <param name="newPathId"></param>
+        void MoveItem(Guid id, Guid newPathId);
 
     }
 }

@@ -18,6 +18,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         ICollection<IEnvironmentViewModel> _environments;
+        string _searchText;
         public ICollection<IEnvironmentViewModel> Environments
         {
             get
@@ -46,6 +47,23 @@ namespace Warewolf.Studio.ViewModels
         public IEnvironmentViewModel SelectedEnvironment { get; set; }
         public IServer SelectedServer { get { return SelectedEnvironment.Server; }  }
         public IConnectControlViewModel ConnectControlViewModel { get; private set; }
+        public string SearchText
+        {
+            get
+            {
+                return _searchText;
+            }
+            set
+            {
+                if(_searchText == value)
+                {
+                    return;
+                }
+                _searchText = value;
+                Filter(_searchText);
+                OnPropertyChanged(() => SearchText);
+            }
+        }
 
         public IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc)
         {

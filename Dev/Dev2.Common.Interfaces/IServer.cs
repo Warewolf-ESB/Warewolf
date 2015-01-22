@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Toolbox;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IServer
+    public interface IServer:IResource
     {
         Task<bool> Connect();
         IList<IResource> Load();

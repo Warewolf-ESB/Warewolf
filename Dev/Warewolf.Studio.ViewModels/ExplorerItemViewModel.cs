@@ -18,6 +18,9 @@ namespace Warewolf.Studio.ViewModels
         bool _allowEditing;
         bool _isRenaming;
         private IExplorerRepository _explorerRepository;
+        bool _canRename;
+        string _path;
+
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
             if(shellViewModel == null)
@@ -69,11 +72,14 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (_explorerRepository.Rename(this, value))
+                if (IsRenaming && _explorerRepository.Rename(this, value)  )
                 {
                     _resourceName = value;
                 }
-            
+                if (!IsRenaming)
+                {
+                    _resourceName = value;
+                }
                 IsRenaming = false;
                 OnPropertyChanged(() => ResourceName);
             }
@@ -99,7 +105,18 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
-        public bool CanRename { get; set; }
+        public bool CanRename
+        {
+            get
+            {
+                return _canRename;
+            }
+            set
+            {
+                OnPropertyChanged(()=>CanRename);
+                _canRename = value;
+            }
+        }
         public bool CanDelete { get; set; }
         public bool CanDeploy { get; set; }
         public ICommand ItemSelectedCommand { get; set; }
@@ -129,6 +146,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public IServer Server { get; private set; }
+        public string Path
+        {
+            get
+            {
+                return _path;
+            }
+        }
+
+        public bool Move(IExplorerItemViewModel destination)
+        {
+            return  _explorerRepository.Move(this, destination);
+        }
 
         public IResource Resource { get; set; }
     }

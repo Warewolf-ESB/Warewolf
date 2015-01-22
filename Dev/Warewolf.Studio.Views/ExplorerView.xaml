@@ -81,7 +81,7 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Grid.Row="0"  Text="Filter" />
+            <TextBox Grid.Column="0" Grid.Row="0" Text="{Binding SearchText, Delay=300}" />
             <Button Width="25"  Grid.Column="1" Grid.Row="0" Style="{StaticResource ExplorerButtonStyle}"
                     Height="25"
                     Padding="4">
@@ -108,12 +108,16 @@
 
 
         <ig:XamDataTree 
-            x:Name="ExplorerTree"
+         x:Name="ExplorerTree"
          Grid.Row="6"
          Grid.Column="1"
+         IsDraggable="True"
+         IsDropTarget="True"
          DisplayMemberPath="DisplayName"
          ActiveDataItem="{Binding Path=Environments}"
          ItemsSource="{Binding Environments}"
+         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
+         
          NodeLineVisibility="Hidden">
             <ig:XamDataTree.EditingSettings>
                 <ig:TreeEditingSettings
@@ -122,17 +126,15 @@
                     IsMouseActionEditingEnabled="None"
                     IsEnterKeyEditingEnabled="True"
                     IsF2EditingEnabled="True"
-                    IsOnNodeActiveEditingEnabled="True"
+                    IsOnNodeActiveEditingEnabled="False"
                     />
             </ig:XamDataTree.EditingSettings>
             <ig:XamDataTree.GlobalNodeLayouts >
                 <ig:NodeLayout Key="ExplorerItemViewModels"
-                               DisplayMemberPath="DisplayName"
-                               
-                              >                    
-                    <ig:NodeLayout.ItemTemplate>
-                        <DataTemplate DataType="viewModels:IExplorerItemViewModel"   >
-                            <StackPanel Orientation="Horizontal">
+                               DisplayMemberPath="DisplayName" >                    
+                    <ig:NodeLayout.ItemTemplate  >
+                        <DataTemplate DataType="viewModels:IExplorerItemViewModel">
+                            <StackPanel  Orientation="Horizontal" Visibility="{Binding Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Text="{Binding Data.ResourceName}" />
                                 <TextBlock Text="{Binding Data.Children.Count}" />                               
                             </StackPanel>
@@ -140,8 +142,8 @@
                     </ig:NodeLayout.ItemTemplate>
                    <ig:NodeLayout.EditorTemplate >
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}">
-                                <TextBox Text="{Binding Path=Data.DisplayName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}"></TextBox>
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <TextBox Text="{Binding Path=Data.DisplayName , UpdateSourceTrigger=LostFocus}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
                                 <TextBlock Text="{Binding Data.ResourceName}" />
                                 <TextBlock Text="{Binding Data.Children.Count}" />
                             </StackPanel>
@@ -157,58 +159,58 @@
 
                                 <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}"></TextBox>
                                 <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVis}}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.10*" />
-                                        <ColumnDefinition Width="0.10*" />
-                                        <ColumnDefinition Width="0.60*" />
-                                        <ColumnDefinition Width="0.10*" />
-                                        <ColumnDefinition Width="0.10*" />
-                                        <ColumnDefinition Width="0.10*" />
-                                        <ColumnDefinition Width="0.10*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Image Grid.Column="0"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.60*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                    <ColumnDefinition Width="0.10*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Image Grid.Column="0"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-New}" />
-                                    <Image Grid.Column="1"
+                                <Image Grid.Column="1"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-Spacer}" />
-                                    <TextBlock Grid.Column="2" Text="{Binding Data.ResourceName}" >
-                                        <TextBlock.InputBindings>
-                                            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Data.OpenCommand}" CommandParameter="{Binding Data}"></MouseBinding>
-                                        </TextBlock.InputBindings>
+                                <TextBlock Grid.Column="2" Text="{Binding Data.ResourceName}" >
+                                    <TextBlock.InputBindings>
+                                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Data.OpenCommand}" CommandParameter="{Binding Data}"></MouseBinding>
+                                    </TextBlock.InputBindings>
                                     </TextBlock>
-                                    <Image Grid.Column="3"
+                                <Image Grid.Column="3"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-Spacer}" />
-                                    <Image Grid.Column="4"
+                                <Image Grid.Column="4"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-Executable-Disabled}" />
-                                    <Image Grid.Column="5"
+                                <Image Grid.Column="5"
                                        Width="5"
                                        Height="12"
                                        Source="{StaticResource System-Spacer}" />
-                                    <Image Grid.Column="6"
+                                <Image Grid.Column="6"
                                        Width="12"
                                        Height="12"
                                        Source="{StaticResource System-Security-Enabled}" />
-                                </Grid>
+                            </Grid>
                             </StackPanel>
 
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
-                    <ig:NodeLayout.EditorTemplate>
+                    <!--<ig:NodeLayout.EditorTemplate>
                         <DataTemplate >
                             <StackPanel>
                            
-                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVis}}"></TextBox>
-                                <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVis}}">
+                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
+                                <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="0.10*" />
                                         <ColumnDefinition Width="0.10*" />
@@ -253,7 +255,7 @@
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>
-                    </ig:NodeLayout.EditorTemplate>
+                    </ig:NodeLayout.EditorTemplate>-->
                 </ig:NodeLayout>
 
             </ig:XamDataTree.GlobalNodeLayouts>
