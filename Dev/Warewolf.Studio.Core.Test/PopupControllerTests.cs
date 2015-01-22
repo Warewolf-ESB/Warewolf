@@ -21,7 +21,7 @@ namespace Warewolf.Studio.Core.Test
             var popupController = new PopupController(factory.Object);
             
             //------------Execute Test---------------------------
-            popupController.Show(new PopupMessages().GetDeleteConfirmation("bob"));
+            popupController.Show( PopupMessages.GetDeleteConfirmation("bob"));
 
             //------------Assert Results-------------------------
             vm.Verify(a=>a.Show(),Times.Once());

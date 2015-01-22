@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.UnittestingUtils;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -22,7 +24,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            new ExplorerItemViewModel(null,null,null);
+            NullArgumentConstructorHelper.AssertNullConstructor( new object[]{new Mock<IShellViewModel>().Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object},typeof(ExplorerItemViewModel));
             //------------Assert Results-------------------------
         }
 
@@ -139,6 +141,83 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(explorerViewModel.CanView);
             Assert.IsFalse(explorerViewModel.CanEdit);
             Assert.IsTrue(explorerViewModel.CanExecute);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Renaming")]
+        public void ExplorerItemViewModel_IsRenaming_NotRenaming()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+                    //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            //------------Assert Results-------------------------
+            explorerViewModel.IsRenaming = true;
+            Assert.IsTrue(explorerViewModel.IsRenaming);
+            Assert.IsFalse(explorerViewModel.IsNotRenaming);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Renaming")]
+        public void ExplorerItemViewModel_UpdateName_RenamesToFalse()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+           
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+                        //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object,server.Object , new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            expRepo.Setup(a => a.Rename(explorerViewModel, "bob")).Returns(true);
+            //------------Assert Results-------------------------
+            explorerViewModel.IsRenaming = true;
+            explorerViewModel.ResourceName = "bob";
+            Assert.IsFalse(explorerViewModel.IsRenaming);
+         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Renaming")]
+        public void ExplorerItemViewModel_UpdateName_RenamesToFalse_ErrorOnCall()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            explorerViewModel.ResourceName = "dave";
+            expRepo.Setup(a => a.Rename(explorerViewModel, "bob")).Throws(new Exception());
+            //------------Assert Results-------------------------
+            explorerViewModel.IsRenaming = true;
+            explorerViewModel.ResourceName = "dave";
+            Assert.IsFalse(explorerViewModel.IsRenaming);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Move")]
+        public void ExplorerItemViewModel_Move_CallsCorrectModel_NoErrorOnCall()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+            var expMovedInto = new Mock<IExplorerItemViewModel>().Object;
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            explorerViewModel.Move(expMovedInto);
+            expRepo.Verify(a=>a.Move(explorerViewModel,expMovedInto));
         }
     }
 }

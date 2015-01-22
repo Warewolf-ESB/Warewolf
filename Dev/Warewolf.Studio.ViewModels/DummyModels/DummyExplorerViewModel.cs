@@ -78,6 +78,8 @@ namespace Warewolf.Studio.ViewModels.DummyModels
 
     internal class DummyServer : Resource,IServer
     {
+        IExplorerRepository _explorerRepository;
+
         #region Implementation of IServer
 
         public Task<bool> Connect()
@@ -103,6 +105,14 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         public IList<IToolDescriptor> LoadTools()
         {
             return null;
+        }
+
+        public IExplorerRepository ExplorerRepository
+        {
+            get
+            {
+                return _explorerRepository;
+            }
         }
 
         public bool IsConnected()

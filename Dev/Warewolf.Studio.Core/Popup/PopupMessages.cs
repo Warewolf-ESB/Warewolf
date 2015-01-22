@@ -5,11 +5,11 @@ using Dev2.Common.Interfaces.PopupController;
 
 namespace Warewolf.Studio.Core.Popup
 {
-    public class PopupMessages : IPopupMessages
+    public static class PopupMessages 
     {
         #region Implementation of IPopupMessages
 
-        public IPopupMessage GetNotConnected()
+        public static IPopupMessage GetNotConnected()
         {
             return new PopupMessage
             {
@@ -20,7 +20,7 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
-        public IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted)
+        public static IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted)
         {
             return new PopupMessage
             {
@@ -31,7 +31,7 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
-        public IPopupMessage GetNameChangedConflict(string oldName, string newName)
+        public static IPopupMessage GetNameChangedConflict(string oldName, string newName)
         {
             return new PopupMessage
             {
@@ -42,7 +42,7 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
-        public IPopupMessage GetSettingsCloseConfirmation()
+        public static IPopupMessage GetSettingsCloseConfirmation()
         {
             return new PopupMessage
             {
@@ -53,7 +53,7 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
-        public IPopupMessage GetSchedulerCloseConfirmation()
+        public static IPopupMessage GetSchedulerCloseConfirmation()
         {
              return new PopupMessage
             {
@@ -65,7 +65,7 @@ namespace Warewolf.Studio.Core.Popup
         
         }
 
-        public IPopupMessage GetNoInputsSelectedWhenClickLink()
+        public static IPopupMessage GetNoInputsSelectedWhenClickLink()
         {
             return new PopupMessage
             {
@@ -77,7 +77,7 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
-        public IPopupMessage GetSaveErrorDialog(string errorMessage)
+        public static IPopupMessage GetSaveErrorDialog(string errorMessage)
         {
             return new PopupMessage
             {
@@ -89,7 +89,7 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
-        public IPopupMessage GetConnectionTimeoutConfirmation(string serverName)
+        public static IPopupMessage GetConnectionTimeoutConfirmation(string serverName)
         {
             return new PopupMessage
             {
@@ -101,7 +101,7 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
-        public IPopupMessage GetDeleteVersionMessage(string displayName)
+        public static IPopupMessage GetDeleteVersionMessage(string displayName)
         {
             return new PopupMessage
             {
@@ -113,7 +113,7 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
-        public IPopupMessage GetRollbackVersionMessage(string displayName)
+        public static IPopupMessage GetRollbackVersionMessage(string displayName)
         {
             return new PopupMessage
             {
@@ -125,7 +125,7 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
-        public IPopupMessage GetInvalidCharacterMessage(string invalidText)
+        public static IPopupMessage GetInvalidCharacterMessage(string invalidText)
         {
             return new PopupMessage
             {
@@ -138,5 +138,17 @@ namespace Warewolf.Studio.Core.Popup
         }
 
         #endregion
+
+        public static IPopupMessage GetInvalidPermissionException()
+        {
+            return new PopupMessage
+            {
+                Buttons = MessageBoxButton.OK,
+                Header = Resources.Languages.Core.InvalidPermissionHeader,
+                Description = string.Format(Resources.Languages.Core.InvalidPermissionMessage),
+                Image = MessageBoxImage.Warning,
+
+            };
+        }
     }
 }

@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Controller;
 using Dev2.Network;
@@ -21,7 +22,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
     {
         readonly ServerProxy _environmentConnection;
         readonly Guid _serverId;
-        readonly StudioServerProxy _proxyLayer;
+        StudioServerProxy _proxyLayer;
+        IExplorerRepository _explorerRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -70,6 +72,14 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return null;
         }
 
+        public IExplorerRepository ExplorerRepository
+        {
+            get
+            {
+                return _explorerRepository;
+            }
+        }
+
         public bool IsConnected()
         {
             return _environmentConnection.IsConnected;
@@ -93,7 +103,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         #endregion
     }
 
-    public class StudioServerProxy
+    public class StudioServerProxy:IExplorerRepository
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -109,8 +119,39 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                 throw new ArgumentNullException("environmentConnection");
             }
             QueryManagerProxy = new QueryManagerProxy(controllerFactory, environmentConnection);
+            UpdateManagerProxy = new ExplorerUpdateManagerProxy(controllerFactory,environmentConnection);
         }
 
         public QueryManagerProxy QueryManagerProxy { get; set; }
+        public ExplorerUpdateManagerProxy UpdateManagerProxy { get; set; }
+
+        #region Implementation of IExplorerRepository
+
+        public bool Rename(IExplorerItemViewModel vm, string newName)
+        {
+            try
+            {
+                UpdateManagerProxy.Rename(vm.ResourceId, newName);
+                return false;
+            }
+            catch(Exception err)
+            {
+                //todo:log
+                return false;
+               
+            }
+            
+        }
+
+        public bool Move(IExplorerItemViewModel explorerItemViewModel, IExplorerItemViewModel destination)
+        {
+   
+              
+                UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId,destination.ResourceId);
+                return true;
+
+        }
+
+        #endregion
     }
 }

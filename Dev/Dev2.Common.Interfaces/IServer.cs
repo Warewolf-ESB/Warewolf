@@ -14,6 +14,7 @@ namespace Dev2.Common.Interfaces
         Task<IExplorerItem> LoadExplorer();
         IList<IServer> GetServerConnections();
         IList<IToolDescriptor> LoadTools();
+        IExplorerRepository ExplorerRepository { get; }
         bool IsConnected();
         void ReloadTools();
         void Disconnect();

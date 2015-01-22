@@ -34,7 +34,7 @@
             <MenuItem Name="NewPluginSource" Header="New Plugin Source" Command="{Binding Path=Data.NewCommand}"
                           CommandParameter="{x:Static data:ResourceType.PluginSource}" Visibility="{Binding Path=Data.CanCreatePluginSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <Separator></Separator>
-            <MenuItem Name="Rename" Header="Rename" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.RenameCommand}"
+            <MenuItem Name="Rename" Header="Rename" Command="{Binding Path=Data.RenameCommand}"
                           CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanRename, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <MenuItem Name="Delete" Header="Delete" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeleteCommand}"
                           CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -108,12 +108,16 @@
 
 
         <ig:XamDataTree 
-            x:Name="ExplorerTree"
+         x:Name="ExplorerTree"
          Grid.Row="6"
          Grid.Column="1"
+         IsDraggable="True"
+         IsDropTarget="True"
          DisplayMemberPath="DisplayName"
          ActiveDataItem="{Binding Path=Environments}"
          ItemsSource="{Binding Environments}"
+         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
+         
          NodeLineVisibility="Hidden">
             <ig:XamDataTree.EditingSettings>
                 <ig:TreeEditingSettings
@@ -122,17 +126,15 @@
                     IsMouseActionEditingEnabled="None"
                     IsEnterKeyEditingEnabled="True"
                     IsF2EditingEnabled="True"
-                    IsOnNodeActiveEditingEnabled="True"
+                    IsOnNodeActiveEditingEnabled="False"
                     />
             </ig:XamDataTree.EditingSettings>
             <ig:XamDataTree.GlobalNodeLayouts >
                 <ig:NodeLayout Key="ExplorerItemViewModels"
-                               DisplayMemberPath="DisplayName"
-                               
-                              >                    
-                    <ig:NodeLayout.ItemTemplate>
-                        <DataTemplate DataType="viewModels:IExplorerItemViewModel"   >
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                               DisplayMemberPath="DisplayName" >                    
+                    <ig:NodeLayout.ItemTemplate  >
+                        <DataTemplate DataType="viewModels:IExplorerItemViewModel">
+                            <StackPanel  Orientation="Horizontal" Visibility="{Binding Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Text="{Binding Data.ResourceName}" />
                                 <TextBlock Text="{Binding Data.Children.Count}" />                               
                             </StackPanel>
@@ -141,7 +143,7 @@
                    <ig:NodeLayout.EditorTemplate >
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
-                                <TextBox Text="{Binding Path=Data.DisplayName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
+                                <TextBox Text="{Binding Path=Data.DisplayName , UpdateSourceTrigger=LostFocus}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
                                 <TextBlock Text="{Binding Data.ResourceName}" />
                                 <TextBlock Text="{Binding Data.Children.Count}" />
                             </StackPanel>
@@ -153,7 +155,10 @@
 
                     <ig:NodeLayout.ItemTemplate >
                         <DataTemplate DataType="viewModels:IExplorerItemViewModel">
-                            <Grid Visibility="{Binding Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <StackPanel>
+
+                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
+                                <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0.10*" />
                                     <ColumnDefinition Width="0.10*" />
@@ -199,13 +204,14 @@
                                        Visibility="{Binding Data.CanView, Converter={StaticResource BoolToVisibilityConverter}}"
                                        Source="{StaticResource System-Security-Enabled}" />
                             </Grid>
+                            </StackPanel>
 
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
-                    <ig:NodeLayout.EditorTemplate>
+                    <!--<ig:NodeLayout.EditorTemplate>
                         <DataTemplate >
                             <StackPanel>
-
+                           
                                 <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
                                 <Grid  Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <Grid.ColumnDefinitions>
@@ -252,7 +258,7 @@
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>
-                    </ig:NodeLayout.EditorTemplate>
+                    </ig:NodeLayout.EditorTemplate>-->
                 </ig:NodeLayout>
 
             </ig:XamDataTree.GlobalNodeLayouts>

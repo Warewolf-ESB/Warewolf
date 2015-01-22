@@ -49,6 +49,7 @@ namespace Warewolf.Studio.Specs
     public class Server : Resource,IServer
     {
         readonly IStudioResourceRepository _resourceRepository;
+        IExplorerRepository _explorerRepository;
 
         #region Implementation of IServer
 
@@ -83,6 +84,14 @@ namespace Warewolf.Studio.Specs
         public IList<IToolDescriptor> LoadTools()
         {
             return new List<IToolDescriptor>();
+        }
+
+        public IExplorerRepository ExplorerRepository
+        {
+            get
+            {
+                return _explorerRepository;
+            }
         }
 
         public bool IsConnected()

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
@@ -14,16 +15,21 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModel : BindableBase,IExplorerItemViewModel
     {
+        readonly IShellViewModel _shellViewModel;
         string _resourceName;
         private bool _isVisible;
         bool _allowEditing;
         bool _isRenaming;
+        private IExplorerRepository _explorerRepository;
+        bool _canRename;
+        string _path;
         bool _canExecute;
         bool _canEdit;
         bool _canView;
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
+            _shellViewModel = shellViewModel;
             if(shellViewModel == null)
             {
                 throw new ArgumentNullException("shellViewModel");
@@ -38,6 +44,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateDbService = true;
             CanRename = true;
             CanCreatePluginService = true;
+            _explorerRepository = server.ExplorerRepository;
             Server.PermissionsChanged += UpdatePermissions;
         }
 
@@ -49,6 +56,8 @@ namespace Warewolf.Studio.ViewModels
                 CanEdit = resourcePermission.Contribute;
                 CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
                 CanView = resourcePermission.View || resourcePermission.Contribute;
+                CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
+                
             }
             else
             {
@@ -72,6 +81,7 @@ namespace Warewolf.Studio.ViewModels
             {
 
                 _isRenaming = value;
+               
                 OnPropertyChanged(() => IsRenaming);
                 OnPropertyChanged(() => IsNotRenaming);
             }
@@ -93,7 +103,15 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if (IsRenaming && _explorerRepository.Rename(this, value)  )
+                {
                 _resourceName = value;
+                }
+                if (!IsRenaming)
+                {
+                    _resourceName = value;
+                }
+                IsRenaming = false;
                 OnPropertyChanged(() => ResourceName);
             }
         }
@@ -118,7 +136,18 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
-        public bool CanRename { get; set; }
+        public bool CanRename
+        {
+            get
+            {
+                return _canRename;
+            }
+            set
+            {
+                OnPropertyChanged(()=>CanRename);
+                _canRename = value;
+            }
+        }
         public bool CanDelete { get; set; }
         public bool CanDeploy { get; set; }
         public ICommand ItemSelectedCommand { get; set; }
@@ -192,6 +221,28 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public IServer Server { get; private set; }
+        public string Path
+        {
+            get
+            {
+                return _path;
+            }
+            }
+
+        public bool Move(IExplorerItemViewModel destination)
+        {
+            try
+            {
+
+                 _explorerRepository.Move(this, destination);
+                 return true;
+            }
+            catch(Exception err)
+            {
+                _shellViewModel.Handle(err);
+                return false;
+            }
+        }
 
         public void Filter(string filter)
         {

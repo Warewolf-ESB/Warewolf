@@ -13,7 +13,7 @@ namespace Warewolf.Studio.Core.Test
         {
             //------------Setup for test--------------------------
             var popupMessageBoxFactory = new PopupMessageBoxFactory();
-            var msg = new PopupMessages().GetNotConnected();
+            var msg =  PopupMessages.GetNotConnected();
             //------------Execute Test---------------------------
             var x = popupMessageBoxFactory.Create(msg);
             //------------Assert Results-------------------------
