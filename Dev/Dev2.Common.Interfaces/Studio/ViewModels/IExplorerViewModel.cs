@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels
 {
@@ -15,6 +16,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         IServer SelectedServer { get;  }
 	    IConnectControlViewModel ConnectControlViewModel { get; }
         string SearchText { get; set; }
+	    ICommand RefreshCommand { get; set; }
 
 	    IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc);
 	}

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -55,6 +58,88 @@ namespace Warewolf.Studio.ViewModels.Tests
             shellViewModelMock.Verify(model => model.NewResource(It.IsAny<ResourceType>()), Times.Once());
             Assert.IsNotNull(resourceTypeParameter);
             Assert.AreEqual(ResourceType.DbService,resourceTypeParameter);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExplorerItemViewModel_PermissionsUpdated")]
+        public void ExplorerItemViewModel_PermissionsUpdated_HasResourcePermissionShouldUpdateItem()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var mockServer = new Mock<IServer>();
+            var resourceId = Guid.NewGuid();
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, mockServer.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object) { ResourceId = resourceId };
+            //------------Execute Test---------------------------
+            mockServer.Raise(server => server.PermissionsChanged += null, new PermissionsChangedArgs(new List<IWindowsGroupPermission>{new WindowsGroupPermission
+            {
+                ResourceID = resourceId,
+                Contribute = false,
+                View = true,
+                Execute = false,
+            }}));
+            //------------Assert Results-------------------------
+            Assert.IsTrue(explorerViewModel.CanView);
+            Assert.IsFalse(explorerViewModel.CanEdit);
+            Assert.IsFalse(explorerViewModel.CanExecute);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExplorerItemViewModel_PermissionsUpdated")]
+        public void ExplorerItemViewModel_PermissionsUpdated_HasResourcePermissionContributeShouldUpdateItem()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var mockServer = new Mock<IServer>();
+            var resourceId = Guid.NewGuid();
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, mockServer.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object) { ResourceId = resourceId };
+            //------------Execute Test---------------------------
+            mockServer.Raise(server => server.PermissionsChanged += null, new PermissionsChangedArgs(new List<IWindowsGroupPermission>{new WindowsGroupPermission
+            {
+                ResourceID = resourceId,
+                View = false,
+                Execute = false,
+                Contribute = true,
+            }}));
+            //------------Assert Results-------------------------
+            Assert.IsTrue(explorerViewModel.CanView);
+            Assert.IsTrue(explorerViewModel.CanEdit);
+            Assert.IsTrue(explorerViewModel.CanExecute);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExplorerItemViewModel_PermissionsUpdated")]
+        public void ExplorerItemViewModel_PermissionsUpdated_HasNoResourcePermissionShouldUpdateItemWithServerPermission()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var mockServer = new Mock<IServer>();
+            var resourceId = Guid.NewGuid();
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, mockServer.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object) { ResourceId = resourceId };
+            //------------Execute Test---------------------------
+            mockServer.Raise(server => server.PermissionsChanged += null, new PermissionsChangedArgs(new List<IWindowsGroupPermission>{
+                new WindowsGroupPermission
+            {
+                ResourceID = Guid.NewGuid(),
+                View = false,
+                Execute = false,
+                Contribute = true,
+            },
+            new WindowsGroupPermission
+            {
+                ResourceID = Guid.Empty,
+                IsServer = true,
+                View = false,
+                Administrator = false,
+                Contribute = false,
+                Execute = true,
+            }}));
+            //------------Assert Results-------------------------
+            Assert.IsFalse(explorerViewModel.CanView);
+            Assert.IsFalse(explorerViewModel.CanEdit);
+            Assert.IsTrue(explorerViewModel.CanExecute);
         }
 
 

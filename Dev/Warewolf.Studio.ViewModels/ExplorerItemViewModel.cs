@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -20,6 +22,9 @@ namespace Warewolf.Studio.ViewModels
         private IExplorerRepository _explorerRepository;
         bool _canRename;
         string _path;
+        bool _canExecute;
+        bool _canEdit;
+        bool _canView;
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
@@ -38,6 +43,28 @@ namespace Warewolf.Studio.ViewModels
             CanRename = true;
             CanCreatePluginService = true;
             _explorerRepository = server.ExplorerRepository;
+            Server.PermissionsChanged += UpdatePermissions;
+        }
+
+        void UpdatePermissions(PermissionsChangedArgs args)
+        {
+            var resourcePermission = args.Permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
+            if (resourcePermission != null)
+            {
+                CanEdit = resourcePermission.Contribute;
+                CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
+                CanView = resourcePermission.View || resourcePermission.Contribute;
+            }
+            else
+            {
+                var serverPermission = args.Permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID==Guid.Empty);
+                if (serverPermission != null)
+                {
+                    CanEdit = serverPermission.Contribute;
+                    CanExecute = serverPermission.Contribute || serverPermission.Execute;
+                    CanView = serverPermission.View || serverPermission.Contribute;
+                }
+            }
         }
 
         public bool IsRenaming
@@ -74,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (IsRenaming && _explorerRepository.Rename(this, value)  )
                 {
-                    _resourceName = value;
+                _resourceName = value;
                 }
                 if (!IsRenaming)
                 {
@@ -120,7 +147,51 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDelete { get; set; }
         public bool CanDeploy { get; set; }
         public ICommand ItemSelectedCommand { get; set; }
-
+        public bool CanExecute
+        {
+            get
+            {
+                return _canExecute;
+            }
+            set
+            {
+                if (_canExecute != value)
+                {
+                    _canExecute = value;
+                    OnPropertyChanged(() => CanExecute);
+                }
+            }
+        }
+        public bool CanEdit
+        {
+            get
+            {
+                return _canEdit;
+            }
+            set
+            {
+                if (_canEdit != value)
+                {
+                    _canEdit = value;
+                    OnPropertyChanged(() => CanEdit);
+                }
+            }
+        }
+        public bool CanView
+        {
+            get
+            {
+                return _canView;
+            }
+            set
+            {
+                if (_canView != value)
+                {
+                    _canView = value;
+                    OnPropertyChanged(() => CanView);
+                }
+            }
+        }
         public bool IsVisible
         {
             get { return _isVisible; }
@@ -152,11 +223,28 @@ namespace Warewolf.Studio.ViewModels
             {
                 return _path;
             }
-        }
+            }
 
         public bool Move(IExplorerItemViewModel destination)
-        {
+            {
             return  _explorerRepository.Move(this, destination);
+        }
+
+        public void Filter(string filter)
+        {
+            foreach (var explorerItemViewModel in Children)
+            {
+                explorerItemViewModel.Children.ForEach(model => model.Filter(filter));
+                if (String.IsNullOrEmpty(filter) || explorerItemViewModel.Children.Any(model => model.IsVisible))
+                {
+                    explorerItemViewModel.IsVisible = true;
+                }
+                else
+                {
+                    explorerItemViewModel.IsVisible = false;
+                }
+                OnPropertyChanged(() => Children);
+            }
         }
 
         public IResource Resource { get; set; }
