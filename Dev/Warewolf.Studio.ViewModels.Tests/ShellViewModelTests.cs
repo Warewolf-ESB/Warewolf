@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.Versioning;
+using Dev2.Util;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
@@ -24,6 +33,12 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ShellViewModelTests
     {
+        [TestInitialize]
+        public void Init()
+        {
+            AppSettings.LocalHost = "http://myserver";
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ShellViewModel_Constructor")]
@@ -60,6 +75,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServer, MockServer>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Explorer",new Region());
             testRegionManager.Regions.Add("Toolbox",new Region());
@@ -96,6 +112,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServer, MockServer>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Explorer",new Region());
             testRegionManager.Regions.Add("Toolbox",new Region());
@@ -136,6 +153,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
             testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
+            testContainer.RegisterType<IServer, MockServer>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
@@ -153,6 +171,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
             testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
+            testContainer.RegisterType<IServer, MockServer>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
@@ -173,6 +192,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
             testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
+            testContainer.RegisterType<IServer, MockServer>();
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
@@ -191,6 +211,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServer, MockServer>();
             testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
             testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
             var testRegionManager = new RegionManager();
@@ -217,6 +238,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServer, MockServer>();
             testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
             testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
             var testRegionManager = new RegionManager();
@@ -235,9 +257,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ShellViewModel_DeployItem_ValidItem_DeployNotOpened_ExpectSet()
         {
             //------------Setup for test--------------------------
-            //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
-
+            testContainer.RegisterType<IServer, MockServer>();
             var dep = new Mock<IDeployViewModel>();
             testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
             testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
@@ -265,7 +286,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
-
+            testContainer.RegisterType<IServer, MockServer>();
             var dep = new Mock<IDeployViewModel>();
             testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
             testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
@@ -291,7 +312,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
-
+            testContainer.RegisterType<IServer, MockServer>();
             var dep = new Mock<IDeployViewModel>();
             testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
             testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
@@ -339,7 +360,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
-
+            testContainer.RegisterType<IServer, MockServer>();
             var dep = new Mock<IDeployViewModel>();
             testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
             testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
@@ -356,6 +377,205 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         }
         // ReSharper restore InconsistentNaming
+    }
+
+    public class MockServer:IServer
+    {
+        public MockServer()
+        {
+            ExplorerRepository = new Mock<IExplorerRepository>().Object;
+        }
+
+        #region Implementation of IEquatable<IResource>
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public bool Equals(IResource other)
+        {
+            return false;
+        }
+
+        #endregion
+
+        #region Implementation of IResource
+
+        /// <summary>
+        ///     The resource ID that uniquely identifies the resource.
+        /// </summary>
+        // ReSharper disable InconsistentNaming
+        public Guid ResourceID { get; set; }
+        /// <summary>
+        ///     The version that uniquely identifies the resource.
+        /// </summary>
+        // Version Version { get; set; }
+        public IVersionInfo VersionInfo { get; set; }
+        /// <summary>
+        ///     The display name of the resource.
+        /// </summary>
+        public string ResourceName { get; set; }
+        /// <summary>
+        ///     Gets or sets the type of the resource.
+        /// </summary>
+        public ResourceType ResourceType { get; set; }
+        /// <summary>
+        ///     Gets or sets the category of the resource.
+        /// </summary>
+        public string ResourcePath { get; set; }
+        /// <summary>
+        ///     Gets or sets the file path of the resource.
+        ///     <remarks>
+        ///         Must only be used by the catalog!
+        ///     </remarks>
+        /// </summary>
+        public string FilePath { get; set; }
+        /// <summary>
+        ///     Gets or sets the author roles.
+        /// </summary>
+        public string AuthorRoles { get; set; }
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance is upgraded.
+        /// </summary>
+        public bool IsUpgraded { get; set; }
+        /// <summary>
+        ///     Gets or sets a value indicating whether [is new resource].
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [is new resource]; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsNewResource { get; set; }
+        public IList<IResourceForTree> Dependencies { get; set; }
+        public bool IsValid { get; set; }
+        public List<IErrorInfo> Errors { get; set; }
+        public StringBuilder DataList { get; set; }
+        public string Inputs { get; set; }
+        public string Outputs { get; set; }
+        public Permissions UserPermissions { get; set; }
+        public IList<IResource> Children { get; set; }
+        public bool IsSelected { get; set; }
+
+        /// <summary>
+        ///     Gets the XML representation of this resource.
+        /// </summary>
+        /// <returns>The XML representation of this resource.</returns>
+        public XElement ToXml()
+        {
+            return default(XElement);
+        }
+
+        /// <summary>
+        ///     Gets the XML representation of this resource.
+        /// </summary>
+        /// <returns>The XML representation of this resource.</returns>
+        XElement IResource.ToXml()
+        {
+            return ToXml();
+        }
+
+        /// <summary>
+        ///     Gets the string builder for this resource.
+        /// </summary>
+        /// <returns></returns>
+        public StringBuilder ToStringBuilder()
+        {
+            return null;
+        }
+
+        /// <summary>
+        ///     Determines whether the given user roles are in the <see cref="IResource.AuthorRoles" />.
+        /// </summary>
+        /// <param name="userRoles">The user roles to be queried.</param>
+        /// <returns>
+        ///     <c>true</c> if the user roles are in the <see cref="IResource.AuthorRoles" />; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsUserInAuthorRoles(string userRoles)
+        {
+            return false;
+        }
+
+        public void UpdateErrorsBasedOnXML(XElement xml)
+        {
+        }
+
+        public void SetIsNew(XElement xml)
+        {
+        }
+
+        public void GetInputsOutputs(XElement xml)
+        {
+        }
+
+        public void ReadDataList(XElement xml)
+        {
+        }
+
+        /// <summary>
+        ///     If this instance <see cref="IResource.IsUpgraded" /> then sets the ID, Version, Name and ResourceType attributes on the given
+        ///     XML.
+        /// </summary>
+        /// <param name="xml">The XML to be upgraded.</param>
+        /// <param name="resource"></param>
+        /// <returns>The XML with the additional attributes set.</returns>
+        public XElement UpgradeXml(XElement xml, IResource resource)
+        {
+            return default(XElement);
+        }
+
+        #endregion
+
+        #region Implementation of IServer
+
+        public Task<bool> Connect()
+        {
+            return null;
+        }
+
+        public List<IResource> Load()
+        {
+            return null;
+        }
+
+        public Task<IExplorerItem> LoadExplorer()
+        {
+            return null;
+        }
+
+        public IList<IServer> GetServerConnections()
+        {
+            return null;
+        }
+
+        public IList<IToolDescriptor> LoadTools()
+        {
+            return null;
+        }
+
+        public IExplorerRepository ExplorerRepository { get; private set; }
+
+        public bool IsConnected()
+        {
+            return false;
+        }
+
+        public void ReloadTools()
+        {
+        }
+
+        public void Disconnect()
+        {
+        }
+
+        public void Edit()
+        {
+        }
+
+        public event PermissionsChanged PermissionsChanged;
+
+        #endregion
     }
 
     internal class MockServiceDesignerViewModel : IServiceDesignerViewModel

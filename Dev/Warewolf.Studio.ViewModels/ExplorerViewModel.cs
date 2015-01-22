@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
@@ -20,6 +21,14 @@ namespace Warewolf.Studio.ViewModels
             }
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer);
             RefreshCommand = new DelegateCommand(Refresh);
+            var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer,shellViewModel);
+            Environments = new ObservableCollection<IEnvironmentViewModel>{localhostEnvironment};
+            localhostEnvironment.Connect();
+        }
+
+        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server,IShellViewModel shellViewModel)
+        {
+            return new EnvironmentViewModel(server, shellViewModel);
         }
 
         void Refresh()

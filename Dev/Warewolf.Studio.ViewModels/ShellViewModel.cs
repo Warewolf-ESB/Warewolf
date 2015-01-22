@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Util;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
@@ -19,7 +20,6 @@ using Microsoft.Practices.Unity;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
-using Warewolf.Studio.ViewModels.DummyModels;
 using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
@@ -37,7 +37,10 @@ namespace Warewolf.Studio.ViewModels
             _unityContainer = unityContainer;
             _regionManager = regionManager;
             _aggregator = aggregator;
-            LocalhostServer = new DummyServer();
+            var localHostString = AppSettings.LocalHost;
+            var localhostUri = new Uri(localHostString);
+            LocalhostServer = unityContainer.Resolve<IServer>(new ParameterOverrides { { "serverUri", localhostUri } });
+            LocalhostServer.ResourceName = "localhost (" + localHostString + ")";
         }
 
         public void Initialize()

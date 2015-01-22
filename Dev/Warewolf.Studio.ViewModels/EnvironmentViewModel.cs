@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
@@ -16,6 +17,7 @@ namespace Warewolf.Studio.ViewModels
     public class EnvironmentViewModel:BindableBase, IEnvironmentViewModel
     {
         readonly IShellViewModel _shellViewModel;
+        ICollection<IExplorerItemViewModel> _explorerItemViewModels;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -24,14 +26,22 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
+            DisplayName = server.ResourceName;
         }
 
         public IServer Server { get; set; }
 
         public ICollection<IExplorerItemViewModel> ExplorerItemViewModels
         {
-            get;
-            set;
+            get
+            {
+                return _explorerItemViewModels;
+            }
+            set
+            {
+                _explorerItemViewModels = value;
+                OnPropertyChanged(() => ExplorerItemViewModels);
+            }
         }
         public ICommand NewCommand
         {
@@ -63,6 +73,7 @@ namespace Warewolf.Studio.ViewModels
         public async void Connect()
         {
             IsConnected = await Server.Connect();
+            Load();
         }
 
         public async void Load()
@@ -126,17 +137,19 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        IList<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server)
+        ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
-            if(explorerItems==null) return new List<IExplorerItemViewModel>();
-            IList<IExplorerItemViewModel> explorerItemModels = new List<IExplorerItemViewModel>();
+            if (explorerItems == null) return new ObservableCollection<IExplorerItemViewModel>();
+            var explorerItemModels = new ObservableCollection<IExplorerItemViewModel>();
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
                 explorerItemModels.Add(new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
                 {
                     ResourceName = explorerItem.DisplayName,
+                    ResourceId = explorerItem.ResourceId,
+                    ResourceType = explorerItem.ResourceType,
                     Children = CreateExplorerItems(explorerItem.Children,server)
                 });
             }

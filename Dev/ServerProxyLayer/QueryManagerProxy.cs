@@ -93,8 +93,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
 
             var workspaceId = Connection.WorkspaceID;
-            var executeCommandAsync = comsController.ExecuteCommandAsync<IExplorerItem>(Connection, workspaceId);
-            var result = await executeCommandAsync;
+            var result = await comsController.ExecuteCommandAsync<IExplorerItem>(Connection, workspaceId);
             return result;
         }
         #endregion
