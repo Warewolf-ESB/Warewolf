@@ -8,10 +8,11 @@ namespace Warewolf.Studio.Core.Popup
     {
         #region Implementation of IDev2MessageBoxViewModel
 
-        public  WarewolfPopupMessage(IPopupMessage msg)
+        public  WarewolfPopupMessage(IPopupMessage msg,IPopupWindow popupWindow)
         {
             VerifyArgument.IsNotNull("msg",msg);
             Message = msg;
+            PopupWindow = popupWindow;
         }
 
         /// <summary>
@@ -57,6 +58,7 @@ namespace Warewolf.Studio.Core.Popup
         /// message to display
         /// </summary>
         public IPopupMessage Message { get; set; }
+        public IPopupWindow PopupWindow { get; set; }
         /// <summary>
         /// result
         /// </summary>
@@ -108,7 +110,7 @@ namespace Warewolf.Studio.Core.Popup
 
         public MessageBoxResult Show()
         {
-            return MessageBoxResult.None;
+            return PopupWindow.Show(Message);
         }
     }
 }

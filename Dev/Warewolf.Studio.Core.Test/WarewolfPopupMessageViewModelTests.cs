@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Core.Test
   
         {
             //------------Setup for test--------------------------
-             new WarewolfPopupMessage(null);
+            new WarewolfPopupMessage(null, null);
             
             //------------Execute Test---------------------------
 
@@ -34,7 +34,8 @@ namespace Warewolf.Studio.Core.Test
         {
             //------------Setup for test--------------------------
             var popupmessage = new Mock<IPopupMessage>();
-            var msg = new WarewolfPopupMessage(popupmessage.Object);
+            var popupWindow = new Mock<IPopupWindow>();
+            var msg = new WarewolfPopupMessage(popupmessage.Object, popupWindow.Object);
 
             //------------Execute Test---------------------------
 
@@ -50,8 +51,9 @@ namespace Warewolf.Studio.Core.Test
         {
             //------------Setup for test--------------------------
             var popupmessage = new Mock<IPopupMessage>();
+            var popupWindow = new Mock<IPopupWindow>();
             popupmessage.Setup(a => a.DefaultResult).Returns(MessageBoxResult.Cancel);
-            var msg = new WarewolfPopupMessage(popupmessage.Object);
+            var msg = new WarewolfPopupMessage(popupmessage.Object, popupWindow.Object);
 
             //------------Execute Test---------------------------
 
@@ -69,8 +71,9 @@ namespace Warewolf.Studio.Core.Test
         {
             //------------Setup for test--------------------------
             var popupmessage = new Mock<IPopupMessage>();
+            var popupWindow = new Mock<IPopupWindow>();
             popupmessage.Setup(a => a.DefaultResult).Returns(MessageBoxResult.OK);
-            var msg = new WarewolfPopupMessage(popupmessage.Object);
+            var msg = new WarewolfPopupMessage(popupmessage.Object, popupWindow.Object);
 
             //------------Execute Test---------------------------
 
@@ -87,8 +90,9 @@ namespace Warewolf.Studio.Core.Test
         {
             //------------Setup for test--------------------------
             var popupmessage = new Mock<IPopupMessage>();
+            var popupWindow = new Mock<IPopupWindow>();
             popupmessage.Setup(a => a.DefaultResult).Returns(MessageBoxResult.Yes);
-            var msg = new WarewolfPopupMessage(popupmessage.Object);
+            var msg = new WarewolfPopupMessage(popupmessage.Object, popupWindow.Object);
 
             //------------Execute Test---------------------------
 
@@ -106,8 +110,9 @@ namespace Warewolf.Studio.Core.Test
         {
             //------------Setup for test--------------------------
             var popupmessage = new Mock<IPopupMessage>();
+            var popupWindow = new Mock<IPopupWindow>();
             popupmessage.Setup(a => a.DefaultResult).Returns(MessageBoxResult.No);
-            var msg = new WarewolfPopupMessage(popupmessage.Object);
+            var msg = new WarewolfPopupMessage(popupmessage.Object, popupWindow.Object);
 
             //------------Execute Test---------------------------
 
@@ -125,8 +130,9 @@ namespace Warewolf.Studio.Core.Test
         {
             //------------Setup for test--------------------------
             var popupmessage = new Mock<IPopupMessage>();
+            var popupWindow = new Mock<IPopupWindow>();
             popupmessage.Setup(a => a.DefaultResult).Returns(MessageBoxResult.No);
-            var msg = new WarewolfPopupMessage(popupmessage.Object);
+            var msg = new WarewolfPopupMessage(popupmessage.Object, popupWindow.Object);
 
             //------------Assert Results-------------------------
             msg.CancelClicked();
