@@ -8,6 +8,7 @@
         <!--  THEME ELEMENTS  -->
 
         <ResourceDictionary Source="Elements/Button.xaml" />
+        <ResourceDictionary Source="Elements/ComboBox.xaml" />
         <ResourceDictionary Source="Elements/CheckBox.xaml" />
         <ResourceDictionary Source="Elements/DataGrid.xaml" />
         <ResourceDictionary Source="Elements/DataTemplatesIntellisense.xaml" />
