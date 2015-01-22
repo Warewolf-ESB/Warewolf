@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ErrorHandling;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
@@ -17,6 +18,7 @@ using Microsoft.Practices.Unity;
 using Moq;
 using Warewolf.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
+using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Themes.Luna;
 using Warewolf.Studio.ViewModels;
@@ -71,6 +73,7 @@ namespace Warewolf.Studio
             var variableList = new VariableListView { DataContext = vm };
             Container.RegisterInstance<IVariableListView>(new VariableListView());
             Container.RegisterInstance<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>(vm);
+            Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory()));
         }
 
         #endregion

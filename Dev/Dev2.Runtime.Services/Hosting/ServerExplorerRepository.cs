@@ -163,6 +163,22 @@ namespace Dev2.Runtime.Hosting
             _sync = sync;
         }
 
+        public IExplorerItem Find(Guid id)
+        {
+            var items = Load("");
+            return Find(items, id);
+        }
+        public IExplorerItem Find(IExplorerItem item,Guid itemToFind)
+        {
+            if (item.ResourceId == itemToFind)
+                return item;
+            if (item.Children == null || item.Children.Count == 0)
+            {
+                return null;
+            }
+            return item.Children.Select(child => Find(child, itemToFind)).FirstOrDefault(found => found != null);
+        }
+
         public IExplorerRepositoryResult DeleteItem(IExplorerItem itemToDelete, Guid workSpaceId)
         {
             if(itemToDelete == null)

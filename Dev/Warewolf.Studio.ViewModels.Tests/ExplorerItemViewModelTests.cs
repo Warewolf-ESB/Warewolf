@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.UnittestingUtils;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -23,7 +24,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            new ExplorerItemViewModel(null,null,null);
+            NullArgumentConstructorHelper.AssertNullConstructor( new object[]{new Mock<IShellViewModel>().Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object},typeof(ExplorerItemViewModel));
             //------------Assert Results-------------------------
         }
 
@@ -198,6 +199,25 @@ namespace Warewolf.Studio.ViewModels.Tests
             explorerViewModel.IsRenaming = true;
             explorerViewModel.ResourceName = "dave";
             Assert.IsFalse(explorerViewModel.IsRenaming);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Move")]
+        public void ExplorerItemViewModel_Move_CallsCorrectModel_NoErrorOnCall()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+            var expMovedInto = new Mock<IExplorerItemViewModel>().Object;
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            explorerViewModel.Move(expMovedInto);
+            expRepo.Verify(a=>a.Move(explorerViewModel,expMovedInto));
         }
     }
 }
