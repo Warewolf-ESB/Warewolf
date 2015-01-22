@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -84,9 +85,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
             var shellViewModelMock = new Mock<IShellViewModel>();
-            server.Setup(server1 => server1.Connect()).Returns(new Task<bool>(() => true)).Verifiable();
+            server.Setup(server1 => server1.Connect()).Returns(Task.FromResult(true)).Verifiable();
             var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
-            
             //------------Execute Test---------------------------
             environmentViewModel.Connect();
             //------------Assert Results-------------------------
@@ -123,7 +123,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
             var shellViewModelMock = new Mock<IShellViewModel>();
-            server.Setup(server1 => server1.Load()).Returns(new List<IResource>()).Verifiable();
+            server.Setup(server1 => server1.LoadExplorer()).Returns(new Task<IExplorerItem>(() => null)).Verifiable();
             var environmentModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             
             //------------Execute Test---------------------------
@@ -141,8 +141,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
             var shellViewModelMock = new Mock<IShellViewModel>();
-            server.Setup(server1 => server1.Connect()).Returns(new Task<bool>(() => true));
-            server.Setup(server1 => server1.Load()).Returns(new List<IResource>()).Verifiable();
+            server.Setup(server1 => server1.Connect()).Returns(Task.FromResult(true));
+            server.Setup(server1 => server1.LoadExplorer()).Returns(Task.FromResult(new Mock<IExplorerItem>().Object)).Verifiable();
             var environmentModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             environmentModel.Connect();
             //------------Execute Test---------------------------
@@ -159,22 +159,24 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var shellViewModelMock = new Mock<IShellViewModel>();
-            var resourceWithNoChildren = new Mock<IResource>();
-            resourceWithNoChildren.Setup(resource => resource.Children).Returns(new List<IResource>());
-            var resourceWithOneLevelChildren = new Mock<IResource>();
-            resourceWithOneLevelChildren.Setup(resource => resource.Children).Returns(new List<IResource> { new Mock<IResource>().Object });
-            var resourceWithMultipleLevelChildren = new Mock<IResource>();
-            var resourceWithChildren = new Mock<IResource>();
-            var childResource = new Mock<IResource>();
-            resourceWithChildren.Setup(resource => resource.Children).Returns(new List<IResource> { childResource.Object });
-            var anotherResourceAsChildren = new Mock<IResource>();
-            resourceWithMultipleLevelChildren.Setup(resource => resource.Children).Returns(new List<IResource>
+            var resourceWithNoChildren = new Mock<IExplorerItem>();
+            resourceWithNoChildren.Setup(resource => resource.Children).Returns(new List<IExplorerItem>());
+            var resourceWithOneLevelChildren = new Mock<IExplorerItem>();
+            resourceWithOneLevelChildren.Setup(resource => resource.Children).Returns(new List<IExplorerItem> { new Mock<IExplorerItem>().Object });
+            var resourceWithMultipleLevelChildren = new Mock<IExplorerItem>();
+            var resourceWithChildren = new Mock<IExplorerItem>();
+            var childResource = new Mock<IExplorerItem>();
+            resourceWithChildren.Setup(resource => resource.Children).Returns(new List<IExplorerItem> { childResource.Object });
+            var anotherResourceAsChildren = new Mock<IExplorerItem>();
+            resourceWithMultipleLevelChildren.Setup(resource => resource.Children).Returns(new List<IExplorerItem>
             {
                 resourceWithChildren.Object,anotherResourceAsChildren.Object
             });
             var server = new Mock<IServer>();
-            server.Setup(server1 => server1.Connect()).Returns(new Task<bool>(() => true));
-            server.Setup(server1 => server1.Load()).Returns(new List<IResource> { resourceWithNoChildren.Object, resourceWithOneLevelChildren.Object, resourceWithMultipleLevelChildren .Object}).Verifiable();
+            server.Setup(server1 => server1.Connect()).Returns(Task.FromResult(true));
+            var mock = new Mock<IExplorerItem>();
+            mock.Setup(item => item.Children).Returns(new List<IExplorerItem> { resourceWithNoChildren.Object, resourceWithOneLevelChildren.Object, resourceWithMultipleLevelChildren.Object });
+            server.Setup(server1 => server1.LoadExplorer()).Returns(Task.FromResult(mock.Object)).Verifiable();
             var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             environmentViewModel.Connect();
             //------------Execute Test---------------------------
@@ -191,30 +193,27 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void EnvironmentViewModel_Filter_ShouldSetIsVisible_False_ExplorerItems()
         {
             //------------Setup for test--------------------------
-            var resourceWithNoChildren = new Mock<IResource>();
-            resourceWithNoChildren.Setup(resource => resource.ResourceName).Returns("MyResource");
-            resourceWithNoChildren.Setup(resource => resource.Children).Returns(new List<IResource>());
-            var resourceWithOneLevelChildren = new Mock<IResource>();
-            resourceWithOneLevelChildren.Setup(resource => resource.ResourceName).Returns("SetName");
-            var resourceShouldHaveParentVisibile = new Mock<IResource>();
-            resourceShouldHaveParentVisibile.Setup(resource => resource.ResourceName).Returns("TestResource");
-            resourceWithOneLevelChildren.Setup(resource => resource.Children).Returns(new List<IResource> { resourceShouldHaveParentVisibile.Object });
-            var resourceWithMultipleLevelChildren = new Mock<IResource>();
-            resourceWithMultipleLevelChildren.Setup(resource => resource.ResourceName).Returns("TestName");
-            var resourceWithChildren = new Mock<IResource>();
-            resourceWithChildren.Setup(resource => resource.ResourceName).Returns("NotVisible");
-            var childResource = new Mock<IResource>();
-            childResource.Setup(resource => resource.ResourceName).Returns("SetVisible");
-            resourceWithChildren.Setup(resource => resource.Children).Returns(new List<IResource> { childResource.Object });
-            var anotherResourceAsChildren = new Mock<IResource>();
-            resourceWithMultipleLevelChildren.Setup(resource => resource.Children).Returns(new List<IResource>
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var resourceWithNoChildren = new Mock<IExplorerItem>();
+            resourceWithNoChildren.Setup(item => item.DisplayName).Returns("my re");
+            resourceWithNoChildren.Setup(resource => resource.Children).Returns(new List<IExplorerItem>());
+            var resourceWithOneLevelChildren = new Mock<IExplorerItem>();
+            resourceWithOneLevelChildren.Setup(resource => resource.Children).Returns(new List<IExplorerItem> { new Mock<IExplorerItem>().Object });
+            var resourceWithMultipleLevelChildren = new Mock<IExplorerItem>();
+            var resourceWithChildren = new Mock<IExplorerItem>();
+            var childResource = new Mock<IExplorerItem>();
+            resourceWithChildren.Setup(resource => resource.Children).Returns(new List<IExplorerItem> { childResource.Object });
+            var anotherResourceAsChildren = new Mock<IExplorerItem>();
+            resourceWithMultipleLevelChildren.Setup(resource => resource.Children).Returns(new List<IExplorerItem>
             {
                 resourceWithChildren.Object,anotherResourceAsChildren.Object
             });
             var server = new Mock<IServer>();
-            server.Setup(server1 => server1.Connect()).Returns(new Task<bool>(() => true));
-            server.Setup(server1 => server1.Load()).Returns(new List<IResource> { resourceWithNoChildren.Object, resourceWithOneLevelChildren.Object, resourceWithMultipleLevelChildren .Object}).Verifiable();
-            var environmentViewModel = new EnvironmentViewModel(server.Object,new Mock<IShellViewModel>().Object);
+            server.Setup(server1 => server1.Connect()).Returns(Task.FromResult(true));
+            var mock = new Mock<IExplorerItem>();
+            mock.Setup(item => item.Children).Returns(new List<IExplorerItem> { resourceWithNoChildren.Object, resourceWithOneLevelChildren.Object, resourceWithMultipleLevelChildren.Object });
+            server.Setup(server1 => server1.LoadExplorer()).Returns(Task.FromResult(mock.Object)).Verifiable();
+            var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             environmentViewModel.Connect();
             environmentViewModel.Load();
             //------------Assert Preconditions-------------------

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
@@ -59,17 +60,17 @@ namespace Warewolf.Studio.ViewModels
         public bool IsConnected { get; private set; }
         public bool IsLoaded { get; private set; }
 
-        public void Connect()
+        public async void Connect()
         {
-            IsConnected = Server.Connect().Result;
+            IsConnected = await Server.Connect();
         }
 
-        public void Load()
+        public async void Load()
         {
             if (IsConnected)
             {
-                var explorerItems = Server.Load();
-                var explorerItemViewModels = CreateExplorerItems(explorerItems,Server);
+                var explorerItems = await Server.LoadExplorer();
+                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children,Server);
                 ExplorerItemViewModels = explorerItemViewModels;
                 IsLoaded = true;
             }
@@ -113,7 +114,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        IList<IExplorerItemViewModel> CreateExplorerItems(IList<IResource> explorerItems, IServer server)
+        IList<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if(explorerItems==null) return new List<IExplorerItemViewModel>();
@@ -123,8 +124,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemModels.Add(new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
                 {
-                    Resource = explorerItem,
-                    ResourceName = explorerItem.ResourceName,
+                    ResourceName = explorerItem.DisplayName,
                     Children = CreateExplorerItems(explorerItem.Children,server)
                 });
             }

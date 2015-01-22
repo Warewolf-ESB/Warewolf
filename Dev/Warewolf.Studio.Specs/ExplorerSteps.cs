@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -64,9 +65,14 @@ namespace Warewolf.Studio.Specs
             return new Task<bool>(() => true);
         }
 
-        public IList<IResource> Load()
+        public List<IResource> Load()
         {
             return new List<IResource>();
+        }
+
+        public Task<IExplorerItem> LoadExplorer()
+        {
+            return new Task<IExplorerItem>(() => null);
         }
 
         public IList<IServer> GetServerConnections()

@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Common.Interfaces.Toolbox;
@@ -20,7 +21,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
     {
         readonly ServerProxy _environmentConnection;
         readonly Guid _serverId;
-        StudioServerProxy _proxyLayer;
+        readonly StudioServerProxy _proxyLayer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -48,10 +49,15 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return await _environmentConnection.ConnectAsync(_serverId);
         }
 
-        public IList<IResource> Load()
+        public List<IResource> Load()
         {
-            _proxyLayer.QueryManagerProxy.Load();
-            return null;
+            return new List<IResource>();
+        }
+
+        public async Task<IExplorerItem> LoadExplorer()
+        {
+            var res = await _proxyLayer.QueryManagerProxy.Load();
+            return res;
         }
 
         public IList<IServer> GetServerConnections()
@@ -81,6 +87,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void Edit()
         {
         }
+
+        public event PermissionsChanged PermissionsChanged;
 
         #endregion
     }

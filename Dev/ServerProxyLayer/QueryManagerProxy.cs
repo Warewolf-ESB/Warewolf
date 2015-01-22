@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -87,14 +88,14 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// Loads the Tree.
         /// </summary>
         /// <returns></returns>
-        public IExplorerItem Load()
+        public async Task<IExplorerItem> Load()
         {
             var comsController = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
 
             var workspaceId = Connection.WorkspaceID;
-            var payload = comsController.ExecuteCommand<IExplorerItem>(Connection, workspaceId);
-
-            return payload;
+            var executeCommandAsync = comsController.ExecuteCommandAsync<IExplorerItem>(Connection, workspaceId);
+            var result = await executeCommandAsync;
+            return result;
         }
         #endregion
     }

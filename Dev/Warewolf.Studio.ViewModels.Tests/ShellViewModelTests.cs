@@ -64,6 +64,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testRegionManager.Regions.Add("Explorer",new Region());
             testRegionManager.Regions.Add("Toolbox",new Region());
             testRegionManager.Regions.Add("Menu",new Region());
+            testRegionManager.Regions.Add("Variables", new Region());
             SetupContainer(testContainer);
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             //------------Execute Test---------------------------
@@ -80,10 +81,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             testContainer.RegisterInstance<IExplorerView>(new Mock<IExplorerView>().Object);
             testContainer.RegisterInstance<IToolboxView>(new Mock<IToolboxView>().Object);
             testContainer.RegisterInstance<IMenuView>(new Mock<IMenuView>().Object);
+            testContainer.RegisterInstance<IVariableListView>(new Mock<IVariableListView>().Object);
 
             testContainer.RegisterInstance<IExplorerViewModel>(new Mock<IExplorerViewModel>().Object);
             testContainer.RegisterInstance<IToolboxViewModel>(new Mock<IToolboxViewModel>().Object);
             testContainer.RegisterInstance<IMenuViewModel>(new Mock<IMenuViewModel>().Object);
+            testContainer.RegisterInstance<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>(new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object);
         }
 
         [TestMethod]
@@ -97,9 +100,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             testRegionManager.Regions.Add("Explorer",new Region());
             testRegionManager.Regions.Add("Toolbox",new Region());
             testRegionManager.Regions.Add("Menu",new Region());
+            testRegionManager.Regions.Add("Variables", new Region());
             testContainer.RegisterInstance<IExplorerViewModel>(new Mock<IExplorerViewModel>().Object);
             testContainer.RegisterInstance<IToolboxViewModel>(new Mock<IToolboxViewModel>().Object);
             testContainer.RegisterInstance<IMenuViewModel>(new Mock<IMenuViewModel>().Object);
+            testContainer.RegisterInstance<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>(new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object);
 
             var mockExplorerView = new Mock<IExplorerView>();
             mockExplorerView.SetupProperty(view => view.DataContext);
@@ -110,6 +115,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockMenuView = new Mock<IMenuView>();
             mockMenuView.SetupProperty(view => view.DataContext);
             testContainer.RegisterInstance<IMenuView>(mockMenuView.Object);
+            var mockVariableListView = new Mock<IVariableListView>();
+            mockMenuView.SetupProperty(view => view.DataContext);
+            testContainer.RegisterInstance<IVariableListView>(mockVariableListView.Object);
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             //------------Execute Test---------------------------
             shellViewModel.Initialize();
@@ -234,7 +242,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
             testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
             var testRegionManager = new RegionManager();
-            var region = new SingleActiveRegion(){};
+            var region = new SingleActiveRegion();
             region.Add(dep.Object,"Deploy");
             testRegionManager.Regions.Add("Workspace",region );
             
@@ -292,7 +300,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager, new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
-            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
             shellViewModel.UpdateHelpDescriptor(null);
 
 
@@ -342,7 +350,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager, aggregator.Object);
 
             //------------Execute Test---------------------------
-            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
             shellViewModel.UpdateHelpDescriptor(new HelpDescriptor("bob","the",new DrawingImage()));
             aggregator.Verify(a=>a.GetEvent<HelpChangedEvent>());
 

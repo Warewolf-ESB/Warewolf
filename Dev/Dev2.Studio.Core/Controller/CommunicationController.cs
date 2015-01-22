@@ -11,6 +11,7 @@
 
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -62,6 +63,17 @@ namespace Dev2.Controller
         public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId)
         {
             return ExecuteCommand<T>(connection, workspaceId, Guid.Empty);
+        }
+
+        /// <summary>
+        /// Executes the command async.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <returns></returns>
+        public Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId)
+        {
+            return new Task<T>(() => ExecuteCommand<T>(connection,workspaceId));
         }
 
         /// <summary>

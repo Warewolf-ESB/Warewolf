@@ -16,7 +16,6 @@ namespace Warewolf.Studio.ViewModels
     {
         string _resourceName;
         private bool _isVisible;
-        IServer _server;
         bool _allowEditing;
         bool _isRenaming;
         bool _canExecute;
@@ -192,17 +191,7 @@ namespace Warewolf.Studio.ViewModels
                 _allowEditing = value;
             }
         }
-        public IServer Server
-        {
-            get
-            {
-                return _server;
-            }
-            private set
-            {
-                _server = value;
-            }
-        }
+        public IServer Server { get; private set; }
 
         public void Filter(string filter)
         {
@@ -255,8 +244,8 @@ namespace Warewolf.Studio.ViewModels
     }
     public class DeployItemMessage : IDeployItemMessage 
     {
-        IExplorerItemViewModel _item;
-        IExplorerItemViewModel _sourceServer;
+        readonly IExplorerItemViewModel _item;
+        readonly IExplorerItemViewModel _sourceServer;
 
         public DeployItemMessage(IExplorerItemViewModel item, IExplorerItemViewModel sourceServer)
         {

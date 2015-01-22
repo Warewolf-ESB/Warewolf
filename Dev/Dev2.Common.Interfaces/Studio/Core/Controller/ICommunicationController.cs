@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Dev2.Common.Interfaces.Studio.Core.Controller
 {
@@ -28,7 +29,15 @@ namespace Dev2.Common.Interfaces.Studio.Core.Controller
         /// <param name="connection">The connection.</param>
         /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <returns></returns>
-        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId);
+        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId); 
+        
+        /// <summary>
+        /// Executes the command async.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <returns></returns>
+        Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId);
 
         /// <summary>
         /// Executes the command.
