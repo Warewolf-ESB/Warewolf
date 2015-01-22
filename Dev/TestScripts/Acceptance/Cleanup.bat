@@ -20,7 +20,6 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM Stop Server:
-sc STOP "Warewolf Server"
 taskkill /im "Warewolf*" /T /F
 IF EXIST %TestRunDirectory%\..\..\..\nircmd.exe %TestRunDirectory%\..\..\..\nircmd.exe elevate taskkill /im "Warewolf*" /T /F
 exit 0

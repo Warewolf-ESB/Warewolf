@@ -20,7 +20,6 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Kill The Warewolf ;) **
-sc stop "Warewolf Server"
 taskkill /im "Warewolf Server.exe"
 taskkill /im "Warewolf Studio.exe"
 
