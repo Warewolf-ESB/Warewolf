@@ -31,6 +31,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canDelete;
 
         ICommand _deleteCommand;
+   
         ICollection<IVersionInfoViewModel> _versions;
         bool _canShowVersions;
         bool _areVersionsVisible;
@@ -43,7 +44,11 @@ namespace Warewolf.Studio.ViewModels
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel" ,shellViewModel}, {"server",server }, {"builder",builder } });
             _shellViewModel = shellViewModel;
-          
+            LostFocus = new DelegateCommand(()=>
+            {
+                IsRenaming = false;
+            }
+                );
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
@@ -228,6 +233,7 @@ namespace Warewolf.Studio.ViewModels
             set;
         }
         public ICommand ItemSelectedCommand { get; set; }
+        public ICommand LostFocus { get; set; }
         public bool CanExecute
         {
             get

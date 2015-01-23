@@ -20,6 +20,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool IsRenaming{ get; set; }
         bool IsNotRenaming { get;  }
         ICommand ItemSelectedCommand { get; set; }
+        ICommand LostFocus { get; set; }
         bool IsVisible { get; set; }
         bool AllowEditing { get; set; }
         bool CanExecute { get; set; }
