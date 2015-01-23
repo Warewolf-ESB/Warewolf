@@ -16,9 +16,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         Guid ResourceId { get; set; }
         ResourceType ResourceType { get; set; }
         ICommand OpenCommand { get; set; }
-        ICommand RenameCommand { get; set; }
-        ICommand DeleteCommand { get; set; }
-        ICommand ShowVersionHistory { get; set; }
+
         bool IsRenaming{ get; set; }
         bool IsNotRenaming { get;  }
         ICommand ItemSelectedCommand { get; set; }
@@ -27,7 +25,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanExecute { get; set; }
         bool CanEdit { get; set; }
         bool CanView { get; set; }
-        bool CanShowVersions { get; }
+       
         bool AreVersionsVisible { get; set; }
         string VersionHeader { get; set; }
         void Filter(string filter);
@@ -36,7 +34,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
 
     }
 
-    public interface IVersionInfoViewModel
+    public interface IVersionInfoViewModel: IExplorerTreeItem
     {
         string VersionName { get; set; }
         Guid ResourceId { get; set; }
@@ -44,8 +42,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         DateTime VersionDate { get; set; }
         bool CanRollBack { get; set; }
         ICommand OpenCommand { get; set; }
-        ICommand RollbackCommand { get; set; }
+
         bool IsVisible { get; set; }
+   
         string VersionHeader { get; set; }
         string Reason { get; set; }
     }

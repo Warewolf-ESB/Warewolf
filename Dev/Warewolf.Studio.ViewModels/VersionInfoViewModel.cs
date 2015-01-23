@@ -1,7 +1,11 @@
 using System;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Versioning;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -15,10 +19,15 @@ namespace Warewolf.Studio.ViewModels
         bool _isVisible;
         string _versionHeader;
         string _reason;
+        bool _canRollback;
+        IExplorerItemViewModel _parent;
+        ICommand _renameCommand;
+        ICommand _deleteCommand;
+        IServer _server;
 
         #region Implementation of IVersionInfoViewModel
 
-        public  VersionInfoViewModel(IVersionInfo version)
+        public  VersionInfoViewModel(IVersionInfo version, IExplorerRepository repository, IExplorerItemViewModel explorerItemViewModel)
         {
             VersionName = version.VersionNumber;
             VersionDate = version.DateTimeStamp;
@@ -26,8 +35,21 @@ namespace Warewolf.Studio.ViewModels
             Version = version.VersionNumber;
             Reason = version.Reason;
             IsVisible = true;
+            RollbackCommand = new DelegateCommand(() =>
+            {
+               var output = repository.Rollback(ResourceId, Version);
+                 _parent.ShowVersionHistory.Execute(null);
+                 _parent.ResourceName = output.DisplayName;
+
+            });
+            _parent = explorerItemViewModel;
+            CanShowVersions = false;
+            CanRollBack = true;
         }
 
+        public string DisplayName { get; set; }
+        public ResourceType ResourceType { get; set; }
+        public bool AreVersionsVisible { get; set; }
         public string VersionName
         {
             get
@@ -78,7 +100,19 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand OpenCommand { get; set; }
+        public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
+        public IServer Server
+        {
+            get
+            {
+                return _server;
+            }
+            set
+            {
+                _server = value;
+            }
+        }
         public bool IsVisible
         {
             get
@@ -89,6 +123,52 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isVisible = value;
                 OnPropertyChanged(() => CanRollBack);
+            }
+        }
+        public ICommand NewCommand { get; set; }
+        public ICommand DeployCommand { get; set; }
+        public bool CanCreateDbService { get; set; }
+        public bool CanCreateDbSource { get; set; }
+        public bool CanCreateWebService { get; set; }
+        public bool CanCreateWebSource { get; set; }
+        public bool CanCreatePluginService { get; set; }
+        public bool CanCreatePluginSource { get; set; }
+        public bool CanRename { get; set; }
+        public bool CanDelete { get; set; }
+        public bool CanDeploy { get; set; }
+        public bool CanShowVersions { get; private set; }
+        public bool CanRollback
+        {
+            get
+            {
+                return _canRollback;
+            }
+            set
+            {
+                _canRollback = value;
+                OnPropertyChanged(()=>CanRollback);
+            }
+        }
+        public ICommand RenameCommand
+        {
+            get
+            {
+                return _renameCommand;
+            }
+            set
+            {
+                _renameCommand = value;
+            }
+        }
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                return _deleteCommand;
+            }
+            set
+            {
+                _deleteCommand = value;
             }
         }
         public string VersionHeader

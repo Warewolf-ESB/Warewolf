@@ -155,6 +155,7 @@
     <Compile Include="ConnectControlView.xaml.cs">
       <DependentUpon>ConnectControlView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CustomMenuIcons.cs" />
     <Compile Include="ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>

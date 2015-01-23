@@ -14,5 +14,7 @@ namespace Dev2.Common.Interfaces.Explorer
         bool Delete(IExplorerItemViewModel explorerItemViewModel);
 
         ICollection<IVersionInfo> GetVersions(Guid id);
+
+        IRollbackResult Rollback(Guid resourceId, string version);
     }
 }
