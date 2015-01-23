@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
@@ -22,6 +23,7 @@ namespace Warewolf.Studio.ViewModels
         IExplorerItemViewModel _parent;
         ICommand _renameCommand;
         ICommand _deleteCommand;
+        IServer _server;
 
         #region Implementation of IVersionInfoViewModel
 
@@ -100,6 +102,17 @@ namespace Warewolf.Studio.ViewModels
         public ICommand OpenCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
+        public IServer Server
+        {
+            get
+            {
+                return _server;
+            }
+            set
+            {
+                _server = value;
+            }
+        }
         public bool IsVisible
         {
             get

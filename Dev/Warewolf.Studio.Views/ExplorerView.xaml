@@ -139,7 +139,7 @@
 
 
             <ig:XamDataTree.GlobalNodeLayouts>
-                <ig:NodeLayout Key="Environments" DisplayMemberPath="DisplayName" TargetTypeName="EnvironmentViewModel">
+                <ig:NodeLayout Key="Environments" DisplayMemberPath="DisplayName">
                     
                     <ig:NodeLayout.ExpandedIconTemplate>
                         <DataTemplate>
@@ -172,7 +172,7 @@
 
                 <ig:NodeLayout Key="Children" 
                                DisplayMemberPath="ResourceName" 
-                               TargetTypeName="Dev2.Common.Interfaces.Studio.ViewModels.IExplorerItemViewModel"
+                               
                                IsExpandedMemberPath="AreVersionsVisible"
                                >
                     <ig:NodeLayout.HeaderTemplate>
@@ -209,7 +209,7 @@
                         </DataTemplate>
                     </ig:NodeLayout.CollapsedIconTemplate>
                 </ig:NodeLayout>
-                <ig:NodeLayout Key="Versions" IsExpandedMemberPath="AreVersionsVisible" TargetTypeName="VersionInfoViewModel" DisplayMemberPath="VersionHeader" >
+                <ig:NodeLayout Key="Versions" IsExpandedMemberPath="AreVersionsVisible"  DisplayMemberPath="VersionHeader" >
                                <!--NodeStyle="{StaticResource NodeStyle}">--> 
                                
                                <!--Visibility="{Binding Path=Data.AreVersionsVisible, RelativeSource={RelativeSource AncestorType=ig:XamDataTreeNode} ,Converter={StaticResource BoolToVisibilityConverter}}"-->
