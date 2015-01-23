@@ -3,6 +3,13 @@
 
 
         <!--  IMAGES  -->
+        <ResourceDictionary Source="Images/Explorer-WorkflowService.xaml" />
+        <ResourceDictionary Source="Images/Explorer-DB.xaml" />
+        <ResourceDictionary Source="Images/Explorer-DLL.xaml" />
+        <ResourceDictionary Source="Images/Explorer-WebService.xaml" />
+        <ResourceDictionary Source="Images/Explorer-Spacer.xaml" />
+
+
         <ResourceDictionary Source="Images/ControlFlow-Descision.xaml" />
         <ResourceDictionary Source="Images/ControlFlow-Rules.xaml" />
         <ResourceDictionary Source="Images/ControlFlow-Sequence.xaml" />

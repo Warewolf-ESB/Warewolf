@@ -4,7 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DataContext="{d:DesignInstance Type=interfaces:IConnectControlViewModel, IsDesignTimeCreatable=False}"
+             d:DataContext="{d:DesignInstance Type=interfaces:IConnectControlViewModel,
+                                              IsDesignTimeCreatable=False}"
              mc:Ignorable="d">
 
     <Grid>
@@ -20,8 +21,7 @@
         <ComboBox Grid.Row="0"
                   Grid.Column="0"
                   ItemsSource="{Binding Servers}"
-                  SelectedItem="{Binding SelectedConnection}"
-                  >
+                  SelectedItem="{Binding SelectedConnection}">
             <ComboBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Vertical" />
@@ -34,8 +34,9 @@
                 Grid.Column="1"
                 Width="25"
                 Height="25"
+                VerticalAlignment="Bottom"
                 Command="{Binding EditConnectionCommand}"
-                Padding="4" VerticalAlignment="Bottom"
+                Padding="4"
                 Style="{StaticResource ExplorerButtonStyle}">
             <Image Source="{StaticResource System-More-Inverted}" />
         </Button>
