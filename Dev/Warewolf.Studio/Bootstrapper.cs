@@ -52,8 +52,8 @@ namespace Warewolf.Studio
             Container.RegisterType<IServer, Server>(new InjectionConstructor(typeof(Uri)));
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>()));
+            Container.RegisterInstance<IMenuViewModel>(new MenuViewModel(Container.Resolve<IShellViewModel>()));
             Container.RegisterInstance<IToolboxViewModel>(new DummyToolboxViewModel());
-            Container.RegisterInstance<IMenuViewModel>(new DummyMenuViewModel());
 
             Container.RegisterInstance<IExplorerView>(new ExplorerView());
             Container.RegisterInstance<IToolboxView>(new ToolboxView());

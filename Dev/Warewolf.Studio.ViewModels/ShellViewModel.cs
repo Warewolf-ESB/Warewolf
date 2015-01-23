@@ -31,6 +31,9 @@ namespace Warewolf.Studio.ViewModels
         readonly IEventAggregator _aggregator;
         IExceptionHandler _handler;
         IPopupController _popupController;
+        IExplorerTreeItem _activeItem;
+        IServer _activeServer;
+
         public ShellViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator aggregator)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "unityContainer", unityContainer }, { "regionManager", regionManager } });
@@ -41,6 +44,7 @@ namespace Warewolf.Studio.ViewModels
             var localhostUri = new Uri(localHostString);
             LocalhostServer = unityContainer.Resolve<IServer>(new ParameterOverrides { { "uri", localhostUri } });
             LocalhostServer.ResourceName = "localhost (" + localHostString + ")";
+            ActiveServer = LocalhostServer;
         }
 
         public void Initialize()
@@ -167,6 +171,67 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
+        public void SaveService()
+        {
+        }
+
+        public void ExecuteService()
+        {
+        }
+
+        public void OpenScheduler()
+        {
+        }
+
+        public void OpenSettings()
+        {
+        }
+
+        public IServer ActiveServer
+        {
+            get
+            {
+                return _activeServer;
+            }
+            set
+            {
+                if (!value.Equals(_activeServer))
+                {
+                    _activeServer = value;
+                    RaiseActiveServerChanged();
+                }
+            }
+        }
+
+        void RaiseActiveServerChanged()
+        {
+            if (ActiveServerChanged != null)
+            {
+                ActiveServerChanged();
+            }
+        }
+
+        public IExplorerTreeItem ActiveItem
+        {
+            get
+            {
+                return _activeItem;
+            }
+            set
+            {
+                _activeItem = value;
+                RaiseActiveItemChanged();
+            }
+        }
+
+        void RaiseActiveItemChanged()
+        {
+            if (ActiveItemChanged != null)
+            {
+                ActiveItemChanged();
+            }
+        }
+
         public IServer LocalhostServer { get; set; }
 
         public void Handle(Exception err)
@@ -182,11 +247,11 @@ namespace Warewolf.Studio.ViewModels
 
         public void RemoveServiceFromExplorer(IExplorerItemViewModel explorerItemViewModel)
         {
-
             var explorervm = _unityContainer.Resolve<IExplorerViewModel>();
             explorervm.RemoveItem(explorerItemViewModel);
         }
 
-  
+        public event Action ActiveServerChanged;
+        public event Action ActiveItemChanged;
     }
 }

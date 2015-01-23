@@ -6,12 +6,15 @@
         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:igWindows="http://infragistics.com/Windows"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
         x:Name="MainWindow"
         Title="Warewolf Studio"
-        WindowState="Maximized">
-
+        WindowState="Maximized"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type={x:Type interfaces:IShellViewModel}}">
 
 
     <Window.Resources>
@@ -142,7 +145,7 @@
                     </dockManager:XamDockManager.Panes>
                     <dockManager:DocumentContentHost>
                         <dockManager:SplitPane>
-                            <dockManager:TabGroupPane x:Name="Workspace" regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
+                            <dockManager:TabGroupPane x:Name="Workspace" SelectedItem="{Binding ActiveItem}" regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>

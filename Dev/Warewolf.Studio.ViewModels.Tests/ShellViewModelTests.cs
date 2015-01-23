@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
@@ -243,7 +244,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ShellViewModel_DeployItem_NullItem_ExpectError()
         {
             //------------Setup for test--------------------------
-            //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
             testContainer.RegisterType<IServer, MockServer>();
             testContainer.RegisterType<IServiceDesignerViewModel, MockServiceDesignerViewModel>();
@@ -291,7 +291,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ShellViewModel_DeployItem_ValidItem_DeployOpened_ExpectSet()
         {
             //------------Setup for test--------------------------
-            //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
             testContainer.RegisterType<IServer, MockServer>();
             var dep = new Mock<IDeployViewModel>();
@@ -317,7 +316,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ShellViewModel_UpdateHelpDescriptor_NullExpectException()
         {
             //------------Setup for test--------------------------
-            //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
             testContainer.RegisterType<IServer, MockServer>();
             var dep = new Mock<IDeployViewModel>();
@@ -334,37 +332,11 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         }
 
-
-
-        //[TestMethod]
-        //[Owner("Leon Rajindrapersadh")]
-        //[TestCategory("ShellViewModel_UpdateHelpDescriptor")]
-        //public void ShellViewModel_UpdateHelpDescriptor_Valid_FiresEventAggregator()
-        //{
-        //    //------------Setup for test--------------------------
-        //    //------------Setup for test--------------------------
-        //    var testContainer = new UnityContainer();
-
-        //    var dep = new Mock<IDeployViewModel>();
-        //    testContainer.RegisterInstance<IDeployViewModel>(dep.Object);
-        //    testContainer.RegisterType<IWorkflowServiceDesignerViewModel, MockWorkflowServiceDesignerViewModel>();
-        //    var testRegionManager = new RegionManager();
-        //    testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
-        //    var shellViewModel = new ShellViewModel(testContainer, testRegionManager, new Mock<IEventAggregator>().Object);
-
-        //    //------------Execute Test---------------------------
-        //    var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
-        //    shellViewModel.UpdateHelpDescriptor(null);
-
-
-        //}
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ShellViewModel_UpdateHelpDescriptor")]
         public void ShellViewModel_UpdateHelpDescriptor_Valid_FiresEventAggregator()
         {
-            //------------Setup for test--------------------------
             //------------Setup for test--------------------------
             var testContainer = new UnityContainer();
             testContainer.RegisterType<IServer, MockServer>();
@@ -383,6 +355,72 @@ namespace Warewolf.Studio.ViewModels.Tests
             aggregator.Verify(a=>a.GetEvent<HelpChangedEvent>());
 
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ShellViewModel_Constructor")]
+        public void ShellViewModel_Constructor_ShouldSetLocalHostServerToActiveServer()
+        {
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServer, MockServer>();
+            var testRegionManager = new RegionManager();
+            var aggregator = new Mock<IEventAggregator>();
+            //------------Execute Test---------------------------
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager, aggregator.Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(shellViewModel.ActiveServer);
+            Assert.AreEqual(shellViewModel.LocalhostServer,shellViewModel.ActiveServer);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ShellViewModel_Constructor")]
+        public void ShellViewModel_ActiveServer_Set_ShouldFireActiveServerChangedEvent()
+        {
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServer, MockServer>();
+            var testRegionManager = new RegionManager();
+            var aggregator = new Mock<IEventAggregator>();
+            var anotherMockServer = new Mock<IServer>();
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager, aggregator.Object);
+            var activeServerChanged = false;
+            shellViewModel.ActiveServerChanged += () => activeServerChanged = true; 
+            //------------Execute Test---------------------------
+            shellViewModel.ActiveServer = anotherMockServer.Object;
+            //------------Assert Results-------------------------
+            Assert.IsTrue(activeServerChanged);
+            Assert.IsNotNull(shellViewModel.ActiveServer);
+            Assert.AreNotEqual(shellViewModel.LocalhostServer,shellViewModel.ActiveServer);
+            Assert.AreEqual(anotherMockServer.Object,shellViewModel.ActiveServer);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ShellViewModel_Constructor")]
+        public void ShellViewModel_ActiveServer_SetToSameServer_ShouldNotFireActiveServerChangedEvent()
+        {
+            //------------Setup for test--------------------------
+            var testContainer = new UnityContainer();
+            testContainer.RegisterType<IServer, MockServer>();
+            var testRegionManager = new RegionManager();
+            var aggregator = new Mock<IEventAggregator>();
+            var anotherMockServer = new Mock<IServer>();
+            anotherMockServer.Setup(server => server.Equals(It.IsAny<IResource>())).Returns(true);
+            var shellViewModel = new ShellViewModel(testContainer, testRegionManager, aggregator.Object);
+            var activeServerChanged = false;
+            shellViewModel.ActiveServer = anotherMockServer.Object;
+            shellViewModel.ActiveServerChanged += () => activeServerChanged = true; 
+            //------------Execute Test---------------------------
+            shellViewModel.ActiveServer = anotherMockServer.Object;
+            //------------Assert Results-------------------------
+            Assert.IsFalse(activeServerChanged);
+        }
+
+
+
+
         // ReSharper restore InconsistentNaming
     }
 
@@ -391,6 +429,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public MockServer()
         {
             ExplorerRepository = new Mock<IExplorerRepository>().Object;
+            Permissions = new List<IWindowsGroupPermission>();
         }
 
         #region Implementation of IEquatable<IResource>
@@ -404,6 +443,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IResource other)
         {
+            if (other == null)
+            {
+                return false;
+            }
+            if (other.ResourceID == ResourceID)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -579,6 +626,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void Edit()
         {
         }
+
+        public List<IWindowsGroupPermission> Permissions { get; private set; }
 
         public event PermissionsChanged PermissionsChanged;
 

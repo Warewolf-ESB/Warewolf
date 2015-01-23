@@ -12,12 +12,17 @@ namespace Dev2.Common.Interfaces
         void DeployService(IExplorerItemViewModel resourceToDeploy);
         void UpdateHelpDescriptor(IHelpDescriptor helpDescriptor);
         void NewResource(ResourceType? type);
+        void SaveService();
+        void ExecuteService();
+        void OpenScheduler();
+        void OpenSettings();
+        IServer ActiveServer { get; set; }
+        IExplorerTreeItem ActiveItem { get; set; }
         IServer LocalhostServer { get; set; }
-
         void Handle(Exception err);
-
         bool ShowPopup(IPopupMessage getDeleteConfirmation);
-
         void RemoveServiceFromExplorer(IExplorerItemViewModel explorerItemViewModel);
+        event Action ActiveServerChanged;
+        event Action ActiveItemChanged;
     }
 }
