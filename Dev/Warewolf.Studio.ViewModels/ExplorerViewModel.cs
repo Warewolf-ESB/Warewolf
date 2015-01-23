@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
@@ -64,6 +65,19 @@ namespace Warewolf.Studio.ViewModels
                 foreach(var environmentViewModel in Environments)
                 {
                     environmentViewModel.Filter(filter);
+                }
+                OnPropertyChanged(() => Environments);
+            }
+        }
+
+        public void RemoveItem(IExplorerItemViewModel item)
+        {
+            if (Environments != null)
+            {
+                var env = Environments.FirstOrDefault(a => a.Server == item.Server);
+                if(env!= null)
+                {
+                    env.RemoveItem(item);
                 }
                 OnPropertyChanged(() => Environments);
             }

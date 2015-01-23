@@ -173,5 +173,20 @@ namespace Warewolf.Studio.ViewModels
         {
             _handler.Handle(err);
         }
+
+        public bool ShowPopup(IPopupMessage msg)
+        {
+            var res = _popupController.Show(msg);
+            return res == MessageBoxResult.OK || res == MessageBoxResult.Yes;
+        }
+
+        public void RemoveServiceFromExplorer(IExplorerItemViewModel explorerItemViewModel)
+        {
+
+            var explorervm = _unityContainer.Resolve<IExplorerViewModel>();
+            explorervm.RemoveItem(explorerItemViewModel);
+        }
+
+  
     }
 }

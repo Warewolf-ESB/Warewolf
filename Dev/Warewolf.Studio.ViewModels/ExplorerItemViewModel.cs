@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -10,6 +11,7 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.Core.Popup;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -26,14 +28,14 @@ namespace Warewolf.Studio.ViewModels
         bool _canExecute;
         bool _canEdit;
         bool _canView;
+        bool _canDelete;
+        ICommand _deleteCommand;
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel" ,shellViewModel}, {"server",server }, {"builder",builder } });
             _shellViewModel = shellViewModel;
-            if(shellViewModel == null)
-            {
-                throw new ArgumentNullException("shellViewModel");
-            }
+          
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
@@ -42,10 +44,21 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
             CanCreateDbService = true;
-            CanRename = true;
+            CanRename = true; //todo:remove
+            CanDelete = true; //todo:remove
             CanCreatePluginService = true;
             _explorerRepository = server.ExplorerRepository;
             Server.PermissionsChanged += UpdatePermissions;
+            DeleteCommand = new DelegateCommand(Delete);
+        }
+
+        void Delete()
+        {
+            if (_shellViewModel.ShowPopup(PopupMessages.GetDeleteConfirmation(ResourceName)))
+            {
+                _explorerRepository.Delete(this);
+                _shellViewModel.RemoveServiceFromExplorer(this);
+            }
         }
 
         void UpdatePermissions(PermissionsChangedArgs args)
@@ -57,7 +70,7 @@ namespace Warewolf.Studio.ViewModels
                 CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
                 CanView = resourcePermission.View || resourcePermission.Contribute;
                 CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
-                
+                CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
             }
             else
             {
@@ -67,10 +80,23 @@ namespace Warewolf.Studio.ViewModels
                     CanEdit = serverPermission.Contribute;
                     CanExecute = serverPermission.Contribute || serverPermission.Execute;
                     CanView = serverPermission.View || serverPermission.Contribute;
+                    CanRename = serverPermission.Contribute || serverPermission.Administrator;
+                    CanDelete = serverPermission.Contribute || serverPermission.Administrator;
                 }
             }
         }
 
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                return _deleteCommand;  
+            }
+            set
+            {
+                _deleteCommand = value;
+            }
+        }
         public bool IsRenaming
         {
             get
@@ -148,7 +174,18 @@ namespace Warewolf.Studio.ViewModels
                 _canRename = value;
             }
         }
-        public bool CanDelete { get; set; }
+        public bool CanDelete
+        {
+            get
+            {
+                return _canDelete;
+            }
+            set
+            {
+                OnPropertyChanged(()=>CanDelete);
+                _canDelete = value;
+            }
+        }
         public bool CanDeploy { get; set; }
         public ICommand ItemSelectedCommand { get; set; }
         public bool CanExecute

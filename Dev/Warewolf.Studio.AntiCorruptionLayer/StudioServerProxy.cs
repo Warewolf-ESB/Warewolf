@@ -48,6 +48,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         }
 
+        public bool Delete(IExplorerItemViewModel explorerItemViewModel)
+        {
+            UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
+            return true;
+        }
+
         #endregion
     }
 }

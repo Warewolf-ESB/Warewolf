@@ -15,6 +15,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ResourceType ResourceType { get; set; }
         ICommand OpenCommand { get; set; }
         ICommand RenameCommand { get; set; }
+        ICommand DeleteCommand { get; set; }
         bool IsRenaming{ get; set; }
         bool IsNotRenaming { get;  }
         ICommand ItemSelectedCommand { get; set; }

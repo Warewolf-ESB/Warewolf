@@ -4,10 +4,12 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Studio.Core.Popup;
 using Warewolf.UnittestingUtils;
 
 namespace Warewolf.Studio.ViewModels.Tests
@@ -18,7 +20,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
+    
         public void Constructor_NullShellViewModel_ExpectException()
         {
             //------------Setup for test--------------------------
@@ -218,6 +220,47 @@ namespace Warewolf.Studio.ViewModels.Tests
             var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
             explorerViewModel.Move(expMovedInto);
             expRepo.Verify(a=>a.Move(explorerViewModel,expMovedInto));
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Delete")]
+        public void ExplorerItemViewModel_Delete_CallsCorrectMethod()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(a => a.ShowPopup(It.IsAny<IPopupMessage>())).Returns(true);
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+            var expMovedInto = new Mock<IExplorerItemViewModel>().Object;
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            explorerViewModel.DeleteCommand.Execute(null);
+            expRepo.Verify(a => a.Delete(explorerViewModel));
+            shellViewModelMock.Verify(a=>a.RemoveServiceFromExplorer(explorerViewModel));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Delete")]
+        public void ExplorerItemViewModel_Delete_DoesNotOccurIfPopupIsFalse()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(a => a.ShowPopup(It.IsAny<IPopupMessage>())).Returns(false);
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+            var expMovedInto = new Mock<IExplorerItemViewModel>().Object;
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            explorerViewModel.DeleteCommand.Execute(null);
+            expRepo.Verify(a => a.Delete(explorerViewModel),Times.Never());
+            shellViewModelMock.Verify(a => a.RemoveServiceFromExplorer(explorerViewModel),Times.Never());
         }
     }
 }
