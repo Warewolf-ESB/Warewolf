@@ -145,7 +145,7 @@ namespace Warewolf.Studio.Core.Popup
             {
                 Buttons = MessageBoxButton.OK,
                 Header = Resources.Languages.Core.InvalidPermissionHeader,
-                Description = string.Format(Resources.Languages.Core.InvalidPermissionMessage),
+                Description = Resources.Languages.Core.InvalidPermissionMessage,
                 Image = MessageBoxImage.Warning,
 
             };

@@ -14,11 +14,10 @@ namespace Warewolf.Studio.Core.Test
         public void PopupMessageBoxFactory_Create_CorrectPropertySet_ExpectWellFormedObject()
         {
             //------------Setup for test--------------------------
-            var mockPopupWindow = new Mock<IPopupWindow>();
             var popupMessageBoxFactory = new PopupMessageBoxFactory();
             var msg =  PopupMessages.GetNotConnected();
             //------------Execute Test---------------------------
-            var x = popupMessageBoxFactory.Create(msg,mockPopupWindow.Object);
+            var x = popupMessageBoxFactory.Create(msg);
             //------------Assert Results-------------------------
             Assert.AreEqual(msg,x.Message);
             Assert.IsFalse(x.FocusCancel);

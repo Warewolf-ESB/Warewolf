@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -103,6 +104,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void AddService(IResource resource)
         {
+
             var region = GetRegion(RegionNames.Workspace);
             var foundViewModel = region.Views.FirstOrDefault(o =>
             {

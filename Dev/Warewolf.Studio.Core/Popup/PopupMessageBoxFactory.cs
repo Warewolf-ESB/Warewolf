@@ -6,9 +6,11 @@ namespace Warewolf.Studio.Core.Popup
     {
         #region Implementation of IPopupMessageBoxFactory
 
-        public IDev2MessageBoxViewModel Create(IPopupMessage message,IPopupWindow popupWindow)
+        public IPopupWindow View { get; set; }
+
+        public IDev2MessageBoxViewModel Create(IPopupMessage message)
         {
-            return new WarewolfPopupMessage(message, popupWindow);
+            return new WarewolfPopupMessage(message, View);
         }
 
         #endregion

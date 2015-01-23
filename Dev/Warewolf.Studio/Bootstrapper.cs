@@ -78,7 +78,7 @@ namespace Warewolf.Studio
             var variableList = new VariableListView { DataContext = vm };
             Container.RegisterInstance<IVariableListView>(new VariableListView());
             Container.RegisterInstance(vm);
-            Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory(),new Mock<IPopupWindow>().Object));
+            Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory(),new PopupView()));
         }
 
         #endregion
