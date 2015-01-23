@@ -184,17 +184,9 @@
                                 <TextBlock Text="! " />
                                 <TextBlock Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsNotRenaming,  Converter={StaticResource BoolToVisibility}}" />
                                 <Grid>
-                                    <Grid.Style>
-                                        <Style>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=Data.IsRenaming}" Value="True">
-                                                    <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=PropertySearch}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-                                    <TextBox Text="{Binding Path=Data.ResourceName ,UpdateSourceTrigger=LostFocus}"  Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <i:Interaction.Triggers>
+
+                                    <TextBox  views:FocusExtension.IsFocused="{Binding Path= Data.IsRenaming}"  Name="PropertySearch"  Text="{Binding Path=Data.ResourceName ,UpdateSourceTrigger=LostFocus}"  Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
+                                   <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="LostFocus" >
                                             <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}"   />
                                         </i:EventTrigger>
