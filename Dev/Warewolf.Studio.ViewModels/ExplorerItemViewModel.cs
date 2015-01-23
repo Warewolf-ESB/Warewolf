@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
 using Dev2;
@@ -67,7 +68,10 @@ namespace Warewolf.Studio.ViewModels
             Versions = new ObservableCollection<IVersionInfoViewModel>();
             VersionHeader = "Show Version History";
             CanRollback = true;
+            Builder = builder;
         }
+
+        public IExplorerHelpDescriptorBuilder Builder { get; set; }
 
         void Delete()
         {
@@ -323,7 +327,10 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    Versions = new ObservableCollection<IVersionInfoViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new VersionInfoViewModel(a,_explorerRepository,this)));
+                    Children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(_shellViewModel,Server,Builder)
+                    {
+                        ResourceName = a.VersionNumber +" "+ a.DateTimeStamp.ToString(CultureInfo.InvariantCulture)+" " + a.Reason}
+                    ));
                     OnPropertyChanged(() => Versions);
                 }
                 else

@@ -164,7 +164,7 @@
                                DisplayMemberPath="ResourceName"
                                TargetTypeName="IExplorerItemViewModel"
                                Visibility="Visible">
-
+                    
                     <ig:NodeLayout.HeaderTemplate>
                         <DataTemplate>
 
@@ -173,12 +173,10 @@
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-
                                 <Image Width="14"
                                        Height="14" 
                                        Source="{Binding Data.ResourceType,
                                                         Converter={StaticResource ResourceTypeToIconConverter}}" />
-
                                 <TextBlock Text="! " />
                                 <TextBlock Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsNotRenaming,  Converter={StaticResource BoolToVisibility}}" />
                                 <Grid>
@@ -204,11 +202,11 @@
                         </DataTemplate>
                     </ig:NodeLayout.CollapsedIconTemplate>
                 </ig:NodeLayout>
-                <ig:NodeLayout Key="Versions" IsExpandedMemberPath="AreVersionsVisible"  DisplayMemberPath="VersionHeader" >
-                               <!--NodeStyle="{StaticResource NodeStyle}">--> 
+                <!--<ig:NodeLayout Key="Versions" IsExpandedMemberPath="AreVersionsVisible"  DisplayMemberPath="VersionHeader"  TargetTypeName="VersionInfoViewModel">
+                               --><!--NodeStyle="{StaticResource NodeStyle}">--> 
                                
                                <!--Visibility="{Binding Path=Data.AreVersionsVisible, RelativeSource={RelativeSource AncestorType=ig:XamDataTreeNode} ,Converter={StaticResource BoolToVisibilityConverter}}"-->
-                            <!-->-->
+                            <!-->--><!--
                     <ig:NodeLayout.HeaderTemplate>
                         <DataTemplate></DataTemplate>
                     </ig:NodeLayout.HeaderTemplate>
@@ -220,7 +218,7 @@
 
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
-                </ig:NodeLayout>
+                </ig:NodeLayout>-->
             </ig:XamDataTree.GlobalNodeLayouts>
 
         </ig:XamDataTree>
