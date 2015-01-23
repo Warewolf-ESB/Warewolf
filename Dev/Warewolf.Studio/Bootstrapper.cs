@@ -60,7 +60,7 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IMenuView>(new MenuView());
             Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
 
-
+     
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();
             colls.Add(new VariableListColumnViewModel("col", "bob", new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, colls) { Input = true });
 
@@ -78,9 +78,7 @@ namespace Warewolf.Studio
             var variableList = new VariableListView { DataContext = vm };
             Container.RegisterInstance<IVariableListView>(new VariableListView());
             Container.RegisterInstance(vm);
-            var popup =  new Mock<IPopupWindow>();
-            popup.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.OK);
-            Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory(),popup.Object));
+            Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory(),new PopupView()));
         }
 
         #endregion

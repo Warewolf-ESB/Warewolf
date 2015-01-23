@@ -18,7 +18,7 @@ namespace Warewolf.Studio.Core.Test
             var factory = new Mock<IPopupMessageBoxFactory>();
             var mockPopupWindow = new Mock<IPopupWindow>();
             var vm = new Mock<IDev2MessageBoxViewModel>();
-            factory.Setup(a => a.Create(It.IsAny<IPopupMessage>(),It.IsAny<IPopupWindow>())).Returns(vm.Object);
+            factory.Setup(a => a.Create(It.IsAny<IPopupMessage>())).Returns(vm.Object);
             var popupController = new PopupController(factory.Object,mockPopupWindow.Object);
             
             //------------Execute Test---------------------------
@@ -26,7 +26,7 @@ namespace Warewolf.Studio.Core.Test
 
             //------------Assert Results-------------------------
             vm.Verify(a=>a.Show(),Times.Once());
-            factory.Verify(a => a.Create(It.IsAny<IPopupMessage>(), It.IsAny<IPopupWindow>()));
+            factory.Verify(a => a.Create(It.IsAny<IPopupMessage>()));
         }
 
         [TestMethod]

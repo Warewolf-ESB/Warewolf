@@ -17,7 +17,7 @@ namespace Warewolf.Studio.ViewModels
     public class EnvironmentViewModel:BindableBase, IEnvironmentViewModel
     {
         readonly IShellViewModel _shellViewModel;
-        ICollection<IExplorerItemViewModel> _explorerItemViewModels;
+        ICollection<IExplorerItemViewModel> _children;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -31,16 +31,16 @@ namespace Warewolf.Studio.ViewModels
 
         public IServer Server { get; set; }
 
-        public ICollection<IExplorerItemViewModel> ExplorerItemViewModels
+        public ICollection<IExplorerItemViewModel> Children
         {
             get
             {
-                return _explorerItemViewModels;
+                return _children;
             }
             set
             {
-                _explorerItemViewModels = value;
-                OnPropertyChanged(() => ExplorerItemViewModels);
+                _children = value;
+                OnPropertyChanged(() => Children);
             }
         }
         public ICommand NewCommand
@@ -82,14 +82,14 @@ namespace Warewolf.Studio.ViewModels
             {
                 var explorerItems = await Server.LoadExplorer();
                 var explorerItemViewModels = CreateExplorerItems(explorerItems.Children,Server);
-                ExplorerItemViewModels = explorerItemViewModels;
+                Children = explorerItemViewModels;
                 IsLoaded = true;
             }
         }
 
         public void Filter(string filter)
         {
-            foreach (var explorerItemViewModel in ExplorerItemViewModels)
+            foreach (var explorerItemViewModel in Children)
             {
                 explorerItemViewModel.Children.ForEach(model => model.Filter(filter));
                 if ((String.IsNullOrEmpty(filter) || explorerItemViewModel.Children.Any(model => model.IsVisible)) || (explorerItemViewModel.ResourceName != null && explorerItemViewModel.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant())))
@@ -100,13 +100,13 @@ namespace Warewolf.Studio.ViewModels
                 {
                     explorerItemViewModel.IsVisible = false;
                 }
-                OnPropertyChanged(() => ExplorerItemViewModels);
+                OnPropertyChanged(() => Children);
             }
         }
 
         public ICollection<IExplorerItemViewModel> AsList()
         {
-            return AsList(ExplorerItemViewModels);
+            return AsList(Children);
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
@@ -128,11 +128,11 @@ namespace Warewolf.Studio.ViewModels
         {
             if(vm.ResourceType != ResourceType.Server)
             {
-                var res = AsList(ExplorerItemViewModels).FirstOrDefault(a => a.Children!= null && a.Children.Any(b=>b.ResourceId==vm.ResourceId));
+                var res = AsList(Children).FirstOrDefault(a => a.Children!= null && a.Children.Any(b=>b.ResourceId==vm.ResourceId));
                 if(res != null)
                 {
                     res.Children.Remove(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
-                    OnPropertyChanged(()=>ExplorerItemViewModels);
+                    OnPropertyChanged(()=>Children);
                 }
             }
         }

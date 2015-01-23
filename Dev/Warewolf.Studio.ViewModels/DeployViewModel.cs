@@ -68,7 +68,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void CalculateStats()
         {
-           Stats = StatsProvider.CalculateStats(Source.SelectedEnvironment.ExplorerItemViewModels,Destination.SelectedEnvironment.ExplorerItemViewModels,Predicates);
+           Stats = StatsProvider.CalculateStats(Source.SelectedEnvironment.Children,Destination.SelectedEnvironment.Children,Predicates);
         }
 
         public void Deploy()
