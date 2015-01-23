@@ -51,6 +51,7 @@ namespace Warewolf.Studio
             AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
             ThemeManager.ApplicationTheme = new LunaTheme();
             Container.RegisterType<IServer, Server>(new InjectionConstructor(typeof(Uri)));
+            Container.RegisterInstance<IVersionChecker>(new VersionChecker());
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>()));
             Container.RegisterInstance<IMenuViewModel>(new MenuViewModel(Container.Resolve<IShellViewModel>()));
@@ -63,7 +64,7 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IToolboxView>(new ToolboxView());
             Container.RegisterInstance<IMenuView>(new MenuView());
             Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
-            
+           
      
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();
             colls.Add(new VariableListColumnViewModel("col", "bob", new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, colls) { Input = true });

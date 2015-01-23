@@ -8,7 +8,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -39,6 +38,7 @@ namespace Warewolf.Studio.ViewModels
         ResourceType _resourceType;
         bool _canRollback;
         ICommand _rollbackCommand;
+        bool _userShouldEditValueNow;
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
@@ -103,6 +103,19 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public bool UserShouldEditValueNow
+        {
+            get
+            {
+                return _userShouldEditValueNow;
+            }
+            set
+            {
+                _userShouldEditValueNow = value;
+                OnPropertyChanged(() => UserShouldEditValueNow);
+            }
+        }
+
         public ICommand DeleteCommand
         {
             get
@@ -136,7 +149,7 @@ namespace Warewolf.Studio.ViewModels
             {
 
                 _isRenaming = value;
-               
+                UserShouldEditValueNow = _isRenaming;
                 OnPropertyChanged(() => IsRenaming);
                 OnPropertyChanged(() => IsNotRenaming);
             }
