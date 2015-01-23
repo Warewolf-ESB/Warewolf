@@ -15,14 +15,37 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new ArgumentNullException("shellViewModel");
             }
-
-            NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
-            DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(null));
-            SaveCommand = new DelegateCommand(shellViewModel.SaveService);
-            OpenSchedulerCommand = new DelegateCommand(shellViewModel.OpenScheduler);
-            OpenSettingsCommand = new DelegateCommand(shellViewModel.OpenSettings);
-            ExecuteServiceCommand = new DelegateCommand(shellViewModel.ExecuteService);
+            shellViewModel.ActiveServerChanged+=ShellViewModelOnActiveServerChanged;
+            NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource,type => CanCreateNewService);
+            DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(null),()=>CanDeploy);
+            SaveCommand = new DelegateCommand(shellViewModel.SaveService,()=>CanSave);
+            OpenSchedulerCommand = new DelegateCommand(shellViewModel.OpenScheduler, () => CanSetSchedules);
+            OpenSettingsCommand = new DelegateCommand(shellViewModel.OpenSettings, () => CanSetSettings);
+            ExecuteServiceCommand = new DelegateCommand(shellViewModel.ExecuteService, () => CanExecuteService);
+            
         }
+
+        void ShellViewModelOnActiveServerChanged()
+        {
+            UpdateCommandExecutionBaseOnPermissions();
+        }
+
+        void UpdateCommandExecutionBaseOnPermissions()
+        {
+            CanCreateNewService = true;
+            CanDeploy = true;
+            CanSave = true;
+            CanSetSchedules = true;
+            CanSetSettings = true;
+            CanExecuteService = true;
+        }
+
+        public bool CanExecuteService { get; set; }
+        public bool CanSetSettings { get; set; }
+        public bool CanSetSchedules { get; set; }
+        public bool CanSave { get; set; }
+        public bool CanDeploy { get; set; }
+        public bool CanCreateNewService { get; set; }
 
         public ICommand DeployCommand { get; set; }
         public ICommand NewCommand { get; set; }
