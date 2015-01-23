@@ -139,7 +139,7 @@
 
 
             <ig:XamDataTree.GlobalNodeLayouts>
-                <ig:NodeLayout Key="Environments" DisplayMemberPath="DisplayName">
+                <ig:NodeLayout Key="Environments" DisplayMemberPath="DisplayName" TargetTypeName="EnvironmentViewModel">
                     
                     <ig:NodeLayout.ExpandedIconTemplate>
                         <DataTemplate>

@@ -19,6 +19,7 @@ namespace Dev2.Common.Interfaces
         void ReloadTools();
         void Disconnect();
         void Edit();
+        List<IWindowsGroupPermission> Permissions { get; } 
 
         event PermissionsChanged PermissionsChanged;
     }

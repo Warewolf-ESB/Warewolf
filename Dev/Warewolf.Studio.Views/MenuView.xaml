@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:studio="clr-namespace:Dev2.Common.Interfaces.Studio;assembly=Dev2.Common.Interfaces"
+             xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
              ScrollViewer.VerticalScrollBarVisibility="Disabled"
              Width="60"
-             mc:Ignorable="d">
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type={x:Type studio:IMenuViewModel}}">
 
     <Grid x:Name="Menu"
           HorizontalAlignment="Stretch"
@@ -70,6 +72,8 @@
 
         <Button Grid.Row="3"
                 Grid.Column="1"
+                Command="{Binding NewCommand}"
+                CommandParameter="{x:Static data:ResourceType.WorkflowService}"
                 Style="{StaticResource SideMenuButtonStyle}">
             <Image Width="20"
                    Height="20"
@@ -78,6 +82,7 @@
 
         <Button Grid.Row="4"
                 Grid.Column="1"
+                Command="{Binding SaveCommand}"
                 Style="{StaticResource SideMenuButtonStyle}">
             <Image Width="20"
                    Height="20"
@@ -86,6 +91,7 @@
 
         <Button Grid.Row="5"
                 Grid.Column="1"
+                Command="{Binding DeployCommand}"
                 Style="{StaticResource SideMenuButtonStyle}">
             <Image Width="20"
                    Height="20"
@@ -98,6 +104,8 @@
 
         <Button Grid.Row="7"
                 Grid.Column="1"
+                Command="{Binding NewCommand}"
+                CommandParameter="{x:Static data:ResourceType.DbService}"
                 Style="{StaticResource SideMenuButtonStyle}">
             <Image Width="20"
                    Height="20"
@@ -106,6 +114,8 @@
 
         <Button Grid.Row="8"
                 Grid.Column="1"
+                Command="{Binding NewCommand}"
+                CommandParameter="{x:Static data:ResourceType.PluginService}"
                 Style="{StaticResource SideMenuButtonStyle}">
             <Image Width="20"
                    Height="20"
@@ -114,6 +124,8 @@
 
         <Button Grid.Row="9"
                 Grid.Column="1"
+                Command="{Binding NewCommand}"
+                CommandParameter="{x:Static data:ResourceType.WebService}"
                 Style="{StaticResource SideMenuButtonStyle}">
             <Image Width="20"
                    Height="20"
@@ -126,6 +138,7 @@
 
         <Button Grid.Row="11"
                 Grid.Column="1"
+                Command="{Binding OpenSchedulerCommand}"
                 Style="{StaticResource SideMenuButtonStyle}">
             <Image Width="20"
                    Height="20"
@@ -134,6 +147,7 @@
 
         <Button Grid.Row="12"
                 Grid.Column="1"
+                Command="{Binding ExecuteServiceCommand}"
                 Style="{StaticResource SideMenuButtonStyle}">
             <Image Width="20"
                    Height="20"
@@ -146,6 +160,7 @@
 
         <Button Grid.Row="14"
                 Grid.Column="1"
+                Command="{Binding OpenSettingsCommand}"
                 Style="{StaticResource SideMenuButtonStyle}">
             <Image Width="20"
                    Height="20"

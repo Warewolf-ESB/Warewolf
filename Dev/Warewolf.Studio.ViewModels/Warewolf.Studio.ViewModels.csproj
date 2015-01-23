@@ -89,9 +89,9 @@
     <Compile Include="ConnectControlViewModel.cs" />
     <Compile Include="DeployItemMessage.cs" />
     <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
+    <Compile Include="MenuViewModel.cs" />
     <Compile Include="VariableList\VariableListColumnViewModel.cs" />
     <Compile Include="VariableList\VariableListViewRecordSetViewModel.cs" />
-    <Compile Include="DummyModels\DummyMenuViewModel.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
     <Compile Include="DummyModels\DummyExplorerViewModel.cs" />

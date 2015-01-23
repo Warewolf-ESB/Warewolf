@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Controller;
 using Dev2.Network;
@@ -17,7 +18,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
     {
         readonly ServerProxy _environmentConnection;
         readonly Guid _serverId;
-        StudioServerProxy _proxyLayer;
+        readonly StudioServerProxy _proxyLayer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -34,10 +35,18 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public Server(string uri,ICredentials credentials)
         {
             _environmentConnection = new ServerProxy(uri,credentials,new AsyncWorker());
-            _environmentConnection.Connect(Guid.NewGuid()); // todo: temp id to ge
             _serverId = Guid.NewGuid();
             _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), _environmentConnection);
+            _environmentConnection.PermissionsModified += RaisePermissionsModifiedEvent;
+        }
 
+        void RaisePermissionsModifiedEvent(object sender, List<IWindowsGroupPermission> e)
+        {
+            if (PermissionsChanged != null)
+            {
+                PermissionsChanged(new PermissionsChangedArgs(e));
+            }
+            Permissions = e;
         }
 
         #region Implementation of IServer
@@ -49,13 +58,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public List<IResource> Load()
         {
-            
             return null;
         }
 
         public async Task<IExplorerItem> LoadExplorer()
         {
-            var result = await _proxyLayer.QueryManagerProxy.Load();
+            var result = await _proxyLayer.QueryManagerProxy.Load();            
             return result;
         }
 
@@ -94,6 +102,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void Edit()
         {
         }
+
+        public List<IWindowsGroupPermission> Permissions { get; private set; }
 
         public event PermissionsChanged PermissionsChanged;
 

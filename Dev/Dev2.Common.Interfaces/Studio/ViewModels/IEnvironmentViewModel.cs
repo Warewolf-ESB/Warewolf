@@ -22,10 +22,11 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand DeleteCommand { get; set; }
         ICommand ShowVersionHistory { get; set; }
         ICommand RollbackCommand { get; set; }
+        IServer Server { get; set; }
+        
     }
     public interface IEnvironmentViewModel : IExplorerTreeItem
     {
-        IServer Server { get; set; }
         ICollection<IExplorerItemViewModel> Children { get; set; }
         string DisplayName { get; set; }
         bool IsConnected { get; }

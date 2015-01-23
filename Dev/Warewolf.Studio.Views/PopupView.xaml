@@ -30,11 +30,13 @@
             <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                 <Button x:Name="OkButton"
                           Content="Ok"
-                          MinWidth="50" Margin="10"
+                          Width="50" Margin="10,0,10,5"
+                        Height="32"
                         Click="OkButton_OnClick"/>
                 <Button x:Name="CancelButton"
-                        MinWidth="50"
-                          Content="Cancel" Margin="10" Click="CancelButton_OnClick"/>
+                        Width="50"
+                        Height="32"
+                          Content="Cancel" Margin="10,0,10,5" Click="CancelButton_OnClick"/>
             </StackPanel>
         </Grid>
     
