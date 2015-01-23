@@ -139,19 +139,36 @@
                                         IsOnNodeActiveEditingEnabled="False" />
             </ig:XamDataTree.EditingSettings>
 
+
             <ig:XamDataTree.GlobalNodeLayouts>
+
+
+                <ig:NodeLayout Key="Environments" DisplayMemberPath="DisplayName" TargetTypeName="IEnvironmentViewModel">
+                    <ig:NodeLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel >
+                                <Image Width="14"
+                                       Height="14"
+                                       Source="{StaticResource System-Logo-Mono}" />
+                                <TextBlock Text="bob" />
+                                <TextBlock Text="{Binding Data.DisplayName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ig:NodeLayout.ItemTemplate>
+                </ig:NodeLayout>
+
                 <ig:NodeLayout Key="Children"
                                DisplayMemberPath="ResourceName"
-                               TargetTypeName="Dev2.Common.Interfaces.Studio.ViewModels.IExplorerItemViewModel"
+                               TargetTypeName="IExplorerItemViewModel"
                                Visibility="Visible">
 
                     <ig:NodeLayout.HeaderTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <!--<StackPanel Orientation="Horizontal">
                                 <TextBlock Text=" - [" />
                                 <TextBlock Text="{Binding Data.Children.Count}" />
                                 <TextBlock Text="]" />
-                            </StackPanel>
+                            </StackPanel>-->
                         </DataTemplate>
                     </ig:NodeLayout.HeaderTemplate>
                                
@@ -164,8 +181,8 @@
                                                         Converter={StaticResource ResourceTypeToIconConverter}}" />
 
                                 <TextBlock Text="! " />
-                                <TextBlock Text="{Binding Data.ResourceName}" />
-
+                                <TextBlock Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsNotRenaming,  Converter={StaticResource BoolToVisibility}}" />
+                                <TextBox Text="{Binding Path=Data.DisplayName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
                             </StackPanel>
 
                         </DataTemplate>
@@ -178,7 +195,8 @@
                                        Source="{Binding Data.ResourceType,
                                                         Converter={StaticResource ResourceTypeToIconConverter}}" />
                                 <TextBlock Text="? " />
-                                <TextBlock Text="{Binding Data.DisplayName}" />
+                                <TextBlock Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsNotRenaming,  Converter={StaticResource BoolToVisibility}}" />
+                                <TextBox Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
                             </StackPanel>
                             
                         </DataTemplate>
