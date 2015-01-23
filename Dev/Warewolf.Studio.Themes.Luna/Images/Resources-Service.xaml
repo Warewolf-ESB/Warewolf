@@ -8,4 +8,14 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
 </DrawingImage>
-	</ResourceDictionary>
+
+    <DrawingImage x:Key="Resources-Service-TreeIcon">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF333333" Geometry="M 37.6808,-366.438L 37.6808,-368.054C 37.6808,-368.444 37.3595,-368.762 36.9582,-368.762"/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>
