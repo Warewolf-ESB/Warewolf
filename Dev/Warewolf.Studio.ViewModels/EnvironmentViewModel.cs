@@ -78,8 +78,12 @@ namespace Warewolf.Studio.ViewModels
 
         public async void Connect()
         {
-            IsConnected = await Server.Connect();
-            Load();
+            if(Server != null)
+            {
+                IsConnected = await Server.Connect();
+                Load();
+            }
+            
         }
 
         public async void Load()

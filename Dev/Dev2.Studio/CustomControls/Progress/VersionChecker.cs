@@ -11,6 +11,8 @@
 
 using System;
 using System.Net;
+using System.Threading.Tasks;
+using Dev2.Common.Interfaces;
 using Dev2.Helpers;
 using Dev2.Studio.Utils;
 
@@ -19,7 +21,7 @@ namespace Dev2.Studio.Core.Helpers
 {
     public class VersionChecker : IVersionChecker
     {
-        readonly IDev2WebClient _webClient;
+        readonly IWarewolfWebClient _webClient;
         readonly Func<Version> _versionGetter;
 
         bool _isDone;
@@ -28,11 +30,11 @@ namespace Dev2.Studio.Core.Helpers
         private string _latestVersionCheckSum;
 
         public VersionChecker()
-            : this(new Dev2WebClient(new WebClient()), VersionInfo.FetchVersionInfoAsVersion)
+            : this(new WarewolfWebClient(new WebClient()), VersionInfo.FetchVersionInfoAsVersion)
         {
         }
 
-        public VersionChecker(IDev2WebClient webClient, Func<Version> versionGetter)
+        public VersionChecker(IWarewolfWebClient webClient, Func<Version> versionGetter)
         {
             VerifyArgument.IsNotNull("webClient", webClient);
             VerifyArgument.IsNotNull("versionGetter", versionGetter);
@@ -94,6 +96,11 @@ namespace Dev2.Studio.Core.Helpers
                 Check();
                 return Warewolf.Studio.Resources.Languages.Core.Uri_Community_HomePage;
             }
+        }
+
+        public Task<bool> GetNewerVersionAsync()
+        {
+            return null;
         }
 
         #endregion

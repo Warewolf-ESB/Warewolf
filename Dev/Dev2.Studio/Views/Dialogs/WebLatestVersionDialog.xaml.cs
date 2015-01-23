@@ -10,15 +10,15 @@
 */
 
 using System;
-using System.Windows;
 using System.Windows.Navigation;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Views.Dialogs
 {
     /// <summary>
     /// Interaction logic for WebLatestVersionDialog.xaml
     /// </summary>
-    public partial class WebLatestVersionDialog : Window
+    public partial class WebLatestVersionDialog
     {
         public WebLatestVersionDialog()
         {
@@ -31,5 +31,11 @@ namespace Dev2.Views.Dialogs
             Browser.Width = Browser.ActualWidth + 32; 
             Browser.Height = Browser.ActualHeight + 32;
         }
+
+        #region Implementation of IWebLatestVersionDialog
+
+       
+
+        #endregion
     }
 }
