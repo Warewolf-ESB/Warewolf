@@ -37,6 +37,8 @@ namespace Warewolf.Studio.ViewModels
         bool _areVersionsVisible;
         string _versionHeader;
         ResourceType _resourceType;
+        bool _canRollback;
+        ICommand _rollbackCommand;
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
@@ -58,13 +60,9 @@ namespace Warewolf.Studio.ViewModels
             Server.PermissionsChanged += UpdatePermissions;
             ShowVersionHistory = new DelegateCommand((() => AreVersionsVisible = (!AreVersionsVisible)));
             DeleteCommand = new DelegateCommand(Delete);
-            Versions = new ObservableCollection<IVersionInfoViewModel>
-            {
-                new VersionInfoViewModel(new VersionInfo(DateTime.Now,"bob","pinal dave","1",Guid.NewGuid(),Guid.NewGuid())),
-                new VersionInfoViewModel(new VersionInfo(DateTime.Now,"the","josh smith","1",Guid.NewGuid(),Guid.NewGuid())),
-                new VersionInfoViewModel(new VersionInfo(DateTime.Now,"builder","pinal dave > Josh Smith","1",Guid.NewGuid(),Guid.NewGuid()))
-            };
+            Versions = new ObservableCollection<IVersionInfoViewModel>();
             VersionHeader = "Show Version History";
+            CanRollback = true;
         }
 
         void Delete()
@@ -113,6 +111,17 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public ICommand ShowVersionHistory { get; set; }
+        public ICommand RollbackCommand
+        {
+            get
+            {
+                return _rollbackCommand;
+            }
+            set
+            {
+                _rollbackCommand = value;
+            }
+        }
         public bool IsRenaming
         {
             get
@@ -267,6 +276,17 @@ namespace Warewolf.Studio.ViewModels
                 return ResourceType == ResourceType.WorkflowService;
             }
         }
+        public bool CanRollback
+        {
+            get
+            {
+                return _canRollback;
+            }
+            set
+            {
+                _canRollback = value;
+            }
+        }
         public bool AreVersionsVisible
         {
             get
@@ -280,8 +300,12 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    Versions = new ObservableCollection<IVersionInfoViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new VersionInfoViewModel(a)));
+                    Versions = new ObservableCollection<IVersionInfoViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new VersionInfoViewModel(a,_explorerRepository,this)));
                     OnPropertyChanged(() => Versions);
+                }
+                else
+                {
+                    Versions = new Collection<IVersionInfoViewModel>();
                 }
                 OnPropertyChanged(()=>AreVersionsVisible);
                 

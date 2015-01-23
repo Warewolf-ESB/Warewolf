@@ -16,7 +16,12 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanRename { get; set; }
         bool CanDelete { get; set; }
         bool CanDeploy { get; set; }
-        
+        bool CanShowVersions { get; }
+        bool CanRollback { get; set; }
+        ICommand RenameCommand { get; set; }
+        ICommand DeleteCommand { get; set; }
+        ICommand ShowVersionHistory { get; set; }
+        ICommand RollbackCommand { get; set; }
     }
     public interface IEnvironmentViewModel : IExplorerTreeItem
     {

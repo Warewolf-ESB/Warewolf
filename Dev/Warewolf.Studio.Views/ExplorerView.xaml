@@ -8,6 +8,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:viewModels1="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -43,6 +44,9 @@
                           CommandParameter="{Binding Path=Data.CanShowVersions}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <MenuItem Name="ShowHideVersions" Header="{Binding Path=Data.VersionHeader}" Command="{Binding Path=Data.ShowVersionHistory}"
                      CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="Rollback" Header="Make Current Version" Command="{Binding Path=Data.RollbackCommand}"
+                     CommandParameter="{Binding Data}" Visibility="Visible" />
+
         </ContextMenu>
         <Style TargetType="{x:Type ig:XamDataTreeNodeControl}">
             <Setter Property="ContextMenu" Value="{StaticResource TreeNodeContextMenu}" />
@@ -169,7 +173,7 @@
                 <ig:NodeLayout Key="Children" 
                                DisplayMemberPath="ResourceName" 
                                TargetTypeName="Dev2.Common.Interfaces.Studio.ViewModels.IExplorerItemViewModel"
-                               
+                               IsExpandedMemberPath="AreVersionsVisible"
                                >
                     <ig:NodeLayout.HeaderTemplate>
                         <DataTemplate></DataTemplate>
@@ -183,8 +187,8 @@
                                 <Image Width="14"
                                        Height="14"
                                        Source="{Binding Data.ResourceType, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                <TextBlock Text="{Binding Data.ResourceName}" />
-                                <TextBlock Text="{Binding Data.Children.Count}" />
+                                <TextBlock Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVisibilityConverter}}" Text="{Binding Path=Data.ResourceName}" />
+                                <TextBlock Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVisibilityConverter}}" Text="{Binding Path=Data.Children.Count}" />
                             </StackPanel>
 
                         </DataTemplate>
@@ -198,16 +202,24 @@
                                 <Image Width="14"
                                        Height="14"
                                        Source="{StaticResource System-Logo-Mono}" />
-                                <TextBlock Text="{Binding Data.DisplayName}" />
-                                <TextBlock Text="{Binding Data.Children.Count}" />
+                                <TextBlock Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVisibilityConverter}}" Text="{Binding Path=Data.ResourceName}" />
+                                <TextBlock Visibility="{Binding Path=Data.IsNotRenaming, Converter={StaticResource BoolToVisibilityConverter}}" Text="{Binding Path=Data.Children.Count}" />
                             </StackPanel>
+                            
                         </DataTemplate>
                     </ig:NodeLayout.CollapsedIconTemplate>
                 </ig:NodeLayout>
-                <ig:NodeLayout Key="Versions" NodeStyle="{StaticResource NodeStyle}" TargetTypeName="Dev2.Common.Interfaces.Studio.ViewModels.IVersionInfoViewModel" DisplayMemberPath="VersionHeader" Visibility="{Binding Path=Data.AreVersionsVisible, RelativeSource={RelativeSource AncestorType=ig:XamDataTreeNode} ,Converter={StaticResource BoolToVisibilityConverter}}">
+                <ig:NodeLayout Key="Versions" IsExpandedMemberPath="AreVersionsVisible" TargetTypeName="VersionInfoViewModel" DisplayMemberPath="VersionHeader" >
+                               <!--NodeStyle="{StaticResource NodeStyle}">--> 
+                               
+                               <!--Visibility="{Binding Path=Data.AreVersionsVisible, RelativeSource={RelativeSource AncestorType=ig:XamDataTreeNode} ,Converter={StaticResource BoolToVisibilityConverter}}"-->
+                            <!-->-->
+                    <ig:NodeLayout.HeaderTemplate>
+                        <DataTemplate></DataTemplate>
+                    </ig:NodeLayout.HeaderTemplate>
                     <ig:NodeLayout.ItemTemplate >
-                        <DataTemplate DataType="viewModels:IVersionInfoViewModel">
-                            <StackPanel  Orientation="Horizontal" Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <DataTemplate DataType="viewModels1:VersionInfoViewModel">
+                            <StackPanel  Orientation="Horizontal" >
                                 <TextBlock Text="{Binding Path=Data.VersionHeader}" />
                             </StackPanel>
 

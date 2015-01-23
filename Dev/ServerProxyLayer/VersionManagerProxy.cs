@@ -5,7 +5,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Common.Interfaces.Versioning;
-using Dev2.Controller;
+using Dev2.Communication;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
@@ -50,8 +50,22 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resourceId">the resource</param>
         /// <param name="versionNumber">the version to rollback to</param>
-        public void RollbackTo(Guid resourceId, string versionNumber)
+        public IRollbackResult RollbackTo(Guid resourceId, string versionNumber)
         {
+            var workSpaceId = Guid.NewGuid();
+            var controller = CommunicationControllerFactory.CreateController("RollbackTo");
+            controller.AddPayloadArgument("resourceId", resourceId.ToString());
+            controller.AddPayloadArgument("versionNumber", versionNumber);
+
+            var result = controller.ExecuteCommand<ExecuteMessage>(_connection, workSpaceId);
+
+            if (result == null || result.HasError)
+            {
+                return null;
+            }
+
+            var serializer = new Dev2JsonSerializer();
+            return serializer.Deserialize<IRollbackResult>(result.Message);
         }
 
         /// <summary>
