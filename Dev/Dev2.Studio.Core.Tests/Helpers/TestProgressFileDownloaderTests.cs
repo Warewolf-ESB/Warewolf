@@ -13,6 +13,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Utils;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.CustomControls.Progress;
@@ -37,7 +38,7 @@ namespace Dev2.Core.Tests.Helpers
 // ReSharper restore InconsistentNaming
         {
             //init
-            var mockWebClient = new Mock<IDev2WebClient>();
+            var mockWebClient = new Mock<IWarewolfWebClient>();
             mockWebClient.Setup(c => c.DownloadFileAsync(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             var mockProgressDialog = new Mock<IProgressDialog>();
             mockProgressDialog.Setup(c => c.Show()).Verifiable();
@@ -58,7 +59,7 @@ namespace Dev2.Core.Tests.Helpers
         public void ProgressFileDownloaderUnitTestDownloadAsyncDownloadStopedAndProgressDialogClosed()
         {
             //init
-            var mockWebClient = new Mock<IDev2WebClient>();
+            var mockWebClient = new Mock<IWarewolfWebClient>();
             mockWebClient.Setup(c => c.CancelAsync()).Verifiable();
             var mockProgressDialog = new Mock<IProgressDialog>();
             mockProgressDialog.Setup(c => c.Close()).Verifiable();
@@ -81,7 +82,7 @@ namespace Dev2.Core.Tests.Helpers
 // ReSharper restore InconsistentNaming
         {
             //init
-            var mockWebClient = new Mock<IDev2WebClient>();
+            var mockWebClient = new Mock<IWarewolfWebClient>();
             var mockProgressDialog = new Mock<IProgressDialog>();
             mockProgressDialog.Setup(c => c.StatusChanged(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<long>())).Verifiable();
             ProgressFileDownloader.GetProgressDialogViewModel = (x, y) => mockProgressDialog.Object;
@@ -102,7 +103,7 @@ namespace Dev2.Core.Tests.Helpers
         public void ProgressFileDownloader_UnitTest_OnDownloadFileCompleted_DialogClosed()
         {
             //init
-            var mockWebClient = new Mock<IDev2WebClient>();
+            var mockWebClient = new Mock<IWarewolfWebClient>();
             var mockProgressDialog = new Mock<IProgressDialog>();
             mockProgressDialog.Setup(c => c.Close()).Verifiable();
             ProgressFileDownloader.GetProgressDialogViewModel = (x, y) => mockProgressDialog.Object;
@@ -134,7 +135,7 @@ namespace Dev2.Core.Tests.Helpers
         public void ProgresssFileDownloader_Ctor_VerifyExceptionThrownIfFileClientsNull()
         {
             // ReSharper disable ObjectCreationAsStatement
-            new ProgressFileDownloader(new Mock<IDev2WebClient>().Object, null, new Mock<ICryptoProvider>().Object);
+            new ProgressFileDownloader(new Mock<IWarewolfWebClient>().Object, null, new Mock<ICryptoProvider>().Object);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -144,7 +145,7 @@ namespace Dev2.Core.Tests.Helpers
         public void ProgresssFileDownloader_Ctor_VerifyExceptionThrownIfCryptoIsNull()
         {
             // ReSharper disable ObjectCreationAsStatement
-            new ProgressFileDownloader(new Mock<IDev2WebClient>().Object, new Mock<IFile>().Object, null);
+            new ProgressFileDownloader(new Mock<IWarewolfWebClient>().Object, new Mock<IFile>().Object, null);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -154,7 +155,7 @@ namespace Dev2.Core.Tests.Helpers
         public void ProgressFileDownloader_Ctor_AssertCorrectConstruction()
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
 #pragma warning disable 168
@@ -194,7 +195,7 @@ namespace Dev2.Core.Tests.Helpers
         public void ProgressFileDownloader_PerformCheckSum_VerifyCryptoProviderCalledAndStringsCompared_ExpectTrueReturned()
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
             var stream = new MemoryStream();
@@ -216,7 +217,7 @@ namespace Dev2.Core.Tests.Helpers
         public void ProgressFileDownloader_PerformCheckSum_VerifyCryptoProviderCalledAndStringsCompared_ExpectFalseReturned()
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
             var stream = new MemoryStream();
@@ -240,7 +241,7 @@ namespace Dev2.Core.Tests.Helpers
 // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             var progressNotifier = new Mock<IProgressNotifier>();
             progressNotifier.Setup(a => a.Close()).Verifiable();
             var file = new Mock<IFile>();
@@ -276,7 +277,7 @@ namespace Dev2.Core.Tests.Helpers
 // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             var progressNotifier = new Mock<IProgressNotifier>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
@@ -307,7 +308,7 @@ namespace Dev2.Core.Tests.Helpers
 // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             var progressNotifier = new Mock<IProgressNotifier>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
@@ -339,7 +340,7 @@ namespace Dev2.Core.Tests.Helpers
 // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
             var progressNotifier = new Mock<IProgressNotifier>();
@@ -372,7 +373,7 @@ namespace Dev2.Core.Tests.Helpers
         // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
             ProgressFileDownloader.GetProgressDialogViewModel = ((a, b) => new Mock<IProgressNotifier>().Object);
@@ -403,7 +404,7 @@ namespace Dev2.Core.Tests.Helpers
         // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             var file = new Mock<IFile>();
             var crytpto = new Mock<ICryptoProvider>();
             ProgressFileDownloader.GetProgressDialogViewModel = ((a, b) => new Mock<IProgressNotifier>().Object);

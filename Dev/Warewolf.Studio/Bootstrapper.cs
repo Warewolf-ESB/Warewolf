@@ -20,6 +20,7 @@ using Microsoft.Practices.Unity;
 using Moq;
 using Warewolf.Core;
 using Warewolf.Studio.AntiCorruptionLayer;
+using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
@@ -55,11 +56,14 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IMenuViewModel>(new MenuViewModel(Container.Resolve<IShellViewModel>()));
             Container.RegisterInstance<IToolboxViewModel>(new DummyToolboxViewModel());
 
+            Container.RegisterInstance<IVersionChecker>(new VersionChecker());
+            Container.RegisterInstance<IWebLatestVersionDialog>(new WebLatestVersionDialog());
+
             Container.RegisterInstance<IExplorerView>(new ExplorerView());
             Container.RegisterInstance<IToolboxView>(new ToolboxView());
             Container.RegisterInstance<IMenuView>(new MenuView());
             Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
-
+            
      
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();
             colls.Add(new VariableListColumnViewModel("col", "bob", new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, colls) { Input = true });
@@ -79,8 +83,9 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IVariableListView>(new VariableListView());
             Container.RegisterInstance(vm);
             Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory(),new PopupView()));
+            
         }
-
+        
         #endregion
 
         protected override void InitializeShell()

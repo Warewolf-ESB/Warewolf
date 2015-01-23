@@ -62,6 +62,12 @@ namespace Warewolf.Studio.ViewModels
         public bool CanRename { get; set; }
         public bool CanDelete { get; set; }
         public bool CanDeploy { get; set; }
+        public bool CanShowVersions { get { return false; } }
+        public bool CanRollback { get; set; }
+        public ICommand RenameCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
+        public ICommand ShowVersionHistory { get; set; }
+        public ICommand RollbackCommand { get; set; }
         public string DisplayName
         {
             get;
@@ -72,8 +78,12 @@ namespace Warewolf.Studio.ViewModels
 
         public async void Connect()
         {
-            IsConnected = await Server.Connect();
-            Load();
+            if(Server != null)
+            {
+                IsConnected = await Server.Connect();
+                Load();
+            }
+            
         }
 
         public async void Load()

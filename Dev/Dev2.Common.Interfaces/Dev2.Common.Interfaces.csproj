@@ -234,9 +234,12 @@
     <Compile Include="IConnectedServerChangedEvent.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
+    <Compile Include="IWarewolfWebClient.cs" />
     <Compile Include="IEsbRequestResult.cs" />
     <Compile Include="IServiceDesignerViewModel.cs" />
     <Compile Include="IShellViewModel.cs" />
+    <Compile Include="IVersionChecker.cs" />
+    <Compile Include="IWebLatestVersionDialog.cs" />
     <Compile Include="IXamlResource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />

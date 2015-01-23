@@ -28,7 +28,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// </summary>
         /// <param name="resourceId">the resource</param>
         /// <param name="versionNumber">the version to rollback to</param>
-        void RollbackTo(Guid resourceId, string versionNumber);
+        IRollbackResult RollbackTo(Guid resourceId, string versionNumber);
         /// <summary>
         /// Delete a version o a resource
         /// </summary>

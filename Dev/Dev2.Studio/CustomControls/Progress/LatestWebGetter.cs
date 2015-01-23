@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using System.Net;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Helpers;
 
 // ReSharper disable CheckNamespace
@@ -21,15 +22,15 @@ namespace Dev2.Studio.Core.Helpers
     // PBI 9512 - 2013.06.07 - TWR: added
     public class LatestWebGetter : ILatestGetter, IDisposable
     {
-        readonly IDev2WebClient _webClient;
+        readonly IWarewolfWebClient _webClient;
 
         public LatestWebGetter()
-            : this(new Dev2WebClient(new WebClient()))
+            : this(new WarewolfWebClient(new WebClient()))
         {
 
         }
 
-        public LatestWebGetter(IDev2WebClient webClient)
+        public LatestWebGetter(IWarewolfWebClient webClient)
         {
             if(webClient == null)
             {
