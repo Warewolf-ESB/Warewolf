@@ -5,37 +5,40 @@
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:igWindows="http://infragistics.com/Windows"
-        xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
         x:Name="MainWindow"
         Title="Warewolf Studio"
-        WindowState="Maximized">
-
+        WindowState="Maximized"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type={x:Type interfaces:IShellViewModel}}">
 
 
     <Window.Resources>
 
-        <Style TargetType="{x:Type igWindows:XamPager}">
+            <Style TargetType="{x:Type igWindows:XamPager}">
             <EventSetter Event="Loaded" Handler="UnpinnedTabArea_Loaded" />
-        </Style>
+            </Style>
         <converters:HeightConverter x:Key="HeightConverter" />
-        <Style TargetType="{x:Type dockManager:ContentPane}">
+            <Style TargetType="{x:Type dockManager:ContentPane}">
             <EventSetter Event="MouseLeave" Handler="ContentPane_MouseLeave" />
-        </Style>
-        <Style TargetType="{x:Type dockManager:PaneTabItem}">
+            </Style>
+            <Style TargetType="{x:Type dockManager:PaneTabItem}">
             <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type dockManager:UnpinnedTabItemPanel}}, Path=ActualHeight, Converter={StaticResource HeightConverter}}" />
             <EventSetter Event="Loaded" Handler="PaneTabItem_Loaded" />
             <Setter Property="Width" Value="1" />
-        </Style>
-        <Style TargetType="dockManager:UnpinnedTabFlyoutSplitter">
-            <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
-        </Style>
-        <Style TargetType="dockManager:DockedPaneSplitter">
-            <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
-        </Style>
+            </Style>
+            <Style TargetType="dockManager:UnpinnedTabFlyoutSplitter">
+                <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
+            </Style>
+            <Style TargetType="dockManager:DockedPaneSplitter">
+                <EventSetter Event="PreviewMouseDown" Handler="PaneResize" />
+            </Style>
         <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
-            <views:WorkflowDesignerView />
+            <views:WorkflowDesignerView/>
         </DataTemplate>
     </Window.Resources>
 
@@ -57,27 +60,26 @@
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
-                        <dockManager:SplitPane Width="60"
-                                               MaxWidth="60"
+                        <dockManager:SplitPane Width="60" MaxWidth="60"                                                
                                                SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedLeft">
-                            <dockManager:ContentPane x:Name="Menu"
+                            <dockManager:ContentPane x:Name="Menu"  
                                                      HorizontalContentAlignment="Stretch"
                                                      VerticalContentAlignment="Stretch"
-                                                     AllowDocking="False"
-                                                     AllowFloatingOnly="False"
+								AllowDocking="False"
+								AllowFloatingOnly="False"
                                                      AllowInDocumentHost="False"
                                                      CloseButtonVisibility="Hidden"
-                                                     IsPinned="True"
+                                IsPinned="True"
                                                      PinButtonVisibility="Hidden"
                                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                      Style="{DynamicResource DockmangerMenuPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Menu}" />
                         </dockManager:SplitPane>
-
-
-
+                        
+                        
+          
 
                         <dockManager:SplitPane Width="300"
                                                SplitterOrientation="Horizontal"
@@ -143,7 +145,7 @@
                     </dockManager:XamDockManager.Panes>
                     <dockManager:DocumentContentHost>
                         <dockManager:SplitPane>
-                            <dockManager:TabGroupPane x:Name="Workspace" regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
+                            <dockManager:TabGroupPane x:Name="Workspace" SelectedItem="{Binding ActiveItem}" regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>

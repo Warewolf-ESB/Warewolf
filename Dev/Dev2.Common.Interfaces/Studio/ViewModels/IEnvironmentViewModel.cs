@@ -16,11 +16,11 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanRename { get; set; }
         bool CanDelete { get; set; }
         bool CanDeploy { get; set; }
+        IServer Server { get; set; }
         
     }
     public interface IEnvironmentViewModel : IExplorerTreeItem
     {
-        IServer Server { get; set; }
         ICollection<IExplorerItemViewModel> Children { get; set; }
         string DisplayName { get; set; }
         bool IsConnected { get; }

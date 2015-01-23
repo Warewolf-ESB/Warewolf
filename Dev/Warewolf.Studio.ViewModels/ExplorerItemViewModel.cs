@@ -23,9 +23,8 @@ namespace Warewolf.Studio.ViewModels
         private bool _isVisible;
         bool _allowEditing;
         bool _isRenaming;
-        private IExplorerRepository _explorerRepository;
+        private readonly IExplorerRepository _explorerRepository;
         bool _canRename;
-        string _path;
         bool _canExecute;
         bool _canEdit;
         bool _canView;
@@ -214,6 +213,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public bool CanDeploy { get; set; }
+        public IServer Server
+        {
+            get;
+            set;
+        }
         public ICommand ItemSelectedCommand { get; set; }
         public bool CanExecute
         {
@@ -323,14 +327,6 @@ namespace Warewolf.Studio.ViewModels
                 _allowEditing = value;
             }
         }
-        public IServer Server { get; private set; }
-        public string Path
-        {
-            get
-            {
-                return _path;
-            }
-            }
 
         public bool Move(IExplorerItemViewModel destination)
         {

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -59,6 +60,7 @@ namespace Warewolf.Studio.Specs
         public Server(IStudioResourceRepository resourceRepository)
         {
             _resourceRepository = resourceRepository;
+            Permissions = new List<IWindowsGroupPermission>();
         }
 
         public Task<bool> Connect()
@@ -110,6 +112,8 @@ namespace Warewolf.Studio.Specs
         public void Edit()
         {
         }
+
+        public List<IWindowsGroupPermission> Permissions { get; private set; }
 
         public event PermissionsChanged PermissionsChanged;
 
