@@ -304,12 +304,10 @@
     <Compile Include="CustomControls\Connections\ConnectControlViewModel.cs" />
     <Compile Include="CustomControls\Connections\IConnectControlViewModel.cs" />
     <Compile Include="CustomControls\Dev2StatusBar.cs" />
-    <Compile Include="CustomControls\Progress\Dev2WebClient.cs" />
-    <Compile Include="CustomControls\Progress\IDev2WebClient.cs" />
+    <Compile Include="CustomControls\Progress\WarewolfWebClient.cs" />
     <Compile Include="CustomControls\Progress\ILatestGetter.cs" />
     <Compile Include="CustomControls\Progress\IProgressDialog.cs" />
     <Compile Include="CustomControls\Progress\IProgressFileDownloader.cs" />
-    <Compile Include="CustomControls\Progress\IVersionChecker.cs" />
     <Compile Include="CustomControls\Progress\LatestWebGetter.cs" />
     <Compile Include="CustomControls\Progress\ProgressDialogViewModel.cs" />
     <Compile Include="CustomControls\Progress\VersionChecker.cs" />

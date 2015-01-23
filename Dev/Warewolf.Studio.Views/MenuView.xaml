@@ -183,13 +183,16 @@
                    Grid.ColumnSpan="3"
                    Style="{StaticResource MenuSeparator}" />
 
-        <Image 
-                Grid.Row="18"
+        <Button Grid.Row="18"
                 Grid.Column="1"
-                Width="20"
-                 VerticalAlignment="Bottom"
+                Command="{Binding CheckForNewVersionCommand}"
+                Visibility="{Binding HasNewVersion}"
+                Style="{StaticResource SideMenuButtonStyle}">
+            <Image Width="20"
                    Height="20"
                    Source="{StaticResource System-Expand}" />
+        </Button>
+        
 
 
         <Separator Grid.Row="19"

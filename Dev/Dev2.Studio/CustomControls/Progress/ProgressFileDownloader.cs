@@ -19,6 +19,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Utils;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -29,7 +30,7 @@ namespace Dev2.CustomControls.Progress
 {
     public class ProgressFileDownloader : IProgressFileDownloader
     {
-        readonly IDev2WebClient _webClient;
+        readonly IWarewolfWebClient _webClient;
         protected readonly IProgressNotifier ProgressDialog;
         private readonly IFile _file;
         private readonly ICryptoProvider _cryptoProvider;
@@ -46,7 +47,7 @@ namespace Dev2.CustomControls.Progress
         #region CTOR
         [ExcludeFromCodeCoverage]
         public ProgressFileDownloader(Window owner) // cant cover this because a window needs to be shown to be a parent of something else. 
-            : this(new Dev2WebClient(new WebClient()), new FileWrapper(), new CryptoProvider(new SHA256CryptoServiceProvider()))
+            : this(new WarewolfWebClient(new WebClient()), new FileWrapper(), new CryptoProvider(new SHA256CryptoServiceProvider()))
         {
             _owner = owner;
         }
@@ -64,7 +65,7 @@ namespace Dev2.CustomControls.Progress
             return dialogViewModel;
         }
 
-        public ProgressFileDownloader(IDev2WebClient webClient, IFile file, ICryptoProvider cryptoProvider)
+        public ProgressFileDownloader(IWarewolfWebClient webClient, IFile file, ICryptoProvider cryptoProvider)
         {
             VerifyArgument.IsNotNull("webClient", webClient);
             VerifyArgument.IsNotNull("file", file);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
@@ -82,6 +83,22 @@ namespace Warewolf.Studio.ViewModels
            return GetRegionViews(regionName).Any();
         }
 
+        public async Task<bool> CheckForNewVersion()
+        {
+            var versionChecker = _unityContainer.Resolve<IVersionChecker>();
+            var hasNewVersion = await versionChecker.GetNewerVersionAsync();
+            return hasNewVersion;
+        }
+        
+        public async void DisplayDialogForNewVersion()
+        {
+            var hasNewVersion = await CheckForNewVersion();
+            if (hasNewVersion)
+            {
+                var dialog = _unityContainer.Resolve <IWebLatestVersionDialog>();
+                dialog.ShowDialog();
+            }
+        }
         public IViewsCollection GetRegionViews(string regionName)
         {
             var region = GetRegion(regionName);

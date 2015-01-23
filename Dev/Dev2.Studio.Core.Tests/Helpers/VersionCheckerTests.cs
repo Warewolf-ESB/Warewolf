@@ -13,6 +13,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Windows;
+using Dev2.Common.Interfaces;
 using Dev2.Helpers;
 using Dev2.Studio.Core.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -74,7 +75,7 @@ namespace Dev2.Core.Tests.Helpers
         public void GetNewerVersion_LaterVersion_ReturnsTrue()
         // ReSharper restore InconsistentNaming
         {
-            Mock<IDev2WebClient> mockWebClient = new Mock<IDev2WebClient>();
+            Mock<IWarewolfWebClient> mockWebClient = new Mock<IWarewolfWebClient>();
             mockWebClient.Setup(c => c.DownloadString(It.IsAny<string>())).Returns("0.0.0.2").Verifiable();
 
             VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.No, CurrentVersion = new Version(0, 0, 0, 1) };
@@ -91,7 +92,7 @@ namespace Dev2.Core.Tests.Helpers
         public void GetNewerVersion_NotLaterVersion_ReturnsFalse()
         // ReSharper restore InconsistentNaming
         {
-            Mock<IDev2WebClient> mockWebClient = new Mock<IDev2WebClient>();
+            Mock<IWarewolfWebClient> mockWebClient = new Mock<IWarewolfWebClient>();
             mockWebClient.Setup(c => c.DownloadString(It.IsAny<string>())).Returns("0.0.0.1").Verifiable();
 
             VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.No, CurrentVersion = new Version(0, 0, 0, 1) };
@@ -110,7 +111,7 @@ namespace Dev2.Core.Tests.Helpers
         {
             //------------Setup for test--------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new VersionChecker(new Dev2WebClient(new WebClient()), null);
+            new VersionChecker(new WarewolfWebClient(new WebClient()), null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Execute Test---------------------------
@@ -124,7 +125,7 @@ namespace Dev2.Core.Tests.Helpers
         public void VersionChecker_LatestVersionCheckSum_CallsCorrectDownloadString()
         {
             //------------Setup for test--------------------------
-            var webClient = new Mock<IDev2WebClient>();
+            var webClient = new Mock<IWarewolfWebClient>();
             webClient.Setup(a => a.DownloadString(It.IsAny<string>())).Returns("1.2.1.1");
             var versionChecker = new VersionChecker(webClient.Object, () => new Version(0, 0, 0, 1));
 

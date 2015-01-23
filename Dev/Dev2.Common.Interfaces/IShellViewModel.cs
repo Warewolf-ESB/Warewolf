@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
@@ -24,5 +25,9 @@ namespace Dev2.Common.Interfaces
         void RemoveServiceFromExplorer(IExplorerItemViewModel explorerItemViewModel);
         event Action ActiveServerChanged;
         event Action ActiveItemChanged;
+
+        Task<bool> CheckForNewVersion();
+
+        void DisplayDialogForNewVersion();
     }
 }
