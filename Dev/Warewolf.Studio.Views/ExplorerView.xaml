@@ -165,15 +165,11 @@
                                TargetTypeName="IExplorerItemViewModel"
                                Visibility="Visible">
 
-                    <!--<ig:NodeLayout.HeaderTemplate>
+                    <ig:NodeLayout.HeaderTemplate>
                         <DataTemplate>
-                            --><!--<StackPanel Orientation="Horizontal">
-                                <TextBlock Text=" - [" />
-                                <TextBlock Text="{Binding Data.Children.Count}" />
-                                <TextBlock Text="]" />
-                            </StackPanel>--><!--
+
                         </DataTemplate>
-                    </ig:NodeLayout.HeaderTemplate>-->
+                    </ig:NodeLayout.HeaderTemplate>
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -187,7 +183,7 @@
                                 <TextBlock Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsNotRenaming,  Converter={StaticResource BoolToVisibility}}" />
                                 <Grid>
 
-                                    <TextBox  views:FocusExtension.IsFocused="{Binding Path= Data.IsRenaming}"  Name="PropertySearch"  Text="{Binding Path=Data.ResourceName ,UpdateSourceTrigger=LostFocus}"  Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <TextBox IsVisibleChanged="UIElement_OnIsVisibleChanged"  views:FocusExtension.IsFocused="{Binding Path= Data.IsRenaming}"  Name="PropertySearch"  Text="{Binding Path=Data.ResourceName ,UpdateSourceTrigger=LostFocus}"  Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
                                    <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="LostFocus" >
                                             <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}"   />
@@ -199,35 +195,14 @@
 
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
-                    <!--<ig:NodeLayout.ExpandedIconTemplate>
+                    <ig:NodeLayout.ExpandedIconTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="14"
-                                       Height="14"
-                                       Source="{Binding Data.ResourceType,
-                                                        Converter={StaticResource ResourceTypeToIconConverter}}" />
-
-                                <TextBlock Text="! " />
-                                <TextBlock Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsNotRenaming,  Converter={StaticResource BoolToVisibility}}" />
-                                <TextBox Text="{Binding Path=Data.ResourceName ,UpdateSourceTrigger=LostFocus}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
-                            </StackPanel>
-
                         </DataTemplate>
                     </ig:NodeLayout.ExpandedIconTemplate>
                     <ig:NodeLayout.CollapsedIconTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="14"
-                                       Height="14"
-                                       Source="{Binding Data.ResourceType,
-                                                        Converter={StaticResource ResourceTypeToIconConverter}}" />
-                                <TextBlock Text="? " />
-                                <TextBlock Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsNotRenaming,  Converter={StaticResource BoolToVisibility}}" />
-                                <TextBox Text="{Binding Path=Data.ResourceName ,UpdateSourceTrigger=LostFocus}" Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
-                            </StackPanel>
-                            
                         </DataTemplate>
-                    </ig:NodeLayout.CollapsedIconTemplate>-->
+                    </ig:NodeLayout.CollapsedIconTemplate>
                 </ig:NodeLayout>
                 <ig:NodeLayout Key="Versions" IsExpandedMemberPath="AreVersionsVisible"  DisplayMemberPath="VersionHeader" >
                                <!--NodeStyle="{StaticResource NodeStyle}">--> 

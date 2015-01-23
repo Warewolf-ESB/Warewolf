@@ -40,6 +40,11 @@ namespace Warewolf.Studio.Views
 	           
 	        }
 	    }
+
+	    void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+	    {
+            Keyboard.Focus((IInputElement)sender);
+	    }
 	}
 
     public static class FocusExtension
@@ -68,8 +73,8 @@ namespace Warewolf.Studio.Views
             var uie = (UIElement)d;
             if ((bool)e.NewValue)
             {
-                Keyboard.Focus(uie);
                 uie.Focus(); // Don't care about false values.
+                Keyboard.Focus(uie);
             }
         }
     }
