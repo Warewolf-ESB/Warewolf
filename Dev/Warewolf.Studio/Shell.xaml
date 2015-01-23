@@ -57,7 +57,7 @@
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
-                        <dockManager:SplitPane Width="60"                                                
+                        <dockManager:SplitPane Width="60" MaxWidth="60"                                                
                                                SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedLeft">
                             <dockManager:ContentPane x:Name="Menu"  

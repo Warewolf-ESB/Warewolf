@@ -8,7 +8,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
 {
     public interface IExplorerItemViewModel : IExplorerTreeItem
     {
-        string ResourceName { get; set; }
+        string ResourceName { get; set; } 
         ICollection<IExplorerItemViewModel> Children { get; set; }
         bool Checked { get; set; }
         Guid ResourceId { get; set; }

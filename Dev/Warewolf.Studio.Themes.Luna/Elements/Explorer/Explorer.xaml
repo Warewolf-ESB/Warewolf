@@ -222,8 +222,8 @@
 
 
     <!--  ********************************** XamDataTreeNodeControl Style **********************************  -->
- 
-   <Style x:Key="XamDataTreeNodeControlStyle" TargetType="igDt:XamDataTreeNodeControl">
+
+    <Style x:Key="XamDataTreeNodeControlStyle" TargetType="igDt:XamDataTreeNodeControl">
         <Setter Property="Background" Value="{StaticResource TreeNodeBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TreeNodeBorderBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />

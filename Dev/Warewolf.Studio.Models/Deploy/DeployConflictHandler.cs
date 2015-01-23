@@ -26,7 +26,7 @@ namespace Warewolf.Studio.Models.Deploy
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach(var sourceItem in source.AsList().Where(a=>a.Checked))
             {
-               if( Predicate.Predicate(sourceItem,source.ExplorerItemViewModels,destination.ExplorerItemViewModels))
+               if( Predicate.Predicate(sourceItem,source.Children,destination.Children))
                    conflicts.Add(new Conflict(sourceItem.ResourceId, sourceItem.ResourceName, destination.AsList().First(a=>a.ResourceId==sourceItem.ResourceId).ResourceName));
             }
             if(conflicts.Any()){

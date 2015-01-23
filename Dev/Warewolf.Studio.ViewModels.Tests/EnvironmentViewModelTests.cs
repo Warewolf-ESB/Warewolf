@@ -183,8 +183,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModel.Load();
             //------------Assert Results-------------------------
             Assert.IsTrue(environmentViewModel.IsLoaded);
-            Assert.AreEqual(3,environmentViewModel.ExplorerItemViewModels.Count);
-            Assert.AreEqual(1,environmentViewModel.ExplorerItemViewModels.ToList()[1].Children.Count);
+            Assert.AreEqual(3,environmentViewModel.Children.Count);
+            Assert.AreEqual(1,environmentViewModel.Children.ToList()[1].Children.Count);
          }
 
         [TestMethod]
@@ -218,12 +218,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             environmentViewModel.Load();
             //------------Assert Preconditions-------------------
             Assert.IsTrue(environmentViewModel.IsLoaded);
-            Assert.AreEqual(3, environmentViewModel.ExplorerItemViewModels.Count);
-            Assert.AreEqual(1, environmentViewModel.ExplorerItemViewModels.ToList()[1].Children.Count);
+            Assert.AreEqual(3, environmentViewModel.Children.Count);
+            Assert.AreEqual(1, environmentViewModel.Children.ToList()[1].Children.Count);
             //------------Execute Test---------------------------
             environmentViewModel.Filter("re");
             //------------Assert Results-------------------------
-            var filteredList = environmentViewModel.ExplorerItemViewModels.ToList();
+            var filteredList = environmentViewModel.Children.ToList();
             Assert.IsTrue(filteredList[0].IsVisible);
             Assert.IsFalse(filteredList[1].IsVisible);
             
