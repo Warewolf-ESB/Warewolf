@@ -58,6 +58,8 @@
             <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />
         </Style>
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
+
+        
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
 
@@ -177,7 +179,7 @@
                             <StackPanel Orientation="Horizontal">
 
                                 <Image Width="14"
-                                       Height="14"
+                                       Height="14" 
                                        Source="{Binding Data.ResourceType,
                                                         Converter={StaticResource ResourceTypeToIconConverter}}" />
 
