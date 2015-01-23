@@ -87,6 +87,7 @@
     <Compile Include="Conflict.cs" />
     <Compile Include="ConflictHandlerViewModel.cs" />
     <Compile Include="ConnectControlViewModel.cs" />
+    <Compile Include="DeployItemMessage.cs" />
     <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
     <Compile Include="VariableList\VariableListColumnViewModel.cs" />
     <Compile Include="VariableList\VariableListViewRecordSetViewModel.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="ToolBox\ToolDescriptorViewModel.cs" />
     <Compile Include="VariableList\DatalistViewScalarViewModel.cs" />
     <Compile Include="VariableList\VariableListViewModel.cs" />
+    <Compile Include="VersionInfoViewModel.cs" />
     <Compile Include="WarewolfInvalidTypeException.cs" />
     <Compile Include="WorkflowServiceDesignerViewModel.cs" />
   </ItemGroup>

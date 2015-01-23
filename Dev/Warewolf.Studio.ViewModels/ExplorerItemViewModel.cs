@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -29,7 +30,13 @@ namespace Warewolf.Studio.ViewModels
         bool _canEdit;
         bool _canView;
         bool _canDelete;
+
         ICommand _deleteCommand;
+        ICollection<IVersionInfoViewModel> _versions;
+        bool _canShowVersions;
+        bool _areVersionsVisible;
+        string _versionHeader;
+        ResourceType _resourceType;
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
@@ -50,6 +57,12 @@ namespace Warewolf.Studio.ViewModels
             _explorerRepository = server.ExplorerRepository;
             Server.PermissionsChanged += UpdatePermissions;
             DeleteCommand = new DelegateCommand(Delete);
+            Versions = new ObservableCollection<IVersionInfoViewModel>
+            {
+                new VersionInfoViewModel(new VersionInfo(DateTime.Now,"bob","pinal dave","1",Guid.NewGuid(),Guid.NewGuid())),
+                new VersionInfoViewModel(new VersionInfo(DateTime.Now,"the","josh smith","1",Guid.NewGuid(),Guid.NewGuid())),
+                new VersionInfoViewModel(new VersionInfo(DateTime.Now,"builder","pinal dave > Josh Smith","1",Guid.NewGuid(),Guid.NewGuid()))
+            };
         }
 
         void Delete()
@@ -148,7 +161,18 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool Checked { get; set; }
         public Guid ResourceId { get; set; }
-        public ResourceType ResourceType { get; set; }
+        public ResourceType ResourceType
+        {
+            get
+            {
+                return _resourceType;
+            }
+            set
+            {
+                _resourceType = value;
+                OnPropertyChanged(()=>CanShowVersions);
+            }
+        }
         public ICommand OpenCommand
         {
             get; set;
@@ -233,6 +257,39 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+        public bool CanShowVersions
+        {
+            get
+            {
+                return ResourceType == ResourceType.WorkflowService;
+            }
+        }
+        public bool AreVersionsVisible
+        {
+            get
+            {
+                return _areVersionsVisible;
+            }
+            set
+            {
+               
+                _areVersionsVisible = value;
+                VersionHeader = value ? "Show Version History" : "Hide Version History";
+                OnPropertyChanged(()=>AreVersionsVisible);
+            }
+        }
+        public string VersionHeader
+        {
+            get
+            {
+                return _versionHeader;
+            }
+            set
+            {
+                _versionHeader = value;
+                OnPropertyChanged(() => VersionHeader);
+            }
+        }
         public bool IsVisible
         {
             get { return _isVisible; }
@@ -281,6 +338,19 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public ICollection<IVersionInfoViewModel> Versions
+        {
+            get
+            {
+                return _versions;
+            }
+            set
+            {
+                _versions = value;
+                OnPropertyChanged(()=>Versions);
+            }
+        }
+
         public void Filter(string filter)
         {
             foreach (var explorerItemViewModel in Children)
@@ -325,36 +395,6 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 return _type;
-            }
-        }
-
-        #endregion
-    }
-    public class DeployItemMessage : IDeployItemMessage 
-    {
-        readonly IExplorerItemViewModel _item;
-        readonly IExplorerItemViewModel _sourceServer;
-
-        public DeployItemMessage(IExplorerItemViewModel item, IExplorerItemViewModel sourceServer)
-        {
-            _item = item;
-            _sourceServer = sourceServer;
-        }
-
-        #region Implementation of IDeployItemMessage
-
-        public IExplorerItemViewModel Item
-        {
-            get
-            {
-                return _item;
-            }
-        }
-        public IExplorerItemViewModel SourceServer
-        {
-            get
-            {
-                return _sourceServer;
             }
         }
 
