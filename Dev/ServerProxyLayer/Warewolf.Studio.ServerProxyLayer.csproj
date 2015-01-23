@@ -58,6 +58,7 @@
     <Compile Include="ScheduleManagerProxy.cs" />
     <Compile Include="SecurityManagerProxy.cs" />
     <Compile Include="UpdateProxy.cs" />
+    <Compile Include="VersionManagerProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">

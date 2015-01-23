@@ -22,7 +22,7 @@ namespace Warewolf.Studio.ViewModels
         public bool HandleConflicts(IEnvironmentViewModel source, IEnvironmentViewModel destination)
         {
             // ReSharper disable MaximumChainedReferences
-           Conflicts = source.ExplorerItemViewModels.Intersect(destination.ExplorerItemViewModels)
+           Conflicts = source.Children.Intersect(destination.Children)
                .Select(a=>new Conflict(a.ResourceId,a.ResourceName,a.ResourceName) as IConflict).ToList();
             // ReSharper restore MaximumChainedReferences
            if (Conflicts.Count == 0)

@@ -267,7 +267,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expdestEnv = new Mock<IServer>();
             var expdestEnvVm = new Mock<IEnvironmentViewModel>();
             expDest.Setup(a => a.SelectedServer).Returns(expdestEnv.Object);
-            expdestEnvVm.Setup(a => a.ExplorerItemViewModels).Returns(destvms);
+            expdestEnvVm.Setup(a => a.Children).Returns(destvms);
             expDest.Setup(a => a.SelectedEnvironment).Returns(expdestEnvVm.Object);
             var destModel = new Mock<IDeployModel>();
             destModel.Setup(a => a.CanDeploy(It.IsAny<IResource>())).Returns(true);
@@ -275,7 +275,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expSource = new Mock<IExplorerViewModel>();
             var expSourceEnv = new Mock<IServer>();
             var expdSourceEnvVm = new Mock<IEnvironmentViewModel>();
-            expdSourceEnvVm.Setup(a => a.ExplorerItemViewModels).Returns(sourcevms);
+            expdSourceEnvVm.Setup(a => a.Children).Returns(sourcevms);
             expSource.Setup(a => a.SelectedServer).Returns(expSourceEnv.Object);
             expSource.Setup(a => a.SelectedEnvironment).Returns(expdSourceEnvVm.Object);
             expSourceEnv.Setup(a => a.Load()).Returns(new List<IResource> { resourceToDeploy.Object });
@@ -314,7 +314,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expdestEnv = new Mock<IServer>();
             var expdestEnvVm = new Mock<IEnvironmentViewModel>();
             expDest.Setup(a => a.SelectedServer).Returns(expdestEnv.Object);
-            expdestEnvVm.Setup(a => a.ExplorerItemViewModels).Returns(destvms);
+            expdestEnvVm.Setup(a => a.Children).Returns(destvms);
             expDest.Setup(a => a.SelectedEnvironment).Returns(expdestEnvVm.Object);
             var destModel = new Mock<IDeployModel>();
             destModel.Setup(a => a.CanDeploy(It.IsAny<IResource>())).Returns(true);
@@ -322,7 +322,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expSource = new Mock<IExplorerViewModel>();
             var expSourceEnv = new Mock<IServer>();
             var expdSourceEnvVm = new Mock<IEnvironmentViewModel>();
-            expdSourceEnvVm.Setup(a => a.ExplorerItemViewModels).Returns(sourcevms);
+            expdSourceEnvVm.Setup(a => a.Children).Returns(sourcevms);
             expSource.Setup(a => a.SelectedServer).Returns(expSourceEnv.Object);
             expSource.Setup(a => a.SelectedEnvironment).Returns(expdSourceEnvVm.Object);
             expSourceEnv.Setup(a => a.Load()).Returns(new List<IResource> { resourceToDeploy.Object });

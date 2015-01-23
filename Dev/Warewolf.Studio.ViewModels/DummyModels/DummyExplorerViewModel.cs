@@ -63,7 +63,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
                 new EnvironmentViewModel(new DummyServer(),shellViewModel)
                 {
                     DisplayName = "Test1",
-                    ExplorerItemViewModels = new List<IExplorerItemViewModel>
+                    Children = new List<IExplorerItemViewModel>
                     {
                         new ExplorerItemViewModel(shellViewModel,server,new Mock<IExplorerHelpDescriptorBuilder>().Object)
                         {
@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
                 new EnvironmentViewModel(server,shellViewModel)
                 {
                     DisplayName = "Test4",
-                    ExplorerItemViewModels = new List<IExplorerItemViewModel>
+                    Children = new List<IExplorerItemViewModel>
                     {
                         multiLevelDeep
                     }
