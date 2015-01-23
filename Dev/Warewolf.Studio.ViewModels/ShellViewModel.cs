@@ -104,6 +104,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void AddService(IResource resource)
         {
+
             var region = GetRegion(RegionNames.Workspace);
             var foundViewModel = region.Views.FirstOrDefault(o =>
             {
