@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Common.Interfaces.Versioning;
 using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -25,8 +28,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
             QueryManagerProxy = new QueryManagerProxy(controllerFactory, environmentConnection);
             UpdateManagerProxy = new ExplorerUpdateManagerProxy(controllerFactory,environmentConnection);
+            VersionManager = new VersionManagerProxy(environmentConnection, controllerFactory); //todo:swap
         }
 
+        public Dev2.Common.Interfaces.ServerProxyLayer.IVersionManager VersionManager { get; set; }
         public QueryManagerProxy QueryManagerProxy { get; set; }
         public ExplorerUpdateManagerProxy UpdateManagerProxy { get; set; }
 
@@ -52,6 +57,13 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
             return true;
+        }
+
+
+
+        public ICollection<IVersionInfo> GetVersions(Guid id)
+        {
+            return new List<IVersionInfo>(VersionManager.GetVersions(id).Select(a => a.VersionInfo));
         }
 
         #endregion

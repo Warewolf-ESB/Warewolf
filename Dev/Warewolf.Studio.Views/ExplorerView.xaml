@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
              xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
@@ -40,11 +41,15 @@
                           CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <MenuItem Name="Deploy" Header="Deploy" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeployCommand}"
                           CommandParameter="{Binding Path=Data.CanShowVersions}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="ShowHideVersions" Header="{Binding Path=Data.VersionHeader}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeployCommand}"
-                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDeploy, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="ShowHideVersions" Header="{Binding Path=Data.VersionHeader}" Command="{Binding Path=Data.ShowVersionHistory}"
+                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
         </ContextMenu>
         <Style TargetType="{x:Type ig:XamDataTreeNodeControl}">
             <Setter Property="ContextMenu" Value="{StaticResource TreeNodeContextMenu}" />
+        </Style>
+        <igPrim:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+        <Style TargetType="{x:Type ig:XamDataTreeNodeControl}" x:Key="NodeStyle">
+            <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />
         </Style>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
@@ -131,6 +136,7 @@
 
             <ig:XamDataTree.GlobalNodeLayouts>
                 <ig:NodeLayout Key="Environments" DisplayMemberPath="DisplayName">
+                    
                     <ig:NodeLayout.ExpandedIconTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -160,7 +166,14 @@
                     </ig:NodeLayout.CollapsedIconTemplate>
                 </ig:NodeLayout>
 
-                <ig:NodeLayout Key="Children" DisplayMemberPath="ResourceName">
+                <ig:NodeLayout Key="Children" 
+                               DisplayMemberPath="ResourceName" 
+                               TargetTypeName="Dev2.Common.Interfaces.Studio.ViewModels.IExplorerItemViewModel"
+                               
+                               >
+                    <ig:NodeLayout.HeaderTemplate>
+                        <DataTemplate></DataTemplate>
+                    </ig:NodeLayout.HeaderTemplate>
                     <ig:NodeLayout.ExpandedIconTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Visibility="{Binding Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -191,40 +204,16 @@
                         </DataTemplate>
                     </ig:NodeLayout.CollapsedIconTemplate>
                 </ig:NodeLayout>
-                <!--  </ig:XamDataTree.GlobalNodeLayouts>  -->
-                <!--
-                    <ig:NodeLayout.EditorTemplate>
-                    <DataTemplate >
-                    <StackPanel>
-                    </ig:NodeLayout.ItemTemplate>
-                </ig:NodeLayout>
-                <ig:NodeLayout Key="Versions" DisplayMemberPath="VersionHeader" Visibility="{Binding Path=Data.AreVersionsVisible, RelativeSource={RelativeSource AncestorType=ig:XamDataTreeNode} ,Converter={StaticResource BoolToVisibilityConverter}}">
+                <ig:NodeLayout Key="Versions" NodeStyle="{StaticResource NodeStyle}" TargetTypeName="Dev2.Common.Interfaces.Studio.ViewModels.IVersionInfoViewModel" DisplayMemberPath="VersionHeader" Visibility="{Binding Path=Data.AreVersionsVisible, RelativeSource={RelativeSource AncestorType=ig:XamDataTreeNode} ,Converter={StaticResource BoolToVisibilityConverter}}">
                     <ig:NodeLayout.ItemTemplate >
                         <DataTemplate DataType="viewModels:IVersionInfoViewModel">
                             <StackPanel  Orientation="Horizontal" Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock Text="{Binding Path=Data.VersionHeader}" />
                             </StackPanel>
-                           
+
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
                 </ig:NodeLayout>
-                    
-                </ig:XamDataTree.GlobalNodeLayouts>
-            -->
-                <!--    -->
-                <!--  <ig:NodeLayout Key="Children"  -->
-                <!--  DisplayMemberPath="Data.ResourceName">  -->
-                <!--  <ig:NodeLayout.ExpandedIconTemplate>  -->
-                <!--  <DataTemplate>  -->
-                <!--  <Image Source="StaticResource System-DB}" />  -->
-                <!--  </DataTemplate>  -->
-                <!--  </ig:NodeLayout.ExpandedIconTemplate>  -->
-                <!--  <ig:NodeLayout.CollapsedIconTemplate>  -->
-                <!--  <DataTemplate>  -->
-                <!--  <Image Source="StaticResource System-DB}" />  -->
-                <!--  </DataTemplate>  -->
-                <!--  </ig:NodeLayout.CollapsedIconTemplate>  -->
-                <!--  </ig:NodeLayout>  -->
             </ig:XamDataTree.GlobalNodeLayouts>
 
         </ig:XamDataTree>

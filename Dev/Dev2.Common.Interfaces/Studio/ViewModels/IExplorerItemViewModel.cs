@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand OpenCommand { get; set; }
         ICommand RenameCommand { get; set; }
         ICommand DeleteCommand { get; set; }
+        ICommand ShowVersionHistory { get; set; }
         bool IsRenaming{ get; set; }
         bool IsNotRenaming { get;  }
         ICommand ItemSelectedCommand { get; set; }

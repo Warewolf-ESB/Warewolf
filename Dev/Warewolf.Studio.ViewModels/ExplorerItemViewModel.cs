@@ -56,6 +56,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreatePluginService = true;
             _explorerRepository = server.ExplorerRepository;
             Server.PermissionsChanged += UpdatePermissions;
+            ShowVersionHistory = new DelegateCommand((() => AreVersionsVisible = (!AreVersionsVisible)));
             DeleteCommand = new DelegateCommand(Delete);
             Versions = new ObservableCollection<IVersionInfoViewModel>
             {
@@ -63,6 +64,7 @@ namespace Warewolf.Studio.ViewModels
                 new VersionInfoViewModel(new VersionInfo(DateTime.Now,"the","josh smith","1",Guid.NewGuid(),Guid.NewGuid())),
                 new VersionInfoViewModel(new VersionInfo(DateTime.Now,"builder","pinal dave > Josh Smith","1",Guid.NewGuid(),Guid.NewGuid()))
             };
+            VersionHeader = "Show Version History";
         }
 
         void Delete()
@@ -110,6 +112,7 @@ namespace Warewolf.Studio.ViewModels
                 _deleteCommand = value;
             }
         }
+        public ICommand ShowVersionHistory { get; set; }
         public bool IsRenaming
         {
             get
@@ -274,8 +277,14 @@ namespace Warewolf.Studio.ViewModels
             {
                
                 _areVersionsVisible = value;
-                VersionHeader = value ? "Show Version History" : "Hide Version History";
+                VersionHeader = !value ? "Show Version History" : "Hide Version History";
+                if (value)
+                {
+                    Versions = new ObservableCollection<IVersionInfoViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new VersionInfoViewModel(a)));
+                    OnPropertyChanged(() => Versions);
+                }
                 OnPropertyChanged(()=>AreVersionsVisible);
+                
             }
         }
         public string VersionHeader
