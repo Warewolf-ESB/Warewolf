@@ -24,14 +24,27 @@ namespace Warewolf.Studio.Views.Converters
     {
         private enum MenuIcons
         {
-            WorkflowService = 1, //sux
-            DbService = 2, //cool
+            Unknown = 0,
+            WorkflowService = 1,
+            DbService = 2,
+            Version = 3,
             PluginService = 4,
-            WebService = 8, //cool
-            Folder = 16, //cool
+            WebService = 8,
+            DbSource = 16,
+            PluginSource = 32,
+            WebSource = 64,
+            EmailSource = 128,
+            OauthSource = 256,
+            ServerSource = 512,
+            Folder = 1024,
+            Server = 2048,
+            ReservedService = 4096,
+            Message = 3069,
             Spacer = 99,
             Execute = 98,
             View = 97
+
+
         }
 
         private static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
@@ -45,7 +58,13 @@ namespace Warewolf.Studio.Views.Converters
             {MenuIcons.View, "Explorer-Permission-Disbled"},
             {MenuIcons.Execute, "Explorer-Run-Disabled"},
 
+            {MenuIcons.WebSource, "Explorer-WebService-Create"},
+            {MenuIcons.PluginSource, "Explorer-DLL-Create"},
+            {MenuIcons.DbSource, "Explorer-DB-Create"},
+
         };
+
+     
 
         public static string WorkflowService
         {
@@ -110,6 +129,31 @@ namespace Warewolf.Studio.Views.Converters
                 return MenuIconsDictionary[MenuIcons.View];
             }
         }
+
+        public static string DbSource
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.DbSource];
+            }
+        }
+
+        public static string PluginSource
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.PluginSource];
+            }
+        }
+
+        public static string WebSource
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.WebSource];
+            }
+        }
+
     }
 
     public class ResourceTypeToIconConverter : IValueConverter
@@ -127,10 +171,7 @@ namespace Warewolf.Studio.Views.Converters
         {
 
             const string Pathname = "/Warewolf.Studio.Themes.Luna;component/Images.xaml";
-
-
             ResourceDictionary dict = Application.LoadComponent(new Uri(Pathname, System.UriKind.Relative)) as ResourceDictionary;
-
             ResourceType resourceType;
             if (Enum.TryParse(value.ToString(), out resourceType))
             {
@@ -140,10 +181,16 @@ namespace Warewolf.Studio.Views.Converters
                         return dict[CustomMenuIcons.WorkflowService] as DrawingImage;
                     case ResourceType.DbService:
                         return dict[CustomMenuIcons.DbService] as DrawingImage;
-                    case ResourceType.PluginService:
-                        return dict[CustomMenuIcons.PluginService] as DrawingImage;
+                    case ResourceType.PluginSource:
+                        return dict[CustomMenuIcons.PluginSource] as DrawingImage;
                     case ResourceType.WebService:
                         return dict[CustomMenuIcons.WebService] as DrawingImage;
+                    case ResourceType.DbSource:
+                        return dict[CustomMenuIcons.DbSource] as DrawingImage;
+                    case ResourceType.PluginService:
+                        return dict[CustomMenuIcons.PluginService] as DrawingImage;
+                    case ResourceType.WebSource:
+                        return dict[CustomMenuIcons.WebSource] as DrawingImage;
                     default:
                         return dict[CustomMenuIcons.Folder] as DrawingImage;
                 }
@@ -194,12 +241,12 @@ namespace Warewolf.Studio.Views.Converters
         {
 
 
-                        ResourceType resourceType;
-                        if (Enum.TryParse(value.ToString(), out resourceType))
-                        {
-                            if (resourceType == ResourceType.Folder)
-                                return "Collapsed";
-                        }
+            ResourceType resourceType;
+            if (Enum.TryParse(value.ToString(), out resourceType))
+            {
+                if (resourceType == ResourceType.Folder)
+                    return "Collapsed";
+            }
 
             return "Visible";
 
