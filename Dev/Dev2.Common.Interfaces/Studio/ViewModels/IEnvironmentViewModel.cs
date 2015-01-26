@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanDeploy { get; set; }
         bool CanShowVersions { get; }
         bool CanRollback { get;  }
+       
         ICommand RenameCommand { get; set; }
         ICommand DeleteCommand { get; set; }
         ICommand ShowVersionHistory { get; set; }
