@@ -219,6 +219,7 @@
                                StrokeDashCap="Round"
                                StrokeThickness="1" />
                 </ControlTemplate>
+                
             </Setter.Value>
         </Setter>
     </Style>
@@ -228,6 +229,7 @@
     <!--  ********************************** XamDataTreeNodeControl Style **********************************  -->
 
     <Style x:Key="XamDataTreeNodeControlStyle" TargetType="igDt:XamDataTreeNodeControl">
+
         <Setter Property="Background" Value="{StaticResource TreeNodeBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TreeNodeBorderBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
@@ -237,8 +239,7 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="8,0" />
-        <Setter Property="Height" Value="10" />
+        <Setter Property="Height" Value="24" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igDt:XamDataTreeNodeControl">
@@ -443,7 +444,7 @@
                                                           RelativeSource={RelativeSource TemplatedParent}}"
                                       IsTabStop="False"
                                       IsThreeState="{Binding Node.NodeLayout.CheckBoxSettings.IsCheckBoxThreeStateResolved}"
-                                      Style="{StaticResource CheckBoxStyle}"
+                                      Style="{DynamicResource CheckBoxStyle}"
                                       Visibility="{Binding Node.NodeLayout.CheckBoxSettings.CheckBoxVisibilityResolved}" />
                             <ContentControl x:Name="ExpandedIcon"
                                             Grid.Column="4"
@@ -474,6 +475,7 @@
                                                           IsTabStop="false"
                                                           Style="{StaticResource ActiveNodeIndicatorStyle}"
                                                           Visibility="Collapsed" />
+                            <!--  Text on Variables  -->
                             <ContentControl x:Name="contentControl"
                                             Grid.Column="5"
                                             Margin="{TemplateBinding Padding}"
