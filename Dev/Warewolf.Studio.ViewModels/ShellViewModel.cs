@@ -96,7 +96,7 @@ namespace Warewolf.Studio.ViewModels
             if (hasNewVersion)
             {
                 var dialog = _unityContainer.Resolve <IWebLatestVersionDialog>();
-                dialog.ShowDialog();
+                dialog.ShowDialog();                
             }
         }
         public IViewsCollection GetRegionViews(string regionName)

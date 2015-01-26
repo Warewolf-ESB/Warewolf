@@ -5,14 +5,13 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Studio.AppResources.Converters;
-using Infragistics.Controls.Interactions;
 
 namespace Warewolf.Studio.Views
 {
     /// <summary>
     /// Interaction logic for PopupView.xaml
     /// </summary>
-    public partial class PopupView : XamDialogWindow, IPopupWindow
+    public partial class PopupView : IPopupWindow
     {
         MessageBoxResult _dialogResult;
         Window _window;
@@ -37,14 +36,7 @@ namespace Warewolf.Studio.Views
             }
             var blurEffect = new BlurEffect { Radius = 10 };
             Application.Current.MainWindow.Effect = blurEffect;
-            _window = new Window();
-            _window.WindowStyle = WindowStyle.None;
-            _window.AllowsTransparency = true;
-            _window.Background = Brushes.Transparent;
-            _window.SizeToContent = SizeToContent.WidthAndHeight;
-            _window.ResizeMode = ResizeMode.NoResize;
-            _window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            _window.Content = this;
+            _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
             _window.ShowDialog();
             return _dialogResult;
         }
