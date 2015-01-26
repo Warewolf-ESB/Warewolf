@@ -25,6 +25,7 @@ namespace Warewolf.Studio.ViewModels
             if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
             _shellViewModel = shellViewModel;
             Server = server;
+            _children = new ObservableCollection<IExplorerItemViewModel>();
             NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
             DisplayName = server.ResourceName;
         }
@@ -100,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Filter(string filter)
         {
-            foreach (var explorerItemViewModel in Children)
+            foreach (var explorerItemViewModel in _children)
             {
                 explorerItemViewModel.Children.ForEach(model => model.Filter(filter));
                 if ((String.IsNullOrEmpty(filter) || explorerItemViewModel.Children.Any(model => model.IsVisible)) || (explorerItemViewModel.ResourceName != null && explorerItemViewModel.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant())))
