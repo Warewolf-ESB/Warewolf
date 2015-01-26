@@ -154,7 +154,7 @@
             <TextBox Grid.Row="0"
                      Grid.Column="0"
                      Text="{Binding SearchText,
-                                    Delay=300}" />
+                                    Delay=300, UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Row="0"
                     Grid.Column="1"
                     Width="25"

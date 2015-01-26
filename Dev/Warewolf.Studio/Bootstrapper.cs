@@ -52,7 +52,7 @@ namespace Warewolf.Studio
             ThemeManager.ApplicationTheme = new LunaTheme();
 
             Container.RegisterInstance<IVersionChecker>(new VersionChecker());
-            Container.RegisterInstance<IWebLatestVersionDialog>(new WebLatestVersionDialog());
+            Container.RegisterType<IWebLatestVersionDialog, WebLatestVersionDialog>();
 
             Container.RegisterType<IServer, Server>(new InjectionConstructor(typeof(Uri)));
             Container.RegisterInstance<IVersionChecker>(new VersionChecker());
@@ -81,7 +81,6 @@ namespace Warewolf.Studio
             convertor.Setup(a => a.Create(expressions[2])).Returns(convertedScalar);
             convertor.Setup(a => a.Create(expressions[3])).Returns(convertedScalar2);
             Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel vm = new VariableListViewModel(expressions, convertor.Object);
-            var variableList = new VariableListView { DataContext = vm };
             Container.RegisterInstance<IVariableListView>(new VariableListView());
             Container.RegisterInstance(vm);
             Container.RegisterInstance<IPopupController>(new PopupController(new PopupMessageBoxFactory(),new PopupView()));
