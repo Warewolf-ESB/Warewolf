@@ -426,21 +426,14 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.Filter(filter);
             }
-                if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && model.ResourceType!=ResourceType.Version)))
-                {
-                    IsVisible = true;
-                }
-                else
-                {
-                    if(!ResourceName.Contains(filter))
-                    IsVisible = false;
-                    else
-                    {
-                        IsVisible = true;
-                    }
-                }
-                
-            
+            if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && model.ResourceType != ResourceType.Version)))
+            {
+                IsVisible = true;
+            }
+            else
+            {
+                IsVisible = ResourceName.Contains(filter);
+            }
             OnPropertyChanged(() => Children);
         }
 

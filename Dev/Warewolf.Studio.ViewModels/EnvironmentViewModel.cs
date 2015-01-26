@@ -7,7 +7,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Moq;
@@ -36,7 +35,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (_children == null) return _children;
+                if(_children == null) return _children;
                 return new ObservableCollection<IExplorerItemViewModel>( _children.Where(a=>a.IsVisible));
             }
             set
@@ -103,17 +102,10 @@ namespace Warewolf.Studio.ViewModels
         {
             foreach (var explorerItemViewModel in _children)
             {
-                explorerItemViewModel.Children.ForEach(model => model.Filter(filter));
-                if ((String.IsNullOrEmpty(filter) || explorerItemViewModel.Children.Any(model => model.IsVisible)) || (explorerItemViewModel.ResourceName != null && explorerItemViewModel.ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant())))
-                {
-                    explorerItemViewModel.IsVisible = true;             
-                }
-                else
-                {
-                    explorerItemViewModel.IsVisible = false;
-                }
-                OnPropertyChanged(() => Children);
+                explorerItemViewModel.Filter(filter);
             }
+
+            OnPropertyChanged(() => Children);
         }
 
         public ICollection<IExplorerItemViewModel> AsList()
