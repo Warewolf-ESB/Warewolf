@@ -258,6 +258,12 @@
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="contentControl"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}">
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
@@ -324,6 +330,12 @@
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <Visibility>Visible</Visibility>
                                                 </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="contentControl"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}">
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
@@ -461,14 +473,14 @@
                             <Border x:Name="hoverBorder"
                                     Grid.Column="5"
                                     Background="{StaticResource TreeNodeHoverBackgroundBrush}"
-                                    BorderBrush="{StaticResource TreeNodeHoverBorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{StaticResource TreeNodeHoverBackgroundBrush}"
+                                    BorderThickness="0"
                                     Visibility="Collapsed" />
                             <Border x:Name="SelectedBorder"
                                     Grid.Column="5"
                                     Background="{StaticResource TreeNodeSelectedBackgroundBrush}"
-                                    BorderBrush="{StaticResource TreeNodeSelectedBorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{StaticResource WareWolfOrangeBrush}"
+                                    BorderThickness="0"
                                     Visibility="Collapsed" />
                             <igPrimDt:ActiveNodeIndicator x:Name="ActiveBorder"
                                                           Grid.Column="5"

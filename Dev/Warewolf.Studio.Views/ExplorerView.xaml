@@ -52,19 +52,14 @@
                      CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         </ContextMenu>
-        <igPrim:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-      
-        <Style x:Key="NodeStyle" TargetType="{x:Type ig:XamDataTreeNodeControl}">
-            <Setter Property="ContextMenu" Value="{DynamicResource TreeNodeContextMenu}" />
-            <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />
-        </Style>
+
+<!--        <Style BasedOn="{StaticResource XamDataTreeNodeControlStyle}" TargetType="{x:Type ig:XamDataTreeNodeControl}">-->
+<!--            <Setter Property="ContextMenu" Value="{DynamicResource TreeNodeContextMenu}" />-->
+<!--            <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />            -->
+<!--        </Style>-->
         
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         <converters:WidthConverter x:Key="WidthConverter" />
-        <converters:CanViewIconConverter x:Key="CanViewIconConverter" />
-        <converters:CanExecuteIconConverter x:Key="CanExecuteIconConverter" />
-
-        
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
 
@@ -190,6 +185,52 @@
                     </ig:NodeLayout.HeaderTemplate>
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
+                            <DataTemplate.Triggers>
+                               <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           AutoReverse="True"
+                                                                       Storyboard.TargetName="EditPermissionImage"
+                                                                       Storyboard.TargetProperty="Source">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}">
+                                                   
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                        AutoReverse="True"
+                                                                       Storyboard.TargetName="ExecutePermissionImage"
+                                                                       Storyboard.TargetProperty="Source">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}">
+
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           AutoReverse="True"
+                                                                       Storyboard.TargetName="EditPermissionImage"
+                                                                       Storyboard.TargetProperty="Source">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}">
+                                                   
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                        AutoReverse="True"
+                                                                       Storyboard.TargetName="ExecutePermissionImage"
+                                                                       Storyboard.TargetProperty="Source">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}">
+
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </DataTemplate.Triggers>
                             <DockPanel Height="14" Margin="0,0,0,0">
                                 <DockPanel.Width>
                                     <MultiBinding Converter="{StaticResource WidthConverter}">
@@ -205,12 +246,12 @@
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
-                                        Visibility="{Binding Data.CanExecute}">
-                                    <Image Width="14"
+                                        Visibility="{Binding Data.CanExecute, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Image x:Name="ExecutePermissionImage" Width="14"
                                            Height="14"
-                                           Source="{Binding Data.CanExecute,
-                                                            Converter={StaticResource CanExecuteIconConverter}}"
-                                           Stretch="Fill" />
+                                           Source="{StaticResource System-Spacer}"
+                                           Stretch="Fill"
+                                           />
                                 </Button>
                                 <Button Width="14"
                                         Height="14"
@@ -221,11 +262,11 @@
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
                                         Visibility="{Binding Data.CanEdit}">
-                                    <Image Width="14"
+                                    <Image x:Name="EditPermissionImage" Width="14"
                                            Height="14"
-                                           Source="{Binding Data.CanEdit,
-                                                            Converter={StaticResource CanViewIconConverter}}"
-                                           Stretch="Fill" />
+                                           Source="{StaticResource System-Spacer}"
+                                           Stretch="Fill" 
+                                           />
                                 </Button>
                                 <Image Width="14"
                                        Height="14" 
@@ -235,7 +276,7 @@
                                 <TextBlock MinWidth="5"
                                            Text="{Binding Path=Data.ResourceName}"
                                            Visibility="{Binding Path=Data.IsNotRenaming,
-                                                                Converter={StaticResource BoolToVisibility}}" />
+                                                                Converter={StaticResource BoolToVisibilityConverter}}" />
                                 <TextBox Name="PropertySearch"
                                          MinWidth="5"
                                          IsVisibleChanged="UIElement_OnIsVisibleChanged"
