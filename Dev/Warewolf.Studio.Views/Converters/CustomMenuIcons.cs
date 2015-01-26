@@ -274,10 +274,10 @@ namespace Warewolf.Studio.Views.Converters
                         if (Enum.TryParse(value.ToString(), out resourceType))
                         {
                             if (resourceType == ResourceType.Folder)
-                                return 0;
+                                return "Collapsed";
                         }
 
-            return 14;
+            return "Visible";
 
         }
 

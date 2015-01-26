@@ -154,7 +154,8 @@
             <TextBox Grid.Row="0"
                      Grid.Column="0"
                      Text="{Binding SearchText,
-                                    Delay=300, UpdateSourceTrigger=PropertyChanged}" />
+                                    Delay=300,
+                                    UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Row="0"
                     Grid.Column="1"
                     Width="25"
@@ -261,6 +262,7 @@
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                     </MultiBinding>
                                 </DockPanel.Width>
+
                                 <Button Width="14"
                                         Height="14"
                                         Margin="0,0,5,0"
@@ -292,13 +294,13 @@
                                            Stretch="Fill" />
                                 </Button>
 
-                                <Image Width="{Binding Data.ResourceType,
-                                                       Converter={StaticResource ViewFolderIcon}}"
-                                       Height="{Binding Data.ResourceType,
-                                                        Converter={StaticResource ViewFolderIcon}}"
+                                <Image Width="14"
+                                       Height="14"
                                        Margin="0,0,3,0"
                                        Source="{Binding Data.ResourceType,
-                                                        Converter={StaticResource ResourceTypeToIconConverter}}" />
+                                                        Converter={StaticResource ResourceTypeToIconConverter}}"
+                                       Visibility="{Binding Data.ResourceType,
+                                                            Converter={StaticResource ViewFolderIcon}}" />
                                 <TextBlock MinWidth="5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
