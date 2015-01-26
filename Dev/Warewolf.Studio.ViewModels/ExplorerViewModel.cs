@@ -19,11 +19,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new ArgumentNullException("shellViewModel");
             }
-            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer);
+            
             RefreshCommand = new DelegateCommand(Refresh);
             var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer,shellViewModel);
             Environments = new ObservableCollection<IEnvironmentViewModel>{localhostEnvironment};
             localhostEnvironment.Connect();
+            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer);
         }
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server,IShellViewModel shellViewModel)
