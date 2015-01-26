@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels
 
         void LostFocusCommand()
         {
-            IsRenaming = false;
+            //IsRenaming = false;
         }
 
         public IExplorerHelpDescriptorBuilder Builder { get; set; }
