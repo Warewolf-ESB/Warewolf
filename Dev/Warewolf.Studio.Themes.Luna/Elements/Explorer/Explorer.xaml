@@ -14,14 +14,14 @@
     <!--  *********************************  RESOURCES  *********************************  -->
     <ResourceDictionary.MergedDictionaries>
 
-        <!--<ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/xamDataTree.xaml" />-->
-        
+        <!--  <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/xamDataTree.xaml" />  -->
+
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
 
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/CheckBox.xaml" />
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ScrollBar.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/CheckBox.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 
@@ -417,7 +417,9 @@
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="1" />
-                            <igPrimDt:NodeLineControl Grid.Column="0" x:Name="lineControl" Node="{Binding Node}" />
+                            <igPrimDt:NodeLineControl x:Name="lineControl"
+                                                      Grid.Column="0"
+                                                      Node="{Binding Node}" />
                             <igPrimDt:NodeLineTerminator x:Name="LineTerminator"
                                                          Grid.Column="1"
                                                          Node="{Binding Node,
@@ -477,7 +479,7 @@
                                             Margin="{TemplateBinding Padding}"
                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            Foreground="{TemplateBinding Foreground}">
+                                            Foreground="{StaticResource WareWolfButtonBrush}">
                                 <ContentPresenter x:Name="ContentPresenter" />
                             </ContentControl>
                         </Grid>
