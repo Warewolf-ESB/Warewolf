@@ -34,6 +34,7 @@ namespace Warewolf.Studio.Views
 
         void IWebLatestVersionDialog.ShowDialog()
         {
+            BringIntoView();
             base.ShowDialog();
         }
     }

@@ -51,7 +51,7 @@ namespace Warewolf.Studio.Core
         {
             get
             {
-                Check();
+                _current = GetCurrentVersion();
                 return _current;
             }
         }
