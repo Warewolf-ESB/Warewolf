@@ -50,15 +50,16 @@ namespace Warewolf.Studio
             base.ConfigureContainer();
             AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
             ThemeManager.ApplicationTheme = new LunaTheme();
+
+            Container.RegisterInstance<IVersionChecker>(new VersionChecker());
+            Container.RegisterInstance<IWebLatestVersionDialog>(new WebLatestVersionDialog());
+
             Container.RegisterType<IServer, Server>(new InjectionConstructor(typeof(Uri)));
             Container.RegisterInstance<IVersionChecker>(new VersionChecker());
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>()));
             Container.RegisterInstance<IMenuViewModel>(new MenuViewModel(Container.Resolve<IShellViewModel>()));
             Container.RegisterInstance<IToolboxViewModel>(new DummyToolboxViewModel());
-
-            Container.RegisterInstance<IVersionChecker>(new VersionChecker());
-            Container.RegisterInstance<IWebLatestVersionDialog>(new WebLatestVersionDialog());
 
             Container.RegisterInstance<IExplorerView>(new ExplorerView());
             Container.RegisterInstance<IToolboxView>(new ToolboxView());
