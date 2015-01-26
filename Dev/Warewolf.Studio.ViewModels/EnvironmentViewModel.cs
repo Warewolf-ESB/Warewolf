@@ -35,7 +35,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _children;
+                if (_children == null) return _children;
+                return new ObservableCollection<IExplorerItemViewModel>( _children.Where(a=>a.IsVisible));
             }
             set
             {

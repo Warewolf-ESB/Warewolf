@@ -10,6 +10,7 @@
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:viewModels1="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -47,6 +48,8 @@
                      CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
             <MenuItem Name="Rollback" Header="Make Current Version" Command="{Binding Path=Data.RollbackCommand}"
                      CommandParameter="{Binding Data}" Visibility="Visible" />
+            <MenuItem Name="Open" Header="Make Current Version" Command="{Binding Path=Data.OpenVersionCommand}"
+                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         </ContextMenu>
         <Style TargetType="{x:Type ig:XamDataTreeNodeControl}">
@@ -57,6 +60,8 @@
             <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />
         </Style>
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
+
+        
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
 
@@ -139,56 +144,71 @@
                                         IsOnNodeActiveEditingEnabled="False" />
             </ig:XamDataTree.EditingSettings>
 
-            <ig:XamDataTree.GlobalNodeLayouts>
-                <ig:NodeLayout Key="Children"
-                               DisplayMemberPath="ResourceName"
-                               TargetTypeName="Dev2.Common.Interfaces.Studio.ViewModels.IExplorerItemViewModel"
-                               Visibility="Visible">
 
-                    <ig:NodeLayout.HeaderTemplate>
+            <ig:XamDataTree.GlobalNodeLayouts>
+
+
+                <ig:NodeLayout Key="Environments" DisplayMemberPath="DisplayName" TargetTypeName="IEnvironmentViewModel">
+                    <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text=" - [" />
-                                <TextBlock Text="{Binding Data.Children.Count}" />
-                                <TextBlock Text="]" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ig:NodeLayout.HeaderTemplate>
-                               
-                    <ig:NodeLayout.ExpandedIconTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel >
                                 <Image Width="14"
                                        Height="14"
+                                       Source="{StaticResource System-Logo-Mono}" />
+                                <TextBlock Text="bob" />
+                                <TextBlock Text="{Binding Data.DisplayName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ig:NodeLayout.ItemTemplate>
+                </ig:NodeLayout>
+
+                <ig:NodeLayout Key="Children"
+                               DisplayMemberPath="ResourceName"
+                               TargetTypeName="IExplorerItemViewModel"
+                               Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    
+                    <ig:NodeLayout.HeaderTemplate>
+                        <DataTemplate>
+
+                        </DataTemplate>
+                    </ig:NodeLayout.HeaderTemplate>
+                    <ig:NodeLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" >
+                                <Image Width="14"
+                                       Height="14" 
                                        Source="{Binding Data.ResourceType,
                                                         Converter={StaticResource ResourceTypeToIconConverter}}" />
-
                                 <TextBlock Text="! " />
-                                <TextBlock Text="{Binding Data.ResourceName}" />
+                                <TextBlock Text="{Binding Path=Data.ResourceName}" Visibility="{Binding Path=Data.IsNotRenaming,  Converter={StaticResource BoolToVisibility}}" />
+                                <Grid>
 
+                                    <TextBox IsVisibleChanged="UIElement_OnIsVisibleChanged"  views:FocusExtension.IsFocused="{Binding Path= Data.IsRenaming}"  Name="PropertySearch"  Text="{Binding Path=Data.ResourceName ,UpdateSourceTrigger=LostFocus}"  Visibility="{Binding Path=Data.IsRenaming, Converter={StaticResource BoolToVisibilityConverter}}">
+                                   <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="LostFocus" >
+                                            <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}"   />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
+                                </Grid>
                             </StackPanel>
 
+                        </DataTemplate>
+                    </ig:NodeLayout.ItemTemplate>
+                    <ig:NodeLayout.ExpandedIconTemplate>
+                        <DataTemplate>
                         </DataTemplate>
                     </ig:NodeLayout.ExpandedIconTemplate>
                     <ig:NodeLayout.CollapsedIconTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="14"
-                                       Height="14"
-                                       Source="{Binding Data.ResourceType,
-                                                        Converter={StaticResource ResourceTypeToIconConverter}}" />
-                                <TextBlock Text="? " />
-                                <TextBlock Text="{Binding Data.DisplayName}" />
-                            </StackPanel>
-                            
                         </DataTemplate>
                     </ig:NodeLayout.CollapsedIconTemplate>
                 </ig:NodeLayout>
-                <ig:NodeLayout Key="Versions" IsExpandedMemberPath="AreVersionsVisible"  DisplayMemberPath="VersionHeader" >
-                               <!--NodeStyle="{StaticResource NodeStyle}">--> 
+                <!--<ig:NodeLayout Key="Versions" IsExpandedMemberPath="AreVersionsVisible"  DisplayMemberPath="VersionHeader"  TargetTypeName="VersionInfoViewModel">
+                               --><!--NodeStyle="{StaticResource NodeStyle}">--> 
                                
                                <!--Visibility="{Binding Path=Data.AreVersionsVisible, RelativeSource={RelativeSource AncestorType=ig:XamDataTreeNode} ,Converter={StaticResource BoolToVisibilityConverter}}"-->
-                            <!-->-->
+                            <!-->--><!--
                     <ig:NodeLayout.HeaderTemplate>
                         <DataTemplate></DataTemplate>
                     </ig:NodeLayout.HeaderTemplate>
@@ -200,7 +220,7 @@
 
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
-                </ig:NodeLayout>
+                </ig:NodeLayout>-->
             </ig:XamDataTree.GlobalNodeLayouts>
 
         </ig:XamDataTree>

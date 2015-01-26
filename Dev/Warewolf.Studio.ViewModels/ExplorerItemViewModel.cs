@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -30,20 +31,33 @@ namespace Warewolf.Studio.ViewModels
         bool _canView;
         bool _canDelete;
 
-        ICommand _deleteCommand;
         ICollection<IVersionInfoViewModel> _versions;
-        bool _canShowVersions;
         bool _areVersionsVisible;
         string _versionHeader;
         ResourceType _resourceType;
-        bool _canRollback;
-        ICommand _rollbackCommand;
+        bool _userShouldEditValueNow;
+        string _versionNumber;
+        ICollection<IExplorerItemViewModel> _children;
+
+        // ReSharper disable TooManyDependencies
+        public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent):this(shellViewModel,server,builder)
+            // ReSharper restore TooManyDependencies
+        {
+            RollbackCommand = new DelegateCommand(() =>
+            {
+                var output = _explorerRepository.Rollback(ResourceId, VersionNumber);
+                parent.ShowVersionHistory.Execute(null);
+                parent.ResourceName = output.DisplayName;
+
+            });
+        }
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel" ,shellViewModel}, {"server",server }, {"builder",builder } });
             _shellViewModel = shellViewModel;
-          
+            LostFocus = new DelegateCommand(LostFocusCommand);
+
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
@@ -59,10 +73,18 @@ namespace Warewolf.Studio.ViewModels
             Server.PermissionsChanged += UpdatePermissions;
             ShowVersionHistory = new DelegateCommand((() => AreVersionsVisible = (!AreVersionsVisible)));
             DeleteCommand = new DelegateCommand(Delete);
-            Versions = new ObservableCollection<IVersionInfoViewModel>();
+          
             VersionHeader = "Show Version History";
-            CanRollback = true;
+            Builder = builder;
+            IsVisible = true;
         }
+
+        void LostFocusCommand()
+        {
+            IsRenaming = false;
+        }
+
+        public IExplorerHelpDescriptorBuilder Builder { get; set; }
 
         void Delete()
         {
@@ -73,54 +95,57 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void UpdatePermissions(PermissionsChangedArgs args)
+        public void UpdatePermissions(PermissionsChangedArgs args)
         {
             var resourcePermission = args.Permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
             if (resourcePermission != null)
             {
-                CanEdit = resourcePermission.Contribute;
-                CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
-                CanView = resourcePermission.View || resourcePermission.Contribute;
-                CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
-                CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
+                SetFromPermission(resourcePermission);
             }
             else
             {
                 var serverPermission = args.Permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID==Guid.Empty);
                 if (serverPermission != null)
                 {
-                    CanEdit = serverPermission.Contribute;
-                    CanExecute = serverPermission.Contribute || serverPermission.Execute;
-                    CanView = serverPermission.View || serverPermission.Contribute;
-                    CanRename = serverPermission.Contribute || serverPermission.Administrator;
-                    CanDelete = serverPermission.Contribute || serverPermission.Administrator;
+                    SetFromServer(serverPermission);
                 }
             }
         }
 
-        public ICommand DeleteCommand
+        void SetFromServer(IWindowsGroupPermission serverPermission)
+        {
+            CanEdit = serverPermission.Contribute;
+            CanExecute = serverPermission.Contribute || serverPermission.Execute;
+            CanView = serverPermission.View || serverPermission.Contribute;
+            CanRename = serverPermission.Contribute || serverPermission.Administrator;
+            CanDelete = serverPermission.Contribute || serverPermission.Administrator;
+        }
+
+        void SetFromPermission(IWindowsGroupPermission resourcePermission)
+        {
+            CanEdit = resourcePermission.Contribute;
+            CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
+            CanView = resourcePermission.View || resourcePermission.Contribute;
+            CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
+            CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
+        }
+
+        public bool UserShouldEditValueNow
         {
             get
             {
-                return _deleteCommand;  
+                return _userShouldEditValueNow;
             }
             set
             {
-                _deleteCommand = value;
+                _userShouldEditValueNow = value;
+                OnPropertyChanged(() => UserShouldEditValueNow);
             }
         }
+
+        public ICommand DeleteCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
-        public ICommand RollbackCommand
-        {
-            get
-            {
-                return _rollbackCommand;
-            }
-            set
-            {
-                _rollbackCommand = value;
-            }
-        }
+        public ICommand RollbackCommand { get; set; }
         public bool IsRenaming
         {
             get
@@ -131,7 +156,7 @@ namespace Warewolf.Studio.ViewModels
             {
 
                 _isRenaming = value;
-               
+                UserShouldEditValueNow = _isRenaming;
                 OnPropertyChanged(() => IsRenaming);
                 OnPropertyChanged(() => IsNotRenaming);
             }
@@ -167,8 +192,16 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICollection<IExplorerItemViewModel> Children
         {
-            get;
-            set;
+            get
+            {
+                return new ObservableCollection<IExplorerItemViewModel>(_children.Where(a=>a.IsVisible));
+            }
+            set
+            {
+                
+                _children = value;
+                OnPropertyChanged(() => Children);
+            }
         }
         public bool Checked { get; set; }
         public Guid ResourceId { get; set; }
@@ -228,6 +261,7 @@ namespace Warewolf.Studio.ViewModels
             set;
         }
         public ICommand ItemSelectedCommand { get; set; }
+        public ICommand LostFocus { get; set; }
         public bool CanExecute
         {
             get
@@ -284,11 +318,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canRollback;
-            }
-            set
-            {
-                _canRollback = value;
+                return ResourceType == ResourceType.Version;
             }
         }
         public bool AreVersionsVisible
@@ -304,15 +334,34 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    Versions = new ObservableCollection<IVersionInfoViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new VersionInfoViewModel(a,_explorerRepository,this)));
-                    OnPropertyChanged(() => Versions);
+                    Children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(_shellViewModel,Server,Builder,this)
+                    {
+                        ResourceName = a.VersionNumber +" "+ a.DateTimeStamp.ToString(CultureInfo.InvariantCulture)+" " + a.Reason,
+                        VersionNumber = a.VersionNumber,
+                        ResourceId =  ResourceId
+                    }
+                    ));
+                    OnPropertyChanged(() => Children);
                 }
                 else
                 {
-                    Versions = new Collection<IVersionInfoViewModel>();
+                    Children = new ObservableCollection<IExplorerItemViewModel>();
+                    OnPropertyChanged(() => Children);
                 }
                 OnPropertyChanged(()=>AreVersionsVisible);
                 
+            }
+        }
+        public string VersionNumber
+        {
+            get
+            {
+                return _versionNumber;
+            }
+            set
+            {
+                _versionNumber = value;
+                OnPropertyChanged(()=>VersionNumber);
             }
         }
         public string VersionHeader
@@ -367,34 +416,30 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ICollection<IVersionInfoViewModel> Versions
-        {
-            get
-            {
-                return _versions;
-            }
-            set
-            {
-                _versions = value;
-                OnPropertyChanged(()=>Versions);
-            }
-        }
+
 
         public void Filter(string filter)
         {
-            foreach (var explorerItemViewModel in Children)
+            foreach (var explorerItemViewModel in _children)
             {
-                explorerItemViewModel.Children.ForEach(model => model.Filter(filter));
-                if (String.IsNullOrEmpty(filter) || explorerItemViewModel.Children.Any(model => model.IsVisible))
+                explorerItemViewModel.Filter(filter);
+            }
+                if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible)))
                 {
-                    explorerItemViewModel.IsVisible = true;
+                    IsVisible = true;
                 }
                 else
                 {
-                    explorerItemViewModel.IsVisible = false;
+                    if(!ResourceName.Contains(filter))
+                    IsVisible = false;
+                    else
+                    {
+                        IsVisible = true;
+                    }
                 }
-                OnPropertyChanged(() => Children);
-            }
+                
+            
+            OnPropertyChanged(() => Children);
         }
 
         public IResource Resource { get; set; }

@@ -12,9 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 using Dev2.Common.Interfaces.Data;
-
 
 namespace Warewolf.Studio.Views.Converters
 {
@@ -22,20 +23,20 @@ namespace Warewolf.Studio.Views.Converters
     {
         private enum MenuIcons
         {
-            WorkflowService = 1,
-            DbService = 2,
-            PluginService = 4,
-            WebService = 8,
-            Folder= 16
+            WorkflowService = 1, //sux
+            DbService = 2, //cool
+            PluginService = 4, 
+            WebService = 8, //cool
+            Folder= 16 //cool
         }
 
         private static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
         {
-            {MenuIcons.WorkflowService, "{StaticResource Resources-Service-TreeIcon}"},
-            {MenuIcons.DbService, "{StaticResource System-DB-TreeIcon}"},
-            {MenuIcons.PluginService, "{StaticResource System-DLL-TreeIcon}"},
-            {MenuIcons.WebService, "{StaticResource System-WebService-TreeIcon}"},
-            {MenuIcons.Folder, "{StaticResource System-WebService-TreeIcon}"},
+            {MenuIcons.WorkflowService, "Explorer-WorkflowService"},
+            {MenuIcons.DbService, "Explorer-DB"},
+            {MenuIcons.PluginService, "Explorer-DLL"},
+            {MenuIcons.WebService, "Explorer-WebService"},
+            {MenuIcons.Folder, "Explorer-Spacer.xaml"},
         };
 
         public static string WorkflowService
@@ -92,19 +93,25 @@ namespace Warewolf.Studio.Views.Converters
         /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+
+            const string Pathname = "/Warewolf.Studio.Themes.Luna;component/Images.xaml";
+
+
+            ResourceDictionary dict = Application.LoadComponent(new Uri(Pathname, System.UriKind.Relative)) as ResourceDictionary;
+
             ResourceType resourceType;
             if (Enum.TryParse(value.ToString(), out resourceType))
             {
                 switch(resourceType)
                 {
                     case ResourceType.WorkflowService:
-                        return CustomMenuIcons.WorkflowService;
+                        return dict[CustomMenuIcons.WorkflowService] as DrawingImage;
                     case ResourceType.DbService:
-                        return CustomMenuIcons.DbService;
+                        return dict[CustomMenuIcons.DbService] as DrawingImage;
                     case ResourceType.PluginService:
-                        return CustomMenuIcons.PluginService;
+                        return dict[CustomMenuIcons.PluginService] as DrawingImage;
                     case ResourceType.WebService:
-                        return CustomMenuIcons.WebService;
+                        return dict[CustomMenuIcons.WebService] as DrawingImage;
 //                    case ResourceType.DbSource:
 //                        break;
 //                    case ResourceType.PluginSource:
@@ -120,11 +127,13 @@ namespace Warewolf.Studio.Views.Converters
 //                    case ResourceType.Server:
 //                        break;
                     default:
-                        return CustomMenuIcons.Folder;
+                        return dict[CustomMenuIcons.Folder] as DrawingImage;
                 }
             }
             return null;
         }
+
+    
 
         /// <summary>
         /// Converts a value. 
@@ -140,5 +149,8 @@ namespace Warewolf.Studio.Views.Converters
 
         #endregion
     }
+
+    
+   
 
 }

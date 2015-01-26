@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <param name="versionNumber">the version to rollback to</param>
         public IRollbackResult RollbackTo(Guid resourceId, string versionNumber)
         {
-            var workSpaceId = Guid.NewGuid();
+            var workSpaceId = resourceId;
             var controller = CommunicationControllerFactory.CreateController("RollbackTo");
             controller.AddPayloadArgument("resourceId", resourceId.ToString());
             controller.AddPayloadArgument("versionNumber", versionNumber);
