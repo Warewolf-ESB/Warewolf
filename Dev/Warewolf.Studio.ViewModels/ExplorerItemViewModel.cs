@@ -29,7 +29,6 @@ namespace Warewolf.Studio.ViewModels
         bool _canEdit;
         bool _canView;
         bool _canDelete;
-
         ICollection<IVersionInfoViewModel> _versions;
         bool _areVersionsVisible;
         string _versionHeader;
@@ -37,6 +36,10 @@ namespace Warewolf.Studio.ViewModels
         bool _userShouldEditValueNow;
         string _versionNumber;
         ICollection<IExplorerItemViewModel> _children;
+        bool _canDrop;
+        bool _canDrag;
+        Guid _resourceId;
+        bool _isExpanded;
 
         // ReSharper disable TooManyDependencies
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent):this(shellViewModel,server,builder)
@@ -78,6 +81,12 @@ namespace Warewolf.Studio.ViewModels
             Builder = builder;
             IsVisible = true;
             IsVersion = false;
+            Expand = new DelegateCommand<int?>(clickCount =>
+            {
+                if (clickCount!= null && clickCount == 2)
+                IsExpanded = !IsExpanded;
+            });
+
         }
 
         void LostFocusCommand()
@@ -205,7 +214,19 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         public bool Checked { get; set; }
-        public Guid ResourceId { get; set; }
+        public Guid ResourceId
+        {
+            get
+            {
+                return _resourceId;
+            }
+            set
+            {
+                _resourceId = value;
+                if (ResourceName == ("Hello World")) 
+                AreVersionsVisible = true;
+            }
+        }
         public ResourceType ResourceType
         {
             get
@@ -418,7 +439,43 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public bool CanDrop
+        {
+            get
+            {
+                return ResourceType != ResourceType.Version  ;
+            }
+
+            set
+            {
+            }
+        }
+        public bool CanDrag
+        {
+            get
+            {
+                return ResourceType<ResourceType.Server && ResourceType!= ResourceType.Version;
+            }
+
+            set
+            {
+            }
+        }
+
         public ICommand OpenVersionCommand { get; set; }
+        public bool IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+            set
+            {
+                _isExpanded = value;
+                OnPropertyChanged(()=>IsExpanded);
+            }
+        }
+        public ICommand Expand { get; set; }
 
         public void Filter(string filter)
         {
