@@ -161,6 +161,11 @@ namespace Warewolf.Studio.Views.Converters
     }
 
 
+
+
+
+
+
     public class CanExecuteIconConverter : IValueConverter
     {
         #region Implementation of IValueConverter
@@ -238,7 +243,8 @@ namespace Warewolf.Studio.Views.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return (double)values[1] - (((XamDataTreeNodeControl)values[0]).Node.Manager.Level * 21) - 50;
+
+           return (double)values[1] - (((XamDataTreeNodeControl)values[0]).Node.Manager.Level * 21) - 50;
         }
 
 
@@ -247,5 +253,41 @@ namespace Warewolf.Studio.Views.Converters
             throw new NotImplementedException();
         }
     }
+
+
+    public class ViewFolderIcon : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        /// <summary>
+        /// Returns the width for the folder ICON. if it is a folder return 0;
+        /// </summary>
+        /// <returns>
+        /// A converted value. If the method returns null, the valid null value is used.
+        /// </returns>
+        /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+
+
+                        ResourceType resourceType;
+                        if (Enum.TryParse(value.ToString(), out resourceType))
+                        {
+                            if (resourceType == ResourceType.Folder)
+                                return 0;
+                        }
+
+            return 14;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
 
 }
