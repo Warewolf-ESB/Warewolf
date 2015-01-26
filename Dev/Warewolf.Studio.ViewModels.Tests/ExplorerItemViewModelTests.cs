@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Common.Interfaces.Versioning;
+using Dev2.Explorer;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Studio.Core.Popup;
 using Warewolf.UnittestingUtils;
 
 namespace Warewolf.Studio.ViewModels.Tests
@@ -21,7 +25,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Hagashen Naidu")]
         [TestCategory("Constructor")]
     
+        // ReSharper disable InconsistentNaming
         public void Constructor_NullShellViewModel_ExpectException()
+      
         {
             //------------Setup for test--------------------------
             
@@ -154,9 +160,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var shellViewModelMock = new Mock<IShellViewModel>();
                     //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object) { IsRenaming = true };
             //------------Assert Results-------------------------
-            explorerViewModel.IsRenaming = true;
             Assert.IsTrue(explorerViewModel.IsRenaming);
             Assert.IsFalse(explorerViewModel.IsNotRenaming);
         }
@@ -194,8 +199,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
-            explorerViewModel.ResourceName = "dave";
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object) { ResourceName = "dave" };
             expRepo.Setup(a => a.Rename(explorerViewModel, "bob")).Throws(new Exception());
             //------------Assert Results-------------------------
             explorerViewModel.IsRenaming = true;
@@ -222,6 +226,105 @@ namespace Warewolf.Studio.ViewModels.Tests
             expRepo.Verify(a=>a.Move(explorerViewModel,expMovedInto));
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Move")]
+        public void ExplorerItemViewModel_Move_CallsCorrectModel_ErrorOnCall()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+            var expMovedInto = new Mock<IExplorerItemViewModel>().Object;
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+          
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            expRepo.Setup(a => a.Move(explorerViewModel, expMovedInto)).Throws(new Exception());
+            explorerViewModel.Move(expMovedInto);
+            shellViewModelMock.Verify(a=>a.Handle(It.IsAny<Exception>()));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Move")]
+        public void ExplorerItemViewModel_HistoryAvailable()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object) { ResourceType = ResourceType.DbService };
+            Assert.IsFalse(explorerViewModel.CanShowVersions);
+            Assert.IsFalse(explorerViewModel.AreVersionsVisible);
+            Assert.AreEqual("Show Version History",explorerViewModel.VersionHeader);
+            explorerViewModel.ResourceType = ResourceType.WorkflowService;
+            Assert.IsTrue(explorerViewModel.CanShowVersions);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Rollback")]
+        public void ExplorerItemViewModel_Rollback_Execute()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            
+            //------------Execute Test---------------------------
+            var parent = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, parent)
+            {
+                VersionNumber = "3",ResourceId = Guid.NewGuid()
+            
+            };
+            expRepo.Setup(a => a.Rollback(explorerViewModel.ResourceId, "3")).Returns(new RollbackResult(){DisplayName = "bob", VersionHistory = new List<IExplorerItem>()});
+            explorerViewModel.RollbackCommand.Execute(null);
+            Assert.AreEqual(parent.ResourceName,"bob");
+            expRepo.Verify(a => a.Rollback(explorerViewModel.ResourceId, "3"));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_History")]
+        public void ExplorerItemViewModel_History_Show()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object);
+            explorerViewModel.ResourceId = Guid.NewGuid();
+            explorerViewModel.ResourceType = ResourceType.DbService;
+            Assert.IsFalse(explorerViewModel.CanShowVersions);
+            Assert.IsFalse(explorerViewModel.AreVersionsVisible);
+            Assert.AreEqual("Show Version History", explorerViewModel.VersionHeader);
+            explorerViewModel.ResourceType = ResourceType.WorkflowService;
+            Assert.IsTrue(explorerViewModel.CanShowVersions);
+            var mockVersion = new Mock<IVersionInfo>();
+            mockVersion.Setup(a => a.VersionNumber).Returns("1");
+            mockVersion.Setup(a => a.DateTimeStamp).Returns(DateTime.MaxValue);
+            mockVersion.Setup(a => a.Reason).Returns("bob");
+            expRepo.Setup(a => a.GetVersions(explorerViewModel.ResourceId)).Returns(new List<IVersionInfo>() { mockVersion.Object });
+            explorerViewModel.AreVersionsVisible = true;
+            Assert.IsTrue(explorerViewModel.Children.Count==1);
+            Assert.AreEqual("1" + " " + DateTime.MaxValue.ToString(CultureInfo.InvariantCulture) + " " + "bob", explorerViewModel.Children.First().ResourceName);
+            explorerViewModel.AreVersionsVisible = false;
+            Assert.AreEqual(0,explorerViewModel.Children.Count);
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -245,6 +348,51 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Filter")]
+        public void ExplorerItemViewModel_FilterSetChildrenInvisible_CallsCorrectMethod()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(a => a.ShowPopup(It.IsAny<IPopupMessage>())).Returns(true);
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+            var expMovedInto = new Mock<IExplorerItemViewModel>().Object;
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object) 
+            { ResourceName = "mat",
+                Children = new ObservableCollection<IExplorerItemViewModel>
+                {
+                     new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object)
+                     {
+                         ResourceName = "bob",
+                         Children = new ObservableCollection<IExplorerItemViewModel>()
+                         {
+                              new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object) {ResourceName = "The"},
+                               new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object) {ResourceName = "Builder"}
+
+                         }
+                     },
+                      new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object){ResourceName = "moot"},
+                       new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object){ResourceName = "boot"}
+                }
+            };
+            Assert.AreEqual(explorerViewModel.Children.Count,3);
+            explorerViewModel.Filter("bob");
+            Assert.AreEqual(explorerViewModel.Children.Count,1);
+            Assert.AreEqual(explorerViewModel.Children.First().Children.Count,0);
+            explorerViewModel.Filter("The");
+            Assert.AreEqual(explorerViewModel.Children.Count, 1);
+            Assert.AreEqual(explorerViewModel.Children.First().Children.Count, 1);
+            explorerViewModel.Filter("Sasuke");
+            Assert.AreEqual(explorerViewModel.Children.Count, 0);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemViewModel_Delete")]
         public void ExplorerItemViewModel_Delete_DoesNotOccurIfPopupIsFalse()
         {
@@ -253,7 +401,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             shellViewModelMock.Setup(a => a.ShowPopup(It.IsAny<IPopupMessage>())).Returns(false);
             var server = new Mock<IServer>();
             var expRepo = new Mock<IExplorerRepository>();
-            var expMovedInto = new Mock<IExplorerItemViewModel>().Object;
 
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             //------------Execute Test---------------------------
@@ -264,3 +411,4 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
     }
 }
+// ReSharper restore InconsistentNaming

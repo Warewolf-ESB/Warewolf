@@ -48,6 +48,8 @@
                      CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
             <MenuItem Name="Rollback" Header="Make Current Version" Command="{Binding Path=Data.RollbackCommand}"
                      CommandParameter="{Binding Data}" Visibility="Visible" />
+            <MenuItem Name="Open" Header="Make Current Version" Command="{Binding Path=Data.OpenVersionCommand}"
+                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         </ContextMenu>
         <Style TargetType="{x:Type ig:XamDataTreeNodeControl}">
@@ -163,7 +165,7 @@
                 <ig:NodeLayout Key="Children"
                                DisplayMemberPath="ResourceName"
                                TargetTypeName="IExplorerItemViewModel"
-                               Visibility="Visible">
+                               Visibility="{Binding Path=Data.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                     
                     <ig:NodeLayout.HeaderTemplate>
                         <DataTemplate>
@@ -172,7 +174,7 @@
                     </ig:NodeLayout.HeaderTemplate>
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" >
                                 <Image Width="14"
                                        Height="14" 
                                        Source="{Binding Data.ResourceType,

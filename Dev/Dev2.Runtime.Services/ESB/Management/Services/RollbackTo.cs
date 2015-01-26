@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 try
                 {
-                    var guid = Guid.Parse(values["resourceId"].ToString());
+                   var guid = Guid.Parse(values["resourceId"].ToString());
                     var version = values["versionNumber"].ToString();
                     Dev2Logger.Log.Info(String.Format("Rollback to. ResourceId:{0} Version:{1}",guid,version));
                     var res = ServerVersionRepo.RollbackTo(guid,version);

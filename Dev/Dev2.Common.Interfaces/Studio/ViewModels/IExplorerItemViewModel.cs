@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
-using Dev2.Common.Interfaces.Versioning;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels
 {
@@ -28,10 +26,10 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanView { get; set; }
        
         bool AreVersionsVisible { get; set; }
+        string VersionNumber { get; set; }
         string VersionHeader { get; set; }
         void Filter(string filter);
         bool Move(IExplorerItemViewModel destination);
-        ICollection<IVersionInfoViewModel> Versions { get; set; } 
 
     }
 
