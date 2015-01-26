@@ -349,7 +349,7 @@
                                            VerticalAlignment="Center"
                                            Text="{Binding Path=Data.ResourceName}"
                                            Visibility="{Binding Path=Data.IsNotRenaming,
-                                                                    Converter={StaticResource BoolToVisibility}}" >
+                                                                    Converter={StaticResource BoolToVisibilityConverter}}" >
                                                 <i:Interaction.Triggers >
                                                     <i:EventTrigger EventName="MouseLeftButtonDown">
                                                      <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
