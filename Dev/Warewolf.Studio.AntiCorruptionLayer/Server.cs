@@ -108,5 +108,20 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public event PermissionsChanged PermissionsChanged;
 
         #endregion
+
+        #region Overrides of Resource
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return "localhost";
+        }
+
+        #endregion
     }
 }

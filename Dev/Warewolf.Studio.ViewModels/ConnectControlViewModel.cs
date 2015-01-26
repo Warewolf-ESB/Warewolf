@@ -16,6 +16,8 @@ namespace Warewolf.Studio.ViewModels
             }
             Server = server;
             Servers = Server.GetServerConnections();
+            Servers = new List<IServer>();
+            Servers.Add(server);
             EditConnectionCommand = new DelegateCommand(Edit);
             ToggleConnectionStateCommand = new DelegateCommand(() =>
             {

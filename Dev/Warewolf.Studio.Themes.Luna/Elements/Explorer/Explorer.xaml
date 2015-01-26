@@ -38,13 +38,13 @@
     <SolidColorBrush x:Key="TreeNodeBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
 
     <SolidColorBrush x:Key="TreeNodeHoverBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="TreeNodeHoverBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="TreeNodeHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
 
     <SolidColorBrush x:Key="TreeNodeSelectedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="TreeNodeSelectedBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
 
     <SolidColorBrush x:Key="TreeNodeActiveBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="TreeNodeActiveBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="TreeNodeActiveBorderBrush" Color="{StaticResource WarewolfOrange}" />
 
     <SolidColorBrush x:Key="NodeLineBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="NodeLineTerminatorBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
@@ -211,6 +211,7 @@
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Smaller}" />
         <Setter Property="BorderThickness" Value="1" />
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igPrimDt:ActiveNodeIndicator">
@@ -219,7 +220,7 @@
                                StrokeDashCap="Round"
                                StrokeThickness="1" />
                 </ControlTemplate>
-                
+
             </Setter.Value>
         </Setter>
     </Style>
@@ -256,6 +257,12 @@
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <Visibility>Visible</Visibility>
                                                 </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="contentControl"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}">
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
@@ -324,6 +331,12 @@
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <Visibility>Visible</Visibility>
                                                 </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="contentControl"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}">
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
@@ -406,10 +419,10 @@
                         <Grid x:Name="main">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="28" />
+                                <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Rectangle Grid.ColumnSpan="6" Fill="{StaticResource TransparentBrush}" />
@@ -435,17 +448,7 @@
                                                          Visibility="{Binding Node.HasChildren,
                                                                               Converter={StaticResource BoolToVis},
                                                                               RelativeSource={RelativeSource TemplatedParent}}" />
-                            <CheckBox x:Name="Checkbox"
-                                      Grid.Column="2"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding Node.IsChecked,
-                                                          Mode=TwoWay,
-                                                          RelativeSource={RelativeSource TemplatedParent}}"
-                                      IsTabStop="False"
-                                      IsThreeState="{Binding Node.NodeLayout.CheckBoxSettings.IsCheckBoxThreeStateResolved}"
-                                      Style="{DynamicResource CheckBoxStyle}"
-                                      Visibility="{Binding Node.NodeLayout.CheckBoxSettings.CheckBoxVisibilityResolved}" />
+
                             <ContentControl x:Name="ExpandedIcon"
                                             Grid.Column="4"
                                             HorizontalContentAlignment="Center"
@@ -461,14 +464,14 @@
                             <Border x:Name="hoverBorder"
                                     Grid.Column="5"
                                     Background="{StaticResource TreeNodeHoverBackgroundBrush}"
-                                    BorderBrush="{StaticResource TreeNodeHoverBorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{StaticResource TreeNodeHoverBackgroundBrush}"
+                                    BorderThickness="0"
                                     Visibility="Collapsed" />
                             <Border x:Name="SelectedBorder"
                                     Grid.Column="5"
                                     Background="{StaticResource TreeNodeSelectedBackgroundBrush}"
-                                    BorderBrush="{StaticResource TreeNodeSelectedBorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{StaticResource WareWolfOrangeBrush}"
+                                    BorderThickness="0"
                                     Visibility="Collapsed" />
                             <igPrimDt:ActiveNodeIndicator x:Name="ActiveBorder"
                                                           Grid.Column="5"
