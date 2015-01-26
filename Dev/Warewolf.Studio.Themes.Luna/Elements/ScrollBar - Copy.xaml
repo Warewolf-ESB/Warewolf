@@ -46,6 +46,9 @@
     <SolidColorBrush x:Key="ScrollbarDisabledBackgroundBrush" Color="{StaticResource WarewolfScrollbarBackground}" />
 
     <SolidColorBrush x:Key="ScrollbarBackgroundBrush" Color="{StaticResource WarewolfScrollbarGrey}" />
+    
+
+
 
 
     <!--  *********************************  ScrollBarButton Style  *********************************  -->
@@ -91,12 +94,23 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle Margin="0" Fill="{StaticResource TransparentBrush}" />
-                        <Path x:Name="Arrow"
-                              Margin="3"
-                              Data="F1 M 541.537,173.589L 531.107,173.589L 536.322,167.49L 541.537,173.589 Z "
-                              Fill="{StaticResource ScrollbarPageButtonArrowBackgroundBrush}"
+
+
+                        <Path x:Name="TopEnd"
+                              Margin="0"
+                              Data="M 339.833,-594.384L 331.361,-594.384L 331.361,-602.856L 339.833,-602.856L 339.833,-594.384 Z"
+                              Fill="{StaticResource ScrollbarBorderBrush}" 
                               Stretch="Uniform" />
+
+                        <Path x:Name="Arrow"
+                              Margin="0"
+                              Data="F1 M 339.811,-598.655C 339.811,-600.994 337.92,-602.894 335.59,-602.894C 333.255,-602.894 331.366,-600.994 331.37,-598.611L 331.366,-598.611L 331.366,-594.421L 339.838,-594.421L 339.838,-598.611L 339.811,-598.655 Z "
+                              Fill="{StaticResource ScrollbarBackgroundBrush}"
+                              Stretch="Uniform" />
+
+                        
+
+
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -112,18 +126,19 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
-                    <Rectangle Width="{TemplateBinding Width}"
-                               Height="{TemplateBinding Height}"
-                               Fill="{TemplateBinding Background}">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="MouseOver" />
-                                <VisualState x:Name="Pressed" />
-                                <VisualState x:Name="Disabled" />
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Rectangle>
+                            <Rectangle 
+                                   Width="32"
+                                   Margin="0,0,0,0"
+                                   Fill="{StaticResource ScrollbarBackgroundBrush}" >
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver" />
+                                    <VisualState x:Name="Pressed" />
+                                    <VisualState x:Name="Disabled" />
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Rectangle>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -131,8 +146,8 @@
 
     <!--  *********************************  Horizontal ScrollBarThumb Style  *********************************  -->
     <Style x:Key="HScrollBarThumbStyle" TargetType="{x:Type Thumb}">
-        <Setter Property="MinWidth" Value="17" />
-        <Setter Property="MinHeight" Value="17" />
+        <Setter Property="MinWidth" Value="14" />
+        <Setter Property="MinHeight" Value="14" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="IsTabStop" Value="false" />
         <Setter Property="Template">
@@ -171,10 +186,13 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle Margin="-3" Fill="{StaticResource TransparentBrush}" />
-                        <Rectangle x:Name="Thumb"
-                                   Margin="0,5,0,5"
+                        <Border BorderBrush="{StaticResource HScrollbarThumbBackgroundBrush}" Width="32"  BorderThickness="7,7,7,7" CornerRadius="5,5,5,5">
+                            <Rectangle  x:Name="Thumb" 
+                                   Width="32"
+                                   Margin="0,0,0,0"
                                    Fill="{StaticResource HScrollbarThumbBackgroundBrush}" />
+                        </Border>
+
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -184,8 +202,8 @@
     <!--  *********************************  Vertical ScrollbarThumb Style  *********************************  -->
     <Style x:Key="VScrollBarThumbStyle" TargetType="{x:Type Thumb}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="MinWidth" Value="17" />
-        <Setter Property="MinHeight" Value="17" />
+        <Setter Property="MinWidth" Value="14" />
+        <Setter Property="MinHeight" Value="14" />
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Template">
             <Setter.Value>
@@ -225,10 +243,12 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle Margin="-3" Fill="{StaticResource TransparentBrush}" />
-                        <Rectangle x:Name="Thumb"
-                                   Margin="5,0,5,0"
-                                   Fill="{StaticResource VScrollbarThumbBackgroundBrush}" />
+                        <Border BorderBrush="{StaticResource HScrollbarThumbBackgroundBrush}" Height="32"  BorderThickness="7,7,7,7" CornerRadius="5,5,5,5">
+                            <Rectangle  x:Name="Thumb" 
+                                   Height="32"
+                                   Margin="0,0,0,0"
+                                   Fill="{StaticResource HScrollbarThumbBackgroundBrush}" />
+                        </Border>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -239,8 +259,8 @@
     <Style x:Key="ScrollBarStyle" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-        <Setter Property="Width" Value="17" />
-        <Setter Property="MinWidth" Value="17" />
+        <Setter Property="Width" Value="14" />
+        <Setter Property="MinWidth" Value="14" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
@@ -277,7 +297,7 @@
                                    Margin="0"
                                    HorizontalAlignment="Stretch"
                                    Fill="{StaticResource ScrollbarBackgroundBrush}"
-                                   Stroke="{StaticResource ScrollbarBorderBrush}"
+                                   Stroke="{StaticResource ScrollbarBackgroundBrush}"
                                    StrokeThickness="0" />
                         <RepeatButton Grid.Row="0" x:Name="repeatButton"
                                       HorizontalAlignment="Center"
@@ -330,8 +350,8 @@
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="Width" Value="Auto" />
                 <Setter Property="MinWidth" Value="0" />
-                <Setter Property="Height" Value="17" />
-                <Setter Property="MinHeight" Value="17" />
+                <Setter Property="Height" Value="14" />
+                <Setter Property="MinHeight" Value="14" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ScrollBar}">
@@ -500,9 +520,9 @@
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
                     <Grid SnapsToDevicePixels="true">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="12" />
+                            <RowDefinition Height="14" />
                             <RowDefinition Height="1" />
-                            <RowDefinition Height="12" />
+                            <RowDefinition Height="14" />
                         </Grid.RowDefinitions>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">

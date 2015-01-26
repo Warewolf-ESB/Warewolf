@@ -13,7 +13,7 @@ namespace Warewolf.Studio.Themes.Luna
             Mappings.Add(ControlMappingKeys.MsCoreControls, BuildLocationString(assemblyFullName, @"\Theme.xaml"));
 
             // Customised Theme Elements
-            Mappings.Add(ControlMappingKeys.XamDataTree, BuildLocationString(assemblyFullName, @"\Elements\Explorer\Explorer.xaml"));
+            //Mappings.Add(ControlMappingKeys.XamDataTree, BuildLocationString(assemblyFullName, @"\Elements\Explorer\Explorer.xaml"));
 
             // Standard Elements
             Mappings.Add(ControlMappingKeys.XamComboEditor_WpfOnly, BuildLocationString(assemblyFullName, @"\Elements\xamComboEditor.xaml"));

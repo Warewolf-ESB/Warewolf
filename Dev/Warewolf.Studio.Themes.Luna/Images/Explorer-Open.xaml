@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <DrawingImage x:Key="System-Explorer-Open-Inactive">
+    <DrawingImage x:Key="Explorer-Open-Inactive">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
@@ -9,7 +9,7 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <DrawingImage x:Key="System-Explorer-Open-Active">
+    <DrawingImage x:Key="Explorer-Open-Active">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
@@ -19,7 +19,7 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <DrawingImage x:Key="System-Explorer-Open-MouseOver">
+    <DrawingImage x:Key="Explorer-Open-MouseOver">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>

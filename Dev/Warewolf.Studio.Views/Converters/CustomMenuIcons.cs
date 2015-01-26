@@ -16,6 +16,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using Dev2.Common.Interfaces.Data;
+using Infragistics.Controls.Menus;
 
 namespace Warewolf.Studio.Views.Converters
 {
@@ -25,9 +26,12 @@ namespace Warewolf.Studio.Views.Converters
         {
             WorkflowService = 1, //sux
             DbService = 2, //cool
-            PluginService = 4, 
+            PluginService = 4,
             WebService = 8, //cool
-            Folder= 16 //cool
+            Folder = 16, //cool
+            Spacer = 99,
+            Execute = 98,
+            View = 97
         }
 
         private static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
@@ -36,7 +40,11 @@ namespace Warewolf.Studio.Views.Converters
             {MenuIcons.DbService, "Explorer-DB"},
             {MenuIcons.PluginService, "Explorer-DLL"},
             {MenuIcons.WebService, "Explorer-WebService"},
-            {MenuIcons.Folder, "Explorer-Spacer.xaml"},
+            {MenuIcons.Folder, "Explorer-Spacer"},
+            {MenuIcons.Spacer, "Explorer-Spacer"},
+            {MenuIcons.View, "Explorer-Permission-Disbled"},
+            {MenuIcons.Execute, "Explorer-Run-Disabled"},
+
         };
 
         public static string WorkflowService
@@ -69,13 +77,37 @@ namespace Warewolf.Studio.Views.Converters
             {
                 return MenuIconsDictionary[MenuIcons.WebService];
             }
-        } 
-        
+        }
+
         public static string Folder
         {
             get
             {
                 return MenuIconsDictionary[MenuIcons.Folder];
+            }
+        }
+
+        public static string Spacer
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.Spacer];
+            }
+        }
+
+        public static string Execute
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.Execute];
+            }
+        }
+
+        public static string View
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.View];
             }
         }
     }
@@ -102,7 +134,7 @@ namespace Warewolf.Studio.Views.Converters
             ResourceType resourceType;
             if (Enum.TryParse(value.ToString(), out resourceType))
             {
-                switch(resourceType)
+                switch (resourceType)
                 {
                     case ResourceType.WorkflowService:
                         return dict[CustomMenuIcons.WorkflowService] as DrawingImage;
@@ -112,20 +144,6 @@ namespace Warewolf.Studio.Views.Converters
                         return dict[CustomMenuIcons.PluginService] as DrawingImage;
                     case ResourceType.WebService:
                         return dict[CustomMenuIcons.WebService] as DrawingImage;
-//                    case ResourceType.DbSource:
-//                        break;
-//                    case ResourceType.PluginSource:
-//                        break;
-//                    case ResourceType.WebSource:
-//                        break;
-//                    case ResourceType.EmailSource:
-//                        break;
-//                    case ResourceType.OauthSource:
-//                        break;
-//                    case ResourceType.ServerSource:
-//                        break;
-//                    case ResourceType.Server:
-//                        break;
                     default:
                         return dict[CustomMenuIcons.Folder] as DrawingImage;
                 }
@@ -133,15 +151,7 @@ namespace Warewolf.Studio.Views.Converters
             return null;
         }
 
-    
 
-        /// <summary>
-        /// Converts a value. 
-        /// </summary>
-        /// <returns>
-        /// A converted value. If the method returns null, the valid null value is used.
-        /// </returns>
-        /// <param name="value">The value that is produced by the binding target.</param><param name="targetType">The type to convert to.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;
@@ -150,7 +160,92 @@ namespace Warewolf.Studio.Views.Converters
         #endregion
     }
 
-    
-   
+
+    public class CanExecuteIconConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        /// <summary>
+        /// Converts a value. 
+        /// </summary>
+        /// <returns>
+        /// A converted value. If the method returns null, the valid null value is used.
+        /// </returns>
+        /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+
+            const string pathname = "/Warewolf.Studio.Themes.Luna;component/Images.xaml";
+            var dict = Application.LoadComponent(new Uri(pathname, System.UriKind.Relative)) as ResourceDictionary;
+
+            return dict[CustomMenuIcons.Execute] as DrawingImage;
+
+            if ((bool)value)
+                return dict[CustomMenuIcons.Execute] as DrawingImage;
+            else
+                return dict[CustomMenuIcons.Spacer] as DrawingImage;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
+
+    public class CanViewIconConverter : IValueConverter
+    {
+        #region Implementation of IValueConverter
+
+        /// <summary>
+        /// Converts a value. 
+        /// </summary>
+        /// <returns>
+        /// A converted value. If the method returns null, the valid null value is used.
+        /// </returns>
+        /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+
+            const string pathname = "/Warewolf.Studio.Themes.Luna;component/Images.xaml";
+            var dict = Application.LoadComponent(new Uri(pathname, System.UriKind.Relative)) as ResourceDictionary;
+
+            return dict[CustomMenuIcons.View] as DrawingImage;
+
+
+            if ((bool)value)
+                return dict[CustomMenuIcons.View] as DrawingImage;
+            else
+                return dict[CustomMenuIcons.Spacer] as DrawingImage;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Returns the exact length of the requred menu node based on its tree position
+    /// </summary>
+    public class WidthConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (double)values[1] - (((XamDataTreeNodeControl)values[0]).Node.Manager.Level * 21) - 50;
+        }
+
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }
