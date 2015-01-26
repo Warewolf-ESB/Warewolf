@@ -38,13 +38,13 @@
     <SolidColorBrush x:Key="TreeNodeBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
 
     <SolidColorBrush x:Key="TreeNodeHoverBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="TreeNodeHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TreeNodeHoverBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
 
     <SolidColorBrush x:Key="TreeNodeSelectedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="TreeNodeSelectedBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
 
     <SolidColorBrush x:Key="TreeNodeActiveBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="TreeNodeActiveBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TreeNodeActiveBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
 
     <SolidColorBrush x:Key="NodeLineBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="NodeLineTerminatorBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
@@ -211,7 +211,6 @@
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Smaller}" />
         <Setter Property="BorderThickness" Value="1" />
-
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igPrimDt:ActiveNodeIndicator">
@@ -220,7 +219,7 @@
                                StrokeDashCap="Round"
                                StrokeThickness="1" />
                 </ControlTemplate>
-
+                
             </Setter.Value>
         </Setter>
     </Style>
@@ -419,10 +418,10 @@
                         <Grid x:Name="main">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="28" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Rectangle Grid.ColumnSpan="6" Fill="{StaticResource TransparentBrush}" />
@@ -459,7 +458,6 @@
                                       IsThreeState="{Binding Node.NodeLayout.CheckBoxSettings.IsCheckBoxThreeStateResolved}"
                                       Style="{DynamicResource CheckBoxStyle}"
                                       Visibility="{Binding Node.NodeLayout.CheckBoxSettings.CheckBoxVisibilityResolved}" />
-
                             <ContentControl x:Name="ExpandedIcon"
                                             Grid.Column="4"
                                             HorizontalContentAlignment="Center"
