@@ -244,7 +244,7 @@
                 <ig:NodeLayout Key="Children"
                                DisplayMemberPath="ResourceName"
                                TargetTypeName="IExplorerItemViewModel"
-                               Visibility="{Binding Path=Data.IsVisible,
+                               Visibility="{Binding Path=Node.IsVisible,
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
                     <ig:NodeLayout.HeaderTemplate>
                         <DataTemplate />
