@@ -60,6 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var destination = Guid.Parse(newPath.ToString());
                 var itemToMove = ServerExplorerRepo.Find(itemToMoveId);
                 var itemLocation = ServerExplorerRepo.Find(destination);
+          
                 string location = itemLocation.ResourcePath;
                 if (itemLocation.ResourceType < ResourceType.Folder)
                     location = ServerVersionRepository.GetDirectoryFromString(itemLocation.ResourcePath);

@@ -47,8 +47,8 @@
             <MenuItem Name="ShowHideVersions" Header="{Binding Path=Data.VersionHeader}" Command="{Binding Path=Data.ShowVersionHistory}"
                      CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
             <MenuItem Name="Rollback" Header="Make Current Version" Command="{Binding Path=Data.RollbackCommand}"
-                     CommandParameter="{Binding Data}" Visibility="Visible" />
-            <MenuItem Name="Open" Header="Make Current Version" Command="{Binding Path=Data.OpenVersionCommand}"
+                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="Open" Header="Open" Command="{Binding Path=Data.OpenVersionCommand}"
                      CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         </ContextMenu>

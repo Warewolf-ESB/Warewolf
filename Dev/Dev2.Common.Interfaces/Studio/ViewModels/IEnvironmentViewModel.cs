@@ -22,6 +22,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand DeleteCommand { get; set; }
         ICommand ShowVersionHistory { get; set; }
         ICommand RollbackCommand { get; set; }
+       
         IServer Server { get; set; }
         
     }

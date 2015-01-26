@@ -99,6 +99,12 @@ namespace Warewolf.Studio.ViewModels
                 dialog.ShowDialog();
             }
         }
+
+        public void OpenVersion(Guid ResourceId, string VersionNumber)
+        {
+            //todo:
+        }
+
         public IViewsCollection GetRegionViews(string regionName)
         {
             var region = GetRegion(regionName);
