@@ -24,6 +24,7 @@ namespace Warewolf.Studio.ViewModels
             if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
             _shellViewModel = shellViewModel;
             Server = server;
+            _children = new ObservableCollection<IExplorerItemViewModel>();
             NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
             DisplayName = server.ResourceName;
         }

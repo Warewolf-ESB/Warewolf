@@ -52,13 +52,13 @@
                      CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         </ContextMenu>
-        <Style TargetType="{x:Type ig:XamDataTreeNodeControl}">
-            <Setter Property="ContextMenu" Value="{StaticResource TreeNodeContextMenu}" />
-        </Style>
         <igPrim:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+      
         <Style x:Key="NodeStyle" TargetType="{x:Type ig:XamDataTreeNodeControl}">
+            <Setter Property="ContextMenu" Value="{DynamicResource TreeNodeContextMenu}" />
             <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />
         </Style>
+        
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         <converters:WidthConverter x:Key="WidthConverter" />
         <converters:CanViewIconConverter x:Key="CanViewIconConverter" />
@@ -104,7 +104,7 @@
             <TextBox Grid.Row="0"
                      Grid.Column="0"
                      Text="{Binding SearchText,
-                                    Delay=300}" />
+                                    Delay=300, UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Row="0"
                     Grid.Column="1"
                     Width="25"
@@ -158,11 +158,11 @@
                         <DataTemplate>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="18" />
+                                    <RowDefinition Height="20" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="2" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Image Grid.Row="0"
@@ -204,7 +204,6 @@
                                         Background="Transparent"
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
-                                        Foreground="Teal"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
                                         Visibility="{Binding Data.CanExecute}">
                                     <Image Width="14"

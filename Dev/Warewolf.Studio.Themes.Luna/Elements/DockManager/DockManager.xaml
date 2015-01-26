@@ -139,13 +139,6 @@
                      presentationOptions:Freeze="true"
                      Color="{StaticResource WarewolfPanelGrey}" />
 
-    <LinearGradientBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalCenterFillKey}" presentationOptions:Freeze="true" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Offset="0" Color="{StaticResource Color_012}" />
-        <GradientStop Offset="0.49900001287460327" Color="{StaticResource Color_036}" />
-        <GradientStop Offset="0.5" Color="{StaticResource Color_037}" />
-        <GradientStop Offset="1" Color="{StaticResource Color_037}" />
-    </LinearGradientBrush>
-
     <LinearGradientBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupHottrackInnerBorderFillKey}" presentationOptions:Freeze="true" StartPoint="0.5172413793103449,0" EndPoint="0.5172413793103449,0.9666666666666667">
         <GradientStop Offset="0" Color="{StaticResource Color_039}" />
         <GradientStop Offset="0.49880000948905945" Color="{StaticResource Color_040}" />
@@ -188,13 +181,13 @@
                      Color="{StaticResource Color_004}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHighlightFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfOrange}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackOuterBorderFillKey}"
                      presentationOptions:Freeze="true"
                      Color="{StaticResource Color_003}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.UnpinnedTabItemHottrackHighlightFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfOrange}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabGroupPaneGlyphFillKey}"
                      presentationOptions:Freeze="true"
                      Color="{StaticResource Color_001}" />
@@ -209,7 +202,7 @@
                      Color="{StaticResource Color_014}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveInnerBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfSubHeaderGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListActiveBottomCenterFillKey}"
                      presentationOptions:Freeze="true"
                      Color="{StaticResource Color_009}" />
@@ -239,25 +232,25 @@
                      Color="{StaticResource Color_009}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveOuterBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfHeaderButtonGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveInnerBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveBottomCenterFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveTopCenterFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfHeaderGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveLeftCenterFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfHeaderGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListNotActiveRightCenterFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfTileGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackInnerBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfOrange}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedListHottrackTextFillKey}"
                      presentationOptions:Freeze="true"
                      Color="{StaticResource Color_001}" />
@@ -269,13 +262,13 @@
                      Color="{StaticResource Color_009}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveOuterBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfHeaderGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveInnerBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfHeaderGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentNotActiveCenterFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfHeaderGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.TabbedDocumentHottrackOuterBorderFillKey}"
                      presentationOptions:Freeze="true"
                      Color="{StaticResource Color_022}" />
@@ -291,10 +284,10 @@
                      Color="{StaticResource Color_009}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneActiveCaptionInnerBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfMenuGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionInnerBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfMenuGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneCaptionButtonHottrackOuterBorderFillKey}"
                      presentationOptions:Freeze="true"
                      Color="{StaticResource Color_014}" />
@@ -324,7 +317,7 @@
                      Color="{StaticResource Color_003}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionInnerBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_050}" />
+                     Color="{DynamicResource WarewolfTileGrey}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuSelectionHottrackTextFillKey}"
                      presentationOptions:Freeze="true"
                      Color="{StaticResource Color_001}" />
@@ -351,16 +344,16 @@
                      Color="{StaticResource Color_001}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.MenuItemSeparatorDarkFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_034}" />
+                     Color="{DynamicResource WarewolfEnabledText}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalOuterBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_035}" />
+                     Color="{DynamicResource WarewolfOrange}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupNormalInnerBorderFillKey}"
                      presentationOptions:Freeze="true"
                      Color="{StaticResource Color_001}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.AeroDockingIndicatorGroupHottrackOuterBorderFillKey}"
                      presentationOptions:Freeze="true"
-                     Color="{StaticResource Color_038}" />
+                     Color="{DynamicResource Color_001}" />
     <SolidColorBrush x:Key="{x:Static igDock:DockManagerBrushKeys.PaneNavigatorOuterBorderFillKey}"
                      presentationOptions:Freeze="true"
                      Color="{StaticResource Color_011}" />
