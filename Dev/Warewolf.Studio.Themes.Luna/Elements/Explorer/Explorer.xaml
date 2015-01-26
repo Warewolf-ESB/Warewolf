@@ -448,6 +448,17 @@
                                                          Visibility="{Binding Node.HasChildren,
                                                                               Converter={StaticResource BoolToVis},
                                                                               RelativeSource={RelativeSource TemplatedParent}}" />
+                            <CheckBox x:Name="Checkbox"
+                                      Grid.Column="2"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding Node.IsChecked,
+                                                          Mode=TwoWay,
+                                                          RelativeSource={RelativeSource TemplatedParent}}"
+                                      IsTabStop="False"
+                                      IsThreeState="{Binding Node.NodeLayout.CheckBoxSettings.IsCheckBoxThreeStateResolved}"
+                                      Style="{DynamicResource CheckBoxStyle}"
+                                      Visibility="{Binding Node.NodeLayout.CheckBoxSettings.CheckBoxVisibilityResolved}" />
 
                             <ContentControl x:Name="ExpandedIcon"
                                             Grid.Column="4"
