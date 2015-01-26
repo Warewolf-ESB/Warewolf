@@ -10,7 +10,6 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core.Popup;
@@ -50,6 +49,7 @@ namespace Warewolf.Studio.ViewModels
                 parent.ResourceName = output.DisplayName;
 
             });
+            IsVersion = true;
         }
 
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
@@ -73,10 +73,11 @@ namespace Warewolf.Studio.ViewModels
             Server.PermissionsChanged += UpdatePermissions;
             ShowVersionHistory = new DelegateCommand((() => AreVersionsVisible = (!AreVersionsVisible)));
             DeleteCommand = new DelegateCommand(Delete);
-          
+            OpenVersionCommand = new DelegateCommand(() => { if (ResourceType == ResourceType.Version) _shellViewModel.OpenVersion(ResourceId, VersionNumber); });
             VersionHeader = "Show Version History";
             Builder = builder;
             IsVisible = true;
+            IsVersion = false;
         }
 
         void LostFocusCommand()
@@ -307,6 +308,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+        public bool IsVersion { get; set; }
         public bool CanShowVersions
         {
             get
@@ -416,7 +418,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-
+        public ICommand OpenVersionCommand { get; set; }
 
         public void Filter(string filter)
         {
@@ -424,21 +426,14 @@ namespace Warewolf.Studio.ViewModels
             {
                 explorerItemViewModel.Filter(filter);
             }
-                if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible)))
-                {
-                    IsVisible = true;
-                }
-                else
-                {
-                    if(!ResourceName.Contains(filter))
-                    IsVisible = false;
-                    else
-                    {
-                        IsVisible = true;
-                    }
-                }
-                
-            
+            if (String.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && model.ResourceType != ResourceType.Version)))
+            {
+                IsVisible = true;
+            }
+            else
+            {
+                IsVisible = ResourceName.Contains(filter);
+            }
             OnPropertyChanged(() => Children);
         }
 

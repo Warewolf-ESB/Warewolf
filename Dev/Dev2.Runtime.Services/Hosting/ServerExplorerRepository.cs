@@ -71,9 +71,7 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem Load(Guid workSpaceId)
         {
-            if (_root == null)
-            _root= ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
-            return _root;
+            return _root ?? (_root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId));
         }
 
         public IExplorerItem Load(ResourceType type, Guid workSpaceId)
@@ -167,7 +165,7 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem Find(Guid id)
         {
-            var items = Load("");
+            var items = Load(Guid.Empty);
             return Find(items, id);
         }
         public IExplorerItem Find(IExplorerItem item,Guid itemToFind)

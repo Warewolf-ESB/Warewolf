@@ -29,5 +29,7 @@ namespace Dev2.Common.Interfaces
         Task<bool> CheckForNewVersion();
 
         void DisplayDialogForNewVersion();
+
+        void OpenVersion(Guid ResourceId, string VersionNumber);
     }
 }

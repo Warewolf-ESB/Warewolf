@@ -24,12 +24,14 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanExecute { get; set; }
         bool CanEdit { get; set; }
         bool CanView { get; set; }
-       
+        bool IsVersion { get; set; }
         bool AreVersionsVisible { get; set; }
         string VersionNumber { get; set; }
         string VersionHeader { get; set; }
         void Filter(string filter);
         bool Move(IExplorerItemViewModel destination);
+
+        ICommand OpenVersionCommand { get; set; }
 
     }
 
