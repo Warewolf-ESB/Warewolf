@@ -61,10 +61,17 @@ namespace Warewolf.Studio.Views.Converters
             {MenuIcons.WebSource, "Explorer-WebService-Create"},
             {MenuIcons.PluginSource, "Explorer-DLL-Create"},
             {MenuIcons.DbSource, "Explorer-DB-Create"},
+            {MenuIcons.ServerSource, "System-Logo-Create"},
 
         };
 
-     
+        public static string ServerSource
+        {
+            get
+            {
+                return MenuIconsDictionary[MenuIcons.ServerSource];
+            }
+        }
 
         public static string WorkflowService
         {
@@ -191,6 +198,8 @@ namespace Warewolf.Studio.Views.Converters
                         return dict[CustomMenuIcons.PluginService] as DrawingImage;
                     case ResourceType.WebSource:
                         return dict[CustomMenuIcons.WebSource] as DrawingImage;
+                    case ResourceType.ServerSource:
+                        return dict[CustomMenuIcons.ServerSource] as DrawingImage;
                     default:
                         return dict[CustomMenuIcons.Folder] as DrawingImage;
                 }
@@ -245,10 +254,10 @@ namespace Warewolf.Studio.Views.Converters
             if (Enum.TryParse(value.ToString(), out resourceType))
             {
                 if (resourceType == ResourceType.Folder)
-                    return "Collapsed";
+                    return Visibility.Collapsed;
             }
 
-            return "Visible";
+            return Visibility.Visible;
 
         }
 

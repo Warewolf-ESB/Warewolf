@@ -30,8 +30,11 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         string VersionHeader { get; set; }
         void Filter(string filter);
         bool Move(IExplorerItemViewModel destination);
-
+        bool CanDrop { get; set; }
+        bool CanDrag { get; set; }
         ICommand OpenVersionCommand { get; set; }
+        bool IsExpanded { get; set; }
+        ICommand Expand { get; set; }
 
     }
 
