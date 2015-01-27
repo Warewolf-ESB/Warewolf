@@ -30,4 +30,23 @@ namespace Dev2.CustomControls.Converters
             return val.Value;
         }
     }
+
+    /// <summary>
+    /// This Converter is used to calculate the height if a vertical scrollbar button for the Warewolf Luna theme
+    /// </summary>
+    public class VerticalGridLengthConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var val = (double)value;
+            var gridLength = new GridLength(val);
+            return gridLength;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var val = (GridLength)value;
+            return val.Value;
+        }
+    }
 }
