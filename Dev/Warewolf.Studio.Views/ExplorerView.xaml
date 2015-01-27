@@ -99,95 +99,7 @@
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
                         NodeLineVisibility="Hidden">
 
-            <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
-            <ig:ContextMenuService.Manager>
-                <ig:ContextMenuManager>
-                    <ig:ContextMenuManager.ContextMenu>
-                        <ig:XamContextMenu x:Name="ExplorerMenu">
-                            <ig:XamContextMenu.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel Orientation="Vertical" />
-                                </ItemsPanelTemplate>
-                            </ig:XamContextMenu.ItemsPanel>
-                            <MenuItem Name="NewDataBaseService"
-                                      Command="{Binding Path=Data.NewCommand}"
-                                      CommandParameter="{x:Static data:ResourceType.DbService}"
-                                      Header="New Database Service"
-                                      Visibility="{Binding Path=Data.CanCreateDbService,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="NewDataBaseSource"
-                                      Command="{Binding Path=Data.NewCommand}"
-                                      CommandParameter="{x:Static data:ResourceType.DbSource}"
-                                      Header="New Database Source"
-                                      Visibility="{Binding Path=Data.CanCreateDbSource,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="NewWebService"
-                                      Command="{Binding Path=Data.NewCommand}"
-                                      CommandParameter="{x:Static data:ResourceType.WebService}"
-                                      Header="New Web Service"
-                                      Visibility="{Binding Path=Data.CanCreateWebService,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="NewWebSource"
-                                      Command="{Binding Path=Data.NewCommand}"
-                                      CommandParameter="{x:Static data:ResourceType.WebSource}"
-                                      Header="New Web Source"
-                                      Visibility="{Binding Path=Data.CanCreateWebSource,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="NewPluginService"
-                                      Command="{Binding Path=Data.NewCommand}"
-                                      CommandParameter="{x:Static data:ResourceType.PluginService}"
-                                      Header="New Plugin Service"
-                                      Visibility="{Binding Path=Data.CanCreatePluginService,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="NewPluginSource"
-                                      Command="{Binding Path=Data.NewCommand}"
-                                      CommandParameter="{x:Static data:ResourceType.PluginSource}"
-                                      Header="New Plugin Source"
-                                      Visibility="{Binding Path=Data.CanCreatePluginSource,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <Separator />
-                            <MenuItem Name="Rename"
-                                      Command="{Binding Path=Data.RenameCommand}"
-                                      CommandParameter="{Binding Data}"
-                                      Header="Rename"
-                                      Visibility="{Binding Path=Data.CanRename,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="Delete"
-                                      Command="{Binding Path=Data.DeleteCommand}"
-                                      CommandParameter="{Binding Data}"
-                                      Header="Delete"
-                                      Visibility="{Binding Path=Data.CanDelete,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="Deploy"
-                                      Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
-                                                        Path=DataContext.DeployCommand}"
-                                      CommandParameter="{Binding Path=Data.CanShowVersions}"
-                                      Header="Deploy"
-                                      Visibility="{Binding Path=Data.CanShowVersions,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="ShowHideVersions"
-                                      Command="{Binding Path=Data.ShowVersionHistory}"
-                                      CommandParameter="{Binding Data}"
-                                      Header="{Binding Path=Data.VersionHeader}"
-                                      Visibility="{Binding Path=Data.CanShowVersions,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="Rollback"
-                                      Command="{Binding Path=Data.RollbackCommand}"
-                                      CommandParameter="{Binding Data}"
-                                      Header="Make Current Version"
-                                      Visibility="{Binding Path=Data.IsVersion,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
-                            <MenuItem Name="Open"
-                                      Command="{Binding Path=Data.OpenVersionCommand}"
-                                      CommandParameter="{Binding Data}"
-                                      Header="Open"
-                                      Visibility="{Binding Path=Data.IsVersion,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                        </ig:XamContextMenu>
-                    </ig:ContextMenuManager.ContextMenu>
-                </ig:ContextMenuManager>
-            </ig:ContextMenuService.Manager>
 
 
 
@@ -266,6 +178,7 @@
 
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
+                            
                             <DataTemplate.Triggers>
                                 <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
                                     <BeginStoryboard>
@@ -313,6 +226,100 @@
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                     </MultiBinding>
                                 </DockPanel.Width>
+                                            <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
+            <ig:ContextMenuService.Manager>
+                <ig:ContextMenuManager>
+                    <ig:ContextMenuManager.ContextMenu>
+                        <ig:XamContextMenu x:Name="ExplorerMenu" >
+                          
+                            
+                                                <ig:XamContextMenu.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical"  />
+                               </ItemsPanelTemplate>
+                            </ig:XamContextMenu.ItemsPanel>
+                                     <ig:XamMenuItem  Name="NewDataBaseService"
+                                      Command="{Binding Path=Data.NewCommand}"
+                                      CommandParameter="{x:Static data:ResourceType.DbService}"
+                                      Header="New Database Service"
+                                      Visibility="{Binding Path=Data.CanCreateDbService,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" >
+                                
+                                    
+                                </ig:XamMenuItem>
+                                                <ig:XamMenuItem  Name="NewDataBaseSource"
+                                      Command="{Binding Path=Data.NewCommand}"
+                                      CommandParameter="{x:Static data:ResourceType.DbSource}"
+                                      Header="New Database Source"
+                                      Visibility="{Binding Path=Data.CanCreateDbSource,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                <ig:XamMenuItem  Name="NewWebService"
+                                      Command="{Binding Path=Data.NewCommand}"
+                                      CommandParameter="{x:Static data:ResourceType.WebService}"
+                                      Header="New Web Service"
+                                      Visibility="{Binding Path=Data.CanCreateWebService,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                <ig:XamMenuItem  Name="NewWebSource"
+                                      Command="{Binding Path=Data.NewCommand}"
+                                      CommandParameter="{x:Static data:ResourceType.WebSource}"
+                                      Header="New Web Source"
+                                      Visibility="{Binding Path=Data.CanCreateWebSource,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                <ig:XamMenuItem  Name="NewPluginService"
+                                      Command="{Binding Path=Data.NewCommand}"
+                                      CommandParameter="{x:Static data:ResourceType.PluginService}"
+                                      Header="New Plugin Service"
+                                      Visibility="{Binding Path=Data.CanCreatePluginService,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                <ig:XamMenuItem  Name="NewPluginSource"
+                                      Command="{Binding Path=Data.NewCommand}"
+                                      CommandParameter="{x:Static data:ResourceType.PluginSource}"
+                                      Header="New Plugin Source"
+                                      Visibility="{Binding Path=Data.CanCreatePluginSource,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <ig:XamMenuSeparator />
+                                                <ig:XamMenuItem  Name="Rename"
+                                      Command="{Binding Path=Data.RenameCommand}"
+                                      CommandParameter="{Binding Data}"
+                                      Header="Rename"
+                                      Visibility="{Binding Path=Data.CanRename,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                <ig:XamMenuItem  Name="Delete"
+                                      Command="{Binding Path=Data.DeleteCommand}"
+                                      CommandParameter="{Binding Data}"
+                                      Header="Delete"
+                                      Visibility="{Binding Path=Data.CanDelete,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                <ig:XamMenuItem  Name="Deploy"
+                                      Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
+                                                        Path=DataContext.DeployCommand}"
+                                      CommandParameter="{Binding Path=Data.CanShowVersions}"
+                                      Header="Deploy"
+                                      Visibility="{Binding Path=CanShowVersions,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                <ig:XamMenuItem  Name="ShowHideVersions"
+                                      Command="{Binding Path=Data.ShowVersionHistory}"
+                                     
+                                      Header="{Binding Path=Data.VersionHeader}"
+                                      Visibility="{Binding Path=Data.CanShowVersions,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                <ig:XamMenuItem  Name="Rollback"
+                                      Command="{Binding Path=Data.RollbackCommand}"
+                                      CommandParameter="{Binding Data}"
+                                      Header="Make Current Version"
+                                      Visibility="{Binding Path=Data.IsVersion,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                <ig:XamMenuItem  Name="Open"
+                                      Command="{Binding Path=Data.OpenVersionCommand}"
+                                      CommandParameter="{Binding Data}"
+                                      Header="Open"
+                                      Visibility="{Binding Path=Data.IsVersion,
+                                                           Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                        </ig:XamContextMenu>
+                    </ig:ContextMenuManager.ContextMenu>
+                </ig:ContextMenuManager>
+            </ig:ContextMenuService.Manager>
                                 <Button 
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"

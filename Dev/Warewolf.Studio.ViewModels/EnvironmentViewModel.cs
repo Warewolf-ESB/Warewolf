@@ -180,11 +180,6 @@ namespace Warewolf.Studio.ViewModels
                 var explorerItems = await Server.LoadExplorer();
                 var explorerItemViewModels = CreateExplorerItems(explorerItems.Children,Server,null);
                 Children = explorerItemViewModels;
-                var explorerItemViewModel = _children.FirstOrDefault(a => a.ResourceName == "Hello World");
-                if(explorerItemViewModel != null)
-                {
-                    explorerItemViewModel.AreVersionsVisible = true;
-                }
                 IsLoaded = true;
                 IsConnecting = false;
             }

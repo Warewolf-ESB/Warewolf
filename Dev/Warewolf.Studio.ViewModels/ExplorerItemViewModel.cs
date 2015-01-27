@@ -398,7 +398,14 @@ namespace Warewolf.Studio.ViewModels
                         ResourceName = a.VersionNumber +" "+ a.DateTimeStamp.ToString(CultureInfo.InvariantCulture)+" " + a.Reason,
                         VersionNumber = a.VersionNumber,
                         ResourceId =  ResourceId,
-                         IsVersion = true
+                         IsVersion = true,
+                         CanCreatePluginSource = false,
+                         CanCreateWebService =  false,
+                         CanCreateDbService = false,
+                         CanCreateDbSource = false,
+                         CanCreatePluginService = false,
+                         CanCreateWebSource = false
+
                     }
                     ));
                     OnPropertyChanged(() => Children);
