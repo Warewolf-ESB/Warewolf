@@ -306,23 +306,4 @@ namespace Warewolf.Studio.Views.Converters
         #endregion
     }
 
-    public class MarginConverter : IValueConverter
-    {
-
-        public object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            var incomingWidth = System.Convert.ToDouble(value);
-            if (incomingWidth > 200)
-            {
-                return new Thickness(-37, 0, -8, 0);
-            }
-            return new Thickness(0, 0, -8, 0);
-        }
-
-        public object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return null;
-        }
-    }
-
 }

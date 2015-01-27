@@ -4,10 +4,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              d:DataContext="{d:DesignInstance Type=interfaces:IConnectControlViewModel,
                                               IsDesignTimeCreatable=False}"
              mc:Ignorable="d">
-
+    <UserControl.Resources>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="29" />
@@ -32,22 +34,25 @@
 
         <Button Grid.Row="0"
                 Grid.Column="1"
-                Width="25"
-                Height="25"
-                VerticalAlignment="Bottom"
+                Width="26"
+                Height="26"
                 Command="{Binding EditConnectionCommand}"
                 Padding="4"
-                Style="{StaticResource ExplorerButtonStyle}">
-            <Image Source="{StaticResource System-More-Inverted}" />
+                Style="{StaticResource ExplorerButtonStyle}" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left">
+            <TextBlock>
+            <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
+            <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
+            <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
+            </TextBlock>
         </Button>
         <Button Grid.Row="0"
                 Grid.Column="2"
-                Width="25"
-                Height="25"
+                Width="26"
+                Height="26"
                 Command="{Binding ToggleConnectionStateCommand}"
                 Padding="4"
-                Style="{StaticResource ExplorerButtonStyle}">
-            <Image Source="{StaticResource System-Link-Inverted}" />
+                Style="{StaticResource ExplorerButtonStyle}" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" FontWeight="DemiBold" Icon="Link" VerticalAlignment="Top" HorizontalAlignment="Center"/>
         </Button>
     </Grid>
 

@@ -14,7 +14,8 @@
         Title="Warewolf Studio"
         WindowState="Maximized"
         d:DataContext="{d:DesignInstance Type={x:Type interfaces:IShellViewModel}}"
-        mc:Ignorable="d">
+        mc:Ignorable="d"
+        TextOptions.TextFormattingMode="Display">
 
 
     <Window.Resources>

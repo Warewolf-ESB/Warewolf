@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FontAwesome.WPF">
+      <HintPath>..\packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
     </Reference>

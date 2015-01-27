@@ -10,6 +10,7 @@
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:interactivity="http://www.codeplex.com/prism"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -64,7 +65,6 @@
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         <converters:WidthConverter x:Key="WidthConverter" />
         <converters:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
-        <converters:MarginConverter x:Key="marginConverter" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -105,18 +105,10 @@
                     Grid.Column="1"
                     Width="25"
                     Height="25"
-                    Padding="4"
-                    Style="{StaticResource ExplorerButtonStyle}">
-                <Image Source="{StaticResource System-Filter-Inverted}" />
-            </Button>
-            <Button Grid.Row="0"
-                    Grid.Column="2"
-                    Width="25"
-                    Height="25"
                     Command="{Binding RefreshCommand}"
                     Padding="4"
                     Style="{StaticResource ExplorerButtonStyle}">
-                <Image Source="{StaticResource System-Refresh-Inverted}" />
+                <fa:FontAwesome FontSize="18" FontWeight="SemiBold" Icon="Refresh" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             </Button>
         </Grid>
         <!--  EXPLORER TREE  -->
