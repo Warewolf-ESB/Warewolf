@@ -6,26 +6,28 @@
              xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ig="http://schemas.infragistics.com/xaml"
-             xmlns:interactivity="http://www.codeplex.com/prism"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:interactivity="http://www.codeplex.com/prism"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
+    
+    
     <UserControl.Resources>
 
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         <converters:WidthConverter x:Key="WidthConverter" />
         <converters:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
-
+        <converters:MarginConverter x:Key="marginConverter" />
     </UserControl.Resources>
-
-
+    
+    
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
@@ -60,9 +62,7 @@
 
             <TextBox Grid.Row="0"
                      Grid.Column="0"
-                     Text="{Binding SearchText,
-                                    Delay=300,
-                                    UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding SearchText, Delay=300, UpdateSourceTrigger=PropertyChanged}" />
             <Button Grid.Row="0"
                     Grid.Column="1"
                     Width="25"
@@ -92,7 +92,6 @@
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
                         NodeLineVisibility="Hidden">
-
 
             <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
             <ig:ContextMenuService.Manager>
@@ -185,6 +184,7 @@
             </ig:ContextMenuService.Manager>
 
 
+
             <ig:XamDataTree.EditingSettings>
                 <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="True"
@@ -208,10 +208,10 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Image Grid.Row="0"
-                                       Grid.Column="0"
-                                       Width="17"
                                        Height="17"
+                                       Width="17"
                                        Margin="-5,0,0,0"
+                                       Grid.Column="0"
                                        Source="{StaticResource System-Logo}" />
                                 <TextBlock Grid.Row="0"
                                            Grid.Column="1"
@@ -225,10 +225,10 @@
 
                 <ig:NodeLayout Key="Children"
                                DisplayMemberPath="ResourceName"
-                               IsExpandedMemberPath="IsExpanded"
                                TargetTypeName="IExplorerItemViewModel"
                                Visibility="{Binding Path=Data.IsVisible,
-                                                    Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    Converter={StaticResource BoolToVisibilityConverter}}"
+                               IsExpandedMemberPath="IsExpanded">
                     <ig:NodeLayout.HeaderTemplate>
                         <DataTemplate />
                     </ig:NodeLayout.HeaderTemplate>
@@ -241,12 +241,16 @@
                                             <ObjectAnimationUsingKeyFrames Duration="0"
                                                                            Storyboard.TargetName="EditPermissionImage"
                                                                            Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}" />
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}">
+
+                                                </DiscreteObjectKeyFrame>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Duration="0"
                                                                            Storyboard.TargetName="ExecutePermissionImage"
                                                                            Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}" />
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}">
+
+                                                </DiscreteObjectKeyFrame>
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -257,37 +261,37 @@
                                             <ObjectAnimationUsingKeyFrames Duration="0"
                                                                            Storyboard.TargetName="EditPermissionImage"
                                                                            Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}">
+                                                </DiscreteObjectKeyFrame>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Duration="0"
                                                                            Storyboard.TargetName="ExecutePermissionImage"
                                                                            Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}">
+                                                </DiscreteObjectKeyFrame>
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
                             </DataTemplate.Triggers>
-                            <DockPanel x:Name="ItemDockPanel"
-                                       Height="Auto"
-                                       VerticalAlignment="Stretch">
+                            <DockPanel x:Name="ItemDockPanel" Height="Auto" VerticalAlignment="Stretch">
                                 <DockPanel.Width>
                                     <MultiBinding Converter="{StaticResource WidthConverter}">
                                         <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                     </MultiBinding>
                                 </DockPanel.Width>
-                                <Button Margin="0,0,5,0"
+                                <Button 
+                                        Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         Background="Transparent"
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
-                                        Visibility="{Binding Data.CanExecute,
-                                                             Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <Image x:Name="ExecutePermissionImage"
-                                           Width="14"
-                                           Source="{StaticResource System-Spacer}" />
+                                        Visibility="{Binding Data.CanExecute, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Image x:Name="ExecutePermissionImage" Width="14"
+                                           Source="{StaticResource System-Spacer}"
+                                           />
                                 </Button>
                                 <Button Width="Auto"
                                         Margin="0,0,5,0"
@@ -297,53 +301,49 @@
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
                                         Visibility="{Binding Data.CanEdit}">
-                                    <Image x:Name="EditPermissionImage"
-                                           Width="14"
-                                           Source="{StaticResource System-Spacer}" />
+                                    <Image x:Name="EditPermissionImage" Width="14"
+                                           Source="{StaticResource System-Spacer}"
+                                           />
                                 </Button>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="20" />
+                                        <RowDefinition Height="20"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" MinWidth="5" />
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*" MinWidth="5"/>
                                     </Grid.ColumnDefinitions>
                                     <Image x:Name="ResourceImage"
-                                           Width="14"
-                                           Height="14"
-                                           Margin="-37,0,-8,0"
-                                           Source="{Binding Data.ResourceType,
-                                                            Converter={StaticResource ResourceTypeToIconConverter}}"
-                                           Visibility="{Binding Data.ResourceType,
-                                                                Converter={StaticResource ResourceTypeToVisibilityConverter}}" />
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseLeftButtonDown">
-                                            <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <TextBlock x:Name="ResourceNameTextBlock"
-                                               Grid.Column="1"
+                                       Height="14"
+                                       Width="14"
+                                       Margin="-37,0,-8,0"
+                                       Source="{Binding Data.ResourceType, Converter={StaticResource ResourceTypeToIconConverter}}"
+                                       Visibility="{Binding Data.ResourceType, Converter={StaticResource ResourceTypeToVisibilityConverter}}"/>
+                                    <TextBlock Grid.Column="1" x:Name="ResourceNameTextBlock" MinWidth="5"
+                                           Text="{Binding Path=Data.ResourceName}"
                                                Height="19"
-                                               MinWidth="5"
                                                VerticalAlignment="Center"
-                                               Text="{Binding Path=Data.ResourceName}"
-                                               Visibility="{Binding Path=Data.IsNotRenaming,
-                                                                    Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <TextBox Name="PropertySearch"
-                                             Grid.Column="1"
-                                             IsVisibleChanged="UIElement_OnIsVisibleChanged"
-                                             Text="{Binding Path=Data.ResourceName,
-                                                            UpdateSourceTrigger=LostFocus}"
-                                             Visibility="{Binding Path=Data.IsRenaming,
-                                                                  Converter={StaticResource BoolToVisibilityConverter}}"
-                                             views:FocusExtension.IsFocused="{Binding Path=Data.IsRenaming}">
+                                           Visibility="{Binding Path=Data.IsNotRenaming,
+                                                                    Converter={StaticResource BoolToVisibilityConverter}}" >
+                                    </TextBlock>
+                                    <TextBox Grid.Column="1" Name="PropertySearch"
+                                         IsVisibleChanged="UIElement_OnIsVisibleChanged"
+                                         Text="{Binding Path=Data.ResourceName,
+                                                        UpdateSourceTrigger=LostFocus}"
+                                         Visibility="{Binding Path=Data.IsRenaming,
+                                                              Converter={StaticResource BoolToVisibilityConverter}}"
+                                         views:FocusExtension.IsFocused="{Binding Path=Data.IsRenaming}">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="LostFocus">
                                                 <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </TextBox>
+                                    <i:Interaction.Triggers >
+                                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                                            <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                 </Grid>
                             </DockPanel>
                         </DataTemplate>
