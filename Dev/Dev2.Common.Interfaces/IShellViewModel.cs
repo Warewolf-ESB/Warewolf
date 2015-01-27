@@ -31,5 +31,7 @@ namespace Dev2.Common.Interfaces
         void DisplayDialogForNewVersion();
 
         void OpenVersion(Guid ResourceId, string VersionNumber);
+
+        void ExecuteOnDispatcher(Action action);
     }
 }

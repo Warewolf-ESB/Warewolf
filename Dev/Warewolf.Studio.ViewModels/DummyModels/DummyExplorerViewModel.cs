@@ -150,6 +150,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         public List<IWindowsGroupPermission> Permissions { get; private set; }
 
         public event PermissionsChanged PermissionsChanged;
+        public event NetworkStateChanged NetworkStateChanged;
 
         #endregion
 

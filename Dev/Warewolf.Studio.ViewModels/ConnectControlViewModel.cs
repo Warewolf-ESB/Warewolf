@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ConnectControlViewModel : IConnectControlViewModel
+    public class ConnectControlViewModel : BindableBase, IConnectControlViewModel
     {
+        bool _isConnected;
+        bool _isConnecing;
+
         public ConnectControlViewModel(IServer server)
         {
             if(server == null)
@@ -31,7 +35,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
+                    IsConnecting = true;
+                    IsConnected = false;
                     SelectedConnection.Connect();
+                    IsConnected = true;
+                    IsConnecting = false;
                 }
             });
         }
@@ -41,6 +49,31 @@ namespace Warewolf.Studio.ViewModels
         public IServer SelectedConnection { get; set; }
         public ICommand EditConnectionCommand { get; set; }
         public ICommand ToggleConnectionStateCommand { get; set; }
+        public bool IsConnected
+        {
+            get
+            {
+                return _isConnected;
+            }
+            set
+            {
+                _isConnected = value;
+                OnPropertyChanged(() => IsConnected);
+            }
+        }
+        public bool IsConnecting
+        {
+            get
+            {
+                return _isConnecing;
+            }
+            set
+            {
+                _isConnecing = value;
+                OnPropertyChanged(()=>IsConnecting);
+               
+            }
+        }
 
         public void Connect(IServer connection)
         {
