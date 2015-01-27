@@ -237,9 +237,9 @@
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="Height" Value="24" />
+        <Setter Property="Height" Value="20" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igDt:XamDataTreeNodeControl">
@@ -439,6 +439,9 @@
                                                                         RelativeSource={RelativeSource TemplatedParent}}" />
                             <igPrimDt:ExpansionIndicator x:Name="ExpansionIndicator"
                                                          Grid.Column="1"
+                                                         VerticalAlignment="Center"
+                                                         VerticalContentAlignment="Center"
+                                                         Margin="-5,0,0,0"
                                                          IsExpanded="{Binding Node.IsExpanded,
                                                                               Mode=TwoWay,
                                                                               RelativeSource={RelativeSource TemplatedParent}}"
