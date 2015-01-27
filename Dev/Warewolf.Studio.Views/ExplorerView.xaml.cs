@@ -44,7 +44,7 @@ namespace Warewolf.Studio.Views
                 }
 
             }
-            e.Handled = true;
+            
 	    }
 
 	    void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
