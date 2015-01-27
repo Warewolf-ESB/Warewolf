@@ -430,6 +430,7 @@ namespace Warewolf.Studio.ViewModels
             {
 
                  _explorerRepository.Move(this, destination);
+                
                  return true;
             }
             catch(Exception err)

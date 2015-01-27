@@ -45,7 +45,7 @@ namespace Warewolf.Studio.Views
                 }
 
             }
-            e.Handled = true;
+            
 	    }
 
         private void ScrollBar_Loaded(object sender, RoutedEventArgs e)
