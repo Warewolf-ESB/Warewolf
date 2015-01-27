@@ -6,10 +6,8 @@
              xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ig="http://schemas.infragistics.com/xaml"
-             xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
-             xmlns:viewModels1="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:interactivity="http://www.codeplex.com/prism"
              x:Name="ExplorerViewControl"
@@ -68,7 +66,6 @@
         <converters:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
             <RowDefinition Height="29" />
@@ -148,22 +145,21 @@
                         <DataTemplate>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="18" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="2" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Image Grid.Row="0"
                                        Grid.Column="0"
-                                       Width="18"
-                                       Height="18"
+                                       Width="Auto"
+                                       Height="Auto"
                                        Source="{StaticResource System-Logo}" />
                                 <TextBlock Grid.Row="0"
-                                           Grid.Column="2"
+                                           Grid.Column="1"
                                            FontSize="12"
-                                           FontWeight="DemiBold"
+                                           Foreground="Black"
                                            Text="{Binding Data.DisplayName}" />
                             </Grid>
                         </DataTemplate>
@@ -227,15 +223,14 @@
                                     </BeginStoryboard>
                                 </EventTrigger>
                             </DataTemplate.Triggers>
-                            <DockPanel x:Name="ItemDockPanel" Height="14" Margin="0,0,0,0">
+                            <DockPanel x:Name="ItemDockPanel">
                                 <DockPanel.Width>
                                     <MultiBinding Converter="{StaticResource WidthConverter}">
                                         <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                     </MultiBinding>
                                 </DockPanel.Width>
-                                <Button Width="14"
-                                        Height="14"
+                                <Button 
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         Background="Transparent"
@@ -243,14 +238,11 @@
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
                                         Visibility="{Binding Data.CanExecute, Converter={StaticResource BoolToVisibilityConverter}}">
-                                    <Image x:Name="ExecutePermissionImage" Width="14"
-                                           Height="14"
+                                    <Image x:Name="ExecutePermissionImage" Width="Auto"
                                            Source="{StaticResource System-Spacer}"
-                                           Stretch="Fill"
                                            />
                                 </Button>
-                                <Button Width="14"
-                                        Height="14"
+                                <Button Width="Auto"
                                         Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         Background="Transparent"
@@ -259,32 +251,28 @@
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
                                         Visibility="{Binding Data.CanEdit}">
                                     <Image x:Name="EditPermissionImage" Width="14"
-                                           Height="14"
                                            Source="{StaticResource System-Spacer}"
                                            Stretch="Fill" 
                                            />
                                 </Button>
-                                <Image Width="14"
-                                       Height="14"
-                                       Margin="0,0,5,0"
-                                       Source="{Binding Data.ResourceType, Converter={StaticResource ResourceTypeToIconConverter}}"
+                                <StackPanel>
+                                <Image 
+                                    Stretch="None"
+                                       Margin="-37,0,0,0"
+                                        Source="{Binding Data.ResourceType, Converter={StaticResource ResourceTypeToIconConverter}}"
                                        Visibility="{Binding Data.ResourceType, Converter={StaticResource ResourceTypeToVisibilityConverter}}"/>
-                                <TextBlock MinWidth="5"
-                                           Margin="-2"
+                                    <TextBlock MinWidth="5"
+                                               Height="Auto"
+                                               Padding="0,0,0,0"
                                            Text="{Binding Path=Data.ResourceName}"
+                                           HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
                                            Visibility="{Binding Path=Data.IsNotRenaming,
                                                                     Converter={StaticResource BoolToVisibilityConverter}}" >
-                                                <i:Interaction.Triggers >
-                                                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                                                     <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                     </TextBlock>
-                              
+                                    </TextBlock>                              
                                 <TextBox Name="PropertySearch"
                                          MinWidth="5"
                                          IsVisibleChanged="UIElement_OnIsVisibleChanged"
-                                         
                                          Text="{Binding Path=Data.ResourceName,
                                                         UpdateSourceTrigger=LostFocus}"
                                          Visibility="{Binding Path=Data.IsRenaming,
@@ -296,42 +284,17 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </TextBox>
-  
+                                    <i:Interaction.Triggers >
+                                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                                            <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </StackPanel>
                             </DockPanel>
-
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
-                    <ig:NodeLayout.ExpandedIconTemplate>
-                        <DataTemplate />
-                    </ig:NodeLayout.ExpandedIconTemplate>
-                    <ig:NodeLayout.CollapsedIconTemplate>
-                        <DataTemplate />
-                    </ig:NodeLayout.CollapsedIconTemplate>
-                </ig:NodeLayout>
-                <!--  <ig:NodeLayout Key="Versions" IsExpandedMemberPath="AreVersionsVisible"  DisplayMemberPath="VersionHeader"  TargetTypeName="VersionInfoViewModel">  -->
-                <!--  NodeStyle="{StaticResource NodeStyle}">  -->
-
-                <!--  Visibility="{Binding Path=Data.AreVersionsVisible, RelativeSource={RelativeSource AncestorType=ig:XamDataTreeNode} ,Converter={StaticResource BoolToVisibilityConverter}}"  -->
-                <!--  >  -->
-                <!--
-                    <ig:NodeLayout.HeaderTemplate>
-                    <DataTemplate></DataTemplate>
-                    </ig:NodeLayout.HeaderTemplate>
-                    <ig:NodeLayout.ItemTemplate >
-                    <DataTemplate DataType="viewModels1:VersionInfoViewModel">
-                    <StackPanel  Orientation="Horizontal" >
-                    <TextBlock Text="{Binding Path=Data.VersionHeader}" />
-                    </StackPanel>
-                    
-                    </DataTemplate>
-                    </ig:NodeLayout.ItemTemplate>
-                    </ig:NodeLayout>
-                -->
+                </ig:NodeLayout>                
             </ig:XamDataTree.GlobalNodeLayouts>
-
         </ig:XamDataTree>
-
-
-
     </Grid>
 </UserControl>
