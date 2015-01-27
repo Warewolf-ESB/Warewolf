@@ -40,6 +40,7 @@
         <ResourceDictionary Source="Elements/DockManager/MainDockManager.xaml" />
 
         <ResourceDictionary Source="Elements/Explorer/Explorer.xaml" />
+        <ResourceDictionary Source="Elements/xamMenu.xaml" />
 
 
 

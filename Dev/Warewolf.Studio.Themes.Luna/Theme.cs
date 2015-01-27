@@ -22,7 +22,7 @@ namespace Warewolf.Studio.Themes.Luna
             Mappings.Add(ControlMappingKeys.XamFormulaEditor, BuildLocationString(assemblyFullName, @"\Elements\xamFormulaEditor.xaml"));
             Mappings.Add(ControlMappingKeys.XamGrid, BuildLocationString(assemblyFullName, @"\Elements\xamGrid.xaml"));
             Mappings.Add(ControlMappingKeys.XamMaskedInput, BuildLocationString(assemblyFullName, @"\Elements\xamMaskedInput.xaml"));
-            Mappings.Add(ControlMappingKeys.XamMenu, BuildLocationString(assemblyFullName, @"\Elements\xamMenu.xaml"));
+            //Mappings.Add(ControlMappingKeys.XamMenu, BuildLocationString(assemblyFullName, @"\Elements\xamMenu.xaml"));
             Mappings.Add(ControlMappingKeys.XamMultiColumnComboEditor, BuildLocationString(assemblyFullName, @"\Elements\xamMultiColumnCombo.xaml"));
             Mappings.Add(ControlMappingKeys.XamRichTextEditor, BuildLocationString(assemblyFullName, @"\Elements\xamRichTextEditor.xaml"));
             Mappings.Add(ControlMappingKeys.XamSpellChecker, BuildLocationString(assemblyFullName, @"\Elements\xamSpellChecker.xaml"));
