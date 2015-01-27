@@ -490,7 +490,7 @@
                             <!--  Text on Variables  -->
                             <ContentControl x:Name="contentControl"
                                             Grid.Column="5"
-                                            Margin="{TemplateBinding Padding}"
+                                            Margin="-5"
                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                             Foreground="{StaticResource WareWolfButtonBrush}">

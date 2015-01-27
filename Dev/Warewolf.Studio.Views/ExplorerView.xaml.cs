@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
@@ -10,7 +11,7 @@ namespace Warewolf.Studio.Views
 	/// <summary>
 	/// Interaction logic for ExplorerView.xaml
 	/// </summary>
-	public partial class ExplorerView : UserControl, IExplorerView
+	public partial class ExplorerView : IExplorerView
 	{
 		public ExplorerView()
 		{
@@ -44,17 +45,28 @@ namespace Warewolf.Studio.Views
                 }
 
             }
-            e.Handled = true;
+            
 	    }
+
+        private void ScrollBar_Loaded(object sender, RoutedEventArgs e)
+        {
+            var scrollBar = sender as ScrollBar;
+            if (scrollBar != null && scrollBar.Orientation == Orientation.Horizontal)
+            {
+                scrollBar.MinHeight = 0;
+                scrollBar.Height = 0;
+            }
+        }
 
 	    void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 	    {
             Keyboard.Focus((IInputElement)sender);
 	    }
 
-	    void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+	    void ScrollBarOnScroll(object sender, ScrollEventArgs e)
 	    {
-            
+            ExplorerTree.Width = ExplorerTree.Width + 1;
+            ExplorerTree.Width = ExplorerTree.Width - 1;
 	    }
 	}
 
@@ -78,10 +90,9 @@ namespace Warewolf.Studio.Views
              new UIPropertyMetadata(false, OnIsFocusedPropertyChanged));
 
 
-        private static void OnIsFocusedPropertyChanged(DependencyObject d,
-            DependencyPropertyChangedEventArgs e)
+        private static void OnIsFocusedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var uie = (UIElement)d;
+            //var uie = (UIElement)d;
             //if ((bool)e.NewValue)
             //{
             //    uie.Focus(); // Don't care about false values.
