@@ -233,12 +233,12 @@
         <Setter Property="Background" Value="{StaticResource TreeNodeBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TreeNodeBorderBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource FontSize-Smaller}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="Height" Value="24" />
         <Setter Property="Template">
             <Setter.Value>
@@ -421,7 +421,7 @@
                                 <ColumnDefinition Width="28" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Rectangle Grid.ColumnSpan="6" Fill="{StaticResource TransparentBrush}" />
@@ -490,7 +490,7 @@
                             <!--  Text on Variables  -->
                             <ContentControl x:Name="contentControl"
                                             Grid.Column="5"
-                                            Margin="{TemplateBinding Padding}"
+                                            Margin="-5,0,0,0"
                                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                             Foreground="{StaticResource WareWolfButtonBrush}">
