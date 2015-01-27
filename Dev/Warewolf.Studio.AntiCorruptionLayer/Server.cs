@@ -38,6 +38,15 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             _serverId = Guid.NewGuid();
             _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), _environmentConnection);
             _environmentConnection.PermissionsModified += RaisePermissionsModifiedEvent;
+            _environmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
+        }
+
+        void RaiseNetworkStateChangeEvent(object sender, System.Network.NetworkStateEventArgs e)
+        {
+            if(NetworkStateChanged!= null)
+            {
+                NetworkStateChanged(new NetworkStateChangedEventArgs(e));
+            }
         }
 
         void RaisePermissionsModifiedEvent(object sender, List<IWindowsGroupPermission> e)
@@ -106,7 +115,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public List<IWindowsGroupPermission> Permissions { get; private set; }
 
         public event PermissionsChanged PermissionsChanged;
-
+        public event NetworkStateChanged NetworkStateChanged;
         #endregion
 
         #region Overrides of Resource

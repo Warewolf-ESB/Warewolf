@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Presentation.Debug;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace Warewolf.Studio.ViewModels
     {
         readonly IShellViewModel _shellViewModel;
         ICollection<IExplorerItemViewModel> _children;
+        bool _isConnecting;
+        bool _isConnected;
+        ICommand _refreshCommand;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -24,9 +28,47 @@ namespace Warewolf.Studio.ViewModels
             if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
             _shellViewModel = shellViewModel;
             Server = server;
+            Server.NetworkStateChanged += Server_NetworkStateChanged;
             _children = new ObservableCollection<IExplorerItemViewModel>();
             NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
             DisplayName = server.ResourceName;
+            RefreshCommand = new DelegateCommand(Load);
+           
+        }
+
+        void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
+        {
+            switch(args.State)
+            {
+                    case NetworkStateChangedState.Connected:
+                    Server.Connect();
+                    if(!IsConnecting)
+                         _shellViewModel.ExecuteOnDispatcher(Load);
+                    break;
+                    case NetworkStateChangedState.Disconnected:
+                    _shellViewModel.ExecuteOnDispatcher(() =>
+                    {
+                        IsConnected = false;
+                        Children = new ObservableCollection<IExplorerItemViewModel>();
+     
+                    });
+                    break;
+                    case NetworkStateChangedState.Connecting:
+
+                    _shellViewModel.ExecuteOnDispatcher(() =>
+                    {
+                        if (!IsConnecting)
+                            IsConnected = false;
+                        Children = new ObservableCollection<IExplorerItemViewModel>();
+                       
+                    });
+                    break;
+            }
+        }
+
+        void Unload()
+        {
+            Children.Clear();
         }
 
         public IServer Server { get; set; }
@@ -74,27 +116,59 @@ namespace Warewolf.Studio.ViewModels
             get;
             set;
         }
-        public bool IsConnected { get; private set; }
+        public bool IsConnected
+        {
+            get
+            {
+                return _isConnected;
+            }
+            private set
+            {
+               
+                _isConnected = value;
+                OnPropertyChanged(() => IsConnected);
+            }
+        }
         public bool IsLoaded { get; private set; }
 
         public async void Connect()
         {
             if(Server != null)
             {
+                IsConnecting = true;
+                IsConnected = false;
                 IsConnected = await Server.Connect();
                 Load();
+             
+                IsConnecting = false ;
             }
             
+        }
+
+        public bool IsConnecting
+        {
+            get
+            {
+                return _isConnecting;
+            }
+            private set
+            {
+                _isConnecting = value;
+
+
+            }
         }
 
         public async void Load()
         {
             if (IsConnected)
             {
+                IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
                 var explorerItemViewModels = CreateExplorerItems(explorerItems.Children,Server);
                 Children = explorerItemViewModels;
                 IsLoaded = true;
+                IsConnecting = false;
             }
         }
 
@@ -138,6 +212,18 @@ namespace Warewolf.Studio.ViewModels
                     res.Children.Remove(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
                     OnPropertyChanged(()=>Children);
                 }
+            }
+        }
+
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand;
+            }
+            set
+            {
+                _refreshCommand = value;
             }
         }
 
