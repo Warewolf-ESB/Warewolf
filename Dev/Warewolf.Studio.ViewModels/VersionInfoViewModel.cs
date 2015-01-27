@@ -24,6 +24,8 @@ namespace Warewolf.Studio.ViewModels
         ICommand _renameCommand;
         ICommand _deleteCommand;
         IServer _server;
+        bool _isExpanderVisible;
+        bool _isExpanded;
 
         #region Implementation of IVersionInfoViewModel
 
@@ -125,6 +127,17 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanRollBack);
             }
         }
+        public bool IsExpanderVisible
+        {
+            get
+            {
+                return _isExpanderVisible;
+            }
+            set
+            {
+                _isExpanderVisible = value;
+            }
+        }
         public ICommand NewCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         public bool CanCreateDbService { get; set; }
@@ -147,6 +160,17 @@ namespace Warewolf.Studio.ViewModels
             {
                 _canRollback = value;
                 OnPropertyChanged(()=>CanRollback);
+            }
+        }
+        public bool IsExpanded
+        {
+            get
+            {
+                return _isExpanded;
+            }
+            set
+            {
+                _isExpanded = value;
             }
         }
         public ICommand RenameCommand

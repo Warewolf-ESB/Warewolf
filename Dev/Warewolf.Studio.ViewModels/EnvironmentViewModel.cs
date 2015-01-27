@@ -21,6 +21,7 @@ namespace Warewolf.Studio.ViewModels
         bool _isConnecting;
         bool _isConnected;
         ICommand _refreshCommand;
+        bool _isExpanderVisible;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -86,6 +87,17 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Children);
             }
         }
+        public bool IsExpanderVisible
+        {
+            get
+            {
+                return Children.Count>0;
+            }
+            set
+            {
+                
+            }
+        }
         public ICommand NewCommand
         {
             get;
@@ -107,6 +119,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDeploy { get; set; }
         public bool CanShowVersions { get { return false; } }
         public bool CanRollback { get; set; }
+        public bool IsExpanded { get; set; }
         public ICommand RenameCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
@@ -165,8 +178,13 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children,Server);
+                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children,Server,null);
                 Children = explorerItemViewModels;
+                var explorerItemViewModel = _children.FirstOrDefault(a => a.ResourceName == "Hello World");
+                if(explorerItemViewModel != null)
+                {
+                    explorerItemViewModel.AreVersionsVisible = true;
+                }
                 IsLoaded = true;
                 IsConnecting = false;
             }
@@ -228,7 +246,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server)
+        ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server,IExplorerItemViewModel parent)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if (explorerItems == null) return new ObservableCollection<IExplorerItemViewModel>();
@@ -236,13 +254,15 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
-                explorerItemModels.Add(new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object)
+                var itemCreated = new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object,parent)
                 {
                     ResourceName = explorerItem.DisplayName,
                     ResourceId = explorerItem.ResourceId,
-                    ResourceType = explorerItem.ResourceType,
-                    Children = CreateExplorerItems(explorerItem.Children,server)
-                });
+                    ResourceType = explorerItem.ResourceType
+                };
+                itemCreated.Children = CreateExplorerItems(explorerItem.Children, server, itemCreated);
+                explorerItemModels.Add(itemCreated);
+                
             }
             return  explorerItemModels;
         }

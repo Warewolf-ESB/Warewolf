@@ -192,13 +192,15 @@
 
 
             <ig:XamDataTree.EditingSettings>
-                <ig:TreeEditingSettings AllowDeletion="False"
+
+                        <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="True"
                                         IsEnterKeyEditingEnabled="True"
                                         IsF2EditingEnabled="True"
                                         IsMouseActionEditingEnabled="None"
                                         IsOnNodeActiveEditingEnabled="False" />
             </ig:XamDataTree.EditingSettings>
+
             <ig:XamDataTree.GlobalNodeLayouts>
                 <ig:NodeLayout Key="Environments"
                                DisplayMemberPath="DisplayName"
@@ -260,9 +262,8 @@
                                Visibility="{Binding Path=Data.IsVisible,
                                                     Converter={StaticResource BoolToVisibilityConverter}}"
                                IsExpandedMemberPath="IsExpanded">
-                    <ig:NodeLayout.HeaderTemplate>
-                        <DataTemplate />
-                    </ig:NodeLayout.HeaderTemplate>
+
+
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
                             <DataTemplate.Triggers>
