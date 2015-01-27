@@ -444,7 +444,7 @@
                                                                               RelativeSource={RelativeSource TemplatedParent}}"
                                                          IsTabStop="False"
                                                          Style="{StaticResource ExpansionIndicatorStyle}"
-                                                         Visibility="{Binding Node.HasChildren,
+                                                         Visibility="{Binding Node.Data.IsExpanderVisible,
                                                                               Converter={StaticResource BoolToVis},
                                                                               RelativeSource={RelativeSource TemplatedParent}}" />
                             <CheckBox x:Name="Checkbox"

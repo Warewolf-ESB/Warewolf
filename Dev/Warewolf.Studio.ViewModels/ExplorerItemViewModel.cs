@@ -40,6 +40,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canDrag;
         Guid _resourceId;
         bool _isExpanded;
+        bool _isExpanderVisible;
 
         // ReSharper disable TooManyDependencies
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent):this(shellViewModel,server,builder)
@@ -52,10 +53,33 @@ namespace Warewolf.Studio.ViewModels
                 parent.ResourceName = output.DisplayName;
 
             });
-            IsVersion = true;
+           
+            Parent = parent; 
         }
 
-        public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
+        public IExplorerItemViewModel Parent { get; set; }
+
+        public void AddSibling(IExplorerItemViewModel sibling)
+        {
+            if( Parent != null)
+            {
+                Parent.AddChild(sibling);
+            }
+        }
+
+        public void AddChild(IExplorerItemViewModel child)
+        {
+            _children.Add(child);
+            OnPropertyChanged(()=>Children);
+        }
+
+        public void RemoveChild(IExplorerItemViewModel child)
+        {
+            _children.Remove(child);
+            OnPropertyChanged(()=>Children);
+        }
+
+        private ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel" ,shellViewModel}, {"server",server }, {"builder",builder } });
             _shellViewModel = shellViewModel;
@@ -243,6 +267,18 @@ namespace Warewolf.Studio.ViewModels
         {
             get; set;
         }
+        public bool IsExpanderVisible
+        {
+            get
+            {
+                return Children.Count>0 && !AreVersionsVisible;
+            }
+            set
+            {
+                _isExpanderVisible = value;
+                OnPropertyChanged(()=>IsExpanderVisible);
+            }
+        }
         public ICommand NewCommand { get; set; }
         public ICommand DeployCommand { get; set; }
         public ICommand RenameCommand { get; set; }
@@ -357,18 +393,27 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    Children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(_shellViewModel,Server,Builder,this)
+                    _children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(_shellViewModel,Server,Builder,this)
                     {
                         ResourceName = a.VersionNumber +" "+ a.DateTimeStamp.ToString(CultureInfo.InvariantCulture)+" " + a.Reason,
                         VersionNumber = a.VersionNumber,
-                        ResourceId =  ResourceId
+                        ResourceId =  ResourceId,
+                         IsVersion = true,
+                         CanCreatePluginSource = false,
+                         CanCreateWebService =  false,
+                         CanCreateDbService = false,
+                         CanCreateDbSource = false,
+                         CanCreatePluginService = false,
+                         CanCreateWebSource = false
+
                     }
                     ));
                     OnPropertyChanged(() => Children);
+                    if (Children.Count > 0) IsExpanded = true;
                 }
                 else
                 {
-                    Children = new ObservableCollection<IExplorerItemViewModel>();
+                    _children = new ObservableCollection<IExplorerItemViewModel>();
                     OnPropertyChanged(() => Children);
                 }
                 OnPropertyChanged(()=>AreVersionsVisible);
@@ -431,6 +476,21 @@ namespace Warewolf.Studio.ViewModels
 
                  _explorerRepository.Move(this, destination);
                 
+                 if (destination.ResourceType == ResourceType.Folder)
+                 {
+                     destination.AddChild(this);
+                     Parent.RemoveChild(this);
+                 }
+                 else if (destination.ResourceType <= ResourceType.Folder)
+                 {
+                     destination.AddSibling(this);
+                     Parent.RemoveChild(this);
+                 }
+                 else if (destination.Parent == null)
+                 {
+                     destination.AddSibling(this);
+                     Parent.RemoveChild(this);
+                 }
                  return true;
             }
             catch(Exception err)

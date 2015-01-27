@@ -5,6 +5,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
 {
     public interface IExplorerTreeItem
     {
+        bool IsExpanderVisible { get; set; }
         ICommand NewCommand { get; set; }
         ICommand DeployCommand { get; set; }
         bool CanCreateDbService { get; set; }
@@ -18,7 +19,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanDeploy { get; set; }
         bool CanShowVersions { get; }
         bool CanRollback { get;  }
-       
+        bool IsExpanded { get; set; }
         ICommand RenameCommand { get; set; }
         ICommand DeleteCommand { get; set; }
         ICommand ShowVersionHistory { get; set; }
