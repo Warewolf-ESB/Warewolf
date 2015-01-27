@@ -312,14 +312,13 @@
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                     </MultiBinding>
                                 </DockPanel.Width>
-                                <Button 
-                                        Margin="0,0,5,0"
+                                <Button Width="Auto"
                                         HorizontalAlignment="Right"
                                         Background="Transparent"
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
-                                        Visibility="{Binding Data.CanExecute, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        Visibility="{Binding Data.CanExecute}">
                                     <Image x:Name="ExecutePermissionImage" Width="14"
                                            Source="{StaticResource System-Spacer}"
                                            />
