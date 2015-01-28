@@ -76,4 +76,6 @@ namespace Warewolf.Studio.Views
             return _convertor.Convert(!(bool)value, targetType, parameter, culture);
         }
     }
+
+
 }

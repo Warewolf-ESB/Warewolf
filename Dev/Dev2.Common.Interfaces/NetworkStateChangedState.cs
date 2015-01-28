@@ -1,6 +1,6 @@
 namespace Dev2.Common.Interfaces
 {
-    public enum NetworkStateChangedState
+    public enum ConnectionNetworkState
     {
         Connected,
         Connecting,

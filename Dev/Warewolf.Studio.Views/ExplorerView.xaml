@@ -136,13 +136,13 @@
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo}"
-                                               Visibility="{Binding Path=Data.IsConnecting,
-                                                                    Converter={StaticResource NotConverter}}" />
+                                               Visibility="{Binding Path=Data.IsServerIconVisible,
+                                                                    Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo-Mono}"
-                                               Visibility="{Binding Path=Data.IsConnected,
-                                                                    Converter={StaticResource NotConverter}}" />
+                                               Visibility="{Binding Path=Data.IsServerUnavailableIconVisible,
+                                                                    Converter={StaticResource BoolToVisibilityConverter}}" />
                                     </Grid>
                                 </Button>
 
