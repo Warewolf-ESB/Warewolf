@@ -68,7 +68,7 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
             Container.RegisterInstance<IActionDialogueWindow>(new DialogWindow());
             Container.RegisterInstance<IDialogueTemplate>(new DialogueViewModel());
-            //Container.RegisterInstance<INewServerDialogue>(new NewServerViewModel());
+            Container.RegisterInstance<INewServerDialogue>(new NewServerViewModel());
            
      
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();
