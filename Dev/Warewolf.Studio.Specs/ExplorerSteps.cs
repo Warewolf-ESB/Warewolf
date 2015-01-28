@@ -116,6 +116,7 @@ namespace Warewolf.Studio.Specs
         public List<IWindowsGroupPermission> Permissions { get; private set; }
 
         public event PermissionsChanged PermissionsChanged;
+        public event NetworkStateChanged NetworkStateChanged;
 
         #endregion
 

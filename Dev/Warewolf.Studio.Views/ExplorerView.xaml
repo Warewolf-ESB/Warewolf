@@ -18,10 +18,6 @@
              d:DesignWidth="640"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <Style TargetType="{x:Type ScrollBar}">
-            <EventSetter Event="Loaded" Handler="ScrollBar_Loaded"/>
-            <EventSetter Event="Scroll" Handler="ScrollBarOnScroll"></EventSetter>
-        </Style>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <ContextMenu x:Key="TreeNodeContextMenu">
             <ContextMenu.ItemsPanel>

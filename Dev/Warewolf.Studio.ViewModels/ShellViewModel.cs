@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -103,6 +104,11 @@ namespace Warewolf.Studio.ViewModels
         public void OpenVersion(Guid ResourceId, string VersionNumber)
         {
             //todo:
+        }
+
+        public void ExecuteOnDispatcher(Action action)
+        {
+            Application.Current.Dispatcher.Invoke(action);
         }
 
         public IViewsCollection GetRegionViews(string regionName)

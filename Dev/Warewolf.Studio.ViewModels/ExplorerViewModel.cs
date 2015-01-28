@@ -34,6 +34,7 @@ namespace Warewolf.Studio.ViewModels
 
         void Refresh()
         {
+            IsRefreshing = true;
             Environments.ForEach(model =>
             {
                 if (model.IsConnected)
@@ -41,11 +42,25 @@ namespace Warewolf.Studio.ViewModels
                     model.Load();
                 }
             });
+            IsRefreshing = false;
         }
 
         public ICommand RefreshCommand { get; set; }
+        public bool IsRefreshing
+        {
+            get
+            {
+                return _isRefreshing;
+            }
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged(()=>IsRefreshing);
+            }
+        }
         ICollection<IEnvironmentViewModel> _environments;
         string _searchText;
+        bool _isRefreshing;
         public ICollection<IEnvironmentViewModel> Environments
         {
             get

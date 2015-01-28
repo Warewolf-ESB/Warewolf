@@ -22,20 +22,9 @@ namespace Dev2.Common.Interfaces
         List<IWindowsGroupPermission> Permissions { get; } 
 
         event PermissionsChanged PermissionsChanged;
+        event NetworkStateChanged NetworkStateChanged;
     }
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);
-
-    public class PermissionsChangedArgs
-    {
-        public List<IWindowsGroupPermission> Permissions { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public PermissionsChangedArgs(List<IWindowsGroupPermission> permissions)
-        {
-            Permissions = permissions;
-        }
-    }
+    public delegate void NetworkStateChanged(INetworkStateChangedEventArgs args);
 }
