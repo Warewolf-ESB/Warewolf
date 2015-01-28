@@ -136,13 +136,13 @@
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo}"
-                                               Visibility="{Binding Path=Data.IsConnecting,
-                                                                    Converter={StaticResource NotConverter}}" />
+                                               Visibility="{Binding Path=Data.IsServerIconVisible,
+                                                                    Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo-Mono}"
-                                               Visibility="{Binding Path=Data.IsConnected,
-                                                                    Converter={StaticResource NotConverter}}" />
+                                               Visibility="{Binding Path=Data.IsServerUnavailableIconVisible,
+                                                                    Converter={StaticResource BoolToVisibilityConverter}}" />
                                     </Grid>
                                 </Button>
 
@@ -219,16 +219,40 @@
                                 </DockPanel.Triggers>
 
                                 <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
+
+
+
+                                <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
                                 <ig:ContextMenuService.Manager>
                                     <ig:ContextMenuManager>
                                         <ig:ContextMenuManager.ContextMenu>
                                             <ig:XamContextMenu x:Name="ExplorerMenu">
+
+
                                                 <ig:XamContextMenu.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <VirtualizingStackPanel Background="{StaticResource WareWolfWhiteBrush}" Orientation="Vertical" />
+
                                                     </ItemsPanelTemplate>
                                                 </ig:XamContextMenu.ItemsPanel>
+
+                                                <ig:XamMenuItem Name="NewService"
+                                                                InputGestureText="[Ctrl+W]"
+                                                                Command="{Binding Path=Data.NewCommand}"
+                                                                CommandParameter="{x:Static data:ResourceType.WorkflowService}"
+                                                                Header="New Workflow Service"
+                                                                Visibility="{Binding Path=Data.CanCreateWorkflowService,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <ig:XamMenuItem.Icon>
+                                                        <Image Width="12"
+                                                               Height="12"
+                                                               Source="{StaticResource Explorer-WorkflowService}" />
+                                                    </ig:XamMenuItem.Icon>
+                                                </ig:XamMenuItem>
+                                                
+
                                                 <ig:XamMenuItem Name="NewDataBaseService"
+                                                                InputGestureText="[Ctrl+Shift+D]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.DbService}"
                                                                 Header="New Database Service"
@@ -240,6 +264,7 @@
                                                                Source="{StaticResource Explorer-DB}" />
                                                     </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
+
                                                 <ig:XamMenuItem Name="NewDataBaseSource"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.DbSource}"
@@ -252,7 +277,10 @@
                                                                Source="{StaticResource Explorer-DB-Create}" />
                                                     </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
+
+
                                                 <ig:XamMenuItem Name="NewWebService"
+                                                                InputGestureText="[Ctrl+Shift+W]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.WebService}"
                                                                 Header="New Web Service"
@@ -264,6 +292,7 @@
                                                                Source="{StaticResource Explorer-WebService}" />
                                                     </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
+
                                                 <ig:XamMenuItem Name="NewWebSource"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.WebSource}"
@@ -276,7 +305,10 @@
                                                                Source="{StaticResource Explorer-WebService-Create}" />
                                                     </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
+
+
                                                 <ig:XamMenuItem Name="NewPluginService"
+                                                                InputGestureText="[Ctrl+Shift+P]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.PluginService}"
                                                                 Header="New Plugin Service"
@@ -288,7 +320,11 @@
                                                                Source="{StaticResource Explorer-DLL}" />
                                                     </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
+
+
                                                 <ig:XamMenuSeparator />
+
+
                                                 <ig:XamMenuItem Name="NewPluginSource"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.PluginSource}"
@@ -301,7 +337,10 @@
                                                                Source="{StaticResource Explorer-DLL-Create}" />
                                                     </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
+
+
                                                 <ig:XamMenuItem Name="Rename"
+																InputGestureText="[F2]"
                                                                 Command="{Binding Path=Data.RenameCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Rename"
@@ -310,42 +349,63 @@
 
 
                                                 <ig:XamMenuItem Name="Delete"
-                                                                Command="{Binding Path=Data.DeleteCommand}"
+																Command="{Binding Path=Data.DeleteCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Delete"
-                                                                InputGestureText="Hello"
                                                                 Visibility="{Binding Path=Data.CanDelete,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
+
+
                                                 <ig:XamMenuItem Name="Deploy"
-                                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
+																Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
                                                                                   Path=DataContext.DeployCommand}"
                                                                 CommandParameter="{Binding Path=Data.CanShowVersions}"
                                                                 Header="Deploy"
                                                                 Visibility="{Binding Path=CanShowVersions,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                <ig:XamMenuSeparator />
+
+                                                <ig:XamMenuSeparator 
+                                                    Visibility="{Binding Path=Data.CanShowVersions,
+                                                                Converter={StaticResource BoolToVisibilityConverter}}"
+                                                    />
+
+
                                                 <ig:XamMenuItem Name="ShowHideVersions"
                                                                 Command="{Binding Path=Data.ShowVersionHistory}"
                                                                 Header="{Binding Path=Data.VersionHeader}"
                                                                 Visibility="{Binding Path=Data.CanShowVersions,
-                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                Converter={StaticResource BoolToVisibilityConverter}}">
+
+                                                    <ig:XamMenuItem.Icon>
+                                                        <Image Width="12"
+                                                               Height="12"
+                                                               Source="{StaticResource Explorer-Permission-Menu}" />
+                                                    </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
+
+
                                                 <ig:XamMenuItem Name="Rollback"
-                                                                Command="{Binding Path=Data.RollbackCommand}"
+																Command="{Binding Path=Data.RollbackCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Make Current Version"
                                                                 Visibility="{Binding Path=Data.IsVersion,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
+
+
                                                 <ig:XamMenuItem Name="Open"
-                                                                Command="{Binding Path=Data.OpenVersionCommand}"
+																Command="{Binding Path=Data.OpenVersionCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Open"
                                                                 Visibility="{Binding Path=Data.IsVersion,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
+
+
                                             </ig:XamContextMenu>
                                         </ig:ContextMenuManager.ContextMenu>
                                     </ig:ContextMenuManager>
                                 </ig:ContextMenuService.Manager>
+
+
                                 <Button Margin="0,0,5,0"
                                         HorizontalAlignment="Right"
                                         Background="Transparent"

@@ -42,5 +42,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void SetItemCheckedState(System.Guid id, bool state);
         void RemoveItem(IExplorerItemViewModel vm);
         ICommand RefreshCommand { get; set; }
+        bool IsServerIconVisible { get; set; }
+        bool IsServerUnavailableIconVisible { get; set; }
+
     }
 }
