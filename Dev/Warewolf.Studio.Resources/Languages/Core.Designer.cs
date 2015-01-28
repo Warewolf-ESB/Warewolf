@@ -1169,6 +1169,60 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Address:.
+        /// </summary>
+        public static string ServerDialogAddressLabel {
+            get {
+                return ResourceManager.GetString("ServerDialogAddressLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication Type:.
+        /// </summary>
+        public static string ServerDialogAuthenticationTypeLabel {
+            get {
+                return ResourceManager.GetString("ServerDialogAuthenticationTypeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server address cannot be empty.
+        /// </summary>
+        public static string ServerDialogNoAddressErrorMessage {
+            get {
+                return ResourceManager.GetString("ServerDialogNoAddressErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string ServerDialogPasswordLabel {
+            get {
+                return ResourceManager.GetString("ServerDialogPasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Connection.
+        /// </summary>
+        public static string ServerDialogTestConnectionLabel {
+            get {
+                return ResourceManager.GetString("ServerDialogTestConnectionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Name:.
+        /// </summary>
+        public static string ServerDialogUserNameLabel {
+            get {
+                return ResourceManager.GetString("ServerDialogUserNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server is not connected.
         /// </summary>
         public static string ServerNotConnected {

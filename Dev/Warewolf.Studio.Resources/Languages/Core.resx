@@ -752,4 +752,22 @@ You need Administrator permission.</value>
   <data name="SettingsChangedHeader" xml:space="preserve">
     <value>Settings have changed</value>
   </data>
+  <data name="ServerDialogAddressLabel" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="ServerDialogAuthenticationTypeLabel" xml:space="preserve">
+    <value>Authentication Type:</value>
+  </data>
+  <data name="ServerDialogNoAddressErrorMessage" xml:space="preserve">
+    <value>The server address cannot be empty</value>
+  </data>
+  <data name="ServerDialogPasswordLabel" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="ServerDialogTestConnectionLabel" xml:space="preserve">
+    <value>Test Connection</value>
+  </data>
+  <data name="ServerDialogUserNameLabel" xml:space="preserve">
+    <value>User Name:</value>
+  </data>
 </root>
