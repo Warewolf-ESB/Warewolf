@@ -311,6 +311,7 @@
                                                                 Command="{Binding Path=Data.DeleteCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Delete"
+                                                                InputGestureText="Hello"
                                                                 Visibility="{Binding Path=Data.CanDelete,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
                                                 <ig:XamMenuItem Name="Deploy"
