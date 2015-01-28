@@ -52,6 +52,7 @@ Scenario: Replace when text to find is blank
 	|                |
 	| [[result]] = 0 |
 
+
 Scenario: Replace when the replace with is blank
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
 	And I have a sentence "[[sentence]]"
@@ -67,6 +68,24 @@ Scenario: Replace when the replace with is blank
 	And the debug output as 
 	|                                                       |               | 
 	| [[sentence]] = Dear Mr , We welcome you as a customer |[[result]] = 1 | 
+
+Scenario: Replace space between the sentece
+	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
+	And I have a sentence "[[sentence]]"
+	And I want to find the characters " "
+	And I want to replace them with "-"
+	When the replace tool is executed
+	Then the replace result should be "8"
+	And "[[sentence]]" should be "Dear-Mr-XXXX,-We-welcome-you-as-a-customer"
+	And the execution has "NO" error
+	And the debug inputs as 
+	| In Field(s)                                               | Find | Replace With |
+	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | " " | "-"           |
+	And the debug output as 
+	|                                                           |                |
+	| [[sentence]] = Dear-Mr-XXXX,-We-welcome-you-as-a-customer | [[result]] = 8 | 
+
+
 
 Scenario: Replace using lower case to find uppercase value
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr AAAA, We welcome you as a customer"

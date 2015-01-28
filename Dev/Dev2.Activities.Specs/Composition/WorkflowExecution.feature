@@ -2006,8 +2006,8 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  |                         |
 	  | [[rec(1).a]] = Warewolf |
 	  | [[rec(2).a]] = Warewolf |
-
 	  | [[rec(3).a]] = 2        |
+
 
 
 Scenario: Workflow Assign and Find Record index tool with two variables in reult field expect error
@@ -3538,6 +3538,134 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug outputs as
 	  |              |
 	  | [[replac]] = |
+
+Scenario: Workflow with Replace Tool is replacing recordset values  
+      Given I have a workflow "UniqueNamessTest123"
+      And "UniqueNamessTest123" contains an Assign "Records1" as
+	  | variable            | value    |
+	  | [[emp().firstname]] | Smith    |
+	  | [[emp().lastname]]  | Gordan   |
+	  | [[emp().firstname]] | Nicholas |
+	  | [[emp().lastname]]  | Cage     |
+	  | [[emp().firstname]] | Cage     |
+	  | [[emp().lastname]]  | Nicholas |
+	  | [[emp().firstname]] | Cage     |
+	  | [[emp().lastname]]  | Nicholas |
+	  And "UniqueNamessTest123" contains Replace "Replacing123" into "[[replace]]" as	
+	  | In Fields            | Find | Replace With |
+	  | [[emp(*).firstname]] | i    | 1            |
+	  When "UniqueNamessTest123" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Records1' in WorkFlow 'UniqueNamessTest123' debug inputs as
+	  | # | Variable              | New Value |
+	  | 1 | [[emp().firstname]] = | Smith     |
+	  | 2 | [[emp().lastname]] =  | Gordan    |
+	  | 3 | [[emp().firstname]] = | Nicholas  |
+	  | 4 | [[emp().lastname]] =  | Cage      |
+	  | 5 | [[emp().firstname]] = | Cage      |
+	  | 6 | [[emp().lastname]] =  | Nicholas  |
+	  | 7 | [[emp().firstname]] = | Cage      |
+	  | 8 | [[emp().lastname]] =  | Nicholas  |
+	  And the 'Records1' in Workflow 'UniqueNamessTest123' debug outputs as  
+	  | # |                                  |
+	  | 1 | [[emp(1).firstname]] =  Smith    |
+	  | 2 | [[emp(1).lastname]] =  Gordan    |
+	  | 3 | [[emp(2).firstname]] =  Nicholas |
+	  | 4 | [[emp(2).lastname]] =  Cage      |
+	  | 5 | [[emp(3).firstname]] =  Cage     |
+	  | 6 | [[emp(3).lastname]] =  Nicholas  |
+	  | 7 | [[emp(4).firstname]] =  Cage     |
+	  | 8 | [[emp(4).lastname]] =  Nicholas  |
+	   And the 'Replacing123' in WorkFlow 'UniqueNamessTest123' debug inputs as 
+	  | In Field(s)                     | Find | Replace With |
+	  | [[emp(1).firstname]] = Smith    |      |              |
+	  | [[emp(2).firstname]] = Nicholas |      |              |
+	  | [[emp(3).firstname]] = Cage     |      |              |
+	  | [[emp(4).firstname]] = Cage     | i    | 1            | 	 	 
+	  And the 'Replacing123' in Workflow 'UniqueNamessTest123' debug outputs as
+	  |                                 |
+	  | [[emp(1).firstname]] = Sm1th    |
+	  | [[emp(2).firstname]] = N1cholas |
+	  | [[replace]] =2                  |      
+
+	  ##  And the 'Replacing' in WorkFlow 'Test1' debug inputs as 
+	  ##| In Field(s)             | Find | Replace With |
+	  ##| [[rec(1).a]] = test     |      |              |
+	  ##| [[rec(1).b]] = test     |      |              |
+	  ##| [[rec(2).a]] = warewolf |      |              |
+	  ##| [[rec(2).b]] = warewolf | e    | REPLACED     |
+	  ##And the 'Replacing' in Workflow 'Test1' debug outputs as
+	  ##|                                |
+	  ##| [[rec(1).a]] = tREPLACEDst     |
+	  ##| [[rec(1).b]] = tREPLACEDst     |
+	  ##| [[rec(2).a]] = warREPLACEDwolf |
+	  ##| [[rec(2).b]] = warREPLACEDwolf |
+	  ##| [[replaceResult]] = 4          |
+
+
+Scenario: Workflow with Replace Tool is replacing recordset numbers
+      Given I have a workflow "ReplaceNamessTest1Replace"
+      And "ReplaceNamessTest1Replace" contains an Assign "Records1" as
+	  | variable            | value      |
+	  | [[emp().firstname]] | 121        |
+	  | [[emp().lastname]]  | 685        |
+	  | [[emp().firstname]] | 98917      |
+	  | [[emp().lastname]]  | 25148      |
+	  | [[emp().firstname]] | 1947       |
+	  | [[emp().lastname]]  | 6512       |
+	  | [[emp().firstname]] | 9856145    |
+	  | [[emp().lastname]]  | 1154115698 |
+	  And "ReplaceNamessTest1Replace" contains Replace "Replacing123" into "[[replace]]" as	
+	  | In Fields            | Find | Replace With |
+	  | [[emp(*).firstname]] | 1    | a            |
+	  When "ReplaceNamessTest1Replace" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Records1' in WorkFlow 'ReplaceNamessTest1Replace' debug inputs as
+	  | # | Variable              | New Value  |
+	  | 1 | [[emp().firstname]] = | 121        |
+	  | 2 | [[emp().lastname]] =  | 685        |
+	  | 3 | [[emp().firstname]] = | 98917      |
+	  | 4 | [[emp().lastname]] =  | 25148      |
+	  | 5 | [[emp().firstname]] = | 1947       |
+	  | 6 | [[emp().lastname]] =  | 6512       |
+	  | 7 | [[emp().firstname]] = | 9856145    |
+	  | 8 | [[emp().lastname]] =  | 1154115698 |
+	  And the 'Records1' in Workflow 'ReplaceNamessTest1Replace' debug outputs as  
+	  | # |                                   |
+	  | 1 | [[emp(1).firstname]] = 121        |
+	  | 2 | [[emp(1).lastname]] =  685        |
+	  | 3 | [[emp(2).firstname]] = 98917      |
+	  | 4 | [[emp(2).lastname]] =  25148      |
+	  | 5 | [[emp(3).firstname]] = 1947       |
+	  | 6 | [[emp(3).lastname]] =  6512       |
+	  | 7 | [[emp(4).firstname]] = 9856145    |
+	  | 8 | [[emp(4).lastname]] =  1154115698 |
+	   And the 'Replacing123' in WorkFlow 'ReplaceNamessTest1Replace' debug inputs as 
+	  | In Field(s)                    | Find | Replace With |
+	  | [[emp(1).firstname]] = 121     |      |              |
+	  | [[emp(2).firstname]] = 98917   |      |              |
+	  | [[emp(3).firstname]] = 1947    |      |              |
+	  | [[emp(4).firstname]] = 9856145 | 1    | a            | 	 	 
+	  And the 'Replacing123' in Workflow 'ReplaceNamessTest1Replace' debug outputs as
+	  |                                |
+	  | [[emp(1).firstname]] = a2a     |
+	  | [[emp(2).firstname]] = 989a7   |
+	  | [[emp(3).firstname]] = a947    |
+	  | [[emp(4).firstname]] = 9856a45 |
+	  | [[replace]] = 5                |      
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned2
 #      Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues2"
