@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.ViewModels.DummyModels;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -21,6 +22,7 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             Servers = Server.GetServerConnections();
             Servers = new List<IServer>();
+            Servers.Add(new DummyServer());
             Servers.Add(server);
             EditConnectionCommand = new DelegateCommand(Edit);
             ToggleConnectionStateCommand = new DelegateCommand(() =>
@@ -107,4 +109,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
     }
+
+    
 }

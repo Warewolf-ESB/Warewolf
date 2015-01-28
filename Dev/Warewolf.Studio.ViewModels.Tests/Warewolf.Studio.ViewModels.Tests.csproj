@@ -90,6 +90,7 @@
     <Compile Include="ToolBox\ToolDescriptorViewModelTest.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
     <Compile Include="MenuViewModelTests.cs" />
+    <Compile Include="NewServerViewModelTests.cs" />
     <Compile Include="Variable List\DatalistScalarViewModelTests.cs" />
     <Compile Include="Variable List\DataListViewRecordSetViewModelTests.cs" />
     <Compile Include="Variable List\VariableListViewModelTest.cs" />

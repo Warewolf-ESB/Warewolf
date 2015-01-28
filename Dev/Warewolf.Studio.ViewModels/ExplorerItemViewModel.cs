@@ -49,7 +49,6 @@ namespace Warewolf.Studio.ViewModels
                 var output = _explorerRepository.Rollback(ResourceId, VersionNumber);
                 parent.ShowVersionHistory.Execute(null);
                 parent.ResourceName = output.DisplayName;
-
             });
            
             Parent = parent; 
