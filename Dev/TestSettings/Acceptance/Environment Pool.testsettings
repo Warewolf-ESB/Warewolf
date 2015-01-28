@@ -1,13 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="CI Environments Acceptance Run" id="7627FF19-3746-4D6A-AD03-AD30FFD0D7ED" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestSettings name="Environment Pool Acceptance Run" id="7627FF19-3746-4D6A-AD03-AD30FFD0D7ED" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
     <Deployment>
-		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
-		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
-        
-            <!--For Build Agents-->
-        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
-        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
+		<DeploymentItem filename="..\Dev\Dev2.Server\bin\Debug\" outputDirectory="Server" />
+		<DeploymentItem filename="..\Dev\Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
     </Deployment>
   <NamingScheme baseName="UT" />
     <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
@@ -32,7 +28,7 @@
         </Browser>
       </WebTestRunConfiguration>
     </TestTypeSpecific>
-    <AgentRule name="Run in the Acceptance Testing Environment Pool Agent 1">
+    <AgentRule name="Run in the Acceptance Testing Environment Pool">
       <SelectionCriteria>
         <AgentProperty name="Pool" value="Acceptance Testing" />
       </SelectionCriteria>
