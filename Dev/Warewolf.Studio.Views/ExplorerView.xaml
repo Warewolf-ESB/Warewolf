@@ -57,7 +57,7 @@
 <!--            <Setter Property="ContextMenu" Value="{DynamicResource TreeNodeContextMenu}" />-->
 <!--            <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />            -->
 <!--        </Style>-->
-
+        <views:NotConverter x:Key="NotConverter" />
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         <converters:WidthConverter x:Key="WidthConverter" />
         <converters:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
@@ -188,7 +188,7 @@
                                                              Converter={StaticResource NotConverter}}">
                                     </Image>
                                     </Button>
-                                    <Grid Grid.Column="1">
+                                    <Grid Grid.Column="0">
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo}"
