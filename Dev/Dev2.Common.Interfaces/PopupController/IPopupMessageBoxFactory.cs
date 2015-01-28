@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 
 namespace Dev2.Common.Interfaces.PopupController
 {
@@ -11,5 +12,9 @@ namespace Dev2.Common.Interfaces.PopupController
     public interface IPopupWindow
     {
         MessageBoxResult Show(IPopupMessage message);
+    }
+    public interface IActionDialogueWindow
+    {
+         MessageBoxResult ShowThis(IDialogueTemplate serverPopup);
     }
 }
