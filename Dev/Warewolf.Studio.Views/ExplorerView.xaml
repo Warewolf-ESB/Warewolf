@@ -211,6 +211,8 @@
                                     <MultiBinding Converter="{StaticResource WidthConverter}">
                                         <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
+                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" Path="Tag.Visibility"/>
+
                                     </MultiBinding>
                                 </DockPanel.Width>
                                 <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->

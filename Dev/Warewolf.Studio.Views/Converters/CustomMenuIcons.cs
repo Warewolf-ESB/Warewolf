@@ -257,11 +257,13 @@ namespace Warewolf.Studio.Views.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[1] == DependencyProperty.UnsetValue)
+            if ((Visibility)values[2] == Visibility.Collapsed)
             {
-                return (((XamDataTreeNodeControl)values[0]).Node.Manager.Level * 18) - 57;
+                return (double)values[1] - ((values[0] as XamDataTreeNodeControl).Node.Manager.Level * 21) - 62;
             }
-            return (double)values[1] - (((XamDataTreeNodeControl)values[0]).Node.Manager.Level*21) - 62;
+            return (double)values[1] - ((values[0] as XamDataTreeNodeControl).Node.Manager.Level * 21) - 50;
+            
+
         }
 
 
