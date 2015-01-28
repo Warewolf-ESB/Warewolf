@@ -14,7 +14,6 @@
     <!--  *********************************  RESOURCES  *********************************  -->
     <ResourceDictionary.MergedDictionaries>
 
-        <!--  <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/xamDataTree.xaml" />  -->
 
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
