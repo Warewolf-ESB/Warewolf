@@ -19,48 +19,10 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <ContextMenu x:Key="TreeNodeContextMenu">
-            <ContextMenu.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ContextMenu.ItemsPanel>
-            <MenuItem Name="NewDataBaseService" Header="New Database Service" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.DbService}" Visibility="{Binding Path=Data.CanCreateDbService, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewDataBaseSource" Header="New Database Source" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.DbSource}" Visibility="{Binding Path=Data.CanCreateDbSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewWebService" Header="New Web Service" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.WebService}" Visibility="{Binding Path=Data.CanCreateWebService, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewWebSource" Header="New Web Source" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.WebSource}" Visibility="{Binding Path=Data.CanCreateWebSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewPluginService" Header="New Plugin Service" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.PluginService}" Visibility="{Binding Path=Data.CanCreatePluginService, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewPluginSource" Header="New Plugin Source" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.PluginSource}" Visibility="{Binding Path=Data.CanCreatePluginSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <Separator></Separator>
-            <MenuItem Name="Rename" Header="Rename" Command="{Binding Path=Data.RenameCommand}"
-                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanRename, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="Delete" Header="Delete" Command="{Binding Path=Data.DeleteCommand}"
-                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="Deploy" Header="Deploy" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeployCommand}"
-                          CommandParameter="{Binding Path=Data.CanShowVersions}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="ShowHideVersions" Header="{Binding Path=Data.VersionHeader}" Command="{Binding Path=Data.ShowVersionHistory}"
-                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
-            <MenuItem Name="Rollback" Header="Make Current Version" Command="{Binding Path=Data.RollbackCommand}"
-                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
-            <MenuItem Name="Open" Header="Open" Command="{Binding Path=Data.OpenVersionCommand}"
-                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-        </ContextMenu>
-
-<!--        <Style BasedOn="{StaticResource XamDataTreeNodeControlStyle}" TargetType="{x:Type ig:XamDataTreeNodeControl}">-->
-<!--            <Setter Property="ContextMenu" Value="{DynamicResource TreeNodeContextMenu}" />-->
-<!--            <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />            -->
-<!--        </Style>-->
-
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         <converters:WidthConverter x:Key="WidthConverter" />
         <converters:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
+        <views:NotConverter x:Key="NotConverter" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -91,7 +53,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
-                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
             <TextBox Grid.Row="0"
@@ -105,15 +66,6 @@
                     Height="25"
                     Command="{Binding RefreshCommand}"
                     Padding="4"
-                    Style="{StaticResource ExplorerButtonStyle}">
-                <fa:FontAwesome FontSize="18" FontWeight="SemiBold" Icon="Refresh" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            </Button>
-            <Button Grid.Row="0"
-                    Grid.Column="2"
-                    Width="25"
-                    Height="25"
-                    Command="{Binding RefreshCommand}"
-                    Padding="4"
                     Style="{StaticResource ExplorerButtonStyle}"
                     Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
@@ -121,7 +73,7 @@
 
             </Button>
             <views:CircularProgressBar Grid.Row="0"
-                                       Grid.Column="2"
+                                       Grid.Column="1"
                                        Width="25"
                                        Height="25"
                                        Padding="2"
@@ -180,26 +132,20 @@
                                         Command="{Binding Path=Data.RefreshCommand}"
                                         Padding="-4"
                                         Style="{StaticResource ExplorerTreeButtonStyle}">
-                                <Image 
-                                       Height="17"
-                                       Width="17"
-                                       Margin="-5,0,0,0"
-                                        Visibility="{Binding Path=Data.IsConnecting,
-                                                             Converter={StaticResource NotConverter}}">
-                                    </Image>
-                                    </Button>
-                                    <Grid Grid.Column="1">
+                                    <Grid>
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo}"
-                                               Visibility="{Binding Path=Data.IsConnected,
-                                                                    Converter={StaticResource BoolToVisibilityConverter}}" />
+                                               Visibility="{Binding Path=Data.IsConnecting,
+                                                                    Converter={StaticResource NotConverter}}" />
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo-Mono}"
                                                Visibility="{Binding Path=Data.IsConnected,
                                                                     Converter={StaticResource NotConverter}}" />
                                     </Grid>
+                                </Button>
+
                                 <views:CircularProgressBar Grid.Row="0"
                                                            Grid.Column="0"
                                                            Visibility="{Binding Path=Data.IsConnecting,
@@ -232,12 +178,12 @@
                                             <ObjectAnimationUsingKeyFrames Duration="0"
                                                                            Storyboard.TargetName="EditPermissionImage"
                                                                            Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}" />
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Disabled}" />
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Duration="0"
                                                                            Storyboard.TargetName="ExecutePermissionImage"
                                                                            Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}" />
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Disabled}" />
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -268,6 +214,10 @@
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                     </MultiBinding>
                                 </DockPanel.Width>
+
+
+                                <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
+
 
 
                                 <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
@@ -371,6 +321,7 @@
 
 
                                                 <ig:XamMenuItem Name="Rename"
+																InputGestureText="???"
                                                                 Command="{Binding Path=Data.RenameCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Rename"
@@ -379,6 +330,7 @@
 
 
                                                 <ig:XamMenuItem Name="Delete"
+																InputGestureText="???"
                                                                 Command="{Binding Path=Data.DeleteCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Delete"
@@ -387,6 +339,7 @@
 
 
                                                 <ig:XamMenuItem Name="Deploy"
+																InputGestureText="???"
                                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
                                                                                   Path=DataContext.DeployCommand}"
                                                                 CommandParameter="{Binding Path=Data.CanShowVersions}"
@@ -401,7 +354,8 @@
                                                                 Command="{Binding Path=Data.ShowVersionHistory}"
                                                                 Header="{Binding Path=Data.VersionHeader}"
                                                                 Visibility="{Binding Path=Data.CanShowVersions,
-                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                                Converter={StaticResource BoolToVisibilityConverter}}">
+
                                                     <ig:XamMenuItem.Icon>
                                                         <Image Width="12"
                                                                Height="12"
@@ -411,6 +365,7 @@
 
 
                                                 <ig:XamMenuItem Name="Rollback"
+																InputGestureText="???"
                                                                 Command="{Binding Path=Data.RollbackCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Make Current Version"
@@ -419,6 +374,7 @@
 
 
                                                 <ig:XamMenuItem Name="Open"
+																InputGestureText="???"
                                                                 Command="{Binding Path=Data.OpenVersionCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Open"
@@ -442,7 +398,32 @@
                                                              Converter={StaticResource BoolToVisibilityConverter}}">
                                     <Image x:Name="ExecutePermissionImage"
                                            Width="14"
-                                           Source="{StaticResource System-Spacer}" />
+                                           Source="{StaticResource System-Spacer}" >
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="EditPermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}" />
+                                                        </ObjectAnimationUsingKeyFrames> 
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="EditPermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
+                                                        </ObjectAnimationUsingKeyFrames>                                                        
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
+                                    </Image>
                                 </Button>
                                 <Button Width="Auto"
                                         Margin="0,0,5,0"
@@ -454,11 +435,36 @@
                                         Visibility="{Binding Data.CanEdit}">
                                     <Image x:Name="EditPermissionImage"
                                            Width="14"
-                                           Source="{StaticResource System-Spacer}" />
+                                           Source="{StaticResource System-Spacer}" >
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="ExecutePermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="ExecutePermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
+                                    </Image>
                                 </Button>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="20" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
@@ -480,7 +486,6 @@
                                     </Image>
                                     <TextBlock x:Name="ResourceNameTextBlock"
                                                Grid.Column="1"
-                                               Height="19"
                                                MinWidth="5"
                                                VerticalAlignment="Center"
                                                Text="{Binding Path=Data.ResourceName}"
