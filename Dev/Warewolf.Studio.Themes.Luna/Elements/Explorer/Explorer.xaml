@@ -14,7 +14,6 @@
     <!--  *********************************  RESOURCES  *********************************  -->
     <ResourceDictionary.MergedDictionaries>
 
-        <!--  <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/xamDataTree.xaml" />  -->
 
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
@@ -238,7 +237,7 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="Height" Value="22" />
+        <Setter Property="Height" Value="20" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igDt:XamDataTreeNodeControl">

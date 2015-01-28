@@ -170,69 +170,57 @@
 
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
-
                             <DataTemplate.Triggers>
-                                
+                                <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="EditPermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Disabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="ExecutePermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Disabled}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="EditPermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="ExecutePermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
                             </DataTemplate.Triggers>
                             <DockPanel x:Name="ItemDockPanel"
                                        Height="Auto"
-                                       VerticalAlignment="Stretch">
+                                       >
                                 <DockPanel.Width>
                                     <MultiBinding Converter="{StaticResource WidthConverter}">
                                         <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                     </MultiBinding>
                                 </DockPanel.Width>
-                                <DockPanel.Triggers>
-                                    <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="EditPermissionImage"
-                                                                           Storyboard.TargetProperty="Source">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Disabled}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="ExecutePermissionImage"
-                                                                           Storyboard.TargetProperty="Source">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Disabled}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                    <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="EditPermissionImage"
-                                                                           Storyboard.TargetProperty="Source">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                                <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="ExecutePermissionImage"
-                                                                           Storyboard.TargetProperty="Source">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </DockPanel.Triggers>
-
-                                <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
-
-
-
                                 <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
                                 <ig:ContextMenuService.Manager>
                                     <ig:ContextMenuManager>
                                         <ig:ContextMenuManager.ContextMenu>
                                             <ig:XamContextMenu x:Name="ExplorerMenu">
-
-
                                                 <ig:XamContextMenu.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <VirtualizingStackPanel Background="{StaticResource WareWolfWhiteBrush}" Orientation="Vertical" />
-
                                                     </ItemsPanelTemplate>
                                                 </ig:XamContextMenu.ItemsPanel>
 
@@ -405,56 +393,53 @@
                                     </ig:ContextMenuManager>
                                 </ig:ContextMenuService.Manager>
 
-
-                                <Button Margin="0,0,5,0"
-                                        HorizontalAlignment="Right"
+                                <Button x:Name="ExecuteButton"
+                                        Width="14"
                                         Background="Transparent"
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
-                                        Visibility="{Binding Data.CanExecute,
-                                                             Converter={StaticResource BoolToVisibilityConverter}}">
+                                        Visibility="{Binding Data.CanExecute}">
                                     <Image x:Name="ExecutePermissionImage"
-                                           Width="14"
+                                           MaxWidth="14"
+                                           Stretch="Uniform"
                                            Source="{StaticResource System-Spacer}" >
                                         <Image.Triggers>
-                                            <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
+                                            <EventTrigger RoutedEvent="Image.MouseEnter">
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                            Storyboard.TargetProperty="Source">
-
                                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}" />
-                                                        </ObjectAnimationUsingKeyFrames> 
+                                                        </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
-                                            <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                            Storyboard.TargetProperty="Source">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
-                                                        </ObjectAnimationUsingKeyFrames>                                                        
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Disabled}" />
+                                                        </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
                                         </Image.Triggers>
-                                    </Image>
+                                    </Image>                                   
                                 </Button>
-                                <Button Width="Auto"
+                                <Button Width="14"
                                         Margin="0,0,5,0"
-                                        HorizontalAlignment="Right"
                                         Background="Transparent"
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
                                         Visibility="{Binding Data.CanEdit}">
                                     <Image x:Name="EditPermissionImage"
-                                           Width="14"
+                                           Stretch="Uniform"
                                            Source="{StaticResource System-Spacer}" >
                                         <Image.Triggers>
-                                            <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
+                                            <EventTrigger RoutedEvent="Image.MouseEnter">
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Duration="0"
@@ -464,28 +449,22 @@
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
-                                            <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                            Storyboard.TargetProperty="Source">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Disabled}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
                                         </Image.Triggers>
                                     </Image>
+                                    
                                 </Button>
-                                <Grid Height="Auto">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                                <StackPanel VerticalAlignment="Center">
                                     <TextBlock x:Name="ResourceNameTextBlock"
-                                               Grid.Column="0"
                                                MinWidth="5"
                                                Text="{Binding Path=Data.ResourceName}"
                                                Visibility="{Binding Path=Data.IsNotRenaming,
@@ -495,9 +474,8 @@
                                              <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
                                             </i:EventTrigger>
                                             </i:Interaction.Triggers>
-                                        </TextBlock>
+                                    </TextBlock>
                                     <TextBox Name="PropertySearch"
-                                             Grid.Column="1"
                                              IsVisibleChanged="UIElement_OnIsVisibleChanged"
                                              Text="{Binding Path=Data.ResourceName,
                                                             UpdateSourceTrigger=LostFocus}"
@@ -510,7 +488,7 @@
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </TextBox>
-                                </Grid>
+                                </StackPanel>
                             </DockPanel>
                         </DataTemplate>                       
                     </ig:NodeLayout.ItemTemplate>
@@ -537,7 +515,7 @@
                             <Image x:Name="ResourceImage"
                                            Width="14"
                                            Height="14"
-                                           Margin="0,0,0,0"
+                                           Margin="-37,0,0,0"
                                            Source="{Binding Data.ResourceType,
                                                             Converter={StaticResource ResourceTypeToIconConverter}}"
                                            Visibility="{Binding Data.ResourceType,
