@@ -21,7 +21,7 @@ namespace Warewolf.Studio.Views
 
         #region Implementation of IDialogueWindow
 
-        public void ShowThis(IDialogueTemplate serverPopup)
+        public MessageBoxResult ShowThis(IDialogueTemplate serverPopup)
         {
             DataContext = serverPopup;
 
@@ -31,9 +31,11 @@ namespace Warewolf.Studio.Views
             //MediaTypeNames.Application.Current.MainWindow.Effect = blurEffect;
             var window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
             window.ShowDialog();
-           
+            return MessageBoxResult.OK;
         }
 
         #endregion
+
+
     }
 }
