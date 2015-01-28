@@ -91,6 +91,7 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
             CanCreateDbService = true;
+            CanCreateWorkflowService = true;
             CanRename = true; //todo:remove
             CanDelete = true; //todo:remove
             CanCreatePluginService = true;
@@ -287,6 +288,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
+        public bool CanCreateWorkflowService { get; set; }
+
+
+
         public bool CanRename
         {
             get

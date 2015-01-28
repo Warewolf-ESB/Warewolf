@@ -234,8 +234,23 @@
                                                     </ItemsPanelTemplate>
                                                 </ig:XamContextMenu.ItemsPanel>
 
+                                                <ig:XamMenuItem Name="NewService"
+                                                                InputGestureText="[Ctrl+W]"
+                                                                Command="{Binding Path=Data.NewCommand}"
+                                                                CommandParameter="{x:Static data:ResourceType.WorkflowService}"
+                                                                Header="New Workflow Service"
+                                                                Visibility="{Binding Path=Data.CanCreateWorkflowService,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <ig:XamMenuItem.Icon>
+                                                        <Image Width="12"
+                                                               Height="12"
+                                                               Source="{StaticResource Explorer-WorkflowService}" />
+                                                    </ig:XamMenuItem.Icon>
+                                                </ig:XamMenuItem>
+                                                
 
                                                 <ig:XamMenuItem Name="NewDataBaseService"
+                                                                InputGestureText="[Ctrl+Shift+D]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.DbService}"
                                                                 Header="New Database Service"
@@ -263,6 +278,7 @@
 
 
                                                 <ig:XamMenuItem Name="NewWebService"
+                                                                InputGestureText="[Ctrl+Shift+W]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.WebService}"
                                                                 Header="New Web Service"
@@ -290,6 +306,7 @@
 
 
                                                 <ig:XamMenuItem Name="NewPluginService"
+                                                                InputGestureText="[Ctrl+Shift+P]"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.PluginService}"
                                                                 Header="New Plugin Service"
@@ -321,7 +338,7 @@
 
 
                                                 <ig:XamMenuItem Name="Rename"
-																InputGestureText="???"
+																InputGestureText="[F2]"
                                                                 Command="{Binding Path=Data.RenameCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Rename"
@@ -330,8 +347,7 @@
 
 
                                                 <ig:XamMenuItem Name="Delete"
-																InputGestureText="???"
-                                                                Command="{Binding Path=Data.DeleteCommand}"
+																Command="{Binding Path=Data.DeleteCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Delete"
                                                                 Visibility="{Binding Path=Data.CanDelete,
@@ -339,15 +355,17 @@
 
 
                                                 <ig:XamMenuItem Name="Deploy"
-																InputGestureText="???"
-                                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
+																Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}},
                                                                                   Path=DataContext.DeployCommand}"
                                                                 CommandParameter="{Binding Path=Data.CanShowVersions}"
                                                                 Header="Deploy"
                                                                 Visibility="{Binding Path=CanShowVersions,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                                                <ig:XamMenuSeparator />
+                                                <ig:XamMenuSeparator 
+                                                    Visibility="{Binding Path=Data.CanShowVersions,
+                                                                Converter={StaticResource BoolToVisibilityConverter}}"
+                                                    />
 
 
                                                 <ig:XamMenuItem Name="ShowHideVersions"
@@ -365,8 +383,7 @@
 
 
                                                 <ig:XamMenuItem Name="Rollback"
-																InputGestureText="???"
-                                                                Command="{Binding Path=Data.RollbackCommand}"
+																Command="{Binding Path=Data.RollbackCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Make Current Version"
                                                                 Visibility="{Binding Path=Data.IsVersion,
@@ -374,8 +391,7 @@
 
 
                                                 <ig:XamMenuItem Name="Open"
-																InputGestureText="???"
-                                                                Command="{Binding Path=Data.OpenVersionCommand}"
+																Command="{Binding Path=Data.OpenVersionCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Open"
                                                                 Visibility="{Binding Path=Data.IsVersion,
