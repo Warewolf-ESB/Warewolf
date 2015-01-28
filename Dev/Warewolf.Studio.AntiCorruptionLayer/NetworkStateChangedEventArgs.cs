@@ -5,22 +5,22 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 {
     public class NetworkStateChangedEventArgs:INetworkStateChangedEventArgs
     {
-        NetworkStateChangedState _state;
+        ConnectionNetworkState _state;
 
         public NetworkStateChangedEventArgs(NetworkStateEventArgs state)
         {
             switch(state.ToState)
             {
-                case NetworkState.Connecting: _state = NetworkStateChangedState.Connecting; break;
-                case NetworkState.Offline: _state = NetworkStateChangedState.Disconnected; break;
-                case NetworkState.Online: _state = NetworkStateChangedState.Connected; break;
+                case NetworkState.Connecting: _state = ConnectionNetworkState.Connecting; break;
+                case NetworkState.Offline: _state = ConnectionNetworkState.Disconnected; break;
+                case NetworkState.Online: _state = ConnectionNetworkState.Connected; break;
             }
             
         }
 
         #region Implementation of INetworkStateChangedEventArgs
 
-        public NetworkStateChangedState State
+        public ConnectionNetworkState State
         {
             get
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Activities.Presentation.Debug;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -20,8 +19,10 @@ namespace Warewolf.Studio.ViewModels
         ICollection<IExplorerItemViewModel> _children;
         bool _isConnecting;
         bool _isConnected;
-        ICommand _refreshCommand;
         bool _isExpanderVisible;
+        ConnectionNetworkState _connectionState;
+        bool _isServerIconVisible;
+        bool _isServerUnavailableIconVisible;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -34,6 +35,7 @@ namespace Warewolf.Studio.ViewModels
             NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(Load);
+            IsServerIconVisible = true;
            
         }
 
@@ -41,12 +43,12 @@ namespace Warewolf.Studio.ViewModels
         {
             switch(args.State)
             {
-                    case NetworkStateChangedState.Connected:
+                    case ConnectionNetworkState.Connected:
                     Server.Connect();
                     if(!IsConnecting)
                          _shellViewModel.ExecuteOnDispatcher(Load);
                     break;
-                    case NetworkStateChangedState.Disconnected:
+                    case ConnectionNetworkState.Disconnected:
                     _shellViewModel.ExecuteOnDispatcher(() =>
                     {
                         IsConnected = false;
@@ -54,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
      
                     });
                     break;
-                    case NetworkStateChangedState.Connecting:
+                    case ConnectionNetworkState.Connecting:
 
                     _shellViewModel.ExecuteOnDispatcher(() =>
                     {
@@ -65,11 +67,6 @@ namespace Warewolf.Studio.ViewModels
                     });
                     break;
             }
-        }
-
-        void Unload()
-        {
-            Children.Clear();
         }
 
         public IServer Server { get; set; }
@@ -139,6 +136,7 @@ namespace Warewolf.Studio.ViewModels
             {
                
                 _isConnected = value;
+               
                 OnPropertyChanged(() => IsConnected);
             }
         }
@@ -167,8 +165,11 @@ namespace Warewolf.Studio.ViewModels
             private set
             {
                 _isConnecting = value;
-                OnPropertyChanged(()=>IsConnecting);
+               IsServerIconVisible = !value;
+               IsServerUnavailableIconVisible = !value;
 
+                OnPropertyChanged(()=>IsConnecting);
+       
             }
         }
 
@@ -228,15 +229,29 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ICommand RefreshCommand
+        public ICommand RefreshCommand { get; set; }
+        public bool IsServerIconVisible
         {
             get
             {
-                return _refreshCommand;
+                return _isServerIconVisible&&IsConnected;
             }
             set
             {
-                _refreshCommand = value;
+                _isServerIconVisible = value;
+                OnPropertyChanged(()=>IsServerIconVisible);
+            }
+        }
+        public bool IsServerUnavailableIconVisible
+        {
+            get
+            {
+                return _isServerUnavailableIconVisible && !IsConnected;
+            }
+            set
+            {
+                _isServerUnavailableIconVisible = value;
+                OnPropertyChanged(() => IsServerIconVisible);
             }
         }
 
