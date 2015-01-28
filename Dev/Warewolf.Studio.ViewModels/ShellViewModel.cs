@@ -216,7 +216,8 @@ namespace Warewolf.Studio.ViewModels
             var serverPopup = _unityContainer.Resolve<IDialogueTemplate>();
             serverPopup.InnerDialogue = _unityContainer.Resolve<INewServerDialogue>();
             var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
-            dialogue.ShowThis();
+
+            dialogue.ShowThis(serverPopup);
         }
 
         public void SaveService()

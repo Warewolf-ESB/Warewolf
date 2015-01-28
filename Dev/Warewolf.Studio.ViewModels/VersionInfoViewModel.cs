@@ -142,6 +142,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand DeployCommand { get; set; }
         public bool CanCreateDbService { get; set; }
         public bool CanCreateDbSource { get; set; }
+        public bool CanCreateServerSource { get; set; }
         public bool CanCreateWebService { get; set; }
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }

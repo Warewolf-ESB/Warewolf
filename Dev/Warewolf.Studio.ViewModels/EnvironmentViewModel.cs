@@ -23,6 +23,7 @@ namespace Warewolf.Studio.ViewModels
         ConnectionNetworkState _connectionState;
         bool _isServerIconVisible;
         bool _isServerUnavailableIconVisible;
+        bool _canCreateServerSource;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -107,6 +108,17 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool CanCreateDbService { get; set; }
         public bool CanCreateDbSource { get; set; }
+        public bool CanCreateServerSource
+        {
+            get
+            {
+                return _canCreateServerSource;
+            }
+            set
+            {
+                _canCreateServerSource = value;
+            }
+        }
         public bool CanCreateWebService { get; set; }
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }

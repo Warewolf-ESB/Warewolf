@@ -239,11 +239,11 @@ namespace Warewolf.Studio.ViewModels
         { get; set; }
 
 
-        public ICommand OkCommand
-        { get; set; }
+        //public ICommand OkCommand
+        //{ get; set; }
 
-        public ICommand CancelCommand
-        { get; set; }
+        //public ICommand CancelCommand
+        //{ get; set; }
 
     }
 
@@ -278,85 +278,7 @@ namespace Warewolf.Studio.ViewModels
         /// The message that will be set if the test is either successful or not
         /// </summary>
         public string TestMessage { get; set; }
-        public bool IsOkEnabled
-        {
-            get
-            {
-                return _isOkEnabled;
-            }
-            set
-            {
-                _isOkEnabled = value;
-            }
-        }
-        public bool IsTestEnabled
-        {
-            get
-            {
-                return _isTestEnabled;
-            }
-            set
-            {
-                _isTestEnabled = value;
-            }
-        }
-        public bool IsUserNameVisible
-        {
-            get
-            {
-                return _isUserNameVisible;
-            }
-            set
-            {
-                _isUserNameVisible = value;
-            }
-        }
-        public bool IsPasswordVisible
-        {
-            get
-            {
-                return _isPasswordVisible;
-            }
-            set
-            {
-                _isPasswordVisible = value;
-            }
-        }
-        public string AddressLabel
-        {
-            get
-            {
-                return _addressLabel;
-            }
-        }
-        public string UserNameLabel
-        {
-            get
-            {
-                return _userNameLabel;
-            }
-        }
-        public string AuthenticationLabel
-        {
-            get
-            {
-                return _authenticationLabel;
-            }
-        }
-        public string PasswordLabel
-        {
-            get
-            {
-                return _passwordLabel;
-            }
-        }
-        public string TestLabel
-        {
-            get
-            {
-                return _testLabel;
-            }
-        }
+
 
         #endregion
     }
