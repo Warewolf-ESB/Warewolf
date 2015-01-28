@@ -19,48 +19,10 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <ContextMenu x:Key="TreeNodeContextMenu">
-            <ContextMenu.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ContextMenu.ItemsPanel>
-            <MenuItem Name="NewDataBaseService" Header="New Database Service" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.DbService}" Visibility="{Binding Path=Data.CanCreateDbService, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewDataBaseSource" Header="New Database Source" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.DbSource}" Visibility="{Binding Path=Data.CanCreateDbSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewWebService" Header="New Web Service" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.WebService}" Visibility="{Binding Path=Data.CanCreateWebService, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewWebSource" Header="New Web Source" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.WebSource}" Visibility="{Binding Path=Data.CanCreateWebSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewPluginService" Header="New Plugin Service" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.PluginService}" Visibility="{Binding Path=Data.CanCreatePluginService, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="NewPluginSource" Header="New Plugin Source" Command="{Binding Path=Data.NewCommand}"
-                          CommandParameter="{x:Static data:ResourceType.PluginSource}" Visibility="{Binding Path=Data.CanCreatePluginSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <Separator></Separator>
-            <MenuItem Name="Rename" Header="Rename" Command="{Binding Path=Data.RenameCommand}"
-                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanRename, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="Delete" Header="Delete" Command="{Binding Path=Data.DeleteCommand}"
-                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="Deploy" Header="Deploy" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeployCommand}"
-                          CommandParameter="{Binding Path=Data.CanShowVersions}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <MenuItem Name="ShowHideVersions" Header="{Binding Path=Data.VersionHeader}" Command="{Binding Path=Data.ShowVersionHistory}"
-                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
-            <MenuItem Name="Rollback" Header="Make Current Version" Command="{Binding Path=Data.RollbackCommand}"
-                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
-            <MenuItem Name="Open" Header="Open" Command="{Binding Path=Data.OpenVersionCommand}"
-                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-        </ContextMenu>
-
-<!--        <Style BasedOn="{StaticResource XamDataTreeNodeControlStyle}" TargetType="{x:Type ig:XamDataTreeNodeControl}">-->
-<!--            <Setter Property="ContextMenu" Value="{DynamicResource TreeNodeContextMenu}" />-->
-<!--            <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />            -->
-<!--        </Style>-->
-
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         <converters:WidthConverter x:Key="WidthConverter" />
         <converters:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
+        <views:NotConverter x:Key="NotConverter" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -91,7 +53,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
-                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
             <TextBox Grid.Row="0"
@@ -105,15 +66,6 @@
                     Height="25"
                     Command="{Binding RefreshCommand}"
                     Padding="4"
-                    Style="{StaticResource ExplorerButtonStyle}">
-                <fa:FontAwesome FontSize="18" FontWeight="SemiBold" Icon="Refresh" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            </Button>
-            <Button Grid.Row="0"
-                    Grid.Column="2"
-                    Width="25"
-                    Height="25"
-                    Command="{Binding RefreshCommand}"
-                    Padding="4"
                     Style="{StaticResource ExplorerButtonStyle}"
                     Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
@@ -121,7 +73,7 @@
 
             </Button>
             <views:CircularProgressBar Grid.Row="0"
-                                       Grid.Column="2"
+                                       Grid.Column="1"
                                        Width="25"
                                        Height="25"
                                        Padding="2"
@@ -379,12 +331,7 @@
                                                                 Command="{Binding Path=Data.ShowVersionHistory}"
                                                                 Header="{Binding Path=Data.VersionHeader}"
                                                                 Visibility="{Binding Path=Data.CanShowVersions,
-                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    <ig:XamMenuItem.Icon>
-                                                        <Image Width="12"
-                                                               Height="12"
-                                                               Source="{StaticResource Explorer-Permission-Menu}" />
-                                                    </ig:XamMenuItem.Icon>
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">                                                 
                                                 </ig:XamMenuItem>
                                                 <ig:XamMenuItem Name="Rollback"
                                                                 Command="{Binding Path=Data.RollbackCommand}"
