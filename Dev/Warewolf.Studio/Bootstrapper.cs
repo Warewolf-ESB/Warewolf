@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Util;
 using Infragistics.Themes;
@@ -65,6 +66,9 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IToolboxView>(new ToolboxView());
             Container.RegisterInstance<IMenuView>(new MenuView());
             Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
+            Container.RegisterInstance<IActionDialogueWindow>(new DialogWindow());
+            Container.RegisterInstance<IDialogueTemplate>(new DialogueViewModel());
+            //Container.RegisterInstance<INewServerDialogue>(new NewServerViewModel());
            
      
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();

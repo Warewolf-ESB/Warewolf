@@ -12,4 +12,8 @@ namespace Dev2.Common.Interfaces.PopupController
     {
         MessageBoxResult Show(IPopupMessage message);
     }
+    public interface IActionDialogueWindow
+    {
+        void ShowThis();
+    }
 }

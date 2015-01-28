@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Util;
 using Microsoft.Practices.Prism.Mvvm;
@@ -198,6 +199,24 @@ namespace Warewolf.Studio.ViewModels
 
         public void NewResource(ResourceType? type)
         {
+            if(type == null)
+                return;
+            switch(type.Value)
+            {
+                case  ResourceType.ServerSource :
+                    CreateNewServerSource();
+                    break;
+                default : return;
+
+            }
+        }
+
+        void CreateNewServerSource()
+        {
+            var serverPopup = _unityContainer.Resolve<IDialogueTemplate>();
+            serverPopup.InnerDialogue = _unityContainer.Resolve<INewServerDialogue>();
+            var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
+            dialogue.ShowThis();
         }
 
         public void SaveService()

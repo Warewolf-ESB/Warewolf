@@ -80,6 +80,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DeployViewModelTests.cs" />
+    <Compile Include="DialogueViewModelTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="Help\HelpDescriptoViewModelTests.cs" />
     <Compile Include="Help\HelpViewModelTest.cs" />

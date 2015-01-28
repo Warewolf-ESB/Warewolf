@@ -14,7 +14,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Robin van den Heever")]
         [TestCategory("NewServerViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
+        // ReSharper disable InconsistentNaming
         public void NewServerViewModel_Constructor_NullShellViewModel_ExceptionThrown()
+       
         {
             //------------Setup for test--------------------------
 
@@ -54,5 +56,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
 
         }
+        // ReSharper restore InconsistentNaming
     }
 }

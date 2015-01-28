@@ -88,6 +88,7 @@
     <Compile Include="ConflictHandlerViewModel.cs" />
     <Compile Include="ConnectControlViewModel.cs" />
     <Compile Include="DeployItemMessage.cs" />
+    <Compile Include="DialogueViewModel.cs" />
     <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="NewServerViewModel.cs" />
