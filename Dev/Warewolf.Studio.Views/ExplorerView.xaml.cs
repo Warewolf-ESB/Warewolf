@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
@@ -49,25 +47,9 @@ namespace Warewolf.Studio.Views
             
 	    }
 
-        private void ScrollBar_Loaded(object sender, RoutedEventArgs e)
-        {
-            var scrollBar = sender as ScrollBar;
-            if (scrollBar != null && scrollBar.Orientation == Orientation.Horizontal)
-            {
-                scrollBar.MinHeight = 0;
-                scrollBar.Height = 0;
-            }
-        }
-
-	    void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 	    {
             Keyboard.Focus((IInputElement)sender);
-	    }
-
-	    void ScrollBarOnScroll(object sender, ScrollEventArgs e)
-	    {
-            ExplorerTree.Width = ExplorerTree.Width + 1;
-            ExplorerTree.Width = ExplorerTree.Width - 1;
 	    }
 	}
 }

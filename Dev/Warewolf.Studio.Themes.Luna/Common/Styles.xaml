@@ -8,7 +8,7 @@
     <!--  *********************************  RESOURCES  *********************************  -->
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
-        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />        
     </ResourceDictionary.MergedDictionaries>
 
     <!--  *********************************  FONTS   *********************************  -->
@@ -16,9 +16,8 @@
 
     <FontFamily x:Key="DefaultFontFamily">Source Sans Pro</FontFamily>
     <FontFamily x:Key="IconFont">FontAwesome</FontFamily>
-
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
-
+    
     <system:Double x:Key="FontSize-Smallest">8</system:Double>
     <system:Double x:Key="FontSize-Smaller">10</system:Double>
     <system:Double x:Key="FontSize-Normal">12</system:Double>

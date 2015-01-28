@@ -10,23 +10,58 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
-
     <UserControl.Resources>
-        <views:NotConverter x:Key="NotConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <ContextMenu x:Key="TreeNodeContextMenu">
+            <ContextMenu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ContextMenu.ItemsPanel>
+            <MenuItem Name="NewDataBaseService" Header="New Database Service" Command="{Binding Path=Data.NewCommand}"
+                          CommandParameter="{x:Static data:ResourceType.DbService}" Visibility="{Binding Path=Data.CanCreateDbService, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="NewDataBaseSource" Header="New Database Source" Command="{Binding Path=Data.NewCommand}"
+                          CommandParameter="{x:Static data:ResourceType.DbSource}" Visibility="{Binding Path=Data.CanCreateDbSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="NewWebService" Header="New Web Service" Command="{Binding Path=Data.NewCommand}"
+                          CommandParameter="{x:Static data:ResourceType.WebService}" Visibility="{Binding Path=Data.CanCreateWebService, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="NewWebSource" Header="New Web Source" Command="{Binding Path=Data.NewCommand}"
+                          CommandParameter="{x:Static data:ResourceType.WebSource}" Visibility="{Binding Path=Data.CanCreateWebSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="NewPluginService" Header="New Plugin Service" Command="{Binding Path=Data.NewCommand}"
+                          CommandParameter="{x:Static data:ResourceType.PluginService}" Visibility="{Binding Path=Data.CanCreatePluginService, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="NewPluginSource" Header="New Plugin Source" Command="{Binding Path=Data.NewCommand}"
+                          CommandParameter="{x:Static data:ResourceType.PluginSource}" Visibility="{Binding Path=Data.CanCreatePluginSource, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <Separator></Separator>
+            <MenuItem Name="Rename" Header="Rename" Command="{Binding Path=Data.RenameCommand}"
+                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanRename, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="Delete" Header="Delete" Command="{Binding Path=Data.DeleteCommand}"
+                          CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="Deploy" Header="Deploy" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ig:XamDataTree}}, Path=DataContext.DeployCommand}"
+                          CommandParameter="{Binding Path=Data.CanShowVersions}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <MenuItem Name="ShowHideVersions" Header="{Binding Path=Data.VersionHeader}" Command="{Binding Path=Data.ShowVersionHistory}"
+                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.CanShowVersions, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="Rollback" Header="Make Current Version" Command="{Binding Path=Data.RollbackCommand}"
+                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <MenuItem Name="Open" Header="Open" Command="{Binding Path=Data.OpenVersionCommand}"
+                     CommandParameter="{Binding Data}" Visibility="{Binding Path=Data.IsVersion, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        </ContextMenu>
+
+<!--        <Style BasedOn="{StaticResource XamDataTreeNodeControlStyle}" TargetType="{x:Type ig:XamDataTreeNodeControl}">-->
+<!--            <Setter Property="ContextMenu" Value="{DynamicResource TreeNodeContextMenu}" />-->
+<!--            <Setter Property="Visibility" Value="{Binding Node.Data.AreVersionsVisible, Converter={StaticResource BoolToVisibility}}" />            -->
+<!--        </Style>-->
+
         <converters:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         <converters:WidthConverter x:Key="WidthConverter" />
         <converters:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
-        <converters:MarginConverter x:Key="marginConverter" />
     </UserControl.Resources>
-
-
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
@@ -68,9 +103,10 @@
                     Grid.Column="1"
                     Width="25"
                     Height="25"
+                    Command="{Binding RefreshCommand}"
                     Padding="4"
                     Style="{StaticResource ExplorerButtonStyle}">
-                <Image Source="{StaticResource System-Filter-Inverted}" />
+                <fa:FontAwesome FontSize="18" FontWeight="SemiBold" Icon="Refresh" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             </Button>
             <Button Grid.Row="0"
                     Grid.Column="2"
@@ -133,7 +169,8 @@
                                     <ColumnDefinition Width="20" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Row="0"
+                                <Button
+                                    Grid.Row="0"
                                         Grid.Column="0"
                                         Width="20"
                                         Height="20"
@@ -142,10 +179,16 @@
                                         BorderThickness="0"
                                         Command="{Binding Path=Data.RefreshCommand}"
                                         Padding="-4"
-                                        Style="{StaticResource ExplorerTreeButtonStyle}"
+                                        Style="{StaticResource ExplorerTreeButtonStyle}">
+                                <Image 
+                                       Height="17"
+                                       Width="17"
+                                       Margin="-5,0,0,0"
                                         Visibility="{Binding Path=Data.IsConnecting,
                                                              Converter={StaticResource NotConverter}}">
-                                    <Grid>
+                                    </Image>
+                                    </Button>
+                                    <Grid Grid.Column="1">
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo}"
@@ -157,7 +200,6 @@
                                                Visibility="{Binding Path=Data.IsConnected,
                                                                     Converter={StaticResource NotConverter}}" />
                                     </Grid>
-                                </Button>
                                 <views:CircularProgressBar Grid.Row="0"
                                                            Grid.Column="0"
                                                            Visibility="{Binding Path=Data.IsConnecting,
