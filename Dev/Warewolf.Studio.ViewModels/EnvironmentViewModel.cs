@@ -219,10 +219,10 @@ namespace Warewolf.Studio.ViewModels
         {
             if(vm.ResourceType != ResourceType.Server)
             {
-                var res = AsList(Children).FirstOrDefault(a => a.Children!= null && a.Children.Any(b=>b.ResourceId==vm.ResourceId));
+                var res = AsList(_children).FirstOrDefault(a => a.Children!= null && a.Children.Any(b=>b.ResourceId==vm.ResourceId));
                 if(res != null)
                 {
-                    res.Children.Remove(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
+                    res.RemoveChild(res.Children.FirstOrDefault(a => a.ResourceId == vm.ResourceId));
                     OnPropertyChanged(()=>Children);
                 }
             }
