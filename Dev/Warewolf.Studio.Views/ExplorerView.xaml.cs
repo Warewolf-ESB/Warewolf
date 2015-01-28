@@ -97,5 +97,10 @@ namespace Warewolf.Studio.Views
 	    {
             Keyboard.Focus((IInputElement)sender);
 	    }
+
+	    private void ExplorerTree_OnActiveNodeChanged(object sender, ActiveNodeChangedEventArgs e)
+	    {
+	        
+	    }
 	}
 }

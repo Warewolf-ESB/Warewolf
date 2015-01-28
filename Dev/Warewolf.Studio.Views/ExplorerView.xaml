@@ -91,14 +91,9 @@
                         IsDropTarget="True"
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
-                        NodeLineVisibility="Hidden">
-
-
-
-
-
+                        NodeLineVisibility="Hidden"
+                        ActiveNodeChanged="ExplorerTree_OnActiveNodeChanged">
             <ig:XamDataTree.EditingSettings>
-
                 <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="True"
                                         IsEnterKeyEditingEnabled="True"
@@ -211,8 +206,6 @@
                                     <MultiBinding Converter="{StaticResource WidthConverter}">
                                         <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
-                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" Path="Tag.Visibility"/>
-
                                     </MultiBinding>
                                 </DockPanel.Width>
                                 <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
