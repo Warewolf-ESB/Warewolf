@@ -20,7 +20,6 @@ namespace Warewolf.Studio
         public Shell(IShellViewModel shellViewModel)
         {
             InitializeComponent();
-            ThemeManager.ApplicationTheme = new LunaTheme(); 
             DataContext = shellViewModel;            
             Loaded+=OnLoaded;
         }

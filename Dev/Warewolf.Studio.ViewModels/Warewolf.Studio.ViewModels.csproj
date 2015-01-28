@@ -155,6 +155,10 @@
       <Project>{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}</Project>
       <Name>Warewolf.Studio.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{c4ac2140-5663-4d3c-9fcd-6d65004cd54e}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
