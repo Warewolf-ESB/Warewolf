@@ -132,26 +132,20 @@
                                         Command="{Binding Path=Data.RefreshCommand}"
                                         Padding="-4"
                                         Style="{StaticResource ExplorerTreeButtonStyle}">
-                                <Image 
-                                       Height="17"
-                                       Width="17"
-                                       Margin="-5,0,0,0"
-                                        Visibility="{Binding Path=Data.IsConnecting,
-                                                             Converter={StaticResource NotConverter}}">
-                                    </Image>
-                                    </Button>
-                                    <Grid Grid.Column="1">
+                                    <Grid>
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo}"
-                                               Visibility="{Binding Path=Data.IsConnected,
-                                                                    Converter={StaticResource BoolToVisibilityConverter}}" />
+                                               Visibility="{Binding Path=Data.IsConnecting,
+                                                                    Converter={StaticResource NotConverter}}" />
                                         <Image Width="18"
                                                Height="18"
                                                Source="{StaticResource System-Logo-Mono}"
                                                Visibility="{Binding Path=Data.IsConnected,
                                                                     Converter={StaticResource NotConverter}}" />
                                     </Grid>
+                                </Button>
+
                                 <views:CircularProgressBar Grid.Row="0"
                                                            Grid.Column="0"
                                                            Visibility="{Binding Path=Data.IsConnecting,
@@ -319,6 +313,7 @@
                                                                 Command="{Binding Path=Data.DeleteCommand}"
                                                                 CommandParameter="{Binding Data}"
                                                                 Header="Delete"
+                                                                InputGestureText="Hello"
                                                                 Visibility="{Binding Path=Data.CanDelete,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
                                                 <ig:XamMenuItem Name="Deploy"
@@ -333,7 +328,7 @@
                                                                 Command="{Binding Path=Data.ShowVersionHistory}"
                                                                 Header="{Binding Path=Data.VersionHeader}"
                                                                 Visibility="{Binding Path=Data.CanShowVersions,
-                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">                                                 
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
                                                 </ig:XamMenuItem>
                                                 <ig:XamMenuItem Name="Rollback"
                                                                 Command="{Binding Path=Data.RollbackCommand}"

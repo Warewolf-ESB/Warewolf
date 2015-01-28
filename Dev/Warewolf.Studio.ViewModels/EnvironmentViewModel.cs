@@ -167,7 +167,7 @@ namespace Warewolf.Studio.ViewModels
             private set
             {
                 _isConnecting = value;
-
+                OnPropertyChanged(()=>IsConnecting);
 
             }
         }
