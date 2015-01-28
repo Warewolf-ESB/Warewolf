@@ -422,25 +422,10 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Image x:Name="ResourceImage"
-                                           Width="14"
-                                           Height="14"
-                                           Margin="-37,0,-8,0"
-                                           Source="{Binding Data.ResourceType,
-                                                            Converter={StaticResource ResourceTypeToIconConverter}}"
-                                           Visibility="{Binding Data.ResourceType,
-                                                                Converter={StaticResource ResourceTypeToVisibilityConverter}}" >
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseLeftButtonDown">
-                                            <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    </Image>
                                     <TextBlock x:Name="ResourceNameTextBlock"
-                                               Grid.Column="1"
+                                               Grid.Column="0"
                                                MinWidth="5"
                                                Text="{Binding Path=Data.ResourceName}"
                                                Visibility="{Binding Path=Data.IsNotRenaming,
@@ -467,8 +452,44 @@
                                     </TextBox>
                                 </Grid>
                             </DockPanel>
-                        </DataTemplate>
+                        </DataTemplate>                       
                     </ig:NodeLayout.ItemTemplate>
+                    <ig:NodeLayout.ExpandedIconTemplate>
+                        <DataTemplate>
+                            <Image x:Name="ResourceImage"
+                                           Width="14"
+                                           Height="14"
+                                           Margin="-37,0,0,0"
+                                           Source="{Binding Data.ResourceType,
+                                                            Converter={StaticResource ResourceTypeToIconConverter}}"
+                                           Visibility="{Binding Data.ResourceType,
+                                                                Converter={StaticResource ResourceTypeToVisibilityConverter}}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Image>
+                        </DataTemplate>
+                    </ig:NodeLayout.ExpandedIconTemplate>
+                    <ig:NodeLayout.CollapsedIconTemplate>
+                        <DataTemplate>
+                            <Image x:Name="ResourceImage"
+                                           Width="14"
+                                           Height="14"
+                                           Margin="0,0,0,0"
+                                           Source="{Binding Data.ResourceType,
+                                                            Converter={StaticResource ResourceTypeToIconConverter}}"
+                                           Visibility="{Binding Data.ResourceType,
+                                                                Converter={StaticResource ResourceTypeToVisibilityConverter}}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Image>
+                        </DataTemplate>
+                    </ig:NodeLayout.CollapsedIconTemplate>
                 </ig:NodeLayout>
             </ig:XamDataTree.GlobalNodeLayouts>
         </ig:XamDataTree>
