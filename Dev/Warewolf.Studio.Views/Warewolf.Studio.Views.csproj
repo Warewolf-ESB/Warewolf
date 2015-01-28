@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FontAwesome.WPF">
-      <HintPath>..\packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll</HintPath>
+      <HintPath>\\rsaklfhagashen\Stuff\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
@@ -165,6 +165,7 @@
     <Compile Include="DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EnumToBoolConverter.cs" />
     <Compile Include="ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
@@ -176,6 +177,7 @@
     <Compile Include="MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NotConverter.cs" />
     <Compile Include="PopupView.xaml.cs">
       <DependentUpon>PopupView.xaml</DependentUpon>
     </Compile>
@@ -184,6 +186,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ServerUserControl.xaml.cs">
+      <DependentUpon>ServerUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolboxView.xaml.cs">
       <DependentUpon>ToolboxView.xaml</DependentUpon>
@@ -234,6 +239,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PopupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ServerUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

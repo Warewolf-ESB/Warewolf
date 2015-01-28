@@ -29,6 +29,24 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// The message that will be set if the test is either successful or not
         /// </summary>
         string TestMessage { get; set; }
+
+        bool IsOkEnabled { get; set; }
+
+        bool IsTestEnabled { get; set; }
+
+        bool IsUserNameVisible { get; set; }
+
+        bool IsPasswordVisible { get; set; }
+
+        string AddressLabel { get; }
+
+        string UserNameLabel { get; }
+
+        string AuthenticationLabel { get; }
+
+        string PasswordLabel { get; }
+
+        string TestLabel { get; }
   
     }
 }
