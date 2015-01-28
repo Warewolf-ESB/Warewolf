@@ -91,14 +91,9 @@
                         IsDropTarget="True"
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
-                        NodeLineVisibility="Hidden">
-
-
-
-
-
+                        NodeLineVisibility="Hidden"
+                        ActiveNodeChanged="ExplorerTree_OnActiveNodeChanged">
             <ig:XamDataTree.EditingSettings>
-
                 <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="True"
                                         IsEnterKeyEditingEnabled="True"
