@@ -16,14 +16,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Command to Validate if the dialogue can be saves
         /// </summary>
         ICommand Validate { get; set; }
-        /// <summary>
-        /// Command for save/ok
-        /// </summary>
-        ICommand OkCommand {get;set;}
-        /// <summary>
-        /// Command for cancel
-        /// </summary>
-        ICommand CancelCommand { get; set; }
+
          /// <summary>
          ///  validateion message to left of ok cancel
          /// </summary>
