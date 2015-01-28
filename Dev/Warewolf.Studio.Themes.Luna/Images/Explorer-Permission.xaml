@@ -9,7 +9,7 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
-    <DrawingImage x:Key="Explorer-Permission-Menu">
+    <DrawingImage x:Key="Explorer-Permission-Disabled">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
