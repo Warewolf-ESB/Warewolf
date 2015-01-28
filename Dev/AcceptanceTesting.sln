@@ -83,7 +83,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Explorer.Specs", "Dev2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{20848FEE-00A7-4B96-9FA1-80F2890E37AB}"
 	ProjectSection(SolutionItems) = preProject
-		TestSettings\Acceptance\CI Environments.testsettings = TestSettings\Acceptance\CI Environments.testsettings
+		TestSettings\Acceptance\Environment Pool.testsettings = TestSettings\Acceptance\Environment Pool.testsettings
 		TestSettings\Acceptance\First CI Environment.testsettings = TestSettings\Acceptance\First CI Environment.testsettings
 		TestSettings\Acceptance\Local.testsettings = TestSettings\Acceptance\Local.testsettings
 		TestSettings\Acceptance\Sandbox.testsettings = TestSettings\Acceptance\Sandbox.testsettings
