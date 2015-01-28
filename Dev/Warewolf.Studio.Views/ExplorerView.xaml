@@ -422,13 +422,13 @@
                                         </Image.Triggers>
                                     </Image>
                                 </Button>
-                                <Grid>
+                                <Grid Height="Auto">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" MinWidth="5" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Image x:Name="ResourceImage"
                                            Width="14"
@@ -447,7 +447,6 @@
                                     <TextBlock x:Name="ResourceNameTextBlock"
                                                Grid.Column="1"
                                                MinWidth="5"
-                                               VerticalAlignment="Center"
                                                Text="{Binding Path=Data.ResourceName}"
                                                Visibility="{Binding Path=Data.IsNotRenaming,
                                                                     Converter={StaticResource BoolToVisibilityConverter}}" >

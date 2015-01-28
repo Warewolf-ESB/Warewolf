@@ -238,7 +238,7 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="Height" Value="20" />
+        <Setter Property="Height" Value="22" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igDt:XamDataTreeNodeControl">
