@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 {

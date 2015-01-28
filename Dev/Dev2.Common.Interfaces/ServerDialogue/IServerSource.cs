@@ -1,10 +1,9 @@
 ﻿using System.Windows.Input;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 
-namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
+namespace Dev2.Common.Interfaces.ServerDialogue
 {
-
-    public interface INewServerDialogue : IInnerDialogueTemplate
+    public interface IServerSource
     {
         /// <summary>
         /// The server address that we are trying to connect to
@@ -30,6 +29,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// The message that will be set if the test is either successful or not
         /// </summary>
         string TestMessage { get; set; }
-  
+
     }
 }

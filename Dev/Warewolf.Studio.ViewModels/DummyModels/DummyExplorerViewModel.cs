@@ -164,9 +164,11 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         /// </returns>
         public override string ToString()
         {
-            return ResourceName;
+            return "New Remote Server...";
         }
 
         #endregion
+
+
     }
 }
