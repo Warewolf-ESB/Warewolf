@@ -429,12 +429,13 @@
                                            Source="{Binding Data.ResourceType,
                                                             Converter={StaticResource ResourceTypeToIconConverter}}"
                                            Visibility="{Binding Data.ResourceType,
-                                                                Converter={StaticResource ResourceTypeToVisibilityConverter}}" />
+                                                                Converter={StaticResource ResourceTypeToVisibilityConverter}}" >
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseLeftButtonDown">
                                             <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
+                                    </Image>
                                     <TextBlock x:Name="ResourceNameTextBlock"
                                                Grid.Column="1"
                                                Height="19"
@@ -442,7 +443,13 @@
                                                VerticalAlignment="Center"
                                                Text="{Binding Path=Data.ResourceName}"
                                                Visibility="{Binding Path=Data.IsNotRenaming,
-                                                                    Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                    Converter={StaticResource BoolToVisibilityConverter}}" >
+                                                                            <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                             <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
+                                            </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBlock>
                                     <TextBox Name="PropertySearch"
                                              Grid.Column="1"
                                              IsVisibleChanged="UIElement_OnIsVisibleChanged"
