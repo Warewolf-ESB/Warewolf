@@ -19,22 +19,24 @@
 
     <!--  ********************************** BRUSHES **********************************  -->
     <!--  Menu Brushes  -->
-    <SolidColorBrush x:Key="MenuBackgroundBrush" Color="{StaticResource Color_024}" />
-    <SolidColorBrush x:Key="MenuForegroundBrush" Color="{StaticResource Color_009}" />
-    <SolidColorBrush x:Key="MenuPopupBackgroundBrush" Color="{StaticResource Color_009}" />
-    <SolidColorBrush x:Key="MenuPopupBorderBrush" Color="{StaticResource Color_004}" />
-    <SolidColorBrush x:Key="ContextMenuBackgroundBrush" Color="{StaticResource Color_009}" />
+    <SolidColorBrush x:Key="MenuBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="MenuForegroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="MenuPopupBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="MenuPopupBorderBrush" Color="{StaticResource WarewolfWhite}" />
+
+    <SolidColorBrush x:Key="ContextMenuBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="ContextMenuBorderBrush" Color="{StaticResource Color_004}" />
-    <SolidColorBrush x:Key="MenuSeparatorBackgroundBrush" Color="{StaticResource Color_005}" />
+
+    <SolidColorBrush x:Key="MenuSeparatorBackgroundBrush" Color="{StaticResource WarewolfHeaderButtonGrey}" />
 
     <!--  MenuItem Brushes  -->
-    <SolidColorBrush x:Key="MenuItemHoverBackgroundBrush" Color="{StaticResource Color_026}" />
-    <SolidColorBrush x:Key="MenuItemHoverBorderBrush" Color="{StaticResource Color_024}" />
-    <SolidColorBrush x:Key="MenuItemHighlightedBackgroundBrush" Color="{StaticResource Color_006}" />
-    <SolidColorBrush x:Key="MenuItemHighlightedBorderBrush" Color="{StaticResource Color_003}" />
-    <SolidColorBrush x:Key="MenuItemHeaderMaskBackgroundBrush" Color="{StaticResource Color_024}" />
-    <SolidColorBrush x:Key="MenuIconColumnBorderBrush" Color="{StaticResource Color_016}" />
-    <SolidColorBrush x:Key="MenuItemVerticalBrush" Color="{StaticResource Color_005}" />
+    <SolidColorBrush x:Key="MenuItemHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="MenuItemHoverBorderBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="MenuItemHighlightedBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="MenuItemHighlightedBorderBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="MenuItemHeaderMaskBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="MenuIconColumnBorderBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
+    <SolidColorBrush x:Key="MenuItemVerticalBrush" Color="{StaticResource WarewolfButtonGrey}" />
 
     <!--  ********************************* SL-WPF SHARED RESOURCES *********************************  -->
     <!--  *******************************************************************************************  -->
@@ -113,8 +115,8 @@
     <!--  *********************************  XamMenu Style  *********************************  -->
     <Style x:Key="XamMenuStyle" TargetType="igMenu:XamMenu">
         <Setter Property="Background" Value="{StaticResource MenuBackgroundBrush}" />
-        <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="Foreground" Value="{StaticResource MenuForegroundBrush}" />
         <Setter Property="MinHeight" Value="36" />
         <Setter Property="ItemsPanel">
@@ -144,11 +146,11 @@
     <!--  *********************************  XamContextMenu Style  *********************************  -->
     <Style x:Key="XamContextMenuStyle" TargetType="igMenu:XamContextMenu">
         <Setter Property="Padding" Value="2" />
-        <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="Background" Value="{StaticResource ContextMenuBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ContextMenuBorderBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfOrangeBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
@@ -177,604 +179,230 @@
 
     <!--  *********************************  XamMenuItem Style  *********************************  -->
     <Style x:Key="XamMenuItemStyle" TargetType="igMenu:XamMenuItem">
-        <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
-        <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
-        <Setter Property="IsTabStop" Value="True" />
-        <Setter Property="IsEnabled" Value="True" />
-        <Setter Property="MinHeight" Value="32" />
-        <Setter Property="ItemsPanel">
-            <Setter.Value>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="IsTabStop" Value="True"/>
+        <Setter Property="IsEnabled" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igMenu:XamMenuItem">
                     <Grid Background="{TemplateBinding Background}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal">
-                                    <Storyboard>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="HeaderMask"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0.3"
-                                                         d:IsOptimized="True" />
-                                    </Storyboard>
-                                </VisualState>
-
+                                <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard x:Name="MouseOverStoryboard">
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SelectedIndicator" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Visibility>Visible</Visibility>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ArrowPanelPath" Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource GlyphHoverBackgroundBrush}" />
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="MenuItemPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="inputGestureText" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightForegroundBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="HeaderMask"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="Highlighted">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HighlightedIndicator" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Visibility>Visible</Visibility>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ArrowPanelPath" Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource GlyphHoverBackgroundBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="inputGestureText" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightForegroundBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="HeaderMask"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0"
-                                                         From="1"
-                                                         Storyboard.TargetName="MenuItemPresenter"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To=".3" />
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="HeaderMask"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
+                                        <DoubleAnimation
+                                                    Duration="0"
+                                                    From="1"
+                                                    Storyboard.TargetName="MenuItemPresenter"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To=".3"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
-
                             <VisualStateGroup x:Name="SubmenuState">
                                 <VisualState x:Name="SubmenuOpen">
                                     <Storyboard>
-                                        <DoubleAnimation BeginTime="0:0:0"
-                                                         Duration="0:0:0.15"
-                                                         Storyboard.TargetName="PopupBorder"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1.0" />
+                                        <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Duration="0:0:0.15"
+                                                    Storyboard.TargetName="PopupBorder"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="1.0"/>
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="SubmenuOpenImmediately">
                                     <Storyboard>
-                                        <DoubleAnimation BeginTime="0:0:0"
-                                                         Duration="0:0:0.15"
-                                                         Storyboard.TargetName="PopupBorder"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1.0" />
+                                        <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Duration="0:0:0.15"
+                                                    Storyboard.TargetName="PopupBorder"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="1.0"/>
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="SubmenuClose">
                                     <Storyboard>
-                                        <DoubleAnimation BeginTime="0:0:0"
-                                                         Duration="0:0:0.1"
-                                                         Storyboard.TargetName="PopupBorder"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="0.01" />
-
+                                        <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Duration="0:0:0.15"
+                                                    Storyboard.TargetName="PopupBorder"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="0"/>
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="SubmenuCloseImmediately">
                                     <Storyboard>
-                                        <DoubleAnimation BeginTime="0:0:0"
-                                                         Duration="0:0:0.1"
-                                                         Storyboard.TargetName="PopupBorder"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="0.01" />
-
+                                        <DoubleAnimation
+                                                    BeginTime="0:0:0"
+                                                    Duration="0:0:0.15"
+                                                    Storyboard.TargetName="PopupBorder"
+                                                    Storyboard.TargetProperty="Opacity"
+                                                    To="0"/>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
-
                             <VisualStateGroup x:Name="MenuItemRole">
                                 <VisualState x:Name="TopLevelHeader">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="IconPlace"
-                                                                       Storyboard.TargetProperty="Width">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <GridLength>Auto</GridLength>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="ChildIndicatorPlace"
-                                                                       Storyboard.TargetProperty="Width">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <GridLength>0</GridLength>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames BeginTime="0"
-                                                                       Duration="0"
-                                                                       Storyboard.TargetName="HeaderPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>10,3,0,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames BeginTime="0"
-                                                                       Duration="0"
-                                                                       Storyboard.TargetName="HeaderCheckboxPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>4,3,0,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="SelectedIndicator"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="HighlightedIndicator"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMask" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Visibility>Visible</Visibility>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="MenuItemPresenterContainer"
-                                                                       Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightForegroundBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="TopLevelHeaderWithIcon">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="IconPlace"
-                                                                       Storyboard.TargetProperty="Width">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <GridLength>Auto</GridLength>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="ChildIndicatorPlace"
-                                                                       Storyboard.TargetProperty="Width">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <GridLength>0</GridLength>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames BeginTime="0"
-                                                                       Duration="0"
-                                                                       Storyboard.TargetName="HeaderPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>0,3,0,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames BeginTime="0"
-                                                                       Duration="0"
-                                                                       Storyboard.TargetName="HeaderCheckboxPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>4,3,0,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMask" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Visibility>Visible</Visibility>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="SelectedIndicator"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="HighlightedIndicator"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="MenuItemPresenterContainer"
-                                                                       Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightForegroundBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="TopLevelItem">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="IconPlace"
-                                                                       Storyboard.TargetProperty="Width">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <GridLength>Auto</GridLength>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="ChildIndicatorPlace"
-                                                                       Storyboard.TargetProperty="Width">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <GridLength>0</GridLength>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames BeginTime="0"
-                                                                       Duration="0"
-                                                                       Storyboard.TargetName="HeaderPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>10,3,0,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="SelectedIndicator"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="HighlightedIndicator"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMask" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Visibility>Visible</Visibility>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames BeginTime="0"
-                                                                       Duration="0"
-                                                                       Storyboard.TargetName="HeaderCheckboxPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>4,3,0,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="MenuItemPresenterContainer"
-                                                                       Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightForegroundBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="TopLevelItemWithIcon">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="IconPlace"
-                                                                       Storyboard.TargetProperty="Width">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <GridLength>Auto</GridLength>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="ChildIndicatorPlace"
-                                                                       Storyboard.TargetProperty="Width">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <GridLength>0</GridLength>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames BeginTime="0"
-                                                                       Duration="0"
-                                                                       Storyboard.TargetName="HeaderPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>0,3,0,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="SelectedIndicator"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="HighlightedIndicator"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="0"
-                                                         d:IsOptimized="True" />
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderMask" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Visibility>Visible</Visibility>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames BeginTime="0"
-                                                                       Duration="0"
-                                                                       Storyboard.TargetName="HeaderCheckboxPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>4,3,0,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="MenuItemPresenterContainer"
-                                                                       Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightForegroundBrush}" />
-                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="SubmenuHeader">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                       Storyboard.TargetName="ArrowPanel"
-                                                                       Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Visibility>Visible</Visibility>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-
-                                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00"
-                                                                       Duration="00:00:00.0010000"
-                                                                       Storyboard.TargetName="HeaderPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>5,3,25,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
+                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="ArrowPanel" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-
                                 <VisualState x:Name="SubmenuItem">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00"
-                                                                       Duration="00:00:00.0010000"
-                                                                       Storyboard.TargetName="HeaderPresenter"
-                                                                       Storyboard.TargetProperty="(FrameworkElement.Margin)">
-                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Thickness>5,3,25,3</Thickness>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
-
                             </VisualStateGroup>
-
                         </VisualStateManager.VisualStateGroups>
                         <Grid>
-                            <Rectangle x:Name="SelectedIndicator"
-                                       Grid.ColumnSpan="3"
-                                       Margin="1"
-                                       HorizontalAlignment="Stretch"
-                                       Fill="{StaticResource MenuItemHoverBackgroundBrush}"
-                                       Stroke="{StaticResource MenuItemHoverBorderBrush}"
-                                       Visibility="Collapsed" />
-                            <Rectangle x:Name="HighlightedIndicator"
-                                       Grid.ColumnSpan="3"
-                                       Margin="1"
-                                       HorizontalAlignment="Stretch"
-                                       Fill="{StaticResource MenuItemHighlightedBackgroundBrush}"
-                                       Stroke="{StaticResource MenuItemHighlightedBorderBrush}"
-                                       Visibility="Collapsed" />
-
-                            <!--  MenuItemPresenter - presentes the content of the menu item.  -->
-                            <ContentControl x:Name="MenuItemPresenterContainer"
-                                            Focusable="False"
-                                            Foreground="{StaticResource ForegroundBrush}">
-                                <ContentControl.Content>
-                                    <ContentPresenter x:Name="MenuItemPresenter"
-                                                      Focusable="False"
-                                                      Opacity="1"
-                                                      Visibility="Visible">
-                                        <ContentPresenter.Content>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition x:Name="IconPlace" Width="33" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition x:Name="ChildIndicatorPlace" Width="22" />
-                                                </Grid.ColumnDefinitions>
-                                                <igPrim:IconContentControl x:Name="HeaderIconPresenter"
-                                                                           Width="16"
-                                                                           Height="16"
-                                                                           Margin="0"
-                                                                           Focusable="False"
-                                                                           Visibility="{TemplateBinding IconVisibilityResolved}" />
-
-                                                <!--  Checkbox presenter  -->
-                                                <ContentPresenter x:Name="HeaderCheckboxPresenter"
-                                                                  Margin="1,0,0,0"
-                                                                  HorizontalAlignment="Left"
-                                                                  VerticalAlignment="Center"
-                                                                  Visibility="{TemplateBinding CheckBoxVisibilityResolved}">
-                                                    <ContentPresenter.Content>
-                                                        <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent},
-                                                                                      Path=IsChecked,
-                                                                                      Mode=TwoWay}"
-                                                                  IsHitTestVisible="False"
-                                                                  Style="{StaticResource CheckBoxStyle}" />
-                                                    </ContentPresenter.Content>
-                                                </ContentPresenter>
-
-                                                <!--  Header presenter  -->
-                                                <Grid Grid.Column="1">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <ContentControl x:Name="contentControl" Focusable="False">
-                                                        <ContentControl.Content>
-                                                            <ContentPresenter x:Name="HeaderPresenter"
-                                                                              Grid.Column="0"
-                                                                              Margin="5,3,5,3"
-                                                                              HorizontalAlignment="Left"
-                                                                              VerticalAlignment="Center"
-                                                                              Content="{TemplateBinding Header}"
-                                                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                                                              Focusable="False" />
-                                                        </ContentControl.Content>
-                                                    </ContentControl>
-                                                    <TextBlock x:Name="inputGestureText"
-                                                               Grid.Column="1"
-                                                               Margin="8,3,2,3"
-                                                               VerticalAlignment="Center"
-                                                               Text="{TemplateBinding InputGestureText}" />
-                                                </Grid>
-
-                                                <!--  Arrow indicator presenter  -->
-                                                <Grid x:Name="ArrowPanel"
-                                                      Grid.Column="2"
-                                                      HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center"
-                                                      Visibility="Collapsed">
-                                                    <Path x:Name="ArrowPanelPath"
-                                                          Width="6"
-                                                          Height="10"
-                                                          VerticalAlignment="Center"
-                                                          Data="M0,0 L0,8 L4,4 z"
-                                                          Fill="{StaticResource GlyphBackgroundBrush}"
-                                                          Stretch="fill" />
-                                                </Grid>
-
-                                            </Grid>
-                                        </ContentPresenter.Content>
+                            <Grid x:Name="SelectedIndicator" Visibility="Collapsed" Background="Transparent" >
+                                <Rectangle RadiusX="2" RadiusY="2">
+                                </Rectangle>
+                                <Border Margin="1" BorderThickness="1" CornerRadius="1">
+                                </Border>
+                                
+                            </Grid>
+                            <Grid x:Name="HighlightedIndicator" Visibility="Collapsed" Background="Transparent">
+                                <Rectangle RadiusX="2" RadiusY="2">
+                                </Rectangle>
+                            </Grid>
+                            <ContentControl
+                                        x:Name="MenuItemPresenter"
+                                        FontFamily="{TemplateBinding FontFamily}"
+                                        FontSize="{TemplateBinding FontSize}"
+                                        FontStretch="{TemplateBinding FontStretch}"
+                                        Foreground="{StaticResource WareWolfMenuBrush}"
+                                        HorizontalContentAlignment="Stretch"
+                                        Opacity="1"
+                                        Visibility="Visible">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition x:Name="IconPlace" Width="27"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition x:Name="TumbPlace" Width="22"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter
+                                                x:Name="HeaderIconPresenter"
+                                                Width="16"
+                                                Height="16"
+                                                Margin="4,3,4,3"
+                                                Content="{TemplateBinding Icon}"
+                                                Visibility="{TemplateBinding IconVisibilityResolved}"/>
+                                    <ContentPresenter
+                                                x:Name="HeaderCheckboxPresenter"
+                                                HorizontalAlignment="Right"
+                                                Margin="4,3,4,3"
+                                                VerticalAlignment="Center"
+                                                Visibility="{TemplateBinding CheckBoxVisibilityResolved}">
+                                        <ContentPresenter.ContentTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" IsHitTestVisible="False"/>
+                                            </DataTemplate>
+                                        </ContentPresenter.ContentTemplate>
                                     </ContentPresenter>
-                                </ContentControl.Content>
+                                    <Grid Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ContentPresenter
+                                                    x:Name="HeaderPresenter"
+                                                    Grid.Column="0"
+                                                    Margin="5,3,5,3"
+                                                    VerticalAlignment="Center"
+                                                    Content="{TemplateBinding Header}"
+                                                    ContentTemplate="{TemplateBinding HeaderTemplate}"/>
+                                        <TextBlock
+                                                    Grid.Column="1"
+                                                    Margin="8,3,2,3"
+                                                    VerticalAlignment="Center"
+                                                    Text="{TemplateBinding InputGestureText}"/>
+                                    </Grid>
+                                    <Grid
+                                                x:Name="ArrowPanel"
+                                                Grid.Column="2"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Visibility="Collapsed">
+                                        <Path
+                                                    x:Name="ArrowPanelPath"
+                                                    Margin="7,0,7,0"
+                                                    VerticalAlignment="Center"
+                                                    Data="M0,0 L0,8 L4,4 z"
+                                                    Fill="Black"/>
+                                    </Grid>
+                                </Grid>
                             </ContentControl>
-                            <Rectangle x:Name="HeaderMask"
-                                       Fill="{StaticResource MenuItemHeaderMaskBackgroundBrush}"
-                                       IsHitTestVisible="False"
-                                       Visibility="Collapsed" />
                         </Grid>
                         <Popup x:Name="Popup">
-                            <Grid Background="{StaticResource MenuPopupBackgroundBrush}">
-                                <Border x:Name="PopupBorder"
-                                        Background="{StaticResource MenuPopupBackgroundBrush}"
-                                        BorderBrush="{StaticResource MenuPopupBorderBrush}"
+                            <Border
+                                        x:Name="PopupBorder"
+                                        Background="{StaticResource WareWolfWhiteBrush}"
+                                        BorderBrush="{StaticResource WareWolfLighkGreyBrush}"
                                         BorderThickness="1"
-                                        Focusable="False"
-                                        Opacity="0.01"
-                                        SnapsToDevicePixels="True">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="33" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <ScrollViewer x:Name="ScrollViewer"
-                                                      Grid.ColumnSpan="2"
-                                                      MaxWidth="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
-                                                                         Path=MaxWidth}"
-                                                      MaxHeight="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
-                                                                          Path=MaxHeight}"
-                                                      HorizontalScrollBarVisibility="Auto"
-                                                      Style="{StaticResource ScrollViewerStyle}"
-                                                      VerticalScrollBarVisibility="Auto">
-                                            <ContentControl Focusable="False" Foreground="{StaticResource ForegroundBrush}">
-                                                <ContentControl.Content>
-                                                    <ItemsPresenter />
-                                                </ContentControl.Content>
-                                            </ContentControl>
-                                        </ScrollViewer>
-                                        <Border Grid.Column="0"
-                                                Width="33"
-                                                HorizontalAlignment="Left"
-                                                Background="{StaticResource MenuIconColumnBorderBrush}">
-                                            <Rectangle Width="1"
-                                                       HorizontalAlignment="Right"
-                                                       Fill="{StaticResource MenuItemVerticalBrush}" />
-                                        </Border>
-                                    </Grid>
-                                </Border>
-                            </Grid>
+                                        CornerRadius="1"
+                                        Opacity="0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition MaxWidth="26"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Background="{StaticResource MenuItemVerticalBrush}" Width="26" HorizontalAlignment="Right"/>
+                                    <ScrollViewer
+                                                x:Name="ScrollViewer"
+                                                Grid.ColumnSpan="2"
+                                                BorderThickness="0"
+                                                Padding="0"
+                                                Margin="0"
+                                                HorizontalScrollBarVisibility="Auto"
+                                                VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter Grid.ColumnSpan="2"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Border>
                         </Popup>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
     </Style>
     <Style BasedOn="{StaticResource XamMenuItemStyle}" TargetType="igMenu:XamMenuItem" />
 </ResourceDictionary>

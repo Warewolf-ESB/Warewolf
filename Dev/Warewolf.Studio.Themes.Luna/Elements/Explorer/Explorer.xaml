@@ -191,11 +191,10 @@
                             <igPrimDt:NodesPanel x:Name="NodesPanel" Background="{StaticResource TransparentBrush}" />
                             <ScrollBar x:Name="VerticalScrollBar"
                                        Grid.Row="0"
-                                       Grid.Column="1"
-                                       Style="{StaticResource ScrollBarStyle}" />
+                                       Grid.Column="1" />
                             <ScrollBar x:Name="HorizontalScrollBar"
-                                       Grid.Row="2"
-                                       Style="{StaticResource ScrollBarStyle}" />
+                                       Grid.Row="1"
+                                       Grid.Column="0" />
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -219,7 +218,7 @@
                                StrokeDashCap="Round"
                                StrokeThickness="1" />
                 </ControlTemplate>
-                
+
             </Setter.Value>
         </Setter>
     </Style>
@@ -261,8 +260,7 @@
                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                        Storyboard.TargetName="contentControl"
                                                                        Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}">
-                                            </DiscreteObjectKeyFrame>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -335,8 +333,7 @@
                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                        Storyboard.TargetName="contentControl"
                                                                        Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}">
-                                            </DiscreteObjectKeyFrame>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource WareWolfOrangeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -439,15 +436,15 @@
                                                                         RelativeSource={RelativeSource TemplatedParent}}" />
                             <igPrimDt:ExpansionIndicator x:Name="ExpansionIndicator"
                                                          Grid.Column="1"
+                                                         Margin="-5,0,0,0"
                                                          VerticalAlignment="Center"
                                                          VerticalContentAlignment="Center"
-                                                         Margin="-5,0,0,0"
                                                          IsExpanded="{Binding Node.IsExpanded,
                                                                               Mode=TwoWay,
                                                                               RelativeSource={RelativeSource TemplatedParent}}"
                                                          IsTabStop="False"
                                                          Style="{StaticResource ExpansionIndicatorStyle}"
-                                                         Visibility="{Binding Node.HasChildren,
+                                                         Visibility="{Binding Node.Data.IsExpanderVisible,
                                                                               Converter={StaticResource BoolToVis},
                                                                               RelativeSource={RelativeSource TemplatedParent}}" />
                             <CheckBox x:Name="Checkbox"

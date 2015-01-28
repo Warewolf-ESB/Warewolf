@@ -35,7 +35,10 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand OpenVersionCommand { get; set; }
         bool IsExpanded { get; set; }
         ICommand Expand { get; set; }
-
+        IExplorerItemViewModel Parent { get; set; }
+        void AddSibling(IExplorerItemViewModel sibling);
+        void AddChild(IExplorerItemViewModel child);
+        void RemoveChild(IExplorerItemViewModel child);
     }
 
     public interface IVersionInfoViewModel: IExplorerTreeItem

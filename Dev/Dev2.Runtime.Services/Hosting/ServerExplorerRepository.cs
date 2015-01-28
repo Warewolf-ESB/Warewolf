@@ -73,7 +73,10 @@ namespace Dev2.Runtime.Hosting
         {
             return _root ?? (_root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId));
         }
-
+        private void Reload(Guid workSpaceId)
+        {
+             _root = ExplorerItemFactory.CreateRootExplorerItem(EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
+        }
         public IExplorerItem Load(ResourceType type, Guid workSpaceId)
         {
             return ExplorerItemFactory.CreateRootExplorerItem(type, EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
@@ -95,6 +98,7 @@ namespace Dev2.Runtime.Hosting
                         return RenameExplorerItem(itemToRename, workSpaceId);
                     }
             }
+           
         }
 
         IExplorerRepositoryResult RenameExplorerItem(IExplorerItem itemToRename, Guid workSpaceId)
@@ -111,6 +115,7 @@ namespace Dev2.Runtime.Hosting
                 return new ExplorerRepositoryResult(ExecStatus.Fail, "There is an item that exists with the same name and path");
             }
             ResourceCatalogResult result = ResourceCatalogue.RenameResource(workSpaceId, itemToRename.ResourceId, itemToRename.DisplayName);
+            Reload(workSpaceId);
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
@@ -128,14 +133,17 @@ namespace Dev2.Runtime.Hosting
                 {
                     MoveVersionFolder(path, newPath);
                     Directory.Delete(DirectoryStructureFromPath(path), true);
+                    Reload(workSpaceId);
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
                 if(resourceCatalogResult.Status == ExecStatus.NoMatch)
                 {
                     Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
                     MoveVersionFolder(path, newPath);
+                    Reload(workSpaceId);
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
+                Reload(workSpaceId);
                 return new ExplorerRepositoryResult(ExecStatus.Fail, resourceCatalogResult.Message);
             }
             catch(Exception err)
@@ -299,7 +307,7 @@ namespace Dev2.Runtime.Hosting
             MoveVersions(itemToMove, newPath);
             ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId,itemToMove.ResourcePath , newPath,new List<IResource>{ResourceCatalogue.GetResource(workSpaceId,itemToMove.ResourceId)});
             _file.Delete(string.Format("{0}.xml", DirectoryStructureFromPath(itemToMove.ResourcePath)));
-            
+            Reload(workSpaceId);
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 

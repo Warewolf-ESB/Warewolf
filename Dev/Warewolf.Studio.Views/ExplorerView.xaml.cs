@@ -43,6 +43,7 @@ namespace Warewolf.Studio.Views
                 }
 
             }
+            e.Handled = true;
             
 	    }
 
