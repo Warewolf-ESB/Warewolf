@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
+             xmlns:views="clr-namespace:Warewolf.Studio.Views"
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="200"
                             Width="800"
@@ -16,10 +18,13 @@
                             StartupPosition="Center">
     <ig:XamDialogWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <DataTemplate DataType="{x:Type interfaces:INewServerDialogue}">
+            <views:ServerUserControl />
+        </DataTemplate>
     </ig:XamDialogWindow.Resources>
     <ig:XamDialogWindow.HeaderTemplate>
        <DataTemplate>
-            <Grid Name="Header">
+            <Grid x:Name="Header">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5*" ></RowDefinition>
                     <RowDefinition Height="7*"></RowDefinition>

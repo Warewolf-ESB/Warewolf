@@ -2,15 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-              xmlns:ig="http://schemas.infragistics.com/xaml"
-              xmlns:converters="clr-namespace:Warewolf.Studio.Views.Converters"
-              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:views="clr-namespace:Warewolf.Studio.Views"
+              
+              xmlns:serviceModel="clr-namespace:Dev2.Common.Interfaces.Runtime.ServiceModel;assembly=Dev2.Common.Interfaces"
               mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-
+    <views:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
     </UserControl.Resources>
     <Grid>
         
@@ -33,7 +33,7 @@
                     <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
                 <TextBlock Text="{Binding Path= ServerLabel}" Grid.Column="0"></TextBlock>
-                <TextBox Text="{Binding Server}" Grid.Column="1" Grid.Row="0"></TextBox>
+                <TextBox Text="{Binding Path=Server}" Grid.Column="1" Grid.Row="0"></TextBox>
                 
                 <TextBlock Text="{Binding Path=AuthenticationTypeText}" Grid.Column="0" Grid.Row="1"></TextBlock>
                 <Grid Grid.Column="1" Grid.Row="1">
@@ -41,17 +41,25 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                <RadioButton Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=AuthenticationType, Converter=EnumToBoolConverter }"></RadioButton>
-                <RadioButton Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
-                <RadioButton Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"></RadioButton>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <RadioButton Grid.Column="0" VerticalAlignment="Center"  HorizontalAlignment="Center" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}"></RadioButton>
+                <TextBlock Text="Windows" Grid.Column="1"></TextBlock>
+                <RadioButton Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}"></RadioButton>
+                <TextBlock Text="User" Grid.Column="3"></TextBlock>
+                <RadioButton Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}"></RadioButton>
+                <TextBlock Text="Public" Grid.Column="4"></TextBlock>
             </Grid>
                 
                 <TextBlock Text="{Binding Path=UserLabel}" Grid.Column="0" Grid.Row="1"></TextBlock>
-                <TextBox Text="{Binding UserName}" Grid.Column="1" Grid.Row="2"></TextBox>
+                <TextBox Text="{Binding Path=UserName}" Grid.Column="1" Grid.Row="2"></TextBox>
                 
                 <TextBlock Text="{Binding Path= PasswordLabel}" Grid.Row="3" Grid.Column="1"></TextBlock>
-                <TextBox Text="{Binding Password}" Grid.Column="1" Grid.Row="3"></TextBox>
+                <TextBox Text="{Binding Path=Password}" Grid.Column="1" Grid.Row="3"></TextBox>
+                
+                <Button Grid.Row="4" HorizontalAlignment="Right" Command="{Binding Path=TestCommand}"></Button>
         </Grid>
     </Grid>
 </UserControl>
