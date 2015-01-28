@@ -29,7 +29,6 @@ namespace Warewolf.Studio.ViewModels
         bool _canEdit;
         bool _canView;
         bool _canDelete;
-        ICollection<IVersionInfoViewModel> _versions;
         bool _areVersionsVisible;
         string _versionHeader;
         ResourceType _resourceType;
@@ -40,7 +39,6 @@ namespace Warewolf.Studio.ViewModels
         bool _canDrag;
         Guid _resourceId;
         bool _isExpanded;
-        bool _isExpanderVisible;
 
         // ReSharper disable TooManyDependencies
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent):this(shellViewModel,server,builder)
@@ -107,8 +105,11 @@ namespace Warewolf.Studio.ViewModels
             IsVersion = false;
             Expand = new DelegateCommand<int?>(clickCount =>
             {
-                if (clickCount!= null && clickCount == 2)
+                if (clickCount!= null && clickCount == 2 && ResourceType == ResourceType.Folder)
                 IsExpanded = !IsExpanded;
+                if (clickCount != null && clickCount == 1 && ResourceType == ResourceType.WorkflowService && IsExpanded)
+                    IsExpanded = false;
+        
             });
 
         }
@@ -247,8 +248,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceId = value;
-                if (ResourceName == ("Hello World")) 
-                AreVersionsVisible = true;
+
             }
         }
         public ResourceType ResourceType
@@ -275,7 +275,6 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _isExpanderVisible = value;
                 OnPropertyChanged(()=>IsExpanderVisible);
             }
         }
