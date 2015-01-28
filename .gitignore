@@ -10,6 +10,7 @@
 *.suo
 *.user
 *.ide
+*.bkp
 
 ####################################################################################
 # Build working directories
@@ -207,6 +208,14 @@
 /Dev/Warewolf.Studio.Themes.Luna/obj
 /Dev/Warewolf.UnittestingUtils/bin
 /Dev/Warewolf.UnittestingUtils/obj
+/Dev/Warewolf.Studio.AntiCorruptionLayer/bin
+/Dev/Warewolf.Studio.AntiCorruptionLayer/obj
+/Dev/Warewolf.Studio.AntiCorruptionLayer.Tests/bin
+/Dev/Warewolf.Studio.AntiCorruptionLayer.Tests/obj
+/Dev/Warewolf.Studio.CustomControls/bin
+/Dev/Warewolf.Studio.CustomControls/obj
+/Dev/Warewolf.Studio.CustomControls.Tests/bin
+/Dev/Warewolf.Studio.CustomControls.Tests/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
