@@ -1,10 +1,9 @@
 ﻿using System.Windows.Input;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 
-namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
+namespace Dev2.Common.Interfaces.ServerDialogue
 {
-
-    public interface INewServerDialogue : IInnerDialogueTemplate
+    public interface IServerSource
     {
         /// <summary>
         /// The server address that we are trying to connect to
@@ -31,23 +30,5 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// </summary>
         string TestMessage { get; set; }
 
-        bool IsOkEnabled { get; set; }
-
-        bool IsTestEnabled { get; set; }
-
-        bool IsUserNameVisible { get; set; }
-
-        bool IsPasswordVisible { get; set; }
-
-        string AddressLabel { get; }
-
-        string UserNameLabel { get; }
-
-        string AuthenticationLabel { get; }
-
-        string PasswordLabel { get; }
-
-        string TestLabel { get; }
-  
     }
 }

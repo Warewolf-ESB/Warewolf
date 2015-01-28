@@ -1,4 +1,6 @@
-﻿namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
+﻿using System.Windows.Input;
+
+namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 {
     public interface IInnerDialogueTemplate
     {
@@ -11,5 +13,14 @@
         /// Is valid 
         /// </summary>
         bool IsValid { get; set; }
+
+        /// <summary>
+        /// Command for save/ok
+        /// </summary>
+        ICommand OkCommand { get; set; }
+        /// <summary>
+        /// Command for cancel
+        /// </summary>
+        ICommand CancelCommand { get; set; }
     }
 }

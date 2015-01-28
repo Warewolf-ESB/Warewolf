@@ -4,23 +4,70 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
+             xmlns:views="clr-namespace:Warewolf.Studio.Views"
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="200"
-                            Width="350"
-                            Height="200"
+                            Width="800"
+                            Height="600"
                             CloseButtonVisibility="Visible"
                             MaximizeButtonVisibility="Collapsed"
                             MinimizeButtonVisibility="Collapsed"
                             IsResizable="False"
                             IsMoveable="False"
-                            StartupPosition="Center"
-                    >
+                            StartupPosition="Center">
+    <ig:XamDialogWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <DataTemplate DataType="{x:Type interfaces:INewServerDialogue}">
+            <views:ServerUserControl />
+        </DataTemplate>
+    </ig:XamDialogWindow.Resources>
+    <ig:XamDialogWindow.HeaderTemplate>
+       <DataTemplate>
+            <Grid x:Name="Header">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5*" ></RowDefinition>
+                    <RowDefinition Height="7*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding Path=Header}" Visibility="{Binding Path=HeaderVisible,Converter={StaticResource BoolToVisibility}}"/>
+                <TextBlock Grid.Row="1" Text="{Binding Path=HeaderDetail}" Visibility="{Binding Path=HeaderVisible,Converter={StaticResource BoolToVisibility}}"></TextBlock>
+            </Grid>
+        </DataTemplate>
+   </ig:XamDialogWindow.HeaderTemplate>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="5"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <ContentPresenter Content="{Binding InnerDialogue}"></ContentPresenter>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                    <ColumnDefinition Width="120"></ColumnDefinition>
+                    <ColumnDefinition Width="120"></ColumnDefinition>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" TextAlignment="Right" VerticalAlignment="Center" Text="Content goes here"></TextBlock>
+                <Button Grid.Column="3" Padding="20" Content="Save" Command="{Binding Path=OkCommand}" ></Button>
+                <Button Grid.Column="4" Padding="20" Content="Cancel" Command="{Binding Path=CancelCommand}" ></Button>
+            </Grid>
+            
+        </Grid>
 
     </Grid>
 </ig:XamDialogWindow>
