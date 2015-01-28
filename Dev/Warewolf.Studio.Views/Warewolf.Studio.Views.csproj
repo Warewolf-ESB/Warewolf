@@ -162,6 +162,9 @@
       <DependentUpon>ConnectControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\CustomMenuIcons.cs" />
+    <Compile Include="DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
@@ -211,6 +214,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ConnectControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
