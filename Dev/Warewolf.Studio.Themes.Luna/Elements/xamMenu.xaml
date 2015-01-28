@@ -179,20 +179,20 @@
 
     <!--  *********************************  XamMenuItem Style  *********************************  -->
     <Style x:Key="XamMenuItemStyle" TargetType="igMenu:XamMenuItem">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="IsTabStop" Value="True"/>
-        <Setter Property="IsEnabled" Value="True"/>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="IsTabStop" Value="True" />
+        <Setter Property="IsEnabled" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="igMenu:XamMenuItem">
                     <Grid Background="{TemplateBinding Background}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Normal" />
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard x:Name="MouseOverStoryboard">
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SelectedIndicator" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Duration="0"
                                                                        Storyboard.TargetName="MenuItemPresenter"
@@ -204,197 +204,196 @@
                                 <VisualState x:Name="Highlighted">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HighlightedIndicator" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <DoubleAnimation
-                                                    Duration="0"
-                                                    From="1"
-                                                    Storyboard.TargetName="MenuItemPresenter"
-                                                    Storyboard.TargetProperty="Opacity"
-                                                    To=".3"/>
+                                        <DoubleAnimation Duration="0"
+                                                         From="1"
+                                                         Storyboard.TargetName="MenuItemPresenter"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To=".3" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="SubmenuState">
                                 <VisualState x:Name="SubmenuOpen">
                                     <Storyboard>
-                                        <DoubleAnimation
-                                                    BeginTime="0:0:0"
-                                                    Duration="0:0:0.15"
-                                                    Storyboard.TargetName="PopupBorder"
-                                                    Storyboard.TargetProperty="Opacity"
-                                                    To="1.0"/>
+                                        <DoubleAnimation BeginTime="0:0:0"
+                                                         Duration="0:0:0.15"
+                                                         Storyboard.TargetName="PopupBorder"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1.0" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="SubmenuOpenImmediately">
                                     <Storyboard>
-                                        <DoubleAnimation
-                                                    BeginTime="0:0:0"
-                                                    Duration="0:0:0.15"
-                                                    Storyboard.TargetName="PopupBorder"
-                                                    Storyboard.TargetProperty="Opacity"
-                                                    To="1.0"/>
+                                        <DoubleAnimation BeginTime="0:0:0"
+                                                         Duration="0:0:0.15"
+                                                         Storyboard.TargetName="PopupBorder"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1.0" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="SubmenuClose">
                                     <Storyboard>
-                                        <DoubleAnimation
-                                                    BeginTime="0:0:0"
-                                                    Duration="0:0:0.15"
-                                                    Storyboard.TargetName="PopupBorder"
-                                                    Storyboard.TargetProperty="Opacity"
-                                                    To="0"/>
+                                        <DoubleAnimation BeginTime="0:0:0"
+                                                         Duration="0:0:0.15"
+                                                         Storyboard.TargetName="PopupBorder"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="SubmenuCloseImmediately">
                                     <Storyboard>
-                                        <DoubleAnimation
-                                                    BeginTime="0:0:0"
-                                                    Duration="0:0:0.15"
-                                                    Storyboard.TargetName="PopupBorder"
-                                                    Storyboard.TargetProperty="Opacity"
-                                                    To="0"/>
+                                        <DoubleAnimation BeginTime="0:0:0"
+                                                         Duration="0:0:0.15"
+                                                         Storyboard.TargetName="PopupBorder"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="MenuItemRole">
                                 <VisualState x:Name="TopLevelHeader">
-                                    <Storyboard>
-                                    </Storyboard>
+                                    <Storyboard />
                                 </VisualState>
                                 <VisualState x:Name="TopLevelHeaderWithIcon">
-                                    <Storyboard>
-                                    </Storyboard>
+                                    <Storyboard />
                                 </VisualState>
                                 <VisualState x:Name="TopLevelItem">
-                                    <Storyboard>
-                                    </Storyboard>
+                                    <Storyboard />
                                 </VisualState>
                                 <VisualState x:Name="TopLevelItemWithIcon">
-                                    <Storyboard>
-                                    </Storyboard>
+                                    <Storyboard />
                                 </VisualState>
                                 <VisualState x:Name="SubmenuHeader">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="ArrowPanel" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="ArrowPanel"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="SubmenuItem">
-                                    <Storyboard>
-                                    </Storyboard>
+                                    <Storyboard />
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Grid>
-                            <Grid x:Name="SelectedIndicator" Visibility="Collapsed" Background="Transparent" >
-                                <Rectangle RadiusX="2" RadiusY="2">
-                                </Rectangle>
-                                <Border Margin="1" BorderThickness="1" CornerRadius="1">
-                                </Border>
-                                
+                            <Grid x:Name="SelectedIndicator"
+                                  Background="Transparent"
+                                  Visibility="Collapsed">
+                                <Rectangle RadiusX="2" RadiusY="2" />
+                                <Border Margin="1"
+                                        BorderThickness="1"
+                                        CornerRadius="1" />
+
                             </Grid>
-                            <Grid x:Name="HighlightedIndicator" Visibility="Collapsed" Background="Transparent">
-                                <Rectangle RadiusX="2" RadiusY="2">
-                                </Rectangle>
+                            <Grid x:Name="HighlightedIndicator"
+                                  Background="Transparent"
+                                  Visibility="Collapsed">
+                                <Rectangle RadiusX="2" RadiusY="2" />
                             </Grid>
-                            <ContentControl
-                                        x:Name="MenuItemPresenter"
-                                        FontFamily="{TemplateBinding FontFamily}"
-                                        FontSize="{TemplateBinding FontSize}"
-                                        FontStretch="{TemplateBinding FontStretch}"
-                                        Foreground="{StaticResource WareWolfMenuBrush}"
-                                        HorizontalContentAlignment="Stretch"
-                                        Opacity="1"
-                                        Visibility="Visible">
+                            <ContentControl x:Name="MenuItemPresenter"
+                                            HorizontalContentAlignment="Stretch"
+                                            FontFamily="{TemplateBinding FontFamily}"
+                                            FontSize="{TemplateBinding FontSize}"
+                                            FontStretch="{TemplateBinding FontStretch}"
+                                            Foreground="{StaticResource WareWolfMenuBrush}"
+                                            Opacity="1"
+                                            Visibility="Visible">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition x:Name="IconPlace" Width="27"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition x:Name="TumbPlace" Width="22"/>
+                                        <ColumnDefinition x:Name="IconPlace" Width="27" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition x:Name="TumbPlace" Width="22" />
                                     </Grid.ColumnDefinitions>
-                                    <ContentPresenter
-                                                x:Name="HeaderIconPresenter"
-                                                Width="16"
-                                                Height="16"
-                                                Margin="4,3,4,3"
-                                                Content="{TemplateBinding Icon}"
-                                                Visibility="{TemplateBinding IconVisibilityResolved}"/>
-                                    <ContentPresenter
-                                                x:Name="HeaderCheckboxPresenter"
-                                                HorizontalAlignment="Right"
-                                                Margin="4,3,4,3"
-                                                VerticalAlignment="Center"
-                                                Visibility="{TemplateBinding CheckBoxVisibilityResolved}">
+                                    <ContentPresenter x:Name="HeaderIconPresenter"
+                                                      Width="16"
+                                                      Height="16"
+                                                      Margin="4,3,4,3"
+                                                      Content="{TemplateBinding Icon}"
+                                                      Visibility="{TemplateBinding IconVisibilityResolved}" />
+                                    <ContentPresenter x:Name="HeaderCheckboxPresenter"
+                                                      Margin="4,3,4,3"
+                                                      HorizontalAlignment="Right"
+                                                      VerticalAlignment="Center"
+                                                      Visibility="{TemplateBinding CheckBoxVisibilityResolved}">
                                         <ContentPresenter.ContentTemplate>
                                             <DataTemplate>
-                                                <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" IsHitTestVisible="False"/>
+                                                <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsChecked, Mode=TwoWay}" IsHitTestVisible="False" />
                                             </DataTemplate>
                                         </ContentPresenter.ContentTemplate>
                                     </ContentPresenter>
                                     <Grid Grid.Column="1">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <ContentPresenter
-                                                    x:Name="HeaderPresenter"
-                                                    Grid.Column="0"
-                                                    Margin="5,3,5,3"
-                                                    VerticalAlignment="Center"
-                                                    Content="{TemplateBinding Header}"
-                                                    ContentTemplate="{TemplateBinding HeaderTemplate}"/>
-                                        <TextBlock
-                                                    Grid.Column="1"
-                                                    Margin="8,3,2,3"
-                                                    VerticalAlignment="Center"
-                                                    Text="{TemplateBinding InputGestureText}"/>
+
+
+                                        <DockPanel x:Name="MenuDockPanel"
+                                                   Grid.Column="0"
+                                                   Grid.ColumnSpan="2"
+                                                   Height="Auto"
+                                                   VerticalAlignment="Stretch">
+
+                                            <ContentPresenter x:Name="HeaderPresenter"
+                                                              Margin="5,3,5,3"
+                                                              VerticalAlignment="Center"
+                                                              Content="{TemplateBinding Header}"
+                                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                              DockPanel.Dock="Left" />
+                                            <TextBlock Margin="8,3,2,3"
+                                                       VerticalAlignment="Center"
+                                                       DockPanel.Dock="Right"
+                                                       Text="{TemplateBinding InputGestureText}" />
+                                        </DockPanel>
+
                                     </Grid>
-                                    <Grid
-                                                x:Name="ArrowPanel"
-                                                Grid.Column="2"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Visibility="Collapsed">
-                                        <Path
-                                                    x:Name="ArrowPanelPath"
-                                                    Margin="7,0,7,0"
-                                                    VerticalAlignment="Center"
-                                                    Data="M0,0 L0,8 L4,4 z"
-                                                    Fill="Black"/>
+                                    <Grid x:Name="ArrowPanel"
+                                          Grid.Column="2"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Visibility="Collapsed">
+                                        <Path x:Name="ArrowPanelPath"
+                                              Margin="7,0,7,0"
+                                              VerticalAlignment="Center"
+                                              Data="M0,0 L0,8 L4,4 z"
+                                              Fill="Black" />
                                     </Grid>
                                 </Grid>
                             </ContentControl>
                         </Grid>
                         <Popup x:Name="Popup">
-                            <Border
-                                        x:Name="PopupBorder"
-                                        Background="{StaticResource WareWolfWhiteBrush}"
-                                        BorderBrush="{StaticResource WareWolfLighkGreyBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="1"
-                                        Opacity="0">
+                            <Border x:Name="PopupBorder"
+                                    Background="{StaticResource WareWolfWhiteBrush}"
+                                    BorderBrush="{StaticResource WareWolfLighkGreyBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="1"
+                                    Opacity="0">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition MaxWidth="26"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition MaxWidth="26" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Border Grid.Column="0" Background="{StaticResource MenuItemVerticalBrush}" Width="26" HorizontalAlignment="Right"/>
-                                    <ScrollViewer
-                                                x:Name="ScrollViewer"
-                                                Grid.ColumnSpan="2"
-                                                BorderThickness="0"
-                                                Padding="0"
-                                                Margin="0"
-                                                HorizontalScrollBarVisibility="Auto"
-                                                VerticalScrollBarVisibility="Auto">
-                                        <ItemsPresenter Grid.ColumnSpan="2"/>
+                                    <ScrollViewer x:Name="ScrollViewer"
+                                                  Grid.ColumnSpan="2"
+                                                  Margin="0"
+                                                  BorderThickness="0"
+                                                  HorizontalScrollBarVisibility="Auto"
+                                                  Padding="0"
+                                                  VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter Grid.ColumnSpan="2" />
                                     </ScrollViewer>
+                                    <Border Grid.Column="0"
+                                            Width="26"
+                                            HorizontalAlignment="Right"
+                                            Background="{StaticResource MenuItemVerticalBrush}" />
                                 </Grid>
                             </Border>
                         </Popup>
