@@ -178,38 +178,7 @@
                         <DataTemplate>
 
                             <DataTemplate.Triggers>
-                                <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="EditPermissionImage"
-                                                                           Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Disabled}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="ExecutePermissionImage"
-                                                                           Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Disabled}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                                <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="EditPermissionImage"
-                                                                           Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="ExecutePermissionImage"
-                                                                           Storyboard.TargetProperty="Source">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
+                                
                             </DataTemplate.Triggers>
                             <DockPanel x:Name="ItemDockPanel"
                                        Height="Auto"
@@ -220,7 +189,40 @@
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                     </MultiBinding>
                                 </DockPanel.Width>
-
+                                <DockPanel.Triggers>
+                                    <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="EditPermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Disabled}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="ExecutePermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Disabled}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="EditPermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                           Storyboard.TargetName="ExecutePermissionImage"
+                                                                           Storyboard.TargetProperty="Source">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </DockPanel.Triggers>
 
                                 <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
                                 <ig:ContextMenuService.Manager>
@@ -365,9 +367,9 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="EditPermissionImage"
                                                                            Storyboard.TargetProperty="Source">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}" />
+
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}" />
                                                         </ObjectAnimationUsingKeyFrames> 
                                                     </Storyboard>
                                                 </BeginStoryboard>
@@ -376,7 +378,6 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="EditPermissionImage"
                                                                            Storyboard.TargetProperty="Source">
                                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
                                                         </ObjectAnimationUsingKeyFrames>                                                        
@@ -402,9 +403,8 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="ExecutePermissionImage"
                                                                            Storyboard.TargetProperty="Source">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Run-Enabled}" />
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Explorer-Permission-Enabled}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </BeginStoryboard>
@@ -413,7 +413,6 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Duration="0"
-                                                                           Storyboard.TargetName="ExecutePermissionImage"
                                                                            Storyboard.TargetProperty="Source">
                                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource System-Spacer}" />
                                                         </ObjectAnimationUsingKeyFrames>
