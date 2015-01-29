@@ -29,7 +29,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             QueryManagerProxy = new QueryManagerProxy(controllerFactory, environmentConnection);
             UpdateManagerProxy = new ExplorerUpdateManagerProxy(controllerFactory,environmentConnection);
             VersionManager = new VersionManagerProxy(environmentConnection, controllerFactory); //todo:swap
+            AdminManagerProxy = new AdminManagerProxy(controllerFactory, environmentConnection); //todo:swap
         }
+
+        public AdminManagerProxy AdminManagerProxy { get; set; }
 
         public Dev2.Common.Interfaces.ServerProxyLayer.IVersionManager VersionManager { get; set; }
         public QueryManagerProxy QueryManagerProxy { get; set; }

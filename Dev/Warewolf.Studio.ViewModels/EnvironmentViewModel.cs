@@ -10,6 +10,8 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Moq;
+using Warewolf.Studio.Core;
+using Warewolf.Studio.Core.Popup;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -46,7 +48,10 @@ namespace Warewolf.Studio.ViewModels
                 }
            
             });
+            ShowServerVersionCommand = new DelegateCommand(ShowServerVersionAbout);
         }
+
+        public ICommand ShowServerVersionCommand { get; set; }
 
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
         {
@@ -151,7 +156,12 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsExpanded);
             }
         }
-
+        void ShowServerVersionAbout()
+        {
+            var serverVersion = Server.GetServerVersion();
+            var studioVersion = Utils.FetchVersionInfo();
+            _shellViewModel.ShowPopup(PopupMessages.GetServerVersionMessage(studioVersion, serverVersion));
+        }
         public ICommand RenameCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }

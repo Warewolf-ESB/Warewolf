@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
@@ -429,6 +430,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public MockServer()
         {
             ExplorerRepository = new Mock<IExplorerRepository>().Object;
+            UpdateRepository = new Mock<IStudioUpdateManager>().Object;
             Permissions = new List<IWindowsGroupPermission>();
         }
 
@@ -631,6 +633,13 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+
+        public IStudioUpdateManager UpdateRepository { get; private set; }
+
+        public string GetServerVersion()
+        {
+            return "0";
+        }
 
         #endregion
     }

@@ -25,6 +25,7 @@ namespace Dev2.Common.Interfaces
         event NetworkStateChanged NetworkStateChanged;
 
         IStudioUpdateManager UpdateRepository{get;}
+        string GetServerVersion();
     }
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);
