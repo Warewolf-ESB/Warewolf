@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces.PopupController;
@@ -25,10 +24,10 @@ namespace Warewolf.Studio.Views
         {
             DataContext = serverPopup;
 
-          
-            
+
+
             var blurEffect = new BlurEffect { Radius = 10 };
-            //MediaTypeNames.Application.Current.MainWindow.Effect = blurEffect;
+            Application.Current.MainWindow.Effect = blurEffect;
             var window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
             window.ShowDialog();
             return MessageBoxResult.OK;

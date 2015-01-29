@@ -22,7 +22,7 @@
     <system:Double x:Key="FontSize-Smaller">10</system:Double>
     <system:Double x:Key="FontSize-Normal">12</system:Double>
     <system:Double x:Key="FontSize-Large">16</system:Double>
-    <system:Double x:Key="FontSize-Larger">40</system:Double>
+    <system:Double x:Key="FontSize-Larger">18</system:Double>
     <system:Double x:Key="ExplorerFontSize">14</system:Double>
 
 
