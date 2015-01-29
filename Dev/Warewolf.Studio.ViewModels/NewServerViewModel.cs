@@ -37,11 +37,8 @@ namespace Warewolf.Studio.ViewModels
 
         public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest,IStudioUpdateManager updateManager)
         {
-          //  VerifyArgument.AreNotNull(new Dictionary<string, object>({{"newServerSource",newServerSource},{"connectionTest",connectionTest},{"updateManager",updateManager}));
-            if (newServerSource == null)
-            {
-                throw new ArgumentNullException("newServerSource");
-            }
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "connectionTest", connectionTest }, { "updateManager", updateManager } });
+          
             _connectionTest = connectionTest;
             _updateManager = updateManager;
             _serverSource = newServerSource;
@@ -53,6 +50,7 @@ namespace Warewolf.Studio.ViewModels
             UserName = newServerSource.UserName;
             Password = newServerSource.Password;
             TestPassed = false;
+
 
             TestCommand = new DelegateCommand(() =>
             {
@@ -94,6 +92,7 @@ namespace Warewolf.Studio.ViewModels
 
             get
             {
+                IsValid = false;
                 if (String.IsNullOrEmpty(Address))
                     return Resources.Languages.Core.ServerDialogNoAddressErrorMessage;
 
@@ -101,6 +100,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return Resources.Languages.Core.ServerDialogNoTestMessage;
                 }
+
+                IsValid = true;
                 return String.Empty;
             }
 
@@ -241,7 +242,7 @@ namespace Warewolf.Studio.ViewModels
         #endregion
 
 
-        bool TestPassed
+        public bool TestPassed
         {
             get
             {
