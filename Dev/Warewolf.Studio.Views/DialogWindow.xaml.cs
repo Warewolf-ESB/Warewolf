@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces.PopupController;
@@ -24,10 +26,17 @@ namespace Warewolf.Studio.Views
         {
             DataContext = serverPopup;
 
+            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
+            var content = Application.Current.MainWindow.Content as Grid;
+            Grid blackoutGrid = new Grid();
+            blackoutGrid.Background = new SolidColorBrush(Colors.Black);
+            blackoutGrid.Opacity = 0.75; 
+            if(content != null)
+            {
+                content.Children.Add(blackoutGrid);
+            }
+            Application.Current.MainWindow.Effect = effect;
 
-
-            var blurEffect = new BlurEffect { Radius = 10 };
-            Application.Current.MainWindow.Effect = blurEffect;
             var window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
             window.ShowDialog();
             return MessageBoxResult.OK;

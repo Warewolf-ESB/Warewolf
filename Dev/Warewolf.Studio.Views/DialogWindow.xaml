@@ -9,27 +9,18 @@
              xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="200"
+            Style="{StaticResource XamDialogWindowStyle}"
                             Width="700"
-                            Height="420"
-                    Style="{x:Null}"
-                    HeaderIconVisibility="Collapsed"
-                    CloseButtonVisibility="Visible"
-                    IsResizable="False"
-                    MinimizeButtonVisibility="Collapsed"
-                  
-                    
-                   
-                  >
+                            Height="420" >
+    
     <ig:XamDialogWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
         <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
             <views:ServerUserControl />
         </DataTemplate>
     </ig:XamDialogWindow.Resources>
-    <ig:XamDialogWindow.HeaderTemplate>
-        <DataTemplate></DataTemplate>
-    </ig:XamDialogWindow.HeaderTemplate>
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="86"></RowDefinition>
