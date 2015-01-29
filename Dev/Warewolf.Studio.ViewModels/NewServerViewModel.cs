@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
+using Dev2;
 using Dev2.Common.Interfaces.Communication;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
@@ -13,44 +16,42 @@ namespace Warewolf.Studio.ViewModels
     {
         ICommand _okCommand;
         ICommand _cancelCommand;
-        bool _isOkEnabled;
-        bool _isTestEnabled;
-        bool _isUserNameVisible;
-        bool _isPasswordVisible;
-        string _addressLabel;
-        string _userNameLabel;
-        string _authenticationLabel;
-        string _passwordLabel;
-        string _testLabel;
+        string _userName;
+        string _password;
+        string _testMessage;
+        bool _isValid;
+        string _address;
+        bool _testPassed;
+        AuthenticationType _authenticationType;
 
         #region Implementation of IInnerDialogueTemplate
 
-        IServerConnectionTest _connectionTest;
-
-
+        readonly IServerConnectionTest _connectionTest;
+        readonly IStudioUpdateManager _updateManager;
+        IServerSource _serverSource;
 
         public NewServerViewModel()
         {
 
         }
 
-
-
-        public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest)
+        public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest,IStudioUpdateManager updateManager)
         {
-            _connectionTest = connectionTest;
-
+          //  VerifyArgument.AreNotNull(new Dictionary<string, object>({{"newServerSource",newServerSource},{"connectionTest",connectionTest},{"updateManager",updateManager}));
             if (newServerSource == null)
             {
                 throw new ArgumentNullException("newServerSource");
             }
+            _connectionTest = connectionTest;
+            _updateManager = updateManager;
+            _serverSource = newServerSource;
+      
 
             IsValid = false;
             Address = newServerSource.Address;
             AuthenticationType = newServerSource.AuthenticationType;
             UserName = newServerSource.UserName;
             Password = newServerSource.Password;
-            TestMessage = String.Empty;
             TestPassed = false;
 
             TestCommand = new DelegateCommand(() =>
@@ -63,38 +64,73 @@ namespace Warewolf.Studio.ViewModels
                     UserName = UserName
 
                 });
-                if(String.IsNullOrEmpty(TestMessage))
+                if (String.IsNullOrEmpty(TestMessage))
                     TestPassed = true;
             });
 
-           // OkCommand = new DelegateCommand(() => );
+             OkCommand = new DelegateCommand(Save);
+             CancelCommand = new DelegateCommand(() => {});
         }
 
+        void Save()
+        {
+            _updateManager.Save(new ServerSource()
+            {
+                Address = Address, 
+                AuthenticationType = AuthenticationType,
+                ID = _serverSource.ID==Guid.Empty? Guid.NewGuid():_serverSource.ID,
+                Name = String.IsNullOrEmpty(_serverSource.Name)?"":_serverSource.Name,
+                Password = Password,
+                ResourcePath = "" //todo: needs to come from explorer
+            });
+        }
 
         /// <summary>
         /// called by outer when validating
         /// </summary>
         /// <returns></returns>
-        public string Validate()
+        public string Validate
         {
-            if(String.IsNullOrEmpty(Address))
-                return Resources.Languages.Core.ServerDialogNoAddressErrorMessage;
-            
-            if (!TestPassed)
+
+            get
             {
-                
+                if (String.IsNullOrEmpty(Address))
+                    return Resources.Languages.Core.ServerDialogNoAddressErrorMessage;
 
-
+                if (!TestPassed)
+                {
+                    return Resources.Languages.Core.ServerDialogNoTestMessage;
+                }
+                return String.Empty;
             }
 
 
-            return String.Empty;
+
+        }
+
+        /// <summary>
+        /// called by outer when validating
+        /// </summary>
+        /// <returns></returns>
+        string IInnerDialogueTemplate.Validate()
+        {
+            return Validate;
         }
 
         /// <summary>
         /// Is valid 
         /// </summary>
-        public bool IsValid { get; set; }
+        public bool IsValid
+        {
+            get
+            {
+                return _isValid;
+            }
+            set
+            {
+                _isValid = value;
+            }
+        }
         /// <summary>
         /// Command for save/ok
         /// </summary>
@@ -131,35 +167,97 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// The server address that we are trying to connect to
         /// </summary>
-        public string Address { get; set; }
+        public string Address
+        {
+            get
+            {
+                return _address;
+            }
+            set
+            {
+                _address = value;
+            }
+        }
         /// <summary>
         ///  Windows or user or publlic
         /// </summary>
-        public AuthenticationType AuthenticationType { get; set; }
+        public AuthenticationType AuthenticationType
+        {
+            get
+            {
+                return _authenticationType;
+            }
+            set
+            {
+                _authenticationType = value;
+            }
+        }
         /// <summary>
         /// User Name
         /// </summary>
-        public string UserName { get; set; }
+        public string UserName
+        {
+            get
+            {
+                return _userName;
+            }
+            set
+            {
+                _userName = value;
+            }
+        }
         /// <summary>
         /// Password
         /// </summary>
-        public string Password { get; set; }
-   
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                _password = value;
+            }
+        }
+
         /// <summary>
         /// The message that will be set if the test is either successful or not
         /// </summary>
-        public string TestMessage { get; set; }
+        public string TestMessage
+        {
+            get
+            {
+                return _testMessage; 
+            }
+
+            set
+            {
+                _testMessage = value;
+            }
+
+        }
 
         #endregion
 
 
-        bool TestPassed  { get; set; }
+        bool TestPassed
+        {
+            get
+            {
+                return _testPassed;
+            }
+            set
+            {
+                _testPassed = value;
+            }
+        }
 
         public bool IsOkEnabled
         {
             get
             {
-               return IsValid;
+                return IsValid;
             }
 
         }
@@ -195,7 +293,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                    return Resources.Languages.Core.ServerDialogAddressLabel;
+                return Resources.Languages.Core.ServerDialogAddressLabel;
             }
         }
 
@@ -203,7 +301,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                    return Resources.Languages.Core.ServerDialogUserNameLabel;
+                return Resources.Languages.Core.ServerDialogUserNameLabel;
             }
         }
 
@@ -211,7 +309,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                    return Resources.Languages.Core.ServerDialogAuthenticationTypeLabel;
+                return Resources.Languages.Core.ServerDialogAuthenticationTypeLabel;
             }
         }
 
@@ -219,7 +317,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                    return Resources.Languages.Core.ServerDialogPasswordLabel;
+                return Resources.Languages.Core.ServerDialogPasswordLabel;
 
             }
         }
@@ -228,7 +326,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                    return Resources.Languages.Core.ServerDialogTestConnectionLabel;
+                return Resources.Languages.Core.ServerDialogTestConnectionLabel;
             }
         }
 
@@ -239,17 +337,11 @@ namespace Warewolf.Studio.ViewModels
         { get; set; }
 
 
-        //public ICommand OkCommand
-        //{ get; set; }
-
-        //public ICommand CancelCommand
-        //{ get; set; }
-
     }
 
 
-  
-    
+
+
     public class ServerSource : IServerSource
     {
         #region Implementation of IServerSource
@@ -278,7 +370,9 @@ namespace Warewolf.Studio.ViewModels
         /// The message that will be set if the test is either successful or not
         /// </summary>
         public string TestMessage { get; set; }
-
+        public Guid ID { get; set; }
+        public string Name { get; set; }
+        public string ResourcePath { get; set; }
 
         #endregion
     }

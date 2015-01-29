@@ -761,6 +761,9 @@ You need Administrator permission.</value>
   <data name="ServerDialogNoAddressErrorMessage" xml:space="preserve">
     <value>The server address cannot be empty</value>
   </data>
+  <data name="ServerDialogNoTestMessage" xml:space="preserve">
+    <value>The server connection must be tested before saving</value>
+  </data>
   <data name="ServerDialogPasswordLabel" xml:space="preserve">
     <value>Password</value>
   </data>
