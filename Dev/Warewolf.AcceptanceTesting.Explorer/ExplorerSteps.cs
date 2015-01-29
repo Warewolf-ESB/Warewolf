@@ -325,6 +325,11 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             get { throw new NotImplementedException(); }
         }
+
+        public string GetServerVersion()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
