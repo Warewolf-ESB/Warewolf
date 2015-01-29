@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -32,7 +33,7 @@ namespace Warewolf.Studio.ViewModels
 
         public NewServerViewModel()
         {
-
+          
         }
 
         public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest, IStudioUpdateManager updateManager)
@@ -73,6 +74,10 @@ namespace Warewolf.Studio.ViewModels
 
         void Test()
         {
+            TestFailed = false;
+            TestPassed = false;
+            Testing = true;
+            
             TestMessage = _updateManager.TestConnection(new ServerSource()
             {
                 Address = Address,
@@ -82,9 +87,17 @@ namespace Warewolf.Studio.ViewModels
                 Password = Password,
                 ResourcePath = "" //todo: needs to come from explorer
             });
-
+            Testing = false;
             if (TestMessage == "Success")
+            {
                 TestPassed = true;
+                TestFailed = false;
+            }
+            else
+            {
+                TestPassed = false;
+                TestFailed = true;
+            }
 
         }
 

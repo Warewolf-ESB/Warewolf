@@ -79,9 +79,9 @@
                     <ColumnDefinition Width="70"></ColumnDefinition>
                     <ColumnDefinition Width="24"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="1" Style="{StaticResource ErrorTextBlockStyle}"  TextAlignment="Right" VerticalAlignment="Center" Text="Server Url Invalid"></TextBlock>
-                <Button Grid.Column="3"  Width="60" Height="30"  Content="Save"  Command="{Binding Path=CancelCommand}"></Button>
-                <Button Grid.Column="5"  Width="70" Height="30"  Content="Cancel" Command="{Binding Path=CancelCommand}" ></Button>
+                <TextBlock Grid.Column="1" Style="{StaticResource ErrorTextBlockStyle}"  TextAlignment="Right" VerticalAlignment="Center" Text="{Binding Path=InnerDialogue.Validate}"></TextBlock>
+                <Button Grid.Column="3"  Width="60" Height="30"  Content="Save"  Command="{Binding Path=InnerDialogue.OkCommand}"></Button>
+                <Button Grid.Column="5"  Width="70" Height="30"  Content="Cancel" Command="{Binding Path=InnerDialogue.CancelCommand}" ></Button>
             </Grid>
             
         </Grid>

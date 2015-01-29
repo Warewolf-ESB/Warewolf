@@ -23,6 +23,8 @@ namespace Dev2.Common.Interfaces
 
         event PermissionsChanged PermissionsChanged;
         event NetworkStateChanged NetworkStateChanged;
+
+        IStudioUpdateManager UpdateRepository{get;}
     }
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);

@@ -69,14 +69,14 @@
                     <ColumnDefinition Width="65"></ColumnDefinition>
                  </Grid.ColumnDefinitions>
                 <TextBlock Text="UnAuthorised" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>
-                <fa:ImageAwesome Width="14"  Height="14" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=IsTestSuccessfull,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
-                <fa:ImageAwesome Width="14" Height="14" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=IsTestFailure,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
+                <fa:ImageAwesome Width="14"  Height="14" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
+                <fa:ImageAwesome Width="14" Height="14" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Remove" HorizontalAlignment="Right" Grid.Column="2"/>
                 <views:CircularProgressBar Grid.Row="0"
                                        Grid.Column="1"
                                        Width="25"
                                        Height="25"
                                        Padding="2"
-                                       Visibility="{Binding Path=IsTesting,Converter={StaticResource BoolToVisibilityConverter}}" />
+                                       Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
                 <Button Grid.Column="23" HorizontalAlignment="Right" Width="60" Height="30" Content="Test" Command="{Binding Path=TestCommand}"/>
             </Grid>
         </Grid>

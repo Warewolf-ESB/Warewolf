@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Controller;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -19,6 +20,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         readonly ServerProxy _environmentConnection;
         readonly Guid _serverId;
         readonly StudioServerProxy _proxyLayer;
+        IStudioUpdateManager _updateRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -37,6 +39,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             _environmentConnection = new ServerProxy(uri,credentials,new AsyncWorker());
             _serverId = Guid.NewGuid();
             _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), _environmentConnection);
+            UpdateRepository = new StudioResourceUpdateManager(new CommunicationControllerFactory(), _environmentConnection);
             _environmentConnection.PermissionsModified += RaisePermissionsModifiedEvent;
             _environmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
         }
@@ -116,6 +119,18 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+        public IStudioUpdateManager UpdateRepository
+        {
+            get
+            {
+                return _updateRepository;
+            }
+            private set
+            {
+                _updateRepository = value;
+            }
+        }
+
         #endregion
 
         #region Overrides of Resource

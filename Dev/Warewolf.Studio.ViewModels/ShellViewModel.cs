@@ -11,15 +11,18 @@ using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Controller;
 using Dev2.Util;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
+using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
@@ -214,7 +217,7 @@ namespace Warewolf.Studio.ViewModels
         void CreateNewServerSource()
         {
             var serverPopup = _unityContainer.Resolve<IDialogueTemplate>();
-            serverPopup.InnerDialogue = _unityContainer.Resolve<INewServerDialogue>();
+            serverPopup.InnerDialogue = new NewServerViewModel(new ServerSource(){UserName = "",Address = "",AuthenticationType = AuthenticationType.Windows,ID = Guid.NewGuid(),Name = "bob",Password = "",ResourcePath = ""},new TestConnection(), ActiveServer.UpdateRepository  );
             var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
 
             dialogue.ShowThis(serverPopup);

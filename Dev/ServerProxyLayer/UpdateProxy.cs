@@ -83,6 +83,8 @@ namespace Warewolf.Studio.ServerProxyLayer
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("ResourceXml", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                return "Unable to contact server";
             if (output.HasError)
                 return output.Message.ToString();
 

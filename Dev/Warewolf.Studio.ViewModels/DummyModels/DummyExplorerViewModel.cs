@@ -89,6 +89,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
     internal class DummyServer : Resource,IServer
     {
         IExplorerRepository _explorerRepository;
+        IStudioUpdateManager _updateRepository;
 
         public DummyServer()
         {
@@ -151,6 +152,13 @@ namespace Warewolf.Studio.ViewModels.DummyModels
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+        public IStudioUpdateManager UpdateRepository
+        {
+            get
+            {
+                return _updateRepository;
+            }
+        }
 
         #endregion
 

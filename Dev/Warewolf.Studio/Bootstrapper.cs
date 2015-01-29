@@ -69,7 +69,7 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IActionDialogueWindow>(new DialogWindow());
             Container.RegisterInstance<IDialogueTemplate>(new DialogueViewModel());
             Container.RegisterInstance<INewServerDialogue>(new NewServerViewModel());
-           
+
      
             ICollection<IVariableListViewColumnViewModel> colls = new ObservableCollection<IVariableListViewColumnViewModel>();
             colls.Add(new VariableListColumnViewModel("col", "bob", new Mock<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>().Object, colls) { Input = true });
