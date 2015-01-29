@@ -421,7 +421,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 
 
-
         // ReSharper restore InconsistentNaming
     }
 
