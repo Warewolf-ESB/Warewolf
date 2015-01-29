@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.ServerDialogue;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.UnittestingUtils;
@@ -177,6 +178,12 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //------------Execute Test---------------------------
             var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+            constructed.TestPassed = true;
+            constructed.Address = "hello";
+            var validate = constructed.Validate;
+
+            //constructed.OkCommand.Execute();
+
 
             //------------Assert Results-------------------------
 
@@ -190,19 +197,35 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void NewServerViewModel_TestCommand_CallsUpdateManager()
         {
             //------------Setup for test--------------------------
+
+            var inner = new Mock<INewServerDialogue>();
+           
+
             var mockNewServerSource = new Mock<IServerSource>();
             var mockServerConnectionTest = new Mock<IServerConnectionTest>();
+            var mockStudioUpdateManager = new Mock<IStudioUpdateManager>();
+            mockStudioUpdateManager.Setup(a => a.TestConnection(It.IsAny<ServerSource>())).Returns("bob");
             var mockCommand = new Mock<ICommand>();
 
-            mockNewServerSource.Setup(a => a.Address).Returns("bob");
+            mockNewServerSource.Setup(a => a.Address).Returns("http://localhost:3142");
             mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Public);
             mockNewServerSource.Setup(a => a.Password).Returns("bobthe");
             mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
 
+
+            mockStudioUpdateManager.Setup(a => a.TestConnection(mockNewServerSource.Object)).Returns("Success");
+
             //------------Execute Test---------------------------
-            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, mockStudioUpdateManager.Object);
 
             //------------Assert Results-------------------------
+            //constructed.TestPassed = true;
+            //var validate = constructed.Validate;
+            constructed.TestCommand.Execute(null);
+
+
+
+
 
         }
 

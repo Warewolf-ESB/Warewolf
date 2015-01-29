@@ -35,14 +35,14 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest,IStudioUpdateManager updateManager)
+        public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest, IStudioUpdateManager updateManager)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "connectionTest", connectionTest }, { "updateManager", updateManager } });
-          
+
             _connectionTest = connectionTest;
             _updateManager = updateManager;
             _serverSource = newServerSource;
-      
+
 
             IsValid = false;
             Address = newServerSource.Address;
@@ -52,35 +52,40 @@ namespace Warewolf.Studio.ViewModels
             TestPassed = false;
 
 
-            TestCommand = new DelegateCommand(() =>
-            {
-                TestMessage = _connectionTest.Test(new ServerSource()
-                {
-                    Address = Address,
-                    AuthenticationType = AuthenticationType,
-                    Password = Password,
-                    UserName = UserName
-
-                });
-                if (String.IsNullOrEmpty(TestMessage))
-                    TestPassed = true;
-            });
-
-             OkCommand = new DelegateCommand(Save);
-             CancelCommand = new DelegateCommand(() => {});
+            TestCommand = new DelegateCommand(Test);
+            OkCommand = new DelegateCommand(Save);
+            CancelCommand = new DelegateCommand(() => { });
         }
 
         void Save()
         {
             _updateManager.Save(new ServerSource()
             {
-                Address = Address, 
+                Address = Address,
                 AuthenticationType = AuthenticationType,
-                ID = _serverSource.ID==Guid.Empty? Guid.NewGuid():_serverSource.ID,
-                Name = String.IsNullOrEmpty(_serverSource.Name)?"":_serverSource.Name,
+                ID = _serverSource.ID == Guid.Empty ? Guid.NewGuid() : _serverSource.ID,
+                Name = String.IsNullOrEmpty(_serverSource.Name) ? "" : _serverSource.Name,
                 Password = Password,
                 ResourcePath = "" //todo: needs to come from explorer
             });
+        }
+
+
+        void Test()
+        {
+            TestMessage = _updateManager.TestConnection(new ServerSource()
+            {
+                Address = Address,
+                AuthenticationType = AuthenticationType,
+                ID = _serverSource.ID == Guid.Empty ? Guid.NewGuid() : _serverSource.ID,
+                Name = String.IsNullOrEmpty(_serverSource.Name) ? "" : _serverSource.Name,
+                Password = Password,
+                ResourcePath = "" //todo: needs to come from explorer
+            });
+
+            if (TestMessage == "Success")
+                TestPassed = true;
+
         }
 
         /// <summary>
@@ -234,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _testMessage; 
+                return _testMessage;
             }
 
             set

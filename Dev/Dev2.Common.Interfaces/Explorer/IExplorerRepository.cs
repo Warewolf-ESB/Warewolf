@@ -22,5 +22,7 @@ namespace Dev2.Common.Interfaces.Explorer
     public interface IStudioUpdateManager
     {
         void Save(IServerSource serverSource);
+
+        string TestConnection(IServerSource serverSource);
     }
 }
