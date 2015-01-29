@@ -44,6 +44,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             _environmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
         }
 
+        public string GetServerVersion()
+        {
+            return _proxyLayer.AdminManagerProxy.GetServerVersion();
+        }
+
         void RaiseNetworkStateChangeEvent(object sender, System.Network.NetworkStateEventArgs e)
         {
             if(NetworkStateChanged!= null)

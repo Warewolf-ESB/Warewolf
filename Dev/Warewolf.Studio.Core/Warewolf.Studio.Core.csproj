@@ -83,10 +83,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Vestris.ResourceLib, Version=1.4.1017.0, Culture=neutral, PublicKeyToken=ec632d8ba5e5750d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Vestris.ResourceLib.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="Converters\HeightConverter.cs" />
     <Compile Include="Infragistics Prism Region Adapter\IDockAware.cs" />
     <Compile Include="Infragistics Prism Region Adapter\TabGroupPaneRegionActiveAwareBehavior.cs" />
