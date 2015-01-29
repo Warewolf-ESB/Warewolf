@@ -241,7 +241,7 @@
                                                     <ig:XamMenuItem.Icon>
                                                         <Image Width="12"
                                                                Height="12"
-                                                               Source="{StaticResource Explorer-WebService-Create}" />
+                                                               Source="{StaticResource System-Logo-Create}" />
                                                     </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
 

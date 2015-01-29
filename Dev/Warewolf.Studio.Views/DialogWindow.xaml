@@ -23,8 +23,14 @@
             <views:ServerUserControl />
         </DataTemplate>
     </ig:XamDialogWindow.Resources>
-    <ig:XamDialogWindow.HeaderTemplate>
-       <DataTemplate>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="Gray">
             <Grid x:Name="Header">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5*" ></RowDefinition>
@@ -33,16 +39,6 @@
                 <TextBlock Grid.Row="0" Text="{Binding Path=Header}" Visibility="{Binding Path=HeaderVisible,Converter={StaticResource BoolToVisibility}}"/>
                 <TextBlock Grid.Row="1" Text="{Binding Path=HeaderDetail}" Visibility="{Binding Path=HeaderVisible,Converter={StaticResource BoolToVisibility}}"></TextBlock>
             </Grid>
-        </DataTemplate>
-   </ig:XamDialogWindow.HeaderTemplate>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="5"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-
         </Grid>
         
         <Grid Grid.Row="1">
