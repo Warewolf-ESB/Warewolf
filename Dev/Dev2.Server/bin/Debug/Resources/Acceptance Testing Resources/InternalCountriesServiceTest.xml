@@ -1,0 +1,47 @@
+
+<Service ID="c0c64982-bfcf-4476-98b6-197992188759" Version="1.0" Name="InternalCountriesServiceTest" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+  <Actions>
+    <Action Name="InternalCountriesServiceTest" Type="InvokeWebService" SourceID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" SourceName="TestingInternalCountries" SourceMethod="" RequestUrl="GetCountries.ashx?extension=[[extension]]&amp;prefix=[[prefix]]" RequestMethod="Get" JsonPath="">
+      <RequestHeaders><![CDATA[]]></RequestHeaders>
+      <RequestBody><![CDATA[]]></RequestBody>
+      <Inputs>
+        <Input Name="extension" Source="extension" EmptyToNull="false" DefaultValue="xml" NativeType="System.Object" />
+        <Input Name="prefix" Source="prefix" EmptyToNull="false" DefaultValue="a" NativeType="System.Object" />
+      </Inputs>
+      <Outputs>
+        <Output OriginalName="CountryID" Name="CountryID" MapsTo="CountryID" Value="[[Countries().CountryID]]" RecordsetName="UnnamedArrayData" RecordsetAlias="Countries" Recordset="Countries" />
+        <Output OriginalName="Description" Name="Description" MapsTo="Description" Value="[[Countries().Description]]" RecordsetName="UnnamedArrayData" RecordsetAlias="Countries" Recordset="Countries" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Json" i:type="d5p1:JsonPath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">UnnamedArrayData().CountryID</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">UnnamedArrayData().CountryID</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Countries().CountryID]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">1,2,3,4,5,6,7,8,9,10</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Json" i:type="d5p1:JsonPath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">UnnamedArrayData().Description</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">UnnamedArrayData().Description</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Countries().Description]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Afghanistan,Albania,Algeria,Andorra,Angola,Argentina,Armenia,Australia,Austria,Azerbaijan</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType></d1p1:_x003C_Paths_x003E_k__BackingField></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeWebService</TypeOf>
+  <DisplayName>InternalCountriesServiceTest</DisplayName>
+  <Category>Acceptance Testing Resources\InternalCountriesServiceTest</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>H3Z6g42iHGOCBCVeZKFsJrcRv/s=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>Cr8WSHbDv86Lq6PRczDlLxaXTO4C/Obc2OStNO2ny9bfLg+ZCNudAimpZNr2JvDaP2H7i64814dlTEAm6pJUaUiflk8xE/pc6/jsgj3Uxlpjhm8fWPsve1zdg7a5f8Vr/3LHcIZfFr/a9rpS5p2ZHUVLhJ1F36kmpCZ3kgTX04A=</SignatureValue>
+  </Signature>
+</Service>
