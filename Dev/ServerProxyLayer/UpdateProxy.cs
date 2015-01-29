@@ -2,10 +2,12 @@
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
+using Dev2.Communication;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
@@ -51,6 +53,31 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.ExecuteCommand<IExecuteMessage>(con, workspaceId);
         }
 
+        /// <summary>
+        /// Save a resource to the server
+        /// </summary>
+        /// <param name="resource">resource to save</param>
+        /// <param name="workspaceId">the workspace to save to</param>
+        public void SaveResource(IResource resource, Guid workspaceId)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveResourceService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ResourceXml",serialiser.SerializeToBuilder( resource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, workspaceId);
+            if(output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(),null);
+            
+        }
+
         #endregion
+    }
+
+    public class WarewolfSaveException : WarewolfException
+    {
+        public WarewolfSaveException(string message, Exception innerException)
+            : base(message, innerException, ExceptionType.Execution,ExceptionSeverity.Error)
+        {
+        }
     }
 }

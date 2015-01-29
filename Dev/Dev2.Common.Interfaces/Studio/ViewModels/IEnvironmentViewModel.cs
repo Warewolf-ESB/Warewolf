@@ -10,6 +10,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand DeployCommand { get; set; }
         bool CanCreateDbService { get; set; }
         bool CanCreateDbSource { get; set; }
+        bool CanCreateServerSource { get; set; }
         bool CanCreateWebService { get; set; }
         bool CanCreateWebSource { get; set; }
         bool CanCreatePluginService { get; set; }

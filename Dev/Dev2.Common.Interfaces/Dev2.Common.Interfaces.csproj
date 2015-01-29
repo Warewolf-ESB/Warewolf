@@ -145,6 +145,7 @@
     <Compile Include="Activity\IWorkflowActivityMessage.cs" />
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
+    <Compile Include="Communication\IServerConnectionTest.cs" />
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ConnectionEnumerations.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />

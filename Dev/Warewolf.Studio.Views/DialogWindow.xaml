@@ -6,6 +6,7 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="200"
                             Width="800"
@@ -14,11 +15,11 @@
                             MaximizeButtonVisibility="Collapsed"
                             MinimizeButtonVisibility="Collapsed"
                             IsResizable="False"
-                            IsMoveable="False"
+                            IsMoveable="True"
                             StartupPosition="Center">
     <ig:XamDialogWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
-        <DataTemplate DataType="{x:Type interfaces:INewServerDialogue}">
+        <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
             <views:ServerUserControl />
         </DataTemplate>
     </ig:XamDialogWindow.Resources>

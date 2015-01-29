@@ -9,8 +9,9 @@ namespace Warewolf.Studio.Themes.Luna
 
         protected override sealed void ConfigureControlMappings()
         {
-            var assemblyFullName = typeof(LunaTheme).Assembly.FullName;
-            Mappings.Add(ControlMappingKeys.MsCoreControls, BuildLocationString(assemblyFullName, @"\Theme.xaml"));
+            var assemblyFullName = typeof(LunaTheme).Assembly.GetName().Name;
+            var locationString = BuildLocationString(assemblyFullName, @"Theme.xaml");
+            Mappings.Add(ControlMappingKeys.MsCoreControls, locationString);
 
             // Customised Theme Elements
             //Mappings.Add(ControlMappingKeys.XamMenu, BuildLocationString(assemblyFullName, @"\Elements\xamMenu.xaml"));

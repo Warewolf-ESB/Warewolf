@@ -2,12 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:studio="clr-namespace:Dev2.Common.Interfaces.Studio;assembly=Dev2.Common.Interfaces"
-             xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
-             ScrollViewer.VerticalScrollBarVisibility="Disabled"
              Width="60"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type={x:Type studio:IMenuViewModel}}">
+             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+             d:DataContext="{d:DesignInstance Type={x:Type studio:IMenuViewModel}}"
+             mc:Ignorable="d">
 
     <Grid x:Name="Menu"
           HorizontalAlignment="Stretch"
@@ -49,22 +50,22 @@
             <ColumnDefinition Width="0.5*" />
         </Grid.ColumnDefinitions>
 
-        <Image 
-                Grid.Row="0"   Grid.ColumnSpan="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                Width="5"
-                   Height="5"
-                   Source="{StaticResource System-Spacer}" />
+        <Image Grid.Row="0"
+               Grid.ColumnSpan="3"
+               Width="5"
+               Height="5"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
 
-        <Image 
-                Grid.Row="1"   Grid.ColumnSpan="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                Width="40"
-                   Height="40"
-                   Margin="0,0,0,0"
-                   Source="{StaticResource System-Logo}" />
+        <Image Grid.Row="1"
+               Grid.ColumnSpan="3"
+               Width="40"
+               Height="40"
+               Margin="0,0,0,0"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Logo}" />
 
         <Separator Grid.Row="2"
                    Grid.ColumnSpan="3"
@@ -186,13 +187,13 @@
         <Button Grid.Row="18"
                 Grid.Column="1"
                 Command="{Binding CheckForNewVersionCommand}"
-                Visibility="{Binding HasNewVersion}"
-                Style="{StaticResource SideMenuButtonStyle}">
+                Style="{StaticResource SideMenuButtonStyle}"
+                Visibility="{Binding HasNewVersion}">
             <Image Width="20"
                    Height="20"
                    Source="{StaticResource System-Expand}" />
         </Button>
-        
+
 
 
         <Separator Grid.Row="19"

@@ -32,7 +32,7 @@
                     <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-                <TextBlock Text="{Binding Path= ServerLabel}" Grid.Column="0"></TextBlock>
+            <TextBlock Text="{Binding Path= AddressLabel}" Grid.Column="0"></TextBlock>
                 <TextBox Text="{Binding Path=Server}" Grid.Column="1" Grid.Row="0"></TextBox>
                 
                 <TextBlock Text="{Binding Path=AuthenticationTypeText}" Grid.Column="0" Grid.Row="1"></TextBlock>
@@ -52,11 +52,11 @@
                 <RadioButton Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}"></RadioButton>
                 <TextBlock Text="Public" Grid.Column="4"></TextBlock>
             </Grid>
-                
-                <TextBlock Text="{Binding Path=UserLabel}" Grid.Column="0" Grid.Row="1"></TextBlock>
+
+            <TextBlock Text="{Binding Path=UserNameLabel}" Grid.Column="0" Grid.Row="1"></TextBlock>
                 <TextBox Text="{Binding Path=UserName}" Grid.Column="1" Grid.Row="2"></TextBox>
-                
-                <TextBlock Text="{Binding Path= PasswordLabel}" Grid.Row="3" Grid.Column="1"></TextBlock>
+
+            <TextBlock Text="{Binding Path= PasswordLabel}" Grid.Row="3" Grid.Column="1"></TextBlock>
                 <TextBox Text="{Binding Path=Password}" Grid.Column="1" Grid.Row="3"></TextBox>
                 
                 <Button Grid.Row="4" HorizontalAlignment="Right" Command="{Binding Path=TestCommand}"></Button>

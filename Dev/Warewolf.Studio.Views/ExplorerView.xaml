@@ -91,14 +91,9 @@
                         IsDropTarget="True"
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
-                        NodeLineVisibility="Hidden">
-
-
-
-
-
+                        NodeLineVisibility="Hidden"
+                        ActiveNodeChanged="ExplorerTree_OnActiveNodeChanged">
             <ig:XamDataTree.EditingSettings>
-
                 <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="True"
                                         IsEnterKeyEditingEnabled="True"
@@ -237,7 +232,19 @@
                                                                Source="{StaticResource Explorer-WorkflowService}" />
                                                     </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
-                                                
+                                                <ig:XamMenuItem Name="NewServerSource"
+                                                                Command="{Binding Path=Data.NewCommand}"
+                                                                CommandParameter="{x:Static data:ResourceType.ServerSource}"
+                                                                Header="New Server Source"
+                                                                Visibility="{Binding Path=Data.CanCreateServerSource,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <ig:XamMenuItem.Icon>
+                                                        <Image Width="12"
+                                                               Height="12"
+                                                               Source="{StaticResource Explorer-WebService-Create}" />
+                                                    </ig:XamMenuItem.Icon>
+                                                </ig:XamMenuItem>
+
 
                                                 <ig:XamMenuItem Name="NewDataBaseService"
                                                                 InputGestureText="[Ctrl+Shift+D]"
