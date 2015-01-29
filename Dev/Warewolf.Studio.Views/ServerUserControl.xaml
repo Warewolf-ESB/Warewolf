@@ -56,11 +56,11 @@
                 <TextBlock Text="Public" HorizontalAlignment="Left" Grid.Column="5" VerticalAlignment="Center"></TextBlock>
             </Grid>
 
-            <TextBlock Text="User Name" Grid.Column="0" Grid.Row="3"></TextBlock>
-                <TextBox Text="{Binding Path=UserName}" Grid.Column="1" Grid.Row="3"></TextBox>
+            <TextBlock Text="User Name" Grid.Column="0" Grid.Row="3" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
+            <TextBox Text="{Binding Path=UserName}" Grid.Column="1" Grid.Row="3" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
 
-                <TextBlock Text="Password" Grid.Row="4" Grid.Column="0"></TextBlock>
-                <TextBox Text="{Binding Path=Password}" Grid.Column="1" Grid.Row="4"></TextBox>
+            <TextBlock Text="Password" Grid.Row="4" Grid.Column="0" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
+            <TextBox Text="{Binding Path=Password}" Grid.Column="1" Grid.Row="4" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
             <Grid Grid.Row="5" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>

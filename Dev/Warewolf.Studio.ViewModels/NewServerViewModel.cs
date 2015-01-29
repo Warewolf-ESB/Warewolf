@@ -177,6 +177,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _address = value;
+                OnPropertyChanged(() => Address);
             }
         }
         /// <summary>
@@ -191,6 +192,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _authenticationType = value;
+                OnPropertyChanged(() => AuthenticationType);
+                OnPropertyChanged(() => IsUserNameVisible);
             }
         }
         /// <summary>
@@ -205,6 +208,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _userName = value;
+                OnPropertyChanged(() => UserName);
             }
         }
         /// <summary>
@@ -219,6 +223,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _password = value;
+                OnPropertyChanged(() => Password);
             }
         }
 
@@ -235,6 +240,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testMessage = value;
+                OnPropertyChanged(() => TestMessage);
             }
 
         }
@@ -251,6 +257,31 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testPassed = value;
+                OnPropertyChanged(() => TestPassed);
+            }
+        }
+        public bool TestFailed
+        {
+            get
+            {
+                return _testPassed;
+            }
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged(() => TestFailed);
+            }
+        }
+        public bool Testing
+        {
+            get
+            {
+                return _testPassed;
+            }
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged(() => Testing);
             }
         }
 
