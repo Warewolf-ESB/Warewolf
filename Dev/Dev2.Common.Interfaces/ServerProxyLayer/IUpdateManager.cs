@@ -30,11 +30,12 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <param name="workspaceId">the workspace to save to</param>
         void SaveResource(IResource resource, Guid workspaceId);
 
-        //todo : implement this
-        //string TestConnection(IResource resource)
-        //{
-        //    return "";
-        //}
+        /// <summary>
+        /// Tests if a valid connection to a server can be made returns 'Success' on a successful connection
+        /// </summary>
+        /// <param name="resource"></param>
+        /// <returns></returns>
+        string TestConnection(IResource resource);
 
     }
 }

@@ -51,5 +51,27 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             };
             UpdateManagerProxy.SaveResource(resource,GlobalConstants.ServerWorkspaceID);
         }
+
+
+
+        public string TestConnection(IServerSource serverSource)
+        {
+            Connection resource = new Connection
+            {
+                ResourceID = serverSource.ID,
+                ResourceName = serverSource.Name,
+                ResourceType = ResourceType.ServerSource,
+                ResourcePath = serverSource.ResourcePath,
+                Address = serverSource.Address,
+                AuthenticationType = serverSource.AuthenticationType,
+                UserName = serverSource.UserName,
+                Password = serverSource.Password
+
+
+            };
+
+            return UpdateManagerProxy.TestConnection(resource);
+
+        }
     }
 }

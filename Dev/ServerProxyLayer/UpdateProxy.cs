@@ -11,12 +11,13 @@ using Dev2.Communication;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
-    public class UpdateProxy:ProxyBase,IUpdateManager
+    public class UpdateProxy : ProxyBase, IUpdateManager
     {
         #region Implementation of IUpdateManager
 
 
-        public UpdateProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection):base(communicationControllerFactory,connection)
+        public UpdateProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection)
+            : base(communicationControllerFactory, connection)
         {
 
         }
@@ -32,7 +33,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new ArgumentNullException("resource");
             }
             var comsController = CommunicationControllerFactory.CreateController("DeployResourceService");
-           //todo: this is different and need to use new method
+            //todo: this is different and need to use new method
             // comsController.AddPayloadArgument("ResourceDefinition", resource.ToServiceDefinition());
             comsController.AddPayloadArgument("Roles", "*");
 
@@ -45,7 +46,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resource">resource to save</param>
         /// <param name="workspaceId">workspace to save to </param>
-        public void SaveResource(StringBuilder resource,Guid workspaceId)
+        public void SaveResource(StringBuilder resource, Guid workspaceId)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveResourceService");
@@ -63,11 +64,31 @@ namespace Warewolf.Studio.ServerProxyLayer
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveResourceService");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("ResourceXml",serialiser.SerializeToBuilder( resource));
+            comsController.AddPayloadArgument("ResourceXml", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, workspaceId);
-            if(output.HasError)
-                throw new WarewolfSaveException(output.Message.ToString(),null);
-            
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+
+        }
+
+        /// <summary>
+        /// Tests if a valid connection to a server can be made
+        /// </summary>
+        /// <param name="resource"></param>
+        /// <returns></returns>
+        public string TestConnection(IResource resource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestConnectionService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ResourceXml", serialiser.SerializeToBuilder(resource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output.HasError)
+                return output.Message.ToString();
+
+            return "Success";
+
+
         }
 
         #endregion
@@ -76,7 +97,7 @@ namespace Warewolf.Studio.ServerProxyLayer
     public class WarewolfSaveException : WarewolfException
     {
         public WarewolfSaveException(string message, Exception innerException)
-            : base(message, innerException, ExceptionType.Execution,ExceptionSeverity.Error)
+            : base(message, innerException, ExceptionType.Execution, ExceptionSeverity.Error)
         {
         }
     }
