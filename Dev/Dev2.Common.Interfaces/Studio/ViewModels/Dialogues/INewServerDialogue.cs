@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
@@ -48,6 +49,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         string PasswordLabel { get; }
 
         string TestLabel { get; }
+
+        DialogResult Result { get; set; }
   
     }
 }

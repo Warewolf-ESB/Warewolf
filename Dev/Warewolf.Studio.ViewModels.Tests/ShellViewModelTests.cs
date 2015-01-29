@@ -426,6 +426,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
     public class MockServer:IServer
     {
+        IStudioUpdateManager _updateRepository;
+
         public MockServer()
         {
             ExplorerRepository = new Mock<IExplorerRepository>().Object;
@@ -631,6 +633,13 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+        public IStudioUpdateManager UpdateRepository
+        {
+            get
+            {
+                return _updateRepository;
+            }
+        }
 
         #endregion
     }

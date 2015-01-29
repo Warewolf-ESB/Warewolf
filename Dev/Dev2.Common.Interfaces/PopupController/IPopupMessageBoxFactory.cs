@@ -16,5 +16,15 @@ namespace Dev2.Common.Interfaces.PopupController
     public interface IActionDialogueWindow
     {
          MessageBoxResult ShowThis(IDialogueTemplate serverPopup);
+
+         void Close();
+
+
+    }
+
+    public enum DialogResult
+    {
+        Failure,
+        Success
     }
 }

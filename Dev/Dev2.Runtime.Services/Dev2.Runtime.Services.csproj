@@ -202,11 +202,13 @@
     <Compile Include="ESB\Management\Services\FetchDependantCompileMessages.cs" />
     <Compile Include="ESB\Management\Services\GetDependanciesOnList.cs" />
     <Compile Include="ESB\Management\Services\RenameResource.cs" />
+    <Compile Include="ESB\Management\Services\SaveServerSource.cs" />
     <Compile Include="ESB\Management\Services\SecurityEncryption.cs" />
     <Compile Include="ESB\Management\Services\SecurityRead.cs" />
     <Compile Include="ESB\Management\Services\SecurityWrite.cs" />
     <Compile Include="ESB\Management\Services\SettingsRead.cs" />
     <Compile Include="ESB\Management\Services\SettingsWrite.cs" />
+    <Compile Include="ESB\Management\Services\TestConnectionService.cs" />
     <Compile Include="Execution\ExecutionToken.cs" />
     <Compile Include="Execution\IExecutionToken.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />

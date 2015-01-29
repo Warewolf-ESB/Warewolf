@@ -11,6 +11,8 @@ namespace Warewolf.Studio.Views
     /// </summary>
     public partial class DialogWindow : IActionDialogueWindow
     {
+        Window _window;
+
         public DialogWindow()
         {
             InitializeComponent();
@@ -28,9 +30,31 @@ namespace Warewolf.Studio.Views
 
             var blurEffect = new BlurEffect { Radius = 10 };
             Application.Current.MainWindow.Effect = blurEffect;
-            var window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
-            window.ShowDialog();
+            Window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
+            var res = Window.ShowDialog();
+            Window.Close();
             return MessageBoxResult.OK;
+        }
+
+        public Window Window
+        {
+            get
+            {
+                return _window;
+            }
+            set
+            {
+                _window = value;
+            }
+        }
+
+        public new void Close()
+        {
+            if (Window != null)
+            {
+                Application.Current.MainWindow.Effect = null;
+                Window.Close();
+            }
         }
 
         #endregion
