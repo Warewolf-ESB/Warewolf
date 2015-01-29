@@ -42,6 +42,17 @@ namespace Warewolf.Studio.Core.Popup
             };
         }
 
+        public static IPopupMessage GetServerVersionMessage(string studioVersion,string serverVersion)
+        {
+            return new PopupMessage
+            {
+                Buttons = MessageBoxButton.OK,
+                Header = Resources.Languages.Core.About_Description_Header,
+                Description = string.Format(Resources.Languages.Core.About_Content,studioVersion, serverVersion),
+                Image = MessageBoxImage.Information
+            };
+        }
+
         public static IPopupMessage GetSettingsCloseConfirmation()
         {
             return new PopupMessage

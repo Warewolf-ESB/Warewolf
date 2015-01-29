@@ -41,6 +41,12 @@
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.Design.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.dll</HintPath>
     </Reference>
@@ -81,6 +87,24 @@
     <Reference Include="InfragisticsWPF4.DockManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v14.2.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.Core.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Documents.Core.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.IO.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Documents.IO.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.RichTextDocument.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.RichTextDocument.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.v14.2.Design.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DragDrop.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v14.2.dll</HintPath>
     </Reference>
@@ -92,6 +116,9 @@
     </Reference>
     <Reference Include="InfragisticsWPF4.Persistence.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Persistence.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Undo.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Undo.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.v14.2.dll</HintPath>
@@ -169,6 +196,7 @@
     <Compile Include="ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExplorerViewTestClass.cs" />
     <Compile Include="FocusExtension.cs" />
     <Compile Include="HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>

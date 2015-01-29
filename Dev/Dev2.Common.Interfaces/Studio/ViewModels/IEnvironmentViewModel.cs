@@ -27,7 +27,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand RollbackCommand { get; set; }
        
         IServer Server { get; set; }
-        
+        ICommand Expand { get; set; }
     }
     public interface IEnvironmentViewModel : IExplorerTreeItem
     {
@@ -45,6 +45,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand RefreshCommand { get; set; }
         bool IsServerIconVisible { get; set; }
         bool IsServerUnavailableIconVisible { get; set; }
-
+        ICommand ShowServerVersionCommand { get; set; }
     }
 }

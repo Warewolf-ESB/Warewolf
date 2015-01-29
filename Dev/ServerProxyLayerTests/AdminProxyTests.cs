@@ -55,6 +55,49 @@ namespace ServerProxyLayerTests
             Assert.AreEqual(-1, output);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AdminProxy_GetServerVersion")]
+        public void AdminProxy_GetServerVersion()
+        {
+            //------------Setup for test--------------------------
+            var factory = new Mock<ICommunicationControllerFactory>();
+            var connection = new Mock<IEnvironmentConnection>();
+            var controller = new Mock<ICommunicationController>();
+            var manager = new AdminManagerProxy(factory.Object, connection.Object);
+            // ReSharper disable MaximumChainedReferences
+            const string expectedVersion = "0.3.5.5";
+            controller.Setup(a => a.ExecuteCommand<string>(connection.Object, GlobalConstants.ServerWorkspaceID)).Returns(expectedVersion);
+            // ReSharper restore MaximumChainedReferences
+            factory.Setup(a => a.CreateController("GetServerVersion")).Returns(controller.Object);
+            //-------------Execute Test-----------------------------
+            var serverVersion = manager.GetServerVersion();
+            //-------------Assert ----------------------------------
+            controller.Verify(a => a.ExecuteCommand<string>(connection.Object, GlobalConstants.ServerWorkspaceID), Times.Once());
+            Assert.AreEqual(expectedVersion,serverVersion);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AdminProxy_GetServerVersion")]
+        public void AdminProxy_GetServerVersion_NullReturned_ShouldReturnDefaultVersion()
+        {
+            //------------Setup for test--------------------------
+            var factory = new Mock<ICommunicationControllerFactory>();
+            var connection = new Mock<IEnvironmentConnection>();
+            var controller = new Mock<ICommunicationController>();
+            var manager = new AdminManagerProxy(factory.Object, connection.Object);
+            // ReSharper disable MaximumChainedReferences
+            controller.Setup(a => a.ExecuteCommand<string>(connection.Object, GlobalConstants.ServerWorkspaceID)).Returns((string)null);
+            // ReSharper restore MaximumChainedReferences
+            factory.Setup(a => a.CreateController("GetServerVersion")).Returns(controller.Object);
+            //-------------Execute Test-----------------------------
+            var serverVersion = manager.GetServerVersion();
+            //-------------Assert ----------------------------------
+            controller.Verify(a => a.ExecuteCommand<string>(connection.Object, GlobalConstants.ServerWorkspaceID), Times.Once());
+            Assert.AreEqual("less than 0.4.19.1",serverVersion);
+        }
+        
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

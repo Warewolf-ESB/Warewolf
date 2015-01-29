@@ -3,24 +3,26 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
+	xmlns:help="clr-namespace:Warewolf.Studio.ViewModels.Help;assembly=Warewolf.Studio.ViewModels"
+	xmlns:ig="http://schemas.infragistics.com/xaml"
 	mc:Ignorable="d"
 	x:Class="Warewolf.Studio.Views.HelpView"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="480"
-    d:DataContext="{d:DesignInstance Type={x:Type dummyModels:DummyHelpViewModel}}">
+    d:DataContext="{d:DesignInstance Type={x:Type help:HelpWindowViewModel}}">
 
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="49*"/>
-			<ColumnDefinition Width="591*"/>
+			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="7*"/>
-			<RowDefinition Height="73*"/>
+			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-        <Image x:Name="HelpImage" Grid.Row="0" Grid.Column="0" Width="32" Height="32" Source="{Binding HelpImage, Mode=OneWay}"/>
-		<TextBlock x:Name="HeadingText" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Text="{Binding HelpName, Mode=OneWay}" VerticalAlignment="Center"/>
-        <TextBlock x:Name="DescriptionText" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" Text="{Binding HelpText, Mode=OneWay}" Margin="0,13.02" Grid.ColumnSpan="2"/>
+        <ig:XamRichTextEditor x:Name="xamRichTextEditor1" Grid.Row="1" Margin="0,10,0,0" AllowDocumentViewSplitting="True"
+                              BorderThickness="1" >
+            <ig:XamRichTextEditor.ClipboardSerializationProviders>
+                <ig:HtmlSerializationProvider />
+            </ig:XamRichTextEditor.ClipboardSerializationProviders>
+        </ig:XamRichTextEditor>
 	</Grid>
 </UserControl>

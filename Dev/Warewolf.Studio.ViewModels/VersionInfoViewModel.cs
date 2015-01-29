@@ -47,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
             _parent = explorerItemViewModel;
             CanShowVersions = false;
             CanRollBack = true;
+            Expand = new DelegateCommand(() => { });
         }
 
         public string DisplayName { get; set; }
@@ -115,6 +116,12 @@ namespace Warewolf.Studio.ViewModels
                 _server = value;
             }
         }
+
+        public ICommand Expand
+        {
+            get; set;
+        }
+
         public bool IsVisible
         {
             get
