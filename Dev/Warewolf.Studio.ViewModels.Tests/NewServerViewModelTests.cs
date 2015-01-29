@@ -16,33 +16,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Robin van den Heever")]
         [TestCategory("NewServerViewModel_Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
         // ReSharper disable InconsistentNaming
         public void NewServerViewModel_Constructor_NullShellViewModel_ExceptionThrown()
-       
         {
-            //------------Setup for test--------------------------
-
-            //------------Execute Test---------------------------
-            var constructed = new NewServerViewModel();
             //------------Assert Results-------------------------
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IServerSource>().Object, new Mock<IServerConnectionTest>().Object, new Mock<IStudioUpdateManager>().Object },typeof(NewServerViewModel));
-          
-
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IServerSource>().Object, new Mock<IServerConnectionTest>().Object, new Mock<IStudioUpdateManager>().Object }, typeof(NewServerViewModel));
         }
 
-        [TestMethod]
-        [Owner("Robin Van Den Heever")]
-        [TestCategory("NewServerViewModel_Ctor")]
-        public void NewServerViewModel_Ctor_NullValues_ExpectErrors()
-        {
-            //------------Setup for test--------------------------
-            var newServerViewModel = new NewServerViewModel();
-            
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
-        }
 
         [TestMethod]
         [Owner("Robin van den Heever")]
@@ -52,7 +32,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var mockNewServerSource = new Mock<IServerSource>();
             var mockServerConnectionTest = new Mock<IServerConnectionTest>();
-
             var mockCommand = new Mock<ICommand>();
 
             mockNewServerSource.Setup(a => a.Address).Returns("bob");
@@ -60,61 +39,221 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockNewServerSource.Setup(a => a.Password).Returns("bobthe");
             mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
 
-             //------------Execute Test---------------------------
+            //------------Execute Test---------------------------
             var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
 
-                 //------------Assert Results-------------------------
+            //------------Assert Results-------------------------
 
             Assert.AreEqual("bob", constructed.Address);
             Assert.AreEqual(AuthenticationType.Public, constructed.AuthenticationType);
             Assert.AreEqual("bobthe", constructed.Password);
             Assert.AreEqual("hairy", constructed.UserName);
-            
+
 
         }
 
-               [TestMethod]
+        [TestMethod]
         [Owner("Robin van den Heever")]
         [TestCategory("NewServerViewModel_Interactions")]
-        public void NewServerViewModel_Interactions_AuthenticationTypeChangesTextboxVisibility() { }
+        public void NewServerViewModel_Interactions_AuthenticationTypeChangesTextboxVisibility()
+        {
+            //------------Setup for test--------------------------
+            var mockNewServerSource = new Mock<IServerSource>();
+            var mockServerConnectionTest = new Mock<IServerConnectionTest>();
+            var mockCommand = new Mock<ICommand>();
+
+            mockNewServerSource.Setup(a => a.Address).Returns("bob");
+           mockNewServerSource.Setup(a => a.Password).Returns("bobthe");
+            mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
+
+            //------------Execute Test---------------------------
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Public);
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+            Assert.AreEqual(false, constructed.IsUserNameVisible);
+            Assert.AreEqual(false, constructed.IsPasswordVisible);
+
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.User);
+            var constructed2 = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+            Assert.AreEqual(true, constructed2.IsUserNameVisible);
+            Assert.AreEqual(true, constructed2.IsPasswordVisible);
+
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Anonymous);
+            var constructed3 = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+            Assert.AreEqual(false, constructed3.IsUserNameVisible);
+            Assert.AreEqual(false, constructed3.IsPasswordVisible);
+
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Windows);
+            var constructed4 = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+            Assert.AreEqual(false, constructed4.IsUserNameVisible);
+            Assert.AreEqual(false, constructed4.IsPasswordVisible);
+
+            //------------Assert Results-------------------------
+
+        }
 
 
         [TestMethod]
         [Owner("Robin van den Heever")]
         [TestCategory("NewServerViewModel_Interactions")]
-        public void NewServerViewModel_Interactions_AdressEnablesSaveCommand() { }
+        public void NewServerViewModel_Interactions_AdressEnablesSaveCommand()
+        {
+            //------------Setup for test--------------------------
+            var mockNewServerSource = new Mock<IServerSource>();
+            var mockServerConnectionTest = new Mock<IServerConnectionTest>();
+            var mockCommand = new Mock<ICommand>();
+
+            
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Public);
+            mockNewServerSource.Setup(a => a.Password).Returns("bobthe");
+            mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
+
+            //------------Execute Test---------------------------
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+
+            Assert.AreEqual("The server address cannot be empty", constructed.Validate);
+
+            constructed.TestPassed = false;
+            constructed.Address = "hello";
+
+            Assert.AreEqual("The server connection must be tested before saving", constructed.Validate);
+
+            constructed.TestPassed = true;
+            constructed.Address = "hello";
+
+            Assert.AreEqual(String.Empty, constructed.Validate);
+
+            //------------Assert Results-------------------------
+
+        }
 
 
 
         [TestMethod]
         [Owner("Robin van den Heever")]
         [TestCategory("NewServerViewModel_Interactions")]
-        public void NewServerViewModel_Interactions_AdressTestSuccessEnablesSaveCommand() { }
+        public void NewServerViewModel_Interactions_AdressTestSuccessEnablesSaveCommand()
+        {
+            //------------Setup for test--------------------------
+            var mockNewServerSource = new Mock<IServerSource>();
+            var mockServerConnectionTest = new Mock<IServerConnectionTest>();
+            var mockCommand = new Mock<ICommand>();
+
+            mockNewServerSource.Setup(a => a.Address).Returns("bob");
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Public);
+            mockNewServerSource.Setup(a => a.Password).Returns("bobthe");
+            mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
+
+            //------------Execute Test---------------------------
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+            constructed.TestPassed = true;
+            constructed.Address = "hello";
+
+            Assert.AreNotEqual(true, constructed.IsOkEnabled);
+            var validate = constructed.Validate;
+            Assert.AreEqual(true, constructed.IsOkEnabled);
+
+
+            //------------Assert Results-------------------------
+
+        }
+
 
 
 
         [TestMethod]
         [Owner("Robin van den Heever")]
         [TestCategory("NewServerViewModel_Interactions")]
-        public void NewServerViewModel_SaveCommand_CallsUpdateManager() { }
+        public void NewServerViewModel_SaveCommand_CallsUpdateManager()
+        {
+            //------------Setup for test--------------------------
+            var mockNewServerSource = new Mock<IServerSource>();
+            var mockServerConnectionTest = new Mock<IServerConnectionTest>();
+            var mockCommand = new Mock<ICommand>();
+
+            mockNewServerSource.Setup(a => a.Address).Returns("bob");
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Public);
+            mockNewServerSource.Setup(a => a.Password).Returns("bobthe");
+            mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
+
+            //------------Execute Test---------------------------
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+
+            //------------Assert Results-------------------------
+
+        }
+
 
 
         [TestMethod]
         [Owner("Robin van den Heever")]
         [TestCategory("NewServerViewModel_Interactions")]
-        public void NewServerViewModel_TestCommand_CallsUpdateManager() { }
+        public void NewServerViewModel_TestCommand_CallsUpdateManager()
+        {
+            //------------Setup for test--------------------------
+            var mockNewServerSource = new Mock<IServerSource>();
+            var mockServerConnectionTest = new Mock<IServerConnectionTest>();
+            var mockCommand = new Mock<ICommand>();
+
+            mockNewServerSource.Setup(a => a.Address).Returns("bob");
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Public);
+            mockNewServerSource.Setup(a => a.Password).Returns("bobthe");
+            mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
+
+            //------------Execute Test---------------------------
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+
+            //------------Assert Results-------------------------
+
+        }
+
 
 
         [TestMethod]
         [Owner("Robin van den Heever")]
         [TestCategory("NewServerViewModel_Interactions")]
-        public void NewServerViewModel_TestCommand_SetsConnectionMessage() { }
+        public void NewServerViewModel_TestCommand_SetsConnectionMessage()
+        {
+            //------------Setup for test--------------------------
+            var mockNewServerSource = new Mock<IServerSource>();
+            var mockServerConnectionTest = new Mock<IServerConnectionTest>();
+            var mockCommand = new Mock<ICommand>();
+
+            mockNewServerSource.Setup(a => a.Address).Returns("bob");
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Public);
+            mockNewServerSource.Setup(a => a.Password).Returns("bobthe");
+            mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
+
+            //------------Execute Test---------------------------
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+
+            //------------Assert Results-------------------------
+
+        }
+
 
 
         [TestMethod]
         [Owner("Robin van den Heever")]
         [TestCategory("NewServerViewModel_Interactions")]
-        public void NewServerViewModel_TestCommand_EnablesSave() { }
+        public void NewServerViewModel_TestCommand_EnablesSave()
+        {
+            //------------Setup for test--------------------------
+            var mockNewServerSource = new Mock<IServerSource>();
+            var mockServerConnectionTest = new Mock<IServerConnectionTest>();
+            var mockCommand = new Mock<ICommand>();
+
+            mockNewServerSource.Setup(a => a.Address).Returns("bob");
+            mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Public);
+            mockNewServerSource.Setup(a => a.Password).Returns("bobthe");
+            mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
+
+            //------------Execute Test---------------------------
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockServerConnectionTest.Object, new Mock<IStudioUpdateManager>().Object);
+
+            //------------Assert Results-------------------------
+
+        }
+
 
 
 
