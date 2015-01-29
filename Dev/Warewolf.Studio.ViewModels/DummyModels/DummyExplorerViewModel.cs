@@ -160,6 +160,11 @@ namespace Warewolf.Studio.ViewModels.DummyModels
             }
         }
 
+        public string GetServerVersion()
+        {
+            return "0";
+        }
+
         #endregion
 
         #region Overrides of Resource

@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -228,5 +230,37 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(filteredList[1].IsVisible);
             
          }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentViewModel_ShowServerVersionCommand")]
+        public void EnvironmentViewModel_ShowServerVersionCommand_ShouldCallShellViewModel()
+        {
+            //------------Setup for test--------------------------
+            var server = new Mock<IServer>();
+            IPopupMessage returnedMessage = null;
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var studioVersion = Utils.FetchVersionInfo();
+            shellViewModelMock.Setup(model => model.ShowPopup(It.IsAny<IPopupMessage>()))
+                .Callback<IPopupMessage>(message => returnedMessage = message);
+            server.Setup(server1 => server1.Connect()).Returns(Task.FromResult(true));
+            server.Setup(server1 => server1.GetServerVersion()).Returns("1.0.0");
+            server.Setup(server1 => server1.LoadExplorer()).Returns(Task.FromResult(new Mock<IExplorerItem>().Object)).Verifiable();
+            var environmentModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
+            //------------Execute Test---------------------------
+            environmentModel.ShowServerVersionCommand.Execute(null);
+            //------------Assert Results-------------------------
+            var correctDescription = "Studio: Version " + studioVersion +
+                                     Environment.NewLine +
+                                     "Server: Version 1.0.0" +
+                                     Environment.NewLine +
+                                     Environment.NewLine +
+                                     "Sofware development by: www.dev2.co.za" +
+                                     Environment.NewLine;
+            shellViewModelMock.Verify(model => model.ShowPopup(It.IsAny<IPopupMessage>()),Times.Once());
+            server.Verify(server1 => server1.GetServerVersion(),Times.Once());
+            Assert.IsNotNull(returnedMessage);
+            Assert.AreEqual(correctDescription,returnedMessage.Description);
+        }
     }
 }

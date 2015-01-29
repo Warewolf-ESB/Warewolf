@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
@@ -12,6 +13,20 @@ namespace Warewolf.Studio.ServerProxyLayer
 
 
         public AdminManagerProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection) : base(communicationControllerFactory, connection) { }
+
+        /// <summary>
+        /// Gets the Warewolf Server version
+        /// </summary>
+        /// <returns>The version of the Server. Default version text of "less than 0.4.19.1" is returned
+        /// if the server is older than that version.</returns>
+        public string GetServerVersion()
+        {
+            var controller = CommunicationControllerFactory.CreateController("GetServerVersion");
+            var version = controller.ExecuteCommand<string>(Connection, Guid.Empty);
+            if (String.IsNullOrEmpty(version))
+                return "less than 0.4.19.1";
+            return version;
+        }
 
         /// <summary>
         /// Get the execution queue depth. ie the number of items waiting for execution

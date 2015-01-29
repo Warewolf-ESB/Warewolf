@@ -10,6 +10,8 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Moq;
+using Warewolf.Studio.Core;
+using Warewolf.Studio.Core.Popup;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -24,6 +26,7 @@ namespace Warewolf.Studio.ViewModels
         bool _isServerIconVisible;
         bool _isServerUnavailableIconVisible;
         bool _canCreateServerSource;
+        private bool _isExpanded;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -37,8 +40,18 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(Load);
             IsServerIconVisible = true;
+            Expand = new DelegateCommand<int?>(clickCount =>
+            {
+                if (clickCount != null && clickCount == 2)
+                {
+                    IsExpanded = !IsExpanded;
+                }
            
+            });
+            ShowServerVersionCommand = new DelegateCommand(ShowServerVersionAbout);
         }
+
+        public ICommand ShowServerVersionCommand { get; set; }
 
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
         {
@@ -71,6 +84,11 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IServer Server { get; set; }
+
+        public ICommand Expand
+        {
+            get; set; 
+        }
 
         public ICollection<IExplorerItemViewModel> Children
         {
@@ -128,7 +146,22 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDeploy { get; set; }
         public bool CanShowVersions { get { return false; } }
         public bool CanRollback { get; set; }
-        public bool IsExpanded { get; set; }
+
+        public bool IsExpanded
+        {
+            get { return _isExpanded; }
+            set
+            {
+                _isExpanded = value;
+                OnPropertyChanged(() => IsExpanded);
+            }
+        }
+        void ShowServerVersionAbout()
+        {
+            var serverVersion = Server.GetServerVersion();
+            var studioVersion = Utils.FetchVersionInfo();
+            _shellViewModel.ShowPopup(PopupMessages.GetServerVersionMessage(studioVersion, serverVersion));
+        }
         public ICommand RenameCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
