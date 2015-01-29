@@ -169,6 +169,7 @@
     <Compile Include="ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExplorerViewTestClass.cs" />
     <Compile Include="FocusExtension.cs" />
     <Compile Include="HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>

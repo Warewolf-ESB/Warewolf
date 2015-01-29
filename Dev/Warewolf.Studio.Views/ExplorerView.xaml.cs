@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
 using Warewolf.Studio.Core.View_Interfaces;
-using System.Windows.Controls.Primitives;
-using Dev2.Common.Interfaces.Data;
 
 namespace Warewolf.Studio.Views
 {
@@ -15,51 +18,59 @@ namespace Warewolf.Studio.Views
 	/// </summary>
 	public partial class ExplorerView : IExplorerView
 	{
-		public ExplorerView()
-		{
-			InitializeComponent();
-		}
+	    private readonly ExplorerViewTestClass _explorerViewTestClass;
 
-        private void ScrollBar_Loaded(object sender, RoutedEventArgs e)
+	    public ExplorerView()
+	    {
+	        InitializeComponent();
+	        _explorerViewTestClass = new ExplorerViewTestClass(this);
+	    }
+
+	    public ExplorerViewTestClass ExplorerViewTestClass
+	    {
+	        get { return _explorerViewTestClass; }
+	    }
+
+
+	    private void ScrollBar_Loaded(object sender, RoutedEventArgs e)
         {
-            if ((sender as ScrollBar).Orientation == System.Windows.Controls.Orientation.Horizontal)
+            if ((sender as ScrollBar).Orientation == Orientation.Horizontal)
             {
                 ExplorerTree.Tag = sender;                
             }
         }
 
-	    public IEnvironmentViewModel GetEnvironmentNode(string nodeName)
-	    {
-            var xamDataTreeNode = ExplorerTree.Nodes.FirstOrDefault(node =>
-	        {
-	            var explorerItem = node.Data as IEnvironmentViewModel;
-	            if (explorerItem != null)
-	            {
-	                if (explorerItem.DisplayName.ToLowerInvariant().Contains(nodeName.ToLowerInvariant()))
-	                {
-	                    return true;
-	                }
-	            }
-	            return false;
-	        });
-	        return xamDataTreeNode == null ? null : xamDataTreeNode.Data as IEnvironmentViewModel;
-	    }
+        public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
+        {
+            return _explorerViewTestClass.OpenEnvironmentNode(nodeName);
+        }
 
 	    public List<IExplorerItemViewModel> GetFoldersVisible()
 	    {
-	        var folderItems = ExplorerTree.Nodes.Where(node =>
-	        {
-	            var explorerItem = node.Data as IExplorerItemViewModel;
-	            if (explorerItem != null)
-	            {
-	                if (explorerItem.ResourceType == ResourceType.Folder)
-	                {
-	                    return true;
-	                }
-	            }
-	            return false;
-	        }).Select(node => node.Data as IExplorerItemViewModel);
-	        return folderItems.ToList();
+	        return _explorerViewTestClass.GetFoldersVisible();
+	    }
+
+	    public IExplorerItemViewModel OpenFolderNode(string folderName)
+	    {
+	        return _explorerViewTestClass.OpenFolderNode(folderName);
+	    }
+
+	    public int GetVisibleChildrenCount(string folderName)
+	    {
+	        return _explorerViewTestClass.GetVisibleChildrenCount(folderName);
+	    }
+
+	    public void PerformFolderRename(string originalFolderName, string newFolderName)
+	    {
+	        _explorerViewTestClass.PerformFolderRename(originalFolderName, newFolderName);
+	    }
+
+	    public void PerformSearch(string searchTerm)
+	    {
+	        SearchTextBox.Text = searchTerm;
+            BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
+            be.UpdateSource();
+        
 	    }
 
 	    void ExplorerTree_OnNodeDragDrop(object sender, TreeDropEventArgs e)
@@ -96,11 +107,6 @@ namespace Warewolf.Studio.Views
         void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 	    {
             Keyboard.Focus((IInputElement)sender);
-	    }
-
-	    private void ExplorerTree_OnActiveNodeChanged(object sender, ActiveNodeChangedEventArgs e)
-	    {
-	        
-	    }
+	    }	    
 	}
 }

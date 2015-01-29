@@ -33,7 +33,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanDrop { get; set; }
         bool CanDrag { get; set; }
         ICommand OpenVersionCommand { get; set; }
-        ICommand Expand { get; set; }
         IExplorerItemViewModel Parent { get; set; }
         void AddSibling(IExplorerItemViewModel sibling);
         void AddChild(IExplorerItemViewModel child);

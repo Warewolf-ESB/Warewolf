@@ -57,6 +57,7 @@
 
             <TextBox Grid.Row="0"
                      Grid.Column="0"
+                     x:Name="SearchTextBox"
                      Text="{Binding SearchText,
                                     Delay=300,
                                     UpdateSourceTrigger=PropertyChanged}" />
@@ -82,6 +83,7 @@
 
         </Grid>
         <!--  EXPLORER TREE  -->
+
         <ig:XamDataTree x:Name="ExplorerTree"
                         Grid.Row="5"
                         Grid.Column="1"
@@ -92,11 +94,11 @@
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
                         NodeLineVisibility="Hidden"
-                        ActiveNodeChanged="ExplorerTree_OnActiveNodeChanged">
+                        >
             <ig:XamDataTree.EditingSettings>
                 <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="True"
-                                        IsEnterKeyEditingEnabled="True"
+                                        IsEnterKeyEditingEnabled="False"
                                         IsF2EditingEnabled="True"
                                         IsMouseActionEditingEnabled="None"
                                         IsOnNodeActiveEditingEnabled="False" />
@@ -105,6 +107,7 @@
             <ig:XamDataTree.GlobalNodeLayouts>
                 <ig:NodeLayout Key="Environments"
                                DisplayMemberPath="DisplayName"
+                               IsExpandedMemberPath="IsExpanded"
                                TargetTypeName="IEnvironmentViewModel">
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
@@ -150,7 +153,13 @@
                                            FontSize="12"
                                            Foreground="Black"
                                            Text="{Binding Data.DisplayName}" />
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                             </Grid>
+                            
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
                 </ig:NodeLayout>
@@ -470,7 +479,7 @@
                                             </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                     </TextBlock>
-                                    <TextBox Name="PropertySearch"
+                                    <TextBox x:Name="PropertySearch"
                                              IsVisibleChanged="UIElement_OnIsVisibleChanged"
                                              Text="{Binding Path=Data.ResourceName,
                                                             UpdateSourceTrigger=LostFocus}"

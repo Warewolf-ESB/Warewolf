@@ -275,6 +275,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                _isVisible = value;
                 OnPropertyChanged(()=>IsExpanderVisible);
             }
         }

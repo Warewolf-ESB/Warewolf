@@ -26,7 +26,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand RollbackCommand { get; set; }
        
         IServer Server { get; set; }
-        
+        ICommand Expand { get; set; }
     }
     public interface IEnvironmentViewModel : IExplorerTreeItem
     {

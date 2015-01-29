@@ -23,6 +23,7 @@ namespace Warewolf.Studio.ViewModels
         ConnectionNetworkState _connectionState;
         bool _isServerIconVisible;
         bool _isServerUnavailableIconVisible;
+        private bool _isExpanded;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -36,7 +37,14 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(Load);
             IsServerIconVisible = true;
-           
+            Expand = new DelegateCommand<int?>(clickCount =>
+            {
+                if (clickCount != null && clickCount == 2)
+                {
+                    IsExpanded = !IsExpanded;
+                }
+
+            });
         }
 
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
@@ -70,6 +78,11 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IServer Server { get; set; }
+
+        public ICommand Expand
+        {
+            get; set; 
+        }
 
         public ICollection<IExplorerItemViewModel> Children
         {
@@ -116,7 +129,17 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDeploy { get; set; }
         public bool CanShowVersions { get { return false; } }
         public bool CanRollback { get; set; }
-        public bool IsExpanded { get; set; }
+
+        public bool IsExpanded
+        {
+            get { return _isExpanded; }
+            set
+            {
+                _isExpanded = value;
+                OnPropertyChanged(() => IsExpanded);
+            }
+        }
+
         public ICommand RenameCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
