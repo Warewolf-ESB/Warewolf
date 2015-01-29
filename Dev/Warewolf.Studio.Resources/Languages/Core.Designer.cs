@@ -1196,6 +1196,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The server connection must be tested before saving.
+        /// </summary>
+        public static string ServerDialogNoTestMessage {
+            get {
+                return ResourceManager.GetString("ServerDialogNoTestMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string ServerDialogPasswordLabel {

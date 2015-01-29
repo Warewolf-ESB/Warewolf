@@ -7,6 +7,5 @@ namespace Dev2.Common.Interfaces.Communication
 
         string Test(IServerSource server);
 
-
     }
 }

@@ -7,12 +7,18 @@ namespace Warewolf.Studio.ViewModels
     class TestConnection : IServerConnectionTest
     {
 
-
+        /// <summary>
+        /// Reurns a result from testing the connection
+        /// </summary>
+        /// <param name="server"></param>
+        /// <returns></returns>
         public string Test(IServerSource server)
         {
 
 
-            return String.Empty;
+            return "Success";
+            //return "Failure";
+            //return String.Empty;
         }
 
     }
