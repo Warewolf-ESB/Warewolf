@@ -21,5 +21,21 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <param name="resource">resource to save</param>
         /// <param name="workspaceId">the workspace to save to</param>
         void SaveResource(StringBuilder resource, Guid workspaceId);
+
+
+        /// <summary>
+        /// Save a resource to the server
+        /// </summary>
+        /// <param name="resource">resource to save</param>
+        /// <param name="workspaceId">the workspace to save to</param>
+        void SaveResource(IResource resource, Guid workspaceId);
+
+        /// <summary>
+        /// Tests if a valid connection to a server can be made returns 'Success' on a successful connection
+        /// </summary>
+        /// <param name="resource"></param>
+        /// <returns></returns>
+        string TestConnection(IResource resource);
+
     }
 }

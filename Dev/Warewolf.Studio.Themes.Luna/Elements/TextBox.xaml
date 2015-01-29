@@ -15,9 +15,9 @@
 
 
     <!--  TextBox Brushes  -->
-    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource Color_009}" />
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource Color_009}" />
+    <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <!--  DO NOT make TextBoxHoverBackgroundBrush transparent!  -->
     <SolidColorBrush x:Key="TextBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
@@ -27,7 +27,7 @@
 
     <!--  *********************************  TextBox Style  *********************************  -->
     <Style x:Key="TextBoxStyle" TargetType="TextBox">
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />

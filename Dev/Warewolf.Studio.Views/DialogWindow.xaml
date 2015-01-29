@@ -6,42 +6,58 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="200"
-                            Width="800"
-                            Height="600"
-                            CloseButtonVisibility="Visible"
-                            MaximizeButtonVisibility="Collapsed"
-                            MinimizeButtonVisibility="Collapsed"
-                            IsResizable="False"
-                            IsMoveable="False"
-                            StartupPosition="Center">
+                            Width="700"
+                            Height="420"
+                    Style="{x:Null}"
+                    HeaderIconVisibility="Collapsed"
+                    CloseButtonVisibility="Visible"
+                    IsResizable="False"
+                    MinimizeButtonVisibility="Collapsed"
+                  
+                    
+                   
+                  >
     <ig:XamDialogWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
-        <DataTemplate DataType="{x:Type interfaces:INewServerDialogue}">
+        <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
             <views:ServerUserControl />
         </DataTemplate>
     </ig:XamDialogWindow.Resources>
     <ig:XamDialogWindow.HeaderTemplate>
-       <DataTemplate>
-            <Grid x:Name="Header">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="5*" ></RowDefinition>
-                    <RowDefinition Height="7*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding Path=Header}" Visibility="{Binding Path=HeaderVisible,Converter={StaticResource BoolToVisibility}}"/>
-                <TextBlock Grid.Row="1" Text="{Binding Path=HeaderDetail}" Visibility="{Binding Path=HeaderVisible,Converter={StaticResource BoolToVisibility}}"></TextBlock>
-            </Grid>
-        </DataTemplate>
-   </ig:XamDialogWindow.HeaderTemplate>
+        <DataTemplate></DataTemplate>
+    </ig:XamDialogWindow.HeaderTemplate>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5"></RowDefinition>
+            <RowDefinition Height="86"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
 
+            <RowDefinition Height="55"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{StaticResource WarewolfPanelGreyBrush}">
+            <Grid x:Name="Header">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24" ></RowDefinition>
+                    <RowDefinition Height="16" ></RowDefinition>
+                    <RowDefinition Height="10"></RowDefinition>
+                    <RowDefinition Height="16"></RowDefinition>
+                    <RowDefinition Height="24"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="24"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <!--<Button Grid.Row="0"  Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="10" Height="10" Padding="0,0,0,0" Background="{StaticResource WarewolfPanelGreyBrush}">
+                    <fa:ImageAwesome Width="10" Height="10" Foreground="{StaticResource WareWolfButtonBrush}" Icon="Times" HorizontalAlignment="Right" Grid.Column="2"/>
+
+                </Button>-->
+                <TextBlock Style="{StaticResource TextPanelHeaderStyle}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Text="New Server Source" Visibility="Visible"/>
+                <TextBlock Style="{StaticResource TextPanelSubHeaderStyle}"  Grid.Row="3" Text="http://bobthebuilder:3142" Grid.Column="1" Visibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Left" ></TextBlock>
+            </Grid>
         </Grid>
         
         <Grid Grid.Row="1">
@@ -49,22 +65,23 @@
         </Grid>
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="5"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="20"></ColumnDefinition>
-                    <ColumnDefinition Width="120"></ColumnDefinition>
-                    <ColumnDefinition Width="120"></ColumnDefinition>
-                    <ColumnDefinition Width="20"></ColumnDefinition>
+                    <ColumnDefinition Width="5"></ColumnDefinition>
+                    <ColumnDefinition Width="60"></ColumnDefinition>
+                    <ColumnDefinition Width="5"></ColumnDefinition>
+                    <ColumnDefinition Width="70"></ColumnDefinition>
+                    <ColumnDefinition Width="24"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="1" TextAlignment="Right" VerticalAlignment="Center" Text="Content goes here"></TextBlock>
-                <Button Grid.Column="3" Padding="20" Content="Save" Command="{Binding Path=OkCommand}" ></Button>
-                <Button Grid.Column="4" Padding="20" Content="Cancel" Command="{Binding Path=CancelCommand}" ></Button>
+                <TextBlock Grid.Column="1" Style="{StaticResource ErrorTextBlockStyle}"  TextAlignment="Right" VerticalAlignment="Center" Text="{Binding Path=InnerDialogue.Validate}"></TextBlock>
+                <Button Grid.Column="3"  Width="60" Height="30"  Content="Save"  Command="{Binding Path=InnerDialogue.OkCommand}"></Button>
+                <Button Grid.Column="5"  Width="70" Height="30"  Content="Cancel" Command="{Binding Path=InnerDialogue.CancelCommand}" ></Button>
             </Grid>
             
         </Grid>

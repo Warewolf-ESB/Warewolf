@@ -39,6 +39,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canDrag;
         Guid _resourceId;
         bool _isExpanded;
+        bool _canCreateServerSource;
 
         // ReSharper disable TooManyDependencies
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent):this(shellViewModel,server,builder)
@@ -91,6 +92,7 @@ namespace Warewolf.Studio.ViewModels
             NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
             CanCreateDbService = true;
             CanCreateWorkflowService = true;
+            CanCreateServerSource = true;
             CanRename = true; //todo:remove
             CanDelete = true; //todo:remove
             CanCreatePluginService = true;
@@ -284,6 +286,18 @@ namespace Warewolf.Studio.ViewModels
         public ICommand RenameCommand { get; set; }
         public bool CanCreateDbService { get; set; }
         public bool CanCreateDbSource { get; set; }
+        public bool CanCreateServerSource
+        {
+            get
+            {
+                return _canCreateServerSource;
+            }
+            set
+            {
+                _canCreateServerSource = value;
+                OnPropertyChanged(() => CanCreateServerSource);
+            }
+        }
         public bool CanCreateWebService { get; set; }
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }

@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
+using Dev2;
+using Dev2.Common.Interfaces.Communication;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -11,51 +17,139 @@ namespace Warewolf.Studio.ViewModels
     {
         ICommand _okCommand;
         ICommand _cancelCommand;
-        bool _isOkEnabled;
-        bool _isTestEnabled;
-        bool _isUserNameVisible;
-        bool _isPasswordVisible;
-        string _addressLabel;
-        string _userNameLabel;
-        string _authenticationLabel;
-        string _passwordLabel;
-        string _testLabel;
+        string _userName;
+        string _password;
+        string _testMessage;
+        bool _isValid;
+        string _address;
+        bool _testPassed;
+        AuthenticationType _authenticationType;
 
         #region Implementation of IInnerDialogueTemplate
 
-        public NewServerViewModel(IServerSource newServerSource)
+        readonly IServerConnectionTest _connectionTest;
+        readonly IStudioUpdateManager _updateManager;
+        IServerSource _serverSource;
+
+        public NewServerViewModel()
         {
+          
+        }
 
-            if (newServerSource == null)
-            {
-                throw new ArgumentNullException("newServerSource");
-            }
+        public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest, IStudioUpdateManager updateManager)
+        {
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "connectionTest", connectionTest }, { "updateManager", updateManager } });
 
-            //IsValid = newServerSource.IsValid;
+            _connectionTest = connectionTest;
+            _updateManager = updateManager;
+            _serverSource = newServerSource;
+
+
+            IsValid = false;
             Address = newServerSource.Address;
             AuthenticationType = newServerSource.AuthenticationType;
             UserName = newServerSource.UserName;
             Password = newServerSource.Password;
-            TestCommand = newServerSource.TestCommand;
-            TestMessage = newServerSource.TestMessage;
+            TestPassed = false;
 
 
+            TestCommand = new DelegateCommand(Test);
+            OkCommand = new DelegateCommand(Save);
+            CancelCommand = new DelegateCommand(() => { });
         }
 
+        void Save()
+        {
+            _updateManager.Save(new ServerSource()
+            {
+                Address = Address,
+                AuthenticationType = AuthenticationType,
+                ID = _serverSource.ID == Guid.Empty ? Guid.NewGuid() : _serverSource.ID,
+                Name = String.IsNullOrEmpty(_serverSource.Name) ? "" : _serverSource.Name,
+                Password = Password,
+                ResourcePath = "" //todo: needs to come from explorer
+            });
+        }
+
+
+        void Test()
+        {
+            TestFailed = false;
+            TestPassed = false;
+            Testing = true;
+            
+            TestMessage = _updateManager.TestConnection(new ServerSource()
+            {
+                Address = Address,
+                AuthenticationType = AuthenticationType,
+                ID = _serverSource.ID == Guid.Empty ? Guid.NewGuid() : _serverSource.ID,
+                Name = String.IsNullOrEmpty(_serverSource.Name) ? "" : _serverSource.Name,
+                Password = Password,
+                ResourcePath = "" //todo: needs to come from explorer
+            });
+            Testing = false;
+            if (TestMessage == "Success")
+            {
+                TestPassed = true;
+                TestFailed = false;
+            }
+            else
+            {
+                TestPassed = false;
+                TestFailed = true;
+            }
+
+        }
 
         /// <summary>
         /// called by outer when validating
         /// </summary>
         /// <returns></returns>
-        public string Validate()
+        public string Validate
         {
-            return null;
+
+            get
+            {
+                IsValid = false;
+                if (String.IsNullOrEmpty(Address))
+                    return Resources.Languages.Core.ServerDialogNoAddressErrorMessage;
+
+                if (!TestPassed)
+                {
+                    return Resources.Languages.Core.ServerDialogNoTestMessage;
+                }
+
+                IsValid = true;
+                return String.Empty;
+            }
+
+
+
+        }
+
+        /// <summary>
+        /// called by outer when validating
+        /// </summary>
+        /// <returns></returns>
+        string IInnerDialogueTemplate.Validate()
+        {
+            return Validate;
         }
 
         /// <summary>
         /// Is valid 
         /// </summary>
-        public bool IsValid { get; set; }
+        public bool IsValid
+        {
+            get
+            {
+                return _isValid;
+            }
+            set
+            {
+                _isValid = value;
+            }
+        }
         /// <summary>
         /// Command for save/ok
         /// </summary>
@@ -92,6 +186,219 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// The server address that we are trying to connect to
         /// </summary>
+        public string Address
+        {
+            get
+            {
+                return _address;
+            }
+            set
+            {
+                _address = value;
+                OnPropertyChanged(() => Address);
+            }
+        }
+        /// <summary>
+        ///  Windows or user or publlic
+        /// </summary>
+        public AuthenticationType AuthenticationType
+        {
+            get
+            {
+                return _authenticationType;
+            }
+            set
+            {
+                _authenticationType = value;
+                OnPropertyChanged(() => AuthenticationType);
+                OnPropertyChanged(() => IsUserNameVisible);
+            }
+        }
+        /// <summary>
+        /// User Name
+        /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return _userName;
+            }
+            set
+            {
+                _userName = value;
+                OnPropertyChanged(() => UserName);
+            }
+        }
+        /// <summary>
+        /// Password
+        /// </summary>
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                _password = value;
+                OnPropertyChanged(() => Password);
+            }
+        }
+
+        /// <summary>
+        /// The message that will be set if the test is either successful or not
+        /// </summary>
+        public string TestMessage
+        {
+            get
+            {
+                return _testMessage;
+            }
+
+            set
+            {
+                _testMessage = value;
+                OnPropertyChanged(() => TestMessage);
+            }
+
+        }
+
+        #endregion
+
+
+        public bool TestPassed
+        {
+            get
+            {
+                return _testPassed;
+            }
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged(() => TestPassed);
+            }
+        }
+        public bool TestFailed
+        {
+            get
+            {
+                return _testPassed;
+            }
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged(() => TestFailed);
+            }
+        }
+        public bool Testing
+        {
+            get
+            {
+                return _testPassed;
+            }
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged(() => Testing);
+            }
+        }
+
+        public bool IsOkEnabled
+        {
+            get
+            {
+                return IsValid;
+            }
+
+        }
+
+        public bool IsTestEnabled
+        {
+            get
+            {
+                return (Address.Length > 0);
+            }
+
+        }
+
+        public bool IsUserNameVisible
+        {
+            get
+            {
+                return AuthenticationType == AuthenticationType.User;
+            }
+
+        }
+
+        public bool IsPasswordVisible
+        {
+            get
+            {
+                return AuthenticationType == AuthenticationType.User;
+            }
+
+        }
+
+        public string AddressLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogAddressLabel;
+            }
+        }
+
+        public string UserNameLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogUserNameLabel;
+            }
+        }
+
+        public string AuthenticationLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogAuthenticationTypeLabel;
+            }
+        }
+
+        public string PasswordLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogPasswordLabel;
+
+            }
+        }
+
+        public string TestLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogTestConnectionLabel;
+            }
+        }
+
+        /// <summary>
+        /// Test if connection is successful
+        /// </summary>
+        public ICommand TestCommand
+        { get; set; }
+
+
+    }
+
+
+
+
+    public class ServerSource : IServerSource
+    {
+        #region Implementation of IServerSource
+
+        /// <summary>
+        /// The server address that we are trying to connect to
+        /// </summary>
         public string Address { get; set; }
         /// <summary>
         ///  Windows or user or publlic
@@ -113,85 +420,9 @@ namespace Warewolf.Studio.ViewModels
         /// The message that will be set if the test is either successful or not
         /// </summary>
         public string TestMessage { get; set; }
-        public bool IsOkEnabled
-        {
-            get
-            {
-                return _isOkEnabled;
-            }
-            set
-            {
-                _isOkEnabled = value;
-            }
-        }
-        public bool IsTestEnabled
-        {
-            get
-            {
-                return _isTestEnabled;
-            }
-            set
-            {
-                _isTestEnabled = value;
-            }
-        }
-        public bool IsUserNameVisible
-        {
-            get
-            {
-                return _isUserNameVisible;
-            }
-            set
-            {
-                _isUserNameVisible = value;
-            }
-        }
-        public bool IsPasswordVisible
-        {
-            get
-            {
-                return _isPasswordVisible;
-            }
-            set
-            {
-                _isPasswordVisible = value;
-            }
-        }
-        public string AddressLabel
-        {
-            get
-            {
-                return _addressLabel;
-            }
-        }
-        public string UserNameLabel
-        {
-            get
-            {
-                return _userNameLabel;
-            }
-        }
-        public string AuthenticationLabel
-        {
-            get
-            {
-                return _authenticationLabel;
-            }
-        }
-        public string PasswordLabel
-        {
-            get
-            {
-                return _passwordLabel;
-            }
-        }
-        public string TestLabel
-        {
-            get
-            {
-                return _testLabel;
-            }
-        }
+        public Guid ID { get; set; }
+        public string Name { get; set; }
+        public string ResourcePath { get; set; }
 
         #endregion
     }

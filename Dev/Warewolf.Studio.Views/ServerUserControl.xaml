@@ -6,16 +6,18 @@
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
               
               xmlns:serviceModel="clr-namespace:Dev2.Common.Interfaces.Runtime.ServiceModel;assembly=Dev2.Common.Interfaces"
+              xmlns:fa="http://schemas.fontawesome.io/icons/"
               mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
     <views:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
         
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="24"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="200"></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -25,41 +27,58 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="20" />
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-                <TextBlock Text="{Binding Path= ServerLabel}" Grid.Column="0"></TextBlock>
-                <TextBox Text="{Binding Path=Server}" Grid.Column="1" Grid.Row="0"></TextBox>
-                
-                <TextBlock Text="{Binding Path=AuthenticationTypeText}" Grid.Column="0" Grid.Row="1"></TextBlock>
-                <Grid Grid.Column="1" Grid.Row="1">
+            <TextBlock Grid.Row="1" Text="{Binding Path= AddressLabel}" Grid.Column="0"></TextBlock>
+                <TextBox Text="{Binding Path=Server}" Grid.Column="1" Grid.Row="1"></TextBox>
+
+            <TextBlock Text="{Binding Path=AuthenticationLabel}" Grid.Column="0" Grid.Row="2"></TextBlock>
+                <Grid Grid.Column="1" Grid.Row="2">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="25"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="25"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <RadioButton Grid.Column="0" VerticalAlignment="Center"  HorizontalAlignment="Center" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}"></RadioButton>
-                <TextBlock Text="Windows" Grid.Column="1"></TextBlock>
-                <RadioButton Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}"></RadioButton>
-                <TextBlock Text="User" Grid.Column="3"></TextBlock>
-                <RadioButton Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}"></RadioButton>
-                <TextBlock Text="Public" Grid.Column="4"></TextBlock>
+                <RadioButton Grid.Column="0" VerticalAlignment="Center"  HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}"></RadioButton>
+                <TextBlock Text="Windows" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" ></TextBlock>
+                <RadioButton Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}"></RadioButton>
+                <TextBlock Text="User" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" ></TextBlock>
+                <RadioButton Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Left"  IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}"></RadioButton>
+                <TextBlock Text="Public" HorizontalAlignment="Left" Grid.Column="5" VerticalAlignment="Center"></TextBlock>
             </Grid>
-                
-                <TextBlock Text="{Binding Path=UserLabel}" Grid.Column="0" Grid.Row="1"></TextBlock>
-                <TextBox Text="{Binding Path=UserName}" Grid.Column="1" Grid.Row="2"></TextBox>
-                
-                <TextBlock Text="{Binding Path= PasswordLabel}" Grid.Row="3" Grid.Column="1"></TextBlock>
-                <TextBox Text="{Binding Path=Password}" Grid.Column="1" Grid.Row="3"></TextBox>
-                
-                <Button Grid.Row="4" HorizontalAlignment="Right" Command="{Binding Path=TestCommand}"></Button>
+
+            <TextBlock Text="User Name" Grid.Column="0" Grid.Row="3" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
+            <TextBox Text="{Binding Path=UserName}" Grid.Column="1" Grid.Row="3" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
+
+            <TextBlock Text="Password" Grid.Row="4" Grid.Column="0" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
+            <TextBox Text="{Binding Path=Password}" Grid.Column="1" Grid.Row="4" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
+            <Grid Grid.Row="5" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="5"></ColumnDefinition>
+                    <ColumnDefinition Width="19"></ColumnDefinition>
+                    <ColumnDefinition Width="65"></ColumnDefinition>
+                 </Grid.ColumnDefinitions>
+                <TextBlock Text="UnAuthorised" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" ></TextBlock>
+                <fa:ImageAwesome Width="14"  Height="14" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
+                <fa:ImageAwesome Width="14" Height="14" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Remove" HorizontalAlignment="Right" Grid.Column="2"/>
+                <views:CircularProgressBar Grid.Row="0"
+                                       Grid.Column="1"
+                                       Width="25"
+                                       Height="25"
+                                       Padding="2"
+                                       Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
+                <Button Grid.Column="23" HorizontalAlignment="Right" Width="60" Height="30" Content="Test" Command="{Binding Path=TestCommand}"/>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

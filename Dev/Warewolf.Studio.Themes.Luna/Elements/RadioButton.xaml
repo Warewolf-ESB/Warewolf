@@ -28,7 +28,7 @@
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="6,0,0,0" />
+        <Setter Property="Padding" Value="0,0,0,0" />
         <Setter Property="MinHeight" Value="30" />
         <Setter Property="MinWidth" Value="20" />
         <Setter Property="BorderThickness" Value="1" />
@@ -115,21 +115,21 @@
                             <ColumnDefinition Width="18" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Rectangle Margin="-6,0" Fill="{StaticResource TransparentBrush}" />
+                        <Rectangle Margin="-6,0" Fill="{StaticResource SolidWhite}" />
                         <Ellipse x:Name="normal"
                                  Width="18"
                                  Height="18"
                                  Fill="{StaticResource RadioButtonBackgroundBrush}"
-                                 Opacity="1"
-                                 Stroke="{StaticResource RadioButtonBorderBrush}"
+                                 Opacity="2"
+                                 Stroke="{StaticResource WarewolfHeaderGreyBrush}"
                                  StrokeThickness="1" />
                         <Ellipse x:Name="hover"
                                  Width="18"
                                  Height="18"
                                  Fill="{StaticResource RadioButtonHoverBackgroundBrush}"
                                  Opacity="0"
-                                 Stroke="{StaticResource RadioButtonHoverBorderBrush}"
-                                 StrokeThickness="1" />
+                                 Stroke="{StaticResource WareWolfOrangeBrush}"
+                                 StrokeThickness="2" />
                         <Ellipse x:Name="pressed"
                                  Width="18"
                                  Height="18"
@@ -161,7 +161,7 @@
                         <Ellipse x:Name="Checked1"
                                  Width="10"
                                  Height="10"
-                                 Fill="{StaticResource RadioButtonCheckBackgroundBrush}"
+                                 Fill="{StaticResource WareWolfButtonBrush}"
                                  Opacity="0" />
                         <Ellipse x:Name="disabled"
                                  Width="18"

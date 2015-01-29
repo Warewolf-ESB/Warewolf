@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 
 namespace Dev2.Common.Interfaces.ServerDialogue
@@ -30,5 +31,10 @@ namespace Dev2.Common.Interfaces.ServerDialogue
         /// </summary>
         string TestMessage { get; set; }
 
+        Guid ID { get; set; }
+
+        string Name { get; set; }
+
+        string ResourcePath { get; set; }
     }
 }

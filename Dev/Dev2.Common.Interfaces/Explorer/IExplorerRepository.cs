@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Versioning;
 
@@ -16,5 +17,12 @@ namespace Dev2.Common.Interfaces.Explorer
         ICollection<IVersionInfo> GetVersions(Guid id);
 
         IRollbackResult Rollback(Guid resourceId, string version);
+    }
+
+    public interface IStudioUpdateManager
+    {
+        void Save(IServerSource serverSource);
+
+        string TestConnection(IServerSource serverSource);
     }
 }

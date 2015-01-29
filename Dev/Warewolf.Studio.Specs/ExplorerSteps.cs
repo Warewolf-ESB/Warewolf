@@ -51,6 +51,7 @@ namespace Warewolf.Studio.Specs
     {
         readonly IStudioResourceRepository _resourceRepository;
         IExplorerRepository _explorerRepository;
+        IStudioUpdateManager _updateRepository;
 
         #region Implementation of IServer
 
@@ -117,6 +118,13 @@ namespace Warewolf.Studio.Specs
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+        public IStudioUpdateManager UpdateRepository
+        {
+            get
+            {
+                return _updateRepository;
+            }
+        }
 
         #endregion
 
