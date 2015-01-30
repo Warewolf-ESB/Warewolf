@@ -20,9 +20,6 @@
 		</Grid.RowDefinitions>
         <ig:XamRichTextEditor x:Name="xamRichTextEditor1" Grid.Row="1" Margin="0,10,0,0" AllowDocumentViewSplitting="True"
                               BorderThickness="1" >
-            <ig:XamRichTextEditor.ClipboardSerializationProviders>
-                <ig:HtmlSerializationProvider />
-            </ig:XamRichTextEditor.ClipboardSerializationProviders>
         </ig:XamRichTextEditor>
 	</Grid>
 </UserControl>
