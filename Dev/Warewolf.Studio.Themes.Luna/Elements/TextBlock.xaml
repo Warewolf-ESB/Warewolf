@@ -34,18 +34,7 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{StaticResource WareWolfButtonBrush}" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Validation.ErrorTemplate">
-            <Setter.Value>
-                <ControlTemplate>
-                    <AdornedElementPlaceholder />
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="Validation.HasError" Value="True">
-                <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
-            </Trigger>
-        </Style.Triggers>
+        <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
     
     
@@ -55,18 +44,7 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{StaticResource WareWolfButtonBrush}" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Validation.ErrorTemplate">
-            <Setter.Value>
-                <ControlTemplate>
-                    <AdornedElementPlaceholder />
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="Validation.HasError" Value="True">
-                <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
-            </Trigger>
-        </Style.Triggers>
+        <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
 
 
