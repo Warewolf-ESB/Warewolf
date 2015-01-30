@@ -3,61 +3,52 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
-using Dev2.Common.Interfaces.Communication;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class NewServerViewModel : BindableBase, INewServerDialogue
     {
-        ICommand _okCommand;
-        ICommand _cancelCommand;
         string _userName;
         string _password;
         string _testMessage;
-        bool _isValid;
         string _address;
         bool _testPassed;
         AuthenticationType _authenticationType;
 
         #region Implementation of IInnerDialogueTemplate
 
-        readonly IServerConnectionTest _connectionTest;
         readonly IStudioUpdateManager _updateManager;
         readonly ISaveDialog _saveDialog;
-        IServerSource _serverSource;
-        bool _testrun;
-        bool _canClickOk;
-        string _subHeaderText;
-        string _headerText;
-        DialogResult _result;
+        readonly IShellViewModel _shellViewModel;
+        readonly string _connectedServer;
 
-        public NewServerViewModel()
-        {
-          
-        }
+        string _headerText;
+        IServerSource _serverSource;
 
         // ReSharper disable TooManyDependencies
-        public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest, IStudioUpdateManager updateManager,ISaveDialog saveDialog)
-            // ReSharper restore TooManyDependencies
+        public NewServerViewModel(IServerSource newServerSource,
+            IStudioUpdateManager updateManager, ISaveDialog saveDialog,
+            IShellViewModel shellViewModel,
+            string connectedServer)
+        // ReSharper restore TooManyDependencies
         {
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "connectionTest", connectionTest }, { "updateManager", updateManager }, { "saveDialog", saveDialog } });
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "updateManager", updateManager }, { "saveDialog", saveDialog } ,{"shellViewModel",shellViewModel},{"connectedServer",connectedServer}});
 
-            _connectionTest = connectionTest;
             _updateManager = updateManager;
             _saveDialog = saveDialog;
+            _shellViewModel = shellViewModel;
+            _connectedServer = connectedServer;
             ServerSource = newServerSource;
-            _subHeaderText = newServerSource.Address;
-            _headerText = String.IsNullOrEmpty(newServerSource.Name) ? "New Server Source" : "Edit " + newServerSource.Name;
+            _headerText = String.IsNullOrEmpty(newServerSource.Name) ? "New Server Source" : SetToEdit(newServerSource);
 
             IsValid = false;
             Address = newServerSource.Address;
@@ -73,10 +64,11 @@ namespace Warewolf.Studio.ViewModels
         }
 
         void Save()
-        {   var res = MessageBoxResult.OK;
-            if(String.IsNullOrEmpty(ServerSource.Name))
-             res =  SaveDialog.ShowSaveDialog();
-            if(res==MessageBoxResult.OK)
+        {
+            var res = MessageBoxResult.OK;
+            if (String.IsNullOrEmpty(ServerSource.Name))
+                res = SaveDialog.ShowSaveDialog();
+            if (res == MessageBoxResult.OK)
             {
                 try
                 {
@@ -92,8 +84,9 @@ namespace Warewolf.Studio.ViewModels
 
                     ServerSource = source;
                     _updateManager.Save(source);
-                    Result = DialogResult.Success;
-                    if(CloseAction != null)
+                    HeaderText = SetToEdit(source);
+                    _shellViewModel.ServerSourceAdded(source);
+                    if (CloseAction != null)
                         CloseAction.Invoke();
                 }
                 catch (Exception err)
@@ -105,14 +98,18 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
+        string SetToEdit(IServerSource source)
+        {
+            return "Edit " + _connectedServer.Trim() + "/" + source.ResourcePath + source.Name;
+        }
+
         public Action CloseAction { get; set; }
         void Test()
         {
             TestFailed = false;
             TestPassed = false;
             Testing = true;
-            
-            TestMessage = _updateManager.TestConnection(new ServerSource()
+            TestMessage = _updateManager.TestConnection(new ServerSource
             {
                 Address = Address,
                 AuthenticationType = AuthenticationType,
@@ -133,10 +130,10 @@ namespace Warewolf.Studio.ViewModels
                 TestPassed = false;
                 TestFailed = true;
             }
-            
-            OnPropertyChanged(()=>Validate);
+
+            OnPropertyChanged(() => Validate);
             OnPropertyChanged(() => CanClickOk);
-           
+
         }
 
         /// <summary>
@@ -157,11 +154,11 @@ namespace Warewolf.Studio.ViewModels
                     return Resources.Languages.Core.ServerDialogNoTestMessage;
                 }
 
-                if(TestFailed)
+                if (TestFailed)
                 {
-                    return TestMessage;
+                    return Resources.Languages.Core.ServerDialogTestConnectionLabel; 
                 }
-               
+
                 IsValid = true;
                 return String.Empty;
             }
@@ -169,17 +166,7 @@ namespace Warewolf.Studio.ViewModels
 
 
         }
-        public bool Testrun
-        {
-            get
-            {
-                return _testrun;
-            }
-            set
-            {
-                _testrun = value;
-            }
-        }
+        public bool Testrun { get; set; }
 
         /// <summary>
         /// called by outer when validating
@@ -193,45 +180,15 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// Is valid 
         /// </summary>
-        public bool IsValid
-        {
-            get
-            {
-                return _isValid;
-            }
-            set
-            {
-                _isValid = value;
-            }
-        }
+        public bool IsValid { get; set; }
         /// <summary>
         /// Command for save/ok
         /// </summary>
-        public ICommand OkCommand
-        {
-            get
-            {
-                return _okCommand;
-            }
-            set
-            {
-                _okCommand = value;
-            }
-        }
+        public ICommand OkCommand { get; set; }
         /// <summary>
         /// Command for cancel
         /// </summary>
-        public ICommand CancelCommand
-        {
-            get
-            {
-                return _cancelCommand;
-            }
-            set
-            {
-                _cancelCommand = value;
-            }
-        }
+        public ICommand CancelCommand { get; set; }
         public bool CanClickOk
         {
             get
@@ -239,19 +196,17 @@ namespace Warewolf.Studio.ViewModels
                 return Validate == "";
             }
         }
-        public string SubHeaderText
-        {
-            get
-            {
-                return _subHeaderText;
-            }
 
-        }
         public string HeaderText
         {
             get
             {
                 return _headerText;
+            }
+            set
+            {
+                _headerText = value;
+                OnPropertyChanged(() => HeaderText);
             }
         }
 
@@ -270,9 +225,17 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                
                 _address = value;
+                if (!String.IsNullOrEmpty(value))
+                {
+                    if (!value.StartsWith("http://"))
+                        _address = "http://" + value;
+                    if (!_address.EndsWith(":3142") || !_address.EndsWith(":3142"))
+                        _address = _address + ":3142";
+                }
                 OnPropertyChanged(() => Address);
-                OnPropertyChanged(()=>Validate);
+                OnPropertyChanged(() => Validate);
                 OnPropertyChanged(() => CanClickOk);
             }
 
@@ -288,13 +251,13 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (value != AuthenticationType)
+                if (value != _authenticationType)
                 {
                     _authenticationType = value;
                     OnPropertyChanged(() => AuthenticationType);
                     OnPropertyChanged(() => IsUserNameVisible);
                     Testrun = false;
-                    
+                    TestPassed = false;
                 }
             }
         }
@@ -466,17 +429,7 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.ServerDialogTestConnectionLabel;
             }
         }
-        public DialogResult Result
-        {
-            get
-            {
-                return _result;
-            }
-            set
-            {
-                _result = value;
-            }
-        }
+
 
         /// <summary>
         /// Test if connection is successful
@@ -492,6 +445,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _serverSource = value;
+                if(!String.IsNullOrEmpty(value.Name))
+                HeaderText = SetToEdit(value);
             }
         }
         public ISaveDialog SaveDialog

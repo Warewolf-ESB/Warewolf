@@ -18,19 +18,17 @@
 
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="86"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
 
                 <RowDefinition Height="50"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="{StaticResource WarewolfPanelGreyBrush}">
+            <Grid Grid.Row="0" Background="{StaticResource WareWolfMenuBrush}">
                 <Grid x:Name="Header">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="24" ></RowDefinition>
+                        <RowDefinition Height="10" ></RowDefinition>
                         <RowDefinition Height="16" ></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="16"></RowDefinition>
-                        <RowDefinition Height="24"></RowDefinition>
+                        <RowDefinition Height="10" ></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="24"></ColumnDefinition>
@@ -41,9 +39,8 @@
                     <fa:ImageAwesome Width="10" Height="10" Foreground="{StaticResource WareWolfButtonBrush}" Icon="Times" HorizontalAlignment="Right" Grid.Column="2"/>
 
                 </Button>-->
-                    <TextBlock Style="{StaticResource TextPanelHeaderStyle}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding Path=HeaderText}" Visibility="Visible"/>
-                    <TextBlock Style="{StaticResource TextPanelSubHeaderStyle}"  Grid.Row="3" Text="{Binding Path=SubHeaderText}" Grid.Column="1" Visibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Left" ></TextBlock>
-                </Grid>
+                    <TextBlock Style="{StaticResource SourceHeader}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding Path=HeaderText}" Visibility="Visible"/>
+                 </Grid>
             </Grid>
 
             <Grid Grid.Row="1">
@@ -86,6 +83,7 @@
                         <RadioButton Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left"  IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public</RadioButton>
                  
                     </Grid>
+                    
                     <TextBlock Text="User Name" Grid.Column="0" Grid.Row="2" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
                     <TextBox Text="{Binding Path=UserName}" Grid.Column="1" Grid.Row="2" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
 
@@ -124,13 +122,11 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="5"></ColumnDefinition>
                         <ColumnDefinition Width="60"></ColumnDefinition>
-                        <ColumnDefinition Width="5"></ColumnDefinition>
-                        <ColumnDefinition Width="70"></ColumnDefinition>
                         <ColumnDefinition Width="20"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="1" Style="{StaticResource ErrorTextBlockStyle}"  TextAlignment="Right" VerticalAlignment="Center" Text="{Binding Path=Validate}"></TextBlock>
-                    <Button Grid.Column="3"  Width="60" Height="30"  Content="Save" IsEnabled="{Binding Path=InnerDialogue.CanClickOk}"  Command="{Binding Path=InnerDialogue.OkCommand}"></Button>
-                    <Button Grid.Column="5"  Width="70" Height="30"  Content="Cancel" Command="{Binding Path=InnerDialogue.CancelCommand}" ></Button>
+                    <Button Grid.Column="3"  Width="60" Height="30"  Content="Save" IsEnabled="{Binding Path=CanClickOk}"  Command="{Binding Path=OkCommand}"></Button>
+                   
                 </Grid>
 
             </Grid>

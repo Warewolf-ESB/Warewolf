@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
@@ -132,6 +133,14 @@ namespace Warewolf.Studio.ViewModels
             Application.Current.Dispatcher.Invoke(action);
         }
 
+        public void ServerSourceAdded(IServerSource source)
+        {
+            if (source != null && _aggregator != null)
+            {
+                _aggregator.GetEvent<ServerAddedEvent>().Publish(source); 
+            }
+        }
+
         public IViewsCollection GetRegionViews(string regionName)
         {
             var region = GetRegion(regionName);
@@ -233,20 +242,8 @@ namespace Warewolf.Studio.ViewModels
 
         void CreateNewServerSource()
         {
-            //Blur();
-            var serverPopup = _unityContainer.Resolve<IDialogueTemplate>();
-
-            //var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
-            //           serverPopup.InnerDialogue = server;
-            //dialogue.ShowThis(serverPopup);
-            //if (server.Result == DialogResult.Success)
-            //{
-            //    _aggregator.GetEvent<ServerAddedEvent>().Publish(server.ServerSource); 
-            //}
-            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, new TestConnection(), ActiveServer.UpdateRepository, new SaveDialogMock());
-
-            server.ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" };
-            
+            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new SaveDialogMock(),this,
+                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", System.StringComparison.Ordinal))) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
             GetRegion("Workspace").Add(server);
 
         }
