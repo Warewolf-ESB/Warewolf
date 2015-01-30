@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
@@ -19,11 +21,15 @@ namespace Warewolf.Studio.Views
 	public partial class ExplorerView : IExplorerView
 	{
 	    private readonly ExplorerViewTestClass _explorerViewTestClass;
+	    Grid _blackoutGrid;
 
 	    public ExplorerView()
 	    {
 	        InitializeComponent();
 	        _explorerViewTestClass = new ExplorerViewTestClass(this);
+            _blackoutGrid = new Grid();
+            _blackoutGrid.Background = new SolidColorBrush(Colors.Black);
+            _blackoutGrid.Opacity = 0.75;
 	    }
 
 	    public ExplorerViewTestClass ExplorerViewTestClass
@@ -33,14 +39,15 @@ namespace Warewolf.Studio.Views
 
 
 	    private void ScrollBar_Loaded(object sender, RoutedEventArgs e)
-        {
-            if ((sender as ScrollBar).Orientation == Orientation.Horizontal)
+	    {
+	        var scrollBar = sender as ScrollBar;
+	        if (scrollBar != null && scrollBar.Orientation == Orientation.Horizontal)
             {
                 ExplorerTree.Tag = sender;                
             }
-        }
+	    }
 
-        public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
+	    public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
         {
             return _explorerViewTestClass.OpenEnvironmentNode(nodeName);
         }
@@ -69,8 +76,29 @@ namespace Warewolf.Studio.Views
 	    {
 	        SearchTextBox.Text = searchTerm;
             BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
-            be.UpdateSource();
-        
+	        if(be != null)
+	        {
+	            be.UpdateSource();
+	        }
+	    }
+
+	    public void Blur()
+	    {
+            
+
+            if (Content != null)
+            {
+                //Effect = new BlurEffect(){Radius = 10};
+                //Background = new SolidColorBrush(Colors.Black);
+                Overlay.Visibility = Visibility.Visible;
+                Overlay.Opacity = 0.75;
+          
+            }
+	    }
+
+	    public void UnBlur()
+	    {
+            RemoveVisualChild(_blackoutGrid);
 	    }
 
 	    void ExplorerTree_OnNodeDragDrop(object sender, TreeDropEventArgs e)

@@ -218,6 +218,9 @@
     <Compile Include="ServerUserControl.xaml.cs">
       <DependentUpon>ServerUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SourcesOuterControl.xaml.cs">
+      <DependentUpon>SourcesOuterControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ToolboxView.xaml.cs">
       <DependentUpon>ToolboxView.xaml</DependentUpon>
     </Compile>
@@ -271,6 +274,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ServerUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SourcesOuterControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

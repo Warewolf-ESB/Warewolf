@@ -288,9 +288,14 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _authenticationType = value;
-                OnPropertyChanged(() => AuthenticationType);
-                OnPropertyChanged(() => IsUserNameVisible);
+                if (value != AuthenticationType)
+                {
+                    _authenticationType = value;
+                    OnPropertyChanged(() => AuthenticationType);
+                    OnPropertyChanged(() => IsUserNameVisible);
+                    Testrun = false;
+                    
+                }
             }
         }
         /// <summary>

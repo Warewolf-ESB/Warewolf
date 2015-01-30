@@ -10,6 +10,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+        xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
         x:Name="MainWindow"
         Title="Warewolf Studio"
         WindowState="Maximized"
@@ -40,6 +41,9 @@
         </Style>
         <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
             <views:WorkflowDesignerView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
+            <views:ServerUserControl />
         </DataTemplate>
     </Window.Resources>
 

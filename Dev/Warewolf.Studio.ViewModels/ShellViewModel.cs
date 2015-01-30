@@ -90,6 +90,21 @@ namespace Warewolf.Studio.ViewModels
            return GetRegionViews(regionName).Any();
         }
 
+        public void Blur()
+        {
+            foreach(var region in _regionManager.Regions)
+            {
+                foreach(var regionView in region.ActiveViews)
+                {
+                   if(regionView is IWarewolfView)
+                   {
+                       (regionView as IWarewolfView).Blur();
+                   }
+                }
+
+            }
+        }
+
         public async Task<bool> CheckForNewVersion()
         {
             var versionChecker = _unityContainer.Resolve<IVersionChecker>();
@@ -218,17 +233,22 @@ namespace Warewolf.Studio.ViewModels
 
         void CreateNewServerSource()
         {
+            //Blur();
             var serverPopup = _unityContainer.Resolve<IDialogueTemplate>();
 
-            var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
-            var server=  new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, new TestConnection(), ActiveServer.UpdateRepository, new SaveDialogMock()) { CloseAction = () => dialogue.Close() };
-            serverPopup.InnerDialogue = server;
-            dialogue.ShowThis(serverPopup);
-            if (server.Result == DialogResult.Success)
-            {
-                _aggregator.GetEvent<ServerAddedEvent>().Publish(server.ServerSource); 
-            }
+            //var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
+            //           serverPopup.InnerDialogue = server;
+            //dialogue.ShowThis(serverPopup);
+            //if (server.Result == DialogResult.Success)
+            //{
+            //    _aggregator.GetEvent<ServerAddedEvent>().Publish(server.ServerSource); 
+            //}
+            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, new TestConnection(), ActiveServer.UpdateRepository, new SaveDialogMock());
+
             server.ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" };
+            
+            GetRegion("Workspace").Add(server);
+
         }
 
         public void SaveService()

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
 using Infragistics.Themes;
 using Infragistics.Windows;
@@ -22,6 +23,7 @@ namespace Warewolf.Studio
             InitializeComponent();
             DataContext = shellViewModel;            
             Loaded+=OnLoaded;
+           // Explorer.Effect = new BlurEffect(){Radius = 10};
         }
             
         void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
