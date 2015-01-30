@@ -773,4 +773,49 @@ You need Administrator permission.</value>
   <data name="ServerDialogUserNameLabel" xml:space="preserve">
     <value>User Name:</value>
   </data>
+  <data name="MenuDialogDatabaseLabel" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="MenuDialogDebugLabel" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="MenuDialogDeployLabel" xml:space="preserve">
+    <value>Deploy</value>
+  </data>
+  <data name="MenuDialogDLLLabel" xml:space="preserve">
+    <value>DLL</value>
+  </data>
+  <data name="MenuDialogForumsLabel" xml:space="preserve">
+    <value>Forums</value>
+  </data>
+  <data name="MenuDialogLockLabel" xml:space="preserve">
+    <value>Lock Menu</value>
+  </data>
+  <data name="MenuDialogNewLabel" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="MenuDialogNewVersionLabel" xml:space="preserve">
+    <value>New Version</value>
+  </data>
+  <data name="MenuDialogSaveLabel" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="MenuDialogSettingsLabel" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="MenuDialogSupportLabel" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="MenuDialogTaskLabel" xml:space="preserve">
+    <value>Task</value>
+  </data>
+  <data name="MenuDialogToursLabel" xml:space="preserve">
+    <value>Tours</value>
+  </data>
+  <data name="MenuDialogUnLockLabel" xml:space="preserve">
+    <value>Unlock Menu</value>
+  </data>
+  <data name="MenuDialogWebLabel" xml:space="preserve">
+    <value>Web</value>
+  </data>
 </root>

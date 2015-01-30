@@ -6,6 +6,19 @@
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+
+    <!--  TextBox Brushes  -->
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <!--  DO NOT make TextBoxHoverBackgroundBrush transparent!  -->
+    <SolidColorBrush x:Key="TextBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+
+
+
     <!--  *********************************  TextBlock Style  *********************************  -->
     <Style x:Key="TextBlockStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
@@ -28,6 +41,23 @@
     <!--  *********************************  Implicit Styles  *********************************  -->
     <Style BasedOn="{StaticResource TextBlockStyle}" TargetType="{x:Type TextBlock}" />
 
+
+
+
+    <Style x:Key="MenuTextBoxStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Large}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Width" Value="105" />
+        <Setter Property="Margin" Value="10,5,0,0" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+    </Style>
+
+
     <Style x:Key="TextPanelHeaderStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Larger}" />
@@ -36,8 +66,8 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
-    
-    
+
+
     <Style x:Key="TextPanelSubHeaderStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Large}" />
@@ -54,7 +84,7 @@
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{StaticResource WareWolfOrangeBrush}" />
-        
+
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
@@ -69,6 +99,8 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <!--  *********************************  Implicit Styles  ********************************* 
-    <Style BasedOn="{StaticResource TextPanelBlockStyle}" TargetType="{x:Type TextBlock}" /> -->
+    <!--
+        *********************************  Implicit Styles  *********************************
+        <Style BasedOn="{StaticResource TextPanelBlockStyle}" TargetType="{x:Type TextBlock}" />
+    -->
 </ResourceDictionary>

@@ -1,10 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:igDw="http://schemas.infragistics.com/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
-    mc:Ignorable="d">
+                    xmlns:igDw="http://schemas.infragistics.com/xaml"
+                    xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
 
     <!--  *********************************  RESOURCES  *********************************  -->
     <ResourceDictionary.MergedDictionaries>
@@ -27,22 +27,22 @@
     <SolidColorBrush x:Key="DialogWindowNoActiveResizeBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
     <SolidColorBrush x:Key="DialogWindowInactiveBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
     <SolidColorBrush x:Key="DialogWindowActiveBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    
-     <SolidColorBrush x:Key="DialogWindowHeaderIconBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />   
+
+    <SolidColorBrush x:Key="DialogWindowHeaderIconBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
     <SolidColorBrush x:Key="DialogWindowHeaderIconBorderBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
-    
+
     <SolidColorBrush x:Key="DialogWindowModalBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="DialogWindowHeaderForegroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
     <SolidColorBrush x:Key="DialogWindowHeaderBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
     <SolidColorBrush x:Key="DialogWindowFocusVisualStyleBorderBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="DialogWindowFocusVisualStyleBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    
+
     <SolidColorBrush x:Key="DialogWindowGlyphBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
     <SolidColorBrush x:Key="DialogWindowGlyphBorderBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
 
     <!--  *********************************  DialogButton Style  *********************************  -->
-  
-    
+
+
     <Style x:Key="DialogButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
         <Setter Property="Padding" Value="3" />
@@ -101,7 +101,7 @@
         </Setter>
     </Style>
 
-   <!--  *********************************  Close Button Style  *********************************  -->
+    <!--  *********************************  Close Button Style  *********************************  -->
 
     <!--  *********************************  XamDialogWindow Style  *********************************  -->
     <Style x:Key="XamDialogWindowStyle" TargetType="igDw:XamDialogWindow">
@@ -135,7 +135,7 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        
+
         <Setter Property="HeaderVerticalContentAlignment" Value="Stretch" />
         <Setter Property="CloseButtonVisibility" Value="Visible" />
         <Setter Property="MinimizeButtonVisibility" Value="Collapsed" />

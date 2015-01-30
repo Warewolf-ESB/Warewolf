@@ -25,7 +25,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="55"/>
+            <RowDefinition Height="55" />
         </Grid.RowDefinitions>
         <!--  HEADER PANEL  -->
         <Grid Grid.Row="0" Background="{StaticResource WarewolfPanelGreyBrush}">
@@ -43,7 +43,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0"
                            Grid.Column="1"
-                            Style="{StaticResource TextPanelHeaderStyle}"
+                           Style="{StaticResource TextPanelHeaderStyle}"
                            Text="{Binding Path=InnerDialogue.HeaderText}"
                            Visibility="Visible" />
                 <TextBlock Grid.Row="2"
@@ -54,13 +54,13 @@
             </Grid>
         </Grid>
 
-        <!--EMBEDDED CLIENT PANEL-->
+        <!--  EMBEDDED CLIENT PANEL  -->
         <Grid Grid.Row="1">
             <ContentPresenter Content="{Binding InnerDialogue}" />
         </Grid>
 
 
-        <!--FOOTER PANEL-->
+        <!--  FOOTER PANEL  -->
         <Grid Grid.Row="2">
 
             <Grid.RowDefinitions>
@@ -75,29 +75,32 @@
                 <ColumnDefinition Width="24" />
             </Grid.ColumnDefinitions>
 
-            <DockPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <DockPanel Grid.Row="1"
+                       Grid.Column="1"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center">
 
-                <TextBlock VerticalAlignment="Center"
-                           HorizontalAlignment="Right"
+                <TextBlock HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
                            Style="{StaticResource ErrorTextBlockStyle}"
                            Text="{Binding Path=InnerDialogue.Validate}"
                            TextAlignment="Right" />
 
-                <Button HorizontalAlignment="Right"
-                        Margin="5,0,0,0"
-                        Width="60"
+                <Button Width="60"
                         Height="30"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Right"
                         Command="{Binding Path=InnerDialogue.OkCommand}"
                         Content="Save"
                         IsEnabled="{Binding Path=InnerDialogue.CanClickOk}" />
-                
+
                 <Button Width="60"
                         Height="30"
-                         HorizontalAlignment="Right"
                         Margin="5,0,0,0"
+                        HorizontalAlignment="Right"
                         Command="{Binding Path=InnerDialogue.CancelCommand}"
                         Content="Cancel" />
-                
+
 
             </DockPanel>
 

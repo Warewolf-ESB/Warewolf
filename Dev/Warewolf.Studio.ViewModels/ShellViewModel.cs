@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -18,13 +17,11 @@ using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Controller;
 using Dev2.Util;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
-using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
@@ -32,7 +29,7 @@ using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ShellViewModel:IShellViewModel
+    public class ShellViewModel : BindableBase, IShellViewModel
     {
         readonly IUnityContainer _unityContainer;
         readonly IRegionManager _regionManager;
@@ -41,6 +38,8 @@ namespace Warewolf.Studio.ViewModels
         IPopupController _popupController;
         IExplorerTreeItem _activeItem;
         IServer _activeServer;
+        int _menuPanelWidth;
+        bool _menuExpanded;
 
         public ShellViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator aggregator)
         {
@@ -53,6 +52,9 @@ namespace Warewolf.Studio.ViewModels
             LocalhostServer = unityContainer.Resolve<IServer>(new ParameterOverrides { { "uri", localhostUri } });
             LocalhostServer.ResourceName = "localhost (" + localHostString + ")";
             ActiveServer = LocalhostServer;
+
+            _menuPanelWidth = 60;
+            _menuExpanded = false;
         }
 
         public void Initialize()
@@ -87,7 +89,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool RegionHasView(string regionName)
         {
-           return GetRegionViews(regionName).Any();
+            return GetRegionViews(regionName).Any();
         }
 
         public async Task<bool> CheckForNewVersion()
@@ -96,14 +98,14 @@ namespace Warewolf.Studio.ViewModels
             var hasNewVersion = await versionChecker.GetNewerVersionAsync();
             return hasNewVersion;
         }
-        
+
         public async void DisplayDialogForNewVersion()
         {
             var hasNewVersion = await CheckForNewVersion();
             if (hasNewVersion)
             {
-                var dialog = _unityContainer.Resolve <IWebLatestVersionDialog>();
-                dialog.ShowDialog();                
+                var dialog = _unityContainer.Resolve<IWebLatestVersionDialog>();
+                dialog.ShowDialog();
             }
         }
 
@@ -154,7 +156,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return Equals(viewModel.Resource, resource);
             });
-            if(foundViewModel==null)
+            if (foundViewModel == null)
             {
                 if (resource.ResourceType == ResourceType.WorkflowService)
                 {
@@ -172,16 +174,16 @@ namespace Warewolf.Studio.ViewModels
 
         public void DeployService(IExplorerItemViewModel resourceToDeploy)
         {
-            VerifyArgument.IsNotNull("resourceToDeploy",resourceToDeploy);
+            VerifyArgument.IsNotNull("resourceToDeploy", resourceToDeploy);
             var region = GetRegion(RegionNames.Workspace);
-            var vm = region.Views.FirstOrDefault(a=>a is IDeployViewModel);
+            var vm = region.Views.FirstOrDefault(a => a is IDeployViewModel);
 
             if (vm == null)
             {
                 var deployVm = _unityContainer.Resolve<IDeployViewModel>();
                 deployVm.SelectSourceItem(resourceToDeploy);
                 region.Add(deployVm);
-                region.Activate(deployVm); 
+                region.Activate(deployVm);
             }
             else
             {
@@ -190,28 +192,29 @@ namespace Warewolf.Studio.ViewModels
                 deploy.SelectSourceItem(resourceToDeploy);
                 region.Activate(deploy); //active the viewModel
             }
-            
+
         }
 
         public void UpdateHelpDescriptor(IHelpDescriptor helpDescriptor)
         {
             //!!!!!!!/// Reviewer please note this could go either way here. Used the event aggregator to ensure order of events... but could go the other way as well cos the shell view model owns this
-             VerifyArgument.IsNotNull("helpDescriptor", helpDescriptor);
-              _aggregator.GetEvent<HelpChangedEvent>().Publish(helpDescriptor);
-            
+            VerifyArgument.IsNotNull("helpDescriptor", helpDescriptor);
+            _aggregator.GetEvent<HelpChangedEvent>().Publish(helpDescriptor);
+
         }
-       
+
+
 
         public void NewResource(ResourceType? type)
         {
-            if(type == null)
+            if (type == null)
                 return;
-            switch(type.Value)
+            switch (type.Value)
             {
-                case  ResourceType.ServerSource :
+                case ResourceType.ServerSource:
                     CreateNewServerSource();
                     break;
-                default : return;
+                default: return;
 
             }
         }
@@ -221,12 +224,12 @@ namespace Warewolf.Studio.ViewModels
             var serverPopup = _unityContainer.Resolve<IDialogueTemplate>();
 
             var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
-            var server=  new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, new TestConnection(), ActiveServer.UpdateRepository, new SaveDialogMock()) { CloseAction = () => dialogue.Close() };
+            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, new TestConnection(), ActiveServer.UpdateRepository, new SaveDialogMock()) { CloseAction = () => dialogue.Close() };
             serverPopup.InnerDialogue = server;
             dialogue.ShowThis(serverPopup);
             if (server.Result == DialogResult.Success)
             {
-                _aggregator.GetEvent<ServerAddedEvent>().Publish(server.ServerSource); 
+                _aggregator.GetEvent<ServerAddedEvent>().Publish(server.ServerSource);
             }
             server.ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" };
         }
@@ -313,6 +316,27 @@ namespace Warewolf.Studio.ViewModels
 
         public event Action ActiveServerChanged;
         public event Action ActiveItemChanged;
+
+
+
+
+        public bool MenuExpanded
+        {
+            get
+            {
+                return _menuExpanded;
+            }
+            set
+            {
+                _menuExpanded = value;
+                OnPropertyChanged(() => MenuExpanded);
+            }
+        }
+
+
+
+
+
     }
 
     public class SaveDialogMock : ISaveDialog
@@ -327,4 +351,8 @@ namespace Warewolf.Studio.ViewModels
             get { return new ResourceName("", Guid.NewGuid().ToString().Substring(0, 5)); }
         }
     }
+
+
+
+
 }

@@ -20,6 +20,9 @@ namespace Dev2.Common.Interfaces
         IServer ActiveServer { get; set; }
         IExplorerTreeItem ActiveItem { get; set; }
         IServer LocalhostServer { get; set; }
+        bool MenuExpanded { get; set; }
+
+
         void Handle(Exception err);
         bool ShowPopup(IPopupMessage getDeleteConfirmation);
         void RemoveServiceFromExplorer(IExplorerItemViewModel explorerItemViewModel);

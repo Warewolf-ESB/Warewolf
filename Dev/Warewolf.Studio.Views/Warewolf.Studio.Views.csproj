@@ -215,8 +215,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ServerUserControl.xaml.cs">
-      <DependentUpon>ServerUserControl.xaml</DependentUpon>
+    <Compile Include="PopupSample.xaml.cs">
+      <DependentUpon>PopupSample.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolboxView.xaml.cs">
       <DependentUpon>ToolboxView.xaml</DependentUpon>
@@ -270,7 +270,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ServerUserControl.xaml">
+    <Page Include="PopupSample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
