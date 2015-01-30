@@ -1,19 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="Environment Pool Acceptance Run" id="7627FF19-3746-4D6A-AD03-AD30FFD0D7ED" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
-    <Deployment>
-        <!--Project specific outputs-->
-		  <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
-		  <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
-		  <DeploymentItem filename="Binaries\AcceptanceTesting\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll"/>
-      <DeploymentItem filename="packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll"/>
+  <Deployment>
+      <!--Project specific outputs-->
+		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
 
       <!--Solution specific outputs-->
-		  <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
-		  <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
-		  <DeploymentItem filename="..\bin\AcceptanceTesting\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll"/>
-      <DeploymentItem filename="..\bin\AcceptanceTesting\FontAwesome.WPF.dll"/>
-    </Deployment>
+		<DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+		<DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
+  </Deployment>
   <NamingScheme baseName="UT" />
     <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />

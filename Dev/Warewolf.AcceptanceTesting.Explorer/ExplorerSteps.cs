@@ -49,7 +49,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
                 Assert.IsNotNull(explorerViewWindow);
                 Assert.IsNotNull(explorerViewWindow.DataContext);
                 Assert.IsInstanceOfType(explorerViewWindow.DataContext, typeof(IExplorerViewModel));
-                //Application.Current.Shutdown();
+                Application.Current.Shutdown();
             }));
             
             Application.Current.Run(Application.Current.MainWindow);
