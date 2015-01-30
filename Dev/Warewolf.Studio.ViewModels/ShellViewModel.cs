@@ -26,6 +26,7 @@ using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Help;
+using IVariableListViewModel = Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -59,32 +60,25 @@ namespace Warewolf.Studio.ViewModels
 
         public void Initialize()
         {
-            var explorerRegion = _regionManager.Regions[RegionNames.Explorer];
-            var explorerView = _unityContainer.Resolve<IExplorerView>();
-            explorerView.DataContext = _unityContainer.Resolve<IExplorerViewModel>();
-            explorerRegion.Add(explorerView, RegionNames.Explorer);
-            explorerRegion.Activate(explorerView);
+            InitializeRegion<IExplorerView,IExplorerViewModel>(RegionNames.Explorer);
+            InitializeRegion<IToolboxView, IToolboxViewModel>(RegionNames.Toolbox);
+            InitializeRegion<IMenuView, IMenuViewModel>(RegionNames.Menu);
+            InitializeRegion<IVariableListView, IVariableListViewModel>(RegionNames.VariableList);
+            InitializeRegion<IHelpView, IHelpWindowViewModel>(RegionNames.Help);
 
-            var toolboxRegion = _regionManager.Regions[RegionNames.Toolbox];
-            var toolBoxView = _unityContainer.Resolve<IToolboxView>();
-            toolBoxView.DataContext = _unityContainer.Resolve<IToolboxViewModel>();
-            toolboxRegion.Add(toolBoxView, RegionNames.Toolbox);
-            toolboxRegion.Activate(toolBoxView);
-
-            var menuRegion = _regionManager.Regions[RegionNames.Menu];
-            var menuView = _unityContainer.Resolve<IMenuView>();
-            menuView.DataContext = _unityContainer.Resolve<IMenuViewModel>();
-            menuRegion.Add(menuView, RegionNames.Menu);
-            menuRegion.Activate(menuView);
             _handler = _unityContainer.Resolve<IExceptionHandler>();
             _popupController = _unityContainer.Resolve<IPopupController>();
             _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => { _popupController.Show(PopupMessages.GetInvalidPermissionException()); });
-            var variableListRegion = _regionManager.Regions[RegionNames.VariableList];
 
-            var variableList = _unityContainer.Resolve<IVariableListView>();
-            variableList.DataContext = _unityContainer.Resolve<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>();
-            variableListRegion.Add(variableList, RegionNames.VariableList);
+        }
 
+        private void InitializeRegion<T,TU>(string regionName) where T:IView
+        {
+            var region = _regionManager.Regions[regionName];
+            var view = _unityContainer.Resolve<T>();
+            view.DataContext = _unityContainer.Resolve<TU>();
+            region.Add(view, regionName);
+            region.Activate(view);
         }
 
         public bool RegionHasView(string regionName)
@@ -109,7 +103,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void OpenVersion(Guid ResourceId, string VersionNumber)
+        public void OpenVersion(Guid resourceId, string versionNumber)
         {
             //todo:
         }

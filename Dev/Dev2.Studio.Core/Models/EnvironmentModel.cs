@@ -263,7 +263,7 @@ namespace Dev2.Studio.Core.Models
 
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
-            RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
+            
             if(e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline)
             {
                 _studioRepo.Disconnect(ID);
@@ -281,6 +281,7 @@ namespace Dev2.Studio.Core.Models
                     OnAuthorizationServicePermissionsChanged(null, new EventArgs());
                 }
             }
+            RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
         }
 
         void RaiseNetworkStateChanged(bool isOnline)

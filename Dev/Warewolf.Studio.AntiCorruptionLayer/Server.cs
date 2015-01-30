@@ -91,7 +91,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IList<IToolDescriptor> LoadTools()
         {
-            return null;
+            var result = _proxyLayer.QueryManagerProxy.FetchTools();
+            return result;
         }
 
         public IExplorerRepository ExplorerRepository

@@ -15,6 +15,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         ICollection<IToolDescriptorViewModel> _tools;
         bool _isDesignerFocused;
         IToolDescriptorViewModel _selectedTool;
+        private string _searchTerm;
 
         public ToolboxViewModel( IToolboxModel localModel,IToolboxModel remoteModel)
         {
@@ -95,6 +96,20 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                 {
                     _selectedTool = value;
                     OnPropertyChanged("SelectedTool");
+                }
+            }
+        }
+
+        public string SearchTerm
+        {
+            get { return _searchTerm; }
+            set
+            {
+                if (_searchTerm != value)
+                {
+                    _searchTerm = value;
+                    OnPropertyChanged(() => SearchTerm);
+                    Filter(_searchTerm);
                 }
             }
         }

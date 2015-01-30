@@ -27,7 +27,7 @@ namespace Dev2.Explorer
             Children = new List<IExplorerItem>();
         }
         public ServerExplorerItem(string displayName, Guid resourceId, ResourceType resourceType,
-                                  IList<IExplorerItem> children, Permissions permissions, string resourcePath)
+                                  IList<IExplorerItem> children, Permissions permissions, string resourcePath,string inputs,string outputs)
         {
             DisplayName = displayName;
             ResourceId = resourceId;
@@ -35,11 +35,24 @@ namespace Dev2.Explorer
             Children = children;
             Permissions = permissions;
             ResourcePath = resourcePath;
+            Inputs = inputs;
+            Outputs = outputs;
         }
         public string DisplayName { get; set; }
         public Guid ResourceId { get; set; }
         public Guid ServerId { get; set; }
         public string WebserverUri { get; set; }
+
+        public string Inputs
+        {
+            get; set;
+        }
+
+        public string Outputs
+        {
+            get; set;
+        }
+
         [JsonConverter(typeof(ResourceTypeConvertor))]
         public ResourceType ResourceType { get; set; }
 

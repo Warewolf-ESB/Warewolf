@@ -33,7 +33,7 @@ namespace Dev2.Common.Interfaces
 
         void DisplayDialogForNewVersion();
 
-        void OpenVersion(Guid ResourceId, string VersionNumber);
+        void OpenVersion(Guid resourceId, string versionNumber);
 
         void ExecuteOnDispatcher(Action action);
     }

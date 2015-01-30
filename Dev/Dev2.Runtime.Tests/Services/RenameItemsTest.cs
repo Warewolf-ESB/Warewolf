@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var renameItemService = new RenameItemService();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "");
+            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "", "", "");
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
             var id = Guid.NewGuid();

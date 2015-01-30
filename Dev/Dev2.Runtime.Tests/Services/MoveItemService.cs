@@ -122,8 +122,8 @@ namespace Dev2.Tests.Runtime.Services
             var MoveItemService = new MoveItemService();
             var idFrom = Guid.NewGuid();
             var IdTo = Guid.NewGuid();
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "dave");
-            ServerExplorerItem itemTo = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "");
+            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "dave", "", "");
+            ServerExplorerItem itemTo = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "", "", "");
             itemTo.ResourcePath = "bob";
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();

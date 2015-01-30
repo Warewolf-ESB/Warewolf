@@ -55,30 +55,34 @@ namespace Warewolf.Studio.ViewModels
 
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
         {
-            switch(args.State)
+            switch (args.State)
             {
-                    case ConnectionNetworkState.Connected:
+                case ConnectionNetworkState.Connected:
+                {
                     Server.Connect();
-                    if(!IsConnecting)
-                         _shellViewModel.ExecuteOnDispatcher(Load);
+                    if (!IsConnecting)
+                        _shellViewModel.ExecuteOnDispatcher(Load);
                     break;
-                    case ConnectionNetworkState.Disconnected:
+                }
+                case ConnectionNetworkState.Disconnected:
+                {
                     _shellViewModel.ExecuteOnDispatcher(() =>
                     {
                         IsConnected = false;
                         Children = new ObservableCollection<IExplorerItemViewModel>();
-     
-                    });
-                    break;
-                    case ConnectionNetworkState.Connecting:
 
+                    });
+                }
+                    break;
+                case ConnectionNetworkState.Connecting:
+                {
                     _shellViewModel.ExecuteOnDispatcher(() =>
                     {
                         if (!IsConnecting)
                             IsConnected = false;
-                        Children = new ObservableCollection<IExplorerItemViewModel>();
-                       
+                        Children = new ObservableCollection<IExplorerItemViewModel>();                        
                     });
+                }
                     break;
             }
         }
@@ -224,7 +228,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children,Server,null);
+                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null);
                 Children = explorerItemViewModels;
                 IsLoaded = true;
                 IsConnecting = false;
@@ -313,7 +317,9 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ResourceName = explorerItem.DisplayName,
                     ResourceId = explorerItem.ResourceId,
-                    ResourceType = explorerItem.ResourceType
+                    ResourceType = explorerItem.ResourceType,
+                    Inputs = explorerItem.Inputs,
+                    Outputs = explorerItem.Outputs
                 };
                 itemCreated.Children = CreateExplorerItems(explorerItem.Children, server, itemCreated);
                 explorerItemModels.Add(itemCreated);

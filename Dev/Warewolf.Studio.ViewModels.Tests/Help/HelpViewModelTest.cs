@@ -58,6 +58,28 @@ namespace Warewolf.Studio.ViewModels.Tests.Help
             Assert.AreEqual("bob", help.CurrentHelpText.Name);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("HelpViewModel_CurrentHelpText")]
+        public void CurrentHelpText_SetProperty_ShouldFirePropertyChangeForHelpText()
+        {
+            //------------Setup for test--------------------------
+            var defaultVal = new Mock<IHelpDescriptorViewModel>();
+            const string defaultDescription = "default description";
+            defaultVal.Setup(viewModel => viewModel.Description).Returns(defaultDescription);
+            var changedVal = new Mock<IHelpDescriptor>();
+            var model = new Mock<IHelpWindowModel>();
+            const string expectedDescription = "bob";
+            changedVal.Setup(a => a.Description).Returns(expectedDescription);
+            var help = new HelpWindowViewModel(defaultVal.Object, model.Object);
+            //------------Assert Preconditions-------------------
+            Assert.AreEqual(defaultDescription,help.HelpText);
+            //------------Execute Test---------------------------
+            model.Raise(a => a.OnHelpTextReceived += null, this, changedVal.Object);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expectedDescription,help.HelpText);
+
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

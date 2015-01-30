@@ -46,6 +46,9 @@
             <TextBox 
                 Grid.Column="0" 
                 Grid.Row="0"  
+                Text="{Binding SearchTerm,
+                                    Delay=300,
+                                    UpdateSourceTrigger=PropertyChanged}"
                     customControls:TextBoxHelper.Watermark="Filter" 
                      customControls:TextBoxHelper.ShowWatermark="True"
                 />

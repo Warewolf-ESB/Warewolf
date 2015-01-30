@@ -93,7 +93,7 @@
                         IsDropTarget="True"
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
-                        NodeLineVisibility="Hidden"
+                        NodeLineVisibility="Hidden"                        
                         >
             <ig:XamDataTree.EditingSettings>
                 <ig:TreeEditingSettings AllowDeletion="False"
@@ -156,7 +156,7 @@
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseLeftButtonDown">
                                         <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
-                                    </i:EventTrigger>
+                                    </i:EventTrigger>                                    
                                 </i:Interaction.Triggers>
 
                                 <ig:ContextMenuService.Manager>
@@ -305,13 +305,13 @@
                 <ig:NodeLayout Key="Children"
                                DisplayMemberPath="ResourceName"
                                IsExpandedMemberPath="IsExpanded"
+                               
                                TargetTypeName="IExplorerItemViewModel"
                                Visibility="{Binding Path=Data.IsVisible,
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
-
-
+                    
                     <ig:NodeLayout.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate>                            
                             <DataTemplate.Triggers>
                                 <EventTrigger RoutedEvent="ig:XamDataTreeNodeControl.MouseEnter">
                                     <BeginStoryboard>
@@ -349,6 +349,7 @@
                             <DockPanel x:Name="ItemDockPanel"
                                        Height="Auto"
                                        >
+                                
                                 <DockPanel.Width>
                                     <MultiBinding Converter="{StaticResource WidthConverter}">
                                         <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
@@ -617,9 +618,10 @@
                                     </Image>
                                     
                                 </Button>
-                                <StackPanel VerticalAlignment="Center">
+                                <StackPanel VerticalAlignment="Center">                                   
                                     <TextBlock x:Name="ResourceNameTextBlock"
                                                MinWidth="5"
+                                               Focusable="True"
                                                Text="{Binding Path=Data.ResourceName}"
                                                Visibility="{Binding Path=Data.IsNotRenaming,
                                                                     Converter={StaticResource BoolToVisibilityConverter}}" >
@@ -627,6 +629,7 @@
                                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                              <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
                                             </i:EventTrigger>
+                                           
                                             </i:Interaction.Triggers>
                                     </TextBlock>
                                     <TextBox x:Name="PropertySearch"
@@ -640,6 +643,7 @@
                                             <i:EventTrigger EventName="LostFocus">
                                                 <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}" />
                                             </i:EventTrigger>
+                                            
                                         </i:Interaction.Triggers>
                                     </TextBox>
                                 </StackPanel>

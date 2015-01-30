@@ -28,5 +28,7 @@ namespace Dev2.Common.Interfaces.Explorer
         string ResourcePath { get; set; }
         IExplorerItem Parent { get; set; }
         string WebserverUri { get; set; }
+        string Inputs { get; set; }
+        string Outputs { get; set; }
     }
 }

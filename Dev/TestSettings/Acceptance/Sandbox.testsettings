@@ -5,10 +5,12 @@
       <!--Project specific outputs-->
     <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
     <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+    <DeploymentItem filename="Warewolf.AcceptanceTesting.Explorer\bin\Debug\" />
 
       <!--Solution specific outputs-->
     <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
     <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
+    <DeploymentItem filename="..\bin\AcceptanceTesting\" />
   </Deployment>
   <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
