@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Toolbox;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
 {
@@ -47,5 +48,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <returns></returns>
         Task<IExplorerItem> Load();
 
+        IList<IToolDescriptor> FetchTools();
     }
 }

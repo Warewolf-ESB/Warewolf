@@ -130,7 +130,7 @@ namespace Dev2.Runtime.Hosting
 
         IExplorerItem CreateVersionFromFilePath(string path, IResource resource)
         {
-            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, ResourceType.Version, new List<IExplorerItem>(), Permissions.View, resource.ResourcePath)
+            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, ResourceType.Version, new List<IExplorerItem>(), Permissions.View, resource.ResourcePath,resource.Inputs,resource.Outputs)
                 {
                     VersionInfo = CreateVersionInfoFromFilePath(path, resource.ResourceID)
                 };

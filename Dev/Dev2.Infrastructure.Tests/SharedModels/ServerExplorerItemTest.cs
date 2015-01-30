@@ -37,7 +37,7 @@ namespace Dev2.Infrastructure.Tests.SharedModels
 
 
             //------------Execute Test---------------------------
-            var serverExplorerItem = new ServerExplorerItem(name, guid, explorerItemType, children, permissions, "/");
+            var serverExplorerItem = new ServerExplorerItem(name, guid, explorerItemType, children, permissions, "/","","");
             //------------Assert Results-------------------------
 
             Assert.AreEqual(children, serverExplorerItem.Children);
@@ -45,6 +45,8 @@ namespace Dev2.Infrastructure.Tests.SharedModels
             Assert.AreEqual(serverExplorerItem.ResourceType, explorerItemType);
             Assert.AreEqual(permissions, serverExplorerItem.Permissions);
             Assert.AreEqual(guid, serverExplorerItem.ResourceId);
+            Assert.AreEqual("",serverExplorerItem.Inputs);
+            Assert.AreEqual("",serverExplorerItem.Outputs);
         }
 
         [TestMethod]
@@ -61,7 +63,7 @@ namespace Dev2.Infrastructure.Tests.SharedModels
 
 
             //------------Execute Test---------------------------
-            var serverExplorerItem = new ServerExplorerItem(name, guid, explorerItemType, children, permissions, "");
+            var serverExplorerItem = new ServerExplorerItem(name, guid, explorerItemType, children, permissions, "","","");
             //------------Assert Results-------------------------
 
             Assert.AreEqual(guid.GetHashCode(), serverExplorerItem.GetHashCode());
@@ -82,9 +84,9 @@ namespace Dev2.Infrastructure.Tests.SharedModels
 
 
             //------------Execute Test---------------------------
-            var serverExplorerItem = new ServerExplorerItem(name, guid, explorerItemType, children, permissions, "");
-            var serverExplorerItem2 = new ServerExplorerItem(name, guid, explorerItemType, children, Permissions.Administrator, "");
-            var serverExplorerItem3 = new ServerExplorerItem(name, Guid.NewGuid(), explorerItemType, children, permissions, "");
+            var serverExplorerItem = new ServerExplorerItem(name, guid, explorerItemType, children, permissions, "","","");
+            var serverExplorerItem2 = new ServerExplorerItem(name, guid, explorerItemType, children, Permissions.Administrator, "","","");
+            var serverExplorerItem3 = new ServerExplorerItem(name, Guid.NewGuid(), explorerItemType, children, permissions, "","","");
             //------------Assert Results-------------------------
 
             Assert.AreEqual(serverExplorerItem, serverExplorerItem2);
@@ -92,6 +94,27 @@ namespace Dev2.Infrastructure.Tests.SharedModels
             Assert.AreEqual(serverExplorerItem, serverExplorerItem);
             Assert.AreNotEqual(serverExplorerItem, guid);
             Assert.AreNotEqual(serverExplorerItem, serverExplorerItem3);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerExplorerItem_Constructor")]
+        public void ServerExplorerItem_InputsOutputs_WhenPassed_ExpectSet()
+        {
+            //------------Setup for test--------------------------
+            var guid = Guid.NewGuid();
+            const string name = "a";
+            const ResourceType explorerItemType = ResourceType.PluginService;
+            var children = new List<IExplorerItem>();
+            const Permissions permissions = Permissions.DeployFrom;
+            //------------Execute Test---------------------------
+            var serverExplorerItem = new ServerExplorerItem(name, guid, explorerItemType, children, permissions, "","Input 1","Output 2");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Input 1",serverExplorerItem.Inputs);
+            Assert.AreEqual("Output 2",serverExplorerItem.Outputs);
+
 
         }
     }

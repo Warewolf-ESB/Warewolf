@@ -317,7 +317,9 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ResourceName = explorerItem.DisplayName,
                     ResourceId = explorerItem.ResourceId,
-                    ResourceType = explorerItem.ResourceType
+                    ResourceType = explorerItem.ResourceType,
+                    Inputs = explorerItem.Inputs,
+                    Outputs = explorerItem.Outputs
                 };
                 itemCreated.Children = CreateExplorerItems(explorerItem.Children, server, itemCreated);
                 explorerItemModels.Add(itemCreated);

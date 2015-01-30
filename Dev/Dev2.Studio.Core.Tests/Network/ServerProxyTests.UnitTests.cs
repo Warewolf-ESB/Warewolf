@@ -148,7 +148,7 @@ namespace Dev2.Core.Tests.Network
 
             }
             //------------Execute Test---------------------------
-            ServerExplorerItem item = new ServerExplorerItem("bob",Guid.Empty,ResourceType.DbService,null,Permissions.Administrator, "bob");
+            ServerExplorerItem item = new ServerExplorerItem("bob", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob", "", "");
             serverProxy.ItemAddedMessageAction += explorerItem => { ItemGuid = explorerItem.ServerId; };
             Dev2JsonSerializer dev = new Dev2JsonSerializer();
             var output = dev.SerializeToBuilder(item);

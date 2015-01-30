@@ -586,6 +586,8 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IResource Resource { get; set; }
+        public string Inputs { get; set; }
+        public string Outputs { get; set; }
     }
 
     public class NewItemMessage : INewItemMessage {
