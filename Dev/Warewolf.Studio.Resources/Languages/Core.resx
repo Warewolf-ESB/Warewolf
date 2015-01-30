@@ -762,7 +762,7 @@ You need Administrator permission.</value>
     <value>The server address cannot be empty</value>
   </data>
   <data name="ServerDialogNoTestMessage" xml:space="preserve">
-    <value>The server connection must be tested before saving</value>
+    <value>The server connection must be tested with a valid address before you can save</value>
   </data>
   <data name="ServerDialogPasswordLabel" xml:space="preserve">
     <value>Password</value>

@@ -8,12 +8,13 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerViewModel:BindableBase,IExplorerViewModel
     {
-        public ExplorerViewModel(IShellViewModel shellViewModel)
+        public ExplorerViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
         {
             if(shellViewModel == null)
             {
@@ -24,7 +25,7 @@ namespace Warewolf.Studio.ViewModels
             var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer,shellViewModel);
             Environments = new ObservableCollection<IEnvironmentViewModel>{localhostEnvironment};
             localhostEnvironment.Connect();
-            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer);
+            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer,aggregator);
         }
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server,IShellViewModel shellViewModel)

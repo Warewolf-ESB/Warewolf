@@ -6,12 +6,14 @@ using System.Windows;
 using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
+using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
@@ -217,10 +219,16 @@ namespace Warewolf.Studio.ViewModels
         void CreateNewServerSource()
         {
             var serverPopup = _unityContainer.Resolve<IDialogueTemplate>();
-            serverPopup.InnerDialogue = new NewServerViewModel(new ServerSource(){UserName = "",Address = "",AuthenticationType = AuthenticationType.Windows,ID = Guid.NewGuid(),Name = "bob",Password = "",ResourcePath = ""},new TestConnection(), ActiveServer.UpdateRepository  );
-            var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
 
+            var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
+            var server=  new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, new TestConnection(), ActiveServer.UpdateRepository, new SaveDialogMock()) { CloseAction = () => dialogue.Close() };
+            serverPopup.InnerDialogue = server;
             dialogue.ShowThis(serverPopup);
+            if (server.Result == DialogResult.Success)
+            {
+                _aggregator.GetEvent<ServerAddedEvent>().Publish(server.ServerSource); 
+            }
+            server.ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" };
         }
 
         public void SaveService()
@@ -305,5 +313,18 @@ namespace Warewolf.Studio.ViewModels
 
         public event Action ActiveServerChanged;
         public event Action ActiveItemChanged;
+    }
+
+    public class SaveDialogMock : ISaveDialog
+    {
+        public MessageBoxResult ShowSaveDialog()
+        {
+            return MessageBoxResult.OK;
+        }
+
+        public ResourceName ResourceName
+        {
+            get { return new ResourceName("", Guid.NewGuid().ToString().Substring(0, 5)); }
+        }
     }
 }

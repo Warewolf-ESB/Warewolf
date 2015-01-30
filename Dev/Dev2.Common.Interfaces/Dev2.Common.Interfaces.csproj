@@ -176,6 +176,7 @@
     <Compile Include="Core\Graph\IPath.cs" />
     <Compile Include="Core\Graph\IPathSegment.cs" />
     <Compile Include="Core\Graph\OutputFormats.cs" />
+    <Compile Include="Core\ServerSource.cs" />
     <Compile Include="DataList\Contract\enTranslationDepth.cs" />
     <Compile Include="DataList\Contract\IBinaryDataListItem.cs" />
     <Compile Include="DataList\DatalistView\IVariableListItemViewModel.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="IXamlResource.cs" />
     <Compile Include="NetworkStateChangedState.cs" />
     <Compile Include="PermissionsChangedArgs.cs" />
+    <Compile Include="SaveDialog\ISaveDialog.cs" />
     <Compile Include="ServerDialogue\IServerSource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />

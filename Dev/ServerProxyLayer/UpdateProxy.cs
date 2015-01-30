@@ -4,6 +4,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
+using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
@@ -64,7 +65,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveResourceService");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("ResourceXml", serialiser.SerializeToBuilder(resource));
+            comsController.AddPayloadArgument("ServerSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, workspaceId);
             if (output.HasError)
                 throw new WarewolfSaveException(output.Message.ToString(), null);
@@ -72,23 +73,43 @@ namespace Warewolf.Studio.ServerProxyLayer
         }
 
         /// <summary>
+        /// Save a resource to the server
+        /// </summary>
+        /// <param name="resource">resource to save</param>
+        /// <param name="workspaceId">the workspace to save to</param>
+        public void SaveServerSource(IServerSource resource, Guid workspaceId)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("SaveServerSourceService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("ServerSource", serialiser.SerializeToBuilder(resource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                throw new WarewolfSaveException( "Unable to contact server",null);
+            if (output.HasError)
+                throw new WarewolfSaveException(output.Message.ToString(), null);
+
+            
+        }
+
+        /// <summary>
         /// Tests if a valid connection to a server can be made
         /// </summary>
         /// <param name="resource"></param>
         /// <returns></returns>
-        public string TestConnection(IResource resource)
+        public string TestConnection(IServerSource resource)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestConnectionService");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("ResourceXml", serialiser.SerializeToBuilder(resource));
+            comsController.AddPayloadArgument("ServerSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
                 return "Unable to contact server";
             if (output.HasError)
                 return output.Message.ToString();
 
-            return "Success";
+            return output.Message.ToString();
 
 
         }

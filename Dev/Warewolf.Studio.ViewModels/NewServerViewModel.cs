@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces.Communication;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
+using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
@@ -29,21 +33,31 @@ namespace Warewolf.Studio.ViewModels
 
         readonly IServerConnectionTest _connectionTest;
         readonly IStudioUpdateManager _updateManager;
+        readonly ISaveDialog _saveDialog;
         IServerSource _serverSource;
+        bool _testrun;
+        bool _canClickOk;
+        string _subHeaderText;
+        string _headerText;
+        DialogResult _result;
 
         public NewServerViewModel()
         {
           
         }
 
-        public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest, IStudioUpdateManager updateManager)
+        // ReSharper disable TooManyDependencies
+        public NewServerViewModel(IServerSource newServerSource, IServerConnectionTest connectionTest, IStudioUpdateManager updateManager,ISaveDialog saveDialog)
+            // ReSharper restore TooManyDependencies
         {
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "connectionTest", connectionTest }, { "updateManager", updateManager } });
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "connectionTest", connectionTest }, { "updateManager", updateManager }, { "saveDialog", saveDialog } });
 
             _connectionTest = connectionTest;
             _updateManager = updateManager;
-            _serverSource = newServerSource;
-
+            _saveDialog = saveDialog;
+            ServerSource = newServerSource;
+            _subHeaderText = newServerSource.Address;
+            _headerText = String.IsNullOrEmpty(newServerSource.Name) ? "New Server Source" : "Edit " + newServerSource.Name;
 
             IsValid = false;
             Address = newServerSource.Address;
@@ -55,23 +69,43 @@ namespace Warewolf.Studio.ViewModels
 
             TestCommand = new DelegateCommand(Test);
             OkCommand = new DelegateCommand(Save);
-            CancelCommand = new DelegateCommand(() => { });
+            CancelCommand = new DelegateCommand(() => CloseAction.Invoke());
         }
 
         void Save()
-        {
-            _updateManager.Save(new ServerSource()
+        {   var res = MessageBoxResult.OK;
+            if(String.IsNullOrEmpty(ServerSource.Name))
+             res =  SaveDialog.ShowSaveDialog();
+            if(res==MessageBoxResult.OK)
             {
-                Address = Address,
-                AuthenticationType = AuthenticationType,
-                ID = _serverSource.ID == Guid.Empty ? Guid.NewGuid() : _serverSource.ID,
-                Name = String.IsNullOrEmpty(_serverSource.Name) ? "" : _serverSource.Name,
-                Password = Password,
-                ResourcePath = "" //todo: needs to come from explorer
-            });
+                try
+                {
+                    var source = new ServerSource
+                    {
+                        Address = Address,
+                        AuthenticationType = AuthenticationType,
+                        ID = ServerSource.ID == Guid.Empty ? Guid.NewGuid() : ServerSource.ID,
+                        Name = String.IsNullOrEmpty(ServerSource.Name) ? SaveDialog.ResourceName.Name : ServerSource.Name,
+                        Password = Password,
+                        ResourcePath = "" //todo: needs to come from explorer
+                    };
+
+                    ServerSource = source;
+                    _updateManager.Save(source);
+                    Result = DialogResult.Success;
+                    if(CloseAction != null)
+                        CloseAction.Invoke();
+                }
+                catch (Exception err)
+                {
+
+                    TestMessage = err.Message;
+                }
+            }
+
         }
 
-
+        public Action CloseAction { get; set; }
         void Test()
         {
             TestFailed = false;
@@ -82,13 +116,14 @@ namespace Warewolf.Studio.ViewModels
             {
                 Address = Address,
                 AuthenticationType = AuthenticationType,
-                ID = _serverSource.ID == Guid.Empty ? Guid.NewGuid() : _serverSource.ID,
-                Name = String.IsNullOrEmpty(_serverSource.Name) ? "" : _serverSource.Name,
+                ID = ServerSource.ID == Guid.Empty ? Guid.NewGuid() : ServerSource.ID,
+                Name = String.IsNullOrEmpty(ServerSource.Name) ? "" : ServerSource.Name,
                 Password = Password,
                 ResourcePath = "" //todo: needs to come from explorer
             });
+            Testrun = true;
             Testing = false;
-            if (TestMessage == "Success")
+            if (TestMessage == "")
             {
                 TestPassed = true;
                 TestFailed = false;
@@ -98,7 +133,10 @@ namespace Warewolf.Studio.ViewModels
                 TestPassed = false;
                 TestFailed = true;
             }
-
+            
+            OnPropertyChanged(()=>Validate);
+            OnPropertyChanged(() => CanClickOk);
+           
         }
 
         /// <summary>
@@ -111,20 +149,36 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 IsValid = false;
-                if (String.IsNullOrEmpty(Address))
-                    return Resources.Languages.Core.ServerDialogNoAddressErrorMessage;
 
-                if (!TestPassed)
+
+
+                if (!Testrun)
                 {
                     return Resources.Languages.Core.ServerDialogNoTestMessage;
                 }
 
+                if(TestFailed)
+                {
+                    return TestMessage;
+                }
+               
                 IsValid = true;
                 return String.Empty;
             }
 
 
 
+        }
+        public bool Testrun
+        {
+            get
+            {
+                return _testrun;
+            }
+            set
+            {
+                _testrun = value;
+            }
         }
 
         /// <summary>
@@ -178,6 +232,28 @@ namespace Warewolf.Studio.ViewModels
                 _cancelCommand = value;
             }
         }
+        public bool CanClickOk
+        {
+            get
+            {
+                return Validate == "";
+            }
+        }
+        public string SubHeaderText
+        {
+            get
+            {
+                return _subHeaderText;
+            }
+
+        }
+        public string HeaderText
+        {
+            get
+            {
+                return _headerText;
+            }
+        }
 
         #endregion
 
@@ -196,7 +272,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 _address = value;
                 OnPropertyChanged(() => Address);
+                OnPropertyChanged(()=>Validate);
+                OnPropertyChanged(() => CanClickOk);
             }
+
         }
         /// <summary>
         ///  Windows or user or publlic
@@ -276,6 +355,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testPassed = value;
                 OnPropertyChanged(() => TestPassed);
+                OnPropertyChanged(() => CanClickOk);
             }
         }
         public bool TestFailed
@@ -288,6 +368,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testPassed = value;
                 OnPropertyChanged(() => TestFailed);
+                OnPropertyChanged(() => CanClickOk);
             }
         }
         public bool Testing
@@ -300,6 +381,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testPassed = value;
                 OnPropertyChanged(() => Testing);
+                OnPropertyChanged(() => CanClickOk);
             }
         }
 
@@ -379,51 +461,40 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.ServerDialogTestConnectionLabel;
             }
         }
+        public DialogResult Result
+        {
+            get
+            {
+                return _result;
+            }
+            set
+            {
+                _result = value;
+            }
+        }
 
         /// <summary>
         /// Test if connection is successful
         /// </summary>
         public ICommand TestCommand
         { get; set; }
-
-
-    }
-
-
-
-
-    public class ServerSource : IServerSource
-    {
-        #region Implementation of IServerSource
-
-        /// <summary>
-        /// The server address that we are trying to connect to
-        /// </summary>
-        public string Address { get; set; }
-        /// <summary>
-        ///  Windows or user or publlic
-        /// </summary>
-        public AuthenticationType AuthenticationType { get; set; }
-        /// <summary>
-        /// User Name
-        /// </summary>
-        public string UserName { get; set; }
-        /// <summary>
-        /// Password
-        /// </summary>
-        public string Password { get; set; }
-        /// <summary>
-        /// Test if connection is successful
-        /// </summary>
-        public ICommand TestCommand { get; set; }
-        /// <summary>
-        /// The message that will be set if the test is either successful or not
-        /// </summary>
-        public string TestMessage { get; set; }
-        public Guid ID { get; set; }
-        public string Name { get; set; }
-        public string ResourcePath { get; set; }
-
-        #endregion
+        public IServerSource ServerSource
+        {
+            get
+            {
+                return _serverSource;
+            }
+            set
+            {
+                _serverSource = value;
+            }
+        }
+        public ISaveDialog SaveDialog
+        {
+            get
+            {
+                return _saveDialog;
+            }
+        }
     }
 }

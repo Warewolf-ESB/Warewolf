@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -18,7 +19,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
-            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
+            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object,new Mock<IEventAggregator>().Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
             var mockEnv2 = new Mock<IEnvironmentViewModel>();
@@ -39,7 +40,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
-            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
+            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object,new Mock<IEventAggregator>().Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
             var environment1 = mockEnv1.Object;
@@ -62,7 +63,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
-            ExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
+            ExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object,new Mock<IEventAggregator>().Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
             var environment1 = mockEnv1.Object;
@@ -94,7 +95,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
-            ExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
+            ExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object, new Mock<IEventAggregator>().Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.Filter(It.IsAny<string>())).Verifiable();
             var environment1 = mockEnv1.Object;
@@ -128,7 +129,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
-            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
+            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object, new Mock<IEventAggregator>().Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.IsConnected).Returns(true);
             mockEnv1.Setup(model => model.Load()).Verifiable();
@@ -153,7 +154,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
             mockShellViewModel.Setup(model => model.LocalhostServer).Returns(new Mock<IServer>().Object);
-            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object);
+            IExplorerViewModel explorerViewModel = new ExplorerViewModel(mockShellViewModel.Object, new Mock<IEventAggregator>().Object);
             var mockEnv1 = new Mock<IEnvironmentViewModel>();
             mockEnv1.Setup(model => model.IsConnected).Returns(true);
             mockEnv1.Setup(model => model.Load()).Verifiable();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -19,7 +20,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             
             
             //------------Execute Test---------------------------
-            new ConnectControlViewModel(null);
+            new ConnectControlViewModel(null,null);
             //------------Assert Results-------------------------
         }
 
@@ -34,7 +35,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var server = mockServer.Object;
             
             //------------Execute Test---------------------------
-            var connectControlViewModel = new ConnectControlViewModel(server);
+            var connectControlViewModel = new ConnectControlViewModel(server, new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(connectControlViewModel);
             Assert.IsNotNull(connectControlViewModel.Servers);
@@ -53,7 +54,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
             var server = mockServer.Object;
             // ReSharper disable UseObjectOrCollectionInitializer
-            var connectControlViewModel = new ConnectControlViewModel(server);
+            var connectControlViewModel = new ConnectControlViewModel(server, new Mock<IEventAggregator>().Object);
             // ReSharper restore UseObjectOrCollectionInitializer
             
             //------------Execute Test---------------------------
@@ -75,7 +76,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
             var server = mockServer.Object;
             // ReSharper disable UseObjectOrCollectionInitializer
-            var connectControlViewModel = new ConnectControlViewModel(server);
+            var connectControlViewModel = new ConnectControlViewModel(server, new Mock<IEventAggregator>().Object);
             // ReSharper restore UseObjectOrCollectionInitializer
             
             //------------Execute Test---------------------------
@@ -98,7 +99,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
             var server = mockServer.Object;
             // ReSharper disable UseObjectOrCollectionInitializer
-            var connectControlViewModel = new ConnectControlViewModel(server);
+            var connectControlViewModel = new ConnectControlViewModel(server, new Mock<IEventAggregator>().Object);
             // ReSharper restore UseObjectOrCollectionInitializer
             
             //------------Execute Test---------------------------
@@ -120,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
             var server = mockServer.Object;
             // ReSharper disable UseObjectOrCollectionInitializer
-            var connectControlViewModel = new ConnectControlViewModel(server);
+            var connectControlViewModel = new ConnectControlViewModel(server, new Mock<IEventAggregator>().Object);
             // ReSharper restore UseObjectOrCollectionInitializer
             connectControlViewModel.SelectedConnection = connection;
             //------------Execute Test---------------------------
@@ -142,7 +143,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
             var server = mockServer.Object;
             // ReSharper disable UseObjectOrCollectionInitializer
-            var connectControlViewModel = new ConnectControlViewModel(server);
+            var connectControlViewModel = new ConnectControlViewModel(server, new Mock<IEventAggregator>().Object);
             // ReSharper restore UseObjectOrCollectionInitializer
             connectControlViewModel.SelectedConnection = connection;
             //------------Execute Test---------------------------
@@ -164,7 +165,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
             var server = mockServer.Object;
             // ReSharper disable UseObjectOrCollectionInitializer
-            var connectControlViewModel = new ConnectControlViewModel(server);
+            var connectControlViewModel = new ConnectControlViewModel(server, new Mock<IEventAggregator>().Object);
             // ReSharper restore UseObjectOrCollectionInitializer
             connectControlViewModel.SelectedConnection = connection;
             //------------Execute Test---------------------------
@@ -186,7 +187,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockServer = new Mock<IServer>();
             mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
             var server = mockServer.Object;
-            var connectControlViewModel = new ConnectControlViewModel(server)
+            var connectControlViewModel = new ConnectControlViewModel(server, new Mock<IEventAggregator>().Object)
             {
                 SelectedConnection = connection
             };
@@ -209,7 +210,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockServer = new Mock<IServer>();
             mockServer.Setup(server1 => server1.GetServerConnections()).Returns(new List<IServer> { connection });
             var server = mockServer.Object;
-            var connectControlViewModel = new ConnectControlViewModel(server)
+            var connectControlViewModel = new ConnectControlViewModel(server, new Mock<IEventAggregator>().Object)
             {
                 SelectedConnection = connection
             };

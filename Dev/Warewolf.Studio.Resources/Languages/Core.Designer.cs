@@ -1196,7 +1196,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The server connection must be tested before saving.
+        ///   Looks up a localized string similar to The server connection must be tested with a valid address before you can save.
         /// </summary>
         public static string ServerDialogNoTestMessage {
             get {

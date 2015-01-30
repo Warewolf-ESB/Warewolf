@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 {
@@ -22,5 +23,11 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Command for cancel
         /// </summary>
         ICommand CancelCommand { get; set; }
+
+        bool CanClickOk { get; }
+
+        string SubHeaderText { get;  }
+
+        string HeaderText { get; }
     }
 }

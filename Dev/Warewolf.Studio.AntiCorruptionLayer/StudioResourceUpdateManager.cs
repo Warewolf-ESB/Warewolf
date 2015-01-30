@@ -36,41 +36,17 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public void Save(IServerSource serverSource)
         {
-            Connection resource = new Connection
-            {
-                ResourceID = serverSource.ID,
-                ResourceName = serverSource.Name,
-                ResourceType = ResourceType.ServerSource,
-                ResourcePath = serverSource.ResourcePath,
-                Address = serverSource.Address,
-                AuthenticationType = serverSource.AuthenticationType,
-                UserName = serverSource.UserName,
-                Password = serverSource.Password
 
-
-            };
-            UpdateManagerProxy.SaveResource(resource,GlobalConstants.ServerWorkspaceID);
+            UpdateManagerProxy.SaveServerSource(serverSource, GlobalConstants.ServerWorkspaceID);
         }
 
 
 
         public string TestConnection(IServerSource serverSource)
         {
-            Connection resource = new Connection
-            {
-                ResourceID = serverSource.ID,
-                ResourceName = serverSource.Name,
-                ResourceType = ResourceType.ServerSource,
-                ResourcePath = serverSource.ResourcePath,
-                Address = serverSource.Address,
-                AuthenticationType = serverSource.AuthenticationType,
-                UserName = serverSource.UserName,
-                Password = serverSource.Password
 
 
-            };
-
-            return UpdateManagerProxy.TestConnection(resource);
+            return UpdateManagerProxy.TestConnection(serverSource);
 
         }
     }
