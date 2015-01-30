@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Warewolf.Studio
 {
@@ -13,6 +14,20 @@ namespace Warewolf.Studio
             base.OnStartup(e);
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.Run();
+            //EventManager.RegisterClassHandler(typeof(Control), UIElement.GotFocusEvent, new RoutedEventHandler(GotFocus));
         }
+
+        private void GotFocus(object sender, RoutedEventArgs e)
+        {
+            var control = e.Source as Control;
+            if (control != null)
+            {
+                var name = control.Name;
+            }
+        }
+    }
+
+    public class SetHelpEvent
+    {
     }
 }

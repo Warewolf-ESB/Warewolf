@@ -142,7 +142,7 @@
                                                      PinButtonVisibility="Hidden"
                                                      Style="{DynamicResource DockmangerToolPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden"
-                                                     regions:RegionManager.RegionName="Help" />
+                                                     regions:RegionManager.RegionName="{x:Static core:RegionNames.Help}" />
                         </dockManager:SplitPane>
                     </dockManager:XamDockManager.Panes>
                     <dockManager:DocumentContentHost>
