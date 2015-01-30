@@ -160,7 +160,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
 
             Container.RegisterType<IServer, ServerForTesting>(new InjectionConstructor());
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
-            Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>()));
+            Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>(), Container.Resolve<IEventAggregator>()));
 
             var explorerView = new ExplorerView();
             explorerView.DataContext = Container.Resolve<IExplorerViewModel>();

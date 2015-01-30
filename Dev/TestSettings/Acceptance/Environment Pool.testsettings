@@ -6,11 +6,13 @@
 		  <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
 		  <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
 		  <DeploymentItem filename="Binaries\AcceptanceTesting\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll"/>
-      
-        <!--Solution specific outputs-->
+      <DeploymentItem filename="packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll"/>
+
+      <!--Solution specific outputs-->
 		  <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
 		  <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
 		  <DeploymentItem filename="..\bin\AcceptanceTesting\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll"/>
+      <DeploymentItem filename="..\bin\AcceptanceTesting\FontAwesome.WPF.dll"/>
     </Deployment>
   <NamingScheme baseName="UT" />
     <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
