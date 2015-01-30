@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22310.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40121.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
@@ -117,6 +117,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Core", "Warewolf.Core\Warewolf.Core.csproj", "{8FD23CE0-02BB-48E1-A914-BA467938CE78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.ServerProxyLayer", "ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj", "{97A827FF-65C4-4267-99D2-DCE6803B2348}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Specs", "Warewolf.Studio.Specs\Warewolf.Studio.Specs.csproj", "{055903B2-8801-4714-B6AF-57DEC358CEEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2467,6 +2469,42 @@ Global
 		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Trial|x64.Build.0 = Release|Any CPU
 		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Trial|x86.ActiveCfg = Release|Any CPU
 		{97A827FF-65C4-4267-99D2-DCE6803B2348}.Trial|x86.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Beta|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Beta|Mixed Platforms.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Beta|x64.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Beta|x86.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.CTP|Any CPU.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.CTP|Any CPU.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.CTP|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.CTP|Mixed Platforms.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.CTP|x64.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.CTP|x86.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Japan|Any CPU.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Japan|Any CPU.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Japan|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Japan|Mixed Platforms.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Japan|x64.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Japan|x86.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|x64.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Release|x86.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Trial|Any CPU.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Trial|Any CPU.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Trial|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Trial|Mixed Platforms.Build.0 = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Trial|x64.ActiveCfg = Release|Any CPU
+		{055903B2-8801-4714-B6AF-57DEC358CEEA}.Trial|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

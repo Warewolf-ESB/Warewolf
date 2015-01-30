@@ -126,6 +126,11 @@ namespace Warewolf.Studio.Specs
             }
         }
 
+        public string GetServerVersion()
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
 
 
