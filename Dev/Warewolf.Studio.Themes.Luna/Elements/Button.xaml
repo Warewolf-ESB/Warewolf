@@ -11,8 +11,10 @@
     <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="ButtonHoverBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="ButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="ButtonPressedBackgroundBrush" Color="{StaticResource WarewolfHeaderGrey}" />
+    <SolidColorBrush x:Key="ButtonPressedBackgroundBrush" Color="{StaticResource WarewolfHeaderButtonGrey}" />
     <SolidColorBrush x:Key="ButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+
+    <SolidColorBrush x:Key="DisabledVisualElement" Color="{StaticResource WarewolfButtonGrey}" />
 
     <!--  *********************************  ButtonStyle  *********************************  -->
     <Style x:Key="ButtonStyle" TargetType="Button">
@@ -340,7 +342,7 @@
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="DisabledVisualElement"
-                                   Fill="{StaticResource DisabledVisualElement}"
+                                   Fill="{StaticResource ButtonBackgroundBrush}"
                                    Visibility="Collapsed" />
                         <ContentControl x:Name="ContentControl"
                                         Margin="{TemplateBinding Padding}"
