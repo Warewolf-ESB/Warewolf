@@ -108,6 +108,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v14.2.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DragDrop.v14.2, Version=14.2.20142.2024, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v14.2.dll</HintPath>
