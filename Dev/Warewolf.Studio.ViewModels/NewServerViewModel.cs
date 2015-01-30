@@ -13,7 +13,6 @@ using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Warewolf.Studio.ViewModels
 {
