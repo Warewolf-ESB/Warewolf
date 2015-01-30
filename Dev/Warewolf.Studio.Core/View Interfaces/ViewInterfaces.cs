@@ -14,7 +14,9 @@ namespace Warewolf.Studio.Core.View_Interfaces
         void PerformSearch(string searchTerm);
     }
     public interface IToolboxView : IView { }
-    public interface IHelpView : IView { }
+    public interface IHelpView : IView {
+        string GetCurrentHelpText();
+    }
     public interface IMenuView : IView { }
     public interface IVariableListView : IView { }
 }
