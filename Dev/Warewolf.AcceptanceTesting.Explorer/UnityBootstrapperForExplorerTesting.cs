@@ -26,8 +26,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             ThemeManager.ApplicationTheme = new LunaTheme();
 
             Container.RegisterType<IServer, ServerForTesting>(new InjectionConstructor());
-            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container,
-                Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
+            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container,Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>(),
                 Container.Resolve<IEventAggregator>()));
 

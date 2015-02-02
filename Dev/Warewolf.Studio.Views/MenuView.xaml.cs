@@ -12,5 +12,17 @@ namespace Warewolf.Studio.Views
         {
             InitializeComponent();
         }
+
+        #region Implementation of IWarewolfView
+
+        public void Blur()
+        {
+        }
+
+        public void UnBlur()
+        {
+        }
+
+        #endregion
     }
 }

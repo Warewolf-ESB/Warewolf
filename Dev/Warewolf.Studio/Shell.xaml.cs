@@ -2,12 +2,11 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
-using Infragistics.Themes;
 using Infragistics.Windows;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
-using Warewolf.Studio.Themes.Luna;
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio
@@ -15,19 +14,25 @@ namespace Warewolf.Studio
     /// <summary>
     /// Interaction logic for Shell.xaml
     /// </summary>
-    public partial class Shell : Window
+    public partial class Shell
     {
         public Shell(IShellViewModel shellViewModel)
         {
             InitializeComponent();
             DataContext = shellViewModel;            
             Loaded+=OnLoaded;
+           // Explorer.Effect = new BlurEffect(){Radius = 10};
         }
             
         void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
+            LoadShellViewModel();
+        }
+
+        protected virtual void LoadShellViewModel()
+        {
             var viewModel = DataContext as ShellViewModel;
-            if(viewModel != null)
+            if (viewModel != null)
             {
                 viewModel.Initialize();
             }

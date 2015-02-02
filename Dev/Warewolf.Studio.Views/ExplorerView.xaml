@@ -24,7 +24,16 @@
         <converters:ResourceTypeToIconVisibility x:Key="ResourceTypeToVisibilityConverter" />
         <views:NotConverter x:Key="NotConverter" />
     </UserControl.Resources>
-    <Grid x:Name="LayoutRoot">
+    <Grid>
+        <Grid x:Name="Overlay" Panel.ZIndex="1000" Visibility="Collapsed">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity=".5"/>
+            </Grid.Background>
+
+            <!-- Add controls as needed -->
+        </Grid>
+
+        <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
             <RowDefinition Height="29" />
@@ -689,5 +698,6 @@
                 </ig:NodeLayout>
             </ig:XamDataTree.GlobalNodeLayouts>
         </ig:XamDataTree>
+    </Grid>
     </Grid>
 </UserControl>

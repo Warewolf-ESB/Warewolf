@@ -66,8 +66,26 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
-
-
+    <Style x:Key="SourceHeader" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Larger}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfWhiteBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <AdornedElementPlaceholder />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="TextElement.Foreground" Value="{StaticResource ValidationErrorElement}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
     <Style x:Key="TextPanelSubHeaderStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Large}" />
@@ -84,7 +102,7 @@
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{StaticResource WareWolfOrangeBrush}" />
-
+        
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>

@@ -77,7 +77,10 @@
     <Reference Include="Moq">
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
@@ -97,6 +100,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerForTesting.cs" />
+    <Compile Include="ShellForTesting.cs" />
     <Compile Include="UnityBootstrapperForTesting.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +115,10 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio\Warewolf.Studio.csproj">
+      <Project>{6F16414C-99A2-444D-93F0-34EAB82A2FF0}</Project>
+      <Name>Warewolf.Studio</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
