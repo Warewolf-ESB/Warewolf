@@ -632,8 +632,13 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
-
-
+        public IStudioUpdateManager UpdateRepository
+        {
+            get
+            {
+                return _updateRepository;
+            }
+        }
 
         public string GetServerVersion()
         {

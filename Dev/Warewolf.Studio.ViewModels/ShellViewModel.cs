@@ -87,20 +87,7 @@ namespace Warewolf.Studio.ViewModels
            return GetRegionViews(regionName).Any();
         }
 
-        public void Blur()
-        {
-            foreach(var region in _regionManager.Regions)
-            {
-                foreach(var regionView in region.ActiveViews)
-                {
-                   if(regionView is IWarewolfView)
-                   {
-                       (regionView as IWarewolfView).Blur();
-                   }
-                }
 
-            }
-        }
 
         public async Task<bool> CheckForNewVersion()
         {
