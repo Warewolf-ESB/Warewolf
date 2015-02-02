@@ -41,6 +41,9 @@
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.dll</HintPath>
     </Reference>

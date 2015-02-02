@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
@@ -33,7 +34,10 @@ namespace Warewolf.Studio.ViewModels
 
         string _headerText;
         IServerSource _serverSource;
-
+        string[] _protocols;
+        string _protocol;
+        ObservableCollection<string> _ports;
+        string _selectedPort; 
         // ReSharper disable TooManyDependencies
         public NewServerViewModel(IServerSource newServerSource,
             IStudioUpdateManager updateManager, ISaveDialog saveDialog,
@@ -42,11 +46,15 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper restore TooManyDependencies
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "updateManager", updateManager }, { "saveDialog", saveDialog } ,{"shellViewModel",shellViewModel},{"connectedServer",connectedServer}});
-
+            Protocols = new[] { "http", "https" };
+            Protocol = Protocols[0];
+            Ports = new ObservableCollection<string> { "3142", "3143" };
+            SelectedPort = Ports[0];
             _updateManager = updateManager;
             _saveDialog = saveDialog;
             _shellViewModel = shellViewModel;
             _connectedServer = connectedServer;
+      
             ServerSource = newServerSource;
             _headerText = String.IsNullOrEmpty(newServerSource.Name) ? "New Server Source" : SetToEdit(newServerSource);
 
@@ -74,7 +82,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var source = new ServerSource
                     {
-                        Address = Address,
+                        Address = Protocol+Address+":"+SelectedPort,
                         AuthenticationType = AuthenticationType,
                         ID = ServerSource.ID == Guid.Empty ? Guid.NewGuid() : ServerSource.ID,
                         Name = String.IsNullOrEmpty(ServerSource.Name) ? SaveDialog.ResourceName.Name : ServerSource.Name,
@@ -111,7 +119,7 @@ namespace Warewolf.Studio.ViewModels
             Testing = true;
             TestMessage = _updateManager.TestConnection(new ServerSource
             {
-                Address = Address,
+                Address = Protocol +"://" + Address + ":" + SelectedPort,
                 AuthenticationType = AuthenticationType,
                 ID = ServerSource.ID == Guid.Empty ? Guid.NewGuid() : ServerSource.ID,
                 Name = String.IsNullOrEmpty(ServerSource.Name) ? "" : ServerSource.Name,
@@ -227,13 +235,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 
                 _address = value;
-                if (!String.IsNullOrEmpty(value))
-                {
-                    if (!value.StartsWith("http://"))
-                        _address = "http://" + value;
-                    if (!_address.EndsWith(":3142") || !_address.EndsWith(":3142"))
-                        _address = _address + ":3142";
-                }
+
                 OnPropertyChanged(() => Address);
                 OnPropertyChanged(() => Validate);
                 OnPropertyChanged(() => CanClickOk);
@@ -454,6 +456,66 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 return _saveDialog;
+            }
+        }
+        public string Protocol
+        {
+            get
+            {
+                return _protocol;
+            }
+            set
+            {
+                _protocol = value;
+                OnPropertyChanged(Protocol);
+                if (Protocol == "https" && SelectedPort == "3142")
+                {
+                    SelectedPort = "3143";
+                }
+                else if(Protocol == "http" && SelectedPort == "3143")
+                {
+                    SelectedPort = "3142";
+                }
+            }
+        }
+        public string[] Protocols
+        {
+            get
+            {
+                return _protocols;
+            }
+            set
+            {
+                _protocols = value;
+            }
+        }
+        public ObservableCollection<string> Ports
+        {
+            get
+            {
+                return _ports;
+            }
+            set
+            {
+                _ports = value;
+            }
+        }
+        public string SelectedPort
+        {
+            get
+            {
+                return _selectedPort;
+            }
+            set
+            {
+                if (_selectedPort != value)
+                {
+                    _selectedPort = value;
+                    OnPropertyChanged(() => SelectedPort);
+                    TestPassed = false;
+                    OnPropertyChanged(()=>TestPassed);
+                }
+               
             }
         }
     }

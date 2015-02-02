@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,14 @@ namespace Warewolf.Studio.Views
         public ServerUserControl()
         {
             InitializeComponent();
+        }
+
+        // ReSharper disable InconsistentNaming
+        void Preview_TextInput(object sender, TextCompositionEventArgs e)
+            // ReSharper restore InconsistentNaming
+        {
+            Regex regex = new Regex("[^0-9]+"); //regex that matches disallowed text
+            e.Handled=  regex.IsMatch(e.Text);
         }
     }
 }
