@@ -36,10 +36,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FontAwesome.WPF">
-      <HintPath>\\rsaklfhagashen\Stuff\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll</HintPath>
+      <HintPath>..\packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.dll</HintPath>
@@ -180,6 +183,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFTextBoxAutoComplete">
+      <HintPath>..\packages\WPFTextBoxAutoComplete.1.0.0\lib\net40\WPFTextBoxAutoComplete.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CircularProgressBar.xaml.cs">
@@ -217,6 +223,9 @@
     </Compile>
     <Compile Include="PopupSample.xaml.cs">
       <DependentUpon>PopupSample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SourcesOuterControl.xaml.cs">
+      <DependentUpon>SourcesOuterControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolboxView.xaml.cs">
       <DependentUpon>ToolboxView.xaml</DependentUpon>
@@ -271,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PopupSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SourcesOuterControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

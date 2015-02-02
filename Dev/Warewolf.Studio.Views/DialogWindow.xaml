@@ -4,7 +4,6 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:fa="http://schemas.fontawesome.io/icons/"
                     xmlns:ig="http://schemas.infragistics.com/xaml"
-                    xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
                     xmlns:views="clr-namespace:Warewolf.Studio.Views"

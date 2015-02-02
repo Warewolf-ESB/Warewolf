@@ -5,7 +5,6 @@ using Dev2.Util;
 using Infragistics.Themes;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
-using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 using Warewolf.AcceptanceTesting.Core;
 using Warewolf.Studio.Core.View_Interfaces;
@@ -15,13 +14,8 @@ using Warewolf.Studio.Views;
 
 namespace Warewolf.AcceptanceTesting.Explorer
 {
-    internal class UnityBootstrapperForExplorerTesting : UnityBootstrapper
+    internal class UnityBootstrapperForExplorerTesting : UnityBootstrapperForTesting
     {
-        protected override DependencyObject CreateShell()
-        {
-            return new DependencyObject();
-        }
-
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
@@ -32,8 +26,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             ThemeManager.ApplicationTheme = new LunaTheme();
 
             Container.RegisterType<IServer, ServerForTesting>(new InjectionConstructor());
-            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container,
-                Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
+            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container,Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>(),
                 Container.Resolve<IEventAggregator>()));
 

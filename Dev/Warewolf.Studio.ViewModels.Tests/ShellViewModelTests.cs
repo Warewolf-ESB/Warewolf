@@ -640,7 +640,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
         }
 
-
         public string GetServerVersion()
         {
             return "0";

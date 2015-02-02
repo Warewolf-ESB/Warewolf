@@ -21669,6 +21669,19 @@
             Disposes the object
             </summary>
         </member>
+        <member name="M:Infragistics.Windows.Licensing.UltraLicense.AddLicenseOptionsTokensToKey(System.String@,Infragistics.Windows.Licensing.LicenseOptions)">
+            <summary>
+            Adds the appropriate string tokens to the specified key based on
+            the specified license options.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Licensing.UltraLicense.ParseLicenseOptionsTokensFromKey(System.String@)">
+            <summary>
+            Parses the license options string tokens out of the specified key,
+            returns a LicenseOptions value describing which license options
+            are available, and modifies the specified key.
+            </summary>
+        </member>
         <member name="P:Infragistics.Windows.Licensing.UltraLicense.ProductInfo">
             <summary>
             Returns the product info object
@@ -21903,6 +21916,21 @@
             Checks the validity of the key
             </summary>
             <returns>True if the key is valid</returns>
+        </member>
+        <member name="M:Infragistics.Windows.Licensing.UltraProductInfo.ProductVerified(Infragistics.Windows.Licensing.UltraProductInfo)">
+            <summary>
+            Adds a product to the cached list of verified products.
+            </summary>
+            <param name="product">Product to add.</param>
+        </member>
+        <member name="M:Infragistics.Windows.Licensing.UltraProductInfo.CheckProductStatus(Infragistics.Windows.Licensing.UltraProductInfo,System.Boolean)">
+            <summary>
+            Checks to see if a product has already been verified.
+            </summary>
+            <param name="product">Product to checked.</param>
+            <param name="updateProductInfoIfFound">Boolean indicating if the supplied product's members should be updated if a match is found.</param>
+            <returns>Status of the product. If the product has not already been
+            verified, Unchecked will be returned.</returns>
         </member>
         <member name="M:Infragistics.Windows.Licensing.UltraProductInfo.GetExpirationDate(System.Int32)">
             <summary>

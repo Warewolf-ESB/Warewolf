@@ -26,7 +26,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 
         bool CanClickOk { get; }
 
-        string SubHeaderText { get;  }
+      
 
         string HeaderText { get; }
     }
