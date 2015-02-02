@@ -5,15 +5,18 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Studio.Core.View_Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class MenuViewModel : BindableBase, IMenuViewModel
+    public class MenuViewModel : BindableBase, IMenuViewModel, IMenuView
     {
+
         bool _hasNewVersion;
-        bool _isPanelLocked;
+        bool _panelLocked;
+        bool _panelOpen;
         int _buttonWidth;
-        
+
 
         public MenuViewModel(IShellViewModel shellViewModel)
         {
@@ -30,22 +33,146 @@ namespace Warewolf.Studio.ViewModels
             ExecuteServiceCommand = new DelegateCommand(shellViewModel.ExecuteService, () => CanExecuteService);
             CheckForNewVersion(shellViewModel);
             CheckForNewVersionCommand = new DelegateCommand(shellViewModel.DisplayDialogForNewVersion);
-            LockCommand = new DelegateCommand(()=>Lock(shellViewModel));
+
+            LockCommand = new DelegateCommand(Lock);
+            SlideOpenCommand = new DelegateCommand(() => SlideOpen(shellViewModel));
+            SlideClosedCommand = new DelegateCommand(() =>
+            {
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+                if (shellViewModel.MenuPanelWidth >= 80)
+                {
+                    SlideClosed(shellViewModel);
+                }
+            });
+
+            ButtonWidth = 115;
+            IsPanelLocked = true;
+            IsPanelOpen = true;
+
+
 
         }
 
 
 
-        public void Lock(IShellViewModel shellViewModel)
-        {
-            IsPanelLocked = !IsPanelLocked;
-            shellViewModel.MenuExpanded = IsPanelLocked;
-        }
+        public ICommand DeployCommand { get; set; }
+        public ICommand NewCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand OpenSettingsCommand { get; set; }
+        public ICommand OpenSchedulerCommand { get; set; }
+        public ICommand ExecuteServiceCommand { get; set; }
 
         public ICommand LockCommand { get; set; }
-
-
+        public ICommand SlideOpenCommand { get; set; }
+        public ICommand SlideClosedCommand { get; set; }
         public ICommand CheckForNewVersionCommand { get; set; }
+
+
+
+
+
+
+        public string LockImage
+        {
+            get
+            {
+                if (IsPanelLocked)
+                    return "Lock";
+                return "UnlockAlt";
+
+            }
+
+        }
+
+
+        void UpdateProperties()
+        {
+
+
+            OnPropertyChanged(() => NewLabel);
+            OnPropertyChanged(() => SaveLabel);
+            OnPropertyChanged(() => DeployLabel);
+            OnPropertyChanged(() => DatabaseLabel);
+            OnPropertyChanged(() => DLLLabel);
+            OnPropertyChanged(() => WebLabel);
+            OnPropertyChanged(() => TaskLabel);
+            OnPropertyChanged(() => DebugLabel);
+            OnPropertyChanged(() => SettingsLabel);
+            OnPropertyChanged(() => SupportLabel);
+            OnPropertyChanged(() => ForumsLabel);
+            OnPropertyChanged(() => ToursLabel);
+            OnPropertyChanged(() => NewVersionLabel);
+            OnPropertyChanged(() => LockLabel);
+
+            OnPropertyChanged(() => ButtonWidth);
+
+        }
+
+
+        public void Lock()
+        {
+
+            bool xxx = IsPanelOpen;
+            int yyy = ButtonWidth;
+
+            if (IsPanelLocked)
+            {
+
+                if (IsPanelOpen && ButtonWidth == 35)
+                    ButtonWidth = 115;
+                //else if (IsPanelOpen && ButtonWidth == 115)
+                //    ButtonWidth = 35;
+                
+                IsPanelLocked = false;
+            }
+            else // panel not locked
+            {
+
+                if (IsPanelOpen && ButtonWidth == 115)
+                {
+                    ButtonWidth = 35;
+
+                }
+
+                IsPanelLocked = true;
+            }
+
+            UpdateProperties();
+
+        }
+
+
+        public void SlideOpen(IShellViewModel shellViewModel)
+        {
+            if (IsPanelLocked)//&& IsPanelOpen)
+            {
+                IsPanelOpen = true;
+                shellViewModel.MenuExpanded = IsPanelOpen;
+
+                ButtonWidth = 115;
+
+                UpdateProperties();
+            }
+        }
+
+        public void SlideClosed(IShellViewModel shellViewModel)
+        {
+            if (IsPanelLocked && !IsPanelOpen)
+            {
+                shellViewModel.MenuExpanded = !IsPanelOpen;
+                ButtonWidth = 35;
+
+            }
+            else if (IsPanelLocked && IsPanelOpen)
+            {
+                shellViewModel.MenuExpanded = !IsPanelOpen;
+                ButtonWidth = 115;
+            }
+
+            //IsPanelOpen = !IsPanelOpen;
+            UpdateProperties();
+        }
+
 
         async void CheckForNewVersion(IShellViewModel shellViewModel)
         {
@@ -66,6 +193,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+
         public bool HasNewVersion
         {
             get
@@ -79,30 +207,35 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public bool IsPanelOpen
+        {
+            get
+            {
+                return _panelOpen;
+            }
+            set
+            {
+                _panelOpen = value;
+                //OnPropertyChanged(() => LockLabel);
+                //OnPropertyChanged(() => LockImage);
+            }
+
+        }
+
+
         public bool IsPanelLocked
         {
             get
             {
-                return _isPanelLocked;
+                return _panelLocked;
             }
             set
             {
-                _isPanelLocked = value;
-                OnPropertyChanged(() => NewLabel);
-                OnPropertyChanged(() => SaveLabel);
-                OnPropertyChanged(() => DeployLabel);
-                OnPropertyChanged(() => DatabaseLabel);
-                OnPropertyChanged(() => DLLLabel);
-                OnPropertyChanged(() => WebLabel);
-                OnPropertyChanged(() => TaskLabel);
-                OnPropertyChanged(() => DebugLabel);
-                OnPropertyChanged(() => SettingsLabel);
-                OnPropertyChanged(() => SupportLabel);
-                OnPropertyChanged(() => ForumsLabel);
-                OnPropertyChanged(() => ToursLabel);
-                OnPropertyChanged(() => NewVersionLabel);
+                _panelLocked = value;
                 OnPropertyChanged(() => LockLabel);
-                OnPropertyChanged(() => UnLockLabel);
+                OnPropertyChanged(() => LockImage);
+
+
 
             }
         }
@@ -129,19 +262,13 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDeploy { get; set; }
         public bool CanCreateNewService { get; set; }
 
-        public ICommand DeployCommand { get; set; }
-        public ICommand NewCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
-        public ICommand OpenSettingsCommand { get; set; }
-        public ICommand OpenSchedulerCommand { get; set; }
-        public ICommand ExecuteServiceCommand { get; set; }
-
 
         public string NewLabel
         {
             get
             {
-                if (!_isPanelLocked)
+                if ( ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogNewLabel;
                 return String.Empty;
             }
@@ -150,7 +277,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogSaveLabel;
                 return String.Empty;
             }
@@ -159,7 +287,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogDeployLabel;
                 return String.Empty;
             }
@@ -168,7 +297,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogDatabaseLabel;
                 return String.Empty;
             }
@@ -178,7 +308,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogDLLLabel;
                 return String.Empty;
             }
@@ -187,7 +318,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogWebLabel;
                 return String.Empty;
             }
@@ -196,7 +328,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogTaskLabel;
                 return String.Empty;
             }
@@ -205,7 +338,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogDebugLabel;
                 return String.Empty;
             }
@@ -214,7 +348,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogSettingsLabel;
                 return String.Empty;
             }
@@ -223,7 +358,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogSupportLabel;
                 return String.Empty;
             }
@@ -232,7 +368,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogForumsLabel;
                 return String.Empty;
             }
@@ -241,7 +378,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogToursLabel;
                 return String.Empty;
             }
@@ -250,7 +388,8 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (ButtonWidth == 115)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogNewVersionLabel;
                 return String.Empty;
             }
@@ -259,20 +398,15 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (!_isPanelLocked)
+                if (IsPanelLocked)
+                    // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogLockLabel;
-                return String.Empty;
+                return Resources.Languages.Core.MenuDialogUnLockLabel;
+
             }
         }
 
-        public string UnLockLabel
-        {
-            get
-            {
-                if (!_isPanelLocked)
-                    return Resources.Languages.Core.MenuDialogUnLockLabel;
-                return String.Empty;
-            }
-        }
+
+        public object DataContext { get; set; }
     }
 }

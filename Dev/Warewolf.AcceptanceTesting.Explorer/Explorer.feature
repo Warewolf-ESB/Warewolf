@@ -165,3 +165,18 @@ Scenario: Renaming Workflow Service Is Creating Version In Version History
 	When I Show Version History for "WF2" in "Folder 1"
     Then I should see "1" versions with "View" Icons
  
+
+
+Scenario: Opening Resources from remote server
+    Given the explorer is visible
+	When I Connected to Remote Server "Remote"
+	And I open "Remote" server
+	Then I should see "10" folders
+	
+
+
+
+
+
+
+

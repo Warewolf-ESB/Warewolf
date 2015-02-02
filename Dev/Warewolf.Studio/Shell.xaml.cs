@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
 using Infragistics.Windows;
 using Infragistics.Windows.DockManager;
@@ -91,6 +92,15 @@ namespace Warewolf.Studio
         void PaneResize(object sender, MouseButtonEventArgs e)
         {
             //e.Handled = true;
+        }
+
+        void SlidingMenuPane_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var vm = DataContext as ShellViewModel;
+            if (vm != null)
+            {
+                vm.MenuPanelWidth = e.NewSize.Width;
+            }
         }
     }
 }

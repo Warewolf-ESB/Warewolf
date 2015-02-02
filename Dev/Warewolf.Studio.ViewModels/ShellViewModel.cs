@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
@@ -39,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
         IPopupController _popupController;
         IExplorerTreeItem _activeItem;
         IServer _activeServer;
-        int _menuPanelWidth;
+        double _menuPanelWidth;
         bool _menuExpanded;
 
         public ShellViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator aggregator)
@@ -83,8 +84,10 @@ namespace Warewolf.Studio.ViewModels
 
         public bool RegionHasView(string regionName)
         {
-            return GetRegionViews(regionName).Any();
+           return GetRegionViews(regionName).Any();
         }
+
+
 
         public async Task<bool> CheckForNewVersion()
         {
@@ -92,14 +95,14 @@ namespace Warewolf.Studio.ViewModels
             var hasNewVersion = await versionChecker.GetNewerVersionAsync();
             return hasNewVersion;
         }
-
+        
         public async void DisplayDialogForNewVersion()
         {
             var hasNewVersion = await CheckForNewVersion();
             if (hasNewVersion)
             {
                 var dialog = _unityContainer.Resolve<IWebLatestVersionDialog>();
-                dialog.ShowDialog();
+                dialog.ShowDialog();                
             }
         }
 
@@ -111,6 +114,14 @@ namespace Warewolf.Studio.ViewModels
         public void ExecuteOnDispatcher(Action action)
         {
             Application.Current.Dispatcher.Invoke(action);
+        }
+
+        public void ServerSourceAdded(IServerSource source)
+        {
+            if (source != null && _aggregator != null)
+            {
+                _aggregator.GetEvent<ServerAddedEvent>().Publish(source); 
+            }
         }
 
         public IViewsCollection GetRegionViews(string regionName)
@@ -177,7 +188,7 @@ namespace Warewolf.Studio.ViewModels
                 var deployVm = _unityContainer.Resolve<IDeployViewModel>();
                 deployVm.SelectSourceItem(resourceToDeploy);
                 region.Add(deployVm);
-                region.Activate(deployVm);
+                region.Activate(deployVm); 
             }
             else
             {
@@ -186,18 +197,30 @@ namespace Warewolf.Studio.ViewModels
                 deploy.SelectSourceItem(resourceToDeploy);
                 region.Activate(deploy); //active the viewModel
             }
-
+            
         }
 
         public void UpdateHelpDescriptor(IHelpDescriptor helpDescriptor)
         {
             //!!!!!!!/// Reviewer please note this could go either way here. Used the event aggregator to ensure order of events... but could go the other way as well cos the shell view model owns this
-            VerifyArgument.IsNotNull("helpDescriptor", helpDescriptor);
-            _aggregator.GetEvent<HelpChangedEvent>().Publish(helpDescriptor);
-
+             VerifyArgument.IsNotNull("helpDescriptor", helpDescriptor);
+              _aggregator.GetEvent<HelpChangedEvent>().Publish(helpDescriptor);
+            
         }
+       
 
-
+        public double MenuPanelWidth
+        {
+            get
+            {
+                return _menuPanelWidth;
+            }
+            set
+            {
+                _menuPanelWidth = value;
+                OnPropertyChanged(() => MenuPanelWidth);
+            }
+        }
 
         public void NewResource(ResourceType? type)
         {
@@ -215,17 +238,10 @@ namespace Warewolf.Studio.ViewModels
 
         void CreateNewServerSource()
         {
-            var serverPopup = _unityContainer.Resolve<IDialogueTemplate>();
+            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new SaveDialogMock(),this,
+                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", System.StringComparison.Ordinal))) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
+            GetRegion("Workspace").Add(server);
 
-            var dialogue = _unityContainer.Resolve<IActionDialogueWindow>();
-            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, new TestConnection(), ActiveServer.UpdateRepository, new SaveDialogMock()) { CloseAction = () => dialogue.Close() };
-            serverPopup.InnerDialogue = server;
-            dialogue.ShowThis(serverPopup);
-            if (server.Result == DialogResult.Success)
-            {
-                _aggregator.GetEvent<ServerAddedEvent>().Publish(server.ServerSource);
-            }
-            server.ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" };
         }
 
         public void SaveService()

@@ -44,10 +44,9 @@
 
 
     <Style x:Key="DialogButtonStyle" TargetType="Button">
-        <Setter Property="Foreground" Value="{StaticResource WareWolfBlackBrush}" />
-        <Setter Property="Padding" Value="3" />
+        <Setter Property="Foreground" Value="{StaticResource WareWolfWhiteBrush}" />
+        <Setter Property="Background" Value="{StaticResource WareWolfButtonBrush}" />
         <Setter Property="Margin" Value="0" />
-        <Setter Property="Width" Value="30" />
         <Setter Property="Height" Value="30" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
@@ -87,7 +86,7 @@
                                 <VisualState x:Name="Unfocused" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="{StaticResource TransparentBrush}" />
+                        <Rectangle Fill="{StaticResource WareWolfButtonBrush}" />
                         <ContentPresenter x:Name="contentPresenter"
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"

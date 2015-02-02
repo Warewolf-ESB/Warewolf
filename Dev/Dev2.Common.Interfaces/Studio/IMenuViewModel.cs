@@ -12,7 +12,11 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand ExecuteServiceCommand { get; set; }
         ICommand CheckForNewVersionCommand { get; set; }
         ICommand LockCommand { get; set; }
+        ICommand SlideOpenCommand { get; set; }
+        ICommand SlideClosedCommand { get; set; }
         bool HasNewVersion { get; set; }
+        bool IsPanelOpen { get; set; }
+        bool IsPanelLocked { get; set; }
         string NewLabel { get; }
         string SaveLabel { get; }
         string DeployLabel { get; }
@@ -27,6 +31,8 @@ namespace Dev2.Common.Interfaces.Studio
         string ToursLabel { get; }
         string NewVersionLabel { get; }
         string LockLabel { get; }
-        string UnLockLabel { get; }
+        string LockImage { get; }
+        int ButtonWidth { get; }
+        void Lock();
     }
 }

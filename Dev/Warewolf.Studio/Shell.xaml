@@ -10,6 +10,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+        xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
         x:Name="MainWindow"
         Title="Warewolf Studio"
         TextOptions.TextFormattingMode="Display"
@@ -42,6 +43,9 @@
         <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
             <views:WorkflowDesignerView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
+            <views:ServerUserControl />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -63,9 +67,9 @@
                     <dockManager:XamDockManager.Panes>
 
                         <dockManager:SplitPane x:Name="SlidingMenuPane"
-                                               Width="{Binding Path=MenuPanelWidth}"
                                                MinWidth="60"
                                                MaxWidth="150"
+                                               SizeChanged="SlidingMenuPane_OnSizeChanged"
                                                SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedLeft">
                             <dockManager:SplitPane.Style>
@@ -75,14 +79,20 @@
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:1" Storyboard.TargetProperty="Width" From="60" To="150" />
+                                                        <DoubleAnimation Duration="0:0:0.5"
+                                                                         From="60"
+                                                                         Storyboard.TargetProperty="Width"
+                                                                         To="150" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </DataTrigger.EnterActions>
                                             <DataTrigger.ExitActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:1" Storyboard.TargetProperty="Width" From="150" To="60" />
+                                                        <DoubleAnimation Duration="0:0:0.5"
+                                                                         From="150"
+                                                                         Storyboard.TargetProperty="Width"
+                                                                         To="60" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </DataTrigger.ExitActions>
