@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Data.Util;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core.Popup;
@@ -92,7 +93,8 @@ namespace Warewolf.Studio.ViewModels
             ItemSelectedCommand = new DelegateCommand(() =>
             {
                 //var helpDescriptor = builder.Build(this, ExplorerEventContext.Selected);
-                var helpDescriptor = new HelpDescriptor("", "<body><H1>Test</H1> Update <a href=\"http://warewolf.io\">Warewolf</a></body>", null);
+                
+                var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>",ResourceName, Inputs, Outputs), null);
                 shellViewModel.UpdateHelpDescriptor(helpDescriptor);
                 //shellViewModel.UpdateHelpDescriptor(builder.Build(this, ExplorerEventContext.Selected));
             });
