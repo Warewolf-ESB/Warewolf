@@ -20,6 +20,17 @@ namespace Warewolf.Studio
             InitializeComponent();
             DataContext = shellViewModel;            
             Loaded+=OnLoaded;
+            KeyDown += Shell_KeyDown;
+        }
+
+        void Shell_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.X && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+
+                ControlStyleTestingWindow testingWindow = new ControlStyleTestingWindow();
+                testingWindow.Show();
+            }
         }
             
         void OnLoaded(object sender, RoutedEventArgs routedEventArgs)

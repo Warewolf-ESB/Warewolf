@@ -200,6 +200,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="ControlStyleTestingWindow.xaml.cs">
+      <DependentUpon>ControlStyleTestingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyCommonInfo.cs" />
     <Compile Include="Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
@@ -225,6 +228,10 @@
     <Folder Include="Modules\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ControlStyleTestingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Shell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
