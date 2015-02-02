@@ -1,6 +1,7 @@
 ﻿<Window x:Class="Warewolf.Studio.ControlStyleTestingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         Title="ControlStyleTestingWindow" Height="300" Width="300">
     <WrapPanel Orientation="Vertical">
         <TextBox></TextBox>
@@ -9,5 +10,21 @@
         <RadioButton></RadioButton>
         <TextBlock></TextBlock>
         <Label></Label>
+        <Button>
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button Style="{StaticResource RoundedButtonStyle}">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button Style="{StaticResource PopupButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock></StackPanel>
+        </Button>
+        <Button Style="{StaticResource PopupRoundedCornerButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock></StackPanel>
+        </Button>        
     </WrapPanel>
 </Window>

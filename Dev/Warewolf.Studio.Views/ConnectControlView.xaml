@@ -38,7 +38,7 @@
                 Height="26"
                 Command="{Binding EditConnectionCommand}"
                 Padding="4"
-                Style="{StaticResource ExplorerButtonStyle}" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left">
+                VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left">
             <TextBlock>
             <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
             <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
@@ -51,7 +51,7 @@
                 Height="26"
                 Command="{Binding ToggleConnectionStateCommand}"
                 Padding="4"
-                Style="{StaticResource ExplorerButtonStyle}" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom">
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom">
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" FontWeight="DemiBold" Icon="Link" VerticalAlignment="Top" HorizontalAlignment="Center"/>
         </Button>
     </Grid>

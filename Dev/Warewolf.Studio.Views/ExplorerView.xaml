@@ -11,6 +11,7 @@
              xmlns:viewModels="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels;assembly=Dev2.Common.Interfaces"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -67,6 +68,8 @@
             <TextBox Grid.Row="0"
                      Grid.Column="0"
                      x:Name="SearchTextBox"
+                     customControls:TextBoxHelper.Watermark="Filter" 
+                     customControls:TextBoxHelper.ShowWatermark="True"
                      Text="{Binding SearchText,
                                     Delay=300,
                                     UpdateSourceTrigger=PropertyChanged}" />
@@ -76,10 +79,9 @@
                     Height="25"
                     Command="{Binding RefreshCommand}"
                     Padding="4"
-                    Style="{StaticResource ExplorerButtonStyle}"
                     Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
-                <Image Source="{StaticResource System-Refresh-Inverted}" />
+                    <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
 
             </Button>
             <views:CircularProgressBar Grid.Row="0"
