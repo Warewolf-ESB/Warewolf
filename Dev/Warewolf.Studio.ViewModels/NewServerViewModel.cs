@@ -37,6 +37,7 @@ namespace Warewolf.Studio.ViewModels
         string[] _protocols;
         string _protocol;
         ObservableCollection<string> _ports;
+        ObservableCollection<string> _servers; 
         string _selectedPort; 
         // ReSharper disable TooManyDependencies
         public NewServerViewModel(IServerSource newServerSource,
@@ -48,6 +49,7 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "updateManager", updateManager }, { "saveDialog", saveDialog } ,{"shellViewModel",shellViewModel},{"connectedServer",connectedServer}});
             Protocols = new[] { "http", "https" };
             Protocol = Protocols[0];
+         
             Ports = new ObservableCollection<string> { "3142", "3143" };
             SelectedPort = Ports[0];
             _updateManager = updateManager;
