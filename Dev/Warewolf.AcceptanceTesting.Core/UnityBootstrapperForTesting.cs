@@ -1,5 +1,6 @@
 using System.Windows;
 using Microsoft.Practices.Prism.UnityExtensions;
+using Microsoft.Practices.Unity;
 
 namespace Warewolf.AcceptanceTesting.Core
 {
