@@ -130,7 +130,7 @@
                         <Border x:Name="Bd"
                                    Background="{StaticResource ButtonBackgroundBrush}"
                                    BorderBrush="{StaticResource ButtonBorderBrush}"
-                                   CornerRadius ="8"
+                                   CornerRadius ="16"
                                    BorderThickness="1" >
                             <ContentControl x:Name="ContentControl"
                                         Margin="{TemplateBinding Padding}"
@@ -457,12 +457,13 @@
 
                                 <VisualState x:Name="Unfocused" />
                             </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+                        </VisualStateManager.VisualStateGroups>                    
                         <Border x:Name="Bd"
                                    Background="{StaticResource ButtonHoverBackgroundBrush}"
                                    BorderBrush="{StaticResource ButtonHoverBackgroundBrush}"
-                                   CornerRadius="8"
+                                   CornerRadius="13"
                                    BorderThickness="1" >
+                            
                             <ContentControl x:Name="ContentControl"
                                         Margin="{TemplateBinding Padding}"
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -471,7 +472,7 @@
                                         IsTabStop="False">
                                 <ContentPresenter x:Name="contentPresenter" />
                             </ContentControl>
-                        </Border>
+                        </Border>                      
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">

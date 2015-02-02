@@ -8,15 +8,16 @@
 
 
     <!--  CheckBox Brushes  -->
-    <SolidColorBrush x:Key="CheckBoxBackgroundlBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="CheckBoxHoverBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="CheckBoxBackgroundBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="CheckBoxHoverBackgroundBrush" Color="Transparent" />
     <SolidColorBrush x:Key="CheckBoxPressedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="CheckBoxFocusedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="CheckBoxInvalidUnfocusedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="CheckBoxInvalidFocusedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="CheckBoxCheckedBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="CheckBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="CheckBoxPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="CheckBoxPressedBorderBrush" Color="{StaticResource WarewolfButtonGrey}" />
     <SolidColorBrush x:Key="CheckBoxFocusedBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="CheckBoxInvalidUnfocusedBorderBrush" Color="{StaticResource Color_029}" />
     <SolidColorBrush x:Key="CheckBoxInvalidFocusedBorderBrush" Color="{StaticResource Color_028}" />
@@ -27,7 +28,7 @@
 
     <!--  ********************************** CheckBoxStyle **********************************  -->
     <Style x:Key="CheckBoxStyle" TargetType="CheckBox">
-        <Setter Property="Foreground" Value="Green" />
+        <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="14.667" />
         <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -56,7 +57,7 @@
                                         <DoubleAnimation Duration="0"
                                                          Storyboard.TargetName="pressed"
                                                          Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="1" />
+                                                         To="1" />                                        
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
@@ -130,9 +131,9 @@
                         <Rectangle x:Name="normal"
                                    Width="18"
                                    Height="18"
-                                   Fill="{StaticResource CheckBoxBackgroundlBrush}"
+                                   Fill="{StaticResource TransparentBrush}"
                                    Opacity="1"
-                                   Stroke="{StaticResource CheckBoxBorderBrush}"
+                                   Stroke="{StaticResource TransparentBrush}"
                                    StrokeThickness="1" />
                         <Rectangle x:Name="hover"
                                    Width="18"
@@ -173,14 +174,14 @@
                               Width="12"
                               Height="10"
                               Data="M 1145.607177734375,430 C1145.607177734375,430 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1138,434.5538330078125 1138,434.5538330078125 1138,434.5538330078125 1141.482177734375,438 1141.482177734375,438 1141.482177734375,438 1141.96875,437.9375 1141.96875,437.9375 1141.96875,437.9375 1147,431.34619140625 1147,431.34619140625 1147,431.34619140625 1145.607177734375,430 1145.607177734375,430 z"
-                              Fill="{StaticResource CheckBoxCheckBackgroundBrush}"
+                              Fill="{StaticResource CheckBoxCheckedBrush}"
                               Opacity="0"
                               Stretch="Fill"
                               UseLayoutRounding="False" />
                         <Rectangle x:Name="IndeterminateCheck"
                                    Width="8"
                                    Height="3"
-                                   Fill="{StaticResource CheckBoxIndeterminateCheckBackgroundBrush}"
+                                   Fill="{StaticResource CheckBoxCheckedBrush}"
                                    Opacity="0" />
                         <Rectangle x:Name="disabled"
                                    Width="18"
