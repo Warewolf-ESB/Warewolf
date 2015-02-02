@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        private void InitializeRegion<T,TU>(string regionName) where T:IView
+        public void InitializeRegion<T,TU>(string regionName) where T:IView
         {
             var region = _regionManager.Regions[regionName];
             var view = _unityContainer.Resolve<T>();
