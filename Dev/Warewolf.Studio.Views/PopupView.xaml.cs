@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
@@ -15,6 +16,7 @@ namespace Warewolf.Studio.Views
     {
         MessageBoxResult _dialogResult;
         Window _window;
+        Grid _blackoutGrid;
 
         public PopupView()
         {
@@ -34,8 +36,18 @@ namespace Warewolf.Studio.Views
             {
                 MessageImage.Source = new BitmapImage(new Uri(imageSource));
             }
-            var blurEffect = new BlurEffect { Radius = 10 };
-            Application.Current.MainWindow.Effect = blurEffect;
+
+            var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
+            var content = Application.Current.MainWindow.Content as Grid;
+            _blackoutGrid = new Grid();
+            _blackoutGrid.Background = new SolidColorBrush(Colors.Black);
+            _blackoutGrid.Opacity = 0.75;
+            if (content != null)
+            {
+                content.Children.Add(_blackoutGrid);
+            }
+            Application.Current.MainWindow.Effect = effect;
+
             _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
             _window.ShowDialog();
             return _dialogResult;
@@ -46,14 +58,24 @@ namespace Warewolf.Studio.Views
         void OkButton_OnClick(object sender, RoutedEventArgs e)
         {
             _dialogResult = MessageBoxResult.OK;
-            Application.Current.MainWindow.Effect = null;
+            RemoveBlackOutEffect();
             _window.Close();
+        }
+
+        void RemoveBlackOutEffect()
+        {
+            Application.Current.MainWindow.Effect = null;
+            var content = Application.Current.MainWindow.Content as Grid;
+            if(content != null)
+            {
+                content.Children.Remove(_blackoutGrid);
+            }
         }
 
         void CancelButton_OnClick(object sender, RoutedEventArgs e)
         {
             _dialogResult = MessageBoxResult.Cancel;
-            Application.Current.MainWindow.Effect = null;
+            RemoveBlackOutEffect();
             _window.Close();
         }
     }

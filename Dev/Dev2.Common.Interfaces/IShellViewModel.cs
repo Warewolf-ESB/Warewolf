@@ -21,7 +21,7 @@ namespace Dev2.Common.Interfaces
         IExplorerTreeItem ActiveItem { get; set; }
         IServer LocalhostServer { get; set; }
         bool MenuExpanded { get; set; }
-
+        double MenuPanelWidth { get; set; }
 
         void Handle(Exception err);
         bool ShowPopup(IPopupMessage getDeleteConfirmation);

@@ -78,5 +78,14 @@ namespace Warewolf.Studio
         {
             //e.Handled = true;
         }
+
+        void SlidingMenuPane_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var vm = DataContext as ShellViewModel;
+            if (vm != null)
+            {
+                vm.MenuPanelWidth = e.NewSize.Width;
+            }
+        }
     }
 }

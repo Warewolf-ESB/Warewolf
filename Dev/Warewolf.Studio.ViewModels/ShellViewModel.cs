@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels
         IPopupController _popupController;
         IExplorerTreeItem _activeItem;
         IServer _activeServer;
-        int _menuPanelWidth;
+        double _menuPanelWidth;
         bool _menuExpanded;
 
         public ShellViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator aggregator)
@@ -198,6 +198,18 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
+        public double MenuPanelWidth
+        {
+            get
+            {
+                return _menuPanelWidth;
+            }
+            set
+            {
+                _menuPanelWidth = value;
+                OnPropertyChanged(() => MenuPanelWidth);
+            }
+        }
 
         public void NewResource(ResourceType? type)
         {

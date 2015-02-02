@@ -63,9 +63,9 @@
                     <dockManager:XamDockManager.Panes>
 
                         <dockManager:SplitPane x:Name="SlidingMenuPane"
-                                               Width="{Binding Path=MenuPanelWidth}"
                                                MinWidth="60"
                                                MaxWidth="150"
+                                               SizeChanged="SlidingMenuPane_OnSizeChanged"
                                                SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedLeft">
                             <dockManager:SplitPane.Style>
@@ -75,14 +75,20 @@
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:1" Storyboard.TargetProperty="Width" From="60" To="150" />
+                                                        <DoubleAnimation Duration="0:0:0.5"
+                                                                         From="60"
+                                                                         Storyboard.TargetProperty="Width"
+                                                                         To="150" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </DataTrigger.EnterActions>
                                             <DataTrigger.ExitActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:1" Storyboard.TargetProperty="Width" From="150" To="60" />
+                                                        <DoubleAnimation Duration="0:0:0.5"
+                                                                         From="150"
+                                                                         Storyboard.TargetProperty="Width"
+                                                                         To="60" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </DataTrigger.ExitActions>
