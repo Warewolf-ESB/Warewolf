@@ -1,0 +1,1356 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Olap.FlatData.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Olap.FlatData.DataSourceHelper">
+            <summary>
+            Provides methods for resolving th
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataSourceHelper.#ctor(System.Collections.IEnumerable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.DataSourceHelper"/> class.
+            </summary>
+            <param name="dataSource">The <see cref="T:System.Collections.IEnumerable"/> data source that this <see cref="T:Infragistics.Olap.FlatData.DataSourceHelper"/> wraps.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataSourceHelper.ResolveItemType(System.Collections.IEnumerable)">
+            <summary>
+            Resolves the underlying type of the item that the specified collection contains.
+            </summary>
+            <param name="dataSource">The <see cref="T:System.Collections.IEnumerable"/> which items type is resolved.</param>
+            <returns>The <see cref="T:System.Type"/> of the elements contained in <paramref name="dataSource"/></returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataSourceHelper.GetDataProperties">
+            <summary>
+            Gets all public properties of <see cref="P:Infragistics.Olap.FlatData.DataSourceHelper.CachedType"/> type.
+            </summary>
+            <returns>All public properties of <see cref="P:Infragistics.Olap.FlatData.DataSourceHelper.CachedType"/> type.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataSourceHelper.GetRecord(System.Int32)">
+            <summary>
+            Returns an object in the data source at a given index, after applying the sort and filter.
+            </summary>
+            <param name="recordIndex">The index of the item to find.</param>
+            <returns>The object at that index.</returns>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataSourceHelper.CachedType">
+            <summary>
+            Gets the type of the elements contained in <see cref="T:System.Collections.IEnumerable"/> that this <see cref="T:Infragistics.Olap.FlatData.DataSourceHelper"/> wraps.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataSourceHelper.TotalRecordCount">
+            <summary>
+            Gets the number of elements contained in <see cref="T:System.Collections.IEnumerable"/> that this <see cref="T:Infragistics.Olap.FlatData.DataSourceHelper"/> wraps.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataSourceHelper.IListData">
+            <summary>
+            Gets the underlying data source as an <see cref="T:System.Collections.IList"/>. If the datasource isn't an IList, null is returned.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.FlatFilterMember">
+            <summary>
+            The default measure used by <see cref="T:Infragistics.Olap.FlatData.FlatDataModelProvider"/> and <see cref="P:Infragistics.Olap.FlatData.FlatFilterMember.FlatDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatFilterMember.#ctor(Infragistics.Olap.IFilterViewModel,Infragistics.Olap.Data.IFilterMember,Infragistics.Olap.Data.IMember,Infragistics.Olap.Data.IFilterSource)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.FlatFilterMember"/> class.
+            </summary>
+            <param name="filterViewModel">The <see cref="T:Infragistics.Olap.IFilterViewModel"/> instance that owns the filter members hierarchy.</param>
+            <param name="parent">The parent of this member in members hierarchy.</param>
+            <param name="member">The member that will be wrapped.</param>
+            <param name="filterSource">The filter item source.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatFilterMember.OnReleaseFilterSource">
+            <summary>
+            Called when filter source usage is released.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatFilterMember.FlatDataSource">
+            <summary>
+            Gets the flat data source which this instance is related to.
+            </summary>
+            <value>The flat data source.</value>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatFilterMember.MetadataItems">
+            <summary>
+            Gets the collection of all metadata items which this instance is built over.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatFilterMember.SelectedMetadataItemsCount">
+            <summary>
+            Gets the count of the metadata items that are currently no excluded.
+            </summary>
+            <value>The selected items count.</value>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.FlatMeasure">
+            <summary>
+            The default measure used by <see cref="T:Infragistics.Olap.FlatData.FlatDataModelProvider"/> and <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatMeasure.#ctor(System.Reflection.PropertyInfo,System.String,System.String,System.String,System.String,System.String,Infragistics.Olap.AggregatorType,Infragistics.Olap.IAggregator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.FlatMeasure"/> class.
+            </summary>
+            <param name="propertyInfo">The property info of the property that describes this instance.</param>
+            <param name="name">The name of the measure.</param>
+            <param name="uniqueName">The unique name of the measure.</param>
+            <param name="caption">The caption.</param>
+            <param name="description">The description.</param>
+            <param name="groupName">The name of the group this measure belongs to.</param>
+            <param name="aggregatorType">The <see cref="T:Infragistics.Olap.AggregatorType"/> that identifies how a measure was derived.</param>
+            <param name="aggregator">The aggregator used to perform the calculations for this instance.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatMeasure.GetValue(System.Object)">
+            <summary>
+            Gets the value from given <paramref name="instance"/> which the <see cref="P:Infragistics.Olap.FlatData.FlatMeasure.Aggregator"/> aggregates.
+            </summary>
+            <param name="instance">Instance of object which contains the aggregated data.</param>
+            <returns>
+            The value used by <see cref="P:Infragistics.Olap.FlatData.FlatMeasure.Aggregator"/>.
+            </returns>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatMeasure.PropertyInfo">
+            <summary>
+            Gets the <see cref="P:Infragistics.Olap.FlatData.FlatMeasure.PropertyInfo"/> of source property.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatMeasure.IsCompoundMeasure">
+            <summary>
+            Gets a value indicating whether this instance is compound measure.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatMeasure.Aggregator">
+            <summary>
+            Gets or sets the <see cref="T:Infragistics.Olap.IAggregator"/> used for particular aggregation.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatLevel.#ctor(Infragistics.Olap.FlatData.HierarchyLevelDescriptor,System.String,System.String,System.String,System.String,System.Int32,Infragistics.Olap.Data.IHierarchy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Data.Base.Level"/> class.
+            </summary>
+            <param name="levelDescriptor">The level descriptor of this level.</param>
+            <param name="name">The name of the level.</param>
+            <param name="caption">The caption of the level.</param>
+            <param name="uniqueName">The unique name of the level.</param>
+            <param name="description">The description.</param>
+            <param name="depth">The distance of the level from the root of the level. Root level is zero (0)</param>
+            <param name="parentHierarchy">The parent hierarchy.</param>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatLevel.LevelDescriptor">
+            <summary>
+            Gets the level descriptor of this level.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.FlatDataModelProvider">
+            <summary>
+            Responsible for generating the Model from <see cref="T:System.Collections.IEnumerable"/> data source
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.#ctor(Infragistics.Olap.IConnectionSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.FlatDataModelProvider"/> class.
+            </summary>
+            <param name="settings">Instance of the <see cref="T:Infragistics.Olap.FlatData.IFlatDataConnectionSettings"/> that holds the data source.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.LoadSchemaAsync">
+            <summary>
+            Fit call routine.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.LoadCubesAsync(System.String)">
+            <summary>
+            Loads the initialized <see cref="T:Infragistics.Olap.Data.ICube"/>.
+            </summary>
+            <param name="catalogName">The name of catalog cubes belong to.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.LoadMeasureGroupDimensionsAsync(Infragistics.Olap.Data.ICube)">
+            <summary>
+            Loads the measure group dimensions in the cube asynchronously.
+            </summary>
+            <param name="cube">The cube to fill groups in.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.LoadDimensionsAsync(Infragistics.Olap.Data.ICube)">
+            <summary>
+            Loads the dimensions for the specified <see cref="T:Infragistics.Olap.Data.ICube"/>.
+            </summary>
+            <param name="cube">The cube to fill dimensions in.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.LoadMeasureGroupsAsync(Infragistics.Olap.Data.ICube)">
+            <summary>
+            Loads the measure groups in the cube asynchronously.
+            </summary>
+            <param name="cube">The cube to fill groups in.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.LoadMeasuresAsync(Infragistics.Olap.Data.ICube)">
+            <summary>
+            Loads the measures in the cube asynchronously.
+            </summary>
+            <param name="cube">The cube to fill measures in.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.LoadKpisAsync(Infragistics.Olap.Data.ICube)">
+            <summary>
+            Loads the KPIs in the cube asynchronously.
+            </summary>
+            <param name="cube">The cube to fill KPIs in.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.LoadMembersAsync(Infragistics.Olap.Data.ICube,Infragistics.Olap.Data.ILevel)">
+            <summary>
+            Loads the members and add them as a children to the level.
+            </summary>
+            <param name="cube">The cube in which the members are.</param>
+            <param name="level">The parent level.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProvider.CreateMember(System.String,System.String,System.String,System.String,System.String,System.Int32,Infragistics.Olap.Data.ILevel,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Data.Base.Member"/> class.
+            </summary>
+            <param name="name">The name of the member.</param>
+            <param name="uniqueName">The unique name of the member.</param>
+            <param name="caption">The caption.</param>
+            <param name="parentUniqueName">The unique name of the parent member.</param>
+            <param name="levelName">The unique name of the parent level.</param>
+            <param name="levelDepth">The level depth.</param>
+            <param name="parentLevel">The parent level.</param>
+            <param name="childCount">The child count.</param>
+            <param name="drilledDown">Sets whether this member is drilled down.</param>
+            <param name="parentSameAsPrevious">Sets whether the parent of this member is the same as the parent of the immediately preceding member.</param>
+            <param name="isTotal">Sets whether this member is considered to be total.</param>
+        </member>
+        <member name="E:Infragistics.Olap.FlatData.FlatDataModelProvider.DataProviderSourceChanged">
+            <summary>
+            Rased when is changed the original data source of class which implements <see cref="T:Infragistics.Olap.IDataProvider"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataModelProvider.CubesSettings">
+            <summary>
+            Gets list of all <see cref="T:Infragistics.Olap.FlatData.CubeMetadata"/> objects defined for this <see cref="T:Infragistics.Olap.FlatData.FlatDataModelProvider"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataModelProvider.HierarchyDescriptors">
+            <summary>
+            Gets the <see cref="T:System.Collections.Generic.IList`1"/> of <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> objects that describe the rules
+            of building custom hierarchies over the properties of the data item objects.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataModelProvider.DimensionsGenerationMode">
+            <summary>
+            Gets or sets the data source used to extract information about the dimensions generation.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.FlatDataConnectionSettings">
+            <summary>
+            Enables implementations of <see cref="T:Infragistics.Olap.IOlapViewModel"/> to connects to data sources of type <see cref="T:System.Collections.IEnumerable"/>
+            when instances of <see cref="T:Infragistics.Olap.FlatData.FlatDataConnectionSettings"/> is passed to <see cref="P:Infragistics.Olap.IDataProvider.ConnectionSettings"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.IFlatDataConnectionSettings">
+            <summary>
+            Enables implementation of <see cref="T:Infragistics.Olap.IConnectionSettings"/> to connects to sources of type <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Olap.FlatData.IFlatDataConnectionSettings.ItemsSourceChanged">
+            <summary>
+            Fired when <see cref="P:Infragistics.Olap.FlatData.IFlatDataConnectionSettings.ItemsSource"/> is changed.
+            This event is fired both when <see cref="T:System.Collections.Specialized.INotifyCollectionChanged"/> collection changes and items source is reset.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.IFlatDataConnectionSettings.ItemsSource">
+            <summary>
+            Gets the underlying <see cref="T:System.Collections.IEnumerable"/> object.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataConnectionSettings.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:Infragistics.Olap.FlatData.FlatDataConnectionSettings"/> class. 
+            Register <see cref="T:Infragistics.Olap.FlatData.FlatDataConnectionSettings"/> class in OlapContainer.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataConnectionSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.FlatDataConnectionSettings"/> class.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.FlatDataConnectionSettings.ItemsSourceProperty">
+            <summary>
+            Identifies the ItemsSource dependency property.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Olap.FlatData.FlatDataConnectionSettings.ItemsSourceChanged">
+            <summary>
+            Fired when <see cref="P:Infragistics.Olap.FlatData.IFlatDataConnectionSettings.ItemsSource"/> is changed.
+            When it is of type that implements <see cref="T:System.Collections.Specialized.INotifyCollectionChanged"/> the event is fired when collection changes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataConnectionSettings.ItemsSource">
+            <summary>
+            Gets or sets the data source.
+            </summary>
+            <value>The data source.</value>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.ExtendedVisibility">
+            <summary>
+            Specifies whether an item will be displayed and/or take up space.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ExtendedVisibility.Visible">
+            <summary>
+            The item is visible.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ExtendedVisibility.Collapsed">
+            <summary>
+            The item is not given space and is not visable.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ExtendedVisibility.Hidden">
+            <summary>
+            The item is given space, but is not visable.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.LogicalOperator">
+            <summary>
+            And enumeration of available operators.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.LogicalOperator.And">
+            <summary>
+            Performs a logical AND operation.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.LogicalOperator.Or">
+            <summary>
+            Performs a logical OR operation.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.ComparisonOperator">
+            <summary>
+            Enum describing operators which can be used for filtering.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.Equals">
+            <summary>
+            An equality compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.NotEquals">
+            <summary>
+            An non equality compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.GreaterThan">
+            <summary>
+            A GreaterThan compare is executed. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.GreaterThanOrEqual">
+            <summary>
+            A greater than or equal compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.LessThan">
+            <summary>
+            A less than compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.LessThanOrEqual">
+            <summary>
+            A less than or equal compare is executed.  With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.StartsWith">
+            <summary>
+            Evaluates if a string begins with a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.DoesNotStartWith">
+            <summary>
+            Evaluates if a string does not begin with a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.EndsWith">
+            <summary>
+            Evaluates if a string ends with a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.DoesNotEndWith">
+            <summary>
+            Evaluates if a string does not end with a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.Contains">
+            <summary>
+            Evaluates if a string contains a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ComparisonOperator.DoesNotContain">
+            <summary>
+            Evaluates if a string does not contain a compared value. With string values, a case sensitivity flag may effect the result.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.LinqSummaryOperator">
+            <summary>
+            An enum used by summary to designate that a LINQ summary should be use.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.LinqSummaryOperator.Count">
+            <summary>
+            Use the LINQ Count summary
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.LinqSummaryOperator.Minimum">
+            <summary>
+            Use the LINQ Minimum summary.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.LinqSummaryOperator.Maximum">
+            <summary>
+            Use the LINQ Maximum summary.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.LinqSummaryOperator.Sum">
+            <summary>
+            Use the LINQ Sum summary.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.LinqSummaryOperator.Average">
+            <summary>
+            Use the LINQ Average summary.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.SummaryExecution">
+            <summary>
+            Enum that is used to determine when a summary should be calculated.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.SummaryExecution.PriorToFilteringAndPaging">
+            <summary>
+            Summary is executed prior to paging and filtering.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.SummaryExecution.AfterFilteringBeforePaging">
+            <summary>
+            Summary is executed prior to paging but after filtering.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.SummaryExecution.AfterFilteringAndPaging">
+            <summary>
+            Summary is executed after paging and filtering.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.FlatDataModelProviderChangeType">
+            <summary>
+            Specifies how the <see cref="T:Infragistics.Olap.IChangeableDataProvider"/> is changed.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.FlatDataModelProviderChangeType.Add">
+            <summary>
+            Specifies that one or more items were added to underlying data source.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.FlatDataModelProviderChangeType.Remove">
+            <summary>
+            Specifies that one or more items were removed from underlying data source.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.FlatDataModelProviderChangeType.Replace">
+            <summary>
+            Specifies that one or more items were replaced in underlying data source.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.DimensionsGenerationMode">
+            <summary>
+            Specifies the data source used to extract information about the dimensions generation for a <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Property">
+            <summary>
+            The dimensions are created based on the properties exposed by the class of items found in items source.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Metadata">
+            <summary>
+            The dimensions are created based on the <see cref="P:Infragistics.Olap.FlatData.CubeMetadata.DimensionSettings"/> found in <see cref="P:Infragistics.Olap.FlatData.FlatDataSource.CubesSettings"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Mixed">
+            <summary>
+            Both data sources are used as data found in <see cref="P:Infragistics.Olap.FlatData.CubeMetadata.DimensionSettings"/> takes precedence.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.DimensionType">
+            <summary>
+            Specifies the type of the dimension described by <see cref="T:Infragistics.Olap.FlatData.DimensionMetadata"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.DimensionType.Dimension">
+            <summary>
+            Describes a dimension.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.DimensionType.Measure">
+            <summary>
+            Describes a measure.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.ItemsSourceChangedAction">
+            <summary>
+            Specifies the type of the change of <see cref="P:Infragistics.Olap.FlatData.FlatDataSource.ItemsSource"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ItemsSourceChangedAction.ItemsSourceReset">
+            <summary>
+            Identifies that new items source is passed to <see cref="P:Infragistics.Olap.FlatData.FlatDataSource.ItemsSource"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Olap.FlatData.ItemsSourceChangedAction.CollectionChanged">
+            <summary>
+            Identifies that the items of source collection have changed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.ItemsSourceChangedEventArgs">
+            <summary>
+            Event arguments passed when <see cref="E:Infragistics.Olap.FlatData.IFlatDataConnectionSettings.ItemsSourceChanged"/> event occurs.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.ItemsSourceChangedEventArgs.#ctor(System.Collections.IEnumerable,Infragistics.Olap.FlatData.ItemsSourceChangedAction,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.ItemsSourceChangedEventArgs"/> class.
+            </summary>
+            <param name="itemsSource">The items source which has changed.</param>
+            <param name="action">The type of the change.</param>
+            <param name="collectionChangedEventArgs">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.ItemsSourceChangedEventArgs.ItemsSource">
+            <summary>
+            Gets the related items source.
+            </summary>
+            <value>The items source.</value>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.ItemsSourceChangedEventArgs.Action">
+            <summary>
+            Gets the type of the change action.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.ItemsSourceChangedEventArgs.CollectionChangedEventArgs">
+            <summary>
+            Gets or sets the original event args of <see cref="E:System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged"/> event.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.InvalidEnumeratorException">
+            <summary>
+            An <see cref="T:System.Exception"/> that is thrown when the GetEnumerator method of the IEnumerable returns null for the <see cref="T:Infragistics.Olap.FlatData.DataSourceHelper"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.InvalidEnumeratorException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.InvalidEnumeratorException"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.InvalidEnumeratorException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.InvalidEnumeratorException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.InvalidEnumeratorException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.InvalidEnumeratorException"/> class.
+            </summary>
+            <param name="message">The message that should be displayed.</param>
+            <param name="innerException">An inner exception.</param>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.FlatDataModelProviderSourceChangedInfo">
+            <summary>
+            Provides specific information when <see cref="P:Infragistics.Olap.FlatData.FlatDataSource.ItemsSource"/> changes.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataModelProviderSourceChangedInfo.#ctor(System.Collections.Generic.IList{Infragistics.Olap.FlatData.DataRowMetadata},System.Collections.Generic.IList{Infragistics.Olap.FlatData.DataRowMetadata},System.Collections.Generic.IList{Infragistics.Olap.Data.IMember},System.Collections.Generic.IList{Infragistics.Olap.Data.IMember})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.FlatDataModelProviderSourceChangedInfo"/> class.
+            </summary>
+            <param name="newAddedDataItems">The new items.</param>
+            <param name="deletedDataItems">The old items.</param>
+            <param name="newAddedMembers">The new added members.</param>
+            <param name="deletedMembers">The removed members.</param>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataModelProviderSourceChangedInfo.NewAddedData">
+            <summary>
+            Gets the items relevant to particular change of the items source.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataModelProviderSourceChangedInfo.DeletedData">
+            <summary>
+            Gets the deleted items.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.HierarchyDescriptor">
+            <summary>
+            Contains information about how <see cref="T:Infragistics.Olap.Data.IHierarchy"/> is created for <see cref="T:Infragistics.Olap.Data.IDimension"/> used by <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            A <see cref="T:Infragistics.Olap.Data.IDimension"/> is created for every single public property exposed by <see cref="T:System.Type"/> of the items from <see cref="T:System.Collections.Generic.IEnumerable`1"/> data source.
+            This class mainly is used when hierarchies are defined from XAML.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyDescriptor.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyDescriptor.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> class.
+            </summary>
+            <param name="hierarchyName">The name of hierarchy created by this descriptor.</param>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyDescriptor.LevelDescriptors">
+            <summary>
+            Gets the list of all <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> items defined for this <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyDescriptor.SourcePropertyName">
+            <summary>
+            Gets or sets the name of the property over which the <see cref="T:Infragistics.Olap.Data.IHierarchy"/> for <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/> is built.
+            This property is used in both <see cref="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Property"/> or <see cref="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Mixed"/> modes
+            in order to match given <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> with the property exposed by the data class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyDescriptor.AppliesToPropertiesOfType">
+            <summary>
+            Gets or sets the <see cref="T:System.Type"/> of the properties this <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> is used.
+            This property finds usage with both <see cref="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Property"/> and <see cref="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Mixed"/> modes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyDescriptor.HierarchyName">
+            <summary>
+            Gets or sets the name of the <see cref="T:Infragistics.Olap.Data.IHierarchy"/> which this <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> provides.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyDescriptor.HierarchyDisplayName">
+            <summary>
+            Gets or sets the display name of the hierarchy.
+            </summary>
+            <value>
+            The display name of the hierarchy.
+            </value>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyDescriptor.IsEnabled">
+            <summary>
+            Gets or sets a value indicating whether a <see cref="T:Infragistics.Olap.Data.IHierarchy"/> will be created over this <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.HierarchyDescriptor`1">
+            <summary>
+            Contains information about how <see cref="T:Infragistics.Olap.Data.IHierarchy"/> is created for <see cref="T:Infragistics.Olap.Data.IDimension"/> used by <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            </summary>
+            <typeparam name="T">The <see cref="T:System.Type"/> which properties are used as base for building of the dimensions and hierarchies. 
+            That is the <see cref="T:System.Type"/> of the items from <see cref="T:System.Collections.Generic.IEnumerable`1"/> data source.</typeparam>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyDescriptor`1.#ctor(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor`1"/> class.
+            </summary>
+            <param name="propertyExpression">The <see cref="T:System.Linq.Expressions.Expression`1"/> that picks the property over which the hierarchy is built.</param>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyDescriptor`1.OriginDataType">
+            <summary>
+            Gets the <see cref="T:System.Type"/> connected with this <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor`1"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.HiearachyExtensions">
+            <summary>
+            Provides extension methods related to creation and building of custom hierarchies used by <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HiearachyExtensions.AddLevel``1(Infragistics.Olap.FlatData.HierarchyDescriptor{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
+            <summary>
+            Adds new <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> to existing <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor`1"/>.
+            </summary>
+            <typeparam name="T">The type of the items passed to <see cref="P:Infragistics.Olap.FlatData.FlatDataSource.ItemsSource"/>.</typeparam>
+            <param name="hierarhyDescriptor">The <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor`1"/> where this level is added to.</param>
+            <param name="expr"><see cref="T:System.Linq.Expressions.LambdaExpression"/> that describes the data resolving path.</param>
+            <param name="levelName">The name used for this new level.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HiearachyExtensions.AddLevel``1(Infragistics.Olap.FlatData.HierarchyDescriptor{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Adds new <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> to existing <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor`1"/>.
+            </summary>
+            <typeparam name="T">The type of the items passed to <see cref="P:Infragistics.Olap.FlatData.FlatDataSource.ItemsSource"/>.</typeparam>
+            <param name="hierarhyDescriptor">The <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor`1"/> where this level is added to.</param>
+            <param name="expr"><see cref="T:System.Linq.Expressions.LambdaExpression"/> that describes the data resolving path.</param>
+            <param name="levelName">The name used for this new level.</param>
+            <param name="userDataExpr">The <see cref="T:System.Linq.Expressions.LambdaExpression"/> that describes the path used when the additional user data is resolved. This data is added to <see cref="P:Infragistics.Olap.Data.Base.Member.Tag"/> property.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HiearachyExtensions.AddLevel``1(Infragistics.Olap.FlatData.HierarchyDescriptor,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.String)">
+            <summary>
+            Adds new <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> to existing <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/>.
+            It is used when the type of the data item is unknown and can be applied to all properties of given type only.
+            </summary>
+            <typeparam name="T">The type of the properties that this level applies to.</typeparam>
+            <param name="hierarhyDescriptor">&gt;The <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> where this level is added to.</param>
+            <param name="expr">&gt;<see cref="T:System.Linq.Expressions.LambdaExpression"/> that describes the data resolving path.</param>
+            <param name="levelName">The name used for this new level.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HiearachyExtensions.AddLevel``1(Infragistics.Olap.FlatData.HierarchyDescriptor,System.String,System.String)">
+            <summary>
+            Adds new <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> to existing <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/>.
+            It is used when the type of the data item is unknown and can be applied to all properties of given type only.
+            </summary>
+            <typeparam name="T">The type of the properties that this level applies to.</typeparam>
+            <param name="hierarhyDescriptor">&gt;The <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> where this level is added to.</param>
+            <param name="levelExpressionPath">Property resolution path.</param>
+            <param name="levelName">The name used for this new level.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HiearachyExtensions.AddLevel(Infragistics.Olap.FlatData.HierarchyDescriptor,System.Object,System.String)">
+            <summary>
+            Adds new <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> to existing <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/>.
+            </summary>
+            <param name="hierarhyDescriptor">&gt;The <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> this level is added to.</param>
+            <param name="data">The instance of the object used to provide the data for this level.</param>
+            <param name="levelName">The name used for this new level.</param>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.DataTimeTypeExtensions">
+            <summary>
+            Provides extension methods for <see cref="T:System.DateTime"/> type.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.SemesterShort(System.DateTime)">
+            <summary>
+            Returns the short name of the semester.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <returns>The short name of the semester.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.SemesterWithYear(System.DateTime)">
+            <summary>
+            Returns year followed by semester name.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <returns>Year followed by semester name.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.Semester(System.DateTime,System.String)">
+            <summary>
+            Returns formated string of year and semester of given <see cref="T:System.DateTime"/>.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <param name="semesterFormat">The format string. Use {0} for year and {1} for semester location.</param>
+            <returns>The semester name in supplied format.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.Semester(System.DateTime,System.String,System.String[])">
+            <summary>
+            Returns formated string of year and semester of given <see cref="T:System.DateTime"/>.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <param name="semesterFormat">The format string. Use {0} for year and {1} for semester location.</param>
+            <param name="semesters">Semester names.</param>
+            <returns>The semester name in supplied format.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.QuarterShort(System.DateTime)">
+            <summary>
+            Builds the short quarter name for date.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <returns>The short name of the quarter.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.Quarter(System.DateTime,System.String)">
+            <summary>
+            Builds the name of quarter from date.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <param name="quarterFormat">The format string. Use {0} for year, {1} for semester and {2} for quarter location.</param>
+            <returns>Formated quarter name.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.Quarter(System.DateTime,System.String,System.String[],System.String[])">
+            <summary>
+            Builds the name of quarter from date.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <param name="quarterFormat">The format string. Use {0} for year, {1} for semester and {2} for quarter location.</param>
+            <param name="semesters">User defined names for semesters.</param>
+            <param name="quarters">User defined names for quarters.</param>
+            <returns>Formated quarter name.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.MonthShort(System.DateTime)">
+            <summary>
+            Build the short name of month from date.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <returns>The name of the month.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.Month(System.DateTime,System.String,System.String[],System.String[],System.String[])">
+            <summary>
+            Build the name of month from date.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <param name="monthFormat">The format string. Use {0} for year, {1} for semester, {2} for quarter and {3} for month location.</param>
+            <param name="semesters">User defined names for semesters.</param>
+            <param name="quarters">User defined names for quarters.</param>
+            <param name="months">User defined names for months.</param>
+            <returns>Formated month name.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTimeTypeExtensions.Month(System.DateTime,System.String)">
+            <summary>
+            Build the name of month from date.
+            </summary>
+            <param name="dateTime">The original <see cref="T:System.DateTime"/> instance.</param>
+            <param name="monthFormat">The format string. Use {0} for year, {1} for semester, {2} for quarter and {3} for month location.</param>
+            <returns>Formated month name.</returns>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor">
+            <summary>
+            Contains information about how <see cref="T:Infragistics.Olap.Data.ILevel"/> is created for <see cref="T:Infragistics.Olap.Data.IHierarchy"/> used by <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.#ctor(System.Linq.Expressions.LambdaExpression,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> class.
+            </summary>
+            <param name="levelExpression">The <see cref="T:System.Linq.Expressions.LambdaExpression"/> that describes the path used when data is resolved from particular instance.</param>
+            <param name="levelName">The name of <see cref="T:Infragistics.Olap.Data.ILevel"/> which this descriptor generates.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.#ctor(System.Linq.Expressions.LambdaExpression,System.String,System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> class.
+            </summary>
+            <param name="levelExpression">The <see cref="T:System.Linq.Expressions.LambdaExpression"/> that describes the path used when data is resolved from particular instance.</param>
+            <param name="levelName">The name of <see cref="T:Infragistics.Olap.Data.ILevel"/> which this descriptor generates.</param>
+            <param name="userDataExpression">The <see cref="T:System.Linq.Expressions.LambdaExpression"/> that describes the path used when the additional user data is resolved. This data is added to <see cref="P:Infragistics.Olap.Data.Base.Member.Tag"/> property.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.#ctor(System.Object,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.HierarchyLevelDescriptor"/> class.
+            </summary>
+            <param name="constantData">The instance of the object used to provide the data for this level.</param>
+            <param name="levelName">The name of <see cref="T:Infragistics.Olap.Data.ILevel"/> which this descriptor generates.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.GetDataFromInstance(System.Object)">
+            <summary>
+            Extracts the data from given object. <see cref="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelExpression"/> is used to resolves the actual data.
+            </summary>
+            <param name="instance">The examined object instance.</param>
+            <returns>The actual data.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.GetUserDataFromInstance(System.Object)">
+            <summary>
+            Extracts the data from given object. <see cref="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelExpression"/> is used to resolves the actual data.
+            </summary>
+            <param name="instance">The examined object instance.</param>
+            <returns>The actual data.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.GetOrderByKeyFromInstance(System.Object)">
+            <summary>
+            Extracts the data from given object. <see cref="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelExpression"/> is used to resolves the actual data.
+            </summary>
+            <param name="instance">The examined object instance.</param>
+            <returns>The actual data.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.ResolveLevelExpression(System.Type)">
+            <summary>
+            Creates and assings the expression to <see cref="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelExpression"/> from the specified <see cref="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelExpressionPath"/>.
+            </summary>
+            <param name="type">The type used as type of the paramer of the expression.</param>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelName">
+            <summary>
+            Gets or sets the name of <see cref="T:Infragistics.Olap.Data.ILevel"/> which this descriptor generates.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelDisplayName">
+            <summary>
+            Gets or sets the display name of the level.
+            </summary>
+            <value>
+            The display name of the level.
+            </value>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.DisplayFormat">
+            <summary>
+            Gets or sets the display format of level members.
+            </summary>
+            <value>
+            The display format of level members.
+            </value>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.Description">
+            <summary>
+            Gets or sets the description of the level.
+            </summary>
+            <value>The description used when instance of the described level is created.</value>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelExpression">
+            <summary>
+            Gets or sets the <see cref="T:System.Linq.Expressions.LambdaExpression"/> that describes the path used when data is resolved from particular instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.OrderByKeyExpression">
+            <summary>
+            Gets or sets the <see cref="T:System.Linq.Expressions.LambdaExpression"/> that describes the path used when data is resolved from particular instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelExpressionPath">
+            <summary>
+            Gets or sets the string representation of the path used when data is resolved from particular instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.UserDataExpression">
+            <summary>
+            Gets or sets the <see cref="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.UserDataExpression"/> that describes the path used when data is resolved from particular instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.AllowNullDataLevelMember">
+            <summary>
+            Gets or sets a value indicating whether additional level member is generated when <see cref="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelExpression"/> returns <c>null</c>.
+            </summary>
+            <value>
+            	<c>true</c> if additional member is generated when <see cref="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.LevelExpression"/> returns <c>null</c>; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.HierarchyLevelDescriptor.NullDataLevelMemberName">
+            <summary>
+            Gets or sets the name of the null data level member.
+            </summary>
+            <value>
+            The name of the null data level member.
+            </value>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.DataTableMetadata">
+            <summary>
+            Contains metadata information about the data used by <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTableMetadata.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.DataTableMetadata"/> class.
+            </summary>
+            <param name="capacity">The initial count of items in items source.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTableMetadata.AddRowMetadata(Infragistics.Olap.FlatData.DataRowMetadata)">
+            <summary>
+            Adds a new <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/> to the internal row medatada array.
+            </summary>
+            <param name="rowMetadata">The instance of <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/> to add.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTableMetadata.Insert(System.Int32,Infragistics.Olap.FlatData.DataRowMetadata)">
+            <summary>
+            Inserts an <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/> at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the element to remove.</param>
+            <param name="rowMetadata">The <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/> to insert.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTableMetadata.RemoveAt(System.Int32)">
+            <summary>
+            Removes the <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/> at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the element to remove.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataTableMetadata.Contains(System.Object)">
+            <summary>
+            Determines whether <paramref name="dataObject"/> is present in <see cref="P:Infragistics.Olap.FlatData.DataTableMetadata.DataObjects"/> collection.
+            </summary>
+            <param name="dataObject">The data object.</param>
+            <returns>
+            	<c>true</c> if <see cref="P:Infragistics.Olap.FlatData.DataTableMetadata.DataObjects"/> contains the specified data object; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataTableMetadata.DataObjects">
+            <summary>
+            Gets the underlaying data objects.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataTableMetadata.DataRows">
+            <summary>
+            Gets an array of <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/> created for this <see cref="T:Infragistics.Olap.FlatData.DataTableMetadata"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataTableMetadata.RowsCount">
+            <summary>
+            Gets the count of the rows stored in this <see cref="T:Infragistics.Olap.FlatData.DataTableMetadata"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataTableMetadata.ColumnsCount">
+            <summary>
+            Gets the count of the columns stored in this <see cref="T:Infragistics.Olap.FlatData.DataTableMetadata"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.DataRowMetadata">
+            <summary>
+            Contains metadata information about data row.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataRowMetadata.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataRowMetadata.AddPropertyMetadata(Infragistics.Olap.FlatData.DataPropertyMetadata)">
+            <summary>
+            Adds a new <see cref="T:Infragistics.Olap.FlatData.DataPropertyMetadata"/> to the internal property medatada array.
+            </summary>
+            <param name="propertyMetadata">The instance of <see cref="T:Infragistics.Olap.FlatData.DataPropertyMetadata"/> to add.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataRowMetadata.UpdateIsExcluded(Infragistics.Olap.Data.IFilterSource)">
+            <summary>
+            Updates the value of <see cref="P:Infragistics.Olap.FlatData.DataRowMetadata.IsExcluded"/> regarding the <see cref="T:Infragistics.Olap.Data.IFilterSource"/> items this instance is connected to.
+            </summary>
+            <param name="filterSource">The filter source instance which selection state has been changed.</param>
+            <returns><c>true</c> if <see cref="P:Infragistics.Olap.FlatData.DataRowMetadata.IsExcluded"/> value is changed, otherwise <c>false</c></returns>
+        </member>
+        <member name="E:Infragistics.Olap.FlatData.DataRowMetadata.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataRowMetadata.DataProperties">
+            <summary>
+            Gets an array of <see cref="T:Infragistics.Olap.FlatData.DataPropertyMetadata"/> added to this <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataRowMetadata.DataLevels">
+            <summary>
+            Gets an array of ids of level metadata added to this <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataRowMetadata.DataObject">
+            <summary>
+            Gets the instance of the object that this <see cref="T:Infragistics.Olap.FlatData.DataPropertyMetadata"/> describes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataRowMetadata.PropertiesCount">
+            <summary>
+            Gets the count of the <see cref="T:Infragistics.Olap.FlatData.DataPropertyMetadata"/> items added to this <see cref="T:Infragistics.Olap.FlatData.DataRowMetadata"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.DataPropertyMetadata">
+            <summary>
+            Contains metadata information about the source property of data item.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataPropertyMetadata.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.DataPropertyMetadata"/> class.
+            </summary>
+            <param name="capacity">Initial size of the id items.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DataPropertyMetadata.ContainsMemberId(System.Int32)">
+            <summary>
+            Verifies if given <see cref="P:Infragistics.Olap.Data.IMember.UniqueId"/> is present in current <see cref="P:Infragistics.Olap.FlatData.DataPropertyMetadata.MemberIds"/> array.
+            </summary>
+            <param name="id">The unique id of the <see cref="T:Infragistics.Olap.Data.IMember"/>.</param>
+            <returns><b>true</b> if the given id is found, otherwise <b>false</b>.</returns>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DataPropertyMetadata.MemberIds">
+            <summary>
+            Gets an array of the <see cref="P:Infragistics.Olap.Data.IMember.UniqueId"/> of the members associated with this <see cref="T:Infragistics.Olap.FlatData.DataPropertyMetadata"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.DimensionMetadata">
+            <summary>
+            Provides description of the <see cref="T:Infragistics.Olap.Data.IDimension"/> build over the property specified by <see cref="P:Infragistics.Olap.FlatData.DimensionMetadata.SourcePropertyName"/>.
+            This class is used with <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/> where instance of <see cref="T:System.Collections.IEnumerable"/> is used as data source.
+            <see cref="T:Infragistics.Olap.FlatData.DimensionMetadata"/> can be assigned to each property that data source items type expose.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.DimensionMetadata.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.DimensionMetadata"/> class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DimensionMetadata.SourcePropertyName">
+            <summary>
+            Gets or sets the name of property used as data source of the dimension this <see cref="T:Infragistics.Olap.FlatData.DimensionMetadata"/> describes in
+            both modes <see cref="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Property"/> and <see cref="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Mixed"/>        
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DimensionMetadata.DisplayName">
+            <summary>
+            Gets or sets the display name for the dimension created over the property specified by <see cref="P:Infragistics.Olap.FlatData.DimensionMetadata.SourcePropertyName"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DimensionMetadata.DisplayFormat">
+            <summary>
+            Gets or sets the format string used for visualization of the data stored into the property specified by <see cref="P:Infragistics.Olap.FlatData.DimensionMetadata.SourcePropertyName"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DimensionMetadata.AutoGenerateField">
+            <summary>
+            Gets or sets a value indicating whether dimennsion/measure will be generated for the property specified by <see cref="P:Infragistics.Olap.FlatData.DimensionMetadata.SourcePropertyName"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DimensionMetadata.DimensionType">
+            <summary>
+            Gets or sets the type of dimension.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DimensionMetadata.HierarchyDescriptors">
+            <summary>
+            Gets the list of <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> objects used to construct the hierarchies of the dimension this <see cref="T:Infragistics.Olap.FlatData.DimensionMetadata"/> describes.
+            This collections is used with both <see cref="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Metadata"/> and <see cref="F:Infragistics.Olap.FlatData.DimensionsGenerationMode.Mixed"/> modes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DimensionMetadata.GroupName">
+            <summary>
+            Gets or sets the name of the group on which belongs the described dimension.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DimensionMetadata.Aggregator">
+            <summary>
+            Gets or sets the default <see cref="P:Infragistics.Olap.FlatData.DimensionMetadata.Aggregator"/> for a <see cref="T:Infragistics.Olap.Data.IMeasure"/>.
+            This property is used only <see cref="P:Infragistics.Olap.FlatData.DimensionMetadata.DimensionType"/> is set to <see cref="F:Infragistics.Olap.FlatData.DimensionType.Measure"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.DimensionMetadata.AggregatorType">
+            <summary>
+            Gets or sets the type of defult measure aggregator for <see cref="P:Infragistics.Olap.FlatData.DimensionMetadata.Aggregator"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.CubeMetadata">
+            <summary>
+            Provides description of the <see cref="T:Infragistics.Olap.Data.ICube"/> build over the <see cref="T:System.Type"/> of the data source items used by <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.CubeMetadata.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.CubeMetadata"/> class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.CubeMetadata.DisplayName">
+            <summary>
+            Gets or sets the display name of the <see cref="T:Infragistics.Olap.Data.ICube"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.CubeMetadata.DataTypeFullName">
+            <summary>
+            Gets or sets the <see cref="P:System.Type.FullName"/> of data source items used as <see cref="P:Infragistics.Olap.FlatData.FlatDataSource.ItemsSource"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.CubeMetadata.DimensionSettings">
+            <summary>
+            Gets list of <see cref="T:Infragistics.Olap.FlatData.DimensionMetadata"/> items which provide information about the different dimensions build over
+            the different properties exposed by data source items.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.ReflectionHelper">
+            <summary>
+            Provides a helper methods to create a cached delegates to field and property get methods and method call delegates.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.ReflectionHelper.CreateFieldGetMethod(System.Reflection.FieldInfo)">
+            <summary>
+            Creates the field get method.
+            </summary>
+            <param name="fieldInfo">The field info.</param>
+            <returns>Returns delegate of get method of the field.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.ReflectionHelper.CreatePropertyGetMethod(System.Reflection.PropertyInfo)">
+            <summary>
+            Creates the property get method.
+            </summary>
+            <param name="propertyInfo">The property info.</param>
+            <returns>Returns delegate of get method of the property.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.ReflectionHelper.CreateMethodInvoker(System.Reflection.MethodInfo)">
+            <summary>
+            Creates the method invoker.
+            </summary>
+            <param name="methodInfo">The method info.</param>
+            <returns>Returns cached delegate of method.</returns>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.FlatDataFilterViewModel">
+            <summary>
+            Provides a class instance of <see cref="T:Infragistics.Olap.IFilterViewModel"/> used by <see cref="T:Infragistics.Olap.FlatData.FlatDataModelProvider"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataFilterViewModel.#ctor(Infragistics.Olap.IOlapViewModel,Infragistics.Olap.IDataProvider,Infragistics.Olap.Data.ICube,Infragistics.Olap.Data.IHierarchy)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.FlatDataFilterViewModel"/> class.
+            </summary>
+            <param name="olapViewModel">The olap view model which this instance is related to.</param>
+            <param name="provider">The model provider which will be used to get the data.</param>
+            <param name="cube">The cube in which the hierarchy to be filtered belongs.</param>
+            <param name="hierarchy">The hierarchy to be displayed in the filter.</param>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.FlatDataSource">
+            <summary>
+            Provides a way to use <see cref="T:System.Collections.IEnumerable"/> as data source to display data in XamPivotGrid.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.#ctor(Infragistics.Olap.IDataProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/> class.
+            </summary>
+            <param name="provider">The provider used by this <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.GetCellItemsIndexes(Infragistics.Olap.Data.ICell)">
+            <summary>
+            Gets list with records indexes that participate in cell value creation.
+            </summary>
+            <param name="cell">The cell which items indexies are requested.</param>
+            <returns>List with records indexes.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.GetCellItemsIndexes(Infragistics.Olap.Data.ITuple,Infragistics.Olap.Data.ITuple)">
+            <summary>
+            Gets list with records indexes that participate in both of the tuples.
+            </summary>
+            <param name="rowTuple">The rowTuple which items indexes are requested.</param>
+            <param name="columnTuple">The column tuple which items indexes are requested.</param>
+            <returns>List with records indexes.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.GetRecord(System.Int32)">
+            <summary>
+            Returns an object in the data source at a given index.
+            </summary>
+            <param name="recordIndex">The index of the item to find.</param>
+            <returns>The object at that index.</returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.AddHierarchyDescriptor(Infragistics.Olap.FlatData.HierarchyDescriptor)">
+            <summary>
+            Adds new <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> to the collection.
+            </summary>
+            <param name="hierarchyDescriptor">The added descriptor.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.CreateFilterViewModel(Infragistics.Olap.Data.IHierarchy)">
+            <summary>
+            Creates view model for the specified hierarchy.
+            </summary>
+            <param name="hierarchy">The hierarchy.</param>
+            <returns>
+            Instance of <see cref="T:Infragistics.Olap.IFilterViewModel"/> which wraps the hierarchy.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.CreateMeasureViewModel(Infragistics.Olap.Data.IMeasure)">
+            <summary>
+            Creates view model for the specified measure.
+            </summary>
+            <param name="measure">The measure.</param>
+            <returns>
+            Instance of <see cref="T:Infragistics.Olap.IMeasureViewModel"/> which wraps the measure.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.BuildDataInternal(Infragistics.Olap.DataSourceBase.BackgroundWorker,Infragistics.Olap.DataSourceBase.DoWorkEventArgs)">
+            <summary>
+            Generates the data internally.
+            </summary>
+            <param name="backgroundWorker">The background worker.</param>
+            <param name="e">The <see cref="T:System.ComponentModel.DoWorkEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.OnChangeableDataProviderSourceChanged(Infragistics.Olap.DataProviderSourceChangedEventArgs)">
+            <summary>
+            Called when original data source of <see cref="P:Infragistics.Olap.DataSourceBase.DataProvider"/> changes.
+            </summary>
+            <param name="e">Event arguments with specific to the change information.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.OnDataProviderChanging">
+            <summary>
+            Called when <see cref="P:Infragistics.Olap.DataSourceBase.DataProvider"/> property is changing.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.OnDataProviderChanged">
+            <summary>
+            Called when <see cref="P:Infragistics.Olap.DataSourceBase.DataProvider"/> property is changed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.OnSchemaLoaded(Infragistics.Olap.LoadSchemaCompletedEventArgs)">
+            <summary>
+            This method is called when connection to the data source is established and the initialization information
+            for data source is loaded.
+            </summary>
+            <param name="e">The event arguments with specific to this action information.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.UpdateHierarchiesCollection(Infragistics.Olap.AreaItemsCollection)">
+            <summary>
+            Defines the way of initial loading of hierarchies and filtering of their members.
+            </summary>
+            <param name="hierarchiesCollection">The <see cref="T:Infragistics.Olap.AreaItemsCollection"/> where initialized hierarchies is added.
+            That should be one of collection exposed by <see cref="P:Infragistics.Olap.DataSourceBase.Rows"/>, <see cref="P:Infragistics.Olap.DataSourceBase.Columns"/> or <see cref="P:Infragistics.Olap.DataSourceBase.Filters"/> properties.</param>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.RegisterResources(System.String,System.Reflection.Assembly)">
+            <summary>
+            Adds an additonal Resx file in which the control will pull its resources from.
+            </summary>
+            <param name="name">The name of the embedded resx file that contains the resources to be used.</param>
+            <param name="assembly">The assembly in which the resx file is embedded.</param>
+            <remarks>Don't include the extension of the file, but prefix it with the default Namespace of the assembly.</remarks>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatDataSource.UnregisterResources(System.String)">
+            <summary>
+            Removes a previously registered resx file.
+            </summary>
+            <param name="name">The name of the embedded resx file that was used for registration.</param>
+            <remarks>
+            Note: this won't have any effect on controls that are already in view and are already displaying strings.
+            It will only affect any new controls created.
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataSource.ItemsSource">
+            <summary>
+            Gets or sets the <see cref="T:System.Collections.Generic.IEnumerable`1"/> used as data sourse by this <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataSource.CubesSettings">
+            <summary>
+            Gets the list of metadata objects used when the UI representation of the cube is built.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataSource.HierarchyDescriptors">
+            <summary>
+            Gets the list of <see cref="T:Infragistics.Olap.FlatData.HierarchyDescriptor"/> objects used to construct the hierarchies over particular property of flat type.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataSource.DimensionsGenerationMode">
+            <summary>
+            Gets or sets the data source used to extract information about the dimensions generation.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataSource.GenerateNullValueCells">
+            <summary>
+            Gets or sets a value indicating whether result cell is generated when aggregated cell's result value is <c>null</c>.
+            The default value is <c>true</c>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataSource.FlatDataProvider">
+            <summary>
+            Gets this <see cref="P:Infragistics.Olap.DataSourceBase.DataProvider"/> as <see cref="T:Infragistics.Olap.FlatData.FlatDataModelProvider"/>
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatDataSource.FlatDataSettings">
+            <summary>
+            Gets this <see cref="P:Infragistics.Olap.DataSourceBase.ConnectionSettings"/> as <see cref="P:Infragistics.Olap.FlatData.FlatDataSource.FlatDataSettings"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.FlatData.FlatTuple">
+            <summary>
+            Represents an ordered sequence of members used by <see cref="T:Infragistics.Olap.FlatData.FlatDataSource"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.FlatData.FlatTuple.#ctor(Infragistics.Olap.OlapElementCollection{Infragistics.Olap.Data.IMember},System.Collections.Generic.IEnumerable{Infragistics.Olap.FlatData.DataRowMetadata},Infragistics.Olap.FlatData.FlatMeasure)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.FlatData.FlatTuple"/> class.
+            </summary>
+            <param name="members">The members.</param>
+            <param name="rowsMetadata">The rows metadata.</param>
+            <param name="measure">The measure that participate in this instance.</param>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatTuple.RowsMetadata">
+            <summary>
+            Gets the rows metadata which participate in this instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.FlatData.FlatTuple.Measure">
+            <summary>
+            Gets the measure that participate in this instance.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -15,7 +15,7 @@
 
 
     <!--  TextBox Brushes  -->
-    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource WarewolfBlack}" />
     <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />

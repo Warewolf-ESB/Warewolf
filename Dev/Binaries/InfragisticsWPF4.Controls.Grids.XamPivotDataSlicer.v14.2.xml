@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Controls.Grids.XamPivotDataSlicer.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Controls.Grids.XamPivotDataSlicer">
+            <summary>
+            XamPivotDataSlicer control class.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.SlicerProviderProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.SlicerProvider"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetHierarchyProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetHierarchy"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetHierarchyNameProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetHierarchyName"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevelProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevel"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevelIndexProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevelIndex"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevelNameProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevelName"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.SlicerItemsColorSchemeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.SlicerItemsColorScheme"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.ItemsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.Items"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.ItemContainerStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.ItemContainerStyle"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicer.IsHeaderAreaExpandedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.IsHeaderAreaExpanded"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotDataSlicer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.XamPivotDataSlicer"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotDataSlicer.RemoveFilters">
+            <summary>
+            Removes all filters applied to this instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotDataSlicer.RegisterResources(System.String,System.Reflection.Assembly)">
+            <summary>
+            Adds an additonal Resx file in which the control will pull its resources from.
+            </summary>
+            <param name="name">The name of the embedded resx file that contains the resources to be used.</param>
+            <param name="assembly">The assembly in which the resx file is embedded.</param>
+            <remarks>Don't include the extension of the file, but prefix it with the default Namespace of the assembly.</remarks>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotDataSlicer.UnregisterResources(System.String)">
+            <summary>
+            Removes a previously registered resx file.
+            </summary>
+            <param name="name">The name of the embedded resx file that was used for registration.</param>
+            <remarks>
+            Note: this won't have any effect on controls that are already in view and are already displaying strings.
+            It will only affect any new controls created.
+            </remarks>
+        </member>
+        <member name="E:Infragistics.Controls.Grids.XamPivotDataSlicer.SlicerItemSelectionChanged">
+            <summary>
+            Occurs when a child <see cref="T:Infragistics.Olap.IPivotDataSlicerItem"/> selection changes.
+            </summary>
+        </member>
+        <member name="E:Infragistics.Controls.Grids.XamPivotDataSlicer.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.IsHeaderAreaExpanded">
+            <summary>
+            Gets or sets a value indicating whether the header area is expanded.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.ItemContainerStyle">
+            <summary>
+            Gets or sets the style that is applied to each <see cref="T:Infragistics.Controls.Grids.XamPivotDataSlicerItem"/>.
+            </summary>
+            <value>The item container style.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.HasAppliedFilter">
+            <summary>
+            Gets a value indicating whether this instance has applied filter.
+            </summary>
+            <value>
+            	<c>true</c> if this instance has applied filter; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevel">
+            <summary>
+            Gets or sets the target level.
+            </summary>
+            <value>The target level.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevelName">
+            <summary>
+            Gets or sets the name of the target level.
+            </summary>
+            <value>The name of the target level.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevelIndex">
+            <summary>
+            Gets or sets the index of the target level.
+            </summary>
+            <value>The index of the target level.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.SlicerItemsColorScheme">
+            <summary>
+            Gets or sets the slicer items color scheme.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.SlicerProvider">
+            <summary>
+            Gets or sets the <see cref="T:Infragistics.Olap.IPivotDataSlicerProvider"/>.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetHierarchyName">
+            <summary>
+            Gets or sets the unique name of the target hierarchy this slicer connects to.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetLevels">
+            <summary>
+            Gets collection of level names of the selected <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetHierarchy"/> of this instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetHierarchies">
+            <summary>
+            Gets collection of target hierarchies names of this instance.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.TargetHierarchy">
+            <summary>
+            Gets or sets the hierarchy this instance targets.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.Infragistics#Olap#IPivotDataSlicer#Items">
+            <summary>
+            Gets <see cref="T:System.Collections.Generic.IEnumerable`1"/> of all <see cref="T:Infragistics.Olap.IPivotDataSlicerItem"/> items of this instance.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicer.Items">
+            <summary>
+            Gets the items related to the selected <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicer.SlicerProvider"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.XamPivotDataSlicerItem">
+            <summary>
+            Class representing an item in a XamPivotDataSlicer.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicerItem.IsSelectedProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicerItem.IsSelected"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicerItem.ItemColorSchemeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicerItem.ItemColorScheme"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotDataSlicerItem.DisplayNameProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotDataSlicerItem.DisplayName"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotDataSlicerItem.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicerItem.DisplayName">
+            <summary>
+            Gets or sets the display name of this instance.
+            </summary>
+            <value>The display name.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicerItem.ItemColorScheme">
+            <summary>
+            Gets or sets the slicer items color scheme.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicerItem.IsSelected">
+            <summary>
+            Gets or sets a value indicating whether this instance is selected.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicerItem.Slicer">
+            <summary>
+            Gets the parent slicer.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotDataSlicerItem.FilterSource">
+            <summary>
+            Gets the filter source this instance is related to.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.StringSettings">
+            <summary>
+            An object that contains strings for different areas in UI (buttons, tooltips, menu headers, etc.) of the <see cref="T:Infragistics.Controls.Grids.XamPivotDataSlicer"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.StringSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.StringSettings"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.StringSettings.GetString(System.String)">
+            <summary>
+            Returns the resource string.
+            </summary>
+            <param name="resourceName">Name of the resource.</param>
+            <returns>the string resource</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.StringSettings.LevelLabel">
+            <summary>
+            Gets or sets the string resource used for level label.
+            </summary>
+            <value>The level label.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.StringSettings.HierarchyLabel">
+            <summary>
+            Gets or sets the string resource used for hierarchy label.
+            </summary>
+            <value>The level label.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.XamPivotDataSlicerPlaceholder">
+            <summary>
+            The designer needs a class which doesn't inherit from control in order to work,
+            otherwise there are compilation problems due to the base class (Control) being ambiguous between SL and WPF.
+            </summary>
+        </member>
+    </members>
+</doc>
