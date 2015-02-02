@@ -44,6 +44,10 @@ namespace Dev2.Runtime.Security
             var result = reader.Execute(null, null);
             var serializer = new Dev2JsonSerializer();
             SecuritySettingsTO securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
+            if (securitySettingsTO == null)
+            {
+                return null;
+            }
             TimeOutPeriod = securitySettingsTO.CacheTimeout;
             return securitySettingsTO.WindowsGroupPermissions;
         }
