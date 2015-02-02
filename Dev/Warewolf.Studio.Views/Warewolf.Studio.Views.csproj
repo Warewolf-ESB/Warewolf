@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FontAwesome.WPF">
-      <HintPath>\\rsaklfhagashen\Stuff\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll</HintPath>
+      <HintPath>..\packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
@@ -221,8 +221,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ServerUserControl.xaml.cs">
-      <DependentUpon>ServerUserControl.xaml</DependentUpon>
+    <Compile Include="PopupSample.xaml.cs">
+      <DependentUpon>PopupSample.xaml</DependentUpon>
     </Compile>
     <Compile Include="SourcesOuterControl.xaml.cs">
       <DependentUpon>SourcesOuterControl.xaml</DependentUpon>
@@ -279,7 +279,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ServerUserControl.xaml">
+    <Page Include="PopupSample.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

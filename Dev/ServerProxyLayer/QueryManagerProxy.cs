@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
+using Dev2.Common.Interfaces.Toolbox;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
@@ -97,6 +98,11 @@ namespace Warewolf.Studio.ServerProxyLayer
             return result;
         }
         #endregion
+
+        public IList<IToolDescriptor> FetchTools()
+        {
+            return null;
+        }
     }
          
     

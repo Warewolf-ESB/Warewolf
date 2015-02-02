@@ -15,6 +15,7 @@
 
 
     <!--  TextBox Brushes  -->
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
@@ -212,7 +213,8 @@
         </Setter>
     </Style>
 
-
     <!--  *********************************  Implicit Styles  *********************************  -->
     <Style BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}" />
+
+
 </ResourceDictionary>

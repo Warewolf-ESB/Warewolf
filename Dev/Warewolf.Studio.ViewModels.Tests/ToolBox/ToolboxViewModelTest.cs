@@ -137,6 +137,70 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             //------------Assert Results-------------------------
             Assert.AreEqual(1,vm.Tools.Count);
             Assert.AreEqual(vm.Tools.First().Tool,tools[1]);
+        } 
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ToolBoxViewModel_Search")]
+        public void ToolBoxViewModel_SetSearch_ShouldCallFiltersWithContains()
+        {
+            //------------Setup for test--------------------------
+            var localTools = new Mock<IToolboxModel>();
+            var tools = new[]
+            {
+                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native),
+                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "ded", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native)
+            };
+            var remoteTools = new Mock<IToolboxModel>();
+            remoteTools.Setup(a => a.IsEnabled()).Returns(false);
+            localTools.Setup(a => a.IsEnabled()).Returns(true);
+            localTools.Setup(a => a.GetTools()).Returns(tools);
+            remoteTools.Setup(a => a.GetTools()).Returns(tools);
+            //------------Execute Test---------------------------
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
+            Assert.AreEqual(2, vm.Tools.Count);
+            vm.SearchTerm = "d";
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,vm.Tools.Count);
+            Assert.AreEqual(vm.Tools.First().Tool,tools[1]);
+        }
+  
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ToolBoxViewModel_Search")]
+        public void ToolBoxViewModel_SetSearchSame_ShouldNotCallFiltersWithContains()
+        {
+            //------------Setup for test--------------------------
+            var localTools = new Mock<IToolboxModel>();
+            var tools = new[]
+            {
+                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native),
+                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "ded", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native)
+            };
+            var remoteTools = new Mock<IToolboxModel>();
+            remoteTools.Setup(a => a.IsEnabled()).Returns(false);
+            localTools.Setup(a => a.IsEnabled()).Returns(true);
+            localTools.Setup(a => a.GetTools()).Returns(tools);
+            remoteTools.Setup(a => a.GetTools()).Returns(tools);
+            var vm = new ToolboxViewModel(localTools.Object, remoteTools.Object) { IsDesignerFocused = true };
+            var hitCount = 0;
+            vm.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "SearchTerm")
+                {
+                    hitCount++;
+                }
+            };
+            //------------Assert Precondition--------------------
+            Assert.AreEqual(2, vm.Tools.Count);
+            vm.SearchTerm = "d";           
+            //------------Execute Test---------------------------
+            vm.SearchTerm = "d";
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, vm.Tools.Count);
+            Assert.AreEqual(vm.Tools.First().Tool, tools[1]);
+            Assert.AreEqual(1,hitCount);
+           
         }
 
         [TestMethod]

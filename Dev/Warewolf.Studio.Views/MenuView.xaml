@@ -5,7 +5,7 @@
              xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:studio="clr-namespace:Dev2.Common.Interfaces.Studio;assembly=Dev2.Common.Interfaces"
-             Width="60"
+             Width="150"
              ScrollViewer.VerticalScrollBarVisibility="Disabled"
              d:DataContext="{d:DesignInstance Type={x:Type studio:IMenuViewModel}}"
              mc:Ignorable="d">
@@ -15,60 +15,74 @@
           VerticalAlignment="Stretch"
           Background="{StaticResource MenuPanelGradient}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.15*" />
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
-            <RowDefinition Height="0.5*" />
-            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
             <RowDefinition Height="*" />
-            <RowDefinition Height="0.25*" />
-            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="15" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Image Grid.Row="0"
                Grid.ColumnSpan="3"
-               Width="5"
-               Height="5"
+               Width="15"
+               Height="15"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                Source="{StaticResource System-Spacer}" />
 
-        <Image Grid.Row="1"
-               Grid.ColumnSpan="3"
+        <Image x:Name="LogoImage"
+               Grid.Row="1"
+               Grid.Column="1"
                Width="40"
                Height="40"
-               Margin="0,0,0,0"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
-               Source="{StaticResource System-Logo}" />
+               Source="{StaticResource System-Logo}"
+               Stretch="Fill" />
+
 
         <Separator Grid.Row="2"
                    Grid.ColumnSpan="3"
+                   Margin="0,15,0,10"
                    Style="{StaticResource MenuSeparator}" />
 
         <Button Grid.Row="3"
@@ -76,138 +90,350 @@
                 Command="{Binding NewCommand}"
                 CommandParameter="{x:Static data:ResourceType.WorkflowService}"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-New}" />
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Source="{StaticResource Menu-System-New}" />
+                <TextBlock HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource MenuTextBoxStyle}"
+                           Text="{Binding Path=NewLabel}" />
+            </DockPanel>
         </Button>
 
-        <Button Grid.Row="4"
-                Grid.Column="1"
-                Command="{Binding SaveCommand}"
-                Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-Save}" />
-        </Button>
+
+        <Image Grid.Row="4"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="10"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
 
         <Button Grid.Row="5"
                 Grid.Column="1"
-                Command="{Binding DeployCommand}"
+                Command="{Binding SaveCommand}"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-Deploy}" />
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource Menu-System-Save}" />
+                <TextBlock Style="{StaticResource MenuTextBoxStyle}" Text="{Binding Path=SaveLabel}" />
+            </DockPanel>
         </Button>
 
-        <Separator Grid.Row="6"
-                   Grid.ColumnSpan="3"
-                   Style="{StaticResource MenuSeparator}" />
+
+        <Image Grid.Row="6"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
 
         <Button Grid.Row="7"
                 Grid.Column="1"
-                Command="{Binding NewCommand}"
-                CommandParameter="{x:Static data:ResourceType.DbService}"
+                Command="{Binding DeployCommand}"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-DB}" />
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource Menu-System-Deploy}" />
+                <TextBlock Style="{StaticResource MenuTextBoxStyle}" Text="{Binding Path=DeployLabel}" />
+            </DockPanel>
         </Button>
 
-        <Button Grid.Row="8"
-                Grid.Column="1"
-                Command="{Binding NewCommand}"
-                CommandParameter="{x:Static data:ResourceType.PluginService}"
-                Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-DLL}" />
-        </Button>
+        <Separator Grid.Row="8"
+                   Grid.ColumnSpan="3"
+                   Margin="0,0,0,10"
+                   Style="{StaticResource MenuSeparator}" />
 
         <Button Grid.Row="9"
                 Grid.Column="1"
                 Command="{Binding NewCommand}"
-                CommandParameter="{x:Static data:ResourceType.WebService}"
+                CommandParameter="{x:Static data:ResourceType.DbService}"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-WebService}" />
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Source="{StaticResource Menu-System-DB}" />
+                <TextBlock Style="{StaticResource MenuTextBoxStyle}" Text="{Binding Path=DatabaseLabel}" />
+            </DockPanel>
         </Button>
 
-        <Separator Grid.Row="10"
-                   Grid.ColumnSpan="3"
-                   Style="{StaticResource MenuSeparator}" />
+        <Image Grid.Row="10"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
 
         <Button Grid.Row="11"
                 Grid.Column="1"
-                Command="{Binding OpenSchedulerCommand}"
+                Command="{Binding NewCommand}"
+                CommandParameter="{x:Static data:ResourceType.PluginService}"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-Task}" />
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource Menu-System-DLL}" />
+                <TextBlock Style="{StaticResource MenuTextBoxStyle}" Text="{Binding Path=DLLLabel}" />
+            </DockPanel>
         </Button>
 
-        <Button Grid.Row="12"
+
+        <Image Grid.Row="12"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
+
+        <Button Grid.Row="13"
                 Grid.Column="1"
-                Command="{Binding ExecuteServiceCommand}"
+                Command="{Binding NewCommand}"
+                CommandParameter="{x:Static data:ResourceType.WebService}"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-Debug}" />
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource Menu-System-WebService}" />
+                <TextBlock Style="{StaticResource MenuTextBoxStyle}" Text="{Binding Path=WebLabel}" />
+            </DockPanel>
         </Button>
 
-        <Separator Grid.Row="13"
-                   Grid.ColumnSpan="3"
-                   Style="{StaticResource MenuSeparator}" />
 
-        <Button Grid.Row="14"
-                Grid.Column="1"
-                Command="{Binding OpenSettingsCommand}"
-                Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-Settings}" />
-        </Button>
+
+        <Image Grid.Row="14"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
 
         <Separator Grid.Row="15"
                    Grid.ColumnSpan="3"
+                   Margin="0,0,0,10"
                    Style="{StaticResource MenuSeparator}" />
 
         <Button Grid.Row="16"
                 Grid.Column="1"
+                Command="{Binding OpenSchedulerCommand}"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-Help}" />
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource Menu-System-Task}" />
+                <TextBlock Style="{StaticResource MenuTextBoxStyle}" Text="{Binding Path=TaskLabel}" />
+            </DockPanel>
         </Button>
 
-        <Separator Grid.Row="17"
-                   Grid.ColumnSpan="3"
-                   Style="{StaticResource MenuSeparator}" />
+
+        <Image Grid.Row="17"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
 
         <Button Grid.Row="18"
                 Grid.Column="1"
-                Command="{Binding CheckForNewVersionCommand}"
-                Style="{StaticResource SideMenuButtonStyle}"
-                Visibility="{Binding HasNewVersion}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource System-Expand}" />
+                Command="{Binding ExecuteServiceCommand}"
+                Style="{StaticResource SideMenuButtonStyle}">
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource Menu-System-Debug}" />
+                <TextBlock Style="{StaticResource MenuTextBoxStyle}" Text="{Binding Path=DebugLabel}" />
+            </DockPanel>
+        </Button>
+
+
+        <Image Grid.Row="19"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
+
+        <Separator Grid.Row="20"
+                   Grid.ColumnSpan="3"
+                   Margin="0,0,0,10"
+                   Style="{StaticResource MenuSeparator}" />
+
+        <Button Grid.Row="21"
+                Grid.Column="1"
+                Command="{Binding OpenSettingsCommand}"
+                Style="{StaticResource SideMenuButtonStyle}">
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource Menu-System-Settings}" />
+                <TextBlock Style="{StaticResource MenuTextBoxStyle}" Text="{Binding Path=SettingsLabel}" />
+            </DockPanel>
+        </Button>
+
+
+        <Image Grid.Row="22"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
+
+        <Separator Grid.Row="23"
+                   Grid.ColumnSpan="3"
+                   Margin="0,0,0,10"
+                   Style="{StaticResource MenuSeparator}" />
+
+        <Button Grid.Row="24"
+                Grid.Column="1"
+                Style="{StaticResource SideMenuButtonStyle}">
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,0,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource Menu-System-Help}" />
+                <TextBlock Style="{StaticResource MenuTextBoxStyle}" Text="{Binding Path=SupportLabel}" />
+            </DockPanel>
         </Button>
 
 
 
-        <Separator Grid.Row="19"
+        <Image Grid.Row="25"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
+
+        <Separator Grid.Row="26"
                    Grid.ColumnSpan="3"
+                   Margin="0,0,0,10"
                    Style="{StaticResource MenuSeparator}" />
 
 
-        <Button Grid.Row="20"
+        <Button Grid.Row="27"
+                Grid.Column="1"
+                VerticalAlignment="Bottom"
+                Command="{Binding CheckForNewVersionCommand}"
+                Style="{StaticResource SideMenuButtonStyle}"
+                Visibility="{Binding HasNewVersion}">
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,5,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource System-Expand}" />
+                <TextBlock Margin="5,5,5,5"
+                           FontSize="{StaticResource FontSize-Normal}"
+                           Style="{StaticResource MenuTextBoxStyle}"
+                           Text="{Binding Path=NewVersionLabel}" />
+            </DockPanel>
+        </Button>
+
+
+        <Image Grid.Row="28"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
+
+        <Separator Grid.Row="29"
+                   Grid.ColumnSpan="3"
+                   Margin="0,0,0,10"
+                   Style="{StaticResource MenuSeparator}" />
+
+
+        <Button Grid.Row="30"
                 Grid.Column="1"
                 VerticalAlignment="Top"
+                Command="{Binding LockCommand}"
                 Style="{StaticResource SideMenuButtonStyle}">
-            <Image Width="20"
-                   Height="20"
-                   Source="{StaticResource Menu-System-Lock}" />
+            <DockPanel Width="115"
+                       Height="30"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center">
+                <Image Width="20"
+                       Height="20"
+                       Margin="5,5,5,5"
+                       HorizontalAlignment="Left"
+                       Source="{StaticResource Menu-System-Lock}" />
+                <TextBlock Margin="5,5,5,5"
+                           FontSize="{StaticResource FontSize-Normal}"
+                           Style="{StaticResource MenuTextBoxStyle}"
+                           Text="{Binding Path=UnLockLabel}" />
+            </DockPanel>
         </Button>
+
+        <Image Grid.Row="31"
+               Grid.ColumnSpan="3"
+               Width="15"
+               Height="15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="{StaticResource System-Spacer}" />
     </Grid>
 </UserControl>

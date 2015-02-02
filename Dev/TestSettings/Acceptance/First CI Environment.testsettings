@@ -1,14 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="CI Environments Acceptance Run" id="81C06529-7F1C-4492-AF18-2FAA0AAF42F2" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
-    <Deployment>
-		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
-		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
-        
-            <!--For Build Agents-->
-        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
-        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
-    </Deployment>
+  <Deployment>
+      <!--Project specific outputs-->
+    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+    <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+    <DeploymentItem filename="Warewolf.AcceptanceTesting.Explorer\bin\Debug\" />
+
+      <!--Solution specific outputs-->
+    <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+    <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
+    <DeploymentItem filename="..\bin\AcceptanceTesting\" />
+  </Deployment>
   <NamingScheme baseName="UT" />
     <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />

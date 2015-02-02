@@ -13,13 +13,14 @@
         xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
         x:Name="MainWindow"
         Title="Warewolf Studio"
+        TextOptions.TextFormattingMode="Display"
         WindowState="Maximized"
         d:DataContext="{d:DesignInstance Type={x:Type interfaces:IShellViewModel}}"
-        mc:Ignorable="d"
-        TextOptions.TextFormattingMode="Display">
+        mc:Ignorable="d">
 
 
     <Window.Resources>
+
 
         <Style TargetType="{x:Type igWindows:XamPager}">
             <EventSetter Event="Loaded" Handler="UnpinnedTabArea_Loaded" />
@@ -65,10 +66,34 @@
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
-                        <dockManager:SplitPane Width="60"
-                                               MaxWidth="60"
+                        <dockManager:SplitPane x:Name="SlidingMenuPane"
+                                               Width="{Binding Path=MenuPanelWidth}"
+                                               MinWidth="60"
+                                               MaxWidth="150"
                                                SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedLeft">
+                            <dockManager:SplitPane.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding MenuExpanded}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="0:0:1" Storyboard.TargetProperty="Width" From="60" To="150" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="0:0:1" Storyboard.TargetProperty="Width" From="150" To="60" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </dockManager:SplitPane.Style>
                             <dockManager:ContentPane x:Name="Menu"
                                                      HorizontalContentAlignment="Stretch"
                                                      VerticalContentAlignment="Stretch"
@@ -146,7 +171,7 @@
                                                      PinButtonVisibility="Hidden"
                                                      Style="{DynamicResource DockmangerToolPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden"
-                                                     regions:RegionManager.RegionName="Help" />
+                                                     regions:RegionManager.RegionName="{x:Static core:RegionNames.Help}" />
                         </dockManager:SplitPane>
                     </dockManager:XamDockManager.Panes>
                     <dockManager:DocumentContentHost>

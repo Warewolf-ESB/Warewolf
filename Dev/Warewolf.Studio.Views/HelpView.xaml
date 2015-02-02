@@ -9,17 +9,22 @@
 	x:Class="Warewolf.Studio.Views.HelpView"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="480"
-    d:DataContext="{d:DesignInstance Type={x:Type help:HelpWindowViewModel}}">
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type help:HelpWindowViewModel}}"
+    Background="{StaticResource WareWolfBackGroundBrush}">
 
-	<Grid>
+    <Grid Background="{StaticResource WareWolfBackGroundBrush}">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
-        <ig:XamRichTextEditor x:Name="xamRichTextEditor1" Grid.Row="1" Margin="0,10,0,0" AllowDocumentViewSplitting="True"
-                              BorderThickness="1" >
-        </ig:XamRichTextEditor>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ig:HtmlDocumentAdapter
+            x:Name="HtmlDocumentAdapter"
+                Document="{Binding Path=Document, ElementName=XamRichTextEditor}"
+                Value="{Binding Path=HelpText, Mode=OneWay, NotifyOnSourceUpdated=True}"
+                 RefreshTrigger="ContentChanged"
+                />
+        <ig:XamRichTextEditor Background="Transparent" FontFamily="Consolas" x:Name="XamRichTextEditor" IsReadOnly="True"></ig:XamRichTextEditor>
 	</Grid>
 </UserControl>

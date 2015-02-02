@@ -1,14 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="Sandbox Acceptance Run" id="3264dd0f-6fc1-4cb9-b44f-c649fef29605" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
-	<Deployment>
-		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
-		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
-        
-            <!--For Build Agents-->
-        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
-        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
-	</Deployment>
+  <Deployment>
+      <!--Project specific outputs-->
+    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+    <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+    <DeploymentItem filename="Warewolf.AcceptanceTesting.Explorer\bin\Debug\" />
+
+      <!--Solution specific outputs-->
+    <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+    <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
+    <DeploymentItem filename="..\bin\AcceptanceTesting\" />
+  </Deployment>
   <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote" hostProcessPlatform="MSIL">

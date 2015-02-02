@@ -792,6 +792,141 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database.
+        /// </summary>
+        public static string MenuDialogDatabaseLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogDatabaseLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debug.
+        /// </summary>
+        public static string MenuDialogDebugLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogDebugLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deploy.
+        /// </summary>
+        public static string MenuDialogDeployLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogDeployLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DLL.
+        /// </summary>
+        public static string MenuDialogDLLLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogDLLLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forums.
+        /// </summary>
+        public static string MenuDialogForumsLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogForumsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lock Menu.
+        /// </summary>
+        public static string MenuDialogLockLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogLockLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string MenuDialogNewLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogNewLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Version.
+        /// </summary>
+        public static string MenuDialogNewVersionLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogNewVersionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string MenuDialogSaveLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogSaveLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string MenuDialogSettingsLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogSettingsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support.
+        /// </summary>
+        public static string MenuDialogSupportLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogSupportLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task.
+        /// </summary>
+        public static string MenuDialogTaskLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogTaskLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tours.
+        /// </summary>
+        public static string MenuDialogToursLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogToursLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unlock Menu.
+        /// </summary>
+        public static string MenuDialogUnLockLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogUnLockLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web.
+        /// </summary>
+        public static string MenuDialogWebLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogWebLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unassigned.
         /// </summary>
         public static string Navigation_Category_Unassigned {

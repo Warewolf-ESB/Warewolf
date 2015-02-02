@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -19,21 +18,20 @@ using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Controller;
 using Dev2.Util;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
-using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Help;
+using IVariableListViewModel = Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ShellViewModel:IShellViewModel
+    public class ShellViewModel : BindableBase, IShellViewModel
     {
         readonly IUnityContainer _unityContainer;
         readonly IRegionManager _regionManager;
@@ -42,6 +40,8 @@ namespace Warewolf.Studio.ViewModels
         IPopupController _popupController;
         IExplorerTreeItem _activeItem;
         IServer _activeServer;
+        int _menuPanelWidth;
+        bool _menuExpanded;
 
         public ShellViewModel(IUnityContainer unityContainer, IRegionManager regionManager, IEventAggregator aggregator)
         {
@@ -54,36 +54,32 @@ namespace Warewolf.Studio.ViewModels
             LocalhostServer = unityContainer.Resolve<IServer>(new ParameterOverrides { { "uri", localhostUri } });
             LocalhostServer.ResourceName = "localhost (" + localHostString + ")";
             ActiveServer = LocalhostServer;
+
+            _menuPanelWidth = 60;
+            _menuExpanded = false;
         }
 
         public void Initialize()
         {
-            var explorerRegion = _regionManager.Regions[RegionNames.Explorer];
-            var explorerView = _unityContainer.Resolve<IExplorerView>();
-            explorerView.DataContext = _unityContainer.Resolve<IExplorerViewModel>();
-            explorerRegion.Add(explorerView, RegionNames.Explorer);
-            explorerRegion.Activate(explorerView);
+            InitializeRegion<IExplorerView,IExplorerViewModel>(RegionNames.Explorer);
+            InitializeRegion<IToolboxView, IToolboxViewModel>(RegionNames.Toolbox);
+            InitializeRegion<IMenuView, IMenuViewModel>(RegionNames.Menu);
+            InitializeRegion<IVariableListView, IVariableListViewModel>(RegionNames.VariableList);
+            InitializeRegion<IHelpView, IHelpWindowViewModel>(RegionNames.Help);
 
-            var toolboxRegion = _regionManager.Regions[RegionNames.Toolbox];
-            var toolBoxView = _unityContainer.Resolve<IToolboxView>();
-            toolBoxView.DataContext = _unityContainer.Resolve<IToolboxViewModel>();
-            toolboxRegion.Add(toolBoxView, RegionNames.Toolbox);
-            toolboxRegion.Activate(toolBoxView);
-
-            var menuRegion = _regionManager.Regions[RegionNames.Menu];
-            var menuView = _unityContainer.Resolve<IMenuView>();
-            menuView.DataContext = _unityContainer.Resolve<IMenuViewModel>();
-            menuRegion.Add(menuView, RegionNames.Menu);
-            menuRegion.Activate(menuView);
             _handler = _unityContainer.Resolve<IExceptionHandler>();
             _popupController = _unityContainer.Resolve<IPopupController>();
             _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => { _popupController.Show(PopupMessages.GetInvalidPermissionException()); });
-            var variableListRegion = _regionManager.Regions[RegionNames.VariableList];
 
-            var variableList = _unityContainer.Resolve<IVariableListView>();
-            variableList.DataContext = _unityContainer.Resolve<Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel>();
-            variableListRegion.Add(variableList, RegionNames.VariableList);
+        }
 
+        public void InitializeRegion<T,TU>(string regionName) where T:IView
+        {
+            var region = _regionManager.Regions[regionName];
+            var view = _unityContainer.Resolve<T>();
+            view.DataContext = _unityContainer.Resolve<TU>();
+            region.Add(view, regionName);
+            region.Activate(view);
         }
 
         public bool RegionHasView(string regionName)
@@ -118,12 +114,12 @@ namespace Warewolf.Studio.ViewModels
             var hasNewVersion = await CheckForNewVersion();
             if (hasNewVersion)
             {
-                var dialog = _unityContainer.Resolve <IWebLatestVersionDialog>();
+                var dialog = _unityContainer.Resolve<IWebLatestVersionDialog>();
                 dialog.ShowDialog();                
             }
         }
 
-        public void OpenVersion(Guid ResourceId, string VersionNumber)
+        public void OpenVersion(Guid resourceId, string versionNumber)
         {
             //todo:
         }
@@ -178,7 +174,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return Equals(viewModel.Resource, resource);
             });
-            if(foundViewModel==null)
+            if (foundViewModel == null)
             {
                 if (resource.ResourceType == ResourceType.WorkflowService)
                 {
@@ -196,9 +192,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void DeployService(IExplorerItemViewModel resourceToDeploy)
         {
-            VerifyArgument.IsNotNull("resourceToDeploy",resourceToDeploy);
+            VerifyArgument.IsNotNull("resourceToDeploy", resourceToDeploy);
             var region = GetRegion(RegionNames.Workspace);
-            var vm = region.Views.FirstOrDefault(a=>a is IDeployViewModel);
+            var vm = region.Views.FirstOrDefault(a => a is IDeployViewModel);
 
             if (vm == null)
             {
@@ -226,16 +222,17 @@ namespace Warewolf.Studio.ViewModels
         }
        
 
+
         public void NewResource(ResourceType? type)
         {
-            if(type == null)
+            if (type == null)
                 return;
-            switch(type.Value)
+            switch (type.Value)
             {
-                case  ResourceType.ServerSource :
+                case ResourceType.ServerSource:
                     CreateNewServerSource();
                     break;
-                default : return;
+                default: return;
 
             }
         }
@@ -330,6 +327,27 @@ namespace Warewolf.Studio.ViewModels
 
         public event Action ActiveServerChanged;
         public event Action ActiveItemChanged;
+
+
+
+
+        public bool MenuExpanded
+        {
+            get
+            {
+                return _menuExpanded;
+            }
+            set
+            {
+                _menuExpanded = value;
+                OnPropertyChanged(() => MenuExpanded);
+            }
+        }
+
+
+
+
+
     }
 
     public class SaveDialogMock : ISaveDialog
@@ -344,4 +362,8 @@ namespace Warewolf.Studio.ViewModels
             get { return new ResourceName("", Guid.NewGuid().ToString().Substring(0, 5)); }
         }
     }
+
+
+
+
 }

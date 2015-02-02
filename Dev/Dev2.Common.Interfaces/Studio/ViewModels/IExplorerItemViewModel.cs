@@ -34,6 +34,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanDrag { get; set; }
         ICommand OpenVersionCommand { get; set; }
         IExplorerItemViewModel Parent { get; set; }
+        string Inputs { get; set; }
+        string Outputs { get; set; }
         void AddSibling(IExplorerItemViewModel sibling);
         void AddChild(IExplorerItemViewModel child);
         void RemoveChild(IExplorerItemViewModel child);

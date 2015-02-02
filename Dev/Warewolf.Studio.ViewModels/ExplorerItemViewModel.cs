@@ -8,11 +8,14 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Data.Util;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core.Popup;
+using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -87,7 +90,14 @@ namespace Warewolf.Studio.ViewModels
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
             RenameCommand = new DelegateCommand(()=>IsRenaming=true);
-            ItemSelectedCommand = new DelegateCommand(()=>shellViewModel.UpdateHelpDescriptor(builder.Build(this,ExplorerEventContext.Selected)));
+            ItemSelectedCommand = new DelegateCommand(() =>
+            {
+                //var helpDescriptor = builder.Build(this, ExplorerEventContext.Selected);
+                
+                var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>",ResourceName, Inputs, Outputs), null);
+                shellViewModel.UpdateHelpDescriptor(helpDescriptor);
+                //shellViewModel.UpdateHelpDescriptor(builder.Build(this, ExplorerEventContext.Selected));
+            });
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
             CanCreateDbService = true;
@@ -107,10 +117,14 @@ namespace Warewolf.Studio.ViewModels
             IsVersion = false;
             Expand = new DelegateCommand<int?>(clickCount =>
             {
-                if (clickCount!= null && clickCount == 2 && ResourceType == ResourceType.Folder)
-                IsExpanded = !IsExpanded;
+                if (clickCount != null && clickCount == 2 && ResourceType == ResourceType.Folder)
+                {
+                    IsExpanded = !IsExpanded;
+                }
                 if (clickCount != null && clickCount == 1 && ResourceType == ResourceType.WorkflowService && IsExpanded)
+                {
                     IsExpanded = false;
+                }
         
             });
 
@@ -574,6 +588,8 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IResource Resource { get; set; }
+        public string Inputs { get; set; }
+        public string Outputs { get; set; }
     }
 
     public class NewItemMessage : INewItemMessage {

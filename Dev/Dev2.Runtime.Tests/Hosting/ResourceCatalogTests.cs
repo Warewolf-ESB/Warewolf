@@ -2592,7 +2592,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var serverVersionRepository = new Mock<IServerVersionRepository>();
-            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), ResourceType.Server, null, Permissions.Administrator, "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
+            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), ResourceType.Server, null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
@@ -2622,7 +2622,7 @@ namespace Dev2.Tests.Runtime.Hosting
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
 
             var serverVersionRepository = new Mock<IServerVersionRepository>();
-            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), ResourceType.Server, null, Permissions.Administrator, "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
+            serverVersionRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem> { new ServerExplorerItem("bob", Guid.NewGuid(), ResourceType.Server, null, Permissions.Administrator, "", "", "") { VersionInfo = new VersionInfo(DateTime.Now, "reason", "", "1", Guid.NewGuid(), Guid.NewGuid()) } });
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);

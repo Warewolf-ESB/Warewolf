@@ -22,6 +22,9 @@ namespace Dev2.Common.Interfaces
         IServer ActiveServer { get; set; }
         IExplorerTreeItem ActiveItem { get; set; }
         IServer LocalhostServer { get; set; }
+        bool MenuExpanded { get; set; }
+
+
         void Handle(Exception err);
         bool ShowPopup(IPopupMessage getDeleteConfirmation);
         void RemoveServiceFromExplorer(IExplorerItemViewModel explorerItemViewModel);
@@ -32,7 +35,7 @@ namespace Dev2.Common.Interfaces
 
         void DisplayDialogForNewVersion();
 
-        void OpenVersion(Guid ResourceId, string VersionNumber);
+        void OpenVersion(Guid resourceId, string versionNumber);
 
         void ExecuteOnDispatcher(Action action);
 

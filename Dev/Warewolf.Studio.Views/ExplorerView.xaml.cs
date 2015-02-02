@@ -27,9 +27,23 @@ namespace Warewolf.Studio.Views
 	    {
 	        InitializeComponent();
 	        _explorerViewTestClass = new ExplorerViewTestClass(this);
-            _blackoutGrid = new Grid();
-            _blackoutGrid.Background = new SolidColorBrush(Colors.Black);
-            _blackoutGrid.Opacity = 0.75;
+            ExplorerTree.ActiveNodeChanged+=ExplorerTreeOnActiveNodeChanged;
+	    }
+
+	    private void ExplorerTreeOnActiveNodeChanged(object sender, ActiveNodeChangedEventArgs activeNodeChangedEventArgs)
+	    {
+	        if (activeNodeChangedEventArgs.NewActiveTreeNode==null)
+	        {
+	            activeNodeChangedEventArgs.Cancel = true;
+	        }
+	        if (activeNodeChangedEventArgs.NewActiveTreeNode != null)
+	        {
+	            var explorerItemViewModel = activeNodeChangedEventArgs.NewActiveTreeNode.Data as IExplorerItemViewModel;
+	            if (explorerItemViewModel != null)
+	            {
+	                explorerItemViewModel.ItemSelectedCommand.Execute(null);
+	            }
+	        }
 	    }
 
 	    public ExplorerViewTestClass ExplorerViewTestClass
@@ -39,15 +53,15 @@ namespace Warewolf.Studio.Views
 
 
 	    private void ScrollBar_Loaded(object sender, RoutedEventArgs e)
-	    {
+        {
 	        var scrollBar = sender as ScrollBar;
 	        if (scrollBar != null && scrollBar.Orientation == Orientation.Horizontal)
             {
                 ExplorerTree.Tag = sender;                
             }
-	    }
+        }
 
-	    public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
+        public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
         {
             return _explorerViewTestClass.OpenEnvironmentNode(nodeName);
         }
@@ -78,13 +92,13 @@ namespace Warewolf.Studio.Views
             BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
 	        if(be != null)
 	        {
-	            be.UpdateSource();
+            be.UpdateSource();
 	        }
 	    }
 
 	    public void Blur()
 	    {
-            
+        
 
             if (Content != null)
             {
@@ -136,5 +150,9 @@ namespace Warewolf.Studio.Views
 	    {
             Keyboard.Focus((IInputElement)sender);
 	    }	    
+
+	    private void FocusManager_OnGotFocus(object sender, RoutedEventArgs e)
+	    {
+	    }
 	}
 }

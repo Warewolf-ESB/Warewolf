@@ -217,13 +217,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         string append = sAppend;
                         if(GetStudioResourceRepository().FindItem(a => a.ResourcePath == append && a.EnvironmentId == _environmentModel.ID) == null)
                         {
-                            item = new ServerExplorerItem(s, Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(), Permissions.Administrator, sAppend) { ServerId = _environmentModel.ID };
+                            item = new ServerExplorerItem(s, Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(), Permissions.Administrator, sAppend,resource.Inputs,resource.Outputs) { ServerId = _environmentModel.ID };
                             GetStudioResourceRepository().ItemAddedMessageHandler(item);
                         }
                     }
                     ResourceType type;
                     Enum.TryParse(resource.ServerResourceType, out type);
-                    GetStudioResourceRepository().ItemAddedMessageHandler(new ServerExplorerItem(resource.DisplayName, resource.ID, type, new List<IExplorerItem>(), resource.UserPermissions, resource.Category) { ServerId = _environmentModel.ID, Parent = item });
+                    GetStudioResourceRepository().ItemAddedMessageHandler(new ServerExplorerItem(resource.DisplayName, resource.ID, type, new List<IExplorerItem>(), resource.UserPermissions, resource.Category,resource.Inputs,resource.Outputs) { ServerId = _environmentModel.ID, Parent = item });
                 }
             }
         }

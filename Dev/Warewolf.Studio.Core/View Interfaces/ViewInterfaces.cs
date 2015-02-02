@@ -5,13 +5,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.Core.View_Interfaces
 {
-
-    public interface IWarewolfView : IView
-    {
-        void Blur();
-        void UnBlur();
-    }
-    public interface IExplorerView : IWarewolfView
+    public interface IExplorerView : IView
     {
         IEnvironmentViewModel OpenEnvironmentNode(string nodeName);
         List<IExplorerItemViewModel> GetFoldersVisible();
@@ -19,9 +13,11 @@ namespace Warewolf.Studio.Core.View_Interfaces
         int GetVisibleChildrenCount(string folderName);
         void PerformFolderRename(string originalFolderName, string newFolderName);
         void PerformSearch(string searchTerm);
-
     }
-    public interface IToolboxView : IWarewolfView { }
-    public interface IMenuView : IWarewolfView { }
-    public interface IVariableListView : IWarewolfView { }
+    public interface IToolboxView : IView { }
+    public interface IHelpView : IView {
+        string GetCurrentHelpText();
+    }
+    public interface IMenuView : IView { }
+    public interface IVariableListView : IView { }
 }
