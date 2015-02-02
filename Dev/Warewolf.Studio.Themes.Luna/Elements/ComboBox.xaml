@@ -73,7 +73,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Grid x:Name="RootElement" SnapsToDevicePixels="True">
+                    <Grid x:Name="RootElement" SnapsToDevicePixels="True" KeyboardNavigation.IsTabStop="False">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
@@ -192,7 +192,8 @@
                                   Margin="1,-4,-4,0"
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Top"
-                                  Background="Transparent">
+                                  Background="Transparent"
+                                  KeyboardNavigation.IsTabStop="False" >
                                 <Path Margin="1,3,0,0"
                                       Data="M 1,0 L6,0 A 2,2 90 0 1 8,2 L8,7 z"
                                       Fill="{StaticResource ValidationErrorElement}" />
@@ -230,7 +231,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Grid>
+                    <Grid KeyboardNavigation.IsTabStop="False">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
@@ -289,7 +290,7 @@
                         <Rectangle x:Name="Bd"
                                    Grid.ColumnSpan="2"
                                    Fill="{StaticResource TextBoxBackgroundBrush}" />
-                        <Grid Grid.Column="1">
+                        <Grid Grid.Column="1" KeyboardNavigation.IsTabStop="False">
                             <Rectangle Width="1"
                                        Margin="-1,5,0,5"
                                        HorizontalAlignment="Left"
@@ -316,8 +317,8 @@
 
     <!--  *********************************  ComboBoxEditable Template  *********************************  -->
     <ControlTemplate x:Key="ComboBoxEditableTemplate" TargetType="{x:Type ComboBox}">
-        <Grid x:Name="MainGrid" SnapsToDevicePixels="true">
-            <Grid.ColumnDefinitions>
+        <Grid x:Name="MainGrid" SnapsToDevicePixels="true" KeyboardNavigation.IsTabStop="False"> 
+            <Grid.ColumnDefinitions >
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
@@ -385,6 +386,7 @@
                        StrokeThickness="1"
                        Visibility="Collapsed" />
             <Popup x:Name="PART_Popup"
+                   KeyboardNavigation.IsTabStop="False"
                    Grid.ColumnSpan="2"
                    Margin="1"
                    AllowsTransparency="true"
@@ -428,7 +430,8 @@
                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                      IsReadOnly="{Binding IsReadOnly,
                                           RelativeSource={RelativeSource TemplatedParent}}"
-                     Style="{StaticResource ComboBoxEditableTextBoxStyle}" />
+                     Style="{StaticResource ComboBoxEditableTextBoxStyle}"
+                     KeyboardNavigation.IsTabStop="False"/>
             <Rectangle x:Name="focused"
                        Grid.ColumnSpan="2"
                        Stroke="{StaticResource ComboBoxFocusedBorderBrush}"
@@ -439,6 +442,7 @@
                        Fill="{StaticResource ComboBoxDisabledBackgroundBrush}"
                        Visibility="Collapsed" />
             <ToggleButton Grid.Column="0"
+                          KeyboardNavigation.IsTabStop="False"
                           Background="{TemplateBinding Background}"
                           Foreground="{StaticResource TextBoxForegroundBrush}"
                           BorderBrush="{TemplateBinding BorderBrush}"
@@ -472,13 +476,26 @@
                     <Grid Background="{TemplateBinding Background}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Normal" >
+                                    <Storyboard>
+
+
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="contentControl" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxForegroundBrush}">
+
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0"
-                                                         Storyboard.TargetName="fillColor"
-                                                         Storyboard.TargetProperty="Opacity"
-                                                         To="1" />
+                   
+
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="contentControl" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxFocusedBrush}">
+
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
@@ -542,9 +559,9 @@
                                 <VisualState x:Name="BeforeUnloaded" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle Fill="{StaticResource TransparentBrush}" />
+                        <Rectangle Fill="{StaticResource ComboBoxBackgroundBrush}" />
                         <Rectangle x:Name="fillColor"
-                                   Fill="{StaticResource ComboBoxItemHoverBackgroundBrush}"
+                                   Fill="{StaticResource ComboBoxBackgroundBrush}"
                                    IsHitTestVisible="False"
                                    Opacity="0"
                                    Stroke="{StaticResource ComboBoxItemHoverBorderBrush}"
@@ -556,13 +573,16 @@
                                    StrokeThickness="{TemplateBinding BorderThickness}"
                                    Visibility="Collapsed" />
                         <ContentControl x:Name="contentControl"
+                                        KeyboardNavigation.IsTabStop="False"
                                         Margin="{TemplateBinding Padding}"
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        Foreground="{TemplateBinding Foreground}">
+                                       >
+
                             <ContentPresenter x:Name="contentPresenter" />
                         </ContentControl>
                         <ContentControl x:Name="contentControl1"
+                                        KeyboardNavigation.IsTabStop="False"
                                         Margin="{TemplateBinding Padding}"
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -617,7 +637,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
-                    <Grid x:Name="MainGrid" SnapsToDevicePixels="true">
+                    <Grid x:Name="MainGrid" SnapsToDevicePixels="true" KeyboardNavigation.IsTabStop="False">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="0" MinWidth="30" />
@@ -674,11 +694,11 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Rectangle x:Name="normal"
+                        <!--<Rectangle x:Name="normal"
                                    Grid.ColumnSpan="2"
                                    Fill="{StaticResource ComboBoxBackgroundBrush}"
                                    Stroke="{StaticResource ComboBoxBorderBrush}"
-                                   StrokeThickness="1" />
+                                   StrokeThickness="1" />-->
                         <Rectangle x:Name="hover"
                                    Grid.ColumnSpan="2"
                                    Fill="{StaticResource ComboBoxHoverBackgroundBrush}"
@@ -688,6 +708,7 @@
                         <Popup x:Name="PART_Popup"
                                Grid.ColumnSpan="2"
                                Margin="1"
+                               KeyboardNavigation.IsTabStop="False"
                                AllowsTransparency="true"
                                IsOpen="{Binding IsDropDownOpen,
                                                 RelativeSource={RelativeSource TemplatedParent}}"
@@ -702,7 +723,7 @@
                                     BorderBrush="{StaticResource PopupBorderBrush}"
                                     BorderThickness="1"
                                     CornerRadius="2">
-                                <ScrollViewer x:Name="DropDownScrollViewer" Style="{StaticResource ScrollViewerStyle}">
+                                <ScrollViewer KeyboardNavigation.IsTabStop="False" x:Name="DropDownScrollViewer" Style="{StaticResource ScrollViewerStyle}">
                                     <Grid RenderOptions.ClearTypeHint="Enabled">
                                         <Canvas Width="0"
                                                 Height="0"
@@ -729,7 +750,8 @@
                                       IsChecked="{Binding IsDropDownOpen,
                                                           Mode=TwoWay,
                                                           RelativeSource={RelativeSource TemplatedParent}}"
-                                      Style="{StaticResource ComboBoxToggleButtonStyle}" />
+                                      Style="{StaticResource ComboBoxToggleButtonStyle}"
+                                      KeyboardNavigation.IsTabStop="False"/>
 
 
                         <ContentControl x:Name="MainTextBox"
@@ -738,8 +760,10 @@
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                         Foreground="{TemplateBinding Foreground}" 
                                         Background="{StaticResource  TextBoxBackgroundBrush}"                                        
-                                        Visibility="Visible">
+                                        Visibility="Visible"
+                                        KeyboardNavigation.IsTabStop="False">
                             <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              KeyboardNavigation.IsTabStop="False"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Content="{TemplateBinding SelectionBoxItem}"
@@ -757,11 +781,15 @@
 
                         </ContentControl>
 
-
+                        <Rectangle x:Name="normal"
+                                   Grid.ColumnSpan="2"
+                                   Stroke="{StaticResource ComboBoxBorderBrush}"
+                                   StrokeThickness="2"
+                                   Visibility="Visible" />
                         <Rectangle x:Name="focused"
                                    Grid.ColumnSpan="2"
                                    Stroke="{StaticResource ComboBoxFocusedBorderBrush}"
-                                   StrokeThickness="1"
+                                   StrokeThickness="2"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="disabled"
                                    Grid.ColumnSpan="2"
