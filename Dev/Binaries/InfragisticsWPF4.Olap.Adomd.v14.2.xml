@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Olap.Adomd.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Olap.Adomd.AdomdCommand">
+            <summary>
+            Wraps and use the generated <see cref="T:Infragistics.Olap.Xmla.XmlaCommand"/> as <see cref="T:Microsoft.AnalysisServices.AdomdClient.AdomdCommand"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdCommand.#ctor(Infragistics.Olap.Xmla.XmlaConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Adomd.AdomdCommand"/> class.
+            </summary>
+            <param name="connection">The connection object used to connect to server.</param>
+        </member>
+        <member name="T:Infragistics.Olap.Adomd.AdomdConnection">
+            <summary>
+            Connects to SSAS trough APIs provided by <see cref="N:Microsoft.AnalysisServices.AdomdClient"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdConnection.#ctor(Infragistics.Olap.IConnectionSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Adomd.AdomdConnection"/> class.
+            </summary>
+            <param name="settings">The <see cref="T:Infragistics.Olap.IConnectionSettings"/> used to establish the connection.
+            Instance of <see cref="T:Infragistics.Olap.Adomd.AdomdConnectionSettings"/> is expected here.</param>
+        </member>
+        <member name="T:Infragistics.Olap.Adomd.AdomdConnectionSettings">
+            <summary>
+            Enables implementations of <see cref="T:Infragistics.Olap.IOlapViewModel"/> to connects to SSAS through <see cref="N:Microsoft.AnalysisServices.AdomdClient"/> connection.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdConnectionSettings.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:Infragistics.Olap.Adomd.AdomdConnectionSettings"/> class. 
+            Registers classes into container.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdConnectionSettings.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Adomd.AdomdConnectionSettings"/> class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Olap.Adomd.AdomdConnectionSettings.ServerUrl">
+            <summary>
+            Gets or sets the server URL. 
+            </summary>
+            <example>Microsoft SQL Analysis Server: http://[domain:port]/olap/msmdpump.dll</example>
+            <value>The server URL.</value>
+        </member>
+        <member name="P:Infragistics.Olap.Adomd.AdomdConnectionSettings.CatalogName">
+            <summary>
+            Gets or sets the name of the catalog.
+            <example>Adventure Works DW</example>
+            </summary>
+            <value>The name of the catalog.</value>
+        </member>
+        <member name="P:Infragistics.Olap.Adomd.AdomdConnectionSettings.ConnectionString">
+            <summary>
+            Gets or sets the connection string used by <see cref="N:Microsoft.AnalysisServices.AdomdClient"/> to connects to SSAS.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.Adomd.AdomdDataProvider">
+            <summary>
+            Provides way to query data from SSAS using <see cref="N:Microsoft.AnalysisServices.AdomdClient"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdDataProvider.#ctor(Infragistics.Olap.IOlapConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Adomd.AdomdDataProvider"/> class.
+            </summary>
+            <param name="connection">The connection should be of type <see cref="T:Infragistics.Olap.Xmla.XmlaConnection"/>.</param>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdDataProvider.LoadSchemaAsync">
+            <summary>
+            Loads the schema asynchronously.
+            </summary>        
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdDataProvider.LoadDimensionsAsync(Infragistics.Olap.Data.ICube)">
+            <summary>
+            Loads the dimensions in the cube asynchronously.
+            </summary>
+            <param name="cube">The cube to fill dimensions in.</param>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdDataProvider.LoadMeasuresAsync(Infragistics.Olap.Data.ICube)">
+            <summary>
+            Loads the measures in the cube asynchronously.
+            </summary>
+            <param name="cube">The cube to fill measures in.</param>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdDataProvider.LoadMembersAsync(Infragistics.Olap.Data.ICube,Infragistics.Olap.Data.IMember)">
+            <summary>
+            Loads the members and add them as a children to the parent member.
+            </summary>
+            <param name="cube">The cube in which the members are.</param>
+            <param name="member">The parent member.</param>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdDataProvider.LoadMembersAsync(Infragistics.Olap.Data.ICube,Infragistics.Olap.Data.IFilterMember)">
+            <summary>
+            Loads the members and add them as a children to the parent member.
+            </summary>
+            <param name="cube">The cube in which the members are.</param>   
+            <param name="filterMember">The parent member.</param>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdDataProvider.LoadMembersAsync(Infragistics.Olap.Data.ICube,Infragistics.Olap.Data.ILevel)">
+            <summary>
+            Loads the members and add them as a children to the level.
+            </summary>
+            <param name="cube">The cube in which the members are.</param>
+            <param name="level">The parent level.</param>
+        </member>
+        <member name="T:Infragistics.Olap.Adomd.AdomdDataSource">
+            <summary>
+            Represents a controller that contains the data provided from model provider built over <see cref="N:Microsoft.AnalysisServices.AdomdClient"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdDataSource.#ctor(Infragistics.Olap.IDataProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Adomd.AdomdDataSource"/> class.
+            </summary>
+            <param name="provider">The data provider</param>
+        </member>
+        <member name="M:Infragistics.Olap.Adomd.AdomdDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Adomd.AdomdDataSource"/> class.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.Data.Adomd.Level">
+            <summary>
+            Use this class instances when levels are created in AdomdDataProvider.LoadDimensionsAsync(ICube)
+            instead the instances of the base class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Data.Adomd.Level.#ctor(System.String,System.String,System.String,System.String,System.Int32,Infragistics.Olap.Data.IHierarchy,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Data.Adomd.Level"/> class.
+            </summary>
+            <param name="name">The name of the level.</param>
+            <param name="caption">The caption of the level.</param>
+            <param name="uniqueName">The unique name of the level.</param>
+            <param name="description">The description.</param>
+            <param name="depth">The distance of the level from the root of the level. Root level is zero (0)</param>
+            <param name="parentHierarchy">The parent hierarchy.</param>
+            <param name="membersCount">The count of members of this level.</param>
+        </member>
+        <member name="M:Infragistics.Olap.Data.Adomd.Measure.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,Infragistics.Olap.AggregatorType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Data.Adomd.Measure"/> class.
+            </summary>
+            <param name="name">The name of the measure.</param>
+            <param name="uniqueName">The unique name of the measure.</param>
+            <param name="caption">The caption.</param>
+            <param name="description">The description.</param>
+            <param name="defaultFormat">The default format string for the measure.</param>
+            <param name="groupName">The name of the group this measure belongs to.</param>
+            <param name="aggregatorType">The <see cref="T:Infragistics.Olap.AggregatorType"/> that identifies how a measure was derived.</param>
+        </member>
+        <member name="P:Infragistics.Olap.Data.Adomd.Measure.MeasureDisplayFolder">
+            <summary>
+            Gets or sets the measure display folder.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.Data.Adomd.Member">
+            <summary>
+            Represents a member within a level
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Data.Adomd.Member.#ctor(System.String,System.String,System.String,System.String,System.String,System.Int32,Infragistics.Olap.Data.ILevel,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Data.Adomd.Member"/> class.
+            </summary>
+            <param name="name">The name of the member.</param>
+            <param name="uniqueName">The unique name of the member.</param>
+            <param name="caption">The caption.</param>
+            <param name="parentUniqueName">The unique name of the parent member.</param>
+            <param name="levelName">The unique name of the parent level.</param>
+            <param name="levelDepth">The level depth.</param>
+            <param name="parentLevel">The parent level.</param>
+            <param name="childCount">The child count.</param>
+            <param name="drilledDown">Sets whether this member is drilled down.</param>
+            <param name="parentSameAsPrevious">Sets whether the parent of this member is the same as the parent of the immediately preceding member.</param>
+            <param name="isTotal">Sets whether this member is considered to be total.</param>        
+        </member>
+        <member name="P:Infragistics.Olap.Data.Adomd.Member.IsLoaded">
+            <summary>
+            Gets a value indicating whether the children members are loaded in <see cref="T:Infragistics.Olap.Data.Xmla.Provider.SqlAnalysisServices2008.Members"/> collection.
+            </summary>
+            <value>
+            	<c>true</c> if the children members are loaded; otherwise, <c>false</c>.
+            </value>
+        </member>
+    </members>
+</doc>

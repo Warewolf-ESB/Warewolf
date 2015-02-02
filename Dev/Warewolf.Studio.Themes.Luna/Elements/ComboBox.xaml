@@ -597,7 +597,7 @@
     </Style>
 
     <Style x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">
-        <Setter Property="Padding" Value="6,5,6,3" />
+        <!--<Setter Property="Padding" Value="6,5,6,3" />-->
         <Setter Property="Margin" Value="0" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
@@ -626,7 +626,17 @@
                         </Grid.ColumnDefinitions>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="normal" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                        <DiscreteObjectKeyFrame KeyTime="1">
+                                            <DiscreteObjectKeyFrame.Value>
+                                                <Visibility>Visible</Visibility>
+                                            </DiscreteObjectKeyFrame.Value>
+                                        </DiscreteObjectKeyFrame>
+                                    </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="hover" Storyboard.TargetProperty="(UIElement.Visibility)">
@@ -679,7 +689,7 @@
                         <Rectangle x:Name="normal"
                                    Grid.ColumnSpan="2"
                                    Fill="{StaticResource ComboBoxBackgroundBrush}"
-                                   Stroke="{StaticResource TextBoxBorderBrush}"
+                                   Stroke="Green"
                                    StrokeThickness="2" 
                                    
                                    />
