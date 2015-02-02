@@ -16,7 +16,7 @@ namespace Dev2.Common.Interfaces.Studio
         ICommand SlideClosedCommand { get; set; }
         bool HasNewVersion { get; set; }
         bool IsPanelOpen { get; set; }
-        bool IsPanelLocked { get; set; }
+        bool IsPanelLockedOpen { get; set; }
         string NewLabel { get; }
         string SaveLabel { get; }
         string DeployLabel { get; }
@@ -33,6 +33,9 @@ namespace Dev2.Common.Interfaces.Studio
         string LockLabel { get; }
         string LockImage { get; }
         int ButtonWidth { get; }
+        ICommand IsOverLockCommand { get; }
+        ICommand IsNotOverLockCommand { get; }
+
         void Lock();
     }
 }

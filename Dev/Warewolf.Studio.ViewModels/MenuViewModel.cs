@@ -13,10 +13,11 @@ namespace Warewolf.Studio.ViewModels
     {
 
         bool _hasNewVersion;
-        bool _panelLocked;
+        bool _panelLockedOpen;
         bool _panelOpen;
         int _buttonWidth;
-
+        readonly IShellViewModel _viewModel;
+        bool _isOverLock;
 
         public MenuViewModel(IShellViewModel shellViewModel)
         {
@@ -24,29 +25,39 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new ArgumentNullException("shellViewModel");
             }
-            shellViewModel.ActiveServerChanged += ShellViewModelOnActiveServerChanged;
-            NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource, type => CanCreateNewService);
-            DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(null), () => CanDeploy);
-            SaveCommand = new DelegateCommand(shellViewModel.SaveService, () => CanSave);
-            OpenSchedulerCommand = new DelegateCommand(shellViewModel.OpenScheduler, () => CanSetSchedules);
-            OpenSettingsCommand = new DelegateCommand(shellViewModel.OpenSettings, () => CanSetSettings);
-            ExecuteServiceCommand = new DelegateCommand(shellViewModel.ExecuteService, () => CanExecuteService);
-            CheckForNewVersion(shellViewModel);
-            CheckForNewVersionCommand = new DelegateCommand(shellViewModel.DisplayDialogForNewVersion);
+            _viewModel = shellViewModel;
+            _isOverLock = false;
+            _viewModel.ActiveServerChanged += ShellViewModelOnActiveServerChanged;
+            NewCommand = new DelegateCommand<ResourceType?>(_viewModel.NewResource, type => CanCreateNewService);
+            DeployCommand = new DelegateCommand(() => _viewModel.DeployService(null), () => CanDeploy);
+            SaveCommand = new DelegateCommand(_viewModel.SaveService, () => CanSave);
+            OpenSchedulerCommand = new DelegateCommand(_viewModel.OpenScheduler, () => CanSetSchedules);
+            OpenSettingsCommand = new DelegateCommand(_viewModel.OpenSettings, () => CanSetSettings);
+            ExecuteServiceCommand = new DelegateCommand(_viewModel.ExecuteService, () => CanExecuteService);
+            CheckForNewVersion(_viewModel);
+            CheckForNewVersionCommand = new DelegateCommand(_viewModel.DisplayDialogForNewVersion);
 
             LockCommand = new DelegateCommand(Lock);
-            SlideOpenCommand = new DelegateCommand(() => SlideOpen(shellViewModel));
+            SlideOpenCommand = new DelegateCommand(() =>
+            {
+                if (!_isOverLock)
+                {
+                    SlideOpen(_viewModel);
+
+                }
+            });
             SlideClosedCommand = new DelegateCommand(() =>
             {
                 // ReSharper disable CompareOfFloatsByEqualityOperator
-                if (shellViewModel.MenuPanelWidth >= 80)
+                if (_viewModel.MenuPanelWidth >= 80 && !_isOverLock)
                 {
-                    SlideClosed(shellViewModel);
+                    SlideClosed(_viewModel);
                 }
             });
-
+            IsOverLockCommand = new DelegateCommand(() => _isOverLock = true);
+            IsNotOverLockCommand = new DelegateCommand(() => _isOverLock = false);
             ButtonWidth = 115;
-            IsPanelLocked = true;
+            IsPanelLockedOpen = true;
             IsPanelOpen = true;
 
 
@@ -68,27 +79,19 @@ namespace Warewolf.Studio.ViewModels
         public ICommand CheckForNewVersionCommand { get; set; }
 
 
-
-
-
-
         public string LockImage
         {
             get
             {
-                if (IsPanelLocked)
-                    return "Lock";
-                return "UnlockAlt";
-
+                if (IsPanelLockedOpen)
+                    return "UnlockAlt";
+                return "Lock";
             }
-
         }
 
 
         void UpdateProperties()
         {
-
-
             OnPropertyChanged(() => NewLabel);
             OnPropertyChanged(() => SaveLabel);
             OnPropertyChanged(() => DeployLabel);
@@ -105,36 +108,26 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => LockLabel);
 
             OnPropertyChanged(() => ButtonWidth);
-
         }
 
+        public ICommand IsOverLockCommand { get; private set; }
+        public ICommand IsNotOverLockCommand { get; private set; }
 
         public void Lock()
         {
 
-            bool xxx = IsPanelOpen;
-            int yyy = ButtonWidth;
-
-            if (IsPanelLocked)
+            if (!IsPanelLockedOpen) 
             {
-
+                IsPanelLockedOpen = true;
+            }
+            else 
+            {
+                if(!IsPanelOpen && ButtonWidth == 115)
+                    ButtonWidth = 35;
                 if (IsPanelOpen && ButtonWidth == 35)
                     ButtonWidth = 115;
-                //else if (IsPanelOpen && ButtonWidth == 115)
-                //    ButtonWidth = 35;
-                
-                IsPanelLocked = false;
-            }
-            else // panel not locked
-            {
 
-                if (IsPanelOpen && ButtonWidth == 115)
-                {
-                    ButtonWidth = 35;
-
-                }
-
-                IsPanelLocked = true;
+                IsPanelLockedOpen = false;
             }
 
             UpdateProperties();
@@ -144,32 +137,32 @@ namespace Warewolf.Studio.ViewModels
 
         public void SlideOpen(IShellViewModel shellViewModel)
         {
-            if (IsPanelLocked)//&& IsPanelOpen)
+            if (IsPanelLockedOpen)
             {
                 IsPanelOpen = true;
                 shellViewModel.MenuExpanded = IsPanelOpen;
-
                 ButtonWidth = 115;
-
                 UpdateProperties();
             }
         }
 
         public void SlideClosed(IShellViewModel shellViewModel)
         {
-            if (IsPanelLocked && !IsPanelOpen)
+            if (IsPanelLockedOpen && !IsPanelOpen)
             {
                 shellViewModel.MenuExpanded = !IsPanelOpen;
                 ButtonWidth = 35;
+                IsPanelOpen = !IsPanelOpen;
 
             }
-            else if (IsPanelLocked && IsPanelOpen)
+            else if (IsPanelLockedOpen && IsPanelOpen)
             {
                 shellViewModel.MenuExpanded = !IsPanelOpen;
                 ButtonWidth = 115;
+                IsPanelOpen = !IsPanelOpen;
             }
 
-            //IsPanelOpen = !IsPanelOpen;
+            
             UpdateProperties();
         }
 
@@ -216,22 +209,20 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _panelOpen = value;
-                //OnPropertyChanged(() => LockLabel);
-                //OnPropertyChanged(() => LockImage);
             }
 
         }
 
 
-        public bool IsPanelLocked
+        public bool IsPanelLockedOpen
         {
             get
             {
-                return _panelLocked;
+                return _panelLockedOpen;
             }
             set
             {
-                _panelLocked = value;
+                _panelLockedOpen = value;
                 OnPropertyChanged(() => LockLabel);
                 OnPropertyChanged(() => LockImage);
 
@@ -398,7 +389,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (IsPanelLocked)
+                if (IsPanelLockedOpen)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogLockLabel;
                 return Resources.Languages.Core.MenuDialogUnLockLabel;
