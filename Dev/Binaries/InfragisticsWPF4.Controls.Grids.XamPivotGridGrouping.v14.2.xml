@@ -1,0 +1,1317 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Controls.Grids.XamPivotGridGrouping.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Controls.Grids.ColumnGroupBySettings">
+            <summary>
+            An object that contains settings for grouping of columns on the <see cref="T:Infragistics.Controls.Grids.XamPivotGrid"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.GroupBySettings">
+            <summary>
+            An object that contains settings for grouping of rows or columns on the <see cref="T:Infragistics.Controls.Grids.XamPivotGrid"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.GroupBySettings.ExpansionIndicatorStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.GroupBySettings.ExpansionIndicatorStyle"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.GroupBySettings.GroupByControlStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.GroupBySettings.GroupByControlStyle"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.GroupBySettings.HeaderPresenterStyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.GroupBySettings.HeaderPresenterStyle"/> dependency property. 
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.GroupBySettings.IndentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.GroupBySettings.Indent"/> dependency property. 
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.GroupBySettings.ExpansionIndicatorStyle">
+            <summary>
+            Gets or sets the <see cref="T:System.Windows.Style"/> that will be applied to the expansion indicator in row or column group by header control.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.GroupBySettings.GroupByControlStyle">
+            <summary>
+            Gets or sets the <see cref="T:System.Windows.Style"/> that will be applied to the row or column group by controls.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.GroupBySettings.HeaderPresenterStyle">
+            <summary>
+            Gets or sets the <see cref="T:System.Windows.Style"/> that will be applied to the header presenter control.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.GroupBySettings.Indent">
+            <summary>
+            Gets or sets a value indicating the indent of column content indicating hierarchy's level.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.ColumnGroupBySettings.LevelStyles">
+            <summary>
+            Gets or sets the level styles.
+            </summary>
+            <value>The level styles.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.ColumnLevelStyle">
+            <summary>
+            ColumnLevelStyle class
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.ColumnLevelStyle.Style">
+            <summary>
+            Gets or sets the style.
+            </summary>
+            <value>The style.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.ColumnLevelStyle.Hierarchy">
+            <summary>
+            Gets or sets the hierarchy.
+            </summary>
+            <value>The hierarchy.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.ColumnLevelStyle.Level">
+            <summary>
+            Gets or sets the level.
+            </summary>
+            <value>The level.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.RowGroupBySettings">
+            <summary>
+            An object that contains settings for grouping of rows on the <see cref="T:Infragistics.Controls.Grids.XamPivotGrid"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.QueryUserPermissionEventArgs">
+            <summary>
+            QueryUserPermissionEventArgs class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.QueryUserPermissionEventArgs.#ctor(Infragistics.Controls.Grids.Grouping.UserPermissionRequest[],System.Action{System.Boolean,Infragistics.Controls.Grids.Grouping.UserPermissionRequest[]},System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Grouping.QueryUserPermissionEventArgs"/> class.
+            </summary>
+            <param name="permissionRequestDetails">The permission request details.</param>
+            <param name="acceptAction">The accept action.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.QueryUserPermissionEventArgs.Handled">
+            <summary>
+            Gets or sets a value that indicates if the request is handled by the user. 
+            If the event is not handled then the default behavior is applied.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.QueryUserPermissionEventArgs.PermissionRequestDetails">
+            <summary>
+            Gets or sets the permission request details.
+            </summary>
+            <value>The permission request details.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.QueryUserPermissionEventArgs.AcceptAction">
+            <summary>
+            Gets or sets the accept action.
+            </summary>
+            <value>The accept action.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.QueryUserPermissionEventArgs.Message">
+            <summary>
+            Gets or sets the message.
+            </summary>
+            <value>The message.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.UserPermissionRequest">
+            <summary>
+            UserPermissionRequest class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.UserPermissionRequest.#ctor(System.String,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Grouping.UserPermissionRequest"/> class.
+            </summary>
+            <param name="actionId">The action id.</param>
+            <param name="requestDetails">The request details.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.UserPermissionRequest.ActionDetails">
+            <summary>
+            Gets or sets the action details.
+            </summary>
+            <value>The action details.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.UserPermissionRequest.ActionId">
+            <summary>
+            Gets or sets the action id.
+            </summary>
+            <value>The action id.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.Member">
+            <summary>
+            Grouping member
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.Member.#ctor(System.String,System.String,System.String,System.String,System.String,System.Int32,Infragistics.Olap.Data.ILevel,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Grouping.Member"/> class.
+            </summary>
+            <param name="name">The name of the member.</param>
+            <param name="uniqueName">The unique name of the member.</param>
+            <param name="caption">The caption.</param>
+            <param name="parentUniqueName">The unique name of the parent member.</param>
+            <param name="levelName">The unique name of the parent level.</param>
+            <param name="levelDepth">The level depth.</param>
+            <param name="parentLevel">The parent level.</param>
+            <param name="childCount">The child count.</param>
+            <param name="drilledDown">Sets whether this member is drilled down.</param>
+            <param name="parentSameAsPrevious">Sets whether the parent of this member is the same as the parent of the immediately preceding member.</param>
+            <param name="isTotal">Sets whether this member is considered to be total.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.Member.IsLoaded">
+            <summary>
+            Gets a value indicating whether the children members are loaded.
+            </summary>
+            <value>
+            	<c>true</c> if the children members are loaded; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider">
+            <summary>
+            GroupingFlatDataModelProvider class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider.#ctor(Infragistics.Olap.IConnectionSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider"/> class.
+            </summary>
+            <param name="settings">Instance of the <see cref="T:Infragistics.Olap.FlatData.IFlatDataConnectionSettings"/> that holds the data source.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider.CreateMember(System.String,System.String,System.String,System.String,System.String,System.Int32,Infragistics.Olap.Data.ILevel,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Grouping.Member"/> class.
+            </summary>
+            <param name="name">The name of the member.</param>
+            <param name="uniqueName">The unique name of the member.</param>
+            <param name="caption">The caption.</param>
+            <param name="parentUniqueName">The unique name of the parent member.</param>
+            <param name="levelName">The unique name of the parent level.</param>
+            <param name="levelDepth">The level depth.</param>
+            <param name="parentLevel">The parent level.</param>
+            <param name="childCount">The child count.</param>
+            <param name="drilledDown">Sets whether this member is drilled down.</param>
+            <param name="parentSameAsPrevious">Sets whether the parent of this member is the same as the parent of the immediately preceding member.</param>
+            <param name="isTotal">Sets whether this member is considered to be total.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider.GetMergedHierarchy(System.Collections.Generic.IList{Infragistics.Olap.IAreaItemViewModel},Infragistics.Olap.Data.ICube,Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider.MergeContext,Infragistics.Olap.Data.IHierarchy@)">
+            <summary>
+            Gets the merged hierarchy.
+            </summary>
+            <param name="areaItems">The area items.</param>
+            <param name="cube">The cube.</param>
+            <param name="mergeContext">The merge context.</param>
+            <param name="hierarchy">The hierarchy.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider.MergeContext">
+            <summary>
+            MergeContext
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider.MergeContext.Rows">
+            <summary>
+            Rows
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider.MergeContext.RowsGroups">
+            <summary>
+            Rows group
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.Grouping.GroupingFlatDataModelProvider.MergeContext.Columns">
+            <summary>
+            Columns
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.GroupingConnectionSettings">
+            <summary>
+            GroupingConnectionSettings class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingConnectionSettings.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:Infragistics.Olap.FlatData.FlatDataConnectionSettings"/> class. 
+            Register <see cref="T:Infragistics.Olap.FlatData.FlatDataConnectionSettings"/> class in OlapContainer.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource">
+            <summary>
+            GroupingFlatDataSource class
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.WaitMergeColumnsPermissionActionId">
+            <summary>
+            WaitMergeColumnsPermissionActionId
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.WaitAllowReminderSummariesPermissionActionId">
+            <summary>
+            WaitAllowReminderSummariesPermissionActionId
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.WaitAddColumnPermissionActionId">
+            <summary>
+            WaitAddColumnPermissionActionId
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.OnRowsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            This method is called when Rows collection changes.
+            </summary>
+            <param name="args">The event arguments with specific to this action information.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.OnRowsGroupsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Raises the <see cref="E:RowsGroupsChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.OnRowsCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Raises the <see cref="E:RowsCollectionChanged"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.PivotGrid">
+            <summary>
+            Pivots the items of Columns and Rows collections.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.OnQueryUserPermission(Infragistics.Controls.Grids.Grouping.QueryUserPermissionEventArgs)">
+            <summary>
+            Raises the <see cref="E:QueryUserPermission"/> event.
+            </summary>
+            <param name="args">The <see cref="T:Infragistics.Controls.Grids.Grouping.QueryUserPermissionEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.AcceptAction(System.Boolean,Infragistics.Controls.Grids.Grouping.UserPermissionRequest[])">
+            <summary>
+            Accepts the action.
+            </summary>
+            <param name="isActionAccepted">if set to <c>true</c> [is action accepted].</param>
+            <param name="requestDetails">The request details.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.BuildDataInternal(Infragistics.Olap.DataSourceBase.BackgroundWorker,Infragistics.Olap.DataSourceBase.DoWorkEventArgs)">
+            <summary>
+            Generates the data internally.
+            </summary>
+            <param name="backgroundWorker">The background worker.</param>
+            <param name="e">The <see cref="T:System.ComponentModel.DoWorkEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.OnResultChanged(Infragistics.Olap.ResultChangedEventArgs)">
+            <summary>
+            Called when the Result changes.
+            </summary>
+            <param name="args">The arguments related to the completed async operation.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.GetDataSourceState(Infragistics.Olap.DataSourceBase.Work)">
+            <summary>
+            Gets the state of the data source.
+            </summary>
+            <param name="work">The work this source state is related to.</param>
+            <returns>
+            The instance that captures the current state of data source.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.OnCubeChanged">
+            <summary>
+            Called when the Cube property is changed.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.UpdateHierarchiesCollection(Infragistics.Olap.AreaItemsCollection)">
+            <summary>
+            Defines the way of initial loading of hierarchies and filtering of their members.
+            </summary>
+            <param name="hierarchiesCollection">The <see cref="T:Infragistics.Olap.AreaItemsCollection"/> where initialized hierarchies is added.
+            That should be one of collection exposed by <see cref="P:Infragistics.Olap.DataSourceBase.Rows"/>, <see cref="P:Infragistics.Olap.DataSourceBase.Columns"/> or <see cref="P:Infragistics.Olap.DataSourceBase.Filters"/> properties.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.FindFilterMember(Infragistics.Olap.ExecutionContext,Infragistics.Olap.Data.IMember)">
+            <summary>
+            Finds the <see cref="T:Infragistics.Olap.Data.IFilterMember"/> connected with the specified <see cref="T:Infragistics.Olap.Data.IMember"/>.
+            </summary>
+            <param name="executionContext">The containing context.</param>
+            <param name="tupleMember">Instance of the <see cref="T:Infragistics.Olap.Data.IMember"/> connected with the searched <see cref="T:Infragistics.Olap.Data.IFilterMember"/>.</param>
+            <returns>
+            Serached <see cref="T:Infragistics.Olap.Data.IFilterMember"/> or <c>null</c> if no such filter member is found.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.GetContextAreaItems(Infragistics.Olap.ExecutionContext)">
+            <summary>
+            Gets the area items for the specified <paramref name="executionContext"/>.
+            </summary>
+            <param name="executionContext">The execution context.</param>
+            <returns>
+            Collection of area items found in the area of the context.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.GetMeasureListIndex">
+            <summary>
+            Gets the index of the measure list.
+            </summary>
+            <returns>
+            Index of <see cref="T:Infragistics.Olap.MeasureListViewModel"/> in the context of its <see cref="T:Infragistics.Olap.MeasureListLocation"/>.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.SetMeasureListIndex(System.Int32)">
+            <summary>
+            Sets the index of the measure list.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.MergedRowsFilterViewModel">
+            <summary>
+            Gets the merged rows filter view model.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.MergedRowsGroupsFilterViewModel">
+            <summary>
+            Gets the merged rows groups filter view model.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.MergedColumnsFilterViewModel">
+            <summary>
+            Gets the merged columns filter view model.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.RowsCollection">
+            <summary>
+            Gets or sets collection of <see cref="T:Infragistics.Olap.IFilterViewModel"/> items that represents the rows of model.
+            </summary>
+            <value>The rows collection.</value>
+        </member>
+        <member name="E:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.QueryUserPermission">
+            <summary>
+            Occurs when specific user action is requred.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.UseZerosOnEmptyTotals">
+            <summary>
+            Gets or sets a value indicating whether [use zeros on empty totals].
+            </summary>
+            <value>
+            	<c>true</c> if [use zeros on empty totals]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.AllowRemainderTotalForColumns">
+            <summary>
+            Gets or sets a value indicating whether [allow remainder total for columns].
+            </summary>
+            <value>
+            	<c>true</c> if [allow remainder total for columns]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.RowsGroups">
+            <summary>
+            Gets or sets collection of <see cref="T:Infragistics.Olap.IFilterViewModel"/> items that represents the rows of model.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.MergeHierarchySettings">
+            <summary>
+            Gets or sets the merge hierarchy settings.
+            </summary>
+            <value>
+            The merge hierarchy settings.
+            </value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.DataSourceState">
+            <summary>
+            Contains state of current datasource
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.DataSourceState.#ctor(System.Collections.Generic.IList{Infragistics.Olap.IAreaItemViewModel},System.Collections.Generic.IList{Infragistics.Olap.IAreaItemViewModel},System.Collections.Generic.IList{Infragistics.Olap.IAreaItemViewModel},System.Collections.Generic.IList{Infragistics.Olap.IAreaItemViewModel},System.Collections.Generic.IList{Infragistics.Olap.IAreaItemViewModel},System.Int32,Infragistics.Olap.MeasureListLocation,Infragistics.Olap.Data.IResult,Infragistics.Olap.SwitchAxisMemberResult)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.DataSourceState"/> class.
+            </summary>
+            <param name="rows">The rows.</param>
+            <param name="rowsGroups">The rows groups.</param>
+            <param name="columns">The columns.</param>
+            <param name="filters">The filters.</param>
+            <param name="measures">The measures.</param>
+            <param name="measureListIndex">Index of the measure list.</param>
+            <param name="measureListLocation">The measure list location.</param>
+            <param name="rawResult">The raw result.</param>
+            <param name="switchAxisMemberResult">The switch axis member result.</param>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.DataSourceState.RowsGroups">
+            <summary>
+            Gets or sets the rows groups.
+            </summary>
+            <value>The rows groups.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.AreaFieldSettingsEx">
+            <summary>
+            AreaFieldSettingsEx class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.AreaFieldSettingsEx.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Grouping.AreaFieldSettingsEx"/> class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.AreaFieldSettingsEx.AllowRowsGroupsEditing">
+            <summary>
+            Gets or sets a value indicating whether editing <see cref="P:Infragistics.Controls.Grids.Grouping.GroupingFlatDataSource.RowsGroups"/> is enabled.
+            </summary>
+            <value>
+              <c>true</c> if rows groups editing is enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings">
+            <summary>
+            MergeHierarchySettings class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings.SetMeasureListInFrontOfColumns(System.Boolean,System.Boolean)">
+            <summary>
+            Sets the measure list in front of columns.
+            </summary>
+            <param name="value">if set to <c>true</c> [value].</param>
+            <param name="refreshGrid">if set to <c>true</c> [refresh grid].</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings.SetMeasureListInFrontOfRows(System.Boolean,System.Boolean)">
+            <summary>
+            Sets the measure list in front of rows.
+            </summary>
+            <param name="value">if set to <c>true</c> [value].</param>
+            <param name="refreshGrid">if set to <c>true</c> [refresh grid].</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings.OnPropertyChanged(System.String)">
+            <summary>
+            Called when [property changed].
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+        </member>
+        <member name="E:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings.AllowMergeOfColumns">
+            <summary>
+            Gets or sets a value indicating whether the merge of columns is allowed.
+            </summary>
+            <value>
+            	<c>true</c> if the merge is allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings.AllowMergeOfRows">
+            <summary>
+            Gets or sets a value indicating whether the merge of rows is allowed.
+            </summary>
+            <value><c>true</c> if the merge of rows is allowed; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings.AllowMergeOfRowsGroups">
+            <summary>
+            Gets or sets a value indicating whether the merge of row groups is allowed.
+            </summary>
+            <value>
+            	<c>true</c> if the merge row groups is allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings.MeasureListInFrontOfRows">
+            <summary>
+            Gets or sets a value indicating whether the measure list is in front of rows.
+            </summary>
+            <value>
+            	<c>true</c> if the measure list is in front of rows; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.Grouping.MergeHierarchySettings.MeasureListInFrontOfColumns">
+            <summary>
+            Gets or sets a value indicating whether the measure list is in front of columns.
+            </summary>
+            <value>
+            	<c>true</c> if the measure list is in front of columns; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotColumnGroupByCell">
+            <summary>
+            PivotColumnGroupByCell class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotColumnGroupByCell.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.PivotColumnGroupByCell"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotColumnGroupByCell.EnsureCurrentState">
+            <summary>
+            Ensures that <see cref="T:Infragistics.Controls.Grids.PivotColumnHeaderCell"/> is in the correct state.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotColumnGroupByCell.CreateInstanceOfRecyclingElement">
+            <summary>
+            Creates the instance of recycling element.
+            </summary>
+            <returns>the return type is PivotColumnGroupByCellControl</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotColumnGroupByCell.Indent">
+            <summary>
+            Gets or sets the indent.
+            </summary>
+            <value>The indent.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotColumnGroupByCell.AxisSpan">
+            <summary>
+            Gets the row span of the cell in the axis.
+            </summary>
+            <value>The axis span.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotColumnGroupByCell.ResolveStyle">
+            <summary>
+            Gets the Style that should be applied to the <see cref="T:Infragistics.Controls.Grids.PivotColumnGroupByCellControl"/> when it's attached.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotColumnGroupByCell.RecyclingElementType">
+            <summary>
+            Gets the Type of control that should be created for the <see cref="T:Infragistics.Controls.Grids.PivotColumnHeaderCell"/>.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotColumnGroupByCellControl">
+            <summary>
+             The class for all visual objects in <see cref="T:Infragistics.Controls.Grids.PivotColumnGroupByCellControl"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotColumnGroupByCellControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.PivotColumnGroupByCellControl"/> class.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.PivotColumnGroupByCellControl.IndentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.PivotColumnGroupByCellControl.Indent"/> dependency property. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotColumnGroupByCellControl.OnApplyTemplate">
+            <summary>
+            Builds the visual tree for the <see cref="T:Infragistics.Controls.Grids.PivotGroupByCellControl"/> when a new template is applied.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotColumnGroupByCellControl.EnsureContent">
+            <summary>
+            This will get called every time the control is measured, and allows the control to adjust it's content if necessary.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotColumnGroupByCellControl.GroupBySettings">
+            <summary>
+            Gets the group by settings that is applyed to this control.
+            </summary>
+            <value>The group by settings.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotColumnGroupByCellControl.Indent">
+            <summary>
+            Gets or sets a value indicating the indent of column content indicating hierarchy's level.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotGroupByCell">
+            <summary>
+            PivotGroupByCell class
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotGroupByCell.Indent">
+            <summary>
+            Gets or sets the indent.
+            </summary>
+            <value>The indent.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotGroupByCell.AxisSpan">
+            <summary>
+            Gets the span of the cell in the axis.
+            </summary>
+            <value>The axis span.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotGroupByCellControl">
+            <summary>
+             The class for all visual objects in <see cref="T:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotGroupByCellControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.PivotGroupByCellControl"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotGroupByCellControl.OnApplyTemplate">
+            <summary>
+            Builds the visual tree for the <see cref="T:Infragistics.Controls.Grids.PivotGroupByCellControl"/> when a new template is applied.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.PivotGroupByCellControl.IndentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.PivotGroupByCellControl.Indent"/> dependency property. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotGroupByCellControl.EnsureContent">
+            <summary>
+            This will get called every time the control is measured, and allows the control to adjust it's content if necessary.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotGroupByCellControl.GroupBySettings">
+            <summary>
+            Gets the group by settings that is applyed to this control.
+            </summary>
+            <value>The group by settings.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotGroupByCellControl.Indent">
+            <summary>
+            Gets or sets a value indicating the indent of column content indicating hierarchy's level.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotRowGroupByCell">
+            <summary>
+            PivotRowGroupByCell class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotRowGroupByCell.EnsureCurrentState">
+            <summary>
+            Ensures that <see cref="T:Infragistics.Controls.Grids.PivotRowGroupByCell"/> is in the correct state.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotRowGroupByCell.CreateInstanceOfRecyclingElement">
+            <summary>
+            Creates the instance of recycling element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotRowGroupByCell.ResolveStyle">
+            <summary>
+            Gets the Style that should be applied to the <see cref="T:Infragistics.Controls.Grids.PivotRowGroupByCellControl"/> when it's attached.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotRowGroupByCell.RecyclingElementType">
+            <summary>
+            Gets the Type of control that should be created for the <see cref="T:Infragistics.Controls.Grids.PivotRowGroupByCell"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotRowGroupByCell.AxisProvider">
+            <summary>
+            Gets the <see cref="P:Infragistics.Controls.Grids.PivotRowGroupByCell.AxisProvider"/> object.
+            </summary>
+            <value>The axis provider.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotRowGroupByCell.IsExpanded">
+            <summary>
+            Gets or sets a value indicating whether this instance is expanded.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is expanded; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotRowGroupByCellControl">
+            <summary>
+             The class for all visual objects in <see cref="T:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotRowGroupByCellControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.PivotRowGroupByCellControl"/> class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotRowGroupByCellControl.GroupBySettings">
+            <summary>
+            Gets the group by settings that is applyed to this control.
+            </summary>
+            <value>The group by settings.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotRowGroupingHeaderCell">
+            <summary>
+            PivotRowGroupingHeaderCell class
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotRowGroupingHeaderCellGroupBy">
+            <summary>
+            PivotRowGroupingHeaderCellGroupBy class
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.ColumnGroupByAxisProvider">
+            <summary>
+            Provides methods for dealing with cells in column axis.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.ColumnGroupByAxisProvider.#ctor(Infragistics.Controls.Grids.PivotGridLayout,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.ColumnAxisProvider"/> class.
+            </summary>
+            <param name="gridLayout">The grid layout.</param>
+            <param name="isParentInFront">indicated the palce of summury cells.</param>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Primitives.FieldsDropAreaControlEx">
+            <summary>
+            FieldsDropAreaControlEx class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Primitives.FieldsDropAreaControlEx.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Primitives.FieldsDropAreaControlEx"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Primitives.FieldsDropAreaControlEx.GetContainerForItemOverride">
+            <summary>
+            Creates or identifies the element that is used to display the given item.
+            </summary>
+            <returns>
+            The element that is used to display the given item.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Primitives.FilterFieldItemControlEx">
+            <summary>
+            FilterFieldItemControlEx class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Primitives.FilterFieldItemControlEx.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Primitives.FilterFieldItemControlEx"/> class.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Primitives.RowGroupsFieldDropAreaControl">
+            <summary>
+            RowGroupsFieldDropAreaControl class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Primitives.RowGroupsFieldDropAreaControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.Primitives.RowGroupsFieldDropAreaControl"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Primitives.RowGroupsFieldDropAreaControl.MeasureOverride(System.Windows.Size)">
+            <summary>
+            When overridden in a derived class, measures the size in layout required for child elements and determines a size for the <see cref="T:System.Windows.FrameworkElement"/>-derived class.
+            </summary>
+            <param name="availableSize">The available size that this element can give to child elements. Infinity can be specified as a value to indicate that the element will size to whatever content is available.</param>
+            <returns>
+            The size that this element determines it needs during layout, based on its calculations of child element sizes.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.GroupingGridLayout">
+            <summary>
+            GroupingGridLayout class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.GroupingGridLayout.#ctor(Infragistics.Controls.Grids.XamPivotGridGrouping)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.GroupingGridLayout"/> class.
+            </summary>
+            <param name="grid">The grid.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.GroupingGridLayout.CreateColumnAxisProvider">
+            <summary>
+            Creates the column axis provider.
+            </summary>
+            <returns>created instance</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.GroupingGridLayout.OnCreateView">
+            <summary>
+            Called when the <see cref="T:Infragistics.Controls.Grids.View"/> is about to create
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.GroupingGridLayout.InitializeLayout(System.Boolean)">
+            <summary>
+            Initializes the layout.
+            </summary>
+            <param name="isEmptyDataSource">indicates if <see cref="P:Infragistics.Controls.Grids.XamPivotGrid.DataSource"/> is null.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.GroupingGridLayout.UpdateRowRealScollIndexies">
+            <summary>
+            Updates the row real scoll indexies.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.GroupingGridLayout.FirstColumnSeparator">
+            <summary>
+            Gets or sets the first column separator.
+            </summary>
+            <value>The first column separator.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.GroupingGridLayout.PivotRowsAreaPanel">
+            <summary>
+            Gets or sets the pivot rows area panel.
+            </summary>
+            <value>The pivot rows area panel.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.Primitives.RowHeaderAlignPanel">
+            <summary>
+            RowHeaderAlignPanel class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Primitives.RowHeaderAlignPanel.CreateColumnOffset">
+            <summary>
+            Creates dictionary with column's offset.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Primitives.RowHeaderAlignPanel.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            When overridden in a derived class, positions child elements and determines a size for a <see cref="T:System.Windows.FrameworkElement"/> derived class.
+            </summary>
+            <param name="finalSize">The final area within the parent that this element should use to arrange itself and its children.</param>
+            <returns>The actual size used.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.Primitives.RowHeaderAlignPanel.MeasureOverride(System.Windows.Size)">
+            <summary>
+            When overridden in a derived class, measures the size in layout required for child elements and determines a size for the <see cref="T:System.Windows.FrameworkElement"/>-derived class.
+            </summary>
+            <param name="availableSize">The available size that this element can give to child elements. Infinity can be specified as a value to indicate that the element will size to whatever content is available.</param>
+            <returns>
+            The size that this element determines it needs during layout, based on its calculations of child element sizes.
+            </returns>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotGroupByRow">
+            <summary>
+            An object that represents a group by row in the <see cref="T:Infragistics.Controls.Grids.XamPivotGrid"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotGroupByRow.#ctor(Infragistics.Controls.Grids.PivotGridLayout)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.PivotGroupByRow"/> class.
+            </summary>
+            <param name="gridLayout"><see cref="T:Infragistics.Controls.Grids.PivotGridLayout"/> that is associated with the <see cref="T:Infragistics.Controls.Grids.PivotGroupByRow"/>.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotGroupByRow.CreateInstanceOfRecyclingElement">
+            <summary>
+            Creates a new instance of the <see cref="T:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel"/>. 
+            Note: this method is only meant to be invoked via the RecyclingManager.
+            </summary>
+            <returns>A new <see cref="T:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel"/></returns>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotGroupByRow.RecyclingElementType">
+            <summary>
+            Gets the Type of control that should be created for the <see cref="T:Infragistics.Controls.Grids.PivotGroupByRow"/>.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotGroupByRow.GroupCells">
+            <summary>
+            Gets or sets the group cells.
+            </summary>
+            <value>The group cells.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotGroupByRow.Indent">
+            <summary>
+            Gets or sets the indent.
+            </summary>
+            <value>The indent.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotGroupByRow.Level">
+            <summary>
+            Gets or sets the level.
+            </summary>
+            <value>The level.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.PivotGroupByRow.RowInfo">
+            <summary>
+            Gets or sets the row info.
+            </summary>
+            <value>The row info.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel">
+            <summary>
+            A panel that organizes the <see cref="T:Infragistics.Controls.Grids.PivotRowGroupByCell"/>s of a <see cref="T:Infragistics.Controls.Grids.PivotGroupByRow"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Used for clean up the released cells before to arrange the new one.
+            </summary>
+            <param name="finalSize">The final area within the parent that this object
+            should use to arrange itself and its children.</param>
+            <returns>The size that panel occupies</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel.MeasureOverride(System.Windows.Size)">
+            <summary>
+            When overridden in a derived class, measures the size in layout required for child elements and determines a size for the <see cref="T:System.Windows.FrameworkElement"/>-derived class.
+            </summary>
+            <param name="availableSize">The available size that this element can give to child elements. Infinity can be specified as a value to indicate that the element will size to whatever content is available.</param>
+            <returns>
+            The size that this element determines it needs during layout, based on its calculations of child element sizes.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotGroupByRowCellsPanel.ReleaseCells">
+            <summary>
+            Called when the panel has to release its cells.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.PivotHeaderAndDataCellsPanel">
+            <summary>
+            Arranges one row of data cells and header cells
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotHeaderAndDataCellsPanel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.PivotHeaderAndDataCellsPanel"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotHeaderAndDataCellsPanel.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Used for clean up the released cells before to arrange the new one.
+            </summary>
+            <param name="finalSize">The final area within the parent that this object
+            should use to arrange itself and its children.</param>
+            <returns>The size that panel occupies</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotHeaderAndDataCellsPanel.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Provides the behavior for the Measure pass of layout. Classes can override this method to define their own Measure pass behavior.
+            </summary>
+            <param name="availableSize">The available size that this object can give to child objects. Infinity can be specified as a value to indicate that the object will size to whatever content is available.</param>
+            <returns>
+            The size that this object determines it needs during layout, based on its calculations of child object allotted sizes.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.PivotHeaderAndDataCellsPanel.ReleaseCells">
+            <summary>
+            Called when the panel has to release its cells.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.RowsManager">
+            <summary>
+            RowsManager class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsManager.#ctor(Infragistics.Controls.Grids.XamPivotGrid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.RowsManager"/> class.
+            </summary>
+            <param name="grid">The grid.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsManager.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsManager.Initialize">
+            <summary>
+            Initializes this instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsManager.GetRow(System.Int32)">
+            <summary>
+            Gets the row.
+            </summary>
+            <param name="index">The index.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.RowsManager.RowsInfo">
+            <summary>
+            Gets the hierarchical sturcture of rows.
+            </summary>
+            <value>The rows info.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.RowsManager.Grid">
+            <summary>
+            Gets or sets the grid.
+            </summary>
+            <value>The grid.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.RowsManager.RowsCount">
+            <summary>
+            Gets the rows count.
+            </summary>
+            <value>The rows count.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.RowInfoType">
+            <summary>
+            RowInfoType enum
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.RowInfoType.DataRow">
+            <summary>
+            DataRow
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.RowInfoType.GroupByRow">
+            <summary>
+            GroupByRow
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.RowInfo">
+            <summary>
+            RowInfo class
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.RowsGroupView">
+            <summary>
+            RowsGroupView class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsGroupView.InitView">
+            <summary>
+            Initializes the view with ui elements taken from template.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsGroupView.Arrange(System.Windows.Size)">
+            <summary>
+            Arranges the <see cref="T:System.Windows.Controls.Panel"/> according the given logic.
+            </summary>
+            <param name="finalSize">The final size.</param>
+            <returns>
+            the size required from the panel to show its children
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsGroupView.Measure(System.Windows.Size)">
+            <summary>
+            Measures the <see cref="T:System.Windows.Controls.Panel"/>'s children in available size.
+            </summary>
+            <param name="availableSize">The size that is available for measure.</param>
+            <returns>
+            The size that this object determines it needs during layout, based on its calculations of child object allotted sizes.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsGroupView.EstimateSharedColumnWidth(System.Double)">
+            <summary>
+            Estimates the width of the shared column.
+            </summary>
+            <param name="avaiableWidth">Width of the avaiable.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsGroupView.DataRowCreateInstanceOfRecyclingElement">
+            <summary>
+            Creates a new instance of the <see cref="T:System.Windows.FrameworkElement"/> that represents the object.
+            </summary>
+            <returns>The control used to container.</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsGroupView.DataRowRecyclingElementType">
+            <summary>
+            Gets the Type of control that should be created for the <see cref="T:Infragistics.Controls.Grids.View"/>.
+            </summary>
+            <returns>Created type</returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsGroupView.CreateRowHeaderCell">
+            <summary>
+            Creates the instance for row header cell.
+            </summary>
+            <returns>Created instance</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.RowsGroupView.FirstSeparator">
+            <summary>
+            Gets or sets the first separator.
+            </summary>
+            <value>The first separator.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.RowsGroupView.PivotRowsAreaPanel">
+            <summary>
+            Gets or sets the pivot rows area panel.
+            </summary>
+            <value>The pivot rows area panel.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.RowsViewGrouping">
+            <summary>
+            RowsViewGrouping class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsViewGrouping.InitView">
+            <summary>
+            Gets or sets the panel in which the rendering is done.
+            </summary>
+            <value>The panel.</value>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsViewGrouping.Arrange(System.Windows.Size)">
+            <summary>
+            Arranges the the <see cref="T:Infragistics.Controls.Grids.PivotGridPanel"/> in default view without respect of grouping columns or rows.
+            </summary>
+            <param name="finalSize">The final size.</param>
+            <returns>
+            The actual size used once the element is arranged.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsViewGrouping.Measure(System.Windows.Size)">
+            <summary>
+            Provides the behavior for the "measure" pass of the <see cref="T:Infragistics.Controls.Grids.PivotGridPanel"/>.
+            </summary>
+            <param name="availableSize">The available size that this object can give to child objects. Infinity can be specified
+            as a value to indicate the object will size to whatever content is available.</param>
+            <returns>
+            The size that this object determines it needs during layout, based on its calculations of child object allotted sizes.
+            </returns>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsViewGrouping.EstimateSharedColumnWidth(System.Double)">
+            <summary>
+            Estimates the width of the shared column.
+            </summary>
+            <param name="avaiableWidth">Avaiable width.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RowsViewGrouping.CreateRowHeaderCell">
+            <summary>
+            Creates the instance for row header cell.
+            </summary>
+            <returns>Created instance</returns>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.RowsViewGrouping.FirstSeparator">
+            <summary>
+            Gets or sets the first separator.
+            </summary>
+            <value>The first separator.</value>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.XamDataSelectorGrouping">
+            <summary>
+            XamDataSelectorGrouping class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamDataSelectorGrouping.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.XamDataSelectorGrouping"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamDataSelectorGrouping.OnApplyTemplate">
+            <summary>
+            Builds the visual tree for the <see cref="T:Infragistics.Controls.Grids.XamPivotDataSelector"/> when a new template is applied.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamDataSelectorGrouping.OnPivotItemDrop(Infragistics.Controls.Grids.PivotItemDragDropEventArgs)">
+            <summary>
+            Called when a dragged item is droped into a valid drop target.
+            </summary>
+            <param name="args">Event args that contains the event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamDataSelectorGrouping.OnPivotItemDragStart(Infragistics.Controls.Grids.PivotItemDragDropStartEventArgs)">
+            <summary>
+            Called when an item drag operation is started.
+            </summary>
+            <param name="args">Event args that contains the event data.</param>
+            <returns>
+            	<c>true</c> if drag operation is not cancelled by the user; otherwise <c>false</c>
+            </returns>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.XamPivotGridGrouping">
+            <summary>
+            XamPivotGridGrouping class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotGridGrouping.#cctor">
+            <summary>
+            Initializes the <see cref="T:Infragistics.Controls.Grids.XamPivotGridGrouping"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotGridGrouping.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Controls.Grids.XamPivotGridGrouping"/> class.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotGridGrouping.UseColumnGroupByViewProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotGridGrouping.UseColumnGroupByView"/> dependency property. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotGridGrouping.OnUseColumnGroupByViewChanged(System.Boolean,System.Boolean)">
+            <summary>
+            Called when <see cref="P:Infragistics.Controls.Grids.XamPivotGridGrouping.UseColumnGroupByView"/> property has changed.
+            </summary>
+            <param name="newValue">the new value.</param>
+            <param name="oldValue">the old value.</param>
+        </member>
+        <member name="F:Infragistics.Controls.Grids.XamPivotGridGrouping.UseRowGroupByViewProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Controls.Grids.XamPivotGridGrouping.UseRowGroupByView"/> dependency property. 
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotGridGrouping.OnUseRowGroupByViewChanged(System.Boolean,System.Boolean)">
+            <summary>
+            Called when <see cref="P:Infragistics.Controls.Grids.XamPivotGridGrouping.UseRowGroupByView"/> property has changed.
+            </summary>
+            <param name="newValue">the new value.</param>
+            <param name="oldValue">the old value.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotGridGrouping.OnApplyTemplate">
+            <summary>
+            Builds the visual tree for the <see cref="T:Infragistics.Controls.Grids.XamPivotGrid"/> when a new template is applied.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotGridGrouping.OnDataSourceChanged(Infragistics.Olap.IOlapViewModel,Infragistics.Olap.IOlapViewModel)">
+            <summary>
+            Called when the DataSource property changed.
+            </summary>
+            <param name="newDataSource">The new instance of view model.</param>
+            <param name="oldDataSource">The old instance of view model.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotGridGrouping.OnPivotItemDrop(Infragistics.Controls.Grids.PivotItemDragDropEventArgs)">
+            <summary>
+            Called when a dragged item is droped into a valid drop target.
+            </summary>
+            <param name="args">Event args that contains the event data.</param>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotGridGrouping.OnPivotItemDragStart(Infragistics.Controls.Grids.PivotItemDragDropStartEventArgs)">
+            <summary>
+            Called when an item drag operation is started.
+            </summary>
+            <param name="args">Event args that contains the event data.</param>
+            <returns>
+            	<c>true</c> if drag operation is not cancelled by the user; otherwise <c>false</c>
+            </returns>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotGridGrouping.UseColumnGroupByView">
+            <summary>
+            Gets or sets a value indicating whether the columns will be displayed grouped.
+            </summary>
+            <value><c>true</c> if compact layout is allow; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotGridGrouping.UseRowGroupByView">
+            <summary>
+            Gets or sets a value indicating whether the columns will be displayed grouped.
+            </summary>
+            <value><c>true</c> if compact layout is allow; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotGridGrouping.ColumnGroupBySettings">
+            <summary>
+            Gets or sets a reference to the <see cref="P:Infragistics.Controls.Grids.XamPivotGridGrouping.ColumnGroupBySettings"/> object that controls all the properties
+            concerning organizing group by column
+            </summary>
+        </member>
+        <member name="P:Infragistics.Controls.Grids.XamPivotGridGrouping.RowGroupBySettings">
+            <summary>
+            Gets or sets a reference to the <see cref="P:Infragistics.Controls.Grids.XamPivotGridGrouping.RowGroupBySettings"/> object that controls all the properties
+            concerning organizing group by row
+            </summary>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.XamPivotGridGroupingCommandSource">
+            <summary>
+            XamPivotGridGroupingCommandSource class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.XamPivotGridGroupingCommandSource.ResolveCommand">
+            <summary>
+            Generates the <see cref="T:System.Windows.Input.ICommand"/> object that will execute the command.
+            </summary>
+            <returns>The object asociated with that command.</returns>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.HideAxisCommandGroupping">
+            <summary>
+            HideAxisCommandGroupping class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.HideAxisCommandGroupping.Execute(System.Object)">
+            <summary>
+            Executes the command
+            </summary>
+            <param name="parameter">The <see cref="T:Infragistics.Controls.Grids.PivotHeaderCell"/> object that will be executed against.</param>
+        </member>
+        <member name="T:Infragistics.Controls.Grids.RemoveFilterCellOnCenterCommand">
+            <summary>
+            RemoveFilterCellOnCenterCommand class
+            </summary>
+        </member>
+        <member name="M:Infragistics.Controls.Grids.RemoveFilterCellOnCenterCommand.Execute(System.Object)">
+            <summary>
+            Executes the command
+            </summary>
+            <param name="parameter">The <see cref="T:Infragistics.Controls.Grids.Primitives.FieldItemControl"/> object that will be executed against.</param>
+        </member>
+    </members>
+</doc>

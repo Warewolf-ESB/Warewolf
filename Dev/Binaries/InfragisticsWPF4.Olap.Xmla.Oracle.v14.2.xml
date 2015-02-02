@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Olap.Xmla.Oracle.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Olap.Xmla.Oracle.XmlaOracleCommand">
+            <summary>
+            Responsible for execution of IQuery over XMLA and deserialize the returned XML result
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Xmla.Oracle.XmlaOracleCommand.#ctor(Infragistics.Olap.Xmla.Oracle.XmlaOracleConnection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Xmla.Oracle.XmlaOracleCommand"/> class.
+            </summary>
+            <param name="connection">The connection.</param>
+        </member>
+        <member name="M:Infragistics.Olap.Xmla.Oracle.MdxOracleQueryBuilder.#ctor(Infragistics.Olap.Xmla.MdxSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Xmla.Oracle.MdxOracleQueryBuilder"/> class.
+            </summary>
+            <param name="settings">The settings used for query generation.</param>
+        </member>
+        <member name="T:Infragistics.Olap.Xmla.Oracle.MdxOracleSet">
+            <summary>
+            A class used to represent the sets in <see cref="T:Infragistics.Olap.Xmla.IMdxQuery"/>.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Xmla.Oracle.MdxOracleSet.#ctor(Infragistics.Olap.Xmla.IAxisFilterElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Xmla.Oracle.MdxOracleSet"/> class.
+            </summary>
+            <param name="axisFilterElement">The axis filter element.</param>
+        </member>
+        <member name="M:Infragistics.Olap.Xmla.Oracle.MdxOracleSet.AddElementExpression(System.Text.StringBuilder,Infragistics.Olap.Xmla.IMdxElement)">
+            <summary>
+            Adds the element expression.
+            </summary>
+            <param name="stringBuilder">The string builder.</param>
+            <param name="mdxElement">The MDX element.</param>
+        </member>
+        <member name="T:Infragistics.Olap.Xmla.Oracle.XmlaOracleConnection">
+            <summary>
+            Responsible for establish a connection to Oracle Xmla soap client
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Xmla.Oracle.XmlaOracleConnection.#ctor(Infragistics.Olap.IConnectionSettings)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Xmla.Oracle.XmlaOracleConnection"/> class.
+            </summary>
+            <param name="settings">The settings parameter should be of type <see cref="T:Infragistics.Olap.Xmla.Oracle.XmlaOracleConnectionSettings"/>.</param>
+        </member>
+        <member name="T:Infragistics.Olap.Xmla.Oracle.XmlaOracleConnectionSettings">
+            <summary>
+            Connection settings for connecting to Oracle Xmla web service.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Olap.Xmla.Oracle.XmlaOracleDataSource">
+            <summary>
+            Represents a controller that contains the data provided from Xmla model provider.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Xmla.Oracle.XmlaOracleDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Xmla.Oracle.XmlaOracleDataSource"/> class.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Olap.Xmla.Oracle.XmlaOracleDataSource.#ctor(Infragistics.Olap.IDataProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Infragistics.Olap.Xmla.Oracle.XmlaOracleDataSource"/> class.
+            </summary>
+            <param name="provider">The data provider.</param>
+        </member>
+    </members>
+</doc>
