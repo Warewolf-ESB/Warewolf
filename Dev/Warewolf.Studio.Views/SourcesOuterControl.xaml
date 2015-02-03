@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
         <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
-            <views:ServerUserControl />
+            <views:ManageServerControl />
         </DataTemplate>
     </UserControl.Resources>
 

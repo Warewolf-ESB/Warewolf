@@ -15,7 +15,7 @@
     <ig:XamDialogWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
         <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
-            <views:ServerUserControl />
+            <views:ManageServerControl />
         </DataTemplate>
     </ig:XamDialogWindow.Resources>
 

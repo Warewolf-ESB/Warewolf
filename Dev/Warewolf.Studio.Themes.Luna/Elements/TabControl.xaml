@@ -41,9 +41,6 @@
                                 KeyboardNavigation.DirectionalNavigation="Contained"
                                 KeyboardNavigation.TabIndex="2"
                                 KeyboardNavigation.TabNavigation="Local">
-                            <Border.BorderBrush>
-                                <SolidColorBrush Color="{StaticResource WarewolfPanelGrey}" />
-                            </Border.BorderBrush>
                             <ContentPresenter x:Name="PART_SelectedContentHost"
                                               Margin="4"
                                               ContentSource="SelectedContent" />

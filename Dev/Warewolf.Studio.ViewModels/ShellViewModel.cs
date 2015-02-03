@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels
         readonly IEventAggregator _aggregator;
         IExceptionHandler _handler;
         IPopupController _popupController;
-        IExplorerTreeItem _activeItem;
+        object _activeItem;
         IServer _activeServer;
         double _menuPanelWidth;
         bool _menuExpanded;
@@ -284,7 +284,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public IExplorerTreeItem ActiveItem
+        public object ActiveItem
         {
             get
             {

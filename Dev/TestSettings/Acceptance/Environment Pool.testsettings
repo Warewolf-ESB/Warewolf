@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="Environment Pool Acceptance Run" id="7627FF19-3746-4D6A-AD03-AD30FFD0D7ED" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestSettings name="Environment Pool Acceptance Run" id="7627ff19-3746-4d6a-ad03-ad30ffd0d7ed" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
   <Deployment>
       <!--Project specific outputs-->
     <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
     <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
 
-    <!--Dynamicly loaded when initializing a view-->
+      <!--Dynamicly loaded when initializing a view-->
     <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll" />
     <DeploymentItem filename="Binaries\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll" />
     <DeploymentItem filename="Binaries\InfragisticsWPF4.DataVisualization.v14.2.dll" />
@@ -20,14 +20,10 @@
     <DeploymentItem filename="packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll" />
     <DeploymentItem filename="packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll" />
     <DeploymentItem filename="Warewolf.Studio.CustomControls\bin\Debug\Warewolf.Studio.CustomControls.dll" />
-
-      <!--Solution specific outputs-->
-    <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
-    <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
   </Deployment>
   <NamingScheme baseName="UT" />
-    <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
-  <RemoteController name="rsaklfsvrtfsbld" />
+  <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
+  <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote" hostProcessPlatform="MSIL">
     <Timeouts testTimeout="180000" />
     <Buckets size="1" />
@@ -54,4 +50,5 @@
       </SelectionCriteria>
     </AgentRule>
   </Execution>
+  <Properties />
 </TestSettings>

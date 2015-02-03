@@ -47,34 +47,7 @@ namespace Warewolf.Studio
                 viewModel.Initialize();
             }
         }
-
-        private void ContentPane_MouseLeave(object sender, MouseEventArgs e)
-        {
-            var contentPane = sender as ContentPane;
-            if(contentPane != null)
-            {
-                contentPane.ExecuteCommand(ContentPaneCommands.FlyIn);
-            }
-        }
-
-        private void PaneTabItem_Loaded(object sender, RoutedEventArgs e)
-        {
-            var paneTabItem = sender as PaneTabItem;
-            if(paneTabItem != null)
-            {
-                paneTabItem.Margin = new Thickness(0, 12, 0, 0);
-            }
-        }
-
-        private void UnpinnedTabArea_Loaded(object sender, RoutedEventArgs e)
-        {
-            var repeatButton = Utilities.GetDescendantFromName(sender as DependencyObject, "PART_ScrollDown") as RepeatButton;
-            if(repeatButton != null)
-            {
-                repeatButton.Visibility = Visibility.Collapsed;
-            }
-        }
-
+        
         void DockManager_OnPaneDragStarting(object sender, PaneDragStartingEventArgs e)
         {
             var dragPane = e.RootPane as PaneHeaderPresenter;
@@ -89,10 +62,6 @@ namespace Warewolf.Studio
             }
         }
 
-        void PaneResize(object sender, MouseButtonEventArgs e)
-        {
-            //e.Handled = true;
-        }
 
         void SlidingMenuPane_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {

@@ -194,7 +194,6 @@
     <Compile Include="ConnectControlView.xaml.cs">
       <DependentUpon>ConnectControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\CustomMenuIcons.cs" />
     <Compile Include="DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
@@ -221,8 +220,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="PopupSample.xaml.cs">
-      <DependentUpon>PopupSample.xaml</DependentUpon>
+    <Compile Include="ManageServerControl.xaml.cs">
+      <DependentUpon>ManageServerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="SourcesOuterControl.xaml.cs">
       <DependentUpon>SourcesOuterControl.xaml</DependentUpon>
@@ -239,6 +238,7 @@
     <Compile Include="WebLatestVersionDialog.xaml.cs">
       <DependentUpon>WebLatestVersionDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WidthConverter.cs" />
     <Compile Include="WorkflowDesignerView.xaml.cs">
       <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
     </Compile>
@@ -279,7 +279,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PopupSample.xaml">
+    <Page Include="ManageServerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -338,7 +338,9 @@
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Converters\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
