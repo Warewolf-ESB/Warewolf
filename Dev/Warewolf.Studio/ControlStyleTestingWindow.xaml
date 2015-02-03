@@ -4,7 +4,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         Title="ControlStyleTestingWindow" Height="300" Width="300">
     <WrapPanel Orientation="Vertical">
-        <TextBox></TextBox>
+       
         <CheckBox></CheckBox>
         <ComboBox></ComboBox>
         <RadioButton></RadioButton>
@@ -28,5 +28,6 @@
         </Button>  
         <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
+        <TextBox></TextBox>
     </WrapPanel>
 </Window>
