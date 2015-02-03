@@ -4,7 +4,7 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         Title="ControlStyleTestingWindow" Height="300" Width="300">
     <WrapPanel Orientation="Vertical">
-        <TextBox></TextBox>
+       
         <CheckBox></CheckBox>
         <ComboBox></ComboBox>
         <RadioButton></RadioButton>
@@ -25,6 +25,9 @@
             <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock></StackPanel>
-        </Button>        
+        </Button>  
+        <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
+        <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
+        <TextBox></TextBox>
     </WrapPanel>
 </Window>

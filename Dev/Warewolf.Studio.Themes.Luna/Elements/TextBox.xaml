@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+                  
                     >
 
     <ResourceDictionary.MergedDictionaries>
@@ -12,6 +13,7 @@
 
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ValidationToolTip.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
 
 
     <!--  TextBox Brushes  -->
@@ -25,6 +27,71 @@
     <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+    <!--Images-->
+
+    <DrawingImage x:Key="System-Document">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="{StaticResource WareWolfMenuBrush}" Geometry="M 338.228,-662.107C 338.386,-661.883 338.59,-661.772 338.834,-661.772C 339.236,-661.772 339.51,-662.131 339.656,-662.844C 339.81,-663.152 340.001,-663.376 340.22,-663.535C 340.434,-663.699 340.785,-663.777 341.252,-663.777C 341.648,-663.777 341.976,-663.661 342.232,-663.441C 342.478,-663.223 342.609,-662.952 342.609,-662.639C 342.609,-662.471 342.568,-662.321 342.493,-662.181C 342.414,-662.037 342.32,-661.911 342.2,-661.793C 342.088,-661.677 341.901,-661.509 341.648,-661.289C 341.354,-661.028 341.121,-660.809 340.953,-660.627C 340.781,-660.436 340.64,-660.225 340.537,-659.979C 340.434,-659.731 340.384,-659.437 340.384,-659.101C 340.384,-658.835 340.458,-658.629 340.602,-658.499C 340.753,-658.359 340.934,-658.295 341.153,-658.295C 341.56,-658.295 341.808,-658.489 341.886,-658.891C 341.922,-659.083 341.952,-659.217 341.976,-659.301C 341.998,-659.381 342.026,-659.461 342.064,-659.54C 342.101,-659.615 342.157,-659.704 342.237,-659.796C 342.312,-659.885 342.414,-659.993 342.544,-660.124C 343.1,-660.576 343.478,-660.903 343.688,-661.093C 343.902,-661.285 344.085,-661.519 344.244,-661.78C 344.397,-662.041 344.477,-662.349 344.477,-662.704C 344.477,-663.152 344.337,-663.568 344.061,-663.945C 343.786,-664.324 343.404,-664.623 342.918,-664.843C 342.418,-665.061 341.866,-665.177 341.252,-665.177C 340.585,-665.177 340.005,-665.051 339.51,-664.819C 339.016,-664.58 338.633,-664.281 338.372,-663.917C 338.11,-663.553 337.984,-663.193 337.984,-662.844C 337.984,-662.583 338.069,-662.335 338.228,-662.107 Z M 341.858,-656.091C 342.049,-656.253 342.144,-656.488 342.144,-656.776C 342.144,-657.039 342.049,-657.257 341.872,-657.44C 341.7,-657.616 341.48,-657.711 341.22,-657.711C 340.953,-657.711 340.729,-657.616 340.546,-657.44C 340.365,-657.257 340.276,-657.039 340.276,-656.776C 340.276,-656.488 340.365,-656.253 340.552,-656.091C 340.744,-655.923 340.962,-655.843 341.22,-655.843C 341.457,-655.843 341.668,-655.923 341.858,-656.091 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="System-DocumentHover">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="{StaticResource TextBoxHoverBorderBrush}" Geometry="M 338.228,-662.107C 338.386,-661.883 338.59,-661.772 338.834,-661.772C 339.236,-661.772 339.51,-662.131 339.656,-662.844C 339.81,-663.152 340.001,-663.376 340.22,-663.535C 340.434,-663.699 340.785,-663.777 341.252,-663.777C 341.648,-663.777 341.976,-663.661 342.232,-663.441C 342.478,-663.223 342.609,-662.952 342.609,-662.639C 342.609,-662.471 342.568,-662.321 342.493,-662.181C 342.414,-662.037 342.32,-661.911 342.2,-661.793C 342.088,-661.677 341.901,-661.509 341.648,-661.289C 341.354,-661.028 341.121,-660.809 340.953,-660.627C 340.781,-660.436 340.64,-660.225 340.537,-659.979C 340.434,-659.731 340.384,-659.437 340.384,-659.101C 340.384,-658.835 340.458,-658.629 340.602,-658.499C 340.753,-658.359 340.934,-658.295 341.153,-658.295C 341.56,-658.295 341.808,-658.489 341.886,-658.891C 341.922,-659.083 341.952,-659.217 341.976,-659.301C 341.998,-659.381 342.026,-659.461 342.064,-659.54C 342.101,-659.615 342.157,-659.704 342.237,-659.796C 342.312,-659.885 342.414,-659.993 342.544,-660.124C 343.1,-660.576 343.478,-660.903 343.688,-661.093C 343.902,-661.285 344.085,-661.519 344.244,-661.78C 344.397,-662.041 344.477,-662.349 344.477,-662.704C 344.477,-663.152 344.337,-663.568 344.061,-663.945C 343.786,-664.324 343.404,-664.623 342.918,-664.843C 342.418,-665.061 341.866,-665.177 341.252,-665.177C 340.585,-665.177 340.005,-665.051 339.51,-664.819C 339.016,-664.58 338.633,-664.281 338.372,-663.917C 338.11,-663.553 337.984,-663.193 337.984,-662.844C 337.984,-662.583 338.069,-662.335 338.228,-662.107 Z M 341.858,-656.091C 342.049,-656.253 342.144,-656.488 342.144,-656.776C 342.144,-657.039 342.049,-657.257 341.872,-657.44C 341.7,-657.616 341.48,-657.711 341.22,-657.711C 340.953,-657.711 340.729,-657.616 340.546,-657.44C 340.365,-657.257 340.276,-657.039 340.276,-656.776C 340.276,-656.488 340.365,-656.253 340.552,-656.091C 340.744,-655.923 340.962,-655.843 341.22,-655.843C 341.457,-655.843 341.668,-655.923 341.858,-656.091 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="System-Trash">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="{StaticResource WareWolfMenuBrush}" Geometry="F1 M 4.46463,1.06042C 4.70782,0.42334 5.38065,-0.0273438 6.06403,0C 7.16229,0.000671387 8.26056,0.00134277 9.35883,0C 10.0408,-0.0238647 10.7144,0.422607 10.9568,1.06042C 11.2014,1.63934 11.437,2.22247 11.6858,2.79932C 12.8268,2.8161 13.9685,2.78949 15.1088,2.81189C 15.4291,2.81824 15.4355,3.19946 15.4214,3.435C 15.4004,3.68451 15.5006,4.04053 15.2182,4.17444C 14.8208,4.2417 14.4129,4.18567 14.012,4.20874C 14.0211,7.68793 14.0204,11.1671 14.0127,14.6462C 14.0218,15.6436 13.3328,16.8113 12.236,16.8182C 9.21936,16.8239 6.20209,16.8246 3.18552,16.8175C 2.10968,16.821 1.40527,15.7018 1.40948,14.7156C 1.40109,11.2141 1.40247,7.71173 1.40878,4.20947C 1.02399,4.19122 0.637085,4.22766 0.254425,4.18842C -0.0777588,4.1015 0.0154419,3.6908 0,3.43433C -0.0161133,3.19879 -0.00628662,2.82104 0.31192,2.81189C 1.45364,2.78876 2.59674,2.81824 3.73846,2.79791C 3.98029,2.21899 4.22488,1.64075 4.46463,1.06042 Z M 5.76334,1.5896C 5.59302,1.99188 5.42554,2.3963 5.2608,2.80139C 6.89456,2.80627 8.52899,2.8056 10.1628,2.80139C 10.0071,2.41028 9.84595,2.02197 9.68756,1.63232C 9.64618,1.52301 9.56351,1.40039 9.43311,1.40381C 8.3089,1.39966 7.18402,1.40454 6.05981,1.40173C 5.92944,1.38422 5.80328,1.46484 5.76334,1.5896 Z M 2.79791,4.20734C 2.81262,7.68298 2.7951,11.1594 2.80634,14.635C 2.84277,14.9091 2.89743,15.3121 3.18903,15.4151C 6.22382,15.4214 9.26001,15.4277 12.2948,15.4123C 12.5464,15.1922 12.6144,14.8326 12.6186,14.5131C 12.6221,11.0787 12.6137,7.64374 12.6228,4.20874C 9.34763,4.20245 6.07245,4.20593 2.79791,4.20734 Z "/>
+                    <GeometryDrawing Brush="{StaticResource WareWolfMenuBrush}" Geometry="F1 M 4.40714,6.34082C 4.78491,6.33801 5.53555,6.10461 5.60284,6.65833C 5.60913,8.76099 5.61053,10.8643 5.60214,12.9669C 5.59933,13.3931 5.09189,13.3188 4.8031,13.3174C 4.55713,13.3524 4.19757,13.2872 4.21228,12.9669C 4.20245,10.8875 4.21158,8.80792 4.20807,6.72913C 4.19617,6.57422 4.25296,6.40247 4.40714,6.34082 Z "/>
+                    <GeometryDrawing Brush="{StaticResource WareWolfMenuBrush}" Geometry="F1 M 7.20996,6.34015C 7.58911,6.33942 8.33838,6.10321 8.40634,6.65906C 8.41196,8.76166 8.41336,10.8643 8.40564,12.9669C 8.39163,13.4239 7.84003,13.3054 7.53445,13.3174C 7.30176,13.3601 7.0025,13.2438 7.01648,12.9662C 7.00458,10.9113 7.01721,8.85486 7.01019,6.79919C 7.00531,6.63025 7.02209,6.40674 7.20996,6.34015 Z "/>
+                    <GeometryDrawing Brush="{StaticResource WareWolfMenuBrush}" Geometry="F1 M 10.0135,6.33942C 10.3926,6.34015 11.1419,6.10394 11.2106,6.65833C 11.2148,8.76099 11.2176,10.8643 11.2098,12.9669C 11.2064,13.3923 10.6982,13.3195 10.4095,13.3174C 10.1628,13.3559 9.80811,13.2837 9.81934,12.9669C 9.80951,10.8881 9.8186,8.80792 9.81512,6.72913C 9.8053,6.57562 9.85718,6.39966 10.0135,6.33942 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="System-TrashHover">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="{StaticResource TextBoxHoverBorderBrush}" Geometry="F1 M 4.46463,1.06042C 4.70782,0.42334 5.38065,-0.0273438 6.06403,0C 7.16229,0.000671387 8.26056,0.00134277 9.35883,0C 10.0408,-0.0238647 10.7144,0.422607 10.9568,1.06042C 11.2014,1.63934 11.437,2.22247 11.6858,2.79932C 12.8268,2.8161 13.9685,2.78949 15.1088,2.81189C 15.4291,2.81824 15.4355,3.19946 15.4214,3.435C 15.4004,3.68451 15.5006,4.04053 15.2182,4.17444C 14.8208,4.2417 14.4129,4.18567 14.012,4.20874C 14.0211,7.68793 14.0204,11.1671 14.0127,14.6462C 14.0218,15.6436 13.3328,16.8113 12.236,16.8182C 9.21936,16.8239 6.20209,16.8246 3.18552,16.8175C 2.10968,16.821 1.40527,15.7018 1.40948,14.7156C 1.40109,11.2141 1.40247,7.71173 1.40878,4.20947C 1.02399,4.19122 0.637085,4.22766 0.254425,4.18842C -0.0777588,4.1015 0.0154419,3.6908 0,3.43433C -0.0161133,3.19879 -0.00628662,2.82104 0.31192,2.81189C 1.45364,2.78876 2.59674,2.81824 3.73846,2.79791C 3.98029,2.21899 4.22488,1.64075 4.46463,1.06042 Z M 5.76334,1.5896C 5.59302,1.99188 5.42554,2.3963 5.2608,2.80139C 6.89456,2.80627 8.52899,2.8056 10.1628,2.80139C 10.0071,2.41028 9.84595,2.02197 9.68756,1.63232C 9.64618,1.52301 9.56351,1.40039 9.43311,1.40381C 8.3089,1.39966 7.18402,1.40454 6.05981,1.40173C 5.92944,1.38422 5.80328,1.46484 5.76334,1.5896 Z M 2.79791,4.20734C 2.81262,7.68298 2.7951,11.1594 2.80634,14.635C 2.84277,14.9091 2.89743,15.3121 3.18903,15.4151C 6.22382,15.4214 9.26001,15.4277 12.2948,15.4123C 12.5464,15.1922 12.6144,14.8326 12.6186,14.5131C 12.6221,11.0787 12.6137,7.64374 12.6228,4.20874C 9.34763,4.20245 6.07245,4.20593 2.79791,4.20734 Z "/>
+                    <GeometryDrawing Brush="{StaticResource TextBoxHoverBorderBrush}" Geometry="F1 M 4.40714,6.34082C 4.78491,6.33801 5.53555,6.10461 5.60284,6.65833C 5.60913,8.76099 5.61053,10.8643 5.60214,12.9669C 5.59933,13.3931 5.09189,13.3188 4.8031,13.3174C 4.55713,13.3524 4.19757,13.2872 4.21228,12.9669C 4.20245,10.8875 4.21158,8.80792 4.20807,6.72913C 4.19617,6.57422 4.25296,6.40247 4.40714,6.34082 Z "/>
+                    <GeometryDrawing Brush="{StaticResource TextBoxHoverBorderBrush}" Geometry="F1 M 7.20996,6.34015C 7.58911,6.33942 8.33838,6.10321 8.40634,6.65906C 8.41196,8.76166 8.41336,10.8643 8.40564,12.9669C 8.39163,13.4239 7.84003,13.3054 7.53445,13.3174C 7.30176,13.3601 7.0025,13.2438 7.01648,12.9662C 7.00458,10.9113 7.01721,8.85486 7.01019,6.79919C 7.00531,6.63025 7.02209,6.40674 7.20996,6.34015 Z "/>
+                    <GeometryDrawing Brush="{StaticResource TextBoxHoverBorderBrush}" Geometry="F1 M 10.0135,6.33942C 10.3926,6.34015 11.1419,6.10394 11.2106,6.65833C 11.2148,8.76099 11.2176,10.8643 11.2098,12.9669C 11.2064,13.3923 10.6982,13.3195 10.4095,13.3174C 10.1628,13.3559 9.80811,13.2837 9.81934,12.9669C 9.80951,10.8881 9.8186,8.80792 9.81512,6.72913C 9.8053,6.57562 9.85718,6.39966 10.0135,6.33942 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="System-Search">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing  Brush="{StaticResource WareWolfMenuBrush}" Geometry="F1 M 1.93231,2.7167C 3.4989,0.936666 5.88739,-0.0875645 8.25748,2.09808e-005C 10.7314,0.0721035 13.1574,1.34139 14.5805,3.37447C 16.529,6.0566 16.6047,9.95351 14.6666,12.6614C 15.9807,13.9866 17.3133,15.2934 18.6194,16.626C 19.2706,17.2559 19.1095,18.4376 18.3317,18.8909C 17.788,19.2522 17.0035,19.1683 16.5496,18.6996C 15.2324,17.381 13.9189,16.0587 12.5849,14.757C 10.2523,16.3781 7.04926,16.6422 4.50183,15.3692C 2.11258,14.278 0.401764,11.913 0,9.33028C -0.387024,6.98006 0.364258,4.4988 1.93231,2.7167 Z M 7.39655,2.96462C 5.72183,3.1177 4.22,4.2214 3.42825,5.68349C 2.37747,7.63637 2.76895,10.2677 4.4187,11.7732C 5.85574,13.2566 8.23172,13.6364 10.0971,12.7946C 10.9499,12.4134 11.6732,11.7762 12.2221,11.0257C 13.2177,9.66872 13.3965,7.80569 12.8218,6.24203C 12.0102,4.10146 9.68719,2.63717 7.39655,2.96462 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="System-SearchHover">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="{StaticResource TextBoxHoverBorderBrush}" Geometry="F1 M 1.93231,2.7167C 3.4989,0.936666 5.88739,-0.0875645 8.25748,2.09808e-005C 10.7314,0.0721035 13.1574,1.34139 14.5805,3.37447C 16.529,6.0566 16.6047,9.95351 14.6666,12.6614C 15.9807,13.9866 17.3133,15.2934 18.6194,16.626C 19.2706,17.2559 19.1095,18.4376 18.3317,18.8909C 17.788,19.2522 17.0035,19.1683 16.5496,18.6996C 15.2324,17.381 13.9189,16.0587 12.5849,14.757C 10.2523,16.3781 7.04926,16.6422 4.50183,15.3692C 2.11258,14.278 0.401764,11.913 0,9.33028C -0.387024,6.98006 0.364258,4.4988 1.93231,2.7167 Z M 7.39655,2.96462C 5.72183,3.1177 4.22,4.2214 3.42825,5.68349C 2.37747,7.63637 2.76895,10.2677 4.4187,11.7732C 5.85574,13.2566 8.23172,13.6364 10.0971,12.7946C 10.9499,12.4134 11.6732,11.7762 12.2221,11.0257C 13.2177,9.66872 13.3965,7.80569 12.8218,6.24203C 12.0102,4.10146 9.68719,2.63717 7.39655,2.96462 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
 
     <!--  *********************************  TextBox Style  *********************************  -->
     <Style x:Key="TextBoxStyle" TargetType="TextBox">
@@ -46,6 +113,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
                     <Grid x:Name="RootElement" SnapsToDevicePixels="True">
+                        
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
@@ -141,7 +209,7 @@
                                 <TextBlock Text="{Binding Path=(customControls:TextBoxHelper.Watermark), 
                 RelativeSource={RelativeSource TemplatedParent}}" 
                                       
-                       Opacity=".75" FontWeight="Light" FontStyle="Italic" Margin="10,0,0,0"
+                       Opacity=".75" FontWeight="Light" Foreground="{StaticResource WareWolfLighkGreyBrush}" FontStyle="Italic" Margin="10,0,0,0"
                        Visibility="{Binding (customControls:TextBoxHelper.ShowWatermark),
                 Converter={StaticResource BooleanToVisibilityConverter}, 
                 RelativeSource={RelativeSource TemplatedParent}}"
@@ -213,8 +281,496 @@
         </Setter>
     </Style>
 
+    <!--  *********************************  Implicit Styles  *********************************  --><!--
+    <Style BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}" />-->
+
+
+    <!--  *********************************  TextBox Style  *********************************  -->
+    <Style x:Key="SearchTextboxStyle" TargetType="TextBox">
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="SelectionBrush" Value="{StaticResource TextBoxFocusedBrush}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationToolTipTemplate}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid x:Name="RootElement" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                Path=ActualHeight}" />
+                        </Grid.ColumnDefinitions>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBorderBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="DisabledVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="ReadOnly">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="ReadOnlyVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="FocusVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="FocusVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ValidationStates">
+                                <VisualState x:Name="Valid" />
+                                <VisualState x:Name="InvalidUnfocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ValidationErrorElement" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="InvalidFocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ValidationErrorElement" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsOpen">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <system:Boolean>True</system:Boolean>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Opacity="1"
+                                Grid.ColumnSpan="2"
+                                >
+                            <Grid>
+
+                                <TextBlock Text="{Binding Path=(customControls:TextBoxHelper.Watermark), 
+                RelativeSource={RelativeSource TemplatedParent}}" 
+                                      
+                       Opacity=".75" FontWeight="Light" Foreground="{StaticResource WareWolfLighkGreyBrush}" FontStyle="Italic" Margin="10,0,0,0"
+                       Visibility="{Binding (customControls:TextBoxHelper.ShowWatermark),
+                Converter={StaticResource BooleanToVisibilityConverter}, 
+                RelativeSource={RelativeSource TemplatedParent}}"
+                       />
+
+                                <Border x:Name="ReadOnlyVisualElement"
+                                        Background="{StaticResource TextBoxReadOnlyBackgroundBrush}"
+                                        Opacity="0" />
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              BorderThickness="0"
+                                              IsTabStop="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              Padding="{TemplateBinding Padding}" />
+
+
+                            </Grid>
+                        </Border>
+                        <Border x:Name="DisabledVisualElement"  Grid.Column="0" Grid.ColumnSpan="2"
+                                Background="{StaticResource DisabledVisualElement}"
+                                BorderBrush="{StaticResource DisabledVisualElement}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                IsHitTestVisible="False"
+                                Opacity="0" />
+                        <Border x:Name="FocusVisualElement" Grid.Column="0" Grid.ColumnSpan="2"
+                                BorderBrush="{StaticResource TextBoxFocusedBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                IsHitTestVisible="False"
+                                Opacity="0" />
+                        <Border x:Name="ValidationErrorElement" Grid.Column="0" Grid.ColumnSpan="2"
+                                BorderBrush="{StaticResource ValidationErrorElement}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Visibility="Collapsed">
+                            <ToolTipService.ToolTip>
+                                <ToolTip x:Name="validationTooltip"
+                                         DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                         Placement="Right"
+                                         PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                         Template="{StaticResource ValidationToolTipTemplate}" />
+                            </ToolTipService.ToolTip>
+                            <Grid Width="12"
+                                  Height="12"
+                                  Margin="1,-4,-4,0"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Top"
+                                  Background="Transparent">
+                                <Path Margin="1,3,0,0"
+                                      Data="M 1,0 L6,0 A 2,2 90 0 1 8,2 L8,7 z"
+                                      Fill="{StaticResource ValidationErrorElement}" />
+                                <Path Margin="1,3,0,0"
+                                      Data="M 0,0 L2,0 L 8,6 L8,8"
+                                      Fill="{StaticResource LightForegroundBrush}" />
+
+
+                            </Grid>
+                        </Border>
+                        <Border x:Name="PART_SearchIconBorder"
+                      Grid.Column="1"
+                      BorderThickness="1"
+                      Padding="1"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
+                      >
+                            <!--<Image Source="{StaticResource System-Search}"></Image>-->
+                            <Button  Command="{Binding Path=SearchClicked}" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*">
+                                                    
+                                                </RowDefinition>
+                                                <RowDefinition Height="2">
+
+                                                </RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Image Name="Normal" Grid.Row="0" Width="15" Height="15" Source="{StaticResource System-Search}"/>
+                                            <Image Name="Hover" Grid.Row="0" Visibility="Hidden"  Width="15" Height="15" Source="{StaticResource System-SearchHover}"/>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Normal" Property="Visibility" Value="Hidden"/>
+                                                <Setter TargetName="Hover" Property="Visibility" Value="Visible"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Border>
+                        
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}"/>
+                            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!--  *********************************  TextBox Style  *********************************  -->
+    <Style x:Key="VariableListTextBox" TargetType="TextBox">
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="SelectionBrush" Value="{StaticResource TextBoxFocusedBrush}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationToolTipTemplate}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid x:Name="RootElement" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="44" />
+                        </Grid.ColumnDefinitions>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBorderBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="DisabledVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="ReadOnly">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="ReadOnlyVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="FocusVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="FocusVisualElement"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ValidationStates">
+                                <VisualState x:Name="Valid" />
+                                <VisualState x:Name="InvalidUnfocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ValidationErrorElement" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="InvalidFocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ValidationErrorElement" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="validationTooltip" Storyboard.TargetProperty="IsOpen">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <system:Boolean>True</system:Boolean>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Opacity="1"
+                                Grid.ColumnSpan="2"
+                                >
+                            <Grid>
+
+                                <TextBlock Text="{Binding Path=(customControls:TextBoxHelper.Watermark), 
+                RelativeSource={RelativeSource TemplatedParent}}" 
+                                      
+                       Opacity=".75" FontWeight="Light" Foreground="{StaticResource WareWolfLighkGreyBrush}" FontStyle="Italic" Margin="10,0,0,0"
+                       Visibility="{Binding (customControls:TextBoxHelper.ShowWatermark),
+                Converter={StaticResource BooleanToVisibilityConverter}, 
+                RelativeSource={RelativeSource TemplatedParent}}"
+                       />
+
+                                <Border x:Name="ReadOnlyVisualElement"
+                                        Background="{StaticResource TextBoxReadOnlyBackgroundBrush}"
+                                        Opacity="0" />
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              BorderThickness="0"
+                                              IsTabStop="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              Padding="{TemplateBinding Padding}" />
+
+
+                            </Grid>
+                        </Border>
+                        <Border x:Name="DisabledVisualElement"  Grid.Column="0" Grid.ColumnSpan="2"
+                                Background="{StaticResource DisabledVisualElement}"
+                                BorderBrush="{StaticResource DisabledVisualElement}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                IsHitTestVisible="False"
+                                Opacity="0" />
+                        <Border x:Name="FocusVisualElement" Grid.Column="0" Grid.ColumnSpan="2"
+                                BorderBrush="{StaticResource TextBoxFocusedBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                IsHitTestVisible="False"
+                                Opacity="0" />
+                        <Border x:Name="ValidationErrorElement" Grid.Column="0" Grid.ColumnSpan="2"
+                                BorderBrush="{StaticResource ValidationErrorElement}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Visibility="Collapsed">
+                            <ToolTipService.ToolTip>
+                                <ToolTip x:Name="validationTooltip"
+                                         DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                         Placement="Right"
+                                         PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                         Template="{StaticResource ValidationToolTipTemplate}" />
+                            </ToolTipService.ToolTip>
+                            <Grid Width="12"
+                                  Height="12"
+                                  Margin="1,-4,-4,0"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Top"
+                                  Background="Transparent">
+                                <Path Margin="1,3,0,0"
+                                      Data="M 1,0 L6,0 A 2,2 90 0 1 8,2 L8,7 z"
+                                      Fill="{StaticResource ValidationErrorElement}" />
+                                <Path Margin="1,3,0,0"
+                                      Data="M 0,0 L2,0 L 8,6 L8,8"
+                                      Fill="{StaticResource LightForegroundBrush}" />
+
+
+                            </Grid>
+                        </Border>
+                        <Border x:Name="PART_SearchIconBorder"
+                      Grid.Column="1"
+                      BorderThickness="1"
+                      Padding="1"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
+                      >
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="22"></ColumnDefinition>
+                                    <ColumnDefinition Width="22"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button  Grid.Column="0" Command="{Binding Path=DeleteClicked}" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*">
+
+                                                    </RowDefinition>
+                                                    <RowDefinition Height="2">
+
+                                                    </RowDefinition>
+                                                </Grid.RowDefinitions>
+                                                <Image Name="Normal" Grid.Row="0" Width="15" Height="15" Source="{StaticResource System-Trash}"/>
+                                                <Image Name="Hover" Grid.Row="0" Visibility="Hidden"  Width="15" Height="15" Source="{StaticResource System-TrashHover}"/>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Normal" Property="Visibility" Value="Hidden"/>
+                                                    <Setter TargetName="Hover" Property="Visibility" Value="Visible"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding Path=NotesClicked}" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*">
+
+                                                    </RowDefinition>
+                                                    <RowDefinition Height="2">
+
+                                                    </RowDefinition>
+                                                </Grid.RowDefinitions>
+                                                <Image Name="Normal" Grid.Row="0" Width="15" Height="15" Source="{StaticResource System-Document}"/>
+                                                <Image Name="Hover" Grid.Row="0" Visibility="Hidden"  Width="15" Height="15" Source="{StaticResource System-DocumentHover}"/>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Normal" Property="Visibility" Value="Hidden"/>
+                                                    <Setter TargetName="Hover" Property="Visibility" Value="Visible"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}"/>
+                            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--  *********************************  Implicit Styles  *********************************  -->
     <Style BasedOn="{StaticResource TextBoxStyle}" TargetType="{x:Type TextBox}" />
-
 
 </ResourceDictionary>

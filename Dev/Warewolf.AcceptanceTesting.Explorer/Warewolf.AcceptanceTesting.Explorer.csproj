@@ -50,6 +50,12 @@
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.Design">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.Design.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamSlider.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.dll</HintPath>
     </Reference>

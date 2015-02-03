@@ -2,17 +2,31 @@
 <TestSettings name="Local Acceptance Run" id="3264dd0f-6fc1-4cb9-b44f-c649fef29609" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
   <Deployment>
-      <!--Project specific outputs-->
+    <!--Project specific outputs-->
     <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
     <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
 
-      <!--Solution specific outputs-->
+    <!--Dynamicly loaded when initializing a view-->
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.DataVisualization.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Persistence.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Math.Calculators.v14.2.dll" />
+    <DeploymentItem filename="packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll" />
+    <DeploymentItem filename="packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll" />
+    <DeploymentItem filename="Warewolf.Studio.CustomControls\bin\Debug\Warewolf.Studio.CustomControls.dll" />
+
+    <!--Solution specific outputs-->
     <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
     <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
   </Deployment>
   <NamingScheme baseName="UT" />
-    <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
-  <RemoteController name="rsaklfsvrtfsbld" />
+  <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <Execution hostProcessPlatform="MSIL">
     <Timeouts testTimeout="180000" />
     <Buckets size="100" />
@@ -36,4 +50,5 @@
     <AgentRule name="LocalMachineDefaultRole">
     </AgentRule>
   </Execution>
+  <Properties />
 </TestSettings>
