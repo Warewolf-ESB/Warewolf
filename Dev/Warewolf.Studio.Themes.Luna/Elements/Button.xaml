@@ -97,7 +97,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
     <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="25" />
         <Setter Property="Height" Value="25" />
@@ -131,16 +131,16 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Border x:Name="Bd"
-                                   Background="{StaticResource ButtonBackgroundBrush}"
-                                   BorderBrush="{StaticResource ButtonBorderBrush}"
-                                   CornerRadius ="16"
-                                   BorderThickness="1" >
+                                Background="{StaticResource ButtonBackgroundBrush}"
+                                BorderBrush="{StaticResource ButtonBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="16">
                             <ContentControl x:Name="ContentControl"
-                                        Margin="{TemplateBinding Padding}"
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        Foreground="{TemplateBinding Foreground}"
-                                        IsTabStop="False">
+                                            Margin="{TemplateBinding Padding}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            IsTabStop="False">
                                 <ContentPresenter x:Name="contentPresenter" />
                             </ContentControl>
                         </Border>
@@ -183,7 +183,7 @@
         <Setter Property="Margin" Value="0" />
     </Style>
 
-   
+
 
     <Style x:Key="ExplorerTreeButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="14" />
@@ -345,6 +345,81 @@
         </Style.Triggers>
     </Style>
 
+
+    <Style x:Key="SideMenuImageButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="115" />
+        <Setter Property="Height" Value="35" />
+        <Setter Property="MinHeight" Value="25" />
+        <Setter Property="MinWidth" Value="25" />
+        <Setter Property="Background" Value="{StaticResource ButtonMenuBackgroundBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="Bd"
+                                   Fill="{StaticResource ButtonMenuBackgroundBrush}"
+                                   Stroke="{StaticResource ButtonMenuBorderBrush}"
+                                   StrokeThickness="1" />
+                        <ContentControl x:Name="ContentControl"
+                                        Margin="{TemplateBinding Padding}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        IsTabStop="False">
+                            <ContentPresenter x:Name="contentPresenter" />
+                        </ContentControl>
+                        <Rectangle x:Name="FocusedVisualElement"
+                                   Stroke="{StaticResource ButtonMenuBorderBrush}"
+                                   StrokeThickness="1"
+                                   Visibility="Collapsed" />
+                        <Rectangle x:Name="DisabledVisualElement"
+                                   Fill="{StaticResource DisabledSideMenuVisualElement}"
+                                   Visibility="Collapsed" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource ButtonHoverBackgroundBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="False">
+                            <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource ButtonMenuBorderBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
+            </Trigger>
+            <Trigger Property="Button.IsPressed" Value="true">
+                <Setter Property="Control.Foreground" Value="White" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
     <Style x:Key="PopupButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="25" />
         <Setter Property="Height" Value="25" />
@@ -417,7 +492,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
     <Style x:Key="PopupRoundedCornerButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="25" />
         <Setter Property="Height" Value="25" />
@@ -449,22 +524,22 @@
 
                                 <VisualState x:Name="Unfocused" />
                             </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>                    
+                        </VisualStateManager.VisualStateGroups>
                         <Border x:Name="Bd"
-                                   Background="{StaticResource ButtonHoverBackgroundBrush}"
-                                   BorderBrush="{StaticResource ButtonHoverBackgroundBrush}"
-                                   CornerRadius="13"
-                                   BorderThickness="1" >
-                            
+                                Background="{StaticResource ButtonHoverBackgroundBrush}"
+                                BorderBrush="{StaticResource ButtonHoverBackgroundBrush}"
+                                BorderThickness="1"
+                                CornerRadius="13">
+
                             <ContentControl x:Name="ContentControl"
-                                        Margin="{TemplateBinding Padding}"
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        Foreground="{TemplateBinding Foreground}"
-                                        IsTabStop="False">
+                                            Margin="{TemplateBinding Padding}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            IsTabStop="False">
                                 <ContentPresenter x:Name="contentPresenter" />
                             </ContentControl>
-                        </Border>                      
+                        </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">

@@ -33,10 +33,10 @@
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeave" SourceName="MenuPanel">
-                    <interactivity:InvokeCommandAction Command="{Binding SlideClosedCommand}" />
+                    <i:InvokeCommandAction Command="{Binding SlideClosedCommand}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="MouseEnter" SourceName="MenuPanel">
-                    <interactivity:InvokeCommandAction Command="{Binding SlideOpenCommand}" />
+                    <i:InvokeCommandAction Command="{Binding SlideOpenCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
@@ -127,7 +127,7 @@
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
-                            <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                            <i:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
@@ -339,29 +339,60 @@
                         HorizontalAlignment="Left"
                         Style="{StaticResource SideMenuButtonStyle}">
 
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+
+
+                            <Grid>
+                                <Rectangle Name="Bd"
+                                           Fill="{StaticResource WareWolfMenuBrush}"
+                                           Stroke="{StaticResource WareWolfMenuBrush}"
+                                           StrokeThickness="1" />
+
+                                <StackPanel Width="{Binding ButtonWidth}"
+                                            Height="35"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Background="Transparent"
+                                            Orientation="Horizontal">
+
+                                    <Image Name="image1"
+                                           Height="20"
+                                           Margin="5,5,5,5"
+                                           Source="{StaticResource Menu-System-WebService}"
+                                           Stretch="Fill"
+                                           Visibility="Visible" />
+
+                                    <TextBlock Height="35"
+                                               HorizontalAlignment="Left"
+                                               Padding="19,6,0,5"
+                                               Style="{StaticResource MenuTextBlockStyle}"
+                                               Text="{Binding Path=WebLabel}" />
+                                </StackPanel>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="image1" Property="Source" Value="{StaticResource Menu-System-WebService-MouseOver}" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="false">
+                                    <Setter TargetName="image1" Property="Source" Value="{StaticResource Menu-System-WebService}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter TargetName="image1" Property="Source" Value="{StaticResource Menu-System-WebService}" />
+                                    <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource WareWolfOrangeBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="false">
+                                    <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource WareWolfMenuBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-
-                    <StackPanel Width="{Binding ButtonWidth}"
-                                Height="35"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Background="Transparent"
-                                Orientation="Horizontal">
-                        <Image Height="20"
-                               Margin="7,5,5,5"
-                               Source="{StaticResource Menu-System-WebService}" />
-
-                        <TextBlock Height="35"
-                                   HorizontalAlignment="Left"
-                                   Padding="13,6,0,5"
-                                   Style="{StaticResource MenuTextBlockStyle}"
-                                   Text="{Binding Path=WebLabel}" />
-
-                    </StackPanel>
 
                 </Button>
 
@@ -479,7 +510,7 @@
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
-                            <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                            <i:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
@@ -576,7 +607,7 @@
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
-                            <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                            <i:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
@@ -645,10 +676,10 @@
                     </StackPanel>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseEnter">
-                            <interactivity:InvokeCommandAction Command="{Binding IsOverLockCommand}" />
+                            <i:InvokeCommandAction Command="{Binding IsOverLockCommand}" />
                         </i:EventTrigger>
                         <i:EventTrigger EventName="MouseLeave">
-                            <interactivity:InvokeCommandAction Command="{Binding IsNotOverLockCommand}" />
+                            <i:InvokeCommandAction Command="{Binding IsNotOverLockCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>
