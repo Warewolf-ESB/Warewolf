@@ -20,7 +20,7 @@ namespace Dev2.Common.Interfaces
         void OpenScheduler();
         void OpenSettings();
         IServer ActiveServer { get; set; }
-        IExplorerTreeItem ActiveItem { get; set; }
+        object ActiveItem { get; set; }
         IServer LocalhostServer { get; set; }
         bool MenuExpanded { get; set; }
         double MenuPanelWidth { get; set; }

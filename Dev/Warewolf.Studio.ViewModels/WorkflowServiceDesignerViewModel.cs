@@ -4,17 +4,16 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
-using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class WorkflowServiceDesignerViewModel : BindableBase, IWorkflowServiceDesignerViewModel, IActiveAware, IDockAware
+    public class WorkflowServiceDesignerViewModel : BindableBase, IWorkflowServiceDesignerViewModel, IDockViewModel
     {
         bool _isActive;
         string _header;
         readonly WorkflowDesigner _wd;
+        private ResourceType? _image;
 
         public WorkflowServiceDesignerViewModel(IXamlResource resource)
         {
@@ -120,6 +119,11 @@ namespace Warewolf.Studio.ViewModels
                 _header = value;
                 OnPropertyChanged(() => Header);
             }
+        }
+
+        public ResourceType? Image
+        {
+            get { return ResourceType.WorkflowService; }
         }
 
         public bool IsNewWorkflow { get; set; }
