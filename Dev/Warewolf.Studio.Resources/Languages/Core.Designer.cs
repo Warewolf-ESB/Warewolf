@@ -173,6 +173,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ConnectControlConnectionsToolTip.
+        /// </summary>
+        public static string ConnectControlConnectionsToolTip {
+            get {
+                return ResourceManager.GetString("ConnectControlConnectionsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ConnectControlEditConnectionToolTip.
+        /// </summary>
+        public static string ConnectControlEditConnectionToolTip {
+            get {
+                return ResourceManager.GetString("ConnectControlEditConnectionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ConnectControlToggleConnectionToolTip.
+        /// </summary>
+        public static string ConnectControlToggleConnectionToolTip {
+            get {
+                return ResourceManager.GetString("ConnectControlToggleConnectionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Critical Error.
         /// </summary>
         public static string CritErrorTitle {
@@ -214,6 +241,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string DebugData_FilePath {
             get {
                 return ResourceManager.GetString("DebugData_FilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DebugToolTip.
+        /// </summary>
+        public static string DebugToolTip {
+            get {
+                return ResourceManager.GetString("DebugToolTip", resourceCulture);
             }
         }
         
@@ -494,6 +530,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EnvironmentExplorerRefreshToolTip.
+        /// </summary>
+        public static string EnvironmentExplorerRefreshToolTip {
+            get {
+                return ResourceManager.GetString("EnvironmentExplorerRefreshToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Environments.
         /// </summary>
         public static string Environments_Directory {
@@ -626,6 +671,42 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ExampleWorkflowNotFound {
             get {
                 return ResourceManager.GetString("ExampleWorkflowNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExplorerItemEditToolTip.
+        /// </summary>
+        public static string ExplorerItemEditToolTip {
+            get {
+                return ResourceManager.GetString("ExplorerItemEditToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExplorerItemExecuteToolTip.
+        /// </summary>
+        public static string ExplorerItemExecuteToolTip {
+            get {
+                return ResourceManager.GetString("ExplorerItemExecuteToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExplorerRefreshToolTip.
+        /// </summary>
+        public static string ExplorerRefreshToolTip {
+            get {
+                return ResourceManager.GetString("ExplorerRefreshToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExplorerSearchToolTip.
+        /// </summary>
+        public static string ExplorerSearchToolTip {
+            get {
+                return ResourceManager.GetString("ExplorerSearchToolTip", resourceCulture);
             }
         }
         
@@ -792,6 +873,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MenuDatabaseToolTip.
+        /// </summary>
+        public static string MenuDatabaseToolTip {
+            get {
+                return ResourceManager.GetString("MenuDatabaseToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuDeployToolTip.
+        /// </summary>
+        public static string MenuDeployToolTip {
+            get {
+                return ResourceManager.GetString("MenuDeployToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Database.
         /// </summary>
         public static string MenuDialogDatabaseLabel {
@@ -923,6 +1022,87 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MenuDialogWebLabel {
             get {
                 return ResourceManager.GetString("MenuDialogWebLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuDownloadToolTip.
+        /// </summary>
+        public static string MenuDownloadToolTip {
+            get {
+                return ResourceManager.GetString("MenuDownloadToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuHelpToolTip.
+        /// </summary>
+        public static string MenuHelpToolTip {
+            get {
+                return ResourceManager.GetString("MenuHelpToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuLockToolTip.
+        /// </summary>
+        public static string MenuLockToolTip {
+            get {
+                return ResourceManager.GetString("MenuLockToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuNewServiceToolTip.
+        /// </summary>
+        public static string MenuNewServiceToolTip {
+            get {
+                return ResourceManager.GetString("MenuNewServiceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuPluginToolTip.
+        /// </summary>
+        public static string MenuPluginToolTip {
+            get {
+                return ResourceManager.GetString("MenuPluginToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuSaveToolTip.
+        /// </summary>
+        public static string MenuSaveToolTip {
+            get {
+                return ResourceManager.GetString("MenuSaveToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuSchedulerToolTip.
+        /// </summary>
+        public static string MenuSchedulerToolTip {
+            get {
+                return ResourceManager.GetString("MenuSchedulerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuSettingsToolTip.
+        /// </summary>
+        public static string MenuSettingsToolTip {
+            get {
+                return ResourceManager.GetString("MenuSettingsToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MenuWebServiceToolTip.
+        /// </summary>
+        public static string MenuWebServiceToolTip {
+            get {
+                return ResourceManager.GetString("MenuWebServiceToolTip", resourceCulture);
             }
         }
         
@@ -1313,6 +1493,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServerDialogAddressPortTip.
+        /// </summary>
+        public static string ServerDialogAddressPortTip {
+            get {
+                return ResourceManager.GetString("ServerDialogAddressPortTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogAddressSaveTip.
+        /// </summary>
+        public static string ServerDialogAddressSaveTip {
+            get {
+                return ResourceManager.GetString("ServerDialogAddressSaveTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogAddressToolTip.
+        /// </summary>
+        public static string ServerDialogAddressToolTip {
+            get {
+                return ResourceManager.GetString("ServerDialogAddressToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogAddressUserAuthenticationToolTip.
+        /// </summary>
+        public static string ServerDialogAddressUserAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("ServerDialogAddressUserAuthenticationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authentication Type:.
         /// </summary>
         public static string ServerDialogAuthenticationTypeLabel {
@@ -1349,6 +1565,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServerDialogAddressPasswordToolTip.
+        /// </summary>
+        public static string ServerDialogPasswordToolTip {
+            get {
+                return ResourceManager.GetString("ServerDialogPasswordToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogProtocolToolTip.
+        /// </summary>
+        public static string ServerDialogProtocolToolTip {
+            get {
+                return ResourceManager.GetString("ServerDialogProtocolToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogPublicToolTip.
+        /// </summary>
+        public static string ServerDialogPublicToolTip {
+            get {
+                return ResourceManager.GetString("ServerDialogPublicToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogsTestToolTip.
+        /// </summary>
+        public static string ServerDialogsTestToolTip {
+            get {
+                return ResourceManager.GetString("ServerDialogsTestToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test Connection.
         /// </summary>
         public static string ServerDialogTestConnectionLabel {
@@ -1363,6 +1615,24 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServerDialogUserNameLabel {
             get {
                 return ResourceManager.GetString("ServerDialogUserNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogUserNameToolTip.
+        /// </summary>
+        public static string ServerDialogUserNameToolTip {
+            get {
+                return ResourceManager.GetString("ServerDialogUserNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogWindowsAuthenticationToolTip.
+        /// </summary>
+        public static string ServerDialogWindowsAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("ServerDialogWindowsAuthenticationToolTip", resourceCulture);
             }
         }
         

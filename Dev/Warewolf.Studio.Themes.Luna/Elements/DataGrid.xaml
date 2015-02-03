@@ -13,17 +13,17 @@
 
 
     <!--  Data Grid Button Brushes  -->
-    <SolidColorBrush x:Key="DataGridBackgroundBrush" Color="{StaticResource Color_021}" />
-    <SolidColorBrush x:Key="DataGridBorderBrush" Color="{StaticResource Color_004}" />
-    <SolidColorBrush x:Key="DataGridHoverBackgroundBrush" Color="{StaticResource Color_006}" />
-    <SolidColorBrush x:Key="DataGridHoverBorderBrush" Color="{StaticResource Color_003}" />
+    <SolidColorBrush x:Key="DataGridBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="DataGridBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="DataGridHoverBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="DataGridHoverBorderBrush" Color="Red" />
     <SolidColorBrush x:Key="DataGridPressedBackgroundBrush" Color="{StaticResource Color_024}" />
-    <SolidColorBrush x:Key="DataGridPressedBorderBrush" Color="{StaticResource Color_024}" />
-    <SolidColorBrush x:Key="DataGridSelectedBackgroundBrush" Color="{StaticResource Color_026}" />
-    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrush" Color="#F0F0F0" />
+    <SolidColorBrush x:Key="DataGridPressedBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="DataGridSelectedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
 
     <Style TargetType="{x:Type DataGridColumnHeader}">
-        <Setter Property="Background" Value="{StaticResource DataGridBackgroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource DataGridColumnHeaderBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
         <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}" />
         <Setter Property="VerticalContentAlignment" Value="Bottom" />
@@ -31,7 +31,8 @@
         <Setter Property="VerticalAlignment" Value="Stretch" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Height" Value="26" />
-        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
@@ -96,22 +97,23 @@
                     <Border x:Name="DGR_Border"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="True">
+                            BorderThickness="1"
+                            SnapsToDevicePixels="True"
+                            Visibility="Visible">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="Normal_AlternatingRow">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color_021}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource WarewolfOrange}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Normal_Selected">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color_006}" />
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource WarewolfOrange}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -199,13 +201,13 @@
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
-                                <VisualState x:Name="Normal_AlternatingRow">
+                                <!--<VisualState x:Name="Normal_AlternatingRow">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color_021}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource BorderBrush}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
-                                </VisualState>
+                                </VisualState>-->
                                 <VisualState x:Name="Normal_Selected">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
@@ -286,7 +288,7 @@
                             Margin="0"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderThickness="2"
                             Padding="0"
                             SnapsToDevicePixels="True">
                         <VisualStateManager.VisualStateGroups>
@@ -295,13 +297,13 @@
                                 <VisualState x:Name="Normal_AlternatingRow">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource Color_021}" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="Violet" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Normal_Selected">
                                     <Storyboard>
-                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="DGR_Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
                                             <EasingColorKeyFrame KeyTime="0" Value="Transparent" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
@@ -353,7 +355,7 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
@@ -363,8 +365,9 @@
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Background="Transparent"
-                            BorderBrush="Transparent"
-                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderThickness="1,0,0,0"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            
                             SnapsToDevicePixels="True">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="FocusStates">
@@ -376,7 +379,7 @@
                                 <VisualState x:Name="Current">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
-                                            <EasingColorKeyFrame KeyTime="0" Value="Gray" />
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource WarewolfOrange}" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -389,7 +392,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource WareWolfOrangeBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -430,5 +433,8 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    <Style TargetType="{x:Type DataGrid}">
     </Style>
 </ResourceDictionary>

@@ -399,5 +399,56 @@ namespace Warewolf.Studio.ViewModels
 
 
         public object DataContext { get; set; }
+
+        public string NewServiceToolTip
+        {
+            get { return Resources.Languages.Core.MenuNewServiceToolTip; }
+        }
+        public string SaveToolTip
+        {
+            get { return Resources.Languages.Core.MenuSaveToolTip; }
+        }
+        public string DeployToolTip
+        {
+            get { return Resources.Languages.Core.MenuDeployToolTip; }
+        }
+        public string DatabaseToolTip
+        {
+            get { return Resources.Languages.Core.MenuDatabaseToolTip; }
+        }
+        public string PluginToolTip
+        {
+            get { return Resources.Languages.Core.MenuPluginToolTip; }
+        }
+        public string WebServiceToolTip
+        {
+            get { return Resources.Languages.Core.MenuWebServiceToolTip; }
+        }
+        public string SchedulerToolTip
+        {
+            get { return Resources.Languages.Core.MenuSchedulerToolTip; }
+        }
+        public string DebugToolTip
+        {
+            get { return Resources.Languages.Core.DebugToolTip; }
+        }
+        public string SettingsToolTip
+        {
+            get { return Resources.Languages.Core.MenuSettingsToolTip; }
+        }
+        public string HelpToolTip
+        {
+            get { return Resources.Languages.Core.MenuHelpToolTip; }
+        }
+
+        public string DownloadToolTip
+        {
+            get { return Resources.Languages.Core.MenuDownloadToolTip; }
+        }
+
+        public string LockToolTip
+        {
+            get { return Resources.Languages.Core.MenuLockToolTip; }
+        }
     }
 }

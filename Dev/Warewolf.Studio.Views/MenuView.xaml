@@ -123,7 +123,9 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
-                        Style="{StaticResource SideMenuButtonStyle}">
+                        Style="{StaticResource SideMenuButtonStyle}"
+                        ToolTip="{Binding Path=NewServiceToolTip}"
+                        >
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
@@ -166,6 +168,7 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
+                        ToolTip="{Binding Path=SaveToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <i:Interaction.Triggers>
@@ -209,7 +212,9 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
-                        Style="{StaticResource SideMenuButtonStyle}">
+                        Style="{StaticResource SideMenuButtonStyle}"
+                        ToolTip="{Binding Path=DeployToolTip}"
+                        >
 
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
@@ -250,6 +255,7 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
+                         ToolTip="{Binding Path=DatabaseToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <i:Interaction.Triggers>
@@ -292,6 +298,7 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
+                        ToolTip="{Binding Path=PluginToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <i:Interaction.Triggers>
@@ -337,6 +344,7 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
+                        ToolTip="{Binding Path=WebServiceToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <Button.Template>
@@ -415,6 +423,7 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
+                        ToolTip="{Binding Path=SchedulerToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <i:Interaction.Triggers>
@@ -458,6 +467,7 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
+                        ToolTip="{Binding DebugToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <i:Interaction.Triggers>
@@ -506,6 +516,7 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
+                        ToolTip="{Binding Path=SettingsToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <i:Interaction.Triggers>
@@ -554,6 +565,7 @@
                         Grid.Column="1"
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
+                        ToolTip="{Binding Path = HelpToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <i:Interaction.Triggers>
@@ -603,6 +615,7 @@
                         Width="{Binding ButtonWidth}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Bottom"
+                        ToolTip="{Binding DownloadToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <i:Interaction.Triggers>
@@ -654,6 +667,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Command="{Binding LockCommand}"
+                        ToolTip="{Binding LockToolTip}"
                         Style="{StaticResource SideMenuButtonStyle}">
 
                     <StackPanel Width="{Binding ButtonWidth}"

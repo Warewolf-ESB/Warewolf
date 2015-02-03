@@ -22,8 +22,10 @@
 
         <ComboBox Grid.Row="0"
                   Grid.Column="0"
+                  ToolTip="{Binding Path=ConnectionsToolTip}"
                   ItemsSource="{Binding Servers}"
                   SelectedItem="{Binding SelectedConnection}">
+            
             <ComboBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Vertical" />
@@ -38,7 +40,9 @@
                 Height="26"
                 Command="{Binding EditConnectionCommand}"
                 Padding="4"
-                VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left">
+                VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
+                ToolTip="{Binding Path=EditConnectionToolTip}"
+                >
             <TextBlock>
             <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
             <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
@@ -50,6 +54,7 @@
                 Width="26"
                 Height="26"
                 Command="{Binding ToggleConnectionStateCommand}"
+                ToolTip ="{Binding Path=ToggleConnectionToolTip}"
                 Padding="4"
                 HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom">
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" FontWeight="DemiBold" Icon="Link" VerticalAlignment="Top" HorizontalAlignment="Center"/>

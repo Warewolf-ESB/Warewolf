@@ -327,5 +327,14 @@ namespace Warewolf.Studio.ViewModels
             }
             return  explorerItemModels;
         }
+
+
+        public string RefreshToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.EnvironmentExplorerRefreshToolTip;
+            }
+        }
     }
 }

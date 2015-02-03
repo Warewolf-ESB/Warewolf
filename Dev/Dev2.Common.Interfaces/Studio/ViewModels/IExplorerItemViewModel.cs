@@ -36,6 +36,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         IExplorerItemViewModel Parent { get; set; }
         string Inputs { get; set; }
         string Outputs { get; set; }
+        string ExecuteToolTip { get; }
+        string EditToolTip { get; }
+
         void AddSibling(IExplorerItemViewModel sibling);
         void AddChild(IExplorerItemViewModel child);
         void RemoveChild(IExplorerItemViewModel child);

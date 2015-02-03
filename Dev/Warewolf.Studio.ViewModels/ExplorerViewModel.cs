@@ -126,5 +126,22 @@ namespace Warewolf.Studio.ViewModels
         {
             return null;
         }
+
+        public string SearchToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ExplorerSearchToolTip;
+            }
+        }
+
+        public string RefreshToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ExplorerRefreshToolTip;
+            }
+        }
+
     }
 }

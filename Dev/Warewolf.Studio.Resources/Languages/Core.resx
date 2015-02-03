@@ -818,4 +818,94 @@ You need Administrator permission.</value>
   <data name="MenuDialogWebLabel" xml:space="preserve">
     <value>Web</value>
   </data>
+  <data name="ConnectControlConnectionsToolTip" xml:space="preserve">
+    <value>ConnectControlConnectionsToolTip</value>
+  </data>
+  <data name="ConnectControlEditConnectionToolTip" xml:space="preserve">
+    <value>ConnectControlEditConnectionToolTip</value>
+  </data>
+  <data name="ConnectControlToggleConnectionToolTip" xml:space="preserve">
+    <value>ConnectControlToggleConnectionToolTip</value>
+  </data>
+  <data name="DebugToolTip" xml:space="preserve">
+    <value>DebugToolTip</value>
+  </data>
+  <data name="EnvironmentExplorerRefreshToolTip" xml:space="preserve">
+    <value>EnvironmentExplorerRefreshToolTip</value>
+  </data>
+  <data name="ExplorerItemEditToolTip" xml:space="preserve">
+    <value>ExplorerItemEditToolTip</value>
+  </data>
+  <data name="ExplorerItemExecuteToolTip" xml:space="preserve">
+    <value>ExplorerItemExecuteToolTip</value>
+  </data>
+  <data name="ExplorerRefreshToolTip" xml:space="preserve">
+    <value>ExplorerRefreshToolTip</value>
+  </data>
+  <data name="ExplorerSearchToolTip" xml:space="preserve">
+    <value>ExplorerSearchToolTip</value>
+  </data>
+  <data name="MenuDatabaseToolTip" xml:space="preserve">
+    <value>MenuDatabaseToolTip</value>
+  </data>
+  <data name="MenuDeployToolTip" xml:space="preserve">
+    <value>MenuDeployToolTip</value>
+  </data>
+  <data name="MenuDownloadToolTip" xml:space="preserve">
+    <value>MenuDownloadToolTip</value>
+  </data>
+  <data name="MenuHelpToolTip" xml:space="preserve">
+    <value>MenuHelpToolTip</value>
+  </data>
+  <data name="MenuLockToolTip" xml:space="preserve">
+    <value>MenuLockToolTip</value>
+  </data>
+  <data name="MenuNewServiceToolTip" xml:space="preserve">
+    <value>MenuNewServiceToolTip</value>
+  </data>
+  <data name="MenuPluginToolTip" xml:space="preserve">
+    <value>MenuPluginToolTip</value>
+  </data>
+  <data name="MenuSaveToolTip" xml:space="preserve">
+    <value>MenuSaveToolTip</value>
+  </data>
+  <data name="MenuSchedulerToolTip" xml:space="preserve">
+    <value>MenuSchedulerToolTip</value>
+  </data>
+  <data name="MenuSettingsToolTip" xml:space="preserve">
+    <value>MenuSettingsToolTip</value>
+  </data>
+  <data name="MenuWebServiceToolTip" xml:space="preserve">
+    <value>MenuWebServiceToolTip</value>
+  </data>
+  <data name="ServerDialogAddressPortTip" xml:space="preserve">
+    <value>ServerDialogAddressPortTip</value>
+  </data>
+  <data name="ServerDialogAddressSaveTip" xml:space="preserve">
+    <value>ServerDialogAddressSaveTip</value>
+  </data>
+  <data name="ServerDialogAddressToolTip" xml:space="preserve">
+    <value>ServerDialogAddressToolTip</value>
+  </data>
+  <data name="ServerDialogAddressUserAuthenticationToolTip" xml:space="preserve">
+    <value>ServerDialogAddressUserAuthenticationToolTip</value>
+  </data>
+  <data name="ServerDialogPasswordToolTip" xml:space="preserve">
+    <value>ServerDialogAddressPasswordToolTip</value>
+  </data>
+  <data name="ServerDialogProtocolToolTip" xml:space="preserve">
+    <value>ServerDialogProtocolToolTip</value>
+  </data>
+  <data name="ServerDialogPublicToolTip" xml:space="preserve">
+    <value>ServerDialogPublicToolTip</value>
+  </data>
+  <data name="ServerDialogsTestToolTip" xml:space="preserve">
+    <value>ServerDialogsTestToolTip</value>
+  </data>
+  <data name="ServerDialogUserNameToolTip" xml:space="preserve">
+    <value>ServerDialogUserNameToolTip</value>
+  </data>
+  <data name="ServerDialogWindowsAuthenticationToolTip" xml:space="preserve">
+    <value>ServerDialogWindowsAuthenticationToolTip</value>
+  </data>
 </root>

@@ -7,35 +7,69 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!--  Tooltip Brushes  -->
-    <SolidColorBrush x:Key="TooltipBackgroundBrush" Color="{StaticResource Color_009}" />
-    <SolidColorBrush x:Key="TooltipBorderBrush" Color="{StaticResource Color_004}" />
-
+    <SolidColorBrush x:Key="TooltipBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="TooltipBorderBrush" Color="{StaticResource WarewolfHeaderGrey}" />
+    <SolidColorBrush x:Key="TooltipValidationBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TooltipForegroundBrush" Color="{StaticResource WarewolfEnabledText}" />
     <!--  *********************************  ToolTip Style  *********************************  -->
     <Style x:Key="ToolTipStyle" TargetType="{x:Type ToolTip}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource TooltipForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource TooltipBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TooltipBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="10,7" />
+        <Setter Property="Padding" Value="3,3" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
+                    <Border Name="Border"
+                BorderThickness="1"
+                BorderBrush="{StaticResource TooltipBorderBrush}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}">
+                   
                     <Grid>
-                        <Rectangle Fill="{TemplateBinding Background}"
-                                   Stroke="{TemplateBinding BorderBrush}"
-                                   StrokeThickness="{TemplateBinding BorderThickness}" />
-                        <StackPanel Orientation="Horizontal">
-                            <ContentPresenter Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" />
+ 
+                        <StackPanel Orientation="Horizontal" Background="{TemplateBinding Background}">
+                            <ContentPresenter Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}"  />
                         </StackPanel>
                     </Grid>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="ToolTipStyleValidationStyle" TargetType="{x:Type ToolTip}">
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="Foreground" Value="{StaticResource TooltipForegroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource TooltipBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TooltipBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="3,3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Border Name="Border"
+                BorderThickness="1"
+                BorderBrush="{StaticResource TooltipValidationBorderBrush}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}">
 
+                        <Grid>
+
+                            <StackPanel Orientation="Horizontal" Background="{TemplateBinding Background}">
+                                <ContentPresenter Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}"  />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!--  *********************************  Implicit Styles  *********************************  -->
     <Style BasedOn="{StaticResource ToolTipStyle}" TargetType="{x:Type ToolTip}" />
 </ResourceDictionary>

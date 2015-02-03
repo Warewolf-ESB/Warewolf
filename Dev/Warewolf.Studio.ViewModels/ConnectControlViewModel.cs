@@ -133,6 +133,19 @@ namespace Warewolf.Studio.ViewModels
                 SelectedConnection.Edit();
             }
         }
+
+        public string ToggleConnectionToolTip
+        {
+            get {   return Resources.Languages.Core.ConnectControlToggleConnectionToolTip;}
+        }
+        public string EditConnectionToolTip
+        {
+            get { return Resources.Languages.Core.ConnectControlEditConnectionToolTip; }
+        }
+        public string ConnectionsToolTip
+        {
+            get { return Resources.Languages.Core.ConnectControlConnectionsToolTip; }
+        }
     }
 
     

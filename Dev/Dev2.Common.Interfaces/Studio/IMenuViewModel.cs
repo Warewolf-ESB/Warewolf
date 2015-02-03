@@ -35,6 +35,8 @@ namespace Dev2.Common.Interfaces.Studio
         int ButtonWidth { get; }
         ICommand IsOverLockCommand { get; }
         ICommand IsNotOverLockCommand { get; }
+        string NewServiceToolTip { get; }
+        string SaveToolTip { get; }
 
         void Lock();
     }

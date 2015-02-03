@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Warewolf.Studio
 {
@@ -22,6 +11,32 @@ namespace Warewolf.Studio
         public ControlStyleTestingWindow()
         {
             InitializeComponent();
+            InitGrid();
         }
+
+        void InitGrid()
+        {
+            var people = new List<Person>
+            {
+                new Person {Name="Bob",Gender = "Male",IsLoadShedded = false,Site = "http://www.google.com", Genders = new []{"Male","Female","Unknown"}}, 
+                new Person {Name="Dora",Gender = "Female",IsLoadShedded = false,Site = "http://www.bing.com", Genders = new []{"Male","Female","Unknown"}}, 
+                new Person {Name="Jake",Gender = "Male",IsLoadShedded = false,Site = "http://www.google.com", Genders = new []{"Male","Female","Unknown"}}, 
+                new Person {Name="Phineas",Gender = "Male",IsLoadShedded = false,Site = "http://www.google.com", Genders = new []{"Male","Female","Unknown"}}, 
+            };
+            BobDataGrid.ItemsSource = people;
+            //        <DataGridCheckBoxColumn Header="Is Load Shedded" Binding="{Binding IsLoadShedded}"></DataGridCheckBoxColumn>
+            //<DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+            //<DataGridHyperlinkColumn Header="Site" Binding="{Binding Site}"></DataGridHyperlinkColumn>
+            //<DataGridComboBoxColumn Header="Gender" ItemsSource="{Binding Genders}"></DataGridComboBoxColumn>
+
+        }
+    }
+    public class Person
+    {
+        public bool IsLoadShedded { get; set; }
+        public string Name { get; set; }
+        public string Site { get; set; }
+        public string[] Genders { get; set; }
+        public string Gender { get; set; }
     }
 }

@@ -77,9 +77,9 @@
                             <ColumnDefinition Width="10"></ColumnDefinition>
                             <ColumnDefinition Width="75"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding Path=Address}" Grid.Column="2" Grid.Row="0"></TextBox>
+                        <TextBox Text="{Binding Path=Address}" Grid.Column="2" Grid.Row="0"  ToolTip="{Binding Path=AddressToolTip}" ></TextBox>
 
-                        <ComboBox Width="75" Grid.Column="0" ItemsSource="{Binding Path=Protocols}" IsEditable="False"   SelectedItem="{Binding Path=Protocol}"  >
+                        <ComboBox Width="75" Grid.Column="0" ItemsSource="{Binding Path=Protocols}" IsEditable="False"  ToolTip="{Binding Path=ProtocolToolTip}"  SelectedItem="{Binding Path=Protocol}"  >
                             <ComboBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel Orientation="Vertical" />
@@ -88,7 +88,7 @@
                         </ComboBox>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Text=":"></TextBlock>
                         <TextBox Grid.Column="4" Text="{Binding SelectedPort}" PreviewTextInput="Preview_TextInput"
-                                wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Ports}"  ></TextBox>
+                                wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Ports}"  ToolTip="{Binding Path=PortToolTip}"></TextBox>
                     </Grid>
 
                     <TextBlock Grid.Row="1" Grid.Column="0"  Text="{Binding Path=AuthenticationLabel}" ></TextBlock>
@@ -101,19 +101,19 @@
 
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <RadioButton Grid.Column="0" Padding="5,0" VerticalAlignment="Center"  HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows</RadioButton>
+                        <RadioButton Grid.Column="0" ToolTip="{Binding Path=WindowsAuthenticationToolTip}" Padding="5,0" VerticalAlignment="Center"  HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows</RadioButton>
 
-                        <RadioButton Grid.Column="1" Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User</RadioButton>
+                        <RadioButton Grid.Column="1" ToolTip="{Binding Path=UserAuthenticationToolTip}"  Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User</RadioButton>
 
-                        <RadioButton Grid.Column="2" Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left"  IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public</RadioButton>
+                        <RadioButton Grid.Column="2" ToolTip="{Binding Path=PublicToolTip}"  Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left"  IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Public}}">Public</RadioButton>
 
                     </Grid>
 
                     <TextBlock Text="User Name" Grid.Column="0" Grid.Row="2" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
-                    <TextBox Text="{Binding Path=UserName}" Grid.Column="1" Grid.Row="2" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
+                    <TextBox Text="{Binding Path=UserName}" ToolTip="{Binding Path=UserNameToolTip}"  Grid.Column="1" Grid.Row="2" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
 
                     <TextBlock Text="Password" Grid.Row="3" Grid.Column="0" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
-                    <TextBox Text="{Binding Path=Password}" Grid.Column="1" Grid.Row="3" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
+                    <TextBox Text="{Binding Path=Password}" ToolTip="{Binding Path=PasswordToolTip}"  Grid.Column="1" Grid.Row="3" Visibility="{Binding Path=IsUserNameVisible,Converter={StaticResource BoolToVisibilityConverter}}"></TextBox>
                     <Grid Grid.Row="4" Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -129,7 +129,7 @@
                                        Width="14"
                                        Height="14"
                                        Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
-                        <Button Grid.Column="3" HorizontalAlignment="Right" Width="60" Height="30" Content="Test" Command="{Binding Path=TestCommand}"/>
+                        <Button Grid.Column="3" ToolTip="{Binding Path=TestToolTip}"  HorizontalAlignment="Right" Width="60" Height="30" Content="Test" Command="{Binding Path=TestCommand}"/>
                     </Grid>
                 </Grid>
             </Grid>
@@ -149,7 +149,7 @@
                         <ColumnDefinition Width="20"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="1" Style="{StaticResource ErrorTextBlockStyle}"  TextAlignment="Right" VerticalAlignment="Center" Text="{Binding Path=Validate}"></TextBlock>
-                    <Button Grid.Column="3"  Width="60" Height="30"  Content="Save" IsEnabled="{Binding Path=CanClickOk}"  Command="{Binding Path=OkCommand}"></Button>
+                    <Button Grid.Column="3"  Width="60" Height="30"  Content="Save" IsEnabled="{Binding Path=CanClickOk}" ToolTip="{Binding Path=SaveToolTip}"   Command="{Binding Path=OkCommand}"></Button>
 
                 </Grid>
 

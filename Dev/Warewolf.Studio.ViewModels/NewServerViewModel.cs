@@ -520,5 +520,77 @@ namespace Warewolf.Studio.ViewModels
                
             }
         }
+
+        public string AddressToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogAddressToolTip; 
+            }
+        }
+        public string ProtocolToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogProtocolToolTip;
+            }
+        }
+        public string PortToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogAddressPortTip;
+            }
+        }
+        public string WindowsAuthenticationToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogWindowsAuthenticationToolTip;
+            }
+        }
+        public string UserAuthenticationToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogAddressUserAuthenticationToolTip;
+            }
+        }
+        public string PublicToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogPublicToolTip;
+            }
+        }
+        public string UserNameToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogUserNameToolTip;
+            }
+        }
+        public string PasswordToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogPasswordToolTip;
+            }
+        }
+        public string TestToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogsTestToolTip;
+            }
+        }
+        public string SaveToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ServerDialogAddressSaveTip;
+            }
+        }
+
     }
 }

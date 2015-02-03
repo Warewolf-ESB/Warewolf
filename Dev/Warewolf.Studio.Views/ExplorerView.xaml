@@ -72,13 +72,15 @@
                      customControls:TextBoxHelper.ShowWatermark="True"
                      Text="{Binding SearchText,
                                     Delay=300,
-                                    UpdateSourceTrigger=PropertyChanged}" />
+                                    UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{Binding Path=SearchToolTip}"/>
             <Button Grid.Row="0"
                     Grid.Column="1"
                     Width="25"
                     Height="25"
                     Command="{Binding RefreshCommand}"
                     Padding="4"
+                    ToolTip="{Binding Path=RefreshToolTip}"
                     Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
                     <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
@@ -140,6 +142,7 @@
                                         BorderThickness="0"
                                         Command="{Binding Path=Data.RefreshCommand}"
                                         Padding="-4"
+                                        ToolTip="{Binding Path=RefreshToolTip}"
                                         Style="{StaticResource ExplorerTreeButtonStyle}">
                                     <Grid>
                                         <Image Width="18"
@@ -565,6 +568,7 @@
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
+                                        ToolTip="{Binding Path=ExecuteToolTip}"
                                         Visibility="{Binding Data.CanExecute}">
                                     <Image x:Name="ExecutePermissionImage"
                                            MaxWidth="14"
@@ -600,7 +604,8 @@
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
-                                        Visibility="{Binding Data.CanEdit}">
+                                        Visibility="{Binding Data.CanEdit}"
+                                        ToolTip="{Binding Path=EditToolTip}">
                                     <Image x:Name="EditPermissionImage"
                                            Stretch="Uniform"
                                            Source="{StaticResource System-Spacer}" >
@@ -647,6 +652,7 @@
                                              IsVisibleChanged="UIElement_OnIsVisibleChanged"
                                              Text="{Binding Path=Data.ResourceName,
                                                             UpdateSourceTrigger=LostFocus}"
+                                             ToolTip="{Binding Path=RenameToolTip}"
                                              Visibility="{Binding Path=Data.IsRenaming,
                                                                   Converter={StaticResource BoolToVisibilityConverter}}"
                                              views:FocusExtension.IsFocused="{Binding Path=Data.IsRenaming}">
