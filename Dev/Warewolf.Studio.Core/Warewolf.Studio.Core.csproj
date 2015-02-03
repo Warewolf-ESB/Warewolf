@@ -90,6 +90,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomMenuIcons.cs" />
+    <Compile Include="ResourceTypeToIconConverter.cs" />
+    <Compile Include="ResourceTypeToIconVisibility.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Converters\HeightConverter.cs" />
     <Compile Include="Infragistics Prism Region Adapter\IDockAware.cs" />
@@ -104,6 +107,7 @@
     <Compile Include="Popup\WarewolfPopupMessage.cs" />
     <Compile Include="VersionChecker.cs" />
     <Compile Include="View Interfaces\ViewInterfaces.cs" />
+    <Compile Include="ViewFolderIcon.cs" />
     <Compile Include="WarewolfWebClient.cs" />
   </ItemGroup>
   <ItemGroup>

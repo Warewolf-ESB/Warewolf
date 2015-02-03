@@ -94,7 +94,68 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
+    <Style x:Key="BasicButton" TargetType="{x:Type Button}">
+        <Setter Property="MinHeight" Value="25" />
+        <Setter Property="MinWidth" Value="25" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="Bd"
+                                   Fill="Transparent"
+                                   Stroke="Transparent"
+                                   StrokeThickness="1" />
+                        <ContentControl x:Name="ContentControl"
+                                        Margin="{TemplateBinding Padding}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        IsTabStop="False">
+                            <ContentPresenter x:Name="contentPresenter" />
+                        </ContentControl>
+                        <Rectangle x:Name="FocusedVisualElement"
+                                   Stroke="{StaticResource ButtonPressedBorderBrush}"
+                                   StrokeThickness="1"
+                                   Visibility="Collapsed" />
+                        <Rectangle x:Name="DisabledVisualElement"
+                                   Fill="{StaticResource DisabledVisualElement}"
+                                   Visibility="Collapsed" />
+                    </Grid>                    
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
+            </Trigger>
+            <Trigger Property="Button.IsPressed" Value="true">
+                <Setter Property="Control.Foreground" Value="Black" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Width" Value="25" />
         <Setter Property="Height" Value="25" />
