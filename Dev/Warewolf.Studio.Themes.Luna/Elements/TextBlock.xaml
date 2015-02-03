@@ -44,8 +44,8 @@
 
 
 
-    <Style x:Key="MenuTextBoxStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+    <Style x:Key="MenuTextBlockStyle" TargetType="TextBlock">
+<!--        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />-->
         <Setter Property="FontSize" Value="{StaticResource FontSize-Large}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontWeight" Value="Normal" />
