@@ -11,6 +11,7 @@
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
         xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework"
         x:Name="MainWindow"
         Title="Warewolf Studio"
         TextOptions.TextFormattingMode="Display"
@@ -22,6 +23,24 @@
 
 
     <Window.Resources>
+
+        <Style TargetType="{x:Type dockManager:ContentPane}">
+<!--            <Setter Property="AllowFloatingOnly" Value="False"/>-->
+<!--            <Setter Property="AllowDockingFloating" Value="False"/>-->
+            <Setter Property="BorderThickness" Value="0"></Setter>
+        </Style>
+                
+        <Style x:Key="RootMenuStyle" TargetType="{x:Type Menu}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <igWindows:CardPanel />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <!-- This is the template for the tab header. For some unknown reason i cannot put this into the theme it does not work.-->
         <ControlTemplate x:Key="{x:Static dockManager:PaneTabItem.DocumentTabItemTemplateKey}" TargetType="{x:Type dockManager:PaneTabItem}">
             <Border x:Name="Background" Margin="0,0,0,0" Height="35">
@@ -31,51 +50,22 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid x:Name="nonSelectedEnd">
-                        <Path
-                        Margin="0,2,0,0"
-		                VerticalAlignment="Stretch"
-		                Height="Auto"
-		                Stretch="Fill"
-		                Opacity="1"
-		                Data="M 619,51 C619,51 616,51 616,51 608,51 606,54 606,54 606,54 594,66 594,66 594,66 619,66 619,66 619,66 619,51 619,51 z"
-		                Fill="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentNotActiveOuterBorderFillKey}}" x:Name="nonSelectedOuterBorderSlice" />
-                        <Path
-		                Margin="1,3,0,0"
-		                VerticalAlignment="Stretch"
-		                Height="Auto"
-		                Stretch="Fill"
-		                Opacity="1"
-		                Data="M 619,52 C619,52 617,52 617,52 609,52 607,55 607,55 607,55 596,66 596,66 596,66 619,66 619,66 619,66 619,52 619,52 z"
-		                Fill="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentNotActiveInnerBorderFillKey}}" x:Name="nonSelectedInnerBorderSlice" />
-                        <Path
-		                Margin="2,3,0,0"
-		                VerticalAlignment="Stretch"
-		                Height="Auto"
-		                Stretch="Fill"
-		                Opacity="1"
-		                Data="M 619,52 C619,52 618,52 618,52 610,52 608,55 608,55 608,55 597,66 597,66 597,66 619,66 619,66 619,66 619,52 619,52 z"
-		                Fill="{TemplateBinding Background}" x:Name="nonSelectedCenterSlice" />
-                    </Grid>
-
-                    <Grid x:Name="selectedEnd" Visibility="Collapsed" Margin="0,0,0,0">
-                    </Grid>
-
+                    
                     <Border x:Name="HighlightBorder" VerticalAlignment="Stretch" Grid.Column="1" Grid.ColumnSpan="1" 
-                        Background="White" 
-                        BorderBrush="Transparent"
-                        BorderThickness="0,0,0,0" CornerRadius="0,0,0,0" Margin="0,0,0,0"/>
+                        Background="{StaticResource WareWolfBackGroundBrush}" 
+                        BorderBrush="{StaticResource WareWolfBackGroundBrush}"
+                        BorderThickness="1" CornerRadius="0,0,0,0" Margin="0,0,0,0"/>
                     <Border  x:Name="Border"  
                          Background="White" 
                          CornerRadius="0,0,0,0" Margin="0,0,0,0" VerticalAlignment="Stretch" Grid.Column="1"/>
                     <Rectangle x:Name="activebrFiller" Grid.Column="1" Width="1" Height="1" 
                            VerticalAlignment="Bottom" HorizontalAlignment="Right" 
-                           Fill="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentActiveInnerBorderFillKey}}" 
+                           Fill="{StaticResource WareWolfBackGroundBrush}" 
                            Margin="0,0,1,-1" 
                            Visibility="Collapsed"/>
 
                     <Border x:Name="Content" Grid.Column="1"
-							BorderThickness="{TemplateBinding BorderThickness}" >
+							BorderThickness="1,1,1,0"  Background="{StaticResource WareWolfBackGroundBrush}">
                         <DockPanel x:Name="ContentDock" Margin="10,5,5,5" VerticalAlignment="Center">
                             <igWindows:AutoDisabledImage Height="20" Width="20" Visibility="{Binding Path=Pane.HasImage, Converter={StaticResource BoolToVis}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                                 DockPanel.Dock="Left"
@@ -93,6 +83,8 @@
                         		RecognizesAccessKey="true"                                       
                         		HorizontalAlignment="Center" 
                         		VerticalAlignment="Center"
+                                TextElement.FontStyle="Italic"
+                                TextElement.FontSize="14"
                                 igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
 								igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
                                 igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static dockManager:XamDockManager.ToolTipStyleKey}"
@@ -122,7 +114,8 @@
                                     Command="{x:Static dockManager:ContentPaneCommands.Close}"
                                     CommandTarget="{Binding Pane,  RelativeSource={RelativeSource AncestorType={x:Type dockManager:PaneTabItem}}}"
                                         Style="{StaticResource BasicButton}"
-                                        Opacity="0.4">
+                                        Opacity="0.4"
+                                        Visibility="Collapsed">
                                     <fa:FontAwesome FontSize="12" Icon="Times" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                                     </Button>
                             </Grid>
@@ -137,23 +130,19 @@
                 </Trigger>
 
                 <Trigger Property="IsMouseOverTab" Value="true">
-                    <Setter Property="Fill" TargetName="nonSelectedOuterBorderSlice" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentHottrackOuterBorderFillKey}}" />
-                    <Setter Property="Fill" TargetName="nonSelectedInnerBorderSlice" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentHottrackInnerBorderFillKey}}" />
-                    <Setter Property="BorderBrush" TargetName="HighlightBorder" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentHottrackOuterBorderFillKey}}"  />
-                    <Setter Property="Background" TargetName="HighlightBorder" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentHottrackInnerBorderFillKey}}"  />
-                    <Setter Property="Background" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentHottrackCenterFillKey}}" />
                 </Trigger>
 
                 <Trigger Property="IsSelected" Value="true">
                     <Setter Property="Panel.ZIndex" Value="1" />
                     <Setter Property="Visibility" TargetName="activebrFiller" Value="Visible"/>
-                    <Setter Property="Visibility" TargetName="selectedEnd" Value="Visible"/>
-                    <Setter Property="Visibility" TargetName="nonSelectedEnd" Value="Collapsed"/>
-                    <Setter Property="BorderBrush" TargetName="HighlightBorder" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentActiveOuterBorderFillKey}}"  />
-                    <Setter Property="Background" TargetName="HighlightBorder" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentActiveInnerBorderFillKey}}"  />
+                    <Setter Property="Visibility" TargetName="closeBtn" Value="Visible"/>
+                    <Setter Property="BorderBrush" TargetName="HighlightBorder" Value="White"  />
+                    <Setter Property="Background" TargetName="HighlightBorder" Value="White"  />
                     <Setter Property="Background" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}}"/>
                     <Setter Property="Margin" TargetName="HighlightBorder" Value="-4,0,0,0" />
                     <Setter Property="Margin" TargetName="Border" Value="-4,1,2,-2" />
+                    <Setter Property="Background" TargetName="Border" Value="Transparent" />
+                    <Setter Property="Background" TargetName="Content" Value="White" />
                 </Trigger>
 
                 <MultiTrigger>
@@ -161,7 +150,7 @@
                         <Condition Property="IsSelected" Value="False"/>
                         <Condition Property="IsMouseOverTab" Value="true"/>
                     </MultiTrigger.Conditions>
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentHottrackTextFillKey}}" />
+                    <Setter Property="BorderBrush" TargetName="Content" Value="Orange"  />
                 </MultiTrigger>
 
                 <DataTrigger Binding="{Binding Path=Pane.IsActiveDocument, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
@@ -203,11 +192,132 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
+        <!-- This is the template for the tab document. For some unknown reason i cannot put this into the theme it does not work.-->
+        <ControlTemplate x:Key="{x:Static dockManager:TabGroupPane.DocumentTabGroupTemplateKey}" TargetType="{x:Type dockManager:TabGroupPane}">
+            <DockPanel ClipToBounds="True"
+                   KeyboardNavigation.TabNavigation="Local"
+                   SnapsToDevicePixels="True">
+                <DockPanel x:Name="PART_HeaderArea"
+                       Panel.ZIndex="1"
+                       DockPanel.Dock="{TemplateBinding TabStripPlacement}" >
+                    <DockPanel>
+
+                        <!--  Dev2  -->
+                        <Button x:Name="closeBtn"
+                            VerticalAlignment="Center"
+                            Command="{x:Static dockManager:TabGroupPane.CloseSelectedItemCommand}"
+                            DockPanel.Dock="Right"
+                            Foreground="{StaticResource BrushLightForeground}"
+                            Style="{DynamicResource {x:Static dockManager:PaneHeaderPresenter.CloseButtonStyleKey}}" />
+
+                        <!--  Dev2  -->
+                        <Menu x:Name="filesMenu"
+                          VerticalAlignment="Center"
+                          DockPanel.Dock="Right"
+                          Style="{StaticResource RootMenuStyle}">
+                            <MenuItem x:Name="PART_FilesMenuItem"
+                                  Foreground="{StaticResource BrushLightForeground}"
+                                  Style="{DynamicResource {x:Static dockManager:PaneHeaderPresenter.PositionMenuItemStyleKey}}" />
+
+                        </Menu>
+
+                        <!--  AS 9/10/09 TFS19267 - Added CommandParameter  -->
+                        <Button x:Name="showNavigatorButton"
+                            Command="{x:Static dockManager:DockManagerCommands.ShowPaneNavigator}"
+                            CommandParameter="{TemplateBinding dockManager:XamDockManager.DockManager}"
+                            DockPanel.Dock="Right"
+                            Style="{DynamicResource {x:Static dockManager:TabGroupPane.DocumentPaneNavigatorButtonStyleKey}}"
+                            Visibility="Collapsed" />
+
+                        <!--  Dev2  -->
+                        <ItemsPresenter x:Name="PART_TabHeaderPanel"
+                                    Margin="0"
+                                    KeyboardNavigation.TabIndex="1" />
+
+                    </DockPanel>
+                </DockPanel>
+                <Border x:Name="ContentPanel"
+                    Background="White"
+                    BorderBrush="White"
+                    BorderThickness="0"
+                    KeyboardNavigation.DirectionalNavigation="Contained"
+                    KeyboardNavigation.TabIndex="2"
+                    KeyboardNavigation.TabNavigation="Local"
+                    SnapsToDevicePixels="True"
+                    Visibility="Visible">
+
+                    <!--  Dev2  -->
+                    <Border x:Name="InnerBorder"
+                        BorderBrush="White"
+                        BorderThickness="0"
+                        CornerRadius="0"
+                        SnapsToDevicePixels="True">
+                        <Border x:Name="ThickInnerBorder"
+                            BorderBrush="White"
+                            BorderThickness="0"
+                            SnapsToDevicePixels="True">
+                            <Border x:Name="InnerMostBorder"
+                                Background="White"
+                                BorderBrush="White"
+                                BorderThickness="0"
+                                SnapsToDevicePixels="True" Padding="0,5">
+                                <ContentPresenter x:Name="PART_SelectedContentHost"
+                                              Margin="{TemplateBinding Padding}"
+                                              Content="{TemplateBinding SelectedContent}"
+                                              ContentSource="SelectedContent"
+                                              ContentTemplateSelector="{TemplateBinding SelectedContentTemplateSelector}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" >
+                                    
+                                    </ContentPresenter>
+                            </Border>
+                        </Border>
+                    </Border>
+                </Border>
+            </DockPanel>
+            <ControlTemplate.Triggers>
+
+                <Trigger Property="dockManager:XamDockManager.PaneLocation" Value="Document">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="TabStripPlacement" Value="Top" />
+                </Trigger>
+                <Trigger Property="TabStripPlacement" Value="Bottom">
+                    <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
+                </Trigger>
+                <Trigger Property="TabStripPlacement" Value="Left">
+                    <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
+                    <Setter TargetName="closeBtn" Property="DockPanel.Dock" Value="Bottom" />
+                    <Setter TargetName="filesMenu" Property="DockPanel.Dock" Value="Bottom" />
+                    <Setter TargetName="showNavigatorButton" Property="DockPanel.Dock" Value="Bottom" />
+                </Trigger>
+                <Trigger Property="TabStripPlacement" Value="Right">
+                    <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
+                    <Setter TargetName="closeBtn" Property="DockPanel.Dock" Value="Bottom" />
+                    <Setter TargetName="filesMenu" Property="DockPanel.Dock" Value="Bottom" />
+                    <Setter TargetName="showNavigatorButton" Property="DockPanel.Dock" Value="Bottom" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.GrayTextBrushKey}}" />
+                </Trigger>
+
+                <!--  PaneNavigatorButtonDisplayMode  -->
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Source={x:Static interop:BrowserInteropHelper.IsBrowserHosted}}" Value="True" />
+                        <Condition Binding="{Binding (dockManager:XamDockManager.DockManager).PaneNavigatorButtonDisplayMode, RelativeSource={x:Static RelativeSource.Self}}" Value="WhenHostedInBrowser" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="showNavigatorButton" Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+                <DataTrigger Binding="{Binding (dockManager:XamDockManager.DockManager).PaneNavigatorButtonDisplayMode, RelativeSource={x:Static RelativeSource.Self}}" Value="Always">
+                    <Setter TargetName="showNavigatorButton" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
         <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
             <views:WorkflowDesignerView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
-            <views:ServerUserControl />
+            <views:ManageServerControl />
         </DataTemplate>
     </Window.Resources>
 
@@ -348,7 +458,8 @@
                         <dockManager:SplitPane>
                             <dockManager:TabGroupPane x:Name="Workspace"
                         		SelectedItem="{Binding ActiveItem}"
-                        		regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}"/>
+                        		regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}">
+                                </dockManager:TabGroupPane>
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>
