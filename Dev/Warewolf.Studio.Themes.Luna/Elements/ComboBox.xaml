@@ -699,12 +699,12 @@
                                    Fill="{StaticResource ComboBoxBackgroundBrush}"
                                    Stroke="{StaticResource ComboBoxBorderBrush}"
                                    StrokeThickness="1" />-->
-                        <Rectangle x:Name="hover"
+                        <!--<Rectangle x:Name="hover"
                                    Grid.ColumnSpan="2"
                                    Fill="{StaticResource ComboBoxHoverBackgroundBrush}"
                                    Stroke="{StaticResource ComboBoxHoverBorderBrush}"
-                                   StrokeThickness="1"
-                                   Visibility="Collapsed" />
+                                   StrokeThickness="2"
+                                   Visibility="Visible" />-->
                         <Popup x:Name="PART_Popup"
                                Grid.ColumnSpan="2"
                                Margin="1"
@@ -786,6 +786,11 @@
                                    Stroke="{StaticResource ComboBoxBorderBrush}"
                                    StrokeThickness="2"
                                    Visibility="Visible" />
+                        <Rectangle x:Name="hover"
+                                   Grid.ColumnSpan="2"
+                                   Stroke="{StaticResource ComboBoxHoverBorderBrush}"
+                                   StrokeThickness="2"
+                                   Visibility="Collapsed" />
                         <Rectangle x:Name="focused"
                                    Grid.ColumnSpan="2"
                                    Stroke="{StaticResource ComboBoxFocusedBorderBrush}"

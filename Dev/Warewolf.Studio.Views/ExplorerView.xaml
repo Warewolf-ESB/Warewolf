@@ -68,7 +68,7 @@
             <TextBox Grid.Row="0"
                      Grid.Column="0"
                      x:Name="SearchTextBox"
-                     customControls:TextBoxHelper.Watermark="Filter" 
+                     customControls:TextBoxHelper.Watermark="Search" 
                      customControls:TextBoxHelper.ShowWatermark="True"
                      Text="{Binding SearchText,
                                     Delay=300,
