@@ -220,8 +220,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="PopupSample.xaml.cs">
-      <DependentUpon>PopupSample.xaml</DependentUpon>
+    <Compile Include="ManageServerControl.xaml.cs">
+      <DependentUpon>ManageServerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="SourcesOuterControl.xaml.cs">
       <DependentUpon>SourcesOuterControl.xaml</DependentUpon>
@@ -279,7 +279,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PopupSample.xaml">
+    <Page Include="ManageServerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

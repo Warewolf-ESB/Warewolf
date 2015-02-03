@@ -11,6 +11,7 @@
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
         xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework"
         x:Name="MainWindow"
         Title="Warewolf Studio"
         TextOptions.TextFormattingMode="Display"
@@ -22,6 +23,18 @@
 
 
     <Window.Resources>
+
+        <Style x:Key="RootMenuStyle" TargetType="{x:Type Menu}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <igWindows:CardPanel />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <!-- This is the template for the tab header. For some unknown reason i cannot put this into the theme it does not work.-->
         <ControlTemplate x:Key="{x:Static dockManager:PaneTabItem.DocumentTabItemTemplateKey}" TargetType="{x:Type dockManager:PaneTabItem}">
             <Border x:Name="Background" Margin="0,0,0,0" Height="35">
@@ -203,11 +216,133 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
+        <!-- This is the template for the tab document. For some unknown reason i cannot put this into the theme it does not work.-->
+        <ControlTemplate x:Key="{x:Static dockManager:TabGroupPane.DocumentTabGroupTemplateKey}" TargetType="{x:Type dockManager:TabGroupPane}">
+            <DockPanel ClipToBounds="True"
+                   KeyboardNavigation.TabNavigation="Local"
+                   SnapsToDevicePixels="True">
+                <DockPanel x:Name="PART_HeaderArea"
+                       Panel.ZIndex="1"
+                       DockPanel.Dock="{TemplateBinding TabStripPlacement}" >
+                    <DockPanel>
+
+                        <!--  Dev2  -->
+                        <Button x:Name="closeBtn"
+                            VerticalAlignment="Center"
+                            Command="{x:Static dockManager:TabGroupPane.CloseSelectedItemCommand}"
+                            DockPanel.Dock="Right"
+                            Foreground="{StaticResource BrushLightForeground}"
+                            Style="{DynamicResource {x:Static dockManager:PaneHeaderPresenter.CloseButtonStyleKey}}" />
+
+                        <!--  Dev2  -->
+                        <Menu x:Name="filesMenu"
+                          VerticalAlignment="Center"
+                          DockPanel.Dock="Right"
+                          Style="{StaticResource RootMenuStyle}">
+                            <MenuItem x:Name="PART_FilesMenuItem"
+                                  Foreground="{StaticResource BrushLightForeground}"
+                                  Style="{DynamicResource {x:Static dockManager:PaneHeaderPresenter.PositionMenuItemStyleKey}}" />
+
+                        </Menu>
+
+                        <!--  AS 9/10/09 TFS19267 - Added CommandParameter  -->
+                        <Button x:Name="showNavigatorButton"
+                            Command="{x:Static dockManager:DockManagerCommands.ShowPaneNavigator}"
+                            CommandParameter="{TemplateBinding dockManager:XamDockManager.DockManager}"
+                            DockPanel.Dock="Right"
+                            Style="{DynamicResource {x:Static dockManager:TabGroupPane.DocumentPaneNavigatorButtonStyleKey}}"
+                            Visibility="Collapsed" />
+
+                        <!--  Dev2  -->
+                        <ItemsPresenter x:Name="PART_TabHeaderPanel"
+                                    Margin="0"
+                                    KeyboardNavigation.TabIndex="1" />
+
+                    </DockPanel>
+                </DockPanel>
+                <Border x:Name="ContentPanel"
+                    Background="White"
+                    BorderBrush="White"
+                    BorderThickness="0"
+                    KeyboardNavigation.DirectionalNavigation="Contained"
+                    KeyboardNavigation.TabIndex="2"
+                    KeyboardNavigation.TabNavigation="Local"
+                    SnapsToDevicePixels="True"
+                    Visibility="Visible">
+
+                    <!--  Dev2  -->
+                    <Border x:Name="InnerBorder"
+                        BorderBrush="White"
+                        BorderThickness="0"
+                        CornerRadius="0"
+                        SnapsToDevicePixels="True">
+                        <Border x:Name="ThickInnerBorder"
+                            BorderBrush="White"
+                            BorderThickness="0"
+                            SnapsToDevicePixels="True">
+                            <Border x:Name="InnerMostBorder"
+                                Background="White"
+                                BorderBrush="White"
+                                BorderThickness="0"
+                                SnapsToDevicePixels="True" Padding="5">
+                                <ContentPresenter x:Name="PART_SelectedContentHost"
+                                              Margin="{TemplateBinding Padding}"
+                                              Content="{TemplateBinding SelectedContent}"
+                                              ContentSource="SelectedContent"
+                                              ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding SelectedContentTemplateSelector}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" >
+                                    
+                                    </ContentPresenter>
+                            </Border>
+                        </Border>
+                    </Border>
+                </Border>
+            </DockPanel>
+            <ControlTemplate.Triggers>
+
+                <Trigger Property="dockManager:XamDockManager.PaneLocation" Value="Document">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="TabStripPlacement" Value="Top" />
+                </Trigger>
+                <Trigger Property="TabStripPlacement" Value="Bottom">
+                    <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
+                </Trigger>
+                <Trigger Property="TabStripPlacement" Value="Left">
+                    <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
+                    <Setter TargetName="closeBtn" Property="DockPanel.Dock" Value="Bottom" />
+                    <Setter TargetName="filesMenu" Property="DockPanel.Dock" Value="Bottom" />
+                    <Setter TargetName="showNavigatorButton" Property="DockPanel.Dock" Value="Bottom" />
+                </Trigger>
+                <Trigger Property="TabStripPlacement" Value="Right">
+                    <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
+                    <Setter TargetName="closeBtn" Property="DockPanel.Dock" Value="Bottom" />
+                    <Setter TargetName="filesMenu" Property="DockPanel.Dock" Value="Bottom" />
+                    <Setter TargetName="showNavigatorButton" Property="DockPanel.Dock" Value="Bottom" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.GrayTextBrushKey}}" />
+                </Trigger>
+
+                <!--  PaneNavigatorButtonDisplayMode  -->
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Source={x:Static interop:BrowserInteropHelper.IsBrowserHosted}}" Value="True" />
+                        <Condition Binding="{Binding (dockManager:XamDockManager.DockManager).PaneNavigatorButtonDisplayMode, RelativeSource={x:Static RelativeSource.Self}}" Value="WhenHostedInBrowser" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="showNavigatorButton" Property="Visibility" Value="Visible" />
+                </MultiDataTrigger>
+                <DataTrigger Binding="{Binding (dockManager:XamDockManager.DockManager).PaneNavigatorButtonDisplayMode, RelativeSource={x:Static RelativeSource.Self}}" Value="Always">
+                    <Setter TargetName="showNavigatorButton" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
         <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
             <views:WorkflowDesignerView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
-            <views:ServerUserControl />
+            <views:ManageServerControl />
         </DataTemplate>
     </Window.Resources>
 
@@ -348,7 +483,8 @@
                         <dockManager:SplitPane>
                             <dockManager:TabGroupPane x:Name="Workspace"
                         		SelectedItem="{Binding ActiveItem}"
-                        		regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}"/>
+                        		regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}">
+                                </dockManager:TabGroupPane>
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>
