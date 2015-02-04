@@ -5,7 +5,9 @@
         xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
        
           xmlns:ig="http://schemas.infragistics.com/xaml"
-        Title="ControlStyleTestingWindow" Height="800" Width="600">
+          xmlns:studio="clr-namespace:Warewolf.Studio"
+          Title="ControlStyleTestingWindow" Height="800" Width="600"
+        >
     <WrapPanel Orientation="Vertical">
        
         <CheckBox AutomationProperties.AutomationId="Testing_CheckBox"></CheckBox>
@@ -68,5 +70,7 @@
         <TextBox AutomationProperties.AutomationId="Testing_SearchTextBox" Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox AutomationProperties.AutomationId="Testing_VariableListTextBox" Style="{StaticResource VariableListTextBox}"></TextBox>
         <TextBox AutomationProperties.AutomationId="Testing_TextBox"></TextBox>
+        <GroupBox Width="200" AutomationProperties.AutomationId="Testing_GroupBox" Header="Box"></GroupBox>
+        <ListBox x:Name="TestingListBox" Style="{StaticResource ListBoxStyle}" ItemsSource="{Binding}" AutomationProperties.AutomationId="Testing_ListBox"></ListBox>
     </WrapPanel>
 </Window>

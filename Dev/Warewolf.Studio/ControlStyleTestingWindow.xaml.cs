@@ -20,17 +20,13 @@ namespace Warewolf.Studio
         {
             InitializeComponent();
             InitGrid();
+            DataContext = this;
+            TestingListBox.ItemsSource = Persons;
         }
 
         void InitGrid()
         {
-            var people = new List<Person>
-            {
-                new Person {Name="Bob",Gender = "Male",IsLoadShedded = false,Site = "http://www.google.com", Genders = new []{"Male","Female","Unknown"}}, 
-                new Person {Name="Dora",Gender = "Female",IsLoadShedded = false,Site = "http://www.bing.com", Genders = new []{"Male","Female","Unknown"}}, 
-                new Person {Name="Jake",Gender = "Male",IsLoadShedded = false,Site = "http://www.google.com", Genders = new []{"Male","Female","Unknown"}}, 
-                new Person {Name="Phineas",Gender = "Male",IsLoadShedded = false,Site = "http://www.google.com", Genders = new []{"Male","Female","Unknown"}}, 
-            };
+            var people = Persons;
             BobDataGrid.ItemsSource = people;
             //        <DataGridCheckBoxColumn Header="Is Load Shedded" Binding="{Binding IsLoadShedded}"></DataGridCheckBoxColumn>
             //<DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
@@ -48,6 +44,49 @@ namespace Warewolf.Studio
             t.Start();
 
             SetupNodes();
+        }
+
+        private static List<Person> Persons
+        {
+            get
+            {
+                var people = new List<Person>
+                {
+                    new Person
+                    {
+                        Name = "Bob",
+                        Gender = "Male",
+                        IsLoadShedded = false,
+                        Site = "http://www.google.com",
+                        Genders = new[] {"Male", "Female", "Unknown"}
+                    },
+                    new Person
+                    {
+                        Name = "Dora",
+                        Gender = "Female",
+                        IsLoadShedded = false,
+                        Site = "http://www.bing.com",
+                        Genders = new[] {"Male", "Female", "Unknown"}
+                    },
+                    new Person
+                    {
+                        Name = "Jake",
+                        Gender = "Male",
+                        IsLoadShedded = false,
+                        Site = "http://www.google.com",
+                        Genders = new[] {"Male", "Female", "Unknown"}
+                    },
+                    new Person
+                    {
+                        Name = "Phineas",
+                        Gender = "Male",
+                        IsLoadShedded = false,
+                        Site = "http://www.google.com",
+                        Genders = new[] {"Male", "Female", "Unknown"}
+                    },
+                };
+                return people;
+            }
         }
 
         void SetupNodes()

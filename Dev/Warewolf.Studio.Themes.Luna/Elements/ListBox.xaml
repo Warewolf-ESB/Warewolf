@@ -14,25 +14,21 @@
 
 
     <!--  ListBox Brushes  -->
-    <SolidColorBrush x:Key="ListBoxBackgroundBrush" Color="{StaticResource Color_009}" />
-    <SolidColorBrush x:Key="ListBoxBorderBrush" Color="{StaticResource Color_004}" />
-    <SolidColorBrush x:Key="ListBoxItemBackgroundBrush" Color="{StaticResource Color_016}" />
-    <SolidColorBrush x:Key="ListBoxItemBorderBrush" Color="{StaticResource Color_016}" />
-    <SolidColorBrush x:Key="ListBoxItemHoverBackgroundBrush" Color="{StaticResource Color_006}" />
-    <SolidColorBrush x:Key="ListBoxItemHoverBorderBrush" Color="{StaticResource Color_003}" />
+    <SolidColorBrush x:Key="ListBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="ListBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ListBoxItemBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="ListBoxItemBorderBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="ListBoxItemHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="ListBoxItemHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
     <SolidColorBrush x:Key="ListBoxItemPressedBackgroundBrush" Color="{StaticResource Color_024}" />
     <SolidColorBrush x:Key="ListBoxItemPressedBorderBrush" Color="{StaticResource Color_024}" />
-    <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundBrush" Color="{StaticResource Color_026}" />
-    <SolidColorBrush x:Key="ListBoxItemSelectedBorderBrush" Color="{StaticResource Color_024}" />
-
-    <!--  ListBox Brushes  -->
-    <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource Color_024}" />
-    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#ffffff" />
+    <SolidColorBrush x:Key="ListBoxItemSelectedBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ListBoxItemSelectedBorderBrush" Color="{StaticResource WarewolfBlack}" />
 
 
     <!--  *********************************  ListBoxItem Style  *********************************  -->
     <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
-        <Setter Property="Background" Value="{StaticResource TransparentBrush}" />
+        <Setter Property="Background" Value="{StaticResource ListBoxItemBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontSize" Value="14.667" />
         <Setter Property="FontFamily" Value="Segoe UI" />
@@ -143,7 +139,7 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Background" Value="{StaticResource ListBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource ListBoxBorderBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource ListBoxBackgroundBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="IsTabStop" Value="False" />
