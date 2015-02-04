@@ -18,6 +18,7 @@ namespace Warewolf.Studio
     public partial class ControlStyleTestingWindow : Window
     {
         private Task _task;
+        private CancellationToken _cancellationToken;
 
         public ControlStyleTestingWindow()
         {
@@ -25,10 +26,12 @@ namespace Warewolf.Studio
             InitGrid();
             DataContext = this;
             TestingListBox.ItemsSource = Persons;
+            var tokenSource2 = new CancellationTokenSource();
+            _cancellationToken = tokenSource2.Token;
             Closing+= delegate {
                                    if (_task != null && _task.Status == TaskStatus.Running)
                                    {
-                                       _task.Dispose();
+                                       tokenSource2.Cancel();
                                    }
             };
         }
@@ -45,10 +48,18 @@ namespace Warewolf.Studio
             {
                 while (true)
                 {
-                    Thread.Sleep(30);
-                    Dispatcher.Invoke(() => ProgressBar.Value = (ProgressBar.Value + 1) % 100);
+                    if (_cancellationToken.IsCancellationRequested)
+                    {
+                        // Clean up here, then...
+                        
+                    }
+                    else
+                    {
+                        Thread.Sleep(30);
+                        Dispatcher.Invoke(() => ProgressBar.Value = (ProgressBar.Value + 1)%100);
+                    }
                 }
-            }
+            },_cancellationToken
                 );
             _task.Start();
 

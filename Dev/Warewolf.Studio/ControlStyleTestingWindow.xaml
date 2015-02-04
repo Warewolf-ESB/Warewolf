@@ -10,7 +10,7 @@
         >
     <WrapPanel Orientation="Vertical">
        
-        <CheckBox AutomationProperties.AutomationId="Testing_CheckBox"></CheckBox>
+        <CheckBox AutomationProperties.AutomationId="Testing_CheckBox">This is a Checkbox</CheckBox>
         <ComboBox AutomationProperties.AutomationId="Testing_Combobox"></ComboBox>
         <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
         <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox" Margin="20,2,1,2"
@@ -90,7 +90,7 @@
         <TextBox AutomationProperties.AutomationId="Testing_SearchTextBox" Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox AutomationProperties.AutomationId="Testing_VariableListTextBox" Style="{StaticResource VariableListTextBox}"></TextBox>
         <TextBox AutomationProperties.AutomationId="Testing_TextBox"></TextBox>
-        <GroupBox Width="200" AutomationProperties.AutomationId="Testing_GroupBox" Header="Box"></GroupBox>
+        <GroupBox Width="200" AutomationProperties.AutomationId="Testing_GroupBox" Header="My Group Box" Height="100"></GroupBox>
         <ListBox x:Name="TestingListBox" Style="{StaticResource ListBoxStyle}" ItemsSource="{Binding}" AutomationProperties.AutomationId="Testing_ListBox"></ListBox>
     </WrapPanel>
 </Window>

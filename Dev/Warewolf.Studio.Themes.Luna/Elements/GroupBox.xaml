@@ -20,41 +20,41 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Padding" Value="2" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type GroupBox}">
-                    <Grid SnapsToDevicePixels="true">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="6" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="6" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="6" />
-                        </Grid.RowDefinitions>
-                        <Border BorderBrush="{StaticResource TransparentBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" />
-                        <Border x:Name="Header" CornerRadius="2"  Grid.Column="1" Padding="10,5,10,0" Grid.Row="0" Grid.RowSpan="2">
-                            <ContentPresenter ContentSource="Header" Height="30" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </Border>
-                        <ContentPresenter Grid.ColumnSpan="2" Grid.Column="1" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        <Border Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3">
-                            <Border.OpacityMask>
-                                <MultiBinding ConverterParameter="7" Converter="{StaticResource BorderGapMaskConverter}">
-                                    <Binding ElementName="Header" Path="ActualWidth" />
-                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
-                                </MultiBinding>
-                            </Border.OpacityMask>
-                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" />
-                        </Border>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+<!--        <Setter Property="Template">-->
+<!--            <Setter.Value>-->
+<!--                <ControlTemplate TargetType="{x:Type GroupBox}">-->
+<!--                    <Grid SnapsToDevicePixels="true">-->
+<!--                        <Grid.ColumnDefinitions>-->
+<!--                            <ColumnDefinition Width="6" />-->
+<!--                            <ColumnDefinition Width="Auto" />-->
+<!--                            <ColumnDefinition Width="*" />-->
+<!--                            <ColumnDefinition Width="6" />-->
+<!--                        </Grid.ColumnDefinitions>-->
+<!--                        <Grid.RowDefinitions>-->
+<!--                            <RowDefinition Height="Auto" />-->
+<!--                            <RowDefinition Height="Auto" />-->
+<!--                            <RowDefinition Height="*" />-->
+<!--                            <RowDefinition Height="6" />-->
+<!--                        </Grid.RowDefinitions>-->
+<!--                        <Border BorderBrush="{StaticResource TransparentBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.ColumnSpan="4" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" />-->
+<!--                        <Border x:Name="Header" CornerRadius="2"  Grid.Column="1" Padding="10,5,10,0" Grid.Row="0" Grid.RowSpan="2">-->
+<!--                            <ContentPresenter ContentSource="Header" Height="30" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />-->
+<!--                        </Border>-->
+<!--                        <ContentPresenter Grid.ColumnSpan="2" Grid.Column="1" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />-->
+<!--                        <Border Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3">-->
+<!--                            <Border.OpacityMask>-->
+<!--                                <MultiBinding ConverterParameter="7" Converter="{StaticResource BorderGapMaskConverter}">-->
+<!--                                    <Binding ElementName="Header" Path="ActualWidth" />-->
+<!--                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />-->
+<!--                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />-->
+<!--                                </MultiBinding>-->
+<!--                            </Border.OpacityMask>-->
+<!--                            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" />-->
+<!--                        </Border>-->
+<!--                    </Grid>-->
+<!--                </ControlTemplate>-->
+<!--            </Setter.Value>-->
+<!--        </Setter>-->
     </Style>
     <!--  *********************************  Implicit Styles  *********************************  -->
     <Style BasedOn="{StaticResource GroupBoxStyle}" TargetType="{x:Type GroupBox}" />
