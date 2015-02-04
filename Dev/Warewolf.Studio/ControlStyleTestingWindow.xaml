@@ -5,34 +5,33 @@
         xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
         Title="ControlStyleTestingWindow" Height="300" Width="300">
     <WrapPanel Orientation="Vertical">
-       
-        <CheckBox></CheckBox>
-        <ComboBox></ComboBox>
-        <RadioButton></RadioButton>
-        <TextBlock></TextBlock>
-        <PasswordBox Margin="20,2,1,2"
+
+        <CheckBox AutomationProperties.AutomationId="Testing_CheckBox"></CheckBox>
+        <ComboBox AutomationProperties.AutomationId="Testing_Combobox"></ComboBox>
+        <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
+        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox" Margin="20,2,1,2"
                      customControls:PasswordBoxAssistant.BindPassword="true"
                      customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </PasswordBox>
-        <Label></Label>
-        <Button>
+        <Label AutomationProperties.AutomationId="Testing_Lable"></Label>
+        <Button AutomationProperties.AutomationId="Testing_NormalButton">
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Button>
-        <Button Style="{StaticResource RoundedButtonStyle}">
+        <Button AutomationProperties.AutomationId="Testing_NormalRoundedButton" Style="{StaticResource RoundedButtonStyle}">
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Button>
-        <Button Style="{StaticResource PopupButtonStyle}" Width="150">
+        <Button AutomationProperties.AutomationId="Testing_PopupButton" Style="{StaticResource PopupButtonStyle}" Width="150">
             <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock></StackPanel>
         </Button>
-        <Button Style="{StaticResource PopupRoundedCornerButtonStyle}" Width="150">
+        <Button AutomationProperties.AutomationId="Testing_PopupRoundedButton" Style="{StaticResource PopupRoundedCornerButtonStyle}" Width="150">
             <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock></StackPanel>
-        </Button>  
-        <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
-        <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
-        <TextBox></TextBox>
+        </Button>
+        <TextBox AutomationProperties.AutomationId="Testing_SearchTextBox" Style="{StaticResource SearchTextboxStyle}"></TextBox>
+        <TextBox AutomationProperties.AutomationId="Testing_VariableListTextBox" Style="{StaticResource VariableListTextBox}"></TextBox>
+        <TextBox AutomationProperties.AutomationId="Testing_TextBox"></TextBox>
     </WrapPanel>
 </Window>
