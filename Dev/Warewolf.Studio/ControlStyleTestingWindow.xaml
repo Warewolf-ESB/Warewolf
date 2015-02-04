@@ -18,6 +18,7 @@
                      customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </PasswordBox>
         <Label AutomationProperties.AutomationId="Testing_Lable"></Label>
+        <!-- Normal Buttons-->
         <Button AutomationProperties.AutomationId="Testing_NormalButton">
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Button>
@@ -33,7 +34,26 @@
             <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock></StackPanel>
-        </Button>  
+        </Button>
+        <!-- Disabled Buttons-->
+        <Button AutomationProperties.AutomationId="Testing_NormalButton_Disabled" IsEnabled="False">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button IsEnabled="False" AutomationProperties.AutomationId="Testing_NormalRoundedButton_Disabled" Style="{StaticResource RoundedButtonStyle}">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button IsEnabled="False" AutomationProperties.AutomationId="Testing_PopupButton_Disabled" Style="{StaticResource PopupButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock>
+            </StackPanel>
+        </Button>
+        <Button IsEnabled="False" AutomationProperties.AutomationId="Testing_PopupRoundedButton_Disabled" Style="{StaticResource PopupRoundedCornerButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock>
+            </StackPanel>
+        </Button>
         <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
         <TextBox ToolTip="Bob the builder">ToolTip</TextBox>

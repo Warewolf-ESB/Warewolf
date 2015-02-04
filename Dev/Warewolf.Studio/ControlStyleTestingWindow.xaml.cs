@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,12 +17,20 @@ namespace Warewolf.Studio
     /// </summary>
     public partial class ControlStyleTestingWindow : Window
     {
+        private Task _task;
+
         public ControlStyleTestingWindow()
         {
             InitializeComponent();
             InitGrid();
             DataContext = this;
             TestingListBox.ItemsSource = Persons;
+            Closing+= delegate {
+                                   if (_task != null && _task.Status == TaskStatus.Running)
+                                   {
+                                       _task.Dispose();
+                                   }
+            };
         }
 
         void InitGrid()
@@ -32,7 +41,7 @@ namespace Warewolf.Studio
             //<DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
             //<DataGridHyperlinkColumn Header="Site" Binding="{Binding Site}"></DataGridHyperlinkColumn>
             //<DataGridComboBoxColumn Header="Gender" ItemsSource="{Binding Genders}"></DataGridComboBoxColumn>
-            Task t = new Task(() =>
+            _task = new Task(() =>
             {
                 while (true)
                 {
@@ -40,8 +49,8 @@ namespace Warewolf.Studio
                     Dispatcher.Invoke(() => ProgressBar.Value = (ProgressBar.Value + 1) % 100);
                 }
             }
-            );
-            t.Start();
+                );
+            _task.Start();
 
             SetupNodes();
         }

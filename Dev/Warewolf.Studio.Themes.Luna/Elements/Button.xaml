@@ -29,6 +29,7 @@
         <Setter Property="Width" Value="25" />
         <Setter Property="Height" Value="25" />
         <Setter Property="MinHeight" Value="25" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="MinWidth" Value="25" />
         <Setter Property="Background" Value="{StaticResource ButtonBackgroundBrush}" />
         <Setter Property="Foreground" Value="White" />
@@ -39,7 +40,6 @@
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
-
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
@@ -53,7 +53,17 @@
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
-
+<!--                                <VisualState x:Name="Focused">-->
+<!--                                    <Storyboard>-->
+<!--                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">-->
+<!--                                            <DiscreteObjectKeyFrame KeyTime="0">-->
+<!--                                                <DiscreteObjectKeyFrame.Value>-->
+<!--                                                    <Visibility>Visible</Visibility>-->
+<!--                                                </DiscreteObjectKeyFrame.Value>-->
+<!--                                            </DiscreteObjectKeyFrame>-->
+<!--                                        </ObjectAnimationUsingKeyFrames>                                         -->
+<!--                                    </Storyboard>-->
+<!--                                </VisualState>-->
                                 <VisualState x:Name="Unfocused" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
@@ -74,7 +84,8 @@
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="DisabledVisualElement"
-                                   Fill="{StaticResource DisabledVisualElement}"
+                                   Fill="{StaticResource ButtonBackgroundBrush}"
+                                   Opacity="0.4"
                                    Visibility="Collapsed" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -92,8 +103,11 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
             </Trigger>
-            <Trigger Property="Button.IsPressed" Value="true">
+            <Trigger Property="Button.IsPressed" Value="True">
                 <Setter Property="Control.Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="Control.IsFocused" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -101,6 +115,7 @@
     <Style x:Key="BasicButton" TargetType="{x:Type Button}">
         <Setter Property="MinHeight" Value="25" />
         <Setter Property="MinWidth" Value="25" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -122,7 +137,17 @@
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
-
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="Unfocused" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
@@ -163,6 +188,7 @@
         <Setter Property="Width" Value="25" />
         <Setter Property="Height" Value="25" />
         <Setter Property="MinHeight" Value="25" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="MinWidth" Value="25" />
         <Setter Property="Background" Value="{StaticResource ButtonBackgroundBrush}" />
         <Setter Property="Foreground" Value="White" />
@@ -176,18 +202,35 @@
 
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd_DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">
                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <Visibility>Visible</Visibility>
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
+<!--                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">-->
+<!--                                            <DiscreteObjectKeyFrame KeyTime="0">-->
+<!--                                                <DiscreteObjectKeyFrame.Value>-->
+<!--                                                    <Visibility>Visible</Visibility>-->
+<!--                                                </DiscreteObjectKeyFrame.Value>-->
+<!--                                            </DiscreteObjectKeyFrame>-->
+<!--                                        </ObjectAnimationUsingKeyFrames>-->
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
-
+<!--                                <VisualState x:Name="Focused">-->
+<!--                                    <Storyboard>-->
+<!--                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">-->
+<!--                                            <DiscreteObjectKeyFrame KeyTime="0">-->
+<!--                                                <DiscreteObjectKeyFrame.Value>-->
+<!--                                                    <Visibility>Visible</Visibility>-->
+<!--                                                </DiscreteObjectKeyFrame.Value>-->
+<!--                                            </DiscreteObjectKeyFrame>-->
+<!--                                        </ObjectAnimationUsingKeyFrames>-->
+<!--                                    </Storyboard>-->
+<!--                                </VisualState>-->
                                 <VisualState x:Name="Unfocused" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
@@ -209,9 +252,16 @@
                                    Stroke="{StaticResource ButtonPressedBorderBrush}"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
-                        <Rectangle x:Name="DisabledVisualElement"
+                        <Border x:Name="Bd_DisabledVisualElement"
+                                   Background="{StaticResource ButtonBackgroundBrush}"
+                                   BorderBrush="{StaticResource ButtonBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="16" Visibility="Collapsed" Opacity="0.4">
+                            <Rectangle x:Name="DisabledVisualElement"
                                    Fill="{StaticResource DisabledVisualElement}"
-                                   Visibility="Collapsed" />
+                                   Visibility="Collapsed"
+                                   Opacity="0.4"/>
+                        </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
@@ -230,6 +280,9 @@
             </Trigger>
             <Trigger Property="Button.IsPressed" Value="true">
                 <Setter Property="Control.Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="Control.IsFocused" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -486,6 +539,7 @@
         <Setter Property="Height" Value="25" />
         <Setter Property="MinHeight" Value="25" />
         <Setter Property="MinWidth" Value="25" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Background" Value="{StaticResource ButtonHoverBackgroundBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Template">
@@ -509,7 +563,17 @@
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
-
+<!--                                <VisualState x:Name="Focused">-->
+<!--                                    <Storyboard>-->
+<!--                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">-->
+<!--                                            <DiscreteObjectKeyFrame KeyTime="0">-->
+<!--                                                <DiscreteObjectKeyFrame.Value>-->
+<!--                                                    <Visibility>Visible</Visibility>-->
+<!--                                                </DiscreteObjectKeyFrame.Value>-->
+<!--                                            </DiscreteObjectKeyFrame>-->
+<!--                                        </ObjectAnimationUsingKeyFrames>-->
+<!--                                    </Storyboard>-->
+<!--                                </VisualState>-->
                                 <VisualState x:Name="Unfocused" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
@@ -530,8 +594,8 @@
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="DisabledVisualElement"
-                                   Fill="{StaticResource DisabledVisualElement}"
-                                   Visibility="Collapsed" />
+                                   Fill="{StaticResource ButtonBorderBrush}"
+                                   Visibility="Collapsed" Opacity="0.4"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
@@ -551,6 +615,9 @@
             <Trigger Property="Button.IsPressed" Value="true">
                 <Setter Property="Control.Foreground" Value="White" />
             </Trigger>
+            <Trigger Property="Control.IsFocused" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ButtonBackgroundBrush}" />
+            </Trigger>
         </Style.Triggers>
     </Style>
     
@@ -561,6 +628,7 @@
         <Setter Property="MinWidth" Value="25" />
         <Setter Property="Background" Value="{StaticResource ButtonHoverBackgroundBrush}" />
         <Setter Property="Foreground" Value="White" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -582,7 +650,17 @@
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
-
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+<!--                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusedVisualElement" Storyboard.TargetProperty="(UIElement.Visibility)">-->
+<!--                                            <DiscreteObjectKeyFrame KeyTime="0">-->
+<!--                                                <DiscreteObjectKeyFrame.Value>-->
+<!--                                                    <Visibility>Visible</Visibility>-->
+<!--                                                </DiscreteObjectKeyFrame.Value>-->
+<!--                                            </DiscreteObjectKeyFrame>-->
+<!--                                        </ObjectAnimationUsingKeyFrames>-->
+                                    </Storyboard>
+                                </VisualState>
                                 <VisualState x:Name="Unfocused" />
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>                    
@@ -600,7 +678,17 @@
                                         IsTabStop="False">
                                 <ContentPresenter x:Name="contentPresenter" />
                             </ContentControl>
-                        </Border>                      
+                        </Border>
+                        <Rectangle x:Name="FocusedVisualElement"
+                                   Stroke="{StaticResource ButtonPressedBorderBrush}"
+                                   StrokeThickness="1"
+                                   Visibility="Collapsed" />
+                        <Border x:Name="DisabledVisualElement"
+                                   Background="{StaticResource ButtonBorderBrush}"
+                                BorderBrush="{StaticResource ButtonBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="13"
+                                   Visibility="Collapsed" Opacity="0.4"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
@@ -619,6 +707,9 @@
             </Trigger>
             <Trigger Property="Button.IsPressed" Value="true">
                 <Setter Property="Control.Foreground" Value="White" />
+            </Trigger>
+            <Trigger Property="Control.IsFocused" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource ButtonBackgroundBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
