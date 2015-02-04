@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
         Title="ControlStyleTestingWindow" Height="300" Width="300">
     <WrapPanel Orientation="Vertical">
        
@@ -9,6 +10,10 @@
         <ComboBox></ComboBox>
         <RadioButton></RadioButton>
         <TextBlock></TextBlock>
+        <PasswordBox Margin="20,2,1,2"
+                     customControls:PasswordBoxAssistant.BindPassword="true"
+                     customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        </PasswordBox>
         <Label></Label>
         <Button>
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>

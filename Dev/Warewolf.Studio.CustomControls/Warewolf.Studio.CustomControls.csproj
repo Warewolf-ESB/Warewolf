@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="WatermarkPasswordBox.cs" />
     <Compile Include="WatermarkTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
