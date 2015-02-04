@@ -4,8 +4,8 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:ig="http://schemas.infragistics.com/xaml"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    Width="350"
-                    Height="200"
+                    Width="300"
+                    Height="150"
                     CloseButtonVisibility="Collapsed"
                     IsMoveable="False"
                     IsResizable="False"
@@ -13,69 +13,54 @@
                     MinimizeButtonVisibility="Collapsed"
                     StartupPosition="Center"
                     Style="{StaticResource XamDialogWindowStyle}"
-                    d:DesignHeight="230"
-                    d:DesignWidth="200"
+                    d:DesignHeight="200"
+                    d:DesignWidth="150"
                     mc:Ignorable="d">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="10" />
-            <RowDefinition Height="100" />
-            <RowDefinition Height="10" />
+            <RowDefinition Height="32" />
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30" />
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="32" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
 
-
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1"
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     Orientation="Horizontal"
-                    Background="Transparent">
-            <Grid>
-                    <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <Image x:Name="MessageImage"
-               Grid.Column="0"                       
-               MinWidth="20"
-               MinHeight="20"
-              Width="30" Height="30"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top" />
-
-                <Image Source="{StaticResource System-Spacer}"
-               Grid.Column="1"                       
-                       Width="5" Height="100"
-                       
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top" />
-
-                <TextBlock x:Name="MessageText"
-                    Height="100"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                   Grid.Column="2" />
-
-            </Grid>
+                    Background="Transparent" Margin="5,0,0,0">
+            <Image x:Name="MessageImage"  />
 
         </StackPanel>
-        <StackPanel Grid.Row="3"
-                    Grid.Column="1"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
+        <TextBlock x:Name="MessageText"
+    		FontSize="14"
+                   TextWrapping="Wrap"
+    		Grid.Column="1" Margin="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Top" />
+        
+        <StackPanel Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
                     Orientation="Horizontal"
-                    Background="Transparent">
+                    Background="Transparent" HorizontalAlignment="Right">
+            <Button x:Name="YesButton"
+                    Style="{StaticResource ButtonStyle}"
+                    Width="60"
+                    Margin="0,0,10,0"
+                    Click="YesButton_OnClick"
+                    Content="Yes" />
+            <Button x:Name="NoButton"
+                    Style="{StaticResource ButtonStyle}"
+                    Width="60"
+                    Margin="0,0,10,0"
+                    Click="NoButton_OnClick"
+                    Content="No" />
             <Button x:Name="OkButton"
                     Style="{StaticResource ButtonStyle}"
                     Width="60"
