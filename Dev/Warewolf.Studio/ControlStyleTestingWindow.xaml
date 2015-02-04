@@ -13,7 +13,7 @@
         <CheckBox AutomationProperties.AutomationId="Testing_CheckBox">This is a Checkbox</CheckBox>
         <ComboBox AutomationProperties.AutomationId="Testing_Combobox"></ComboBox>
         <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
-        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox" Margin="20,2,1,2"
+        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox"
                      customControls:PasswordBoxAssistant.BindPassword="true"
                      customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </PasswordBox>
