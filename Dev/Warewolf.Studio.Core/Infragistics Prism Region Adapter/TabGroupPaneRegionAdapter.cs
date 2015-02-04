@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Infragistics.Windows.Controls;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Microsoft.Practices.Prism.Regions;
@@ -173,7 +174,16 @@ namespace Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter
             //let's first check the item that was injected for IDockAware. This may be a View or ViewModel
             var dockAwareContent = contentPane.Content as IDockAware;
             if (dockAwareContent != null)
+            {
                 binding.Source = dockAwareContent;
+                if (dockAwareContent.Image != null)
+                {
+                    Binding imageBinding = new Binding("Image");
+                    imageBinding.Converter = new ResourceTypeToIconConverter();
+                    imageBinding.Source = dockAwareContent;
+                    contentPane.SetBinding(ContentPane.ImageProperty, imageBinding);
+                }
+            }
 
             //nothing was found on the item being injected, let's check the DataContext
             if (binding.Source == null)

@@ -51,11 +51,34 @@ Scenario: Creating And Deleting Folder in localhost
    Then I should see "19" children for "Folder 2"
    And I should see "New Folder" in "Folder 2"
    #Deleting Sub Folder
-   When I delete "New Folder" in "Folder 2" server
+   When I delete "New Folder" in "Folder 2"
    Then I should see "18" children for "Folder 2" 
    And I should not see "New Folder" in "Folder 2"
 
 
+
+Scenario: Deleting Resource in folders
+    Given the explorer is visible
+    When I open "localhost" server
+    Then I should see "5" folders
+	When I open "Folder 6"
+	Then I should see "4" children for "Folder 6"
+	And I should see "deleteresouce" in "Folder 6"
+	When I delete "deleteresouce" in "Folder 6"
+    Then I should not see "deleteresouce" in "Folder 6"
+	And I should see "3" children for "Folder 6"
+
+Scenario: Deleting Resource in localhost Server
+    Given the explorer is visible
+    When I open "localhost" server
+    Then I should see "5" folders
+	And I should see "5" resources in "localhost"
+	And I should see "Resource" in "localhost" 
+	When I delete "Resource" in "localhost"
+    Then I should not see "Resource" in "localhost"
+	And I should see "4" resources in "localhost"
+
+ 
 
 Scenario: Opening Versions in Explorer
    Given the explorer is visible
@@ -82,6 +105,18 @@ Scenario: Opening Versions in Explorer
    When I Delete Version "v.2"
    Then I should not see "v.2"
    And I should see "3" versions with "View" Icons
+
+
+Scenario: No Version history option for services and sources.
+   Given the explorer is visible
+   When I open "localhost" server
+   Then I should see "Webservice" in "localhost" server
+   When I Show Version History for "service" in "localhost" server is "False"
+   Then I should see "Pluginservice" in "localhost" server
+   When I Show Version History for "Pluginservice" in "localhost" server is "False"
+   Then I should see "Remoteserver" in "localhost" server
+   When I Show Version History for "Remoteserver" in "localhost" server is "False"
+  
 
 
 Scenario: Creating Services Under Localhost 
@@ -130,6 +165,25 @@ Scenario: Creating Services Under Explorer Folder
 	Then "Deploy" is opened
 
 
+
+Scenario: Context Menu Items for workflow.
+	Given the explorer is visible
+	When I open "Open" for "workflow" in "localhost" server
+	Then "workflow" is opened
+	And I open "New Database Connector" for "workflow" in "localhost" server is "False"
+	And I open "New Plugin Connector" for "workflow" in "localhost" server is "False"
+	And I open "New Web Service Connector" for "workflow" in "localhost" server is "False"
+	And I open "New Remote Warewolf Source" for "workflow" in "localhost" server is "False"
+	And I open "New Plugin Source" for "workflow" in "localhost" server is "False"
+	And I open "New Web Source" for "workflow" in "localhost" server is "False"
+	And I open "New Email Source" for "workflow" in "localhost" server is "False"
+	And I open "New Dropbox Source" for "workflow" in "localhost" server is "False"
+	And I Deploy "workflow" of "localhost" server
+	And "Deploy" is opened
+	And I open Dependencies of "workflow" in "localhost" server
+	And "Ones*Dependants" is opened
+
+
 Scenario: Opening Dependencies Of All Services In Explorer
     Given the explorer is visible
 	When I open Show Dependencies of "WF1" in "Folder1"
@@ -149,11 +203,31 @@ Scenario: Renaming Folder And Workflow Service
 	When I rename "Folder 2" to "Folder New"
 	Then I should see "18" children for "Folder New"
 	And I should not see "Folder 2"
-	Given I rename "WF1" of "Follder 1" to "WorkFlow1" in "Localhost" server 
+	Given I rename "WF1" of "Follder 1" to "WorkFlow1" in "localhost" server 
 	Then I should see "WorkFlow1" of "Folder1" in "localhost" server
 	And I should not see "WF1" in "Folder1"
 	Given I rename "WF2" of "Follder 1" to "WorkFlow1" in "Localhost" server 
 	Then Conflict message is occured
+
+Scenario: Renaming Service in explorer
+    Given the explorer is visible
+	And I open "localhost" server
+	And I should see "Renameresource" in "localhost"
+	When I rename "Renameresource" to "renamed" in "localhost" server
+	Then I should see "renamed" in "localhost" server
+	Then Conflict message should be occured
+
+
+Scenario: Rename conflicting resources
+    Given the explorer is visible
+	And I open "localhost" server
+	And I should see "Conflict" in "localhost"
+	And I should see "Renameresource" in "localhost"
+	When I rename "Conflict" to "Renameresource" in "localhost" server
+	Then I should see "renameconflict" in "localhost" server
+	Then Conflict message should be occured
+
+
 
 	
 Scenario: Renaming Workflow Service Is Creating Version In Version History
@@ -164,7 +238,7 @@ Scenario: Renaming Workflow Service Is Creating Version In Version History
 	And I should not see "WF2" in "Folder1"
 	When I Show Version History for "WF2" in "Folder 1"
     Then I should see "1" versions with "View" Icons
- 
+    And I should not see "1" version with "Execute" Icons
 
 
 Scenario: Opening Resources from remote server
@@ -174,9 +248,20 @@ Scenario: Opening Resources from remote server
 	Then I should see "10" folders
 	
 
+Scenario: Searching resources by using filter
+   Given the explorer is visible
+   And I open "localhost" server
+   When I search for "Folder 1" in explorer
+   Then I should see "Folder 1" in "localhost" server 
+   And I search for "deleteresouce" in explorer
+   Then I should see "deleteresouce" in "Follder 1" 
 
-
-
-
-
-
+Scenario: Checking versions 
+   Given the explorer is visible
+   And I open "localhost" server
+   When I search for "WF1" in explorer
+   Then I should see "WF1" in "Follder 1" 
+   When I Show Version History for "WF1" in "Folder 1"
+   Then I should see "3" versions with "View" Icons
+   And I should not see "3" versions with "View,Execute" Icons
+ 

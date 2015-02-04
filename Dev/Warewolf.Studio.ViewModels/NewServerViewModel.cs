@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -16,7 +17,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class NewServerViewModel : BindableBase, INewServerDialogue
+    public class NewServerViewModel : BindableBase, INewServerDialogue, IDockViewModel
     {
         string _userName;
         string _password;
@@ -39,6 +40,8 @@ namespace Warewolf.Studio.ViewModels
         ObservableCollection<string> _ports;
         ObservableCollection<string> _servers; 
         string _selectedPort; 
+        private bool _isActive;
+        private ResourceType? _image;
         // ReSharper disable TooManyDependencies
         public NewServerViewModel(IServerSource newServerSource,
             IStudioUpdateManager updateManager, ISaveDialog saveDialog,
@@ -217,6 +220,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _headerText = value;
                 OnPropertyChanged(() => HeaderText);
+                OnPropertyChanged(() => Header);
             }
         }
 
@@ -519,6 +523,29 @@ namespace Warewolf.Studio.ViewModels
                 }
                
             }
+        }
+
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set { _isActive = value; }
+        }
+
+        public event EventHandler IsActiveChanged;
+
+        public string Header
+        {
+            get { return HeaderText; }
+            set
+            {
+                HeaderText = value;
+                OnPropertyChanged(()=>Header);
+            }
+        }
+
+        public ResourceType? Image
+        {
+            get { return ResourceType.ServerSource; }
         }
 
         public string AddressToolTip

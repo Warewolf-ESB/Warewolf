@@ -98,6 +98,7 @@
     <Compile Include="DeployItemMessage.cs" />
     <Compile Include="DialogueViewModel.cs" />
     <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
+    <Compile Include="IDockViewModel.cs" />
     <Compile Include="ExplorerItemNodeViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="NewServerViewModel.cs" />

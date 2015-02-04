@@ -20,10 +20,6 @@
     <DeploymentItem filename="packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll" />
     <DeploymentItem filename="packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll" />
     <DeploymentItem filename="Warewolf.Studio.CustomControls\bin\Debug\Warewolf.Studio.CustomControls.dll" />
-
-      <!--Solution specific outputs-->
-    <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
-    <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
   </Deployment>
   <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
