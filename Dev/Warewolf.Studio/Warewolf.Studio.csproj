@@ -74,6 +74,12 @@
     <Reference Include="InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Maps.XamNetworkNode.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Maps.XamNetworkNode.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Maps.XamNetworkNode.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Maps.XamNetworkNode.v14.2.Design.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.dll</HintPath>
     </Reference>

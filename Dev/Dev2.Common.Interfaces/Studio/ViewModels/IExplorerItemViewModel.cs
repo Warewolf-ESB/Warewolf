@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Help;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels
 {
@@ -44,43 +44,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void RemoveChild(IExplorerItemViewModel child);
     }
 
-    public interface IVersionInfoViewModel: IExplorerTreeItem
-    {
-        string VersionName { get; set; }
-        Guid ResourceId { get; set; }
-        string Version { get; set; }
-        DateTime VersionDate { get; set; }
-        bool CanRollBack { get; set; }
-        ICommand OpenCommand { get; set; }
-
-        bool IsVisible { get; set; }
-   
-        string VersionHeader { get; set; }
-        string Reason { get; set; }
-    }
-    public interface IExplorerHelpDescriptorBuilder
-    {
-        IHelpDescriptor Build(IExplorerItemViewModel model,ExplorerEventContext ctx );
-    }
-
     public enum ExplorerEventContext
     {
         Selected
-    }
-
-    public interface INewItemMessage
-    {
-        IExplorerItemViewModel Parent{get;}
-
-        ResourceType Type { get;  }
-
-    }
-
-    public interface IDeployItemMessage
-    {
-        IExplorerItemViewModel Item { get;  }
-
-        IExplorerItemViewModel SourceServer { get; }
-
     }
 }

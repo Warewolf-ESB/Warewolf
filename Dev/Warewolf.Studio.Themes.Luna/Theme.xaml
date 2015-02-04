@@ -42,7 +42,7 @@
         <ResourceDictionary Source="Elements/Explorer/Explorer.xaml" />
         <ResourceDictionary Source="Elements/xamMenu.xaml" />
         <ResourceDictionary Source="Elements/xamDialogWindow.xaml" />
-
+        <ResourceDictionary Source="Elements/HyperLink.xaml" />
 
 
     </ResourceDictionary.MergedDictionaries>

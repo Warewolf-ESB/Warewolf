@@ -1,5 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.ViewModels;
+using Moq;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio
 {
@@ -28,7 +36,72 @@ namespace Warewolf.Studio
             //<DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
             //<DataGridHyperlinkColumn Header="Site" Binding="{Binding Site}"></DataGridHyperlinkColumn>
             //<DataGridComboBoxColumn Header="Gender" ItemsSource="{Binding Genders}"></DataGridComboBoxColumn>
+            Task t = new Task(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(30);
+                    Dispatcher.Invoke(() => ProgressBar.Value = (ProgressBar.Value + 1) % 100);
+                }
+            }
+            );
+            t.Start();
 
+            SetupNodes();
+        }
+
+        void SetupNodes()
+        {
+            var shell = new Mock<IShellViewModel>().Object;
+            var server = new Mock<IServer>().Object;
+            var helper = new Mock<IExplorerHelpDescriptorBuilder>().Object;
+
+            ExplorerItemNodeViewModel root = new ExplorerItemNodeViewModel(shell, server, helper, null)
+            {
+                ResourceName = "bob",
+                Children = new ObservableCollection<IExplorerItemViewModel>()
+                {
+                    new ExplorerItemNodeViewModel(shell,server,helper,null)
+                    {
+                        ResourceName = "child 1",
+                        Children = new ObservableCollection<IExplorerItemViewModel>()
+                        {
+                          new ExplorerItemNodeViewModel(shell,server,helper,null)
+                            {
+                                ResourceName = "granchild 1",
+                                Children = new ObservableCollection<IExplorerItemViewModel>()
+                                {
+                    
+                                }   
+                             },
+                           new ExplorerItemNodeViewModel(shell,server,helper,null)
+                            {
+                                ResourceName = "granchild 2",
+                                Children = new ObservableCollection<IExplorerItemViewModel>()
+                                {
+                    
+                                }   
+                             }
+                         }
+                      },
+                    new ExplorerItemNodeViewModel(shell,server,helper,null)
+                    {
+                        ResourceName = "child 2",
+                        Children = new ObservableCollection<IExplorerItemViewModel>()
+                        {
+                          new ExplorerItemNodeViewModel(shell,server,helper,null)
+                            {
+                                ResourceName = "granchild 1",
+                                Children = new ObservableCollection<IExplorerItemViewModel>()
+                                {
+                    
+                                }   
+                             }
+                         }
+                      }
+                }
+            };
+            Nodes.ItemsSource = new ObservableCollection<ExplorerItemNodeViewModel>() { root , root.NodeChildren.First(), root.NodeChildren.Last()};
         }
     }
     public class Person
