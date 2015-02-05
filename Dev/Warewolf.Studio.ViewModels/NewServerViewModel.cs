@@ -29,7 +29,7 @@ namespace Warewolf.Studio.ViewModels
         #region Implementation of IInnerDialogueTemplate
 
         readonly IStudioUpdateManager _updateManager;
-        readonly ISaveDialog _saveDialog;
+        readonly IRequestServiceNameViewModel _requestServiceNameViewModel;
         readonly IShellViewModel _shellViewModel;
         readonly string _connectedServer;
 
@@ -44,19 +44,19 @@ namespace Warewolf.Studio.ViewModels
         private ResourceType? _image;
         // ReSharper disable TooManyDependencies
         public NewServerViewModel(IServerSource newServerSource,
-            IStudioUpdateManager updateManager, ISaveDialog saveDialog,
+            IStudioUpdateManager updateManager, IRequestServiceNameViewModel requestServiceNameViewModel,
             IShellViewModel shellViewModel,
             string connectedServer)
         // ReSharper restore TooManyDependencies
         {
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "updateManager", updateManager }, { "saveDialog", saveDialog } ,{"shellViewModel",shellViewModel},{"connectedServer",connectedServer}});
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "updateManager", updateManager }, { "requestServiceNameViewModel", requestServiceNameViewModel } ,{"shellViewModel",shellViewModel},{"connectedServer",connectedServer}});
             Protocols = new[] { "http", "https" };
             Protocol = Protocols[0];
          
             Ports = new ObservableCollection<string> { "3142", "3143" };
             SelectedPort = Ports[0];
             _updateManager = updateManager;
-            _saveDialog = saveDialog;
+            _requestServiceNameViewModel = requestServiceNameViewModel;
             _shellViewModel = shellViewModel;
             _connectedServer = connectedServer;
       
@@ -80,7 +80,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var res = MessageBoxResult.OK;
             if (String.IsNullOrEmpty(ServerSource.Name))
-                res = SaveDialog.ShowSaveDialog();
+                res = RequestServiceNameViewModel.ShowSaveDialog();
             if (res == MessageBoxResult.OK)
             {
                 try
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels
                         Address = Protocol+Address+":"+SelectedPort,
                         AuthenticationType = AuthenticationType,
                         ID = ServerSource.ID == Guid.Empty ? Guid.NewGuid() : ServerSource.ID,
-                        Name = String.IsNullOrEmpty(ServerSource.Name) ? SaveDialog.ResourceName.Name : ServerSource.Name,
+                        Name = String.IsNullOrEmpty(ServerSource.Name) ? RequestServiceNameViewModel.ResourceName.Name : ServerSource.Name,
                         Password = Password,
                         ResourcePath = "" //todo: needs to come from explorer
                     };
@@ -457,11 +457,11 @@ namespace Warewolf.Studio.ViewModels
                 HeaderText = SetToEdit(value);
             }
         }
-        public ISaveDialog SaveDialog
+        public IRequestServiceNameViewModel RequestServiceNameViewModel
         {
             get
             {
-                return _saveDialog;
+                return _requestServiceNameViewModel;
             }
         }
         public string Protocol

@@ -238,7 +238,7 @@ namespace Warewolf.Studio.ViewModels
 
         void CreateNewServerSource()
         {
-            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new SaveDialogMock(),this,
+            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModelMock(),this,
                 ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", System.StringComparison.Ordinal))) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
             GetRegion("Workspace").Add(server);
 
@@ -349,7 +349,7 @@ namespace Warewolf.Studio.ViewModels
 
     }
 
-    public class SaveDialogMock : ISaveDialog
+    public class RequestServiceNameViewModelMock : IRequestServiceNameViewModel
     {
         public MessageBoxResult ShowSaveDialog()
         {

@@ -2,10 +2,12 @@
 
 namespace Dev2.Common.Interfaces.SaveDialog
 {
-    public interface ISaveDialog
+    public interface IRequestServiceNameViewModel
     {
         MessageBoxResult ShowSaveDialog();
         ResourceName ResourceName { get; }
+        string Name { get; set; }
+        string ErrorMessage { get; set; }
     }
 
     public class ResourceName

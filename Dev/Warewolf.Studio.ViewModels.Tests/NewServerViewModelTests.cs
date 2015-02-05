@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void NewServerViewModel_Constructor_NullShellViewModel_ExceptionThrown()
         {
             //------------Assert Results-------------------------
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IServerSource>().Object, new Mock<IStudioUpdateManager>().Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "" }, typeof(NewServerViewModel));
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IServerSource>().Object, new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "" }, typeof(NewServerViewModel));
         }
 
 
@@ -44,7 +44,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
 
             //------------Execute Test---------------------------
-            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "");
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "");
 
             //------------Assert Results-------------------------
 
@@ -75,22 +75,22 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //------------Execute Test---------------------------
             mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Public);
-            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object,new Mock<ISaveDialog>().Object,new Mock<IShellViewModel>().Object,"");
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object,new Mock<IRequestServiceNameViewModel>().Object,new Mock<IShellViewModel>().Object,"");
             Assert.AreEqual(false, constructed.IsUserNameVisible);
             Assert.AreEqual(false, constructed.IsPasswordVisible);
 
             mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.User);
-            var constructed2 = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "");
+            var constructed2 = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "");
             Assert.AreEqual(true, constructed2.IsUserNameVisible);
             Assert.AreEqual(true, constructed2.IsPasswordVisible);
 
             mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Anonymous);
-            var constructed3 = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "");
+            var constructed3 = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "");
             Assert.AreEqual(false, constructed3.IsUserNameVisible);
             Assert.AreEqual(false, constructed3.IsPasswordVisible);
 
             mockNewServerSource.Setup(a => a.AuthenticationType).Returns(AuthenticationType.Windows);
-            var constructed4 = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "");
+            var constructed4 = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "");
             Assert.AreEqual(false, constructed4.IsUserNameVisible);
             Assert.AreEqual(false, constructed4.IsPasswordVisible);
 
@@ -115,7 +115,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
 
             //------------Execute Test---------------------------
-            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<ISaveDialog>().Object,new Mock<IShellViewModel>().Object,"");
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object,new Mock<IShellViewModel>().Object,"");
 
             Assert.AreEqual("The server connection must be tested with a valid address before you can save", constructed.Validate);
 
@@ -153,7 +153,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
 
             //------------Execute Test---------------------------
-            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "");
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "");
             constructed.TestPassed = true;
             constructed.Address = "hello";
 
@@ -193,7 +193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
 
             //------------Execute Test---------------------------
-            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockStudioUpdateManager.Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "");
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockStudioUpdateManager.Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "");
 
             //------------Assert Results-------------------------
             constructed.OkCommand.Execute(null);
@@ -216,7 +216,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockStudioUpdateManager = new Mock<IStudioUpdateManager>();
             var mockShell = new Mock<IShellViewModel>();
             string mockResult = String.Empty;
-            var saveDialog = new Mock<ISaveDialog>();
+            var saveDialog = new Mock<IRequestServiceNameViewModel>();
             saveDialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             saveDialog.Setup(a=>a.ResourceName).Returns(new ResourceName("bb","dd"));
             mockStudioUpdateManager.Setup(a => a.Save(It.IsAny<ServerSource>()));
@@ -260,7 +260,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
 
             //------------Execute Test---------------------------
-            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockStudioUpdateManager.Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "");
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, mockStudioUpdateManager.Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "");
 
             //------------Assert Results-------------------------
             constructed.TestCommand.Execute(null);
@@ -290,7 +290,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
 
             //------------Execute Test---------------------------
-            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "");
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "");
 
             //------------Assert Results-------------------------
 
@@ -314,7 +314,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockNewServerSource.Setup(a => a.UserName).Returns("hairy");
 
             //------------Execute Test---------------------------
-            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<ISaveDialog>().Object, new Mock<IShellViewModel>().Object, "");
+            var constructed = new NewServerViewModel(mockNewServerSource.Object, new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IShellViewModel>().Object, "");
 
             //------------Assert Results-------------------------
 
