@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -9,7 +11,6 @@ using FontAwesome.WPF;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
-using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using WinInterop = System.Windows.Interop;
@@ -36,25 +37,25 @@ namespace Warewolf.Studio
         }
 
 
-        void WinSourceInitialized(object sender, EventArgs e)
+        private void WinSourceInitialized(object sender, EventArgs e)
         {
             Maximise();
         }
 
         private void Maximise()
         {
-                var handle = (new WinInterop.WindowInteropHelper(this)).Handle;
-                var handleSource = WinInterop.HwndSource.FromHwnd(handle);
-                if (handleSource == null)
-                    return;
-                handleSource.AddHook(WindowProc);
+            var handle = (new WinInterop.WindowInteropHelper(this)).Handle;
+            var handleSource = WinInterop.HwndSource.FromHwnd(handle);
+            if (handleSource == null)
+                return;
+            handleSource.AddHook(WindowProc);
         }
 
         private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             switch (msg)
             {
-                case 0x0024:/* WM_GETMINMAXINFO */
+                case 0x0024: /* WM_GETMINMAXINFO */
                     if (!_isSuperMaximising)
                     {
                         WmGetMinMaxInfo(hwnd, lParam);
@@ -63,13 +64,13 @@ namespace Warewolf.Studio
                     break;
             }
 
-            return (IntPtr)0;
+            return (IntPtr) 0;
         }
 
         private static void WmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
         {
 
-            var mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
+            var mmi = (MINMAXINFO) Marshal.PtrToStructure(lParam, typeof (MINMAXINFO));
 
             // Adjust the maximized size and position to fit the work area of the correct monitor
             var currentScreen = Screen.FromHandle(hwnd);
@@ -82,42 +83,41 @@ namespace Warewolf.Studio
 
             Marshal.StructureToPtr(mmi, lParam, true);
         }
-    
 
 
-    [StructLayout(LayoutKind.Sequential)]
-    // ReSharper disable InconsistentNaming
-    public struct MINMAXINFO
-    {
-        public POINT ptReserved;
-        public POINT ptMaxSize;
-        public POINT ptMaxPosition;
-        public POINT ptMinTrackSize;
-        public POINT ptMaxTrackSize;
-    };
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct POINT
-    {
-        /// <summary>
-        /// x coordinate of point.
-        /// </summary>
-        public int x;
-
-        /// <summary>
-        /// y coordinate of point.
-        /// </summary>
-        public int y;
-
-        /// <summary>
-        /// Construct a point of coordinates (x,y).
-        /// </summary>
-        public POINT(int x, int y)
+        [StructLayout(LayoutKind.Sequential)]
+        // ReSharper disable InconsistentNaming
+        public struct MINMAXINFO
         {
-            this.x = x;
-            this.y = y;
+            public POINT ptReserved;
+            public POINT ptMaxSize;
+            public POINT ptMaxPosition;
+            public POINT ptMinTrackSize;
+            public POINT ptMaxTrackSize;
+        };
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            /// <summary>
+            /// x coordinate of point.
+            /// </summary>
+            public int x;
+
+            /// <summary>
+            /// y coordinate of point.
+            /// </summary>
+            public int y;
+
+            /// <summary>
+            /// Construct a point of coordinates (x,y).
+            /// </summary>
+            public POINT(int x, int y)
+            {
+                this.x = x;
+                this.y = y;
+            }
         }
-    }
 
         private void Shell_KeyDown(object sender, KeyEventArgs e)
         {
@@ -213,8 +213,8 @@ namespace Warewolf.Studio
         {
             WindowState = WindowState.Minimized;
         }
-        
-        
+
+
 
         /// <summary>
         /// </summary>
@@ -320,6 +320,7 @@ namespace Warewolf.Studio
                 return (this == (RECT) obj);
             }
 
+
             /// <summary>Return the HashCode for this struct (not garanteed to be unique)</summary>
             public override int GetHashCode()
             {
@@ -342,7 +343,7 @@ namespace Warewolf.Studio
             }
         }
 
-       
+
         private void PART_SUPER_MAXIMIZE_RESTORE_Click(object sender, RoutedEventArgs e)
         {
             EnterSuperMaximisedMode();
@@ -363,7 +364,7 @@ namespace Warewolf.Studio
         private void CloseSuperMaximised(object sender, RoutedEventArgs e)
         {
             ExitSuperMaximisedMode();
-            
+
         }
 
         private void ExitSuperMaximisedMode()
@@ -377,7 +378,7 @@ namespace Warewolf.Studio
                 WindowState = WindowState.Normal;
                 WindowState = WindowState.Maximized;
             }
-            
+
         }
 
         private void DoCloseExitFullScreenPanelAnimation()
@@ -438,7 +439,7 @@ namespace Warewolf.Studio
             if (e.ClickCount == 2)
             {
                 ToggleWindowState();
-            }   
+            }
         }
 
         private void PART_LOCK_Click(object sender, RoutedEventArgs e)
@@ -470,6 +471,23 @@ namespace Warewolf.Studio
                 storyboard.SetValue(Storyboard.TargetProperty, titleBar);
                 storyboard.Begin();
             }
+        }
+    }
+
+
+    public class ExtendedGridSplitter : GridSplitter
+    {
+
+        public ExtendedGridSplitter()
+        {
+            EventManager.RegisterClassHandler(typeof (ExtendedGridSplitter), DragDeltaEvent,
+                new DragDeltaEventHandler(OnDragDelta));
+        }
+
+
+        private void OnDragDelta(object sender, DragDeltaEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }
