@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.SaveDialog
 {
@@ -8,6 +9,7 @@ namespace Dev2.Common.Interfaces.SaveDialog
         ResourceName ResourceName { get; }
         string Name { get; set; }
         string ErrorMessage { get; set; }
+        ICommand OkCommand { get; set; }
     }
 
     public class ResourceName

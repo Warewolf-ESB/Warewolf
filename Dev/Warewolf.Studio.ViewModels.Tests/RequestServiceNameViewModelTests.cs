@@ -2,8 +2,10 @@
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -11,11 +13,11 @@ using Moq;
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
-    public class SaveServiceViewModelTests
+    public class RequestServiceNameViewModelTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveServiceViewModel_Constructor")]
+        [TestCategory("RequestServiceNameViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_NullEnvironment_ArgumentNullExceptionThrown()
         {
@@ -29,66 +31,66 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveServiceViewModel_ValidateName")]
+        [TestCategory("RequestServiceNameViewModel_ValidateName")]
         public void ValidateName_InvalidCharactersName_ShouldReturnErrorMessage()
         {
             //------------Setup for test--------------------------
-            var saveServiceViewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
             //------------Execute Test---------------------------
-            saveServiceViewModel.Name = "Bad#$Name";
+            viewModel.Name = "Bad#$Name";
             //------------Assert Results-------------------------
-            Assert.AreEqual("'Name' contains invalid characters.",saveServiceViewModel.ErrorMessage);
+            Assert.AreEqual("'Name' contains invalid characters.", viewModel.ErrorMessage);
         }
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveServiceViewModel_ValidateName")]
+        [TestCategory("RequestServiceNameViewModel_ValidateName")]
         public void ValidateName_ValidCharactersName_ShouldReturnNoErrorMessage()
         {
             //------------Setup for test--------------------------
-            var saveServiceViewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
             //------------Execute Test---------------------------
-            saveServiceViewModel.Name = "Good Name";
+            viewModel.Name = "Good Name";
             //------------Assert Results-------------------------
-            Assert.AreEqual("",saveServiceViewModel.ErrorMessage);
+            Assert.AreEqual("", viewModel.ErrorMessage);
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveServiceViewModel_ValidateName")]
+        [TestCategory("RequestServiceNameViewModel_ValidateName")]
         public void ValidateName_NullName_ShouldReturnErrorMessage()
         {
             //------------Setup for test--------------------------
-            var saveServiceViewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
             //------------Execute Test---------------------------
-            saveServiceViewModel.Name = null;
+            viewModel.Name = null;
             //------------Assert Results-------------------------
-            Assert.AreEqual("'Name' cannot be empty.", saveServiceViewModel.ErrorMessage);
+            Assert.AreEqual("'Name' cannot be empty.", viewModel.ErrorMessage);
 
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveServiceViewModel_ValidateName")]
+        [TestCategory("RequestServiceNameViewModel_ValidateName")]
         public void ValidateName_EmptyName_ShouldReturnErrorMessage()
         {
             //------------Setup for test--------------------------
-            var saveServiceViewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
             //------------Execute Test---------------------------
-            saveServiceViewModel.Name = "";
+            viewModel.Name = "";
             //------------Assert Results-------------------------
-            Assert.AreEqual("'Name' cannot be empty.", saveServiceViewModel.ErrorMessage);
+            Assert.AreEqual("'Name' cannot be empty.", viewModel.ErrorMessage);
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveServiceViewModel_Name")]
+        [TestCategory("RequestServiceNameViewModel_Name")]
         public void Name_Set_ShouldFirePropertyChangedEvent()
         {
             //------------Setup for test--------------------------
             var propertyChangeFired = false;
-            var saveServiceViewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
-            saveServiceViewModel.PropertyChanged += (sender, args) =>
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            viewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Name")
                 {
@@ -96,20 +98,20 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            saveServiceViewModel.Name = "Test";
+            viewModel.Name = "Test";
             //------------Assert Results-------------------------
             Assert.IsTrue(propertyChangeFired);
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveServiceViewModel_ErrorMessage")]
+        [TestCategory("RequestServiceNameViewModel_ErrorMessage")]
         public void ErrorMessage_Set_ShouldFirePropertyChangedEvent()
         {
             //------------Setup for test--------------------------
             var propertyChangeFired = false;
-            var saveServiceViewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
-            saveServiceViewModel.PropertyChanged += (sender, args) =>
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            viewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ErrorMessage")
                 {
@@ -117,37 +119,73 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
             //------------Execute Test---------------------------
-            saveServiceViewModel.ErrorMessage = "Test";
+            viewModel.ErrorMessage = "Test";
             //------------Assert Results-------------------------
             Assert.IsTrue(propertyChangeFired);
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveServiceViewModel_Constructor")]
+        [TestCategory("RequestServiceNameViewModel_Constructor")]
         public void Constructor_ShouldSetupOkCommand()
         {
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
             //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.OkCommand);
 
         }
 
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveServiceViewModel_OkCommand")]
+        [TestCategory("RequestServiceNameViewModel_OkCommand")]
         public void OkCommand_CanExecute_HasErrorMessage_False()
         {
             //------------Setup for test--------------------------
-            var saveServiceViewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
             //------------Execute Test---------------------------
-            saveServiceViewModel.Name = "Bad**Name";
+            viewModel.Name = "Bad**Name";
             //------------Assert Results-------------------------
-            var canExecute = saveServiceViewModel.OkCommand.CanExecute(null);
+            var canExecute = viewModel.OkCommand.CanExecute(null);
             Assert.IsFalse(canExecute);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_OkCommand")]
+        public void OkCommand_CanExecute_NoErrorMessage_True()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            //------------Execute Test---------------------------
+            viewModel.Name = "Resource Name";
+            //------------Assert Results-------------------------
+            var canExecute = viewModel.OkCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_ErrorMessage")]
+        public void ErrorMessage_Set_ShouldRaiseCanExecuteChangeForOkCommand()
+        {
+            //------------Setup for test--------------------------
+            var canExecuteChangedFired = false;
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            viewModel.OkCommand.CanExecuteChanged += (sender, args) =>
+            {
+                canExecuteChangedFired = true;
+            };
+            //------------Assert Preconditions-------------------
+            Assert.IsFalse(canExecuteChangedFired);
+            //------------Execute Test---------------------------
+            viewModel.ErrorMessage = "Some error message";
+            //------------Assert Results-------------------------
+            Assert.IsTrue(canExecuteChangedFired);
+
         }
     }
 
@@ -163,6 +201,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             if (environmentViewModel == null)
             {
                 throw new ArgumentNullException("environmentViewModel");
+            }
+            OkCommand = new DelegateCommand(() => _resourceName=new ResourceName("",Name),() => String.IsNullOrEmpty(ErrorMessage));            
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            var command = OkCommand as DelegateCommand;
+            if (command != null)
+            {
+                command.RaiseCanExecuteChanged();
             }
         }
 
@@ -210,6 +258,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 _errorMessage = value;
                 OnPropertyChanged(() => ErrorMessage);
+                RaiseCanExecuteChanged();
             }
         }
 
