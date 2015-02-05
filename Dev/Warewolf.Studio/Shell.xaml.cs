@@ -127,6 +127,11 @@ namespace Warewolf.Studio
                 var testingWindow = new ControlStyleTestingWindow();
                 testingWindow.Show();
             }
+            if (e.Key == Key.G && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                var testingWindow = new Graph();
+                testingWindow.Show();
+            }
             if (e.Key == Key.F11)
             {
                 if (_isSuperMaximising)

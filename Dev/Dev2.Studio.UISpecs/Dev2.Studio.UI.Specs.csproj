@@ -80,6 +80,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SchedulerUISpecFlow.feature</DependentUpon>
     </Compile>
+    <Compile Include="Studio StylingUISpecs\StudioStyling.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudioStyling.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\ControlFlow-Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -245,6 +250,10 @@
     <None Include="Scheduler\SchedulerUISpecFlow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SchedulerUISpecFlow.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Studio StylingUISpecs\StudioStyling.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioStyling.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\ControlFlow-Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
