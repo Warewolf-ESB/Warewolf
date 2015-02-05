@@ -18,7 +18,7 @@
     <WrapPanel Orientation="Vertical">
        
        
-        <CheckBox AutomationProperties.AutomationId="Testing_CheckBox"></CheckBox>
+        <CheckBox AutomationProperties.AutomationId="Testing_CheckBox">This is a check box</CheckBox>
         <ComboBox Name="ComboBox" AutomationProperties.AutomationId="Testing_Combobox">
             <ComboBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -27,10 +27,7 @@
             </ComboBox.ItemsPanel>
         </ComboBox>
         <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
-        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox"
-                     customControls:PasswordBoxAssistant.BindPassword="true"
-                     customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-        </PasswordBox>
+        
         <Label AutomationProperties.AutomationId="Testing_Lable"></Label>
         <!-- Normal Buttons-->
         <Button AutomationProperties.AutomationId="Testing_NormalButton">
@@ -68,6 +65,10 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock>
             </StackPanel>
         </Button>
+        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox"
+                     customControls:PasswordBoxAssistant.BindPassword="true"
+                     customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        </PasswordBox>
         <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
         <TextBox ToolTip="Bob the builder">ToolTip</TextBox>
@@ -75,12 +76,34 @@
             <TextBox.ToolTip>
                 <ToolTip Style="{StaticResource ToolTipStyleValidationStyle}"> Bad Bob the builder</ToolTip>
             </TextBox.ToolTip> Validation tool tip</TextBox>
-        <DataGrid Width="400" Name="BobDataGrid" GridLinesVisibility="None" AutoGenerateColumns="False"    ItemsSource="{Binding}" >
+        <DataGrid Width="400" Name="BobDataGrid" GridLinesVisibility="None" AutoGenerateColumns="False" BorderBrush="Transparent"   ItemsSource="{Binding}" 
+                  CanUserResizeColumns="True" CanUserReorderColumns="True"
+                  >
 
         <DataGrid.Columns>
-            <DataGridCheckBoxColumn Header="Is Load Shedded" Binding="{Binding IsLoadShedded}"></DataGridCheckBoxColumn>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
-                <DataGridHyperlinkColumn Header="Site" Binding="{Binding Site}"></DataGridHyperlinkColumn>
+            <DataGridTemplateColumn Header="IsLoadShedded">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Path=IsLoadShedded, Mode=TwoWay}"></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"> </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Url">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Width="Auto">
+                               <Hyperlink NavigateUri="http://www.google.com">Click here</Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
         </DataGrid.Columns>
         </DataGrid>
         <TextBlock Width="Auto">
@@ -95,5 +118,10 @@
         <TextBox AutomationProperties.AutomationId="Testing_TextBox"></TextBox>
         <GroupBox Width="200" AutomationProperties.AutomationId="Testing_GroupBox" Header="My Group Box" Height="100"></GroupBox>
         <ListBox x:Name="TestingListBox" Style="{StaticResource ListBoxStyle}" ItemsSource="{Binding}" AutomationProperties.AutomationId="Testing_ListBox"></ListBox>
+       
+        
+        <TextBlock Text="Standard Label/textbox styling"></TextBlock>
+        <TextBlock Style="{StaticResource SourceHeader}" Text="Sources header label" Visibility="Visible"/>
+
     </WrapPanel>
 </Window>

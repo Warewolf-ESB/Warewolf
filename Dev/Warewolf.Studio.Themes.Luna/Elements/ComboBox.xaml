@@ -41,8 +41,8 @@
     <!--  ComboBoxItem Brushes  -->
     <SolidColorBrush x:Key="ComboBoxItemHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="ComboBoxItemHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
-    <SolidColorBrush x:Key="ComboBoxItemPressedBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    <SolidColorBrush x:Key="ComboBoxItemPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ComboBoxItemPressedBackgroundBrush" Color="{StaticResource Color_006}" />
+    <SolidColorBrush x:Key="ComboBoxItemPressedBorderBrush" Color="{StaticResource Color_006}" />
 
     <!--  ComboBoxToggleButton Brushes  -->
     <SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
@@ -489,11 +489,13 @@
                                 </VisualState>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                   
 
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="contentControl" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxFocusedBrush}">
 
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="hover" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0" >
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
@@ -565,15 +567,23 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Rectangle Fill="{StaticResource ComboBoxBackgroundBrush}" />
+                        <Rectangle x:Name="hover"
+                                   Fill="{StaticResource ComboBoxBackgroundBrush}"
+                                   IsHitTestVisible="False"
+                                   Visibility="Collapsed"
+                                    Opacity="0"
+                                   Stroke="{StaticResource WareWolfOrangeBrush}"
+                                   StrokeThickness="5" />
                         <Rectangle x:Name="fillColor"
                                    Fill="{StaticResource ComboBoxBackgroundBrush}"
                                    IsHitTestVisible="False"
                                    Opacity="0"
-                                   Stroke="{StaticResource ComboBoxItemHoverBorderBrush}"
+                                   Stroke="{StaticResource WareWolfOrangeBrush}"
                                    StrokeThickness="{TemplateBinding BorderThickness}" />
                         <Rectangle x:Name="CheckedBd"
                                    Fill="{StaticResource ComboBoxItemPressedBackgroundBrush}"
                                    IsHitTestVisible="False"
+                                   
                                    Stroke="{StaticResource ComboBoxItemPressedBorderBrush}"
                                    StrokeThickness="{TemplateBinding BorderThickness}"
                                    Visibility="Collapsed" />
@@ -597,8 +607,8 @@
                             <ContentPresenter x:Name="contentPresenter1" />
                         </ContentControl>
                         <Rectangle x:Name="FocusVisualElement"
-                                   Stroke="{StaticResource ComboBoxItemPressedBackgroundBrush}"
-                                   StrokeThickness="2"
+                                   Stroke="{StaticResource WareWolfOrangeBrush}"
+                                   StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="DisabledVisualElement"
                                    Fill="{StaticResource DisabledVisualElement}"
@@ -794,7 +804,7 @@
                                    Visibility="Visible" />
                         <Rectangle x:Name="hover"
                                    Grid.ColumnSpan="2"
-                                   Stroke="{StaticResource ComboBoxHoverBorderBrush}"
+                                   Stroke="{StaticResource WareWolfOrangeBrush}"
                                    StrokeThickness="2"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="focused"
