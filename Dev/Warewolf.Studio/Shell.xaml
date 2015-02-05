@@ -54,7 +54,197 @@
                                                                          To="25" />
         </Storyboard>
 
-        
+        <Style TargetType="{x:Type igWindows:ToolWindow}" x:Key="WarewolfToolWindow">
+            <Setter Property="Background" Value="Green" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="AllowsTransparency" Value="True" />
+            <!-- AS 6/30/10 TFS14299
+        <Setter Property="SnapsToDevicePixels" Value="True"/>-->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type igWindows:ToolWindow}">
+                        <Grid Background="White" SnapsToDevicePixels="true">
+                            <Border x:Name="windowOuterBorder" BorderBrush="White" BorderThickness="1,1,1,1"/>
+                            <Border x:Name="windowInnerBorder" BorderThickness="1,1,1,1" BorderBrush="{StaticResource MenuPanelGradient}" Margin="1,1,1,1"/>
+                            <Border x:Name="windowCenterBorder" Margin="2,2,2,2" Background="{StaticResource WarewolfPanelGreyBrush}">
+                                    <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition x:Name="captionRow" Height="Auto" />
+                                            <RowDefinition x:Name="contentRow" Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <!-- AS 6/24/11 FloatingWindowCaptionSource - Bind Visibility -->
+                                    <igWindows:CardPanel x:Name="PART_Caption" Background="White" Visibility="{TemplateBinding CaptionVisibility}">
+                                        <DockPanel x:Name="captionPanel" Margin="6,6,6,2">
+                                            <Button x:Name="MaximizeButton"
+												Style="{StaticResource MetroWindowButtonStyle}"
+                                                Command="{x:Static igWindows:ToolWindow.MaximizeCommand}" 
+												Visibility="{TemplateBinding MaximizeButtonVisibility}"
+                                                HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                DockPanel.Dock="Right"
+                                                Margin="1,0">
+                                                <Path Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
+                                                      Stretch="Uniform" Fill="Black" Width="10" Margin="0,0,0,0" ></Path>
+                                            </Button>
+                                            <Button x:Name="MinimizeButton" 
+												Style="{StaticResource MetroWindowButtonStyle}"
+                                                Command="{x:Static igWindows:ToolWindow.MinimizeCommand}" 
+												Visibility="{TemplateBinding MinimizeButtonVisibility}"
+                                                HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                DockPanel.Dock="Right">
+                                                <fa:FontAwesome Icon="Minus" VerticalAlignment="Bottom"></fa:FontAwesome>
+                                            </Button>
+
+                                                <TextBlock x:Name="txtCaption"
+											           Text="{TemplateBinding Title}" 
+                                                       IsHitTestVisible="False" 
+                                                       TextTrimming="CharacterEllipsis"
+											           Foreground="#FFAAAAAA"
+                                                           />
+                                            </DockPanel>
+                                        </igWindows:CardPanel>
+                                        <Grid x:Name="Content" Background="Transparent" Margin="0" Grid.Row="1">
+                                            <ContentPresenter x:Name="PART_Content"
+										    Grid.Row="1"
+										    Margin="{TemplateBinding Padding}"
+										    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										    ContentSource="Content" />
+                                            <!-- Put the resize grip within the border so it doesn't overlap the border -->
+                                            <Grid Name="PART_ResizeGrip" Grid.RowSpan="2" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Bottom" Visibility="Collapsed">
+                                                <!-- We need to wrap the resize grip in an element and prevent hittesting on the resize grip -->
+                                                <ResizeGrip IsTabStop="False" IsHitTestVisible="False" />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                                <Grid x:Name="resizeAreas" Visibility="Collapsed" FlowDirection="LeftToRight">
+                                    <igWindows:ToolWindowResizeElement x:Name="PART_BorderTop" BorderLocation="Top"/>
+                                    <igWindows:ToolWindowResizeElement x:Name="PART_BorderLeft" BorderLocation="Left"/>
+                                    <igWindows:ToolWindowResizeElement x:Name="PART_BorderBottom" BorderLocation="Bottom"/>
+                                    <igWindows:ToolWindowResizeElement x:Name="PART_BorderRight" BorderLocation="Right"/>
+
+                                    <igWindows:ToolWindowResizeElement x:Name="PART_BorderTopLeft" BorderLocation="TopLeft"/>
+                                    <igWindows:ToolWindowResizeElement x:Name="PART_BorderTopRight" BorderLocation="TopRight"/>
+                                    <igWindows:ToolWindowResizeElement x:Name="PART_BorderBottomLeft" BorderLocation="BottomLeft"/>
+                                    <igWindows:ToolWindowResizeElement x:Name="PART_BorderBottomRight" BorderLocation="BottomRight"/>
+                                </Grid>
+                            </Grid>
+                        <ControlTemplate.Triggers>
+                            <!-- NA 2011.1 - ToolWindow changes -->
+                            <Trigger Property="WindowState" Value="Minimized">
+                                <Setter Property="Command" TargetName="MinimizeButton" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
+                                <Setter Property="Style" TargetName="MinimizeButton" Value="{StaticResource ToolWindowRestoreButtonStyle}" />
+                            </Trigger>
+                            <Trigger Property="WindowState" Value="Maximized">
+                                <Setter Property="Command" TargetName="MaximizeButton" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
+                                <Setter Property="Style" TargetName="MaximizeButton" Value="{StaticResource ToolWindowRestoreButtonStyle}" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="WindowState" Value="Minimized" />
+                                    <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                                    <!-- AS 1/4/12 TFS85418 -->
+                                    <Condition Property="CaptionVisibility" Value="Visible" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="PART_Content" Value="Collapsed" />
+                                <Setter Property="Height" TargetName="captionRow" Value="*" />
+                                <Setter Property="Height" TargetName="contentRow" Value="0" />
+                                <Setter Property="Margin" TargetName="captionPanel" Value="6,0" />
+                                <Setter Property="VerticalAlignment" TargetName="txtCaption" Value="Center" />
+                            </MultiTrigger>
+                            <!-- AS 6/24/11 FloatingWindowCaptionSource - Don't show any non-client area when maximized and window style is none -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="WindowState" Value="Maximized" />
+                                    <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" TargetName="Content" Value="0" />
+                            </MultiTrigger>
+                            <Trigger Property="IsActive" Value="True">
+                                <Setter Property="Foreground" TargetName="txtCaption" Value="{DynamicResource {x:Static igWindows:PrimitivesBrushKeys.ToolWindowActiveCaptionTextFillKey}}" />
+                                <Setter TargetName="windowOuterBorder" Property="BorderBrush" Value="White"/>
+                                <Setter TargetName="windowInnerBorder" Property="BorderBrush" Value="{StaticResource MenuPanelGradient}"/>
+                                <Setter TargetName="windowCenterBorder" Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}"/>
+                                <Setter TargetName="PART_Caption" Property="Background" Value="White"/>
+                            </Trigger>
+                            <!-- Do not allow resizing unless canresize or canresizewithgrip -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="ResizeMode" Value="CanResize" />
+                                    <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                                    <!-- NA 2011.1 - ToolWindow changes -->
+                                    <Condition Property="WindowState" Value="Normal" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="resizeAreas" Value="Visible" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+                                    <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                                    <!-- NA 2011.1 - ToolWindow changes -->
+                                    <Condition Property="WindowState" Value="Normal" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="resizeAreas" Value="Visible" />
+                            </MultiTrigger>
+                            <!-- NA 2011.1 - ToolWindow changes -->
+                            <!--<Trigger Property="ResizeMode" Value="CanResizeWithGrip">
+                            <Setter Property="Visibility" TargetName="PART_ResizeGrip" Value="Visible" />
+                        </Trigger>-->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+                                    <Condition Property="WindowState" Value="Normal" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="PART_ResizeGrip" Value="Visible" />
+                            </MultiTrigger>
+                            <Trigger Property="IsUsingOSNonClientArea" Value="True">
+                                <Setter Property="Visibility" TargetName="PART_Caption" Value="Collapsed" />
+                                <Setter Property="Margin" TargetName="Content" Value="0,0,0,0" />
+                                <Setter Property="Visibility" TargetName="windowOuterBorder" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="windowInnerBorder" Value="Collapsed" />
+                                <Setter Property="Background" TargetName="windowCenterBorder" Value="Transparent" />
+                                <Setter Property="Padding" TargetName="windowCenterBorder" Value="0,0,0,0" />
+                                <Setter Property="Margin" TargetName="windowCenterBorder" Value="0,0,0,0" />
+                            </Trigger>
+                            <!-- AS 6/24/11 FloatingWindowCaptionSource - Show space on top when we're not providing the caption -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                                    <Condition Property="CaptionVisibility" Value="Collapsed" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" TargetName="Content" Value="6" />
+                            </MultiTrigger>
+                            <!-- AS 6/24/11 FloatingWindowCaptionSource - Hide the resize area when maximized and we're providing the nonclient area. -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                                    <Condition Property="WindowState" Value="Maximized" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" TargetName="windowCenterBorder" Value="0" />
+                                <Setter Property="Visibility" TargetName="windowInnerBorder" Value="Collapsed" />
+                                <Setter Property="Visibility" TargetName="windowOuterBorder" Value="Collapsed" />
+                                <Setter Property="Margin" TargetName="Content" Value="0" />
+                            </MultiTrigger>
+                            <!-- AS 1/4/12 TFS85418 -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="WindowState" Value="Minimized" />
+                                    <Condition Property="IsUsingOSNonClientArea" Value="False" />
+                                    <Condition Property="CaptionVisibility" Value="Collapsed" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Margin" TargetName="Content" Value="0" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsActive" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+      
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -114,7 +304,6 @@
                                             </Button>
                                         </DockPanel>
                                     </Border>
-
                                     <AdornerDecorator DockPanel.Dock="Bottom">
                                         <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
                                     </AdornerDecorator>
@@ -504,7 +693,7 @@
                                             Background="{StaticResource WareWolfBackGroundBrush}"
                                             FlyoutAnimation="Resize"
                                             LayoutMode="FillContainer"
-                                            PaneDragStarting="DockManager_OnPaneDragStarting"
+                                            ToolWindowLoaded="DockManager_OnToolWindowLoaded"
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
