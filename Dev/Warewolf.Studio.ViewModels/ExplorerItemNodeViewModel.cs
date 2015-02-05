@@ -10,6 +10,8 @@ namespace Warewolf.Studio.ViewModels
     public class ExplorerItemNodeViewModel : ExplorerItemViewModel, IExplorerItemNodeViewModel {
         ICollection<ExplorerItemNodeViewModel> _nodeChildren;
         Visibility _textVisibility;
+        Visibility _isNotMainNode;
+        Visibility _isMainNode;
         // ReSharper disable TooManyDependencies
         public ExplorerItemNodeViewModel(IShellViewModel shellViewModel, IServer server, IExplorerHelpDescriptorBuilder builder, IExplorerItemViewModel parent)
             // ReSharper restore TooManyDependencies
@@ -18,7 +20,7 @@ namespace Warewolf.Studio.ViewModels
             Self = this;
             Weight = 1;
             IsMainNode = Visibility.Collapsed;
-
+            IsNotMainNode = Visibility.Visible;
         }
 
 
@@ -43,7 +45,33 @@ namespace Warewolf.Studio.ViewModels
             return null;
         }
 
-        public Visibility IsMainNode { get; set; }
+        public Visibility IsMainNode
+        {
+            get
+            {
+                return _isMainNode;
+            }
+            set
+            {
+                
+                _isMainNode = value;
+                if(value == Visibility.Visible)
+                {
+                    IsNotMainNode = Visibility.Collapsed;
+                }
+            }
+        }
+        public Visibility IsNotMainNode
+        {
+            get
+            {
+                return _isNotMainNode;
+            }
+            set
+            {
+                _isNotMainNode = value;
+            }
+        }
 
         #endregion
 

@@ -25,6 +25,7 @@ namespace Warewolf.Studio
 
         public Shell(IShellViewModel shellViewModel)
         {
+        
             InitializeComponent();
             DataContext = shellViewModel;
             _isSuperMaximising = false;

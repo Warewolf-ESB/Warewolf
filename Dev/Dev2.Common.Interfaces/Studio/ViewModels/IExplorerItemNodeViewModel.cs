@@ -9,5 +9,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         int Weight { get; set; }
         ICollection<IExplorerItemNodeViewModel> AsList();
         Visibility IsMainNode { get; set; }
+        Visibility IsNotMainNode { get; set; }
     }
 }

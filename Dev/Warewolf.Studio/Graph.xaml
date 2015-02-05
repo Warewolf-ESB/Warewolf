@@ -22,7 +22,7 @@
         <CheckBox IsChecked="True" Name="LabeBox"  Checked="ToggleButton_OnChecked" Unchecked="ToggleButton_OnChecked"> Label visible</CheckBox>
             <Button Click="ButtonBase_OnClick" Width="80">Reset</Button>
         </StackPanel>
-        <ig:XamNetworkNode Grid.Row="1"  x:Name="Nodes"
+        <ig:XamNetworkNode Grid.Row="1" Height="600" x:Name="Nodes"
                            ItemsSource="{Binding}"
 
                            >
