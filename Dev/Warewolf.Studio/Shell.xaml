@@ -28,7 +28,7 @@
 
         <Storyboard x:Key="AnimateExitFullScreenPanelOpen" TargetName="ExitFullScreenPanel">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
-                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-10,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,0,0,0" />
             </ThicknessAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
                 <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
@@ -54,55 +54,7 @@
                                                                          To="25" />
         </Storyboard>
 
-        <Style x:Key="MetroWindowButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle">
-                <Setter.Value>
-                    <Style>
-                        <Setter Property="Control.Template">
-                            <Setter.Value>
-                                <ControlTemplate>
-                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="#FF707070"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="True">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -637,7 +589,7 @@
                 <DropShadowEffect BlurRadius="10" Direction="300" ShadowDepth="10"/>
             </StackPanel.Effect>
         </StackPanel>
-        <Rectangle x:Name="ShowFullScreenPanel" Height="10" Margin="0,-5,0,0" MouseEnter="ShowFullScreenPanel_OnMouseEnter" VerticalAlignment="Top" IsHitTestVisible="True" Fill="#00000000"/>
-        <Rectangle x:Name="HideFullScreenPanel" Height="8" VerticalAlignment="Top" Margin="0,30,0,0" MouseEnter="HideFullScreenPanel_OnMouseEnter" IsHitTestVisible="True" Fill="#00000000"/>
+        <Rectangle x:Name="ShowFullScreenPanel" Height="15" Margin="0,-6,0,0" MouseEnter="ShowFullScreenPanel_OnMouseEnter" VerticalAlignment="Top" IsHitTestVisible="True" Fill="#00000000"/>
+        <Rectangle x:Name="HideFullScreenPanel" Height="20" VerticalAlignment="Top" Margin="0,45,0,0" MouseEnter="HideFullScreenPanel_OnMouseEnter" IsHitTestVisible="True" Fill="#00000000"/>
     </Grid>
 </Window>
