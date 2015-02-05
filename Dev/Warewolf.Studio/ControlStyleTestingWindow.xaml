@@ -81,21 +81,21 @@
                   >
 
         <DataGrid.Columns>
-            <DataGridTemplateColumn Header="IsLoadShedded">
+            <DataGridTemplateColumn Header="IsLoadShedded" CanUserResize="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox IsChecked="{Binding Path=IsLoadShedded, Mode=TwoWay}"></CheckBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Name">
+                <DataGridTemplateColumn Header="Name" CanUserResize="True" SortMemberPath="Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"> </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Url">
+                <DataGridTemplateColumn Header="Url" CanUserResize="True" SortMemberPath="Url">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Width="Auto">

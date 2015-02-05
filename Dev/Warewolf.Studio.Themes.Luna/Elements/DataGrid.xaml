@@ -22,6 +22,22 @@
     <SolidColorBrush x:Key="DataGridSelectedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
 
+    <Style x:Key="ColumnHeaderGripperStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="Width" Value="2"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Cursor" Value="SizeWE"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border Padding="{TemplateBinding Padding}"
+                            BorderBrush="{StaticResource DataGridBorderBrush}"
+                            BorderThickness="0,0,1,0"
+                            
+                    Background="{TemplateBinding Background}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="Background" Value="{StaticResource DataGridColumnHeaderBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
@@ -70,8 +86,9 @@
                                 Margin="0,0,0,2"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="1,1,0,0"
+                                BorderThickness="0,0,0,0"
                                 Padding="3,0,3,1">
+                            
                             <ContentControl x:Name="contentControl"
                                         KeyboardNavigation.IsTabStop="False"
                                         Foreground="{TemplateBinding Foreground}">
@@ -82,6 +99,11 @@
                             </ContentControl>
                          
                         </Border>
+            
+                            <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" BorderBrush="Transparent" Background="Transparent"  Style="{StaticResource ColumnHeaderGripperStyle}"
+                             />
+                     
+
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -392,7 +414,7 @@
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Background="Transparent"
-                            BorderThickness="1,0,0,0"
+                            BorderThickness="2,0,0,0"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Padding="0"
                             SnapsToDevicePixels="True">
