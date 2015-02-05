@@ -76,7 +76,7 @@
             <TextBox.ToolTip>
                 <ToolTip Style="{StaticResource ToolTipStyleValidationStyle}"> Bad Bob the builder</ToolTip>
             </TextBox.ToolTip> Validation tool tip</TextBox>
-        <DataGrid Width="400" Name="BobDataGrid" GridLinesVisibility="None" AutoGenerateColumns="False" BorderBrush="Transparent"   ItemsSource="{Binding}" 
+        <DataGrid Width="400" Name="BobDataGrid" GridLinesVisibility="Vertical" CanUserSortColumns="True" AutoGenerateColumns="False" BorderBrush="Transparent"   ItemsSource="{Binding}" 
                   CanUserResizeColumns="True" CanUserReorderColumns="True"
                   >
 
