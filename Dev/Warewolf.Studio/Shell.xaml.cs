@@ -183,6 +183,10 @@ namespace Warewolf.Studio
         private void PART_TITLEBAR_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+            if (e.ClickCount == 2)
+            {
+                ToggleWindowState();
+            }
         }
 
         private void PART_CLOSE_Click(object sender, RoutedEventArgs e)
@@ -355,17 +359,9 @@ namespace Warewolf.Studio
                 dependencyObject.SetValue(VisibilityProperty, Visibility.Collapsed);
                 WindowState = WindowState.Normal;
                 WindowState = WindowState.Maximized;
-                TogglePanelsHitTestable(Visibility.Visible);
             }
         }
-
-        private void TogglePanelsHitTestable(Visibility visibility)
-        {
-            //HideFullScreenPanel.Visibility = visibility;
-            //ExitFullScreenPanel.Visibility = visibility;
-        }
-
-
+        
         private void CloseSuperMaximised(object sender, RoutedEventArgs e)
         {
             ExitSuperMaximisedMode();
@@ -382,7 +378,6 @@ namespace Warewolf.Studio
                 dependencyObject.SetValue(VisibilityProperty, Visibility.Visible);
                 WindowState = WindowState.Normal;
                 WindowState = WindowState.Maximized;
-                TogglePanelsHitTestable(Visibility.Collapsed);
             }
 
         }
@@ -440,10 +435,7 @@ namespace Warewolf.Studio
 
         private void PART_MainBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
-            {
-                ToggleWindowState();
-            }
+            
         }
 
         private void PART_LOCK_Click(object sender, RoutedEventArgs e)
@@ -460,7 +452,6 @@ namespace Warewolf.Studio
                 else
                 {
                     fontAwesome.Icon = FontAwesomeIcon.Lock;
-                    TogglePanelsHitTestable(Visibility.Collapsed);
                 }
                 dependencyObject.SetValue(ContentProperty, fontAwesome);
                 _isLocked = !_isLocked;
@@ -475,7 +466,6 @@ namespace Warewolf.Studio
                 var titleBar = GetTemplateChild("PART_TITLEBAR");
                 storyboard.SetValue(Storyboard.TargetProperty, titleBar);
                 storyboard.Begin();
-                TogglePanelsHitTestable(Visibility.Visible);
             }
         }
     }
