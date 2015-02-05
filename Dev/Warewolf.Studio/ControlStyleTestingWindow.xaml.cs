@@ -31,6 +31,7 @@ namespace Warewolf.Studio
                     tokenSource2.Cancel();
                 }
             };
+            ComboBox.ItemsSource = Persons;
         }
 
         void InitGrid()

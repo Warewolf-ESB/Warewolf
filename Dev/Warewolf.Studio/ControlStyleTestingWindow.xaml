@@ -18,7 +18,7 @@
     <WrapPanel Orientation="Vertical">
        
        
-        <CheckBox AutomationProperties.AutomationId="Testing_CheckBox"></CheckBox>
+        <CheckBox AutomationProperties.AutomationId="Testing_CheckBox">This is a check box</CheckBox>
         <ComboBox Name="ComboBox" AutomationProperties.AutomationId="Testing_Combobox">
             <ComboBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -27,10 +27,7 @@
             </ComboBox.ItemsPanel>
         </ComboBox>
         <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
-        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox"
-                     customControls:PasswordBoxAssistant.BindPassword="true"
-                     customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-        </PasswordBox>
+        
         <Label AutomationProperties.AutomationId="Testing_Lable"></Label>
         <!-- Normal Buttons-->
         <Button AutomationProperties.AutomationId="Testing_NormalButton">
@@ -68,6 +65,10 @@
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock>
             </StackPanel>
         </Button>
+        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox"
+                     customControls:PasswordBoxAssistant.BindPassword="true"
+                     customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        </PasswordBox>
         <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
         <TextBox ToolTip="Bob the builder">ToolTip</TextBox>
