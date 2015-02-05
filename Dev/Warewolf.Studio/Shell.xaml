@@ -27,7 +27,7 @@
     <Window.Resources>
         <Storyboard x:Key="AnimateExitFullScreenPanelOpen" TargetName="ExitFullScreenPanel">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
-                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-10,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,0,0,0" />
             </ThicknessAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
                 <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
@@ -106,6 +106,7 @@
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
             <Setter Property="WindowStyle" Value="None" />
+            <Setter Property="AllowsTransparency" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
@@ -652,7 +653,7 @@
                 <DropShadowEffect BlurRadius="10" Direction="300" ShadowDepth="10"/>
             </StackPanel.Effect>
         </StackPanel>
-        <Rectangle x:Name="ShowFullScreenPanel" Height="10" Margin="0,-5,0,0" MouseEnter="ShowFullScreenPanel_OnMouseEnter" VerticalAlignment="Top" IsHitTestVisible="True" Fill="#00000000"/>
-        <Rectangle x:Name="HideFullScreenPanel" Height="8" VerticalAlignment="Top" Margin="0,30,0,0" MouseEnter="HideFullScreenPanel_OnMouseEnter" IsHitTestVisible="True" Fill="#00000000"/>
+        <Rectangle x:Name="ShowFullScreenPanel" Height="15" Margin="0,-6,0,0" MouseEnter="ShowFullScreenPanel_OnMouseEnter" VerticalAlignment="Top" IsHitTestVisible="True" Fill="#00000000"/>
+        <Rectangle x:Name="HideFullScreenPanel" Height="25" VerticalAlignment="Top" Margin="0,50,0,0" MouseEnter="HideFullScreenPanel_OnMouseEnter" IsHitTestVisible="True" Fill="#00000000"/>
     </Grid>
 </Window>

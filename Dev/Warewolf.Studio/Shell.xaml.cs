@@ -3,15 +3,13 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Dev2.Common.Interfaces;
 using FontAwesome.WPF;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
-using Button = System.Windows.Controls.Button;
+using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using WinInterop = System.Windows.Interop;
@@ -36,6 +34,7 @@ namespace Warewolf.Studio
             KeyDown += Shell_KeyDown;
             SourceInitialized += WinSourceInitialized;
         }
+
 
         void WinSourceInitialized(object sender, EventArgs e)
         {
@@ -358,16 +357,8 @@ namespace Warewolf.Studio
                 dependencyObject.SetValue(VisibilityProperty, Visibility.Collapsed);
                 WindowState = WindowState.Normal;
                 WindowState = WindowState.Maximized;
-                TogglePanelsHitTestable(Visibility.Visible);
             }
         }
-
-        private void TogglePanelsHitTestable(Visibility visibility)
-        {
-            //HideFullScreenPanel.Visibility = visibility;
-            //ExitFullScreenPanel.Visibility = visibility;
-        }
-
 
         private void CloseSuperMaximised(object sender, RoutedEventArgs e)
         {
@@ -385,7 +376,6 @@ namespace Warewolf.Studio
                 dependencyObject.SetValue(VisibilityProperty, Visibility.Visible);
                 WindowState = WindowState.Normal;
                 WindowState = WindowState.Maximized;
-                TogglePanelsHitTestable(Visibility.Collapsed);
             }
             
         }
@@ -401,6 +391,11 @@ namespace Warewolf.Studio
 
         private void ShowFullScreenPanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
+            DoAnimationsToOpenPanels();
+        }
+
+        private void DoAnimationsToOpenPanels()
+        {
             if (_isSuperMaximising)
             {
                 var storyboard = Resources["AnimateExitFullScreenPanelOpen"] as Storyboard;
@@ -413,9 +408,6 @@ namespace Warewolf.Studio
             {
                 DoAnimateOpenTitleBar();
             }
-          
-
-           
         }
 
         private void DoAnimateOpenTitleBar()
@@ -463,7 +455,6 @@ namespace Warewolf.Studio
                 else
                 {
                     fontAwesome.Icon = FontAwesomeIcon.Lock;
-                    TogglePanelsHitTestable(Visibility.Collapsed);
                 }
                 dependencyObject.SetValue(ContentProperty, fontAwesome);
                 _isLocked = !_isLocked;
@@ -478,7 +469,6 @@ namespace Warewolf.Studio
                 var titleBar = GetTemplateChild("PART_TITLEBAR");
                 storyboard.SetValue(Storyboard.TargetProperty, titleBar);
                 storyboard.Begin();
-                TogglePanelsHitTestable(Visibility.Visible);
             }
         }
     }
