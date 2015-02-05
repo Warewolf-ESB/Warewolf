@@ -71,6 +71,7 @@
         <Setter Property="Foreground" Value="{StaticResource WareWolfWhiteBrush}" />
         <Setter Property="Background" Value="{StaticResource WareWolfMenuBrush}" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="5,2,5,2"/>
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
                 <ControlTemplate>
