@@ -258,6 +258,7 @@
     <Compile Include="Studio\ViewModels\IDeployItemMessage.cs" />
     <Compile Include="Studio\ViewModels\IExplorerHelpDescriptorBuilder.cs" />
     <Compile Include="Studio\ViewModels\IExplorerItemNodeViewModel.cs" />
+    <Compile Include="Studio\ViewModels\IExplorerTreeItem.cs" />
     <Compile Include="Studio\ViewModels\INewItemMessage.cs" />
     <Compile Include="Studio\ViewModels\IVersionInfoViewModel.cs" />
     <Compile Include="Toolbox\IToolboxCatergoryViewModel.cs" />
