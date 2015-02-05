@@ -608,7 +608,7 @@
                         </ContentControl>
                         <Rectangle x:Name="FocusVisualElement"
                                    Stroke="{StaticResource WareWolfOrangeBrush}"
-                                   StrokeThickness="2"
+                                   StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="DisabledVisualElement"
                                    Fill="{StaticResource DisabledVisualElement}"
