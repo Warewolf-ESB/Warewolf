@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -36,8 +34,7 @@ namespace Warewolf.Studio
             SourceInitialized += WinSourceInitialized;
         }
 
-
-        private void WinSourceInitialized(object sender, EventArgs e)
+        void WinSourceInitialized(object sender, EventArgs e)
         {
             Maximise();
         }
@@ -55,7 +52,7 @@ namespace Warewolf.Studio
         {
             switch (msg)
             {
-                case 0x0024: /* WM_GETMINMAXINFO */
+                case 0x0024:/* WM_GETMINMAXINFO */
                     if (!_isSuperMaximising)
                     {
                         WmGetMinMaxInfo(hwnd, lParam);
@@ -64,13 +61,13 @@ namespace Warewolf.Studio
                     break;
             }
 
-            return (IntPtr) 0;
+            return (IntPtr)0;
         }
 
         private static void WmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
         {
 
-            var mmi = (MINMAXINFO) Marshal.PtrToStructure(lParam, typeof (MINMAXINFO));
+            var mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
 
             // Adjust the maximized size and position to fit the work area of the correct monitor
             var currentScreen = Screen.FromHandle(hwnd);
@@ -83,6 +80,7 @@ namespace Warewolf.Studio
 
             Marshal.StructureToPtr(mmi, lParam, true);
         }
+
 
 
         [StructLayout(LayoutKind.Sequential)]
@@ -223,7 +221,7 @@ namespace Warewolf.Studio
         {
             /// <summary>
             /// </summary>
-            public int cbSize = Marshal.SizeOf(typeof (MONITORINFO));
+            public int cbSize = Marshal.SizeOf(typeof(MONITORINFO));
 
             /// <summary>
             /// </summary>
@@ -317,9 +315,8 @@ namespace Warewolf.Studio
                     return false;
                 }
                 // ReSharper disable PossibleInvalidCastException
-                return (this == (RECT) obj);
+                return (this == (RECT)obj);
             }
-
 
             /// <summary>Return the HashCode for this struct (not garanteed to be unique)</summary>
             public override int GetHashCode()
@@ -358,8 +355,16 @@ namespace Warewolf.Studio
                 dependencyObject.SetValue(VisibilityProperty, Visibility.Collapsed);
                 WindowState = WindowState.Normal;
                 WindowState = WindowState.Maximized;
+                TogglePanelsHitTestable(Visibility.Visible);
             }
         }
+
+        private void TogglePanelsHitTestable(Visibility visibility)
+        {
+            //HideFullScreenPanel.Visibility = visibility;
+            //ExitFullScreenPanel.Visibility = visibility;
+        }
+
 
         private void CloseSuperMaximised(object sender, RoutedEventArgs e)
         {
@@ -377,6 +382,7 @@ namespace Warewolf.Studio
                 dependencyObject.SetValue(VisibilityProperty, Visibility.Visible);
                 WindowState = WindowState.Normal;
                 WindowState = WindowState.Maximized;
+                TogglePanelsHitTestable(Visibility.Collapsed);
             }
 
         }
@@ -392,11 +398,6 @@ namespace Warewolf.Studio
 
         private void ShowFullScreenPanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            DoAnimationsToOpenPanels();
-        }
-
-        private void DoAnimationsToOpenPanels()
-        {
             if (_isSuperMaximising)
             {
                 var storyboard = Resources["AnimateExitFullScreenPanelOpen"] as Storyboard;
@@ -409,6 +410,9 @@ namespace Warewolf.Studio
             {
                 DoAnimateOpenTitleBar();
             }
+
+
+
         }
 
         private void DoAnimateOpenTitleBar()
@@ -456,6 +460,7 @@ namespace Warewolf.Studio
                 else
                 {
                     fontAwesome.Icon = FontAwesomeIcon.Lock;
+                    TogglePanelsHitTestable(Visibility.Collapsed);
                 }
                 dependencyObject.SetValue(ContentProperty, fontAwesome);
                 _isLocked = !_isLocked;
@@ -470,24 +475,8 @@ namespace Warewolf.Studio
                 var titleBar = GetTemplateChild("PART_TITLEBAR");
                 storyboard.SetValue(Storyboard.TargetProperty, titleBar);
                 storyboard.Begin();
+                TogglePanelsHitTestable(Visibility.Visible);
             }
-        }
-    }
-
-
-    public class ExtendedGridSplitter : GridSplitter
-    {
-
-        public ExtendedGridSplitter()
-        {
-            EventManager.RegisterClassHandler(typeof (ExtendedGridSplitter), DragDeltaEvent,
-                new DragDeltaEventHandler(OnDragDelta));
-        }
-
-
-        private void OnDragDelta(object sender, DragDeltaEventArgs e)
-        {
-            e.Handled = true;
         }
     }
 }

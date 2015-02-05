@@ -4,37 +4,43 @@
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:dockManager="http://infragistics.com/DockManager"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:igWindows="http://infragistics.com/Windows"
         xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
-        xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
-        xmlns:studio="clr-namespace:Warewolf.Studio"
-        xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+        xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework"
+        xmlns:studio="clr-namespace:Warewolf.Studio"
         x:Name="MainWindow"
         Title="Warewolf Studio"
-        Background="{StaticResource WareWolfBackGroundBrush}"
-        FontFamily="{StaticResource DefaultFontFamily}"
-        ShowInTaskbar="True"
-        Style="{DynamicResource MetroWindowStyle}"
         TextOptions.TextFormattingMode="Display"
+        FontFamily="{StaticResource DefaultFontFamily}"
         WindowState="Maximized"
+        ShowInTaskbar="True"
+        Background="{StaticResource WareWolfBackGroundBrush}"
         d:DataContext="{d:DesignInstance Type={x:Type interfaces:IShellViewModel}}"
-        mc:Ignorable="d">
+        mc:Ignorable="d" Style="{DynamicResource MetroWindowStyle}"
+        >
 
     <Window.Resources>
+
+        <Style x:Key="SplitterStyle" TargetType="dockManager:SplitPaneSplitter">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+        </Style>
+
         <Storyboard x:Key="AnimateExitFullScreenPanelOpen" TargetName="ExitFullScreenPanel">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
-                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,0,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-10,0,0" />
             </ThicknessAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
                 <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="AnimateExitFullScreenPanelClose" TargetName="ExitFullScreenPanel">
-            <ThicknessAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="Margin">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
                 <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-90,0,0" />
             </ThicknessAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
@@ -52,7 +58,7 @@
                                                                          Storyboard.TargetProperty="Height"
                                                                          To="25" />
         </Storyboard>
-        
+
         <Style x:Key="MetroWindowButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle">
                 <Setter.Value>
@@ -103,20 +109,19 @@
             </Setter>
         </Style>
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
-            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
             <Setter Property="WindowStyle" Value="None" />
-            <Setter Property="AllowsTransparency" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
                         <Grid>
-                            <Border x:Name="MainBorder" BorderThickness="0" Background="White" MouseLeftButtonDown="PART_MainBar_MouseLeftButtonDown">                           
+                            <Border x:Name="MainBorder" BorderThickness="0" Background="White" MouseLeftButtonDown="PART_MainBar_MouseLeftButtonDown">
                                 <DockPanel LastChildFill="True">
                                     <Border x:Name="PART_TITLEBAR" 
                                             Margin="0,0,0,0" Height="25" DockPanel.Dock="Top"                                             
                                             Background="Transparent" MouseLeftButtonDown="PART_TITLEBAR_MouseLeftButtonDown"
-                                            >                                    
+                                            >
                                         <DockPanel LastChildFill="False">
                                             <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" 
                                                        Foreground="#FFAAAAAA" TextWrapping="NoWrap" 
@@ -127,8 +132,8 @@
                                                     Style="{StaticResource MetroWindowButtonStyle}"
                                                     Click="PART_CLOSE_Click">
                                                 <Path Data="F1M54.0573,47.8776L38.1771,31.9974 54.0547,16.1198C55.7604,14.4141 55.7604,11.6511 54.0573,9.94531 52.3516,8.23962 49.5859,8.23962 47.8802,9.94531L32.0026,25.8229 16.1224,9.94531C14.4167,8.23962 11.6511,8.23962 9.94794,9.94531 8.24219,11.6511 8.24219,14.4141 9.94794,16.1198L25.8255,32 9.94794,47.8776C8.24219,49.5834 8.24219,52.3477 9.94794,54.0534 11.6511,55.7572 14.4167,55.7585 16.1224,54.0534L32.0026,38.1745 47.8802,54.0534C49.5859,55.7585 52.3516,55.7572 54.0573,54.0534 55.7604,52.3477 55.763,49.5834 54.0573,47.8776z" 
-                                                      Stretch="Uniform" Fill="Black" Width="10" Margin="0,0,0,0" ></Path>                                                                                        
-                                                </Button>
+                                                      Stretch="Uniform" Fill="Black" Width="10" Margin="0,0,0,0" ></Path>
+                                            </Button>
                                             <Button x:Name="PART_MAXIMIZE_RESTORE" 
                                                     DockPanel.Dock="Right" Margin="0,5,5,5"
                                                     HorizontalAlignment="Center" VerticalAlignment="Center" 
@@ -144,17 +149,13 @@
                                                     Click="PART_SUPER_MAXIMIZE_RESTORE_Click">
                                                 <fa:FontAwesome Icon="ArrowsAlt"></fa:FontAwesome>
                                             </Button>
-                                            <Button x:Name="PART_MINIMIZE"
-                                                    Width="20"
-                                                    Height="20"
-                                                    Margin="0,5,5,5"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    VerticalContentAlignment="Bottom"
-                                                    Click="PART_MINIMIZE_Click"
-                                                    Style="{StaticResource MetroWindowButtonStyle}"
-                                                    DockPanel.Dock="Right">                                   
-                                                <fa:FontAwesome Icon="Minus" VerticalAlignment="Bottom"></fa:FontAwesome>                                                
+                                            <Button x:Name="PART_MINIMIZE" 
+                                                    HorizontalAlignment="Center" 
+                                                    VerticalAlignment="Center" Margin="0,5,5,5"
+                                                    DockPanel.Dock="Right"
+                                                    Height="20" Width="20" Style="{StaticResource MetroWindowButtonStyle}"
+                                                    Click="PART_MINIMIZE_Click" VerticalContentAlignment="Bottom">
+                                                <fa:FontAwesome Icon="Minus" VerticalAlignment="Bottom"></fa:FontAwesome>
                                             </Button>
                                             <Button x:Name="PART_LOCK" DockPanel.Dock="Right" 
                                                     VerticalAlignment="Center" Margin="0,5,5,5"
@@ -167,9 +168,7 @@
                                     </Border>
 
                                     <AdornerDecorator DockPanel.Dock="Bottom">
-                                        <ContentPresenter Content="{TemplateBinding Content}"
-                                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                        <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
                                     </AdornerDecorator>
                                 </DockPanel>
                             </Border>
@@ -182,29 +181,21 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Window}">
-                                <Border Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
                                     <Grid>
                                         <AdornerDecorator>
-                                            <ContentPresenter Content="{TemplateBinding Content}"
-                                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
                                         </AdornerDecorator>
-                                        <ResizeGrip x:Name="WindowResizeGrip"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Bottom"
-                                                    IsTabStop="False"
-                                                    Visibility="Collapsed" />
+                                        <ResizeGrip x:Name="WindowResizeGrip" HorizontalAlignment="Right" IsTabStop="False" Visibility="Collapsed" VerticalAlignment="Bottom"/>
                                     </Grid>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
-                                            <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
-                                            <Condition Property="WindowState" Value="Normal" />
+                                            <Condition Property="ResizeMode" Value="CanResizeWithGrip"/>
+                                            <Condition Property="WindowState" Value="Normal"/>
                                         </MultiTrigger.Conditions>
-                                        <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible" />
+                                        <Setter Property="Visibility" TargetName="WindowResizeGrip" Value="Visible"/>
                                     </MultiTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -213,11 +204,13 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
+
+
         <Style TargetType="{x:Type dockManager:ContentPane}">
-            <!--  <Setter Property="AllowFloatingOnly" Value="False"/>  -->
-            <!--  <Setter Property="AllowDockingFloating" Value="False"/>  -->
-            <Setter Property="BorderThickness" Value="0" />
+            <!--            <Setter Property="AllowFloatingOnly" Value="False"/>-->
+            <!--            <Setter Property="AllowDockingFloating" Value="False"/>-->
+            <Setter Property="BorderThickness" Value="0"></Setter>
         </Style>
 
         <Style x:Key="RootMenuStyle" TargetType="{x:Type Menu}">
@@ -231,96 +224,70 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--  This is the template for the tab header. For some unknown reason i cannot put this into the theme it does not work.  -->
+        <!-- This is the template for the tab header. For some unknown reason i cannot put this into the theme it does not work.-->
         <ControlTemplate x:Key="{x:Static dockManager:PaneTabItem.DocumentTabItemTemplateKey}" TargetType="{x:Type dockManager:PaneTabItem}">
-            <Border x:Name="Background"
-                    Height="35"
-                    Margin="0,0,0,0">
+            <Border x:Name="Background" Margin="0,0,0,0" Height="35">
                 <Grid x:Name="TabbedDocumentTab"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch">
+                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border x:Name="HighlightBorder"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="1"
-                            Margin="0,0,0,0"
-                            VerticalAlignment="Stretch"
+                    <Border x:Name="HighlightBorder" VerticalAlignment="Stretch" Grid.Column="1" Grid.ColumnSpan="1" 
                         Background="{StaticResource WareWolfBackGroundBrush}" 
                         BorderBrush="{StaticResource WareWolfBackGroundBrush}"
-                            BorderThickness="1"
-                            CornerRadius="0,0,0,0" />
-                    <Border x:Name="Border"
-                            Grid.Column="1"
-                            Margin="0,0,0,0"
-                            VerticalAlignment="Stretch"
+                        BorderThickness="1" CornerRadius="0,0,0,0" Margin="0,0,0,0"/>
+                    <Border  x:Name="Border"  
                          Background="White" 
-                            CornerRadius="0,0,0,0" />
-                    <Rectangle x:Name="activebrFiller"
-                               Grid.Column="1"
-                               Width="1"
-                               Height="1"
-                               Margin="0,0,1,-1"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Bottom"
+                         CornerRadius="0,0,0,0" Margin="0,0,0,0" VerticalAlignment="Stretch" Grid.Column="1"/>
+                    <Rectangle x:Name="activebrFiller" Grid.Column="1" Width="1" Height="1" 
+                           VerticalAlignment="Bottom" HorizontalAlignment="Right" 
                            Fill="{StaticResource WareWolfBackGroundBrush}" 
-                               Visibility="Collapsed" />
+                           Margin="0,0,1,-1" 
+                           Visibility="Collapsed"/>
 
-                    <Border x:Name="Content"
-                            Grid.Column="1"
-                            Background="{StaticResource WareWolfBackGroundBrush}"
-                            BorderThickness="1,1,1,0">
-                        <DockPanel x:Name="ContentDock"
-                                   Margin="10,5,5,5"
-                                   VerticalAlignment="Center">
-                            <igWindows:AutoDisabledImage Width="20"
-                                                         Height="20"
-                                                         Margin="3,3,10,0"
+                    <Border x:Name="Content" Grid.Column="1"
+							BorderThickness="1,1,1,0"  Background="{StaticResource WareWolfBackGroundBrush}">
+                        <DockPanel x:Name="ContentDock" Margin="10,5,5,5" VerticalAlignment="Center">
+                            <igWindows:AutoDisabledImage Height="20" Width="20" Visibility="{Binding Path=Pane.HasImage, Converter={StaticResource BoolToVis}, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                                 DockPanel.Dock="Left"
-                                                         Source="{Binding Path=Pane.Image,
-                                                                          RelativeSource={x:Static RelativeSource.TemplatedParent}}"
+                                Margin="3,3,10,0"                                                         
                                 Stretch="Fill"
-                                                         Visibility="{Binding Path=Pane.HasImage,
-                                                                              Converter={StaticResource BoolToVis},
-                                                                              RelativeSource={x:Static RelativeSource.TemplatedParent}}" />
-                            <Grid x:Name="gdContent"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch">
+                                Source="{Binding Path=Pane.Image, RelativeSource={x:Static RelativeSource.TemplatedParent}}" />
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="gdContent">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <ContentPresenter x:Name="NormalContent"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"
                         		ContentSource="Header" 
-                                                  RecognizesAccessKey="true"
                         		SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                                  TextElement.FontSize="14"
+                        		RecognizesAccessKey="true"                                       
+                        		HorizontalAlignment="Center" 
+                        		VerticalAlignment="Center"
                                 TextElement.FontStyle="Italic"
-                                                  igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
+                                TextElement.FontSize="14"
                                 igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
-                                                  igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static dockManager:XamDockManager.ToolTipStyleKey}" />
+								igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
+                                igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static dockManager:XamDockManager.ToolTipStyleKey}"
+								/>
 
                                 <ContentPresenter x:Name="NormalContentBold"
-                                                  Margin="-4,0,-3,0"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"
                         		ContentSource="Header" 
-                                                  RecognizesAccessKey="true"
                         		SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                                  TextElement.FontSize="14"
-                                                  TextElement.FontStyle="Italic"
-                                                  TextElement.FontWeight="Normal"
-                                                  ToolTip="{Binding Path=Pane.Header,
-                                                                    RelativeSource={x:Static RelativeSource.TemplatedParent}}"
-                                                  Visibility="Hidden"
-                                                  igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
+                        		RecognizesAccessKey="true"                                       
+                        		HorizontalAlignment="Center" 
+                        		VerticalAlignment="Center"
+                                ToolTip="{Binding Path=Pane.Header, RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                                 igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
-                                                  igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static dockManager:XamDockManager.ToolTipStyleKey}" />
+								igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
+                                igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static dockManager:XamDockManager.ToolTipStyleKey}"
+                                TextElement.FontWeight="Normal"
+                                TextElement.FontStyle="Italic"
+                                TextElement.FontSize="14"
+                                Margin="-4,0,-3,0"
+                                Visibility="Hidden"/>
 
                                 <Button x:Name="closeBtn"
                                     Grid.Column="1"
@@ -328,15 +295,11 @@
                                     VerticalAlignment="Top"
                                         VerticalContentAlignment="Top"
                                     Command="{x:Static dockManager:ContentPaneCommands.Close}"
-                                        CommandTarget="{Binding Pane,
-                                                                RelativeSource={RelativeSource AncestorType={x:Type dockManager:PaneTabItem}}}"
-                                        Opacity="0.4"
+                                    CommandTarget="{Binding Pane,  RelativeSource={RelativeSource AncestorType={x:Type dockManager:PaneTabItem}}}"
                                         Style="{StaticResource BasicButton}"
+                                        Opacity="0.4"
                                         Visibility="Collapsed">
-                                    <fa:FontAwesome HorizontalAlignment="Center"
-                                                    VerticalAlignment="Top"
-                                                    FontSize="12"
-                                                    Icon="Times" />
+                                    <fa:FontAwesome FontSize="12" Icon="Times" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                                 </Button>
                             </Grid>
                         </DockPanel>
@@ -349,58 +312,59 @@
                     <Setter Property="Foreground" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.GrayTextBrushKey}}" />
                 </Trigger>
 
-                <Trigger Property="IsMouseOverTab" Value="true" />
+                <Trigger Property="IsMouseOverTab" Value="true">
+                </Trigger>
 
                 <Trigger Property="IsSelected" Value="true">
                     <Setter Property="Panel.ZIndex" Value="1" />
-                    <Setter TargetName="activebrFiller" Property="Visibility" Value="Visible" />
-                    <Setter TargetName="closeBtn" Property="Visibility" Value="Visible" />
-                    <Setter TargetName="HighlightBorder" Property="BorderBrush" Value="White" />
-                    <Setter TargetName="HighlightBorder" Property="Background" Value="White" />
-                    <Setter Property="Background" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}}" />
-                    <Setter TargetName="HighlightBorder" Property="Margin" Value="-4,0,0,0" />
-                    <Setter TargetName="Border" Property="Margin" Value="-4,1,2,-2" />
-                    <Setter TargetName="Border" Property="Background" Value="Transparent" />
-                    <Setter TargetName="Content" Property="Background" Value="White" />
+                    <Setter Property="Visibility" TargetName="activebrFiller" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="closeBtn" Value="Visible"/>
+                    <Setter Property="BorderBrush" TargetName="HighlightBorder" Value="White"  />
+                    <Setter Property="Background" TargetName="HighlightBorder" Value="White"  />
+                    <Setter Property="Background" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}}"/>
+                    <Setter Property="Margin" TargetName="HighlightBorder" Value="-4,0,0,0" />
+                    <Setter Property="Margin" TargetName="Border" Value="-4,1,2,-2" />
+                    <Setter Property="Background" TargetName="Border" Value="Transparent" />
+                    <Setter Property="Background" TargetName="Content" Value="White" />
                 </Trigger>
 
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
-                        <Condition Property="IsSelected" Value="False" />
-                        <Condition Property="IsMouseOverTab" Value="true" />
+                        <Condition Property="IsSelected" Value="False"/>
+                        <Condition Property="IsMouseOverTab" Value="true"/>
                     </MultiTrigger.Conditions>
-                    <Setter TargetName="Content" Property="BorderBrush" Value="Orange" />
+                    <Setter Property="BorderBrush" TargetName="Content" Value="Orange"  />
                 </MultiTrigger>
 
                 <DataTrigger Binding="{Binding Path=Pane.IsActiveDocument, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
-                    <Setter TargetName="NormalContent" Property="Visibility" Value="Hidden" />
-                    <Setter TargetName="NormalContentBold" Property="Visibility" Value="Visible" />
+                    <Setter Property="Visibility" TargetName="NormalContent" Value="Hidden" />
+                    <Setter Property="Visibility" TargetName="NormalContentBold" Value="Visible" />
                 </DataTrigger>
 
-                <!--  ========== TAB PLACEMENT : BOTTOM ==========  -->
+                <!-- ========== TAB PLACEMENT : BOTTOM ========== -->
                 <Trigger Property="TabStripPlacement" Value="Bottom">
                     <Setter Property="LayoutTransform">
                         <Setter.Value>
                             <ScaleTransform ScaleY="-1" />
                         </Setter.Value>
                     </Setter>
-                    <Setter TargetName="ContentDock" Property="LayoutTransform">
+                    <Setter Property="LayoutTransform" TargetName="ContentDock">
                         <Setter.Value>
                             <ScaleTransform ScaleY="-1" />
                         </Setter.Value>
                     </Setter>
                 </Trigger>
 
-                <!--  ========== TAB PLACEMENT : LEFT ==========  -->
+                <!-- ========== TAB PLACEMENT : LEFT ========== -->
                 <Trigger Property="TabStripPlacement" Value="Left">
                     <Setter Property="LayoutTransform">
                         <Setter.Value>
-                            <RotateTransform Angle="-90" />
+                            <RotateTransform Angle="-90"/>
                         </Setter.Value>
                     </Setter>
                 </Trigger>
 
-                <!--  ========== TAB PLACEMENT : RIGHT ==========  -->
+                <!-- ========== TAB PLACEMENT : RIGHT ========== -->
                 <Trigger Property="TabStripPlacement" Value="Right">
                     <Setter Property="LayoutTransform">
                         <Setter.Value>
@@ -411,14 +375,14 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <!--  This is the template for the tab document. For some unknown reason i cannot put this into the theme it does not work.  -->
+        <!-- This is the template for the tab document. For some unknown reason i cannot put this into the theme it does not work.-->
         <ControlTemplate x:Key="{x:Static dockManager:TabGroupPane.DocumentTabGroupTemplateKey}" TargetType="{x:Type dockManager:TabGroupPane}">
             <DockPanel ClipToBounds="True"
                    KeyboardNavigation.TabNavigation="Local"
                    SnapsToDevicePixels="True">
                 <DockPanel x:Name="PART_HeaderArea"
                        Panel.ZIndex="1"
-                           DockPanel.Dock="{TemplateBinding TabStripPlacement}">
+                       DockPanel.Dock="{TemplateBinding TabStripPlacement}" >
                     <DockPanel>
 
                         <!--  Dev2  -->
@@ -479,14 +443,15 @@
                                 Background="White"
                                 BorderBrush="White"
                                 BorderThickness="0"
-                                    Padding="0,5"
-                                    SnapsToDevicePixels="True">
+                                SnapsToDevicePixels="True" Padding="0,5">
                                 <ContentPresenter x:Name="PART_SelectedContentHost"
                                               Margin="{TemplateBinding Padding}"
                                               Content="{TemplateBinding SelectedContent}"
                                               ContentSource="SelectedContent"
                                               ContentTemplateSelector="{TemplateBinding SelectedContentTemplateSelector}"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" >
+
+                                </ContentPresenter>
                             </Border>
                         </Border>
                     </Border>
@@ -542,7 +507,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>       
+        </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"
@@ -553,32 +518,32 @@
             <Grid Grid.Column="0">
                 <ContentControl SizeChanged="SlidingMenuPane_OnSizeChanged" Width="60" regions:RegionManager.RegionName="{x:Static core:RegionNames.Menu}">
                     <ContentControl.Style>
-                                <Style>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding MenuExpanded}" Value="True">
-                                            <DataTrigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:0.5"
-                                                                         From="60"
-                                                                         Storyboard.TargetProperty="Width"
-                                                                         To="150" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:0.5"
-                                                                         From="150"
-                                                                         Storyboard.TargetProperty="Width"
-                                                                         To="60" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.ExitActions>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MenuExpanded}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.5"
+                                                                 From="60"
+                                                                 Storyboard.TargetProperty="Width"
+                                                                 To="150" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.5"
+                                                                 From="150"
+                                                                 Storyboard.TargetProperty="Width"
+                                                                 To="60" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
                     </ContentControl.Style>
                 </ContentControl>
             </Grid>
@@ -592,6 +557,9 @@
                                             PaneDragStarting="DockManager_OnPaneDragStarting"
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
+
+
+
 
                         <dockManager:SplitPane Width="300"
                                                SplitterOrientation="Horizontal"
@@ -659,7 +627,8 @@
                         <dockManager:SplitPane>
                             <dockManager:TabGroupPane x:Name="Workspace"
                         		SelectedItem="{Binding ActiveItem}"
-                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
+                        		regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}">
+                            </dockManager:TabGroupPane>
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>
@@ -675,8 +644,7 @@
                 <DropShadowEffect BlurRadius="10" Direction="300" ShadowDepth="10"/>
             </StackPanel.Effect>
         </StackPanel>
-        <Rectangle x:Name="ShowFullScreenPanel" Height="15" Margin="0,-6,0,0" MouseEnter="ShowFullScreenPanel_OnMouseEnter" VerticalAlignment="Top" IsHitTestVisible="True" Fill="#00000000"/>
-        <Rectangle x:Name="HideFullScreenPanel" Height="25" VerticalAlignment="Top" Margin="0,50,0,0" MouseEnter="HideFullScreenPanel_OnMouseEnter" IsHitTestVisible="True" Fill="#00000000"/>
+        <Rectangle x:Name="ShowFullScreenPanel" Height="10" Margin="0,-5,0,0" MouseEnter="ShowFullScreenPanel_OnMouseEnter" VerticalAlignment="Top" IsHitTestVisible="True" Fill="#00000000"/>
+        <Rectangle x:Name="HideFullScreenPanel" Height="8" VerticalAlignment="Top" Margin="0,30,0,0" MouseEnter="HideFullScreenPanel_OnMouseEnter" IsHitTestVisible="True" Fill="#00000000"/>
     </Grid>
-
 </Window>
