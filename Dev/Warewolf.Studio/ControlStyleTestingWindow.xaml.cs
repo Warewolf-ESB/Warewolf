@@ -38,6 +38,7 @@ namespace Warewolf.Studio
         {
             var people = Persons;
             BobDataGrid.ItemsSource = people;
+            ComboBox.ItemsSource = new List<string> { "the", "quick", "Brown", "Fox", "Jumped" };
             //        <DataGridCheckBoxColumn Header="Is Load Shedded" Binding="{Binding IsLoadShedded}"></DataGridCheckBoxColumn>
             //<DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
             //<DataGridHyperlinkColumn Header="Site" Binding="{Binding Site}"></DataGridHyperlinkColumn>
