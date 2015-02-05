@@ -71,7 +71,9 @@
         </PasswordBox>
         <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
+        <TextBox Style="{StaticResource MultiLineTextBoxStyle}" ToolTip="Bob the builder" TextWrapping="Wrap" Height="90" AcceptsReturn="True" > Multi Line </TextBox>
         <TextBox ToolTip="Bob the builder">ToolTip</TextBox>
+       
         <TextBox>
             <TextBox.ToolTip>
                 <ToolTip Style="{StaticResource ToolTipStyleValidationStyle}"> Bad Bob the builder</ToolTip>
@@ -121,7 +123,7 @@
        
         
         <TextBlock Text="Standard Label/textbox styling"></TextBlock>
-        <TextBlock Style="{StaticResource SourceHeader}" Text="Sources header label" Visibility="Visible"/>
+        <TextBlock Style="{StaticResource SourceHeader}"  VerticalAlignment="Center" Text="Sources header label" Visibility="Visible"/>
 
     </WrapPanel>
 </Window>
