@@ -18,7 +18,7 @@
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource TooltipForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource TooltipBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource TooltipBorderBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource WareWolfButtonBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Padding" Value="3,3" />
         <Setter Property="Template">

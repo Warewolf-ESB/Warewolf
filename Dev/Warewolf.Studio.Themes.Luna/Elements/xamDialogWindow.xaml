@@ -104,7 +104,6 @@
 
     <!--  *********************************  XamDialogWindow Style  *********************************  -->
     <Style x:Key="XamDialogWindowStyle" TargetType="igDw:XamDialogWindow">
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="IsEnabled" Value="true" />
         <Setter Property="ModalBackground" Value="{StaticResource DialogWindowModalBackgroundBrush}" />
@@ -116,7 +115,7 @@
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="HeaderForeground" Value="{StaticResource WarewolfPanelGreyBrush}" />
+        <Setter Property="HeaderForeground" Value="{StaticResource WareWolfBlackBrush}" />
         <Setter Property="HeaderBackground" Value="{StaticResource WarewolfPanelGreyBrush}" />
         <Setter Property="HeaderIconTemplate">
             <Setter.Value>

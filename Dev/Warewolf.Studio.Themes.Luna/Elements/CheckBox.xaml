@@ -8,10 +8,11 @@
 
 
     <!--  CheckBox Brushes  -->
-    <SolidColorBrush x:Key="CheckBoxBackgroundBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="CheckBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="CheckBoxHoverBackgroundBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="CheckBoxPressedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
-    <SolidColorBrush x:Key="CheckBoxFocusedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="CheckBoxNormalBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="CheckBoxPressedBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="CheckBoxFocusedBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="CheckBoxInvalidUnfocusedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="CheckBoxInvalidFocusedBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="{StaticResource WarewolfPanelGrey}" />
@@ -22,15 +23,17 @@
     <SolidColorBrush x:Key="CheckBoxInvalidUnfocusedBorderBrush" Color="{StaticResource Color_029}" />
     <SolidColorBrush x:Key="CheckBoxInvalidFocusedBorderBrush" Color="{StaticResource Color_028}" />
     <SolidColorBrush x:Key="CheckBoxIndeterminateCheckBackgroundBrush" Color="{StaticResource WarewolfHeaderGrey}" />
-    <SolidColorBrush x:Key="CheckBoxCheckBackgroundBrush" Color="{StaticResource WarewolfHeaderGrey}" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundBrush" Color="Transparent" />
 
 
 
     <!--  ********************************** CheckBoxStyle **********************************  -->
     <Style x:Key="CheckBoxStyle" TargetType="CheckBox">
         <Setter Property="Foreground" Value="Black" />
-        <Setter Property="FontSize" Value="14.667" />
-        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Background" Value="{StaticResource WarewolfWhite}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="6,0,0,0" />
@@ -40,7 +43,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
-                    <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                    <Grid Background="Transparent"  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
@@ -127,13 +130,13 @@
                             <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Rectangle Fill="{StaticResource TransparentBrush}" />
+                        <Rectangle Fill="Transparent" />
                         <Rectangle x:Name="normal"
                                    Width="18"
                                    Height="18"
-                                   Fill="{StaticResource TransparentBrush}"
+                                   Fill="{StaticResource CheckBoxBackgroundBrush}"
                                    Opacity="1"
-                                   Stroke="{StaticResource TransparentBrush}"
+                                   Stroke="{StaticResource CheckBoxNormalBorderBrush}"
                                    StrokeThickness="1" />
                         <Rectangle x:Name="hover"
                                    Width="18"
@@ -191,6 +194,7 @@
                                    StrokeThickness="1" />
                         <ContentPresenter x:Name="contentPresenter"
                                           Grid.Column="1"
+                                          
                                           Margin="{TemplateBinding Padding}"
                                           Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}" />

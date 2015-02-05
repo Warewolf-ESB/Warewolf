@@ -5,15 +5,18 @@
         xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
        
           xmlns:ig="http://schemas.infragistics.com/xaml"
-          xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+          xmlns:studio="clr-namespace:Warewolf.Studio"
+                    xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
           Title="ControlStyleTestingWindow" Height="800" Width="600">
+        
+
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
         </Window.Resources>
-        <WrapPanel Orientation="Vertical">
-         
+    <WrapPanel Orientation="Vertical">
+       
        
         <CheckBox AutomationProperties.AutomationId="Testing_CheckBox"></CheckBox>
         <ComboBox Name="ComboBox" AutomationProperties.AutomationId="Testing_Combobox">
@@ -24,11 +27,12 @@
             </ComboBox.ItemsPanel>
         </ComboBox>
         <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
-        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox" Margin="20,2,1,2"
+        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox"
                      customControls:PasswordBoxAssistant.BindPassword="true"
                      customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         </PasswordBox>
         <Label AutomationProperties.AutomationId="Testing_Lable"></Label>
+        <!-- Normal Buttons-->
         <Button AutomationProperties.AutomationId="Testing_NormalButton">
             <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Button>
@@ -45,6 +49,25 @@
                 <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock></StackPanel>
         </Button>  
+        <!-- Disabled Buttons-->
+        <Button AutomationProperties.AutomationId="Testing_NormalButton_Disabled" IsEnabled="False">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button IsEnabled="False" AutomationProperties.AutomationId="Testing_NormalRoundedButton_Disabled" Style="{StaticResource RoundedButtonStyle}">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button IsEnabled="False" AutomationProperties.AutomationId="Testing_PopupButton_Disabled" Style="{StaticResource PopupButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock>
+            </StackPanel>
+        </Button>
+        <Button IsEnabled="False" AutomationProperties.AutomationId="Testing_PopupRoundedButton_Disabled" Style="{StaticResource PopupRoundedCornerButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock>
+            </StackPanel>
+        </Button>
         <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
         <TextBox ToolTip="Bob the builder">ToolTip</TextBox>
@@ -70,5 +93,7 @@
         <TextBox AutomationProperties.AutomationId="Testing_SearchTextBox" Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox AutomationProperties.AutomationId="Testing_VariableListTextBox" Style="{StaticResource VariableListTextBox}"></TextBox>
         <TextBox AutomationProperties.AutomationId="Testing_TextBox"></TextBox>
+        <GroupBox Width="200" AutomationProperties.AutomationId="Testing_GroupBox" Header="My Group Box" Height="100"></GroupBox>
+        <ListBox x:Name="TestingListBox" Style="{StaticResource ListBoxStyle}" ItemsSource="{Binding}" AutomationProperties.AutomationId="Testing_ListBox"></ListBox>
     </WrapPanel>
 </Window>

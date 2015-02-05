@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,45 +13,99 @@ namespace Warewolf.Studio
     /// </summary>
     public partial class ControlStyleTestingWindow : Window
     {
-
-
+        private Task _task;
+        private CancellationToken _cancellationToken;
 
         public ControlStyleTestingWindow()
         {
             InitializeComponent();
             InitGrid();
+            DataContext = this;
+            TestingListBox.ItemsSource = Persons;
+            var tokenSource2 = new CancellationTokenSource();
+            _cancellationToken = tokenSource2.Token;
+            Closing += delegate
+            {
+                if (_task != null && _task.Status == TaskStatus.Running)
+                {
+                    tokenSource2.Cancel();
+                }
+            };
         }
 
         void InitGrid()
         {
-            IList<string> comboboxItems = new List<string>{"Bob","Dora","Jake","Phineas"};
-            ComboBox.ItemsSource = comboboxItems;
-            var people = new List<Person>
-            {
-                new Person {Name="Bob",Gender = "Male",IsLoadShedded = false,Site = "http://www.google.com", Genders = new []{"Male","Female","Unknown"}}, 
-                new Person {Name="Dora",Gender = "Female",IsLoadShedded = false,Site = "http://www.bing.com", Genders = new []{"Male","Female","Unknown"}}, 
-                new Person {Name="Jake",Gender = "Male",IsLoadShedded = false,Site = "http://www.google.com", Genders = new []{"Male","Female","Unknown"}}, 
-                new Person {Name="Phineas",Gender = "Male",IsLoadShedded = false,Site = "http://www.google.com", Genders = new []{"Male","Female","Unknown"}}, 
-            };
+            var people = Persons;
             BobDataGrid.ItemsSource = people;
             //        <DataGridCheckBoxColumn Header="Is Load Shedded" Binding="{Binding IsLoadShedded}"></DataGridCheckBoxColumn>
             //<DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
             //<DataGridHyperlinkColumn Header="Site" Binding="{Binding Site}"></DataGridHyperlinkColumn>
             //<DataGridComboBoxColumn Header="Gender" ItemsSource="{Binding Genders}"></DataGridComboBoxColumn>
-            bool bob = true;
-            Task t = new Task(() =>
+            _task = new Task(() =>
             {
-                while (bob)
+                while (true)
                 {
-                    Thread.Sleep(30);
-                    Dispatcher.Invoke(() => ProgressBar.Value = (ProgressBar.Value + 1) % 100);
+                    if (_cancellationToken.IsCancellationRequested)
+                    {
+                        // Clean up here, then...
+
+                    }
+                    else
+                    {
+                        Thread.Sleep(30);
+                        Dispatcher.Invoke(() => ProgressBar.Value = (ProgressBar.Value + 1) % 100);
+                    }
                 }
-            }
+            }, _cancellationToken
             );
-            t.Start();
-            Application.Current.Exit += (a, b) => { bob = false; t.Wait(); };
+            _task.Start();
+
 
         }
+
+        private static List<Person> Persons
+        {
+            get
+            {
+                var people = new List<Person>
+                {
+                    new Person
+                    {
+                        Name = "Bob",
+                        Gender = "Male",
+                        IsLoadShedded = false,
+                        Site = "http://www.google.com",
+                        Genders = new[] {"Male", "Female", "Unknown"}
+                    },
+                    new Person
+                    {
+                        Name = "Dora",
+                        Gender = "Female",
+                        IsLoadShedded = false,
+                        Site = "http://www.bing.com",
+                        Genders = new[] {"Male", "Female", "Unknown"}
+                    },
+                    new Person
+                    {
+                        Name = "Jake",
+                        Gender = "Male",
+                        IsLoadShedded = false,
+                        Site = "http://www.google.com",
+                        Genders = new[] {"Male", "Female", "Unknown"}
+                    },
+                    new Person
+                    {
+                        Name = "Phineas",
+                        Gender = "Male",
+                        IsLoadShedded = false,
+                        Site = "http://www.google.com",
+                        Genders = new[] {"Male", "Female", "Unknown"}
+                    },
+                };
+                return people;
+            }
+        }
+
     }
     public class Person
     {
