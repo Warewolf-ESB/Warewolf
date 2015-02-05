@@ -8,7 +8,7 @@
 
 
     <!--  ProgressBar Brushes  -->
-    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="{StaticResource Color_005}" />
+    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="ProgressBarForegroundBrush" Color="{StaticResource Color_024}" />
     <LinearGradientBrush x:Key="ProgressBarIndeterminateBackgroundBrush" MappingMode="Absolute" Opacity="0.8" SpreadMethod="Repeat" StartPoint="20,1" EndPoint="0,1">
         <LinearGradientBrush.Transform>
@@ -27,7 +27,8 @@
     <Style x:Key="ProgressBarStyle" TargetType="{x:Type ProgressBar}">
         <Setter Property="Foreground" Value="{StaticResource ProgressBarForegroundBrush}" />
         <Setter Property="Background" Value="{StaticResource ProgressBarBackgroundBrush}" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="{StaticResource WarewolfHeaderGreyBrush}" />
         <Setter Property="Height" Value="6" />
         <Setter Property="Template">
             <Setter.Value>
