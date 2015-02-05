@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Dev2.Common.Interfaces;
 using FontAwesome.WPF;
+using Infragistics.Windows;
+using Infragistics.Windows.Controls;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
@@ -22,6 +25,7 @@ namespace Warewolf.Studio
     {
         private static bool _isSuperMaximising;
         private bool _isLocked;
+        Point _pointInToolWindow;
 
         public Shell(IShellViewModel shellViewModel)
         {
@@ -154,21 +158,6 @@ namespace Warewolf.Studio
             if (viewModel != null)
             {
                 viewModel.Initialize();
-            }
-        }
-
-        private void DockManager_OnPaneDragStarting(object sender, PaneDragStartingEventArgs e)
-        {
-            var dragPane = e.RootPane as PaneHeaderPresenter;
-            if (dragPane != null)
-            {
-                var content = dragPane.Content as string;
-                if (!String.IsNullOrEmpty(content) &&
-                    (content.ToLowerInvariant() == "menu" || content.ToLowerInvariant() == "help"))
-                {
-                    e.Handled = true;
-                    e.Cancel = true;
-                }
             }
         }
 
@@ -433,12 +422,7 @@ namespace Warewolf.Studio
                 DoAnimateCloseTitle();
             }
         }
-
-        private void PART_MainBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            
-        }
-
+        
         private void PART_LOCK_Click(object sender, RoutedEventArgs e)
         {
             var dependencyObject = GetTemplateChild("PART_LOCK");
@@ -467,6 +451,17 @@ namespace Warewolf.Studio
                 var titleBar = GetTemplateChild("PART_TITLEBAR");
                 storyboard.SetValue(Storyboard.TargetProperty, titleBar);
                 storyboard.Begin();
+            }
+        }
+
+        private void DockManager_OnToolWindowLoaded(object sender, PaneToolWindowEventArgs e)
+        {
+            var style = Resources["WarewolfToolWindow"] as Style;
+            if (style != null)
+            {
+                var window = e.Window;
+                window.UseOSNonClientArea = false;
+                window.Style = style;
             }
         }
     }
