@@ -25,6 +25,12 @@
         >
 
     <Window.Resources>
+
+        <Style x:Key="SplitterStyle" TargetType="dockManager:SplitPaneSplitter">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="IsHitTestVisible" Value="False" />
+        </Style>
+
         <Storyboard x:Key="AnimateExitFullScreenPanelOpen" TargetName="ExitFullScreenPanel">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
                 <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-10,0,0" />
@@ -52,7 +58,7 @@
                                                                          Storyboard.TargetProperty="Height"
                                                                          To="25" />
         </Storyboard>
-        
+
         <Style x:Key="MetroWindowButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle">
                 <Setter.Value>
@@ -198,7 +204,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
 
 
         <Style TargetType="{x:Type dockManager:ContentPane}">
@@ -504,67 +510,53 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"
+                                  MinWidth="60"
+                                  MaxWidth="150" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
+                <ContentControl SizeChanged="SlidingMenuPane_OnSizeChanged" Width="60" regions:RegionManager.RegionName="{x:Static core:RegionNames.Menu}">
+                    <ContentControl.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MenuExpanded}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.5"
+                                                                 From="60"
+                                                                 Storyboard.TargetProperty="Width"
+                                                                 To="150" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.5"
+                                                                 From="150"
+                                                                 Storyboard.TargetProperty="Width"
+                                                                 To="60" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </Grid>
+            <Grid Grid.Column="1">
                 <dockManager:XamDockManager x:Name="DockManager"
-                                            Background="{StaticResource WareWolfBackGroundBrush}"
                                             AllowMaximizeFloatingWindows="True"
                                             AllowMinimizeFloatingWindows="True"
+                                            Background="{StaticResource WareWolfBackGroundBrush}"
                                             FlyoutAnimation="Resize"
                                             LayoutMode="FillContainer"
                                             PaneDragStarting="DockManager_OnPaneDragStarting"
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
-
-                        <dockManager:SplitPane x:Name="SlidingMenuPane"
-                                               MinWidth="60"
-                                               MaxWidth="150"
-                                               SizeChanged="SlidingMenuPane_OnSizeChanged"
-                                               SplitterOrientation="Horizontal"
-                                               dockManager:XamDockManager.InitialLocation="DockedLeft">
-                            <dockManager:SplitPane.Style>
-                                <Style>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding MenuExpanded}" Value="True">
-                                            <DataTrigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:0.5"
-                                                                         From="60"
-                                                                         Storyboard.TargetProperty="Width"
-                                                                         To="150" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="0:0:0.5"
-                                                                         From="150"
-                                                                         Storyboard.TargetProperty="Width"
-                                                                         To="60" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.ExitActions>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </dockManager:SplitPane.Style>
-                            <dockManager:ContentPane x:Name="Menu"
-                                                     HorizontalContentAlignment="Stretch"
-                                                     VerticalContentAlignment="Stretch"
-                                                     AllowDocking="False"
-                                                     AllowFloatingOnly="False"
-                                                     AllowInDocumentHost="False"
-                                                     CloseButtonVisibility="Hidden"
-                                                     IsPinned="True"
-                                                     PinButtonVisibility="Hidden"
-                                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                                     Style="{DynamicResource DockmangerMenuPaneStyle}"
-                                                     WindowPositionMenuVisibility="Hidden"
-                                                     regions:RegionManager.RegionName="{x:Static core:RegionNames.Menu}" />
-                        </dockManager:SplitPane>
 
 
 
