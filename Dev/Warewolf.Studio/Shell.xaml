@@ -26,11 +26,6 @@
 
     <Window.Resources>
 
-        <Style x:Key="SplitterStyle" TargetType="dockManager:SplitPaneSplitter">
-            <Setter Property="Visibility" Value="Collapsed" />
-            <Setter Property="IsHitTestVisible" Value="False" />
-        </Style>
-
         <Storyboard x:Key="AnimateExitFullScreenPanelOpen" TargetName="ExitFullScreenPanel">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
                 <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-10,0,0" />
@@ -112,15 +107,16 @@
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
             <Setter Property="WindowStyle" Value="None" />
+            <Setter Property="AllowsTransparency" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
                         <Grid>
-                            <Border x:Name="MainBorder" BorderThickness="0" Background="White" MouseLeftButtonDown="PART_MainBar_MouseLeftButtonDown">
-                                <DockPanel LastChildFill="True">
+                            <Border x:Name="MainBorder" BorderThickness="0" Background="White" >
+                                <DockPanel LastChildFill="True" >
                                     <Border x:Name="PART_TITLEBAR" 
                                             Margin="0,0,0,0" Height="25" DockPanel.Dock="Top"                                             
-                                            Background="Transparent" MouseLeftButtonDown="PART_TITLEBAR_MouseLeftButtonDown"
+                                            Background="Transparent" MouseLeftButtonDown="PART_TITLEBAR_MouseLeftButtonDown" BorderBrush="{StaticResource MenuPanelGradient}" BorderThickness="0,0,0,1"
                                             >
                                         <DockPanel LastChildFill="False">
                                             <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" 
@@ -611,13 +607,10 @@
                             <dockManager:ContentPane x:Name="Help"
                                                      Height="400"
                                                      AllowClose="False"
-                                                     AllowDocking="False"
-                                                     AllowFloatingOnly="False"
                                                      AllowInDocumentHost="False"
                                                      CloseButtonVisibility="Hidden"
                                                      Header="WHAT DOES THIS DO?"
                                                      IsPinned="True"
-                                                     PinButtonVisibility="Hidden"
                                                      Style="{DynamicResource DockmangerToolPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Help}" />
