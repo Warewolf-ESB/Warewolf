@@ -570,14 +570,7 @@
                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Help}" />
                         </dockManager:SplitPane>
                     </dockManager:XamDockManager.Panes>
-                    <dockManager:DocumentContentHost Background="{StaticResource WarewolfPanelGreyBrush}">
-                        <dockManager:SplitPane>
-                            <dockManager:TabGroupPane x:Name="Workspace"
-                        		SelectedItem="{Binding ActiveItem}"
-                        		regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}">
-                            </dockManager:TabGroupPane>
-                        </dockManager:SplitPane>
-                    </dockManager:DocumentContentHost>
+
                 </dockManager:XamDockManager>
             </Grid>
         </Grid>
