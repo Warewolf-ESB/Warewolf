@@ -69,6 +69,7 @@
         <Setter Property="FontSize" Value="{StaticResource FontSize-Larger}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Foreground" Value="{StaticResource WareWolfWhiteBrush}" />
+        <Setter Property="Background" Value="{StaticResource WareWolfMenuBrush}" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
