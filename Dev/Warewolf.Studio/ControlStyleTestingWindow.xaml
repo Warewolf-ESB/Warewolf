@@ -123,7 +123,7 @@
        
         
         <TextBlock Text="Standard Label/textbox styling"></TextBlock>
-        <TextBlock Style="{StaticResource SourceHeader}"  VerticalAlignment="Center" Text="Sources header label" Visibility="Visible"/>
+        <TextBlock Style="{StaticResource SourceHeader}"  VerticalAlignment="Center" Text="Sources header label yyyAAAxxxggg" Visibility="Visible"/>
 
     </WrapPanel>
 </Window>
