@@ -1,14 +1,19 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 using Dev2.Common.Interfaces;
+using FontAwesome.WPF;
 using Infragistics.Windows.DockManager;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
+using Button = System.Windows.Controls.Button;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using WinInterop = System.Windows.Interop;
 
 namespace Warewolf.Studio
@@ -19,12 +24,14 @@ namespace Warewolf.Studio
     public partial class Shell
     {
         private static bool _isSuperMaximising;
+        private bool _isLocked;
 
         public Shell(IShellViewModel shellViewModel)
         {
             InitializeComponent();
             DataContext = shellViewModel;
             _isSuperMaximising = false;
+            _isLocked = true;
             Loaded += OnLoaded;
             KeyDown += Shell_KeyDown;
             SourceInitialized += WinSourceInitialized;
@@ -66,7 +73,7 @@ namespace Warewolf.Studio
             var mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
 
             // Adjust the maximized size and position to fit the work area of the correct monitor
-            var currentScreen = System.Windows.Forms.Screen.FromHandle(hwnd);
+            var currentScreen = Screen.FromHandle(hwnd);
             var workArea = currentScreen.WorkingArea;
             var monitorArea = currentScreen.Bounds;
             mmi.ptMaxPosition.x = Math.Abs(workArea.Left - monitorArea.Left);
@@ -80,6 +87,7 @@ namespace Warewolf.Studio
 
 
     [StructLayout(LayoutKind.Sequential)]
+    // ReSharper disable InconsistentNaming
     public struct MINMAXINFO
     {
         public POINT ptReserved;
@@ -181,6 +189,11 @@ namespace Warewolf.Studio
         }
 
         private void PART_MAXIMIZE_RESTORE_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleWindowState();
+        }
+
+        private void ToggleWindowState()
         {
             if (WindowState == WindowState.Normal)
             {
@@ -299,12 +312,14 @@ namespace Warewolf.Studio
                 {
                     return false;
                 }
+                // ReSharper disable PossibleInvalidCastException
                 return (this == (RECT) obj);
             }
 
             /// <summary>Return the HashCode for this struct (not garanteed to be unique)</summary>
             public override int GetHashCode()
             {
+                // ReSharper disable NonReadonlyMemberInGetHashCode
                 return left.GetHashCode() + top.GetHashCode() + right.GetHashCode() + bottom.GetHashCode();
             }
 
@@ -338,22 +353,26 @@ namespace Warewolf.Studio
                 dependencyObject.SetValue(VisibilityProperty, Visibility.Collapsed);
                 WindowState = WindowState.Normal;
                 WindowState = WindowState.Maximized;
+                TogglePanelsHitTestable(Visibility.Visible);
             }
+        }
+
+        private void TogglePanelsHitTestable(Visibility visibility)
+        {
+            //HideFullScreenPanel.Visibility = visibility;
+            //ExitFullScreenPanel.Visibility = visibility;
         }
 
 
         private void CloseSuperMaximised(object sender, RoutedEventArgs e)
         {
             ExitSuperMaximisedMode();
-            var storyboard = Resources["AnimateExitFullScreenPanelClose"] as Storyboard;
-            if (storyboard != null)
-            {
-                storyboard.Begin();
-            }
+            
         }
 
         private void ExitSuperMaximisedMode()
         {
+            DoCloseExitFullScreenPanelAnimation();
             _isSuperMaximising = false;
             var dependencyObject = GetTemplateChild("PART_TITLEBAR");
             if (dependencyObject != null)
@@ -361,6 +380,17 @@ namespace Warewolf.Studio
                 dependencyObject.SetValue(VisibilityProperty, Visibility.Visible);
                 WindowState = WindowState.Normal;
                 WindowState = WindowState.Maximized;
+                TogglePanelsHitTestable(Visibility.Collapsed);
+            }
+            
+        }
+
+        private void DoCloseExitFullScreenPanelAnimation()
+        {
+            var storyboard = Resources["AnimateExitFullScreenPanelClose"] as Storyboard;
+            if (storyboard != null)
+            {
+                storyboard.Begin();
             }
         }
 
@@ -374,17 +404,76 @@ namespace Warewolf.Studio
                     storyboard.Begin();
                 }
             }
+            if (!_isLocked)
+            {
+                DoAnimateOpenTitleBar();
+            }
+          
+
+           
+        }
+
+        private void DoAnimateOpenTitleBar()
+        {
+            var storyboard = Resources["AnimateOpenTitleBorder"] as Storyboard;
+            if (storyboard != null)
+            {
+                var titleBar = GetTemplateChild("PART_TITLEBAR");
+                storyboard.SetValue(Storyboard.TargetProperty, titleBar);
+                storyboard.Begin();
+            }
         }
 
         private void HideFullScreenPanel_OnMouseEnter(object sender, MouseEventArgs e)
         {
             if (_isSuperMaximising)
             {
-                var storyboard = Resources["AnimateExitFullScreenPanelClose"] as Storyboard;
-                if (storyboard != null)
+                DoCloseExitFullScreenPanelAnimation();
+            }
+            if (!_isLocked)
+            {
+                DoAnimateCloseTitle();
+            }
+        }
+
+        private void PART_MainBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                ToggleWindowState();
+            }   
+        }
+
+        private void PART_LOCK_Click(object sender, RoutedEventArgs e)
+        {
+            var dependencyObject = GetTemplateChild("PART_LOCK");
+            if (dependencyObject != null)
+            {
+                var fontAwesome = new FontAwesome.WPF.FontAwesome();
+                if (_isLocked)
                 {
-                    storyboard.Begin();
+                    fontAwesome.Icon = FontAwesomeIcon.Unlock;
+                    DoAnimateCloseTitle();
                 }
+                else
+                {
+                    fontAwesome.Icon = FontAwesomeIcon.Lock;
+                    TogglePanelsHitTestable(Visibility.Collapsed);
+                }
+                dependencyObject.SetValue(ContentProperty, fontAwesome);
+                _isLocked = !_isLocked;
+            }
+        }
+
+        private void DoAnimateCloseTitle()
+        {
+            var storyboard = Resources["AnimateCloseTitleBorder"] as Storyboard;
+            if (storyboard != null)
+            {
+                var titleBar = GetTemplateChild("PART_TITLEBAR");
+                storyboard.SetValue(Storyboard.TargetProperty, titleBar);
+                storyboard.Begin();
+                TogglePanelsHitTestable(Visibility.Visible);
             }
         }
     }

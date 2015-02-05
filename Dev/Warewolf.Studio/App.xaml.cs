@@ -1,33 +1,21 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
+using Infragistics.Themes;
+using Warewolf.Studio.Themes.Luna;
 
 namespace Warewolf.Studio
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            ThemeManager.ApplicationTheme = new LunaTheme();
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.Run();
-            //EventManager.RegisterClassHandler(typeof(Control), UIElement.GotFocusEvent, new RoutedEventHandler(GotFocus));
         }
-
-        private void GotFocus(object sender, RoutedEventArgs e)
-        {
-            var control = e.Source as Control;
-            if (control != null)
-            {
-                var name = control.Name;
-            }
-        }
-    }
-
-    public class SetHelpEvent
-    {
     }
 }

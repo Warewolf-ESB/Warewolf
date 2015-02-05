@@ -27,7 +27,7 @@
     <Window.Resources>
         <Storyboard x:Key="AnimateExitFullScreenPanelOpen" TargetName="ExitFullScreenPanel">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
-                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,10,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-10,0,0" />
             </ThicknessAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
                 <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
@@ -41,6 +41,67 @@
                 <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+
+        <Storyboard x:Key="AnimateCloseTitleBorder">
+            <DoubleAnimation Duration="0:0:0.3"
+                                                                         Storyboard.TargetProperty="Height"
+                                                                         To="0" />
+        </Storyboard>
+        <Storyboard x:Key="AnimateOpenTitleBorder">
+            <DoubleAnimation Duration="0:0:0.3"
+                                                                         Storyboard.TargetProperty="Height"
+                                                                         To="25" />
+        </Storyboard>
+        
+        <Style x:Key="MetroWindowButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle">
+                <Setter.Value>
+                    <Style>
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#FF707070"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -49,49 +110,53 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Window}">
                         <Grid>
-                            <Border x:Name="MainBorder" BorderThickness="0" Background="White" >
+                            <Border x:Name="MainBorder" BorderThickness="0" Background="White" MouseLeftButtonDown="PART_MainBar_MouseLeftButtonDown">
                                 <DockPanel LastChildFill="True">
                                     <Border x:Name="PART_TITLEBAR" 
-                                            Margin="0,0,0,0" Height="40" DockPanel.Dock="Top"                                             
+                                            Margin="0,0,0,0" Height="25" DockPanel.Dock="Top"                                             
                                             Background="Transparent" MouseLeftButtonDown="PART_TITLEBAR_MouseLeftButtonDown"
                                             >
                                         <DockPanel LastChildFill="False">
-                                            <TextBlock Margin="4,0,0,4" VerticalAlignment="Center" 
+                                            <TextBlock Margin="5,0,0,0" VerticalAlignment="Center" 
                                                        Foreground="#FFAAAAAA" TextWrapping="NoWrap" 
                                                        Text="{TemplateBinding Title}" FontSize="16" />
                                             <Button x:Name="PART_CLOSE" DockPanel.Dock="Right" 
-                                                    VerticalAlignment="Center" Margin="5"
+                                                    VerticalAlignment="Center" Margin="0,5,5,5"
                                                     Height="20" Width="20" 
-                                                    Style="{DynamicResource MetroWindowButtonStyle}"
+                                                    Style="{StaticResource MetroWindowButtonStyle}"
                                                     Click="PART_CLOSE_Click">
                                                 <Path Data="F1M54.0573,47.8776L38.1771,31.9974 54.0547,16.1198C55.7604,14.4141 55.7604,11.6511 54.0573,9.94531 52.3516,8.23962 49.5859,8.23962 47.8802,9.94531L32.0026,25.8229 16.1224,9.94531C14.4167,8.23962 11.6511,8.23962 9.94794,9.94531 8.24219,11.6511 8.24219,14.4141 9.94794,16.1198L25.8255,32 9.94794,47.8776C8.24219,49.5834 8.24219,52.3477 9.94794,54.0534 11.6511,55.7572 14.4167,55.7585 16.1224,54.0534L32.0026,38.1745 47.8802,54.0534C49.5859,55.7585 52.3516,55.7572 54.0573,54.0534 55.7604,52.3477 55.763,49.5834 54.0573,47.8776z" 
-                                                      Stretch="Uniform" Fill="#FFAAAAAA" Width="10" Margin="0,0,0,0" ></Path>
+                                                      Stretch="Uniform" Fill="Black" Width="10" Margin="0,0,0,0" ></Path>
                                             </Button>
                                             <Button x:Name="PART_MAXIMIZE_RESTORE" 
-                                                    DockPanel.Dock="Right" Margin="5"
+                                                    DockPanel.Dock="Right" Margin="0,5,5,5"
                                                     HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                    Height="20" Width="20" Style="{DynamicResource MetroWindowButtonStyle}"
+                                                    Height="20" Width="20" Style="{StaticResource MetroWindowButtonStyle}"
                                                     Click="PART_MAXIMIZE_RESTORE_Click">
                                                 <Path Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
-                                                      Stretch="Uniform" Fill="#FFAAAAAA" Width="10" Margin="0,0,0,0" ></Path>
+                                                      Stretch="Uniform" Fill="Black" Width="10" Margin="0,0,0,0" ></Path>
                                             </Button>
                                             <Button x:Name="PART_SUPER_MAXIMIZE_RESTORE" 
-                                                    DockPanel.Dock="Right" Margin="5"
+                                                    DockPanel.Dock="Right" Margin="0,5,5,5"
                                                     HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                    Height="20" Width="20" Style="{DynamicResource MetroWindowButtonStyle}"
+                                                    Height="20" Width="20" Style="{StaticResource MetroWindowButtonStyle}"
                                                     Click="PART_SUPER_MAXIMIZE_RESTORE_Click">
                                                 <fa:FontAwesome Icon="ArrowsAlt"></fa:FontAwesome>
                                             </Button>
                                             <Button x:Name="PART_MINIMIZE" 
                                                     HorizontalAlignment="Center" 
-                                                    VerticalAlignment="Center" Margin="5"
+                                                    VerticalAlignment="Center" Margin="0,5,5,5"
                                                     DockPanel.Dock="Right"
-                                                    Height="20" Width="20" Style="{DynamicResource MetroWindowButtonStyle}"
+                                                    Height="20" Width="20" Style="{StaticResource MetroWindowButtonStyle}"
                                                     Click="PART_MINIMIZE_Click" VerticalContentAlignment="Bottom">
-                                                <Button.Content>
-                                                    <Path Data="M0,20L53.333,20 53.333,8.888 0,8.888z" 
-                                                          Stretch="Uniform" Fill="#FFAAAAAA" Width="10" Margin="0,0,0,5"></Path>
-                                                </Button.Content>
+                                                <fa:FontAwesome Icon="Minus" VerticalAlignment="Bottom"></fa:FontAwesome>
+                                            </Button>
+                                            <Button x:Name="PART_LOCK" DockPanel.Dock="Right" 
+                                                    VerticalAlignment="Center" Margin="0,5,5,5"
+                                                    Height="20" Width="20" 
+                                                    Style="{StaticResource MetroWindowButtonStyle}"
+                                                    Click="PART_LOCK_Click">
+                                                <fa:FontAwesome Icon="Lock"></fa:FontAwesome>
                                             </Button>
                                         </DockPanel>
                                     </Border>
@@ -133,55 +198,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="MetroWindowButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle">
-                <Setter.Value>
-                    <Style>
-                        <Setter Property="Control.Template">
-                            <Setter.Value>
-                                <ControlTemplate>
-                                    <Rectangle Margin="2" SnapsToDevicePixels="True" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Background" Value="{x:Null}"/>
-            <Setter Property="BorderBrush" Value="#FF707070"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="True">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        
 
 
         <Style TargetType="{x:Type dockManager:ContentPane}">
@@ -625,8 +642,8 @@
                 </dockManager:XamDockManager>
             </Grid>
         </Grid>
-        <StackPanel x:Name="ExitFullScreenPanel" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="250" Margin="0,-90,0,0" Background="White" Opacity="0">
-            <TextBlock Background="White" FontSize="22" Margin="5,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel x:Name="ExitFullScreenPanel" HorizontalAlignment="Center" Height="60" VerticalAlignment="Top" Width="250" Margin="0,-90,0,0" Background="White" ScrollViewer.VerticalScrollBarVisibility="Disabled" Opacity="0">
+            <TextBlock Background="White" FontSize="22" Margin="25,10,0,10" HorizontalAlignment="Center" VerticalAlignment="Center">
                  <Hyperlink Click="CloseSuperMaximised">
                                     <Run Text="Exit Full Screen (F11)" />
                                 </Hyperlink>
@@ -635,7 +652,7 @@
                 <DropShadowEffect BlurRadius="10" Direction="300" ShadowDepth="10"/>
             </StackPanel.Effect>
         </StackPanel>
-        <Rectangle x:Name="ShowFullScreenPanel" Height="60" Margin="0,-45,0,0" Fill="#00000000" MouseEnter="ShowFullScreenPanel_OnMouseEnter" VerticalAlignment="Top" Visibility="Visible" Width="700" HorizontalAlignment="Center"/>
-        <Rectangle x:Name="HideFullScreenPanel" Height="60" VerticalAlignment="Top" Margin="0,50,0,0" Fill="#00000000" MouseEnter="HideFullScreenPanel_OnMouseEnter" Visibility="Visible" Width="700" HorizontalAlignment="Center"/>
+        <Rectangle x:Name="ShowFullScreenPanel" Height="10" Margin="0,-5,0,0" MouseEnter="ShowFullScreenPanel_OnMouseEnter" VerticalAlignment="Top" IsHitTestVisible="True" Fill="#00000000"/>
+        <Rectangle x:Name="HideFullScreenPanel" Height="8" VerticalAlignment="Top" Margin="0,30,0,0" MouseEnter="HideFullScreenPanel_OnMouseEnter" IsHitTestVisible="True" Fill="#00000000"/>
     </Grid>
 </Window>
