@@ -5,11 +5,24 @@
         xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
        
           xmlns:ig="http://schemas.infragistics.com/xaml"
-        Title="ControlStyleTestingWindow" Height="800" Width="600">
-    <WrapPanel Orientation="Vertical">
+          xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+          Title="ControlStyleTestingWindow" Height="800" Width="600">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
+        </Window.Resources>
+        <WrapPanel Orientation="Vertical">
+         
        
         <CheckBox AutomationProperties.AutomationId="Testing_CheckBox"></CheckBox>
-        <ComboBox AutomationProperties.AutomationId="Testing_Combobox"></ComboBox>
+        <ComboBox Name="ComboBox" AutomationProperties.AutomationId="Testing_Combobox">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
         <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
         <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox" Margin="20,2,1,2"
                      customControls:PasswordBoxAssistant.BindPassword="true"
@@ -53,18 +66,7 @@
         <ProgressBar Name="ProgressBar" Height="30" Width="200"  Minimum="0" Maximum="100" Value="0"></ProgressBar>
 
 
-        <ig:XamNetworkNode x:Name="Nodes"
-                           ItemsSource="{Binding}">
-            <ig:XamNetworkNode.GlobalNodeLayouts>
-                <ig:NetworkNodeNodeLayout
-                    TargetTypeName="ExplorerItemNodeViewModel"
-                    DisplayMemberPath="ResourceName"
-                    ConnectionsMemberPath="Children"
-                    ConnectionTargetMemberPath="Self"
-                    ConnectionWeightMemberPath="Weight"
-                    />
-            </ig:XamNetworkNode.GlobalNodeLayouts>
-        </ig:XamNetworkNode>
+
         <TextBox AutomationProperties.AutomationId="Testing_SearchTextBox" Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox AutomationProperties.AutomationId="Testing_VariableListTextBox" Style="{StaticResource VariableListTextBox}"></TextBox>
         <TextBox AutomationProperties.AutomationId="Testing_TextBox"></TextBox>

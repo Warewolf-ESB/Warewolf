@@ -376,13 +376,13 @@
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="CurrentStates">
                                 <VisualState x:Name="Regular" />
-                                <VisualState x:Name="Current">
-                                    <Storyboard>
+                                <VisualState x:Name="Current"/>
+                                    <!--<Storyboard>
                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
                                             <EasingColorKeyFrame KeyTime="0" Value="{StaticResource WarewolfOrange}" />
                                         </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
+                                    </Storyboard>-->
+                                
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <ContentPresenter Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
