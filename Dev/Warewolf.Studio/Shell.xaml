@@ -26,11 +26,6 @@
 
     <Window.Resources>
 
-        <Style x:Key="SplitterStyle" TargetType="dockManager:SplitPaneSplitter">
-            <Setter Property="Visibility" Value="Collapsed" />
-            <Setter Property="IsHitTestVisible" Value="False" />
-        </Style>
-
         <Storyboard x:Key="AnimateExitFullScreenPanelOpen" TargetName="ExitFullScreenPanel">
             <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00">
                 <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-10,0,0" />
@@ -612,13 +607,10 @@
                             <dockManager:ContentPane x:Name="Help"
                                                      Height="400"
                                                      AllowClose="False"
-                                                     AllowDocking="False"
-                                                     AllowFloatingOnly="False"
                                                      AllowInDocumentHost="False"
                                                      CloseButtonVisibility="Hidden"
                                                      Header="WHAT DOES THIS DO?"
                                                      IsPinned="True"
-                                                     PinButtonVisibility="Hidden"
                                                      Style="{DynamicResource DockmangerToolPaneStyle}"
                                                      WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Help}" />
