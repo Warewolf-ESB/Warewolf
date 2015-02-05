@@ -53,7 +53,7 @@ namespace Warewolf.Studio
         {
             base.ConfigureContainer();
             AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
-            ThemeManager.ApplicationTheme = new LunaTheme();
+            
 
             Container.RegisterInstance<IVersionChecker>(new VersionChecker());
             Container.RegisterType<IWebLatestVersionDialog, WebLatestVersionDialog>();

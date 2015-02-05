@@ -102,7 +102,7 @@
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
         <Setter Property="Height" Value="25" />
-        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="Padding" Value="4,2" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="NoWrap" />
@@ -294,7 +294,7 @@
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
         <Setter Property="Height" Value="25" />
-        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="Padding" Value="4,3" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="NoWrap" />
@@ -523,7 +523,7 @@
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
         <Setter Property="Height" Value="25" />
-        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="Padding" Value="4,3" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="TextWrapping" Value="NoWrap" />
