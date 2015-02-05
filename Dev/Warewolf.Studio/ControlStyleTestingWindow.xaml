@@ -71,7 +71,9 @@
         </PasswordBox>
         <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
         <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
+        <TextBox Style="{StaticResource MultiLineTextBoxStyle}" ToolTip="Bob the builder" TextWrapping="Wrap" Height="90" AcceptsReturn="True" > Multi Line </TextBox>
         <TextBox ToolTip="Bob the builder">ToolTip</TextBox>
+       
         <TextBox>
             <TextBox.ToolTip>
                 <ToolTip Style="{StaticResource ToolTipStyleValidationStyle}"> Bad Bob the builder</ToolTip>
