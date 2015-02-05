@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Dev2.Common.Interfaces;
@@ -37,11 +38,11 @@ namespace Warewolf.Studio
 
         private void Maximise()
         {
-                var handle = (new WinInterop.WindowInteropHelper(this)).Handle;
-                var handleSource = WinInterop.HwndSource.FromHwnd(handle);
-                if (handleSource == null)
-                    return;
-                handleSource.AddHook(WindowProc);
+            var handle = (new WinInterop.WindowInteropHelper(this)).Handle;
+            var handleSource = WinInterop.HwndSource.FromHwnd(handle);
+            if (handleSource == null)
+                return;
+            handleSource.AddHook(WindowProc);
         }
 
         private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -76,41 +77,41 @@ namespace Warewolf.Studio
 
             Marshal.StructureToPtr(mmi, lParam, true);
         }
-    
 
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct MINMAXINFO
-    {
-        public POINT ptReserved;
-        public POINT ptMaxSize;
-        public POINT ptMaxPosition;
-        public POINT ptMinTrackSize;
-        public POINT ptMaxTrackSize;
-    };
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct POINT
-    {
-        /// <summary>
-        /// x coordinate of point.
-        /// </summary>
-        public int x;
-
-        /// <summary>
-        /// y coordinate of point.
-        /// </summary>
-        public int y;
-
-        /// <summary>
-        /// Construct a point of coordinates (x,y).
-        /// </summary>
-        public POINT(int x, int y)
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MINMAXINFO
         {
-            this.x = x;
-            this.y = y;
+            public POINT ptReserved;
+            public POINT ptMaxSize;
+            public POINT ptMaxPosition;
+            public POINT ptMinTrackSize;
+            public POINT ptMaxTrackSize;
+        };
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            /// <summary>
+            /// x coordinate of point.
+            /// </summary>
+            public int x;
+
+            /// <summary>
+            /// y coordinate of point.
+            /// </summary>
+            public int y;
+
+            /// <summary>
+            /// Construct a point of coordinates (x,y).
+            /// </summary>
+            public POINT(int x, int y)
+            {
+                this.x = x;
+                this.y = y;
+            }
         }
-    }
 
         private void Shell_KeyDown(object sender, KeyEventArgs e)
         {
@@ -201,8 +202,8 @@ namespace Warewolf.Studio
         {
             WindowState = WindowState.Minimized;
         }
-        
-        
+
+
 
         /// <summary>
         /// </summary>
@@ -211,7 +212,7 @@ namespace Warewolf.Studio
         {
             /// <summary>
             /// </summary>
-            public int cbSize = Marshal.SizeOf(typeof (MONITORINFO));
+            public int cbSize = Marshal.SizeOf(typeof(MONITORINFO));
 
             /// <summary>
             /// </summary>
@@ -304,7 +305,7 @@ namespace Warewolf.Studio
                 {
                     return false;
                 }
-                return (this == (RECT) obj);
+                return (this == (RECT)obj);
             }
 
             /// <summary>Return the HashCode for this struct (not garanteed to be unique)</summary>
@@ -328,7 +329,7 @@ namespace Warewolf.Studio
             }
         }
 
-       
+
         private void PART_SUPER_MAXIMIZE_RESTORE_Click(object sender, RoutedEventArgs e)
         {
             EnterSuperMaximisedMode();
@@ -390,6 +391,23 @@ namespace Warewolf.Studio
                 {
                     storyboard.Begin();
                 }
+            }
+        }
+
+
+        public class ExtendedGridSplitter : GridSplitter
+        {
+
+            public ExtendedGridSplitter()
+            {
+                EventManager.RegisterClassHandler(typeof(ExtendedGridSplitter), Thumb.DragDeltaEvent,
+                    new DragDeltaEventHandler(OnDragDelta));
+            }
+
+
+            private void OnDragDelta(object sender, DragDeltaEventArgs e)
+            {
+                e.Handled = true;
             }
         }
     }
