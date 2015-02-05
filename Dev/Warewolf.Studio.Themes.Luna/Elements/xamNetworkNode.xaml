@@ -93,7 +93,8 @@
                                 <VisualState x:Name="Focused">
                                     <Storyboard>
 
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="over" />
+                                        <!--<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="over" />-->
+                                        <!--<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="selectedMain" />-->
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Unfocused"/>
@@ -102,8 +103,10 @@
                                 <VisualState x:Name="Unselected"></VisualState>
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="selected" />
+                                        <DoubleAnimation Duration="1" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="overlay" />
+                                        <!--<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="selected" />-->
                                         <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="focused" />
+                                        <!--<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="selectedMain" />-->
                                     </Storyboard>
                                     
                                 </VisualState>
@@ -113,13 +116,15 @@
             Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" />
                         <Border x:Name="overlayMain" Background="{StaticResource WareWolfHeaderButtonBrush}" Visibility="{Binding Path=IsMainNode}" CornerRadius="{TemplateBinding CornerRadius}"
             BorderThickness="0" />
+                        <Border x:Name="selectedMain" Opacity="0" Background="{StaticResource WareWolfHeaderButtonBrush}" Visibility="{Binding Path=IsMainNode}" CornerRadius="{TemplateBinding CornerRadius}"
+            BorderThickness="0" />
                         <Border x:Name="over" BorderBrush="{StaticResource WareWolfOrangeBrush}" Background="{StaticResource NodeBgBrushOver}"
             CornerRadius="{TemplateBinding CornerRadius}" Opacity="0"  BorderThickness="2"/>
                         
-                        <Border x:Name="focused" BorderBrush="{StaticResource WareWolfOrangeBrush}" Background="{StaticResource NodeBgFocus}"
+                        <Border x:Name="focused" BorderBrush="{StaticResource WareWolfOrangeBrush}" Background="Transparent"
                           CornerRadius="{TemplateBinding CornerRadius}" Opacity="0" BorderThickness="2"/>
-                        
-                        <Border x:Name="selected" Background="{StaticResource NodeBgBrushSelected}" CornerRadius="{TemplateBinding CornerRadius}"
+
+                        <Border x:Name="selected" Background="{StaticResource NodeBgBrushSelected}" Visibility="{Binding Path=IsNotMainNode}" CornerRadius="{TemplateBinding CornerRadius}"
                         BorderThickness="{TemplateBinding BorderThickness}" Opacity="0" BorderBrush="{StaticResource WareWolfOrangeBrush}" />
                         
                         <Border x:Name="focusedStroke" BorderBrush="{StaticResource WareWolfOrangeBrush}" CornerRadius="{TemplateBinding CornerRadius}" Opacity="0" BorderThickness="2"/>

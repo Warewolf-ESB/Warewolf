@@ -435,7 +435,7 @@
                                     CommandTarget="{Binding Pane,  RelativeSource={RelativeSource AncestorType={x:Type dockManager:PaneTabItem}}}"
                                         Style="{StaticResource BasicButton}"
                                         Opacity="0.4"
-                                        Visibility="Collapsed">
+                                        Visibility="Visible">
                                     <fa:FontAwesome FontSize="12" Icon="Times" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                                 </Button>
                             </Grid>
@@ -641,6 +641,8 @@
         </DataTemplate>
     </Window.Resources>
 
+    <!--START OF LAYOUT-->
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
