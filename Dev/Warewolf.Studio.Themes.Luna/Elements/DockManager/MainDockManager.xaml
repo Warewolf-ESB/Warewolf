@@ -79,7 +79,7 @@
         </Style.Resources>
     </Style>
 
-        <!--  TOOL WINDOW DOCK MANAGER STYLING  -->
+    <!--  TOOL WINDOW DOCK MANAGER STYLING  -->
     <Style x:Key="DockmangerToolPaneStyle" TargetType="{x:Type igDock:ContentPane}">
         <Setter Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}" />
         <Setter Property="BorderThickness" Value="0" />
@@ -131,7 +131,7 @@
                                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                                     </DockPanel>
                                 </Border>
-                                
+
                                 <Border x:Name="innerBorderHighlight"
                                         BorderBrush="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionInnerBorderFillKey}}"
                                         BorderThickness="1,1,1,0" />
@@ -364,19 +364,19 @@
     <Style TargetType="{x:Type igDock:PaneTabItem}">
         <Setter Property="Template">
             <Setter.Value>
-    <ControlTemplate TargetType="{x:Type igDock:PaneTabItem}">
-        <Border x:Name="Background"
+                <ControlTemplate TargetType="{x:Type igDock:PaneTabItem}">
+                    <Border x:Name="Background"
                     Height="35"
                     Margin="0,0,0,0">
-            <Grid x:Name="TabbedDocumentTab"
+                        <Grid x:Name="TabbedDocumentTab"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                <Border x:Name="HighlightBorder"
+                            <Border x:Name="HighlightBorder"
                             Grid.Column="1"
                             Grid.ColumnSpan="1"
                             Margin="0,0,0,0"
@@ -385,13 +385,13 @@
                         BorderBrush="{StaticResource WareWolfBackGroundBrush}"
                             BorderThickness="1"
                             CornerRadius="0,0,0,0" />
-                <Border x:Name="Border"
+                            <Border x:Name="Border"
                             Grid.Column="1"
                             Margin="0,0,0,0"
                             VerticalAlignment="Stretch"
                          Background="White" 
                             CornerRadius="0,0,0,0" />
-                <Rectangle x:Name="activebrFiller"
+                            <Rectangle x:Name="activebrFiller"
                                Grid.Column="1"
                                Width="1"
                                Height="1"
@@ -401,14 +401,14 @@
                            Fill="{StaticResource WareWolfBackGroundBrush}" 
                                Visibility="Collapsed" />
 
-                <Border x:Name="Content"
+                            <Border x:Name="Content"
                             Grid.Column="1"
                             Background="{StaticResource WareWolfBackGroundBrush}"
                             BorderThickness="1,1,1,0">
-                    <DockPanel x:Name="ContentDock"
+                                <DockPanel x:Name="ContentDock"
                                    Margin="10,5,5,5"
                                    VerticalAlignment="Center">
-                        <igWindows:AutoDisabledImage Width="20"
+                                    <igWindows:AutoDisabledImage Width="20"
                                                          Height="20"
                                                          Margin="3,3,10,0"
                                 DockPanel.Dock="Left"
@@ -418,14 +418,14 @@
                                                          Visibility="{Binding Path=Pane.HasImage,
                                                                               Converter={StaticResource BoolToVis},
                                                                               RelativeSource={x:Static RelativeSource.TemplatedParent}}" />
-                        <Grid x:Name="gdContent"
+                                    <Grid x:Name="gdContent"
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <ContentPresenter x:Name="NormalContent"
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ContentPresenter x:Name="NormalContent"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Center"
                         		ContentSource="Header" 
@@ -437,7 +437,7 @@
                                 igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
                                                   igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static igDock:XamDockManager.ToolTipStyleKey}" />
 
-                            <ContentPresenter x:Name="NormalContentBold"
+                                        <ContentPresenter x:Name="NormalContentBold"
                                                   Margin="-4,0,-3,0"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Center"
@@ -454,7 +454,7 @@
                                 igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
                                                   igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static igDock:XamDockManager.ToolTipStyleKey}" />
 
-                            <Button x:Name="closeBtn"
+                                    <Button x:Name="closeBtn"
                                     Grid.Column="1"
                                     Margin="3,0,0,0"
                                     VerticalAlignment="Top"
@@ -463,136 +463,137 @@
                                         CommandTarget="{Binding Pane,
                                                                 RelativeSource={RelativeSource AncestorType={x:Type igDock:PaneTabItem}}}"
                                         Opacity="0.4"
-                                        Style="{StaticResource BasicButton}"
+                                        Style="{StaticResource TabButton}"
                                         Visibility="Visible">
-                                <fa:FontAwesome HorizontalAlignment="Center"
+                                            <fa:FontAwesome HorizontalAlignment="Center"
                                                     VerticalAlignment="Top"
                                                     FontSize="12"
                                                     Icon="Times" />
-                            </Button>
+                                        </Button>
+                                    </Grid>
+                                </DockPanel>
+                            </Border>
                         </Grid>
-                    </DockPanel>
-                </Border>
-            </Grid>
-        </Border>
-        <ControlTemplate.Triggers>
+                    </Border>
+                    <ControlTemplate.Triggers>
 
-            <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.GrayTextBrushKey}}" />
-            </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.GrayTextBrushKey}}" />
+                        </Trigger>
 
-            <Trigger Property="IsMouseOverTab" Value="true" />
+                        <Trigger Property="IsMouseOverTab" Value="true" >
+                            <Setter TargetName="closeBtn" Property="Foreground" Value="{StaticResource WareWolfOrangeBrush}" />
+                        </Trigger>
 
-            <Trigger Property="IsSelected" Value="true">
-                <Setter Property="Panel.ZIndex" Value="1" />
-                <Setter TargetName="activebrFiller" Property="Visibility" Value="Visible" />
-                <Setter TargetName="closeBtn" Property="Visibility" Value="Visible" />
-                <Setter TargetName="HighlightBorder" Property="BorderBrush" Value="White" />
-                <Setter TargetName="HighlightBorder" Property="Background" Value="White" />
-                <Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}}" />
-                <Setter TargetName="HighlightBorder" Property="Margin" Value="-4,0,0,0" />
-                <Setter TargetName="Border" Property="Margin" Value="-4,1,2,-2" />
-                <Setter TargetName="Border" Property="Background" Value="Transparent" />
-                <Setter TargetName="Content" Property="Background" Value="White" />
-            </Trigger>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Panel.ZIndex" Value="1" />
+                            <Setter TargetName="activebrFiller" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="HighlightBorder" Property="BorderBrush" Value="White" />
+                            <Setter TargetName="HighlightBorder" Property="Background" Value="White" />
+                            <Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}}" />
+                            <Setter TargetName="HighlightBorder" Property="Margin" Value="-4,0,0,0" />
+                            <Setter TargetName="Border" Property="Margin" Value="-4,1,2,-2" />
+                            <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                            <Setter TargetName="Content" Property="Background" Value="White" />
+                        </Trigger>
 
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsSelected" Value="False" />
-                    <Condition Property="IsMouseOverTab" Value="true" />
-                </MultiTrigger.Conditions>
-                <Setter TargetName="Content" Property="BorderBrush" Value="Orange" />
-            </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False" />
+                                <Condition Property="IsMouseOverTab" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Content" Property="BorderBrush" Value="Orange" />
+                        </MultiTrigger>
 
-            <DataTrigger Binding="{Binding Path=Pane.IsActiveDocument, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
-                <Setter TargetName="NormalContent" Property="Visibility" Value="Hidden" />
-                <Setter TargetName="NormalContentBold" Property="Visibility" Value="Visible" />
-            </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=Pane.IsActiveDocument, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
+                            <Setter TargetName="NormalContent" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="NormalContentBold" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
 
-            <!--  ========== TAB PLACEMENT : BOTTOM ==========  -->
-            <Trigger Property="TabStripPlacement" Value="Bottom">
-                <Setter Property="LayoutTransform">
-                    <Setter.Value>
-                        <ScaleTransform ScaleY="-1" />
-                    </Setter.Value>
-                </Setter>
-                <Setter TargetName="ContentDock" Property="LayoutTransform">
-                    <Setter.Value>
-                        <ScaleTransform ScaleY="-1" />
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
+                        <!--  ========== TAB PLACEMENT : BOTTOM ==========  -->
+                        <Trigger Property="TabStripPlacement" Value="Bottom">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleY="-1" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="ContentDock" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleY="-1" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
 
-            <!--  ========== TAB PLACEMENT : LEFT ==========  -->
-            <Trigger Property="TabStripPlacement" Value="Left">
-                <Setter Property="LayoutTransform">
-                    <Setter.Value>
-                        <RotateTransform Angle="-90" />
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
+                        <!--  ========== TAB PLACEMENT : LEFT ==========  -->
+                        <Trigger Property="TabStripPlacement" Value="Left">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
 
-            <!--  ========== TAB PLACEMENT : RIGHT ==========  -->
-            <Trigger Property="TabStripPlacement" Value="Right">
-                <Setter Property="LayoutTransform">
-                    <Setter.Value>
-                        <RotateTransform Angle="90" />
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
+                        <!--  ========== TAB PLACEMENT : RIGHT ==========  -->
+                        <Trigger Property="TabStripPlacement" Value="Right">
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
             </Setter.Value>
-            </Setter>
+        </Setter>
     </Style>
     <Style TargetType="{x:Type igDock:TabGroupPane}">
         <Setter Property="TabStripPlacement" Value="Top"></Setter>
         <Setter Property="Template">
             <Setter.Value>
-    <ControlTemplate  TargetType="{x:Type igDock:TabGroupPane}">
-        <DockPanel ClipToBounds="True"
+                <ControlTemplate  TargetType="{x:Type igDock:TabGroupPane}">
+                    <DockPanel ClipToBounds="True"
                    KeyboardNavigation.TabNavigation="Local"
                    SnapsToDevicePixels="True">
-            <DockPanel x:Name="PART_HeaderArea"
+                        <DockPanel x:Name="PART_HeaderArea"
                        Panel.ZIndex="1"
                            DockPanel.Dock="{TemplateBinding TabStripPlacement}">
-                <DockPanel>
+                            <DockPanel>
 
-                    <!--  Dev2  -->
-                    <Button x:Name="closeBtn"
+                                <!--  Dev2  -->
+                                <Button x:Name="closeBtn"
                             VerticalAlignment="Center"
                             Command="{x:Static igDock:TabGroupPane.CloseSelectedItemCommand}"
                             DockPanel.Dock="Right"
                             Foreground="{StaticResource BrushLightForeground}"
                             Style="{DynamicResource {x:Static igDock:PaneHeaderPresenter.CloseButtonStyleKey}}" />
 
-                    <!--  Dev2  -->
-                    <Menu x:Name="filesMenu"
+                                <!--  Dev2  -->
+                                <Menu x:Name="filesMenu"
                           VerticalAlignment="Center"
                           DockPanel.Dock="Right"
                           Style="{StaticResource RootMenuStyle}">
-                        <MenuItem x:Name="PART_FilesMenuItem"
+                                    <MenuItem x:Name="PART_FilesMenuItem"
                                   Foreground="{StaticResource BrushLightForeground}"
                                   Style="{DynamicResource {x:Static igDock:PaneHeaderPresenter.PositionMenuItemStyleKey}}" />
 
-                    </Menu>
+                                </Menu>
 
-                    <!--  AS 9/10/09 TFS19267 - Added CommandParameter  -->
-                    <Button x:Name="showNavigatorButton"
+                                <!--  AS 9/10/09 TFS19267 - Added CommandParameter  -->
+                                <Button x:Name="showNavigatorButton"
                             Command="{x:Static igDock:DockManagerCommands.ShowPaneNavigator}"
                             CommandParameter="{TemplateBinding igDock:XamDockManager.DockManager}"
                             DockPanel.Dock="Right"
                             Style="{DynamicResource {x:Static igDock:TabGroupPane.DocumentPaneNavigatorButtonStyleKey}}"
                             Visibility="Collapsed" />
 
-                    <!--  Dev2  -->
-                    <ItemsPresenter x:Name="PART_TabHeaderPanel"
+                                <!--  Dev2  -->
+                                <ItemsPresenter x:Name="PART_TabHeaderPanel"
                                     Margin="0"
                                     KeyboardNavigation.TabIndex="1" />
 
-                </DockPanel>
-            </DockPanel>
-            <Border x:Name="ContentPanel"
+                            </DockPanel>
+                        </DockPanel>
+                        <Border x:Name="ContentPanel"
                     Background="White"
                     BorderBrush="White"
                     BorderThickness="0"
@@ -602,78 +603,78 @@
                     SnapsToDevicePixels="True"
                     Visibility="Visible">
 
-                <!--  Dev2  -->
-                <Border x:Name="InnerBorder"
+                            <!--  Dev2  -->
+                            <Border x:Name="InnerBorder"
                         BorderBrush="White"
                         BorderThickness="0"
                         CornerRadius="0"
                         SnapsToDevicePixels="True">
-                    <Border x:Name="ThickInnerBorder"
+                                <Border x:Name="ThickInnerBorder"
                             BorderBrush="White"
                             BorderThickness="0"
                             SnapsToDevicePixels="True">
-                        <Border x:Name="InnerMostBorder"
+                                    <Border x:Name="InnerMostBorder"
                                 Background="White"
                                 BorderBrush="White"
                                 BorderThickness="0"
                                     Padding="0,5"
                                     SnapsToDevicePixels="True">
-                            <ContentPresenter x:Name="PART_SelectedContentHost"
+                                        <ContentPresenter x:Name="PART_SelectedContentHost"
                                               Margin="{TemplateBinding Padding}"
                                               Content="{TemplateBinding SelectedContent}"
                                               ContentSource="SelectedContent"
                                               ContentTemplateSelector="{TemplateBinding SelectedContentTemplateSelector}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    </Border>
+                                </Border>
+                            </Border>
                         </Border>
-                    </Border>
-                </Border>
-            </Border>
-        </DockPanel>
-        <ControlTemplate.Triggers>
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
 
-            <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Document">
-                <Setter Property="Padding" Value="0" />
-                <Setter Property="TabStripPlacement" Value="Top" />
-            </Trigger>
-            <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Floating">
-                <Setter Property="Padding" Value="0" />
-            </Trigger>
-            <Trigger Property="TabStripPlacement" Value="Bottom">
-                <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
-            </Trigger>
-            <Trigger Property="TabStripPlacement" Value="Left">
-                <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
-                <Setter TargetName="closeBtn" Property="DockPanel.Dock" Value="Bottom" />
-                <Setter TargetName="filesMenu" Property="DockPanel.Dock" Value="Bottom" />
-                <Setter TargetName="showNavigatorButton" Property="DockPanel.Dock" Value="Bottom" />
-            </Trigger>
-            <Trigger Property="TabStripPlacement" Value="Right">
-                <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
-                <Setter TargetName="closeBtn" Property="DockPanel.Dock" Value="Bottom" />
-                <Setter TargetName="filesMenu" Property="DockPanel.Dock" Value="Bottom" />
-                <Setter TargetName="showNavigatorButton" Property="DockPanel.Dock" Value="Bottom" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.GrayTextBrushKey}}" />
-            </Trigger>
+                        <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Document">
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="TabStripPlacement" Value="Top" />
+                        </Trigger>
+                        <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Floating">
+                            <Setter Property="Padding" Value="0" />
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Bottom">
+                            <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Left">
+                            <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
+                            <Setter TargetName="closeBtn" Property="DockPanel.Dock" Value="Bottom" />
+                            <Setter TargetName="filesMenu" Property="DockPanel.Dock" Value="Bottom" />
+                            <Setter TargetName="showNavigatorButton" Property="DockPanel.Dock" Value="Bottom" />
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Right">
+                            <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
+                            <Setter TargetName="closeBtn" Property="DockPanel.Dock" Value="Bottom" />
+                            <Setter TargetName="filesMenu" Property="DockPanel.Dock" Value="Bottom" />
+                            <Setter TargetName="showNavigatorButton" Property="DockPanel.Dock" Value="Bottom" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.GrayTextBrushKey}}" />
+                        </Trigger>
 
-            <!--  PaneNavigatorButtonDisplayMode  -->
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Source={x:Static interop:BrowserInteropHelper.IsBrowserHosted}}" Value="True" />
-                    <Condition Binding="{Binding (igDock:XamDockManager.DockManager).PaneNavigatorButtonDisplayMode, RelativeSource={x:Static RelativeSource.Self}}" Value="WhenHostedInBrowser" />
-                </MultiDataTrigger.Conditions>
-                <Setter TargetName="showNavigatorButton" Property="Visibility" Value="Visible" />
-            </MultiDataTrigger>
-            <DataTrigger Binding="{Binding (igDock:XamDockManager.DockManager).PaneNavigatorButtonDisplayMode, RelativeSource={x:Static RelativeSource.Self}}" Value="Always">
-                <Setter TargetName="showNavigatorButton" Property="Visibility" Value="Visible" />
-            </DataTrigger>
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+                        <!--  PaneNavigatorButtonDisplayMode  -->
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Source={x:Static interop:BrowserInteropHelper.IsBrowserHosted}}" Value="True" />
+                                <Condition Binding="{Binding (igDock:XamDockManager.DockManager).PaneNavigatorButtonDisplayMode, RelativeSource={x:Static RelativeSource.Self}}" Value="WhenHostedInBrowser" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="showNavigatorButton" Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger>
+                        <DataTrigger Binding="{Binding (igDock:XamDockManager.DockManager).PaneNavigatorButtonDisplayMode, RelativeSource={x:Static RelativeSource.Self}}" Value="Always">
+                            <Setter TargetName="showNavigatorButton" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
-    
+
     <Style TargetType="{x:Type igWindows:ToolWindow}" x:Key="WarewolfToolWindow">
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderThickness" Value="1" />
