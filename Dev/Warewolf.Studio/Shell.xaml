@@ -531,7 +531,7 @@
                                         CommandTarget="{Binding Pane,
                                                                 RelativeSource={RelativeSource AncestorType={x:Type dockManager:PaneTabItem}}}"
                                         Opacity="0.4"
-                                        Style="{StaticResource BasicButton}"
+                                        Style="{StaticResource TabButton}"
                                         Visibility="Visible">
                                     <fa:FontAwesome HorizontalAlignment="Center"
                                                     VerticalAlignment="Top"
@@ -554,7 +554,7 @@
                 <Trigger Property="IsSelected" Value="true">
                     <Setter Property="Panel.ZIndex" Value="1" />
                     <Setter TargetName="activebrFiller" Property="Visibility" Value="Visible" />
-                    <Setter TargetName="closeBtn" Property="Visibility" Value="Visible" />
+
                     <Setter TargetName="HighlightBorder" Property="BorderBrush" Value="White" />
                     <Setter TargetName="HighlightBorder" Property="Background" Value="White" />
                     <Setter Property="Background" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}}" />
