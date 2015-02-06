@@ -16,7 +16,6 @@
                     d:DesignHeight="200"
                     d:DesignWidth="150"
                     mc:Ignorable="d">
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="32" />
