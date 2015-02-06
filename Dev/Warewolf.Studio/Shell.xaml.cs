@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -10,8 +9,10 @@ using FontAwesome.WPF;
 using Infragistics.Windows;
 using Infragistics.Windows.Controls;
 using Infragistics.Windows.DockManager;
+using Infragistics.Windows.DockManager.Dragging;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
+using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using WinInterop = System.Windows.Interop;
@@ -456,13 +457,14 @@ namespace Warewolf.Studio
 
         private void DockManager_OnToolWindowLoaded(object sender, PaneToolWindowEventArgs e)
         {
-            var style = Resources["WarewolfToolWindow"] as Style;
+            var resourceDictionary = Application.Current.Resources;
+            var style = resourceDictionary["WarewolfToolWindow"] as Style;
             if (style != null)
             {
                 var window = e.Window;
                 window.UseOSNonClientArea = false;
                 window.Style = style;
             }
-        }
+        }        
     }
 }

@@ -186,7 +186,7 @@
                                Height="35"
                                MaxWidth="35"
                                MaxHeight="35"
-                               Padding="8.5,8.5,8.5,8.5"
+                               Padding="6.5,8.5,10.5,8.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="18"
                                         FontWeight="Light"
@@ -268,7 +268,7 @@
                                Height="35"
                                MaxWidth="35"
                                MaxHeight="35"
-                               Padding="7.5,7.5,7.5,7.5"
+                               Padding="6.5,7.5,8.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
@@ -457,7 +457,7 @@
                                Height="35"
                                MaxWidth="35"
                                MaxHeight="35"
-                               Padding="8.5,8.5,8.5,8.5"
+                               Padding="5.5,8.5,9.5,8.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="18"
                                         FontWeight="Light"
@@ -501,7 +501,7 @@
                                Height="35"
                                MaxWidth="35"
                                MaxHeight="35"
-                               Padding="6.5,6.5,6.5,6.5"
+                               Padding="8.5,6.5,.5,6.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="22"
                                         FontWeight="Light"
@@ -541,7 +541,7 @@
                                Height="35"
                                MaxWidth="35"
                                MaxHeight="35"
-                               Padding="7.5,7.5,7.5,7.5"
+                               Padding="7.5,7.5,7.5,6.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
@@ -581,7 +581,7 @@
                                Height="35"
                                MaxWidth="35"
                                MaxHeight="35"
-                               Padding="7.5,7.5,7.5,7.5"
+                               Padding="9.5,7.5,5.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20" Icon="{Binding Path=LockImage}" />
                     </TextBlock>
