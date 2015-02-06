@@ -191,7 +191,7 @@
                         </Setter.Value>
                     </Setter>
                 </Trigger>
-            </Style.Triggers>            
+            </Style.Triggers>
         </Style>
         <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
             <views:WorkflowDesignerView />

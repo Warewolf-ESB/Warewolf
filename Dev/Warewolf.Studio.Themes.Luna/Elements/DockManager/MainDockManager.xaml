@@ -90,6 +90,8 @@
                                            Margin="{TemplateBinding Padding}"
                                            Background="{StaticResource WareWolfHeaderButtonBrush}"
                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                
+                            
 
                             </Grid>
                         </ControlTemplate>
@@ -665,6 +667,7 @@
         </Style.Triggers>
     </Style>
 
+    
 
     <Style TargetType="{x:Type igDock:ContentPane}">
         <Setter Property="BorderThickness" Value="0" />

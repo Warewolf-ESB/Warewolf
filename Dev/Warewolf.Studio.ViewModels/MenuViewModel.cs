@@ -56,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
             });
             IsOverLockCommand = new DelegateCommand(() => _isOverLock = true);
             IsNotOverLockCommand = new DelegateCommand(() => _isOverLock = false);
-            ButtonWidth = 120;
+            ButtonWidth = 125;
             IsPanelLockedOpen = true;
             IsPanelOpen = true;
 
@@ -122,10 +122,10 @@ namespace Warewolf.Studio.ViewModels
             }
             else 
             {
-                if(!IsPanelOpen && ButtonWidth == 120)
+                if(!IsPanelOpen && ButtonWidth == 125)
                     ButtonWidth = 35;
                 if (IsPanelOpen && ButtonWidth == 35)
-                    ButtonWidth = 120;
+                    ButtonWidth = 125;
 
                 IsPanelLockedOpen = false;
             }
@@ -141,7 +141,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsPanelOpen = true;
                 shellViewModel.MenuExpanded = IsPanelOpen;
-                ButtonWidth = 120;
+                ButtonWidth = 125;
                 UpdateProperties();
             }
         }
@@ -158,7 +158,7 @@ namespace Warewolf.Studio.ViewModels
             else if (IsPanelLockedOpen && IsPanelOpen)
             {
                 shellViewModel.MenuExpanded = !IsPanelOpen;
-                ButtonWidth = 120;
+                ButtonWidth = 125;
                 IsPanelOpen = !IsPanelOpen;
             }
 
@@ -258,7 +258,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogNewLabel;
                 return String.Empty;
@@ -268,7 +268,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogSaveLabel;
                 return String.Empty;
@@ -278,7 +278,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogDeployLabel;
                 return String.Empty;
@@ -288,7 +288,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogDatabaseLabel;
                 return String.Empty;
@@ -299,7 +299,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogDLLLabel;
                 return String.Empty;
@@ -309,7 +309,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogWebLabel;
                 return String.Empty;
@@ -319,7 +319,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogTaskLabel;
                 return String.Empty;
@@ -329,7 +329,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogDebugLabel;
                 return String.Empty;
@@ -339,7 +339,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogSettingsLabel;
                 return String.Empty;
@@ -349,7 +349,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogSupportLabel;
                 return String.Empty;
@@ -359,7 +359,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogForumsLabel;
                 return String.Empty;
@@ -369,7 +369,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogToursLabel;
                 return String.Empty;
@@ -379,7 +379,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth == 120)
+                if (ButtonWidth == 125)
                     // ReSharper disable once MaximumChainedReferences
                     return Resources.Languages.Core.MenuDialogNewVersionLabel;
                 return String.Empty;
