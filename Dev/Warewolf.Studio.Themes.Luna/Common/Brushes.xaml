@@ -68,7 +68,7 @@
     <SolidColorBrush x:Key="BrushBackground" Color="{StaticResource WarewolfPanelGrey}" />
     <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource WarewolfEnabledText}" />
     <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource WarewolfDisabledText}" />
-    <SolidColorBrush x:Key="TransparentBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="TransparentBrush" Color="Transparent" />
     <SolidColorBrush x:Key="DisabledVisualElement" Color="{StaticResource WarewolfDisabledText}" />
     <SolidColorBrush x:Key="ValidationErrorElement"
                      igPrim:XamlHelper.IsExcludedFromWash="True"

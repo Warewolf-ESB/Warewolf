@@ -19,26 +19,25 @@
 
 
     <SolidColorBrush x:Key="DialogWindowBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    <SolidColorBrush x:Key="DialogWindowBorderBrush" Color="{StaticResource WarewolfWhite}" />
 
-    <SolidColorBrush x:Key="DialogWindowActiveResizeBorderBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
-    <SolidColorBrush x:Key="DialogWindowActiveResizeBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
-    <SolidColorBrush x:Key="DialogWindowNoActiveResizeBorderBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
-    <SolidColorBrush x:Key="DialogWindowNoActiveResizeBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
-    <SolidColorBrush x:Key="DialogWindowInactiveBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
-    <SolidColorBrush x:Key="DialogWindowActiveBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="DialogWindowActiveResizeBorderBrush" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="DialogWindowActiveResizeBackgroundBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="DialogWindowNoActiveResizeBorderBrush" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="DialogWindowNoActiveResizeBackgroundBrush" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="DialogWindowInactiveBackgroundBrush" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="DialogWindowActiveBackgroundBrush" Color="Transparent" />
 
-    <SolidColorBrush x:Key="DialogWindowHeaderIconBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
-    <SolidColorBrush x:Key="DialogWindowHeaderIconBorderBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
+    <SolidColorBrush x:Key="DialogWindowHeaderIconBackgroundBrush" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="DialogWindowHeaderIconBorderBrush" Color="{StaticResource WarewolfMenuGrey}" />
 
-    <SolidColorBrush x:Key="DialogWindowModalBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
-    <SolidColorBrush x:Key="DialogWindowHeaderForegroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
-    <SolidColorBrush x:Key="DialogWindowHeaderBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
+    <SolidColorBrush x:Key="DialogWindowModalBackgroundBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="DialogWindowHeaderForegroundBrush" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="DialogWindowHeaderBackgroundBrush" Color="{StaticResource WarewolfMenuGrey}" />
     <SolidColorBrush x:Key="DialogWindowFocusVisualStyleBorderBrush" Color="{StaticResource WarewolfWhite}" />
     <SolidColorBrush x:Key="DialogWindowFocusVisualStyleBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
 
-    <SolidColorBrush x:Key="DialogWindowGlyphBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
-    <SolidColorBrush x:Key="DialogWindowGlyphBorderBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
+    <SolidColorBrush x:Key="DialogWindowGlyphBackgroundBrush" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="DialogWindowGlyphBorderBrush" Color="{StaticResource WarewolfMenuGrey}" />
 
     <!--  *********************************  DialogButton Style  *********************************  -->
 
@@ -106,17 +105,18 @@
     <Style x:Key="XamDialogWindowStyle" TargetType="igDw:XamDialogWindow">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="IsEnabled" Value="true" />
-        <Setter Property="ModalBackground" Value="{StaticResource DialogWindowModalBackgroundBrush}" />
+        <Setter Property="ModalBackground" Value="Transparent" />
         <Setter Property="Background" Value="{StaticResource DialogWindowBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource DialogWindowBorderBrush}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Top" />
-        <Setter Property="HeaderForeground" Value="{StaticResource WareWolfBlackBrush}" />
-        <Setter Property="HeaderBackground" Value="{StaticResource WarewolfPanelGreyBrush}" />
+        <Setter Property="HeaderForeground" Value="{StaticResource WareWolfWhiteBrush}" />
+        <Setter Property="HeaderBackground" Value="{StaticResource WareWolfMenuBrush}" />
+        <Setter Property="Margin" Value="0,0,0,0" />
         <Setter Property="HeaderIconTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -128,13 +128,14 @@
                         <Border Height="0"
                                 Margin="0,0,0,0"
                                 VerticalAlignment="Top"
-                                Background="{StaticResource DialogWindowHeaderIconBorderBrush}" />
+                                Background="Transparent"
+                                Visibility="Collapsed" />
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
 
-        <Setter Property="HeaderVerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HeaderVerticalContentAlignment" Value="Center" />
         <Setter Property="CloseButtonVisibility" Value="Visible" />
         <Setter Property="MinimizeButtonVisibility" Value="Collapsed" />
         <Setter Property="MaximizeButtonVisibility" Value="Collapsed" />
@@ -144,6 +145,7 @@
         <Setter Property="StartupPosition" Value="Center" />
 
         <Setter Property="Template">
+
             <Setter.Value>
                 <ControlTemplate TargetType="igDw:XamDialogWindow">
                     <Grid x:Name="ContainerContext">
@@ -652,9 +654,7 @@
                             <!--  Borders  -->
                             <Grid x:Name="BorderGrid">
                                 <Border x:Name="Border1" BorderThickness="0" />
-                                <Grid x:Name="ActiveResizeBorderGrid"
-                                      Margin="0"
-                                      Background="{x:Null}">
+                                <Grid x:Name="ActiveResizeBorderGrid" Margin="0">
                                     <Border x:Name="ActiveResizeBorder"
                                             Background="{StaticResource DialogWindowActiveResizeBackgroundBrush}"
                                             BorderBrush="{StaticResource DialogWindowActiveResizeBorderBrush}" />
@@ -706,11 +706,11 @@
                                                                 Visibility="Visible" />
                                                 <ContentControl x:Name="HeaderContent"
                                                                 Grid.Column="1"
-                                                                Margin="5,0,0,4"
-                                                                HorizontalAlignment="{TemplateBinding HeaderHorizontalContentAlignment}"
-                                                                VerticalAlignment="{TemplateBinding HeaderVerticalContentAlignment}"
-                                                                HorizontalContentAlignment="{TemplateBinding HeaderHorizontalContentAlignment}"
-                                                                VerticalContentAlignment="{TemplateBinding HeaderVerticalContentAlignment}"
+                                                                Margin="5,0,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalContentAlignment="Left"
+                                                                VerticalContentAlignment="Center"
                                                                 Content="{TemplateBinding Header}"
                                                                 ContentTemplate="{TemplateBinding HeaderTemplate}"
                                                                 FontFamily="{TemplateBinding FontFamily}"

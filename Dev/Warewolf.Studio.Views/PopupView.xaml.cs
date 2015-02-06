@@ -73,18 +73,21 @@ namespace Warewolf.Studio.Views
                     CancelButton.Visibility = Visibility.Visible;
                     NoButton.Visibility = Visibility.Collapsed;
                     YesButton.Visibility = Visibility.Collapsed;
+                    YesButton.Margin = new Thickness(0, 0, 8, 0);
                     break;
                 case MessageBoxButton.YesNoCancel:
                     OkButton.Visibility = Visibility.Collapsed;
                     CancelButton.Visibility = Visibility.Visible;
                     NoButton.Visibility = Visibility.Visible;
                     YesButton.Visibility = Visibility.Visible;
+                    YesButton.Margin = new Thickness(0, 0, 8, 0);
                     break;
                 case MessageBoxButton.YesNo:
                     OkButton.Visibility = Visibility.Collapsed;
                     CancelButton.Visibility = Visibility.Collapsed;
                     NoButton.Visibility = Visibility.Visible;
                     YesButton.Visibility = Visibility.Visible;
+                    YesButton.Margin = new Thickness(0, 0,8, 0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
