@@ -294,6 +294,7 @@
                                             FlyoutAnimation="Resize"
                                             LayoutMode="FillContainer"
                                             ToolWindowLoaded="DockManager_OnToolWindowLoaded"
+                                            FloatingWindowDoubleClickAction="ToggleDockedState"
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
