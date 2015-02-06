@@ -55,7 +55,7 @@
         </Storyboard>
 
         <Style TargetType="{x:Type igWindows:ToolWindow}" x:Key="WarewolfToolWindow">
-            <Setter Property="Background" Value="Green" />
+            <Setter Property="Background" Value="White" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="AllowsTransparency" Value="True" />
             <!-- AS 6/30/10 TFS14299
@@ -66,22 +66,22 @@
                         <Grid Background="White" SnapsToDevicePixels="true">
                             <Border x:Name="windowOuterBorder" BorderBrush="White" BorderThickness="1,1,1,1"/>
                             <Border x:Name="windowInnerBorder" BorderThickness="1,1,1,1" BorderBrush="{StaticResource MenuPanelGradient}" Margin="1,1,1,1"/>
-                            <Border x:Name="windowCenterBorder" Margin="2,2,2,2" Background="{StaticResource WarewolfPanelGreyBrush}">
+                            <Border x:Name="windowCenterBorder" Margin="3" Background="{StaticResource WarewolfPanelGreyBrush}">
                                     <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition x:Name="captionRow" Height="Auto" />
+                                            <RowDefinition x:Name="captionRow" Height="25" />
                                             <RowDefinition x:Name="contentRow" Height="*" />
                                         </Grid.RowDefinitions>
                                         <!-- AS 6/24/11 FloatingWindowCaptionSource - Bind Visibility -->
                                     <igWindows:CardPanel x:Name="PART_Caption" Background="White" Visibility="{TemplateBinding CaptionVisibility}">
-                                        <DockPanel x:Name="captionPanel" Margin="6,6,6,2">
+                                        <DockPanel x:Name="captionPanel" Margin="6,0">
                                             <Button x:Name="MaximizeButton"
-												Style="{StaticResource MetroWindowButtonStyle}"
+												 DockPanel.Dock="Right" Margin="0"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                    Height="20" Width="20" Style="{StaticResource MetroWindowButtonStyle}"
                                                 Command="{x:Static igWindows:ToolWindow.MaximizeCommand}" 
 												Visibility="{TemplateBinding MaximizeButtonVisibility}"
-                                                HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                DockPanel.Dock="Right"
-                                                Margin="1,0">
+                                                >
                                                 <Path Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
                                                       Stretch="Uniform" Fill="Black" Width="10" Margin="0,0,0,0" ></Path>
                                             </Button>
@@ -89,9 +89,11 @@
 												Style="{StaticResource MetroWindowButtonStyle}"
                                                 Command="{x:Static igWindows:ToolWindow.MinimizeCommand}" 
 												Visibility="{TemplateBinding MinimizeButtonVisibility}"
+                                                    Height="20" Width="20"
+                                                    Margin="0,0,3,0"
                                                 HorizontalAlignment="Right" VerticalAlignment="Center" 
                                                 DockPanel.Dock="Right">
-                                                <fa:FontAwesome Icon="Minus" VerticalAlignment="Bottom"></fa:FontAwesome>
+                                                <fa:FontAwesome Icon="Minus" VerticalAlignment="Bottom" Background="Transparent"></fa:FontAwesome>
                                             </Button>
 
                                                 <TextBlock x:Name="txtCaption"
