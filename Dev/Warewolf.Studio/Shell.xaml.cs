@@ -10,8 +10,10 @@ using FontAwesome.WPF;
 using Infragistics.Windows;
 using Infragistics.Windows.Controls;
 using Infragistics.Windows.DockManager;
+using Infragistics.Windows.DockManager.Dragging;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
+using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using WinInterop = System.Windows.Interop;
@@ -456,12 +458,29 @@ namespace Warewolf.Studio
 
         private void DockManager_OnToolWindowLoaded(object sender, PaneToolWindowEventArgs e)
         {
-            var style = Resources["WarewolfToolWindow"] as Style;
+            var resourceDictionary = Application.Current.Resources;
+            var style = resourceDictionary["WarewolfToolWindow"] as Style;
             if (style != null)
             {
                 var window = e.Window;
+                window.Resources.Add(PaneTabItem.DocumentTabItemTemplateKey, resourceDictionary[PaneTabItem.DocumentTabItemTemplateKey]);
+                window.Resources.Add(TabGroupPane.DocumentTabGroupTemplateKey, resourceDictionary[TabGroupPane.DocumentTabGroupTemplateKey]);
                 window.UseOSNonClientArea = false;
                 window.Style = style;
+            }
+        }
+
+
+        private void DockManager_OnPaneDragOver(object sender, PaneDragOverEventArgs e)
+        {
+            var paneDragAction = e.DragAction;
+            var actionType = paneDragAction.GetType();
+            if (actionType == typeof(MoveInGroupAction) || actionType == typeof(AddToGroupAction) || actionType == typeof(AddToDocumentHostAction) || actionType == typeof(NewTabGroupAction))
+            {
+                if (e.IsValidDragAction)
+                {
+                    
+                }
             }
         }
     }

@@ -30,7 +30,7 @@ namespace Warewolf.Studio.Themes.Luna
             Mappings.Add(ControlMappingKeys.XamSpellChecker, BuildLocationString(assemblyFullName, @"\Elements\xamSpellChecker.xaml"));
             Mappings.Add(ControlMappingKeys.XamSyntaxEditor, BuildLocationString(assemblyFullName, @"\Elements\xamSyntaxEditor.xaml"));
             Mappings.Add(ControlMappingKeys.XamTileManager, BuildLocationString(assemblyFullName, @"\Elements\xamTileManager.xaml"));
-
+            Mappings.Add(ControlMappingKeys.XamDockManager, BuildLocationString(assemblyFullName, @"\Elements\DockManager\MainDockManager.xaml"));
 
 
          
