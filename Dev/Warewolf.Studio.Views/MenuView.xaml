@@ -100,14 +100,16 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
@@ -115,10 +117,10 @@
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
-                               Padding="15,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=NewLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -136,14 +138,16 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
@@ -151,10 +155,10 @@
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
-                                Padding="15,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=SaveLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -173,25 +177,27 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="8.5,8.5,8.5,8.5"
                                Style="{StaticResource MenuTextBlockStyle}">
-                        <fa:FontAwesome FontSize="20"
+                        <fa:FontAwesome FontSize="18"
                                         FontWeight="Light"
                                         Icon="PaperPlaneOutlined" />
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
-                                Padding="12,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=DeployLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -215,14 +221,16 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
@@ -230,10 +238,10 @@
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
-                                Padding="15,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=DatabaseLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -251,14 +259,16 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
@@ -266,10 +276,10 @@
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
-                                Padding="12,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=DLLLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -293,26 +303,25 @@
                                        Stroke="{StaticResource WareWolfMenuBrush}"
                                        StrokeThickness="1" />
 
-                            <StackPanel Width="{Binding ButtonWidth}"
-                                        Height="35"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        Background="Transparent"
-                                        Orientation="Horizontal">
+                            <DockPanel Width="{Binding ButtonWidth}"
+                                       Height="35"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       Background="Transparent">
 
                                 <Image Name="image1"
+                                       Width="20"
                                        Height="20"
-                                       Margin="5,5,5,5"
+                                       Margin="7.5,7.5,7.5,7.5"
                                        Source="{StaticResource Menu-System-WebService}"
-                                       Stretch="Fill"
                                        Visibility="Visible" />
 
                                 <TextBlock Height="35"
                                            HorizontalAlignment="Left"
-                                            Padding="15,6,0,5"
+                                           Padding="16,8,0,5"
                                            Style="{StaticResource MenuTextBlockStyle}"
                                            Text="{Binding Path=WebLabel}" />
-                            </StackPanel>
+                            </DockPanel>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
@@ -358,14 +367,16 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
@@ -373,10 +384,10 @@
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
-                                Padding="15,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=TaskLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -393,14 +404,16 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
@@ -408,10 +421,10 @@
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
-                                Padding="15,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=DebugLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -435,25 +448,27 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="8.5,8.5,8.5,8.5"
                                Style="{StaticResource MenuTextBlockStyle}">
-                        <fa:FontAwesome FontSize="20"
+                        <fa:FontAwesome FontSize="18"
                                         FontWeight="Light"
                                         Icon="Cogs" />
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
-                                Padding="11,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=SettingsLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -477,25 +492,27 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="6.5,6.5,6.5,6.5"
                                Style="{StaticResource MenuTextBlockStyle}">
-                        <fa:FontAwesome FontSize="20"
+                        <fa:FontAwesome FontSize="22"
                                         FontWeight="Light"
                                         Icon="Question" />
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
-                                Padding="19,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=SupportLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -515,14 +532,16 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20"
                                         FontWeight="Light"
@@ -532,10 +551,10 @@
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
                                FontSize="{StaticResource FontSize-Normal}"
-                                Padding="14,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=NewVersionLabel}" />
-                </StackPanel>
+                </DockPanel>
 
             </Button>
 
@@ -553,24 +572,26 @@
                     Style="{StaticResource SideMenuButtonStyle}"
                     ToolTip="{Binding LockToolTip}">
 
-                <StackPanel Width="{Binding ButtonWidth}"
-                            Height="35"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Transparent"
-                            Orientation="Horizontal">
-                    <TextBlock Height="35"
-                               Padding="7.5,7,5,5"
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
                                Style="{StaticResource MenuTextBlockStyle}">
                         <fa:FontAwesome FontSize="20" Icon="{Binding Path=LockImage}" />
                     </TextBlock>
                     <TextBlock Height="35"
                                HorizontalAlignment="Left"
                                FontSize="{StaticResource FontSize-Normal}"
-                                Padding="17,6,0,5"
+                               Padding="15,8,0,5"
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=LockLabel}" />
-                </StackPanel>
+                </DockPanel>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseEnter">
                         <i:InvokeCommandAction Command="{Binding IsOverLockCommand}" />

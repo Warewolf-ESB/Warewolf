@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -238,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
 
         void CreateNewServerSource()
         {
-            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new SaveDialogMock(),this,
+            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModelMock(),this,
                 ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", System.StringComparison.Ordinal))) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
             GetRegion("Workspace").Add(server);
 
@@ -349,8 +350,12 @@ namespace Warewolf.Studio.ViewModels
 
     }
 
-    public class SaveDialogMock : ISaveDialog
+    public class RequestServiceNameViewModelMock : IRequestServiceNameViewModel
     {
+        private string _name;
+        private string _errorMessage;
+        private ICommand _okCommand;
+
         public MessageBoxResult ShowSaveDialog()
         {
             return MessageBoxResult.OK;
@@ -359,6 +364,24 @@ namespace Warewolf.Studio.ViewModels
         public ResourceName ResourceName
         {
             get { return new ResourceName("", Guid.NewGuid().ToString().Substring(0, 5)); }
+        }
+
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set { _errorMessage = value; }
+        }
+
+        public ICommand OkCommand
+        {
+            get { return _okCommand; }
+            set { _okCommand = value; }
         }
     }
 
