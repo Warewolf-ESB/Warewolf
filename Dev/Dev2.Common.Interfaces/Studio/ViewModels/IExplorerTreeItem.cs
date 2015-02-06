@@ -16,11 +16,13 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanCreatePluginSource { get; set; }
         bool CanRename { get; set; }
         bool CanDelete { get; set; }
+        bool CanCreateFolder { get; set; }
         bool CanDeploy { get; set; }
         bool CanShowVersions { get; }
         bool CanRollback { get;  }
         bool IsExpanded { get; set; }
         ICommand RenameCommand { get; set; }
+        ICommand CreateFolderCommand { get; set; }
         ICommand DeleteCommand { get; set; }
         ICommand ShowVersionHistory { get; set; }
         ICommand RollbackCommand { get; set; }
