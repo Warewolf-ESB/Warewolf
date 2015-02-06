@@ -45,17 +45,17 @@
 
         <Storyboard x:Key="AnimateCloseTitleBorder">
             <DoubleAnimation Duration="0:0:0.3"
-                             Storyboard.TargetProperty="Height"
-                             To="0" />
+                                                                         Storyboard.TargetProperty="Height"
+                                                                         To="0" />
         </Storyboard>
         <Storyboard x:Key="AnimateOpenTitleBorder">
             <DoubleAnimation Duration="0:0:0.3"
-                             Storyboard.TargetProperty="Height"
-                             To="25" />
+                                                                         Storyboard.TargetProperty="Height"
+                                                                         To="25" />
         </Storyboard>
 
-        <Style x:Key="WarewolfToolWindow" TargetType="{x:Type igWindows:ToolWindow}">
-            <Setter Property="Background" Value="Green" />
+        <Style TargetType="{x:Type igWindows:ToolWindow}" x:Key="WarewolfToolWindow">
+            <Setter Property="Background" Value="White" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="AllowsTransparency" Value="True" />
             <!--
@@ -66,57 +66,46 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type igWindows:ToolWindow}">
                         <Grid Background="White" SnapsToDevicePixels="true">
-                            <Border x:Name="windowOuterBorder"
-                                    BorderBrush="White"
-                                    BorderThickness="1,1,1,1" />
-                            <Border x:Name="windowInnerBorder"
-                                    Margin="1,1,1,1"
-                                    BorderBrush="{StaticResource MenuPanelGradient}"
-                                    BorderThickness="1,1,1,1" />
-                            <Border x:Name="windowCenterBorder"
-                                    Margin="2,2,2,2"
-                                    Background="{StaticResource WarewolfPanelGreyBrush}">
-                                <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition x:Name="captionRow" Height="Auto" />
-                                        <RowDefinition x:Name="contentRow" Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <!--  AS 6/24/11 FloatingWindowCaptionSource - Bind Visibility  -->
-                                    <igWindows:CardPanel x:Name="PART_Caption"
-                                                         Background="White"
-                                                         Visibility="{TemplateBinding CaptionVisibility}">
-                                        <DockPanel x:Name="captionPanel" Margin="6,6,6,2">
+                            <Border x:Name="windowOuterBorder" BorderBrush="White" BorderThickness="1,1,1,1"/>
+                            <Border x:Name="windowInnerBorder" BorderThickness="1,1,1,1" BorderBrush="{StaticResource MenuPanelGradient}" Margin="1,1,1,1"/>
+                            <Border x:Name="windowCenterBorder" Margin="3" Background="{StaticResource WarewolfPanelGreyBrush}">
+                                    <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition x:Name="captionRow" Height="25" />
+                                            <RowDefinition x:Name="contentRow" Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <!-- AS 6/24/11 FloatingWindowCaptionSource - Bind Visibility -->
+                                    <igWindows:CardPanel x:Name="PART_Caption" Background="White" Visibility="{TemplateBinding CaptionVisibility}">
+                                        <DockPanel x:Name="captionPanel" Margin="6,0">
                                             <Button x:Name="MaximizeButton"
-                                                    Margin="1,0"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Center"
-                                                    Command="{x:Static igWindows:ToolWindow.MaximizeCommand}"
-                                                    DockPanel.Dock="Right"
-                                                    Style="{StaticResource MetroWindowButtonStyle}"
-                                                    Visibility="{TemplateBinding MaximizeButtonVisibility}">
-                                                <Path Width="10"
-                                                      Margin="0,0,0,0"
-                                                      Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
-                                                      Fill="Black"
-                                                      Stretch="Uniform" />
+												 DockPanel.Dock="Right" Margin="0"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                    Height="20" Width="20" Style="{StaticResource MetroWindowButtonStyle}"
+                                                Command="{x:Static igWindows:ToolWindow.MaximizeCommand}" 
+												Visibility="{TemplateBinding MaximizeButtonVisibility}"
+                                                >
+                                                <Path Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
+                                                      Stretch="Uniform" Fill="Black" Width="10" Margin="0,0,0,0" ></Path>
                                             </Button>
-                                            <Button x:Name="MinimizeButton"
+                                            <Button x:Name="MinimizeButton" 
                                                     HorizontalAlignment="Right"
-                                                    VerticalAlignment="Center"
-                                                    Command="{x:Static igWindows:ToolWindow.MinimizeCommand}"
-                                                    DockPanel.Dock="Right"
+                                                    VerticalAlignment="Bottom"
                                                     Style="{StaticResource MetroWindowButtonStyle}"
-                                                    Visibility="{TemplateBinding MinimizeButtonVisibility}">
-                                                <fa:FontAwesome VerticalAlignment="Bottom" Icon="Minus" />
+                                                Command="{x:Static igWindows:ToolWindow.MinimizeCommand}" 
+												Visibility="{TemplateBinding MinimizeButtonVisibility}"
+                                                    Height="20" Width="20"
+                                                    Margin="0,0,3,0"
+                                                DockPanel.Dock="Right">
+                                                <fa:FontAwesome Icon="Minus" VerticalAlignment="Bottom" Background="Transparent"></fa:FontAwesome>
                                             </Button>
 
-                                            <TextBlock x:Name="txtCaption"
-                                                       Foreground="#FFAAAAAA"
+                                                <TextBlock x:Name="txtCaption"
+											           Foreground="#FFAAAAAA"
                                                        IsHitTestVisible="False"
                                                        Text="{TemplateBinding Title}"
                                                        TextTrimming="CharacterEllipsis" />
-                                        </DockPanel>
-                                    </igWindows:CardPanel>
+                                            </DockPanel>
+                                        </igWindows:CardPanel>
                                     <Grid x:Name="Content"
                                           Grid.Row="1"
                                           Margin="0"
@@ -130,16 +119,16 @@
                                             <!--  We need to wrap the resize grip in an element and prevent hittesting on the resize grip  -->
                                             <ResizeGrip IsHitTestVisible="False" IsTabStop="False" />
                                         </Grid>
-                                        <ContentPresenter x:Name="PART_Content"
-                                                          Grid.Row="1"
-                                                          Margin="{TemplateBinding Padding}"
-                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                          ContentSource="Content" />
+                                            <ContentPresenter x:Name="PART_Content"
+										    Grid.Row="1"
+										    Margin="{TemplateBinding Padding}"
+										    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										    ContentSource="Content" />
                                         <!--  Put the resize grip within the border so it doesn't overlap the border  -->
-                                    </Grid>
-                                </Grid>
-                            </Border>
+                                            </Grid>
+                                        </Grid>
+                                </Border>
                             <Grid x:Name="resizeAreas"
                                   FlowDirection="LeftToRight"
                                   Visibility="Collapsed">
@@ -152,8 +141,8 @@
                                 <igWindows:ToolWindowResizeElement x:Name="PART_BorderTopRight" BorderLocation="TopRight" />
                                 <igWindows:ToolWindowResizeElement x:Name="PART_BorderBottomLeft" BorderLocation="BottomLeft" />
                                 <igWindows:ToolWindowResizeElement x:Name="PART_BorderBottomRight" BorderLocation="BottomRight" />
+                                </Grid>
                             </Grid>
-                        </Grid>
                         <ControlTemplate.Triggers>
                             <!--  NA 2011.1 - ToolWindow changes  -->
                             <Trigger Property="WindowState" Value="Minimized">
@@ -214,7 +203,7 @@
                             <!--  NA 2011.1 - ToolWindow changes  -->
                             <!--
                                 <Trigger Property="ResizeMode" Value="CanResizeWithGrip">
-                                <Setter Property="Visibility" TargetName="PART_ResizeGrip" Value="Visible" />
+                            <Setter Property="Visibility" TargetName="PART_ResizeGrip" Value="Visible" />
                                 </Trigger>
                             -->
                             <MultiTrigger>
@@ -271,7 +260,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
+      
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
@@ -285,7 +274,7 @@
                                     Background="White"
                                     BorderThickness="0">
                                 <DockPanel LastChildFill="True">
-                                    <Border x:Name="PART_TITLEBAR"
+                                    <Border x:Name="PART_TITLEBAR" 
                                             Height="25"
                                             Margin="0,0,0,0"
                                             Background="Transparent"
@@ -314,7 +303,7 @@
                                                       Fill="Black"
                                                       Stretch="Uniform" />
                                             </Button>
-                                            <Button x:Name="PART_MAXIMIZE_RESTORE"
+                                            <Button x:Name="PART_MAXIMIZE_RESTORE" 
                                                     Width="20"
                                                     Height="20"
                                                     Margin="0,5,5,5"
@@ -329,7 +318,7 @@
                                                       Fill="Black"
                                                       Stretch="Uniform" />
                                             </Button>
-                                            <Button x:Name="PART_SUPER_MAXIMIZE_RESTORE"
+                                            <Button x:Name="PART_SUPER_MAXIMIZE_RESTORE" 
                                                     Width="20"
                                                     Height="20"
                                                     Margin="0,5,5,5"
@@ -340,11 +329,11 @@
                                                     Style="{StaticResource MetroWindowButtonStyle}">
                                                 <fa:FontAwesome Icon="ArrowsAlt" />
                                             </Button>
-                                            <Button x:Name="PART_MINIMIZE"
+                                            <Button x:Name="PART_MINIMIZE" 
                                                     Width="20"
                                                     Height="20"
                                                     Margin="0,5,5,5"
-                                                    HorizontalAlignment="Center"
+                                                    HorizontalAlignment="Center" 
                                                     VerticalAlignment="Center"
                                                     VerticalContentAlignment="Bottom"
                                                     Click="PART_MINIMIZE_Click"
@@ -449,15 +438,15 @@
                             Grid.ColumnSpan="1"
                             Margin="0,0,0,0"
                             VerticalAlignment="Stretch"
-                            Background="{StaticResource WareWolfBackGroundBrush}"
-                            BorderBrush="{StaticResource WareWolfBackGroundBrush}"
+                        Background="{StaticResource WareWolfBackGroundBrush}" 
+                        BorderBrush="{StaticResource WareWolfBackGroundBrush}"
                             BorderThickness="1"
                             CornerRadius="0,0,0,0" />
                     <Border x:Name="Border"
                             Grid.Column="1"
                             Margin="0,0,0,0"
                             VerticalAlignment="Stretch"
-                            Background="White"
+                         Background="White" 
                             CornerRadius="0,0,0,0" />
                     <Rectangle x:Name="activebrFiller"
                                Grid.Column="1"
@@ -466,7 +455,7 @@
                                Margin="0,0,1,-1"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Bottom"
-                               Fill="{StaticResource WareWolfBackGroundBrush}"
+                           Fill="{StaticResource WareWolfBackGroundBrush}" 
                                Visibility="Collapsed" />
 
                     <Border x:Name="Content"
@@ -479,10 +468,10 @@
                             <igWindows:AutoDisabledImage Width="20"
                                                          Height="20"
                                                          Margin="3,3,10,0"
-                                                         DockPanel.Dock="Left"
+                                DockPanel.Dock="Left"
                                                          Source="{Binding Path=Pane.Image,
                                                                           RelativeSource={x:Static RelativeSource.TemplatedParent}}"
-                                                         Stretch="Fill"
+                                Stretch="Fill"
                                                          Visibility="{Binding Path=Pane.HasImage,
                                                                               Converter={StaticResource BoolToVis},
                                                                               RelativeSource={x:Static RelativeSource.TemplatedParent}}" />
@@ -496,22 +485,22 @@
                                 <ContentPresenter x:Name="NormalContent"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Center"
-                                                  ContentSource="Header"
+                        		ContentSource="Header" 
                                                   RecognizesAccessKey="true"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                        		SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
                                                   TextElement.FontSize="14"
-                                                  TextElement.FontStyle="Italic"
+                                TextElement.FontStyle="Italic"
                                                   igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
-                                                  igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
+                                igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
                                                   igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static dockManager:XamDockManager.ToolTipStyleKey}" />
 
                                 <ContentPresenter x:Name="NormalContentBold"
                                                   Margin="-4,0,-3,0"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Center"
-                                                  ContentSource="Header"
+                        		ContentSource="Header" 
                                                   RecognizesAccessKey="true"
-                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                        		SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
                                                   TextElement.FontSize="14"
                                                   TextElement.FontStyle="Italic"
                                                   TextElement.FontWeight="Normal"
@@ -519,15 +508,15 @@
                                                                     RelativeSource={x:Static RelativeSource.TemplatedParent}}"
                                                   Visibility="Hidden"
                                                   igWindows:ClippedTextToolTipService.AncestorTypeForToolTip="{x:Type ContentControl}"
-                                                  igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
+                                igWindows:ClippedTextToolTipService.ShowToolTipWhenClipped="True"
                                                   igWindows:ClippedTextToolTipService.ToolTipStyleKey="{x:Static dockManager:XamDockManager.ToolTipStyleKey}" />
 
                                 <Button x:Name="closeBtn"
-                                        Grid.Column="1"
-                                        Margin="3,0,0,0"
-                                        VerticalAlignment="Top"
+                                    Grid.Column="1"
+                                    Margin="3,0,0,0"
+                                    VerticalAlignment="Top"
                                         VerticalContentAlignment="Top"
-                                        Command="{x:Static dockManager:ContentPaneCommands.Close}"
+                                    Command="{x:Static dockManager:ContentPaneCommands.Close}"
                                         CommandTarget="{Binding Pane,
                                                                 RelativeSource={RelativeSource AncestorType={x:Type dockManager:PaneTabItem}}}"
                                         Opacity="0.4"
@@ -614,78 +603,78 @@
         <!--  This is the template for the tab document. For some unknown reason i cannot put this into the theme it does not work.  -->
         <ControlTemplate x:Key="{x:Static dockManager:TabGroupPane.DocumentTabGroupTemplateKey}" TargetType="{x:Type dockManager:TabGroupPane}">
             <DockPanel ClipToBounds="True"
-                       KeyboardNavigation.TabNavigation="Local"
-                       SnapsToDevicePixels="True">
+                   KeyboardNavigation.TabNavigation="Local"
+                   SnapsToDevicePixels="True">
                 <DockPanel x:Name="PART_HeaderArea"
-                           Panel.ZIndex="1"
+                       Panel.ZIndex="1"
                            DockPanel.Dock="{TemplateBinding TabStripPlacement}">
                     <DockPanel>
 
                         <!--  Dev2  -->
                         <Button x:Name="closeBtn"
-                                VerticalAlignment="Center"
-                                Command="{x:Static dockManager:TabGroupPane.CloseSelectedItemCommand}"
-                                DockPanel.Dock="Right"
-                                Foreground="{StaticResource BrushLightForeground}"
-                                Style="{DynamicResource {x:Static dockManager:PaneHeaderPresenter.CloseButtonStyleKey}}" />
+                            VerticalAlignment="Center"
+                            Command="{x:Static dockManager:TabGroupPane.CloseSelectedItemCommand}"
+                            DockPanel.Dock="Right"
+                            Foreground="{StaticResource BrushLightForeground}"
+                            Style="{DynamicResource {x:Static dockManager:PaneHeaderPresenter.CloseButtonStyleKey}}" />
 
                         <!--  Dev2  -->
                         <Menu x:Name="filesMenu"
-                              VerticalAlignment="Center"
-                              DockPanel.Dock="Right"
-                              Style="{StaticResource RootMenuStyle}">
+                          VerticalAlignment="Center"
+                          DockPanel.Dock="Right"
+                          Style="{StaticResource RootMenuStyle}">
                             <MenuItem x:Name="PART_FilesMenuItem"
-                                      Foreground="{StaticResource BrushLightForeground}"
-                                      Style="{DynamicResource {x:Static dockManager:PaneHeaderPresenter.PositionMenuItemStyleKey}}" />
+                                  Foreground="{StaticResource BrushLightForeground}"
+                                  Style="{DynamicResource {x:Static dockManager:PaneHeaderPresenter.PositionMenuItemStyleKey}}" />
 
                         </Menu>
 
                         <!--  AS 9/10/09 TFS19267 - Added CommandParameter  -->
                         <Button x:Name="showNavigatorButton"
-                                Command="{x:Static dockManager:DockManagerCommands.ShowPaneNavigator}"
-                                CommandParameter="{TemplateBinding dockManager:XamDockManager.DockManager}"
-                                DockPanel.Dock="Right"
-                                Style="{DynamicResource {x:Static dockManager:TabGroupPane.DocumentPaneNavigatorButtonStyleKey}}"
-                                Visibility="Collapsed" />
+                            Command="{x:Static dockManager:DockManagerCommands.ShowPaneNavigator}"
+                            CommandParameter="{TemplateBinding dockManager:XamDockManager.DockManager}"
+                            DockPanel.Dock="Right"
+                            Style="{DynamicResource {x:Static dockManager:TabGroupPane.DocumentPaneNavigatorButtonStyleKey}}"
+                            Visibility="Collapsed" />
 
                         <!--  Dev2  -->
                         <ItemsPresenter x:Name="PART_TabHeaderPanel"
-                                        Margin="0"
-                                        KeyboardNavigation.TabIndex="1" />
+                                    Margin="0"
+                                    KeyboardNavigation.TabIndex="1" />
 
                     </DockPanel>
                 </DockPanel>
                 <Border x:Name="ContentPanel"
-                        Background="White"
-                        BorderBrush="White"
-                        BorderThickness="0"
-                        KeyboardNavigation.DirectionalNavigation="Contained"
-                        KeyboardNavigation.TabIndex="2"
-                        KeyboardNavigation.TabNavigation="Local"
-                        SnapsToDevicePixels="True"
-                        Visibility="Visible">
+                    Background="White"
+                    BorderBrush="White"
+                    BorderThickness="0"
+                    KeyboardNavigation.DirectionalNavigation="Contained"
+                    KeyboardNavigation.TabIndex="2"
+                    KeyboardNavigation.TabNavigation="Local"
+                    SnapsToDevicePixels="True"
+                    Visibility="Visible">
 
                     <!--  Dev2  -->
                     <Border x:Name="InnerBorder"
+                        BorderBrush="White"
+                        BorderThickness="0"
+                        CornerRadius="0"
+                        SnapsToDevicePixels="True">
+                        <Border x:Name="ThickInnerBorder"
                             BorderBrush="White"
                             BorderThickness="0"
-                            CornerRadius="0"
                             SnapsToDevicePixels="True">
-                        <Border x:Name="ThickInnerBorder"
+                            <Border x:Name="InnerMostBorder"
+                                Background="White"
                                 BorderBrush="White"
                                 BorderThickness="0"
-                                SnapsToDevicePixels="True">
-                            <Border x:Name="InnerMostBorder"
-                                    Background="White"
-                                    BorderBrush="White"
-                                    BorderThickness="0"
                                     Padding="0,5"
                                     SnapsToDevicePixels="True">
                                 <ContentPresenter x:Name="PART_SelectedContentHost"
-                                                  Margin="{TemplateBinding Padding}"
-                                                  Content="{TemplateBinding SelectedContent}"
-                                                  ContentSource="SelectedContent"
-                                                  ContentTemplateSelector="{TemplateBinding SelectedContentTemplateSelector}"
+                                              Margin="{TemplateBinding Padding}"
+                                              Content="{TemplateBinding SelectedContent}"
+                                              ContentSource="SelectedContent"
+                                              ContentTemplateSelector="{TemplateBinding SelectedContentTemplateSelector}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Border>
                         </Border>
@@ -740,7 +729,7 @@
     </Window.Resources>
 
     <!--  START OF LAYOUT  -->
-
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
