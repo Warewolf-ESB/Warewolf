@@ -53,8 +53,6 @@
                                                                          Storyboard.TargetProperty="Height"
                                                                          To="25" />
         </Storyboard>
-
-
       
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
@@ -299,7 +297,6 @@
                                             FlyoutAnimation="Resize"
                                             LayoutMode="FillContainer"
                                             ToolWindowLoaded="DockManager_OnToolWindowLoaded"
-                                            PaneDragOver="DockManager_OnPaneDragOver"
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
@@ -369,6 +366,7 @@
                         <dockManager:SplitPane>
                             <dockManager:TabGroupPane x:Name="Workspace"
                                                       SelectedItem="{Binding ActiveItem}"
+                                                      
                                                       regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>

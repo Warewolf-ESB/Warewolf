@@ -361,8 +361,10 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <!--  This is the template for the tab header. For some unknown reason i cannot put this into the theme it does not work.  -->
-    <ControlTemplate x:Key="{x:Static igDock:PaneTabItem.DocumentTabItemTemplateKey}" TargetType="{x:Type igDock:PaneTabItem}">
+    <Style TargetType="{x:Type igDock:PaneTabItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+    <ControlTemplate TargetType="{x:Type igDock:PaneTabItem}">
         <Border x:Name="Background"
                     Height="35"
                     Margin="0,0,0,0">
@@ -540,9 +542,14 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-
-    <!--  This is the template for the tab document. For some unknown reason i cannot put this into the theme it does not work.  -->
-    <ControlTemplate x:Key="{x:Static igDock:TabGroupPane.DocumentTabGroupTemplateKey}" TargetType="{x:Type igDock:TabGroupPane}">
+            </Setter.Value>
+            </Setter>
+    </Style>
+    <Style TargetType="{x:Type igDock:TabGroupPane}">
+        <Setter Property="TabStripPlacement" Value="Top"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+    <ControlTemplate  TargetType="{x:Type igDock:TabGroupPane}">
         <DockPanel ClipToBounds="True"
                    KeyboardNavigation.TabNavigation="Local"
                    SnapsToDevicePixels="True">
@@ -630,7 +637,6 @@
             </Trigger>
             <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Floating">
                 <Setter Property="Padding" Value="0" />
-                <Setter Property="TabStripPlacement" Value="Top" />
             </Trigger>
             <Trigger Property="TabStripPlacement" Value="Bottom">
                 <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
@@ -664,7 +670,10 @@
             </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-
+                </Setter.Value>
+            </Setter>
+    </Style>
+    
     <Style TargetType="{x:Type igWindows:ToolWindow}" x:Key="WarewolfToolWindow">
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderThickness" Value="1" />
@@ -871,5 +880,4 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
 </ResourceDictionary>

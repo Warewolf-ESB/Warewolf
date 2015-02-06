@@ -462,25 +462,9 @@ namespace Warewolf.Studio
             if (style != null)
             {
                 var window = e.Window;
-                window.Resources.Add(PaneTabItem.DocumentTabItemTemplateKey, resourceDictionary[PaneTabItem.DocumentTabItemTemplateKey]);
-                window.Resources.Add(TabGroupPane.DocumentTabGroupTemplateKey, resourceDictionary[TabGroupPane.DocumentTabGroupTemplateKey]);
                 window.UseOSNonClientArea = false;
                 window.Style = style;
             }
-        }
-
-
-        private void DockManager_OnPaneDragOver(object sender, PaneDragOverEventArgs e)
-        {
-            var paneDragAction = e.DragAction;
-            var actionType = paneDragAction.GetType();
-            if (actionType == typeof(MoveInGroupAction) || actionType == typeof(AddToGroupAction) || actionType == typeof(AddToDocumentHostAction) || actionType == typeof(NewTabGroupAction))
-            {
-                if (e.IsValidDragAction)
-                {
-                    
-                }
-            }
-        }
+        }        
     }
 }
