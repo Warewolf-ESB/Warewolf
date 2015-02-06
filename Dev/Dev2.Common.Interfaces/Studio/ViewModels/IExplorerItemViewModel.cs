@@ -42,6 +42,10 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void AddSibling(IExplorerItemViewModel sibling);
         void AddChild(IExplorerItemViewModel child);
         void RemoveChild(IExplorerItemViewModel child);
+
+        void CreateNewFolder();
+
+  
     }
 
     public enum ExplorerEventContext

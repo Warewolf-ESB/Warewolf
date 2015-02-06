@@ -8,10 +8,8 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Dev2.Data.Util;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core.Popup;
@@ -43,9 +41,11 @@ namespace Warewolf.Studio.ViewModels
         Guid _resourceId;
         bool _isExpanded;
         bool _canCreateServerSource;
+        bool _canCreateFolder;
+        IWindowsGroupPermission _permission ;
 
         // ReSharper disable TooManyDependencies
-        public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent):this(shellViewModel,server,builder)
+        public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent)
             // ReSharper restore TooManyDependencies
         {
             RollbackCommand = new DelegateCommand(() =>
@@ -55,46 +55,20 @@ namespace Warewolf.Studio.ViewModels
                 parent.ResourceName = output.DisplayName;
             });
            
-            Parent = parent; 
-        }
-
-        public IExplorerItemViewModel Parent { get; set; }
-
-        public void AddSibling(IExplorerItemViewModel sibling)
-        {
-            if( Parent != null)
-            {
-                Parent.AddChild(sibling);
-            }
-        }
-
-        public void AddChild(IExplorerItemViewModel child)
-        {
-            _children.Add(child);
-            OnPropertyChanged(()=>Children);
-        }
-
-        public void RemoveChild(IExplorerItemViewModel child)
-        {
-            _children.Remove(child);
-            OnPropertyChanged(()=>Children);
-        }
-
-        private ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder)
-        {
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel" ,shellViewModel}, {"server",server }, {"builder",builder } });
+            Parent = parent;
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } });
             _shellViewModel = shellViewModel;
             LostFocus = new DelegateCommand(LostFocusCommand);
 
             Children = new ObservableCollection<IExplorerItemViewModel>();
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
-            RenameCommand = new DelegateCommand(()=>IsRenaming=true);
+            RenameCommand = new DelegateCommand(() => IsRenaming = true);
             ItemSelectedCommand = new DelegateCommand(() =>
             {
                 //var helpDescriptor = builder.Build(this, ExplorerEventContext.Selected);
-                
-                var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>",ResourceName, Inputs, Outputs), null);
+
+                var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>", ResourceName, Inputs, Outputs), null);
                 shellViewModel.UpdateHelpDescriptor(helpDescriptor);
                 //shellViewModel.UpdateHelpDescriptor(builder.Build(this, ExplorerEventContext.Selected));
             });
@@ -125,9 +99,70 @@ namespace Warewolf.Studio.ViewModels
                 {
                     IsExpanded = false;
                 }
-        
-            });
 
+            });
+            CreateFolderCommand = new DelegateCommand(CreateNewFolder);
+            CanCreateFolder = true;
+        }
+
+        public IExplorerItemViewModel Parent { get; set; }
+
+        public void AddSibling(IExplorerItemViewModel sibling)
+        {
+            if( Parent != null)
+            {
+                Parent.AddChild(sibling);
+            }
+        }
+
+        public void AddChild(IExplorerItemViewModel child)
+        {
+            _children.Add(child);
+            OnPropertyChanged(()=>Children);
+        }
+
+        public void RemoveChild(IExplorerItemViewModel child)
+        {
+            _children.Remove(child);
+            OnPropertyChanged(()=>Children);
+        }
+
+
+
+        public void CreateNewFolder()
+        {
+            if(ResourceType == ResourceType.Folder)
+            {
+                IsExpanded = true;
+                var id = Guid.NewGuid();
+                var name = GetChildNameFromChildren();
+                var folder = _explorerRepository.CreateFolder(ResourceId,name,id);
+                var child = new ExplorerItemViewModel(_shellViewModel, Server, Builder, this)
+               {
+                   ResourceName = name,
+                   ResourceId = id,
+                   ResourceType = ResourceType.Folder
+                  
+               };
+               child.SetFromServer(Server.Permissions.FirstOrDefault(a=>a.IsServer));     
+               
+               AddChild(child);
+               child.IsRenaming = true;
+            }
+
+        }
+
+        string GetChildNameFromChildren()
+        {
+            const string NewFolder = "New Folder";
+            int count = 0;
+            string folderName = NewFolder;
+            while(Children.Any(a=>a.ResourceName == folderName ))
+            {
+                count++;
+                folderName = NewFolder + " "+ count;
+            }
+            return folderName;
         }
 
         void LostFocusCommand()
@@ -165,20 +200,26 @@ namespace Warewolf.Studio.ViewModels
 
         void SetFromServer(IWindowsGroupPermission serverPermission)
         {
+            _permission = serverPermission;
             CanEdit = serverPermission.Contribute;
             CanExecute = serverPermission.Contribute || serverPermission.Execute;
             CanView = serverPermission.View || serverPermission.Contribute;
             CanRename = serverPermission.Contribute || serverPermission.Administrator;
             CanDelete = serverPermission.Contribute || serverPermission.Administrator;
+            CanCreateFolder =  (serverPermission.Contribute || serverPermission.Administrator);
         }
 
         void SetFromPermission(IWindowsGroupPermission resourcePermission)
         {
+            _permission = resourcePermission;
             CanEdit = resourcePermission.Contribute;
             CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
             CanView = resourcePermission.View || resourcePermission.Contribute;
             CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
             CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
+           
+
+            
         }
 
         public bool UserShouldEditValueNow
@@ -194,6 +235,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public ICommand CreateFolderCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
@@ -342,6 +384,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 OnPropertyChanged(()=>CanDelete);
                 _canDelete = value;
+            }
+        }
+        public bool CanCreateFolder
+        {
+            get
+            {
+                return (ResourceType== ResourceType.Folder || ResourceType == ResourceType.Server) && _canCreateFolder;
+            }
+            set
+            {
+                _canCreateFolder = value;
+                OnPropertyChanged(() => CanCreateFolder);
             }
         }
         public bool CanDeploy { get; set; }

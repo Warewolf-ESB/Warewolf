@@ -156,6 +156,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreatePluginSource { get; set; }
         public bool CanRename { get; set; }
         public bool CanDelete { get; set; }
+        public bool CanCreateFolder { get; set; }
         public bool CanDeploy { get; set; }
         public bool CanShowVersions { get; private set; }
         public bool CanRollback
@@ -192,6 +193,7 @@ namespace Warewolf.Studio.ViewModels
                 _renameCommand = value;
             }
         }
+        public ICommand CreateFolderCommand { get; set; }
         public ICommand DeleteCommand
         {
             get

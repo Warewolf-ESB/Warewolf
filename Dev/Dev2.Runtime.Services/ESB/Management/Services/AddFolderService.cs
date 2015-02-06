@@ -9,10 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
@@ -37,7 +40,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
            
             var serializer = new Dev2JsonSerializer();
-            var itemToAdd = serializer.Deserialize<ServerExplorerItem>(values["itemToAdd"]);
+            var name = (values["name"].ToString());
+            var parentGuid = Guid.Parse(values["parentGuid"].ToString());
+            var id = Guid.Parse((values["id"].ToString()));
+            var parent = ServerExplorerRepo.Find(parentGuid);
+            var itemToAdd = new ServerExplorerItem(name, id, ResourceType.Folder, new List<IExplorerItem>(), Permissions.Contribute, parent.ResourcePath + "\\" + name,"","");
+            parent.Children.Add(itemToAdd);
             Dev2Logger.Log.Info("Add Folder Service." +itemToAdd);
             itemToAdd.Permissions = Permissions.Contribute;
             if(itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
@@ -51,7 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToAdd ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><name ColumnIODirection=\"Input\"/><parentGuid ColumnIODirection=\"Input\"/><id ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
             var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 

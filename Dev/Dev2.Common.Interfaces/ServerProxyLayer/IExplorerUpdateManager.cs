@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common.Interfaces.Explorer;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
 {
@@ -11,7 +12,8 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// Add a folder to a warewolf server
         /// </summary>
         /// <param name="path">relative path</param>
-        void AddFolder(string path);
+        /// <param name="name"></param>
+        IExplorerItem AddFolder(Guid path, string name);
         /// <summary>
         /// delete a folder from a warewolf server
         /// </summary>

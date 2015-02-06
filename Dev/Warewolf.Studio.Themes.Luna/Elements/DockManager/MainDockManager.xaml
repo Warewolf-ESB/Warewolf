@@ -353,8 +353,6 @@
     
 
     <Style TargetType="{x:Type igDock:ContentPane}">
-        <!--  <Setter Property="AllowFloatingOnly" Value="False"/>  -->
-        <!--  <Setter Property="AllowDockingFloating" Value="False"/>  -->
         <Setter Property="BorderThickness" Value="0" />
     </Style>
     <!--  ROBIN  -->
@@ -369,8 +367,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="{x:Type igDock:PaneTabItem}">
-        <Setter Property="Template">
+    <Style TargetType="{x:Type igDock:PaneTabItem}">        
+            <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type igDock:PaneTabItem}">
                     <Border x:Name="Background"
@@ -488,11 +486,14 @@
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.GrayTextBrushKey}}" />
                         </Trigger>
-
+                        
                         <Trigger Property="IsMouseOverTab" Value="true" >
                             <Setter TargetName="closeBtn" Property="Foreground" Value="{StaticResource WareWolfOrangeBrush}" />
                         </Trigger>
-
+                        <Trigger Property="AllowClosing" Value="False">
+                            <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        
                         <Trigger Property="IsSelected" Value="true">
                             <Setter Property="Panel.ZIndex" Value="1" />
                             <Setter TargetName="activebrFiller" Property="Visibility" Value="Visible" />
@@ -537,8 +538,10 @@
                             <Setter Property="LayoutTransform">
                                 <Setter.Value>
                                     <RotateTransform Angle="-90" />
-                                </Setter.Value>
-                            </Setter>
+                                </Setter.Value>                                
+                                </Setter>
+                            <Setter Property="Margin" TargetName="Background" Value="-8,0,12,0"></Setter>
+                            <Setter Property="Visibility" TargetName="closeBtn" Value="Collapsed"></Setter>
                         </Trigger>
 
                         <!--  ========== TAB PLACEMENT : RIGHT ==========  -->
@@ -547,8 +550,10 @@
                                 <Setter.Value>
                                     <RotateTransform Angle="90" />
                                 </Setter.Value>
-                            </Setter>
-                        </Trigger>
+                            </Setter>          
+                            <Setter Property="Margin" TargetName="Background" Value="16,0,-16,0"></Setter>
+                            <Setter Property="Visibility" TargetName="closeBtn" Value="Collapsed"></Setter>
+        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -625,7 +630,7 @@
                                 Background="White"
                                 BorderBrush="White"
                                 BorderThickness="0"
-                                    Padding="0,5"
+                                    Padding="0"
                                     SnapsToDevicePixels="True">
                                         <ContentPresenter x:Name="PART_SelectedContentHost"
                                               Margin="{TemplateBinding Padding}"
@@ -643,9 +648,6 @@
                         <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Document">
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="TabStripPlacement" Value="Top" />
-                        </Trigger>
-                        <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Floating">
-                            <Setter Property="Padding" Value="0" />
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Bottom">
                             <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
@@ -695,15 +697,16 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type igWindows:ToolWindow}">
                     <Grid Background="White" SnapsToDevicePixels="true">
-                        <Border x:Name="windowOuterBorder" BorderBrush="White" BorderThickness="1,1,1,1"/>
-                        <Border x:Name="windowInnerBorder" BorderThickness="1,1,1,1" BorderBrush="{StaticResource MenuPanelGradient}" Margin="1,1,1,1"/>
-                        <Border x:Name="windowCenterBorder" Margin="3" Background="{StaticResource WarewolfPanelGreyBrush}">
+                        <Border x:Name="windowOuterBorder" BorderBrush="White" BorderThickness="0"/>
+                        <Border x:Name="windowInnerBorder" BorderThickness="1" BorderBrush="{StaticResource MenuPanelGradient}" Margin="0"/>
+                        <Border x:Name="windowCenterBorder" Margin="0" BorderThickness="1" BorderBrush="{StaticResource MenuPanelGradient}" Background="{StaticResource WarewolfPanelGreyBrush}">
                             <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition x:Name="captionRow" Height="25" />
                                     <RowDefinition x:Name="contentRow" Height="*" />
                                 </Grid.RowDefinitions>
                                 <!-- AS 6/24/11 FloatingWindowCaptionSource - Bind Visibility -->
+                                <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource MenuPanelGradient}">
                                 <igWindows:CardPanel x:Name="PART_Caption" Background="White" Visibility="{TemplateBinding CaptionVisibility}">
                                     <DockPanel x:Name="captionPanel" Margin="6,0">
                                         <Button x:Name="MaximizeButton"
@@ -735,6 +738,7 @@
                                                        TextTrimming="CharacterEllipsis" />
                                     </DockPanel>
                                 </igWindows:CardPanel>
+                                </Border>
                                 <Grid x:Name="Content"
                                           Grid.Row="1"
                                           Margin="0"
@@ -750,7 +754,7 @@
                                     </Grid>
                                     <ContentPresenter x:Name="PART_Content"
 										    Grid.Row="1"
-										    Margin="{TemplateBinding Padding}"
+										    Margin="0"
 										    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
 										    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
 										    ContentSource="Content" />
