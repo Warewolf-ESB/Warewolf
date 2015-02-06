@@ -89,7 +89,8 @@
                                             </Button>
                                             <Button x:Name="MinimizeButton" 
                                                     HorizontalAlignment="Right"
-                                                    VerticalAlignment="Center"
+                                                    VerticalAlignment="Bottom"
+                                                    Style="{StaticResource MetroWindowButtonStyle}"
                                                 Command="{x:Static igWindows:ToolWindow.MinimizeCommand}" 
 												Visibility="{TemplateBinding MinimizeButtonVisibility}"
                                                     Height="20" Width="20"
