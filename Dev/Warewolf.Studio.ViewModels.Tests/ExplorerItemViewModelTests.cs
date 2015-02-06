@@ -285,7 +285,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 VersionNumber = "3",ResourceId = Guid.NewGuid()
             
             };
-            expRepo.Setup(a => a.Rollback(explorerViewModel.ResourceId, "3")).Returns(new RollbackResult(){DisplayName = "bob", VersionHistory = new List<IExplorerItem>()});
+            expRepo.Setup(a => a.Rollback(explorerViewModel.ResourceId, "3")).Returns(new RollbackResult {DisplayName = "bob", VersionHistory = new List<IExplorerItem>()});
             explorerViewModel.RollbackCommand.Execute(null);
             Assert.AreEqual(parent.ResourceName,"bob");
             expRepo.Verify(a => a.Rollback(explorerViewModel.ResourceId, "3"));
@@ -305,9 +305,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
 
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
-            explorerViewModel.ResourceId = Guid.NewGuid();
-            explorerViewModel.ResourceType = ResourceType.DbService;
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) { ResourceId = Guid.NewGuid(), ResourceType = ResourceType.DbService };
             Assert.IsFalse(explorerViewModel.CanShowVersions);
             Assert.IsFalse(explorerViewModel.AreVersionsVisible);
             Assert.AreEqual("Show Version History", explorerViewModel.VersionHeader);
@@ -317,7 +315,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockVersion.Setup(a => a.VersionNumber).Returns("1");
             mockVersion.Setup(a => a.DateTimeStamp).Returns(DateTime.MaxValue);
             mockVersion.Setup(a => a.Reason).Returns("bob");
-            expRepo.Setup(a => a.GetVersions(explorerViewModel.ResourceId)).Returns(new List<IVersionInfo>() { mockVersion.Object });
+            expRepo.Setup(a => a.GetVersions(explorerViewModel.ResourceId)).Returns(new List<IVersionInfo> { mockVersion.Object });
             explorerViewModel.AreVersionsVisible = true;
             Assert.IsTrue(explorerViewModel.Children.Count==1);
             Assert.AreEqual("1" + " " + DateTime.MaxValue.ToString(CultureInfo.InvariantCulture) + " " + "bob", explorerViewModel.Children.First().ResourceName);
@@ -336,7 +334,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             shellViewModelMock.Setup(a => a.ShowPopup(It.IsAny<IPopupMessage>())).Returns(true);
             var server = new Mock<IServer>();
             var expRepo = new Mock<IExplorerRepository>();
-            var expMovedInto = new Mock<IExplorerItemViewModel>().Object;
 
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             //------------Execute Test---------------------------
@@ -356,7 +353,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             shellViewModelMock.Setup(a => a.ShowPopup(It.IsAny<IPopupMessage>())).Returns(true);
             var server = new Mock<IServer>();
             var expRepo = new Mock<IExplorerRepository>();
-            var expMovedInto = new Mock<IExplorerItemViewModel>().Object;
+         
 
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             //------------Execute Test---------------------------
@@ -367,7 +364,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                      new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null)
                      {
                          ResourceName = "bob",
-                         Children = new ObservableCollection<IExplorerItemViewModel>()
+                         Children = new ObservableCollection<IExplorerItemViewModel>
                          {
                               new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null) {ResourceName = "The"},
                                new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null) {ResourceName = "Builder"}
@@ -409,6 +406,80 @@ namespace Warewolf.Studio.ViewModels.Tests
             expRepo.Verify(a => a.Delete(explorerViewModel),Times.Never());
             shellViewModelMock.Verify(a => a.RemoveServiceFromExplorer(explorerViewModel),Times.Never());
         }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_UpdatePermissions")]
+        public void ExplorerItemViewModel_UpdatePermissions_CanCreateNewFolder()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
+            {
+                ResourceType = ResourceType.Folder,
+                CanCreateFolder = false
+            };
+            explorerViewModel.UpdatePermissions( new PermissionsChangedArgs(new List<IWindowsGroupPermission>{new WindowsGroupPermission {Administrator = true}}));
+            Assert.IsTrue(explorerViewModel.CanCreateFolder);
+            explorerViewModel.UpdatePermissions(new PermissionsChangedArgs(new List<IWindowsGroupPermission> { new WindowsGroupPermission { Administrator = false,Contribute = false} }));
+            Assert.IsFalse(explorerViewModel.CanCreateFolder);
+            explorerViewModel.UpdatePermissions(new PermissionsChangedArgs(new List<IWindowsGroupPermission> { new WindowsGroupPermission { Contribute = true } }));
+            Assert.IsTrue(explorerViewModel.CanCreateFolder);
+            explorerViewModel.ResourceType = ResourceType.DbService;
+            Assert.IsFalse(explorerViewModel.CanCreateFolder);
+            explorerViewModel.ResourceType = ResourceType.Server;
+            Assert.IsTrue(explorerViewModel.CanCreateFolder);
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_UpdatePermissions")]
+        public void ExplorerItemViewModel_CreateNewFolderCommand()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+           
+            var id = Guid.NewGuid();
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission>() { new WindowsGroupPermission() { Contribute = true,IsServer = true} });
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
+            {
+                ResourceType = ResourceType.Folder,
+                CanCreateFolder = true,
+                ResourceId = id,
+                Children =  new ObservableCollection<IExplorerItemViewModel>()
+            };
+           
+            explorerViewModel.UpdatePermissions(new PermissionsChangedArgs(new List<IWindowsGroupPermission> { new WindowsGroupPermission { Administrator = true } }));
+            Assert.IsTrue(explorerViewModel.CanCreateFolder);
+            var result = new Mock<IExplorerItem>();
+            result.Setup(a => a.DisplayName).Returns("New Folder");
+         
+            // ReSharper disable MaximumChainedReferences
+            expRepo.Setup(a => a.CreateFolder(id, "New Folder",It.IsAny<Guid>())).Returns(result.Object);
+            // ReSharper restore MaximumChainedReferences
+            // execute command expect repo called and child added
+            explorerViewModel.CreateFolderCommand.Execute(null);
+            Assert.IsTrue(explorerViewModel.Children.Count == 1);
+            Assert.AreEqual("New Folder",explorerViewModel.Children.First().ResourceName);
+            Assert.IsTrue(explorerViewModel.Children.First().CanCreateFolder);
+        }
+
     }
+
+
+
 }
 // ReSharper restore InconsistentNaming

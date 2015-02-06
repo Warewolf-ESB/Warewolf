@@ -25,12 +25,24 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="parentGuid"></param>
         /// <param name="name"></param>
-        public IExplorerItem AddFolder(Guid parentGuid, string name)
+        /// <param name="id"></param>
+        public IExplorerItem AddFolder(Guid parentGuid, string name, Guid id)
         {
             var controller = CommunicationControllerFactory.CreateController("AddFolderService");
             controller.AddPayloadArgument("name", name);
             controller.AddPayloadArgument("parentGuid", parentGuid.ToString());
+            controller.AddPayloadArgument("id", id.ToString());
             controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
+            return null;
+        }
+
+        /// <summary>
+        /// Add a folder to a warewolf server
+        /// </summary>
+        /// <param name="path">relative path</param>
+        /// <param name="name"></param>
+        public IExplorerItem AddFolder(Guid path, string name)
+        {
             return null;
         }
 

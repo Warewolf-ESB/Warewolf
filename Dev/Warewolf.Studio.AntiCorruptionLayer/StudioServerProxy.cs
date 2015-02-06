@@ -74,9 +74,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
            return  VersionManager.RollbackTo(resourceId,version);
         }
 
-        public IExplorerItem CreateFolder(Guid parentGuid , string name)
+        public IExplorerItem CreateFolder(Guid parentGuid, string name, Guid id)
         {
-           return UpdateManagerProxy.AddFolder(parentGuid,name);
+           return UpdateManagerProxy.AddFolder(parentGuid,name,id);
         }
 
         #endregion
