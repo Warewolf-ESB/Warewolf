@@ -26,6 +26,8 @@ namespace Dev2.Common.Interfaces
 
         IStudioUpdateManager UpdateRepository{get;}
         string GetServerVersion();
+
+       
     }
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);

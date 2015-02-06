@@ -273,7 +273,16 @@
                                                                Source="{StaticResource Explorer-DLL}" />
                                                     </ig:XamMenuItem.Icon>
                                                 </ig:XamMenuItem>
-                                                <ig:XamMenuSeparator />
+                                                    <ig:XamMenuItem Name="NewFolder"
+                                                                InputGestureText="[Ctrl+Shift+F]"
+                                                                Command="{Binding Path=Data.NewFolderCommand}"
+                                                                CommandParameter="{x:Static data:ResourceType.PluginService}"
+                                                                Header="New Folder"
+                                                                Visibility="{Binding Path=Data.CanCreateFolder,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                          
+                                                    </ig:XamMenuItem>
+                                                    <ig:XamMenuSeparator />
                                                 <ig:XamMenuItem Name="NewPluginSource"
                                                                 Command="{Binding Path=Data.NewCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.PluginSource}"

@@ -44,7 +44,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
-          return true;
+                return true;
                
             
         }
@@ -72,6 +72,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public IRollbackResult Rollback(Guid resourceId, string version)
         {
            return  VersionManager.RollbackTo(resourceId,version);
+        }
+
+        public IExplorerItem CreateFolder(Guid parentGuid , string name)
+        {
+           return UpdateManagerProxy.AddFolder(parentGuid,name);
         }
 
         #endregion

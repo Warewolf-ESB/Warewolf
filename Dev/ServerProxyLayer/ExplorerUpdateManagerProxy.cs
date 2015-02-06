@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
@@ -22,12 +23,15 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <summary>
         /// Add a folder to a warewolf server
         /// </summary>
-        /// <param name="path">relative path</param>
-        public void AddFolder(string path)
+        /// <param name="parentGuid"></param>
+        /// <param name="name"></param>
+        public IExplorerItem AddFolder(Guid parentGuid, string name)
         {
             var controller = CommunicationControllerFactory.CreateController("AddFolderService");
-            controller.AddPayloadArgument("path", path);
+            controller.AddPayloadArgument("name", name);
+            controller.AddPayloadArgument("parentGuid", parentGuid.ToString());
             controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
+            return null;
         }
 
         /// <summary>

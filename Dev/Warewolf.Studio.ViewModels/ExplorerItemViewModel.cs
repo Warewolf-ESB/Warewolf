@@ -43,6 +43,7 @@ namespace Warewolf.Studio.ViewModels
         Guid _resourceId;
         bool _isExpanded;
         bool _canCreateServerSource;
+        bool _canCreateFolder;
 
         // ReSharper disable TooManyDependencies
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent):this(shellViewModel,server,builder)
@@ -127,7 +128,21 @@ namespace Warewolf.Studio.ViewModels
                 }
         
             });
+            CreateFolderCommand = new DelegateCommand(CreateNewFolder);
 
+        }
+
+        public void CreateNewFolder()
+        {
+            if(ResourceType == ResourceType.Folder)
+            {
+                var folder = _explorerRepository.CreateFolder(ResourceId,"bob");
+               // Children.Add(folder);
+            }
+            else
+            {
+               Parent.CreateNewFolder();
+            }
         }
 
         void LostFocusCommand()
@@ -194,6 +209,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public ICommand CreateFolderCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
@@ -342,6 +358,18 @@ namespace Warewolf.Studio.ViewModels
             {
                 OnPropertyChanged(()=>CanDelete);
                 _canDelete = value;
+            }
+        }
+        public bool CanCreateFolder
+        {
+            get
+            {
+                return _canCreateFolder;
+            }
+            set
+            {
+                _canCreateFolder = value;
+                OnPropertyChanged(() => CanCreateFolder);
             }
         }
         public bool CanDeploy { get; set; }

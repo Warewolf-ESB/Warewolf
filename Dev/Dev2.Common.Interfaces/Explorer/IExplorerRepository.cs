@@ -17,6 +17,8 @@ namespace Dev2.Common.Interfaces.Explorer
         ICollection<IVersionInfo> GetVersions(Guid id);
 
         IRollbackResult Rollback(Guid resourceId, string version);
+
+        IExplorerItem CreateFolder(Guid parentGuid, string name);
     }
 
     public interface IStudioUpdateManager
