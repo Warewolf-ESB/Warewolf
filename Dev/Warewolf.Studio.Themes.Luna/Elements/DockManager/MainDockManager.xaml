@@ -345,8 +345,6 @@
 
 
     <Style TargetType="{x:Type igDock:ContentPane}">
-        <!--  <Setter Property="AllowFloatingOnly" Value="False"/>  -->
-        <!--  <Setter Property="AllowDockingFloating" Value="False"/>  -->
         <Setter Property="BorderThickness" Value="0" />
     </Style>
     <!--  ROBIN  -->
@@ -361,8 +359,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="{x:Type igDock:PaneTabItem}">
-        <Setter Property="Template">
+    <Style TargetType="{x:Type igDock:PaneTabItem}">        
+            <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type igDock:PaneTabItem}">
                     <Border x:Name="Background"
@@ -480,11 +478,14 @@
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.GrayTextBrushKey}}" />
                         </Trigger>
-
+                        
                         <Trigger Property="IsMouseOverTab" Value="true" >
                             <Setter TargetName="closeBtn" Property="Foreground" Value="{StaticResource WareWolfOrangeBrush}" />
                         </Trigger>
-
+                        <Trigger Property="AllowClosing" Value="False">
+                            <Setter TargetName="closeBtn" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        
                         <Trigger Property="IsSelected" Value="true">
                             <Setter Property="Panel.ZIndex" Value="1" />
                             <Setter TargetName="activebrFiller" Property="Visibility" Value="Visible" />
@@ -529,8 +530,10 @@
                             <Setter Property="LayoutTransform">
                                 <Setter.Value>
                                     <RotateTransform Angle="-90" />
-                                </Setter.Value>
-                            </Setter>
+                                </Setter.Value>                                
+                                </Setter>
+                            <Setter Property="Margin" TargetName="Background" Value="-8,0,12,0"></Setter>
+                            <Setter Property="Visibility" TargetName="closeBtn" Value="Collapsed"></Setter>
                         </Trigger>
 
                         <!--  ========== TAB PLACEMENT : RIGHT ==========  -->
@@ -539,8 +542,10 @@
                                 <Setter.Value>
                                     <RotateTransform Angle="90" />
                                 </Setter.Value>
-                            </Setter>
-                        </Trigger>
+                            </Setter>          
+                            <Setter Property="Margin" TargetName="Background" Value="16,0,-16,0"></Setter>
+                            <Setter Property="Visibility" TargetName="closeBtn" Value="Collapsed"></Setter>
+        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -635,9 +640,6 @@
                         <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Document">
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="TabStripPlacement" Value="Top" />
-                        </Trigger>
-                        <Trigger Property="igDock:XamDockManager.PaneLocation" Value="Floating">
-                            <Setter Property="Padding" Value="0" />
                         </Trigger>
                         <Trigger Property="TabStripPlacement" Value="Bottom">
                             <Setter TargetName="PART_TabHeaderPanel" Property="Margin" Value="0" />
