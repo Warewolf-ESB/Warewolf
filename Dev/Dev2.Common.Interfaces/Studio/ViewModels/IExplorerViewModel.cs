@@ -19,7 +19,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         string SearchText { get; set; }
 	    ICommand RefreshCommand { get; set; }
         bool IsRefreshing { get; set; }
-
 	    IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc);
 	}
 }

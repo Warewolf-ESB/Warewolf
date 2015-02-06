@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -465,6 +466,7 @@ namespace Warewolf.Studio
                 window.UseOSNonClientArea = false;
                 window.Style = style;
             }
-        }        
+        }
+
     }
 }

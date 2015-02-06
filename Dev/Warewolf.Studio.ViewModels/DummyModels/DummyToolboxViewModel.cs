@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
@@ -22,7 +23,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         #region Implementation of IToolboxViewModel
 
         public DummyToolboxViewModel()
-            : base(new ToolboxModel(new DummyServer(), new DummyServer(), new Mock<IPluginProxy>().Object), new ToolboxModel(new DummyServer(), new DummyServer(), new Mock<IPluginProxy>().Object))
+            : base(new ToolboxModel(new Mock<IServer>().Object, new Mock<IServer>().Object, new Mock<IPluginProxy>().Object), new ToolboxModel(new Mock<IServer>().Object, new Mock<IServer>().Object, new Mock<IPluginProxy>().Object))
         {
             SetupTools();
         }

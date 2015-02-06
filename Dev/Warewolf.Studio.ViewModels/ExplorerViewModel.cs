@@ -59,9 +59,11 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=>IsRefreshing);
             }
         }
+
         ICollection<IEnvironmentViewModel> _environments;
         string _searchText;
         bool _isRefreshing;
+
         public ICollection<IEnvironmentViewModel> Environments
         {
             get
