@@ -54,7 +54,7 @@
                                                                          To="25" />
         </Storyboard>
 
-        
+
       
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
