@@ -412,7 +412,9 @@
         <Style x:Key="RootMenuStyle" TargetType="{x:Type Menu}">
             <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="Background" Value="Green"/>
             <Setter Property="ItemsPanel">
+              
                 <Setter.Value>
                     <ItemsPanelTemplate>
                         <igWindows:CardPanel AllowDrop="True" />
@@ -538,12 +540,13 @@
                     <Setter Property="Foreground" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.GrayTextBrushKey}}" />
                 </Trigger>
 
-                <Trigger Property="IsMouseOverTab" Value="true" />
+                <Trigger Property="IsMouseOverTab" Value="true" >
+                    <Setter TargetName="closeBtn" Property="Foreground" Value="{StaticResource WareWolfLighkGreyBrush}" />
+                </Trigger>
 
                 <Trigger Property="IsSelected" Value="true">
                     <Setter Property="Panel.ZIndex" Value="1" />
                     <Setter TargetName="activebrFiller" Property="Visibility" Value="Visible" />
-
                     <Setter TargetName="HighlightBorder" Property="BorderBrush" Value="White" />
                     <Setter TargetName="HighlightBorder" Property="Background" Value="White" />
                     <Setter Property="Background" Value="{DynamicResource {x:Static dockManager:DockManagerBrushKeys.TabbedDocumentActiveCenterFillKey}}" />
@@ -620,7 +623,7 @@
 
                         <!--  Dev2  -->
                         <Menu x:Name="filesMenu"
-                          VerticalAlignment="Center"
+                           VerticalAlignment="Center"
                           DockPanel.Dock="Right"
                           Style="{StaticResource RootMenuStyle}">
                             <MenuItem x:Name="PART_FilesMenuItem"
@@ -890,7 +893,9 @@
                         <dockManager:SplitPane>
                             <dockManager:TabGroupPane x:Name="Workspace"
                                                       SelectedItem="{Binding ActiveItem}"
-                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
+                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}">
+
+                                </dockManager:TabGroupPane>
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>
