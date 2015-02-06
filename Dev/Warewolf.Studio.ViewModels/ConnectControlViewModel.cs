@@ -9,7 +9,6 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Studio.AntiCorruptionLayer;
-using Warewolf.Studio.ViewModels.DummyModels;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -31,7 +30,6 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             Servers = Server.GetServerConnections();
             Servers = new List<IServer>();
-            Servers.Add(new DummyServer());
             Servers.Add(server);
             aggregator.GetEvent<ServerAddedEvent>().Subscribe(ServerAdded);
             EditConnectionCommand = new DelegateCommand(Edit);

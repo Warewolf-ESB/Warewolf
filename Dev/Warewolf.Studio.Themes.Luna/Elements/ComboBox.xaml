@@ -489,8 +489,6 @@
                                 </VisualState>
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-
-
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="hover" Storyboard.TargetProperty="(UIElement.Visibility)">
                                             <DiscreteObjectKeyFrame KeyTime="0" >
                                                 <DiscreteObjectKeyFrame.Value>
