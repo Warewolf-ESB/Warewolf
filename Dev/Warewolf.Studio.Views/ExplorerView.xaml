@@ -51,7 +51,7 @@
 
 
         <!--  URI LOOKUP  -->
-        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid Grid.Row="1" Grid.Column="1" Visibility="{Binding ShowConnectControl,Converter={StaticResource BoolToVisibilityConverter}}">
             <views:ConnectControlView DataContext="{Binding ConnectControlViewModel}" />
         </Grid>
 
@@ -100,7 +100,7 @@
         <ig:XamDataTree x:Name="ExplorerTree"
                         Grid.Row="5"
                         Grid.Column="1"
-                        ActiveDataItem="{Binding Path=Environments}"
+                        ActiveDataItem="{Binding SelectedItem, Mode=TwoWay}"
                         DisplayMemberPath="DisplayName"
                         IsDraggable="True"
                         IsDropTarget="True"
@@ -328,7 +328,7 @@
                 <ig:NodeLayout Key="Children"
                                DisplayMemberPath="ResourceName"
                                IsExpandedMemberPath="IsExpanded"
-                               
+                               IsSelectedMemberPath="IsSelected"
                                TargetTypeName="IExplorerItemViewModel"
                                Visibility="{Binding Path=Data.IsVisible,
                                                     Converter={StaticResource BoolToVisibilityConverter}}">

@@ -55,7 +55,7 @@ namespace Warewolf.Studio
 
             Container.RegisterInstance<IVersionChecker>(new VersionChecker());
             Container.RegisterType<IWebLatestVersionDialog, WebLatestVersionDialog>();
-
+            Container.RegisterInstance<IRequestServiceNameView>(new RequestServiceNameView());
             Container.RegisterType<IServer, Server>(new InjectionConstructor(typeof(Uri)));
             Container.RegisterInstance<IVersionChecker>(new VersionChecker());
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));

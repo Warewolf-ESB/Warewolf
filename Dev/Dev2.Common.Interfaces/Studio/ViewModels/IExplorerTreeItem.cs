@@ -21,6 +21,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanShowVersions { get; }
         bool CanRollback { get;  }
         bool IsExpanded { get; set; }
+        bool IsSelected { get; set; }
         ICommand RenameCommand { get; set; }
         ICommand CreateFolderCommand { get; set; }
         ICommand DeleteCommand { get; set; }
