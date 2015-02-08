@@ -37,7 +37,7 @@
         <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
-            <RowDefinition Height="29" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="5" />
             <RowDefinition Height="29" />
             <RowDefinition Height="5" />
@@ -51,7 +51,7 @@
 
 
         <!--  URI LOOKUP  -->
-            <Grid Grid.Row="1" Grid.Column="1" Visibility="{Binding ShowConnectControl,Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid Grid.Row="1" Height="29" Grid.Column="1" Visibility="{Binding ShowConnectControl,Converter={StaticResource BoolToVisibilityConverter}}">
             <views:ConnectControlView DataContext="{Binding ConnectControlViewModel}" />
         </Grid>
 
