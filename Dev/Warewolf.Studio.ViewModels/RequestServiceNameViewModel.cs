@@ -18,7 +18,7 @@ namespace Warewolf.Studio.ViewModels
         private string _errorMessage;
         private ResourceName _resourceName;
         private IRequestServiceNameView _view;
-        private MessageBoxResult _viewResult;
+        public MessageBoxResult ViewResult { get; private set; }
 
         public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel,IRequestServiceNameView view)
         {
@@ -26,43 +26,61 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new ArgumentNullException("environmentViewModel");
             }
+            if (view == null)
+            {
+                throw new ArgumentNullException("view");
+            }
 
             environmentViewModel.Connect();
             environmentViewModel.Load();
             _view = view;
-            OkCommand = new DelegateCommand(() =>
-                                            {
-                                                var parent = SingleEnvironmentExplorerViewModel.SelectedItem.Parent;
-                                                var parentNames = new List<string>();
-                                                while (parent!=null)
-                                                {
-                                                    parentNames.Add(parent.ResourceName);
-                                                    parent = parent.Parent;
-                                                }
-                                                var path = "";
-                                                if (parentNames.Count > 0)
-                                                {
-                                                    for (int index = parentNames.Count; index >0; index--)
-                                                    {
-                                                        var parentName = parentNames[index-1];
-                                                        path = path+"\\"+parentName;
-                                                    }
-                                                }
-                                                if (SingleEnvironmentExplorerViewModel.SelectedItem.ResourceType ==
-                                                    ResourceType.Folder)
-                                                {
-                                                    path = path + "\\" +
-                                                           SingleEnvironmentExplorerViewModel.SelectedItem.ResourceName;
-                                                }
-                                                path = path.TrimStart('\\') + "\\";
-                                                _resourceName = new ResourceName(path, Name);
-                                                _viewResult = MessageBoxResult.OK;
-                                                _view.RequestClose();
-                                            },() => String.IsNullOrEmpty(ErrorMessage));            
-            CancelCommand = new DelegateCommand(() => _view.RequestClose());
+            OkCommand = new DelegateCommand(SetServiceName,() => String.IsNullOrEmpty(ErrorMessage));            
+            CancelCommand = new DelegateCommand(CloseView);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(environmentViewModel);
             _view.DataContext = this;
             Name = "";
+        }
+
+        private void CloseView()
+        {
+            _view.RequestClose();
+        }
+
+        private void SetServiceName()
+        {
+            var path = GetPath();
+            if (!string.IsNullOrEmpty(path))
+            {
+                path = path.TrimStart('\\') + "\\";
+            }
+            _resourceName = new ResourceName(path, Name);
+            ViewResult = MessageBoxResult.OK;
+            _view.RequestClose();
+        }
+
+        private string GetPath()
+        {
+            var parent = SingleEnvironmentExplorerViewModel.SelectedItem.Parent;
+            var parentNames = new List<string>();
+            while (parent != null)
+            {
+                parentNames.Add(parent.ResourceName);
+                parent = parent.Parent;
+            }
+            var path = "";
+            if (parentNames.Count > 0)
+            {
+                for (var index = parentNames.Count; index > 0; index--)
+                {
+                    var parentName = parentNames[index - 1];
+                    path = path + "\\" + parentName;
+                }
+            }
+            if (SingleEnvironmentExplorerViewModel.SelectedItem.ResourceType == ResourceType.Folder)
+            {
+                path = path + "\\" + SingleEnvironmentExplorerViewModel.SelectedItem.ResourceName;
+            }
+            return path;
         }
 
         private void RaiseCanExecuteChanged()
@@ -77,7 +95,7 @@ namespace Warewolf.Studio.ViewModels
         public MessageBoxResult ShowSaveDialog()
         {
             _view.ShowView();
-            return _viewResult;
+            return ViewResult;
         }
 
         public ResourceName ResourceName
