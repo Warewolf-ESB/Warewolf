@@ -27,6 +27,7 @@ namespace Warewolf.Studio.ViewModels
         bool _isServerUnavailableIconVisible;
         bool _canCreateServerSource;
         private bool _isExpanded;
+        private bool _isSelected;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -161,6 +162,17 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsExpanded);
             }
         }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged(() => IsSelected);
+            }
+        }
+
         void ShowServerVersionAbout()
         {
             var serverVersion = Server.GetServerVersion();

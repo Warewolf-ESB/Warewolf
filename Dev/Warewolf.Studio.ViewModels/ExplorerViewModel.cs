@@ -12,41 +12,22 @@ using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ExplorerViewModel:BindableBase,IExplorerViewModel
+    public class ExplorerViewModelBase : BindableBase, IExplorerViewModel
     {
-        public ExplorerViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
+        private ICollection<IEnvironmentViewModel> _environments;
+        private string _searchText;
+        private bool _isRefreshing;
+        private IExplorerItemViewModel _selectedItem;
+
+        public ExplorerViewModelBase()
         {
-            if(shellViewModel == null)
-            {
-                throw new ArgumentNullException("shellViewModel");
-            }
             
             RefreshCommand = new DelegateCommand(Refresh);
-            var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer,shellViewModel);
-            Environments = new ObservableCollection<IEnvironmentViewModel>{localhostEnvironment};
-            localhostEnvironment.Connect();
-            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer,aggregator);
-        }
-
-        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server,IShellViewModel shellViewModel)
-        {
-            return new EnvironmentViewModel(server, shellViewModel);
-        }
-
-        void Refresh()
-        {
-            IsRefreshing = true;
-            Environments.ForEach(model =>
-            {
-                if (model.IsConnected)
-                {
-                    model.Load();
-                }
-            });
-            IsRefreshing = false;
+            
         }
 
         public ICommand RefreshCommand { get; set; }
+
         public bool IsRefreshing
         {
             get
@@ -60,9 +41,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        ICollection<IEnvironmentViewModel> _environments;
-        string _searchText;
-        bool _isRefreshing;
+        public bool ShowConnectControl { get; set; }
+
+        public IExplorerItemViewModel SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                _selectedItem = value;
+            }
+        }
 
         public ICollection<IEnvironmentViewModel> Environments
         {
@@ -75,6 +63,57 @@ namespace Warewolf.Studio.ViewModels
                 _environments = value;
                 OnPropertyChanged(() => Environments);
             }
+        }
+
+        public IEnvironmentViewModel SelectedEnvironment { get; set; }
+        public IServer SelectedServer { get { return SelectedEnvironment.Server; }  }
+        
+
+        public string SearchText
+        {
+            get
+            {
+                return _searchText;
+            }
+            set
+            {
+                if(_searchText == value)
+                {
+                    return;
+                }
+                _searchText = value;
+                Filter(_searchText);
+                OnPropertyChanged(() => SearchText);
+            }
+        }
+
+        public string SearchToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ExplorerSearchToolTip;
+            }
+        }
+
+        public string RefreshToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ExplorerRefreshToolTip;
+            }
+        }
+
+        private void Refresh()
+        {
+            IsRefreshing = true;
+            Environments.ForEach(model =>
+                              {
+                                  if (model.IsConnected)
+                                  {
+                                      model.Load();
+                                  }
+                              });
+            IsRefreshing = false;
         }
 
         public void Filter(string filter)
@@ -103,47 +142,48 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
-        public IEnvironmentViewModel SelectedEnvironment { get; set; }
-        public IServer SelectedServer { get { return SelectedEnvironment.Server; }  }
-        public IConnectControlViewModel ConnectControlViewModel { get; private set; }
-        public string SearchText
-        {
-            get
-            {
-                return _searchText;
-            }
-            set
-            {
-                if(_searchText == value)
-                {
-                    return;
-                }
-                _searchText = value;
-                Filter(_searchText);
-                OnPropertyChanged(() => SearchText);
-            }
-        }
 
         public IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc)
         {
             return null;
         }
-
-        public string SearchToolTip
+        public IConnectControlViewModel ConnectControlViewModel { get; internal set; }
+        protected virtual void OnSelectedEnvironmentChanged(IEnvironmentViewModel e)
         {
-            get
+            var handler = SelectedEnvironmentChanged;
+            if (handler != null) handler(this, e);
+        }
+    }
+
+    public class ExplorerViewModel:ExplorerViewModelBase
+    {
+        public ExplorerViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
+        {
+            if (shellViewModel == null)
             {
-                return Resources.Languages.Core.ExplorerSearchToolTip;
+                throw new ArgumentNullException("shellViewModel");
             }
+            var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer, shellViewModel);
+            Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
+            localhostEnvironment.Connect();
+            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator);
+            ShowConnectControl = true;
         }
 
-        public string RefreshToolTip
-        {
-            get
-            {
-                return Resources.Languages.Core.ExplorerRefreshToolTip;
-            }
-        }
+        
 
+        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server,IShellViewModel shellViewModel)
+        {
+            return new EnvironmentViewModel(server, shellViewModel);
+        }
+    }
+
+    public class SingleEnvironmentExplorerViewModel : ExplorerViewModelBase
+    {
+        public SingleEnvironmentExplorerViewModel(IEnvironmentViewModel environmentViewModel)
+        {
+            Environments = new ObservableCollection<IEnvironmentViewModel> { environmentViewModel };
+            ShowConnectControl = false;
+        }
     }
 }

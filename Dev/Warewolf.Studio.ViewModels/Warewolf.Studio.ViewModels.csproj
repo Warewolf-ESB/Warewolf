@@ -102,6 +102,7 @@
     <Compile Include="ExplorerItemNodeViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="NewServerViewModel.cs" />
+    <Compile Include="RequestServiceNameViewModel.cs" />
     <Compile Include="ServerAddedEvent.cs" />
     <Compile Include="TestConnection.cs" />
     <Compile Include="VariableList\VariableListColumnViewModel.cs" />

@@ -182,6 +182,9 @@ namespace Warewolf.Studio.ViewModels
                 _isExpanded = value;
             }
         }
+
+        public bool IsSelected { get; set; }
+
         public ICommand RenameCommand
         {
             get

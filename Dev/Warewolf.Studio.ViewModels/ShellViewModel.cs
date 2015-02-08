@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
@@ -13,7 +12,6 @@ using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
-using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
@@ -239,7 +237,7 @@ namespace Warewolf.Studio.ViewModels
 
         void CreateNewServerSource()
         {
-            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModelMock(),this,
+            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer,this), _unityContainer.Resolve<IRequestServiceNameView>()),this,
                 ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", System.StringComparison.Ordinal))) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
             GetRegion("Workspace").Add(server);
 
@@ -343,49 +341,5 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => MenuExpanded);
             }
         }
-
-
-
-
-
     }
-
-    public class RequestServiceNameViewModelMock : IRequestServiceNameViewModel
-    {
-        private string _name;
-        private string _errorMessage;
-        private ICommand _okCommand;
-
-        public MessageBoxResult ShowSaveDialog()
-        {
-            return MessageBoxResult.OK;
-        }
-
-        public ResourceName ResourceName
-        {
-            get { return new ResourceName("", Guid.NewGuid().ToString().Substring(0, 5)); }
-        }
-
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set { _errorMessage = value; }
-        }
-
-        public ICommand OkCommand
-        {
-            get { return _okCommand; }
-            set { _okCommand = value; }
-        }
-    }
-
-
-
-
 }
