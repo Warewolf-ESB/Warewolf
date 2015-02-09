@@ -18,7 +18,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanDelete { get; set; }
         bool CanCreateFolder { get; set; }
         bool CanDeploy { get; set; }
-        bool CanShowVersions { get; }
+        bool CanShowVersions { get; set; }
         bool CanRollback { get;  }
         bool IsExpanded { get; set; }
         bool IsSelected { get; set; }

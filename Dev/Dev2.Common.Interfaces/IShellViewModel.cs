@@ -14,7 +14,7 @@ namespace Dev2.Common.Interfaces
         void AddService(IResource resource);
         void DeployService(IExplorerItemViewModel resourceToDeploy);
         void UpdateHelpDescriptor(IHelpDescriptor helpDescriptor);
-        void NewResource(ResourceType? type);
+        void NewResource(ResourceType? type, Guid selectedId);
         void SaveService();
         void ExecuteService();
         void OpenScheduler();

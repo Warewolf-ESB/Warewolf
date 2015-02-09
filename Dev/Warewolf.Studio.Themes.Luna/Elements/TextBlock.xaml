@@ -64,6 +64,7 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
+    
     <Style x:Key="SourceHeader" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Larger}" />
@@ -71,7 +72,8 @@
         <Setter Property="Foreground" Value="{StaticResource WareWolfWhiteBrush}" />
         <Setter Property="Background" Value="{StaticResource WareWolfMenuBrush}" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Padding" Value="5,1,5,1"/>
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Margin" Value="10,0,0,0" />
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
                 <ControlTemplate>

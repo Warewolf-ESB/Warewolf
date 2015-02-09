@@ -158,7 +158,7 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDelete { get; set; }
         public bool CanCreateFolder { get; set; }
         public bool CanDeploy { get; set; }
-        public bool CanShowVersions { get; private set; }
+        public bool CanShowVersions { get; set; }
         public bool CanRollback
         {
             get

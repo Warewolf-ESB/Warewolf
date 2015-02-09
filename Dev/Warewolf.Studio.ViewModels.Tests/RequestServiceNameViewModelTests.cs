@@ -22,7 +22,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             
             //------------Execute Test---------------------------
             // ReSharper disable once ObjectCreationAsStatement
-            new RequestServiceNameViewModel(null,new Mock<IRequestServiceNameView>().Object);
+            new RequestServiceNameViewModel(null,new Mock<IRequestServiceNameView>().Object,Guid.Empty);
             //------------Assert Results-------------------------
         }
         
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             
             //------------Execute Test---------------------------
             // ReSharper disable once ObjectCreationAsStatement
-            new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object,null);
+            new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object,null,Guid.Empty);
             //------------Assert Results-------------------------
         }
 
@@ -46,7 +46,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ValidateName_InvalidCharactersName_ShouldReturnErrorMessage()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             //------------Execute Test---------------------------
             viewModel.Name = "Bad#$Name";
             //------------Assert Results-------------------------
@@ -59,7 +59,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ValidateName_ValidCharactersName_ShouldReturnNoErrorMessage()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             //------------Execute Test---------------------------
             viewModel.Name = "Good Name";
             //------------Assert Results-------------------------
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ValidateName_NullName_ShouldReturnErrorMessage()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             //------------Execute Test---------------------------
             viewModel.Name = null;
             //------------Assert Results-------------------------
@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ValidateName_EmptyName_ShouldReturnErrorMessage()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             //------------Execute Test---------------------------
             viewModel.Name = "";
             //------------Assert Results-------------------------
@@ -100,7 +100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var propertyChangeFired = false;
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             viewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Name")
@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var propertyChangeFired = false;
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             viewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ErrorMessage")
@@ -143,7 +143,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.OkCommand);
 
@@ -156,7 +156,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OkCommand_CanExecute_HasErrorMessage_False()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             //------------Execute Test---------------------------
             viewModel.Name = "Bad**Name";
             //------------Assert Results-------------------------
@@ -170,7 +170,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OkCommand_CanExecute_NoErrorMessage_True()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             //------------Execute Test---------------------------
             viewModel.Name = "Resource Name";
             //------------Assert Results-------------------------
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var canExecuteChangedFired = false;
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object, Guid.Empty);
             viewModel.OkCommand.CanExecuteChanged += (sender, args) =>
             {
                 canExecuteChangedFired = true;
@@ -205,7 +205,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mockView = new Mock<IRequestServiceNameView>();
             mockView.Setup(view => view.RequestClose()).Verifiable();
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object, Guid.Empty);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -220,7 +220,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mockView = new Mock<IRequestServiceNameView>();
             mockView.Setup(view => view.RequestClose()).Verifiable();
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object, Guid.Empty);
             const string resourceName = "Test";
             viewModel.Name = resourceName;
             var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
@@ -241,7 +241,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mockView = new Mock<IRequestServiceNameView>();
             mockView.Setup(view => view.RequestClose()).Verifiable();
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object, Guid.Empty);
             const string resourceName = "Test";
             viewModel.Name = resourceName;
             var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
@@ -267,7 +267,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mockView = new Mock<IRequestServiceNameView>();
             mockView.Setup(view => view.RequestClose()).Verifiable();
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object, Guid.Empty);
             const string resourceName = "Test";
             viewModel.Name = resourceName;
             var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
@@ -295,7 +295,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mockView = new Mock<IRequestServiceNameView>();
             mockView.Setup(view => view.RequestClose()).Verifiable();
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object, Guid.Empty);
             const string resourceName = "Test";
             viewModel.Name = resourceName;
             var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();

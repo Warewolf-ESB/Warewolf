@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             Server.NetworkStateChanged += Server_NetworkStateChanged;
             _children = new ObservableCollection<IExplorerItemViewModel>();
-            NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
+            NewCommand = new DelegateCommand<ResourceType?>(type => _shellViewModel.NewResource(type, Guid.Empty));
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(Load);
             IsServerIconVisible = true;
@@ -53,6 +53,21 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand ShowServerVersionCommand { get; set; }
+
+        public void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction)
+        {
+            foreach (var explorerItemViewModel in Children)
+            {
+                explorerItemViewModel.Apply(a =>
+                {
+                    if (a.ResourceId == id)
+                    {
+                        a.IsExpanded = true;
+                        foundAction(a);
+                    }
+                });
+            }
+        }
 
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
         {
@@ -150,7 +165,13 @@ namespace Warewolf.Studio.ViewModels
         public bool CanDelete { get; set; }
         public bool CanCreateFolder { get; set; }
         public bool CanDeploy { get; set; }
-        public bool CanShowVersions { get { return false; } }
+        public bool CanShowVersions
+        {
+            get { return false; }
+            set
+            {
+            }
+        }
         public bool CanRollback { get; set; }
 
         public bool IsExpanded
@@ -158,6 +179,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _isExpanded; }
             set
             {
+                
                 _isExpanded = value;
                 OnPropertyChanged(() => IsExpanded);
             }
@@ -246,8 +268,26 @@ namespace Warewolf.Studio.ViewModels
                 Children = explorerItemViewModels;
                 IsLoaded = true;
                 IsConnecting = false;
+                IsExpanded = true;
             }
         }
+        public async void LoadDialog(Guid selectedId)
+        {
+            if (IsConnected)
+            {
+                IsConnecting = true;
+                var explorerItems = await Server.LoadExplorer();
+
+                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null,true);
+                Children = explorerItemViewModels;
+                IsLoaded = true;
+                IsConnecting = false;
+                IsExpanded = true;
+               
+            }
+        }
+
+
 
         public void Filter(string filter)
         {
@@ -319,7 +359,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server,IExplorerItemViewModel parent)
+        ObservableCollection<IExplorerItemViewModel> CreateExplorerItems(IList<IExplorerItem> explorerItems, IServer server,IExplorerItemViewModel parent,bool isDialog = false)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             if (explorerItems == null) return new ObservableCollection<IExplorerItemViewModel>();
@@ -335,7 +375,21 @@ namespace Warewolf.Studio.ViewModels
                     Inputs = explorerItem.Inputs,
                     Outputs = explorerItem.Outputs
                 };
-                itemCreated.Children = CreateExplorerItems(explorerItem.Children, server, itemCreated);
+                if(isDialog)
+                {
+                    itemCreated.CanCreateDbService = false;
+                    itemCreated.CanCreateDbSource = false;
+                    itemCreated.CanCreatePluginService = false;
+                    itemCreated.CanCreatePluginSource = false;
+                    itemCreated.CanCreateServerSource = false;
+                    itemCreated.CanCreateWebService = false;
+                    itemCreated.CanCreateWebSource = false;
+                    itemCreated.CanCreateWorkflowService = false;
+                    itemCreated.CanDeploy = false;
+                    itemCreated.CanShowVersions = false;
+
+                }
+                itemCreated.Children = CreateExplorerItems(explorerItem.Children, server, itemCreated,isDialog);
                 explorerItemModels.Add(itemCreated);
                 
             }

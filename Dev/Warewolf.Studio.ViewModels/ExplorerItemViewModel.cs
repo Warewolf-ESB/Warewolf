@@ -44,6 +44,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canCreateFolder;
         IWindowsGroupPermission _permission ;
         private bool _isSelected;
+        bool _canShowVersions;
 
         // ReSharper disable TooManyDependencies
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent)
@@ -55,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
                 parent.ShowVersionHistory.Execute(null);
                 parent.ResourceName = output.DisplayName;
             });
-           
+            _canShowVersions = true;
             Parent = parent;
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } });
             _shellViewModel = shellViewModel;
@@ -74,7 +75,7 @@ namespace Warewolf.Studio.ViewModels
                 //shellViewModel.UpdateHelpDescriptor(builder.Build(this, ExplorerEventContext.Selected));
             });
             Server = server;
-            NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
+            NewCommand = new DelegateCommand<ResourceType?>(type => shellViewModel.NewResource(type, ResourceId));
             CanCreateDbService = true;
             CanCreateWorkflowService = true;
             CanCreateServerSource = true;
@@ -151,6 +152,18 @@ namespace Warewolf.Studio.ViewModels
                child.IsRenaming = true;
             }
 
+        }
+
+        public void Apply(Action<IExplorerItemViewModel> action)
+        {
+            action(this);
+            if(Children != null)
+            {
+                foreach(var explorerItemViewModel in Children)
+                {
+                    explorerItemViewModel.Apply(action);
+                }
+            }
         }
 
         string GetChildNameFromChildren()
@@ -468,7 +481,12 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return ResourceType == ResourceType.WorkflowService;
+                return ResourceType == ResourceType.WorkflowService && _canShowVersions;
+            }
+            set
+            {
+                _canShowVersions = value;
+                OnPropertyChanged(() => CanShowVersions);
             }
         }
         public bool CanRollback
@@ -630,6 +648,10 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if(Parent != null && Parent.IsExpanded != value)
+                {
+                    Parent.IsExpanded = value;
+                }
                 _isExpanded = value;
                 OnPropertyChanged(()=>IsExpanded);
             }

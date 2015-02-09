@@ -79,7 +79,8 @@
                     Width="25"
                     Height="25"
                     Command="{Binding RefreshCommand}"
-                    Padding="4"
+                    Margin="4,0,0,0"
+                    Padding="2.5"
                     ToolTip="{Binding Path=RefreshToolTip}"
                     Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
@@ -90,7 +91,8 @@
                                        Grid.Column="1"
                                        Width="25"
                                        Height="25"
-                                       Padding="2"
+                                       Margin="4,0,0,0"
+                                       Padding="2.5"
                                        Visibility="{Binding Path=IsRefreshing,
                                                             Converter={StaticResource BoolToVisibilityConverter}}" />
 
@@ -101,12 +103,14 @@
                         Grid.Row="5"
                         Grid.Column="1"
                         ActiveDataItem="{Binding SelectedItem, Mode=TwoWay}"
+                        
                         DisplayMemberPath="DisplayName"
                         IsDraggable="True"
                         IsDropTarget="True"
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
-                        NodeLineVisibility="Hidden"                        
+                        NodeLineVisibility="Hidden"         
+                        
                         >
             <ig:XamDataTree.EditingSettings>
                 <ig:TreeEditingSettings AllowDeletion="False"
@@ -331,8 +335,9 @@
                                IsSelectedMemberPath="IsSelected"
                                TargetTypeName="IExplorerItemViewModel"
                                Visibility="{Binding Path=Data.IsVisible,
+                               
                                                     Converter={StaticResource BoolToVisibilityConverter}}">
-                    
+
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>                            
                             <DataTemplate.Triggers>
@@ -368,9 +373,10 @@
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
-                            </DataTemplate.Triggers>
+                                </DataTemplate.Triggers>
                             <DockPanel x:Name="ItemDockPanel"
                                        Height="Auto"
+                                      
                                        >
                                 
                                 <DockPanel.Width>
@@ -379,6 +385,7 @@
                                         <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
                                     </MultiBinding>
                                 </DockPanel.Width>
+                                
                                 <!--  CONTEXT MENU FOR THE EXPLORER TREE  -->
                                 <ig:ContextMenuService.Manager>
                                     <ig:ContextMenuManager>
@@ -601,7 +608,8 @@
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
-                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+               
+                                                <EventTrigger RoutedEvent="Button.MouseLeave">
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Duration="0"
@@ -650,8 +658,10 @@
                                     </Image>
                                     
                                 </Button>
-                                <StackPanel VerticalAlignment="Center">                                   
-                                    <TextBlock x:Name="ResourceNameTextBlock"
+
+                                <StackPanel Name="Panel" VerticalAlignment="Center">
+                                        
+                                            <TextBlock x:Name="ResourceNameTextBlock"
                                                MinWidth="5"
                                                Focusable="True"
                                                Text="{Binding Path=Data.ResourceName}"
@@ -663,6 +673,7 @@
                                             </i:EventTrigger>
                                            
                                             </i:Interaction.Triggers>
+
                                     </TextBlock>
                                     <TextBox x:Name="PropertySearch"
                                              IsVisibleChanged="UIElement_OnIsVisibleChanged"
@@ -672,7 +683,8 @@
                                              Visibility="{Binding Path=Data.IsRenaming,
                                                                   Converter={StaticResource BoolToVisibilityConverter}}"
                                              views:FocusExtension.IsFocused="{Binding Path=Data.IsRenaming}">
-                                        <i:Interaction.Triggers>
+                               
+                                            <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="LostFocus">
                                                 <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}" />
                                             </i:EventTrigger>
@@ -680,7 +692,9 @@
                                         </i:Interaction.Triggers>
                                     </TextBox>
                                 </StackPanel>
+                             
                             </DockPanel>
+                                
                         </DataTemplate>                       
                     </ig:NodeLayout.ItemTemplate>
                     <ig:NodeLayout.ExpandedIconTemplate>

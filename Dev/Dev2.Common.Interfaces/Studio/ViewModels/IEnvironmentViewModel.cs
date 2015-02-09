@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -12,6 +13,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void Connect();
         bool IsConnecting { get; }
         void Load();
+        void LoadDialog(Guid selectedId);
         void Filter(string filter);
         ICollection<IExplorerItemViewModel> AsList();
         void SetItemCheckedState(System.Guid id, bool state);
@@ -20,5 +22,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool IsServerIconVisible { get; set; }
         bool IsServerUnavailableIconVisible { get; set; }
         ICommand ShowServerVersionCommand { get; set; }
+
+        void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction);
     }
 }
