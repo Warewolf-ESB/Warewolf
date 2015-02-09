@@ -193,9 +193,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
-
-
         <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
             <views:WorkflowDesignerView />
         </DataTemplate>
@@ -297,6 +294,7 @@
                                             FlyoutAnimation="Resize"
                                             LayoutMode="FillContainer"
                                             ToolWindowLoaded="DockManager_OnToolWindowLoaded"
+                                            FloatingWindowDoubleClickAction="ToggleDockedState"
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
@@ -345,6 +343,7 @@
                             <dockManager:ContentPane x:Name="Toolbox"
                                                      AllowInDocumentHost="False"
                                                      CloseButtonVisibility="Hidden"
+                                                     AllowClose="False"
                                                      Header="TOOL BOX"
                                                      IsPinned="True"
                                                      Style="{DynamicResource DockmangerToolPaneStyle}"
@@ -366,8 +365,8 @@
                         <dockManager:SplitPane>
                             <dockManager:TabGroupPane x:Name="Workspace"
                                                       SelectedItem="{Binding ActiveItem}"
-                                                      
                                                       regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
+                            
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>

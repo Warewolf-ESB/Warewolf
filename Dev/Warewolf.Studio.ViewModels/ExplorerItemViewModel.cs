@@ -43,6 +43,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canCreateServerSource;
         bool _canCreateFolder;
         IWindowsGroupPermission _permission ;
+        private bool _isSelected;
 
         // ReSharper disable TooManyDependencies
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent)
@@ -339,6 +340,17 @@ namespace Warewolf.Studio.ViewModels
         }
         public ICommand NewCommand { get; set; }
         public ICommand DeployCommand { get; set; }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged(() => IsSelected);
+            }
+        }
+
         public ICommand RenameCommand { get; set; }
         public bool CanCreateDbService { get; set; }
         public bool CanCreateDbSource { get; set; }

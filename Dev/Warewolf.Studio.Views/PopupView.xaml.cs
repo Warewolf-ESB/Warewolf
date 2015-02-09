@@ -30,7 +30,12 @@ namespace Warewolf.Studio.Views
             InitializeComponent(); //Note this is here due to the fact that the Header does not update if set at later stage than the InitializeComponent
             MessageText.Text = message.Description;
             IsModal = true;
-            Header = message.Header;
+
+            var textBlock = new TextBlock();
+            textBlock.FontSize = 16.0;
+            textBlock.Text = message.Header;
+            Header = textBlock; 
+            
             var imageSource = new MessageBoxImageToSystemIconConverter().Convert(message.Image, null, null, null) as string;
             if(imageSource != null)
             {
@@ -68,18 +73,21 @@ namespace Warewolf.Studio.Views
                     CancelButton.Visibility = Visibility.Visible;
                     NoButton.Visibility = Visibility.Collapsed;
                     YesButton.Visibility = Visibility.Collapsed;
+                    YesButton.Margin = new Thickness(0, 0, 8, 0);
                     break;
                 case MessageBoxButton.YesNoCancel:
                     OkButton.Visibility = Visibility.Collapsed;
                     CancelButton.Visibility = Visibility.Visible;
                     NoButton.Visibility = Visibility.Visible;
                     YesButton.Visibility = Visibility.Visible;
+                    YesButton.Margin = new Thickness(0, 0, 8, 0);
                     break;
                 case MessageBoxButton.YesNo:
                     OkButton.Visibility = Visibility.Collapsed;
                     CancelButton.Visibility = Visibility.Collapsed;
                     NoButton.Visibility = Visibility.Visible;
                     YesButton.Visibility = Visibility.Visible;
+                    YesButton.Margin = new Thickness(0, 0,8, 0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

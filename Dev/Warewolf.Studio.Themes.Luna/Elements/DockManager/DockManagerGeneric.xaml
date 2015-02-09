@@ -3517,8 +3517,6 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Border x:Name="IconAreaBackground" Style="{StaticResource MenuItem_IconAreaBackground}" />
-
                         <Border Grid.Column="1"
                                 Height="2"
                                 Margin="9,2,0,2"

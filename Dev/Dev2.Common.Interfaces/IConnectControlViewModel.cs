@@ -16,6 +16,7 @@ namespace Dev2.Common.Interfaces
         string ToggleConnectionToolTip { get; }
         string EditConnectionToolTip { get; }
         string ConnectionsToolTip { get; }
+        
 
         void Connect(IServer connection);
 

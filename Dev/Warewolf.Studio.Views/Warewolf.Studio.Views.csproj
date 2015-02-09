@@ -223,6 +223,9 @@
     <Compile Include="ManageServerControl.xaml.cs">
       <DependentUpon>ManageServerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RequestServiceNameView.xaml.cs">
+      <DependentUpon>RequestServiceNameView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SourcesOuterControl.xaml.cs">
       <DependentUpon>SourcesOuterControl.xaml</DependentUpon>
     </Compile>
@@ -280,6 +283,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ManageServerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RequestServiceNameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

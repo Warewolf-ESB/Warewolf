@@ -102,13 +102,13 @@
     <Compile Include="ExplorerItemNodeViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="NewServerViewModel.cs" />
+    <Compile Include="RequestServiceNameViewModel.cs" />
     <Compile Include="ServerAddedEvent.cs" />
     <Compile Include="TestConnection.cs" />
     <Compile Include="VariableList\VariableListColumnViewModel.cs" />
     <Compile Include="VariableList\VariableListViewRecordSetViewModel.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="DeployViewModel.cs" />
-    <Compile Include="DummyModels\DummyExplorerViewModel.cs" />
     <Compile Include="DummyModels\DummyHelpViewModel.cs" />
     <Compile Include="DummyModels\DummyToolboxViewModel.cs" />
     <Compile Include="EnvironmentViewModel.cs" />
