@@ -197,6 +197,7 @@ namespace Dev2.Runtime.Hosting
             }
             try
             {
+                path = path + "\\";
                 List<ResourceCatalogResult> deletedResources = ResourceCatalogue.GetResourceList(workSpaceId)
                                                                                 .Where(a => a.ResourcePath.StartsWith(path))
                                                                                 .Select(a => ResourceCatalogue.DeleteResource(workSpaceId, a.ResourceName, a.ResourceType.ToString())).ToList();

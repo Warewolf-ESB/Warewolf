@@ -81,10 +81,7 @@ namespace Dev2.Studio.Core.Models
 
         public IAuthorizationService AuthorizationService
         {
-            get
-            {
-                return _authorizationService;
-            }
+            get { return _authorizationService ?? (_authorizationService = CreateAuthorizationService(Connection)); }
             private set
             {
                 _authorizationService = value;
