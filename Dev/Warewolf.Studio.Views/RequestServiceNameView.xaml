@@ -37,10 +37,15 @@
         <views:ExplorerView DataContext="{Binding SingleEnvironmentExplorerViewModel}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
 
         <!-- Name Panel -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource TextPanelSubHeaderStyle}" Margin="5,0,0,0">Name:</TextBlock>
-            <TextBox Width="300" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,0,0,0" Style="{StaticResource TextBoxStyle}"></TextBox>
-        </StackPanel>
+        <Grid Grid.Row="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"></ColumnDefinition>
+                 <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="10"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource TextPanelSubHeaderStyle}" Margin="5,0,0,0">Name:</TextBlock>
+            <TextBox Grid.Column="1"  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,0,0,0" Style="{StaticResource TextBoxStyle}"></TextBox>
+        </Grid>
         <!--  FOOTER PANEL  -->
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
