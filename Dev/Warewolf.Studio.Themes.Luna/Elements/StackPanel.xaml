@@ -10,7 +10,7 @@
 
     <!--  *********************************  Stack Panel Style  *********************************  -->
 
-    <Style x:Key="ExplorerStackPanel" TargetType="StackPanel">
+    <!--<Style x:Key="ExplorerStackPanel" TargetType="StackPanel">
         <Setter Property="Background" Value="{StaticResource WarewolfPanelGreyBrush}" />
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="Height" Value="29" />
@@ -36,7 +36,7 @@
         </Style.Resources>
     </Style>
 
-    <!--  *********************************  Implicit Styles  *********************************  -->
+    --><!--  *********************************  Implicit Styles  *********************************  --><!--
     <Style BasedOn="{StaticResource ExplorerStackPanel}" TargetType="{x:Type StackPanel}" />
 
     <Style x:Key="ActivityDesignerStackPanel"
@@ -44,7 +44,7 @@
            TargetType="{x:Type StackPanel}">
         <Setter Property="MinWidth" Value="75" />
         <Setter Property="Margin" Value="0" />
-    </Style>
+    </Style>-->
 
 
 </ResourceDictionary>
