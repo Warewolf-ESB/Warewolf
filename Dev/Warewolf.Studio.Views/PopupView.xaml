@@ -18,52 +18,52 @@
                     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="8" />
             <RowDefinition Height="32" />
             <RowDefinition Height="*"/>
             <RowDefinition Height="30" />
-
+            <RowDefinition Height="8" />
         </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8" />
             <ColumnDefinition Width="32" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="8" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Grid.Column="0"
+        <DockPanel Grid.Row="1"
+                    Grid.Column="1"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    Orientation="Horizontal"
-                    Background="Transparent" Margin="5,0,0,0">
+                    Background="Transparent">
             <Image x:Name="MessageImage"  />
 
-        </StackPanel>
-        <TextBlock x:Name="MessageText"
-    		FontSize="14"
+        </DockPanel>
+        <TextBlock Grid.Row="1" Grid.Column="2"  Grid.RowSpan="2"  Grid.ColumnSpan="2" Margin="8,0,8,8"
+            
+                   x:Name="MessageText"
+    		FontSize="12"
                    TextWrapping="Wrap"
-    		Grid.Column="1" Margin="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Top" />
-        
-        <StackPanel Grid.Row="2"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Orientation="Horizontal"
+    		 VerticalAlignment="Top" HorizontalAlignment="Left" />
+
+        <DockPanel Grid.Row="3"
+                    Grid.Column="2"
                     Background="Transparent" HorizontalAlignment="Right">
             <Button x:Name="YesButton"
                     Style="{StaticResource ButtonStyle}"
                     Width="60"
-                    Margin="0,0,10,0"
                     Click="YesButton_OnClick"
-                    Content="Yes" />
+                    Content="Yes" >
+            </Button>
             <Button x:Name="NoButton"
                     Style="{StaticResource ButtonStyle}"
                     Width="60"
-                    Margin="0,0,10,0"
                     Click="NoButton_OnClick"
                     Content="No" />
             <Button x:Name="OkButton"
                     Style="{StaticResource ButtonStyle}"
                     Width="60"
-                    Margin="0,0,10,0"
                     Click="OkButton_OnClick"
                     Content="Ok" />
             <Button x:Name="CancelButton"
@@ -71,7 +71,16 @@
                     Width="60"
                     Click="CancelButton_OnClick"
                     Content="Cancel" />
-        </StackPanel>
+        </DockPanel>
+
+        <Image Grid.Row="4"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Width="10"
+                    Height="8"
+                    Source="{StaticResource System-Spacer}"
+                    Visibility="Visible" />
+
     </Grid>
 
 </ig:XamDialogWindow>

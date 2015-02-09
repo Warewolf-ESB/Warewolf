@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Navigation;
-using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -25,7 +22,21 @@ namespace Warewolf.Studio.ViewModels.Tests
             
             //------------Execute Test---------------------------
             // ReSharper disable once ObjectCreationAsStatement
-            new RequestServiceNameViewModel(null);
+            new RequestServiceNameViewModel(null,new Mock<IRequestServiceNameView>().Object);
+            //------------Assert Results-------------------------
+        }
+        
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_Constructor")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_NullView_ArgumentNullExceptionThrown()
+        {
+            //------------Setup for test--------------------------
+            
+            //------------Execute Test---------------------------
+            // ReSharper disable once ObjectCreationAsStatement
+            new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object,null);
             //------------Assert Results-------------------------
         }
 
@@ -35,7 +46,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ValidateName_InvalidCharactersName_ShouldReturnErrorMessage()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             //------------Execute Test---------------------------
             viewModel.Name = "Bad#$Name";
             //------------Assert Results-------------------------
@@ -48,7 +59,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ValidateName_ValidCharactersName_ShouldReturnNoErrorMessage()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             //------------Execute Test---------------------------
             viewModel.Name = "Good Name";
             //------------Assert Results-------------------------
@@ -61,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ValidateName_NullName_ShouldReturnErrorMessage()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             //------------Execute Test---------------------------
             viewModel.Name = null;
             //------------Assert Results-------------------------
@@ -75,7 +86,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void ValidateName_EmptyName_ShouldReturnErrorMessage()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             //------------Execute Test---------------------------
             viewModel.Name = "";
             //------------Assert Results-------------------------
@@ -89,7 +100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var propertyChangeFired = false;
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             viewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Name")
@@ -110,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var propertyChangeFired = false;
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             viewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ErrorMessage")
@@ -132,7 +143,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.OkCommand);
 
@@ -145,7 +156,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OkCommand_CanExecute_HasErrorMessage_False()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             //------------Execute Test---------------------------
             viewModel.Name = "Bad**Name";
             //------------Assert Results-------------------------
@@ -159,7 +170,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void OkCommand_CanExecute_NoErrorMessage_True()
         {
             //------------Setup for test--------------------------
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             //------------Execute Test---------------------------
             viewModel.Name = "Resource Name";
             //------------Assert Results-------------------------
@@ -174,7 +185,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var canExecuteChangedFired = false;
-            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object);
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, new Mock<IRequestServiceNameView>().Object);
             viewModel.OkCommand.CanExecuteChanged += (sender, args) =>
             {
                 canExecuteChangedFired = true;
@@ -187,81 +198,123 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canExecuteChangedFired);
 
         }
-    }
 
-
-    public class RequestServiceNameViewModel : BindableBase, IRequestServiceNameViewModel
-    {
-        private string _name;
-        private string _errorMessage;
-        private ResourceName _resourceName;
-
-        public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel)
+        [TestMethod]
+        public void CancelCommand_WhenExecuted_ShouldCallRequestCloseOnView()
         {
-            if (environmentViewModel == null)
-            {
-                throw new ArgumentNullException("environmentViewModel");
-            }
-            OkCommand = new DelegateCommand(() => _resourceName=new ResourceName("",Name),() => String.IsNullOrEmpty(ErrorMessage));            
+            //---------------Set up test pack-------------------
+            var mockView = new Mock<IRequestServiceNameView>();
+            mockView.Setup(view => view.RequestClose()).Verifiable();
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            viewModel.CancelCommand.Execute(null);
+            //---------------Test Result -----------------------
+            mockView.Verify(view => view.RequestClose(),Times.Once());
         }
 
-        private void RaiseCanExecuteChanged()
+        [TestMethod]
+        public void OkCommand_WhenExecutedWithNullParent_ShouldSetResourceNameWithEmptyPath()
         {
-            var command = OkCommand as DelegateCommand;
-            if (command != null)
-            {
-                command.RaiseCanExecuteChanged();
-            }
+            //---------------Set up test pack-------------------
+            var mockView = new Mock<IRequestServiceNameView>();
+            mockView.Setup(view => view.RequestClose()).Verifiable();
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            const string resourceName = "Test";
+            viewModel.Name = resourceName;
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModel.Setup(model => model.Parent).Returns((IExplorerItemViewModel) null);
+            viewModel.SingleEnvironmentExplorerViewModel.SelectedItem = mockExplorerItemViewModel.Object;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            viewModel.OkCommand.Execute(null);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("",viewModel.ResourceName.Path);
+            Assert.AreEqual(resourceName,viewModel.ResourceName.Name);
+        }
+        
+        [TestMethod]
+        public void OkCommand_WhenExecutedWithParents_ShouldSetResourceNameWithPathIncludingParentNames()
+        {
+            //---------------Set up test pack-------------------
+            var mockView = new Mock<IRequestServiceNameView>();
+            mockView.Setup(view => view.RequestClose()).Verifiable();
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            const string resourceName = "Test";
+            viewModel.Name = resourceName;
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            var mockExplorerItemViewModelParent1 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent1.Setup(model => model.ResourceName).Returns("Parent 1");
+            var mockExplorerItemViewModelParent2 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent2.Setup(model => model.ResourceName).Returns("Parent 2");
+            mockExplorerItemViewModelParent1.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent2.Object);
+            mockExplorerItemViewModel.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent1.Object);
+            viewModel.SingleEnvironmentExplorerViewModel.SelectedItem = mockExplorerItemViewModel.Object;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            viewModel.OkCommand.Execute(null);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("Parent 2\\Parent 1\\",viewModel.ResourceName.Path);
+            Assert.AreEqual(resourceName,viewModel.ResourceName.Name);
+        }
+        
+        [TestMethod]
+        public void OkCommand_WhenExecutedWithSelectedItemIsForlder_ShouldSetResourceNameWithPathSelectedItemResourceName()
+        {
+            //---------------Set up test pack-------------------
+            var mockView = new Mock<IRequestServiceNameView>();
+            mockView.Setup(view => view.RequestClose()).Verifiable();
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            const string resourceName = "Test";
+            viewModel.Name = resourceName;
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            var mockExplorerItemViewModelParent1 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent1.Setup(model => model.ResourceName).Returns("Parent 1");
+            var mockExplorerItemViewModelParent2 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent2.Setup(model => model.ResourceName).Returns("Parent 2");
+            mockExplorerItemViewModelParent1.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent2.Object);
+            mockExplorerItemViewModel.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent1.Object);
+            mockExplorerItemViewModel.Setup(model => model.ResourceName).Returns("SelectedItem");
+            mockExplorerItemViewModel.Setup(model => model.ResourceType).Returns(ResourceType.Folder);
+            viewModel.SingleEnvironmentExplorerViewModel.SelectedItem = mockExplorerItemViewModel.Object;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            viewModel.OkCommand.Execute(null);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("Parent 2\\Parent 1\\SelectedItem\\",viewModel.ResourceName.Path);
+            Assert.AreEqual(resourceName,viewModel.ResourceName.Name);
         }
 
-        public MessageBoxResult ShowSaveDialog()
+        [TestMethod]
+        public void OkCommand_WhenExecuted_ShouldSetViewResultToOK()
         {
-            return MessageBoxResult.None;
-        }
+            //---------------Set up test pack-------------------
+            var mockView = new Mock<IRequestServiceNameView>();
+            mockView.Setup(view => view.RequestClose()).Verifiable();
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object);
+            const string resourceName = "Test";
+            viewModel.Name = resourceName;
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            var mockExplorerItemViewModelParent1 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent1.Setup(model => model.ResourceName).Returns("Parent 1");
+            var mockExplorerItemViewModelParent2 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent2.Setup(model => model.ResourceName).Returns("Parent 2");
+            mockExplorerItemViewModelParent1.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent2.Object);
+            mockExplorerItemViewModel.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent1.Object);
+            mockExplorerItemViewModel.Setup(model => model.ResourceName).Returns("SelectedItem");
+            mockExplorerItemViewModel.Setup(model => model.ResourceType).Returns(ResourceType.Folder);
+            viewModel.SingleEnvironmentExplorerViewModel.SelectedItem = mockExplorerItemViewModel.Object;
+            //---------------Assert Precondition----------------
 
-        public ResourceName ResourceName
-        {
-            get { return _resourceName; }
+            //---------------Execute Test ----------------------
+            viewModel.OkCommand.Execute(null);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(MessageBoxResult.OK,viewModel.ViewResult);
+            mockView.Verify(view => view.RequestClose(),Times.Once());
         }
-
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                _name = value;
-                OnPropertyChanged(() => Name);
-                if (String.IsNullOrEmpty(Name))
-                {
-                    ErrorMessage = "'Name' cannot be empty.";
-                }
-                else if (NameHasInvalidCharacters(Name))
-                {
-                    ErrorMessage = "'Name' contains invalid characters.";
-                }
-                else
-                {
-                    ErrorMessage = "";
-                }
-            }
-        }
-
-        private bool NameHasInvalidCharacters(string name)
-        {
-            return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
-        }
-
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(() => ErrorMessage);
-                RaiseCanExecuteChanged();
-            }
-        }
-
-        public ICommand OkCommand { get; set; }
     }
 }

@@ -17,7 +17,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class NewServerViewModel : BindableBase, INewServerDialogue, IDockViewModel
+    public sealed class NewServerViewModel : BindableBase, INewServerDialogue, IDockViewModel
     {
         string _userName;
         string _password;
@@ -38,10 +38,8 @@ namespace Warewolf.Studio.ViewModels
         string[] _protocols;
         string _protocol;
         ObservableCollection<string> _ports;
-        ObservableCollection<string> _servers; 
         string _selectedPort; 
         private bool _isActive;
-        private ResourceType? _image;
         // ReSharper disable TooManyDependencies
         public NewServerViewModel(IServerSource newServerSource,
             IStudioUpdateManager updateManager, IRequestServiceNameViewModel requestServiceNameViewModel,
@@ -87,12 +85,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var source = new ServerSource
                     {
-                        Address = Protocol+Address+":"+SelectedPort,
+                        Address = Protocol+"://"+Address+":"+SelectedPort,
                         AuthenticationType = AuthenticationType,
                         ID = ServerSource.ID == Guid.Empty ? Guid.NewGuid() : ServerSource.ID,
                         Name = String.IsNullOrEmpty(ServerSource.Name) ? RequestServiceNameViewModel.ResourceName.Name : ServerSource.Name,
                         Password = Password,
-                        ResourcePath = "" //todo: needs to come from explorer
+                        ResourcePath = RequestServiceNameViewModel.ResourceName.Path
                     };
 
                     ServerSource = source;

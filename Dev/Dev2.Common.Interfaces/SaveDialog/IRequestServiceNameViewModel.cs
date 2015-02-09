@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 
 namespace Dev2.Common.Interfaces.SaveDialog
 {
@@ -10,6 +11,8 @@ namespace Dev2.Common.Interfaces.SaveDialog
         string Name { get; set; }
         string ErrorMessage { get; set; }
         ICommand OkCommand { get; set; }
+        ICommand CancelCommand { get; }
+        IExplorerViewModel SingleEnvironmentExplorerViewModel { get; }
     }
 
     public class ResourceName
@@ -31,7 +34,8 @@ namespace Dev2.Common.Interfaces.SaveDialog
             }
 
         }
-        string Path
+
+        public string Path
         {
             get
             {
