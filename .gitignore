@@ -10,6 +10,7 @@
 *.suo
 *.user
 *.ide
+*.bkp
 
 ####################################################################################
 # Build working directories
@@ -18,6 +19,7 @@
 /Dev/TestResults
 /bin
 /TestResults
+/Logs
 
 ####################################################################################
 # Server Build Output Folders
@@ -41,6 +43,16 @@
 /Dev/Dev2.Server/bin/Debug/*.manifest
 /Dev/Dev2.Server/bin/Debug/*.log
 /Dev/Dev2.Server/bin/Debug/*.cer
+/Dev/Dev2.Server/bin/Debug/de
+/Dev/Dev2.Server/bin/Debug/en
+/Dev/Dev2.Server/bin/Debug/en-gb
+/Dev/Dev2.Server/bin/Debug/es
+/Dev/Dev2.Server/bin/Debug/fr
+/Dev/Dev2.Server/bin/Debug/it
+/Dev/Dev2.Server/bin/Debug/ja
+/Dev/Dev2.Server/bin/Debug/ko
+/Dev/Dev2.Server/bin/Debug/zh-Hans
+/Dev/Dev2.Server/bin/Debug/zh-Hant
 ####################################################################################
 # Other Build Output Folders
 ####################################################################################
@@ -156,12 +168,54 @@
 /Dev/Dev2.Sql.Tests/obj
 /Dev/Dev2.TaskScheduler.Wrappers.Test/bin
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
+/Dev/Example Shipper/Example Shipper/bin
+/Dev/Example Shipper/Example Shipper/obj
+/Dev/ServerProxyLayer/bin
+/Dev/ServerProxyLayer/obj
+/Dev/ServerProxyLayerTests/bin
+/Dev/ServerProxyLayerTests/obj
 /Dev/SFTPServer/bin
 /Dev/SFTPServer/obj
 /Dev/Studio.UI.Load.Specs/bin
 /Dev/Studio.UI.Load.Specs/obj
-/Dev/Example Shipper/Example Shipper/bin
-/Dev/Example Shipper/Example Shipper/obj
+/Dev/Test.Localisation/bin
+/Dev/Test.Localisation/obj
+/Dev/Warewolf.Studio/bin
+/Dev/Warewolf.Studio/obj
+/Dev/Warewolf.Studio.Core/bin
+/Dev/Warewolf.Studio.Core/obj
+/Dev/Warewolf.Studio.Resources/bin
+/Dev/Warewolf.Studio.Resources/obj
+/Dev/Warewolf.Studio.Specs/bin
+/Dev/Warewolf.Studio.Specs/obj
+/Dev/Warewolf.Studio.ViewModels/bin
+/Dev/Warewolf.Studio.ViewModels/obj
+/Dev/Warewolf.Studio.ViewModels.Tests/bin
+/Dev/Warewolf.Studio.ViewModels.Tests/obj
+/Dev/Warewolf.Studio.Views/bin
+/Dev/Warewolf.Studio.Views/obj
+/Dev/Warewolf.Core/bin
+/Dev/Warewolf.Core/obj
+/Dev/Warewolf.Core.Test/bin
+/Dev/Warewolf.Core.Test/obj
+/Dev/Warewolf.Studio.Core.Test/bin
+/Dev/Warewolf.Studio.Core.Test/obj
+/Dev/Warewolf.Studio.Models/bin
+/Dev/Warewolf.Studio.Models/obj
+/Dev/Warewolf.Studio.Models.Tests/bin
+/Dev/Warewolf.Studio.Models.Tests/obj
+/Dev/Warewolf.Studio.Themes.Luna/bin
+/Dev/Warewolf.Studio.Themes.Luna/obj
+/Dev/Warewolf.UnittestingUtils/bin
+/Dev/Warewolf.UnittestingUtils/obj
+/Dev/Warewolf.Studio.AntiCorruptionLayer/bin
+/Dev/Warewolf.Studio.AntiCorruptionLayer/obj
+/Dev/Warewolf.Studio.AntiCorruptionLayer.Tests/bin
+/Dev/Warewolf.Studio.AntiCorruptionLayer.Tests/obj
+/Dev/Warewolf.Studio.CustomControls/bin
+/Dev/Warewolf.Studio.CustomControls/obj
+/Dev/Warewolf.Studio.CustomControls.Tests/bin
+/Dev/Warewolf.Studio.CustomControls.Tests/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!

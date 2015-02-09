@@ -9,6 +9,16 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Communication;
+using Dev2.Core.Tests.Utils;
+using Dev2.Explorer;
+using Dev2.Network;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Threading;
+using Microsoft.AspNet.SignalR.Client;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -16,15 +26,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Security;
-using Dev2.Communication;
-using Dev2.Explorer;
-using Dev2.Network;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Threading;
-using Microsoft.AspNet.SignalR.Client;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Network
@@ -125,7 +126,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsNotNull(subscription);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(5000)]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServerProxy_Constructor")]
         public void ServerProxy_HandleItemAdded()
@@ -158,7 +159,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsNotNull(subscription);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(5000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerProxy_Connect")]
         public void ServerProxy_ConnectSetsId()
@@ -183,7 +184,7 @@ namespace Dev2.Core.Tests.Network
             Assert.AreEqual(x,serverProxy.ID);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerProxy_Wait")]
         public void ServerProxy_Wait_TaskThrowsHttpRequestException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsFalse()
@@ -211,7 +212,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsFalse(serverProxy.IsConnected);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerProxy_Wait")]
         public void ServerProxy_Wait_TaskThrowsHttpClientException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
@@ -239,7 +240,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsTrue(serverProxy.IsConnected);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Travis Frisinger")]
         [TestCategory("ServerProxy_Wait")]
         public void ServerProxy_Wait_TaskThrowsException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
@@ -267,7 +268,7 @@ namespace Dev2.Core.Tests.Network
             Assert.IsTrue(serverProxy.IsConnected);
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServerProxy_Wait")]
         public void ServerProxy_Wait_TaskThrowsReconnectingBeforeInvocationInvalidOperationException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
@@ -304,7 +305,7 @@ namespace Dev2.Core.Tests.Network
         {
         }
         public TestServerProxy()
-            : base("http://localhost:8080", CredentialCache.DefaultCredentials, new AsyncWorker())
+            : base("http://localhost:8080", CredentialCache.DefaultCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)
         {
 
         }

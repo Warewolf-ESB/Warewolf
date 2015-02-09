@@ -717,6 +717,27 @@ Scenario: Assign a variable to another variable
     | 3 | [[var]] = a |
 
 
+#Wolf - 485
+#Scenario: Assign values to recordsets
+#	Given I assign the value 1 to a variable "[[AB().a]]"	
+#	And I assign the value a to a variable "[[CD().a]]"
+#	And I assign the value b to a variable "[[CD().a]]"
+#	And I assign the value 2 to a variable "[[AB().a]]"	
+#	When the assign tool is executed
+#	Then the value of "[[AB(2).a]]" equals 2
+#	And the execution has "NO" error
+#	And the debug inputs as
+#	| # | Variable      | New Value |
+#	| 1 | [[AB().a]]  = | 1         |
+#	| 2 | [[CD().a]]  = | a         |
+#	| 3 | [[CD().a]]  = | b         |
+#	| 4 | [[AB().a]]  = | 2         |
+#	And the debug output as
+#    | # |                 |
+#    | 1 | [[AB(1).a]] = 1 |
+#    | 2 | [[CD(1).a]] = a |
+#    | 3 | [[CD(2).a]] = b |
+#    | 4 | [[AB(2).a]] = 2 |
 
 
 

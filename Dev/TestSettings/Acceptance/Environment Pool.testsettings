@@ -1,10 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="On X86 Execution Platform" id="3264dd0f-6fc1-4cb9-b44f-c649fef29609" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>These setting force mstest to execute these tests as an X86 process.</Description>
-  <Deployment enabled="false" />  
+<TestSettings name="Environment Pool Acceptance Run" id="7627FF19-3746-4D6A-AD03-AD30FFD0D7ED" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>These are default test settings for a remote acceptance test run.</Description>
+    <Deployment>
+		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+    </Deployment>
+  <NamingScheme baseName="UT" />
+    <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
-  <Execution>
-    <Timeouts testTimeout="0" />
+  <Execution location="Remote" hostProcessPlatform="MSIL">
+    <Timeouts testTimeout="180000" />
+    <Buckets size="1" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
@@ -22,8 +28,10 @@
         </Browser>
       </WebTestRunConfiguration>
     </TestTypeSpecific>
-    <AgentRule name="LocalMachineDefaultRole">
+    <AgentRule name="Run in the Acceptance Testing Environment Pool">
+      <SelectionCriteria>
+        <AgentProperty name="Pool" value="Acceptance Testing" />
+      </SelectionCriteria>
     </AgentRule>
   </Execution>
-  <Properties />
 </TestSettings>

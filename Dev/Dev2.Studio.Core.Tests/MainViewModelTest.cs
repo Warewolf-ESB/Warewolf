@@ -2013,7 +2013,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
-            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker(), new Mock<IConnectControlViewModel>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlViewModel>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
@@ -2051,7 +2051,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
-            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker(), new Mock<IConnectControlViewModel>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlViewModel>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(false);
             scheduler.SelectedTask = task.Object;
@@ -2093,7 +2093,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
-            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(), new NativeWindow()) { RetValue = false, WorkSurfaceContext = WorkSurfaceContext.Settings };
+            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new NativeWindow()) { RetValue = false, WorkSurfaceContext = WorkSurfaceContext.Settings };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             settings.IsDirty = true;
@@ -2130,7 +2130,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
 
-            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(), new NativeWindow()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Settings };
+            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new NativeWindow()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Settings };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             settings.IsDirty = true;
@@ -2166,7 +2166,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes).Verifiable();
-            var scheduler = new SchedulerViewModelForTesting(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Scheduler };
+            var scheduler = new SchedulerViewModelForTesting(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;

@@ -6,7 +6,7 @@
 @Create
 Scenario: CreateTool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
-	And all tabs are closed	
+	And all tabs are closed
 	Given I click "EXPLORERFILTERCLEARBUTTON"  
 	Given I click "EXPLORERCONNECTCONTROL"
 	Given I click "U_UI_ExplorerServerCbx_AutoID_localhost"
