@@ -498,6 +498,9 @@
         </Setter>
     </Style>
 
+    
+    
+    <!--Button size = 102 H 86 W -->
 
     <DataTemplate x:Key="ToolboxCategoryItemTemplate" DataType="toolbox:IToolDescriptor">
 
@@ -506,38 +509,38 @@
               VerticalAlignment="Stretch"
               Background="{StaticResource WarewolfPanelGreyBrush}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="13" />
-                <RowDefinition Height="32" />
-                <RowDefinition Height="13" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="13" />
+                <RowDefinition Height="14" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="34" />
+                <RowDefinition Height="14" />
 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="11" />
-                <ColumnDefinition Width="7" />
-                <ColumnDefinition Width="32" />
-                <ColumnDefinition Width="7" />
-                <ColumnDefinition Width="11" />
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="18" />
             </Grid.ColumnDefinitions>
 
             <Image Grid.Row="1"
                    Grid.Column="2"
-                   Width="32"
-                   Height="32"
+                   Width="40"
+                   Height="40"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Source="{Binding Icon}" />
-            <TextBlock Grid.Row="3"
+            <TextBlock Grid.Row="2"
                        Grid.Column="1"
                        Grid.ColumnSpan="3"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Bottom"
                        FontFamily="{StaticResource DefaultFontFamily}"
-                       FontSize="{StaticResource FontSize-Smaller}"
+                       FontSize="{StaticResource FontSize-Normal}"
                        Text="{Binding Name}"
                        TextAlignment="Center"
-                       TextWrapping="Wrap" />
+                       TextWrapping="Wrap" 
+                       Margin="0,3,0,0"/>
 
         </Grid>
     </DataTemplate>
