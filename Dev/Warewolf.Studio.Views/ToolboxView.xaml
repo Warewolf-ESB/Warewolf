@@ -27,7 +27,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
 
@@ -53,23 +52,47 @@
                     customControls:TextBoxHelper.Watermark="Filter" 
                      customControls:TextBoxHelper.ShowWatermark="True"
                 />
-           <Button Width="25" Grid.Column="2" Grid.Row="0"
+            <Button Width="25"  Grid.Row="0" Grid.Column="1"
                     Height="25"
                     Padding="4">
-               <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
             </Button>
-            
+
         </Grid>
 
         <!--TOOL BUTTONS-->
-        <ListBox ItemTemplate="{DynamicResource ToolboxItemTemplate}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding CategorisedTools}">
-            <!-- This style is used as a way to disable the selection for this list box which represents the category -->
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Focusable" Value="False"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
+
+        <DockPanel Grid.Row="3" Grid.Column="1" >
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+                <ListBox   ItemsSource="{Binding CategorisedTools}" ItemTemplate="{DynamicResource ToolboxItemTemplate}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate >
+                            <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Focusable" Value="False"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+
+                </ListBox>
+            </ScrollViewer>
+        </DockPanel>
+
+
+        <!--TOOL BUTTONS-->
+
+
+
     </Grid>
 </UserControl>
