@@ -979,7 +979,7 @@
                                 <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource MenuPanelGradient}">
                                 <igWindows:CardPanel x:Name="PART_Caption" Background="White" Visibility="{TemplateBinding CaptionVisibility}">
                                     <DockPanel x:Name="captionPanel" Margin="3,0">
-                                        <Button x:Name="MaximizeButton"
+                                            <Button x:Name="MaximizeButton"
 												 DockPanel.Dock="Right" 
                                                  Margin="0,5,5,5"
                                                     HorizontalAlignment="Center" 
@@ -988,22 +988,10 @@
                                                 Command="{x:Static igWindows:ToolWindow.MaximizeCommand}" 
 												Visibility="{TemplateBinding MaximizeButtonVisibility}"
                                                 >
-                                            <Path Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
+                                                <Path Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
                                                       Stretch="Uniform" Fill="Black" Width="10" Margin="0,0,0,0" ></Path>
-                                        </Button>
-                                        <Button x:Name="MinimizeButton" 
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    VerticalContentAlignment="Bottom"
-                                                Command="{x:Static igWindows:ToolWindow.MinimizeCommand}" 
-												Visibility="{TemplateBinding MinimizeButtonVisibility}"
-                                                    Height="20" Width="20"
-                                                    Margin="0,5,5,5"
-                                                DockPanel.Dock="Right">
-                                                <fa:FontAwesome Icon="Minus" Margin="1,1,1,1" VerticalAlignment="Bottom"></fa:FontAwesome>
-                                        </Button>
-
-                                        <TextBlock x:Name="txtCaption"
+                                            </Button>
+                                            <TextBlock x:Name="txtCaption"
 											           Foreground="#FFAAAAAA"
                                                        IsHitTestVisible="False"
                                                        Text="{TemplateBinding Title}"
@@ -1050,10 +1038,10 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <!--  NA 2011.1 - ToolWindow changes  -->
-                        <Trigger Property="WindowState" Value="Minimized">
-                            <Setter TargetName="MinimizeButton" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
-                            <Setter TargetName="MinimizeButton" Property="Style" Value="{StaticResource ToolWindowRestoreButtonStyle}" />
-                        </Trigger>
+<!--                        <Trigger Property="WindowState" Value="Minimized">-->
+<!--                            <Setter TargetName="MinimizeButton" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />-->
+<!--                            <Setter TargetName="MinimizeButton" Property="Style" Value="{StaticResource ToolWindowRestoreButtonStyle}" />-->
+<!--                        </Trigger>-->
                         <Trigger Property="WindowState" Value="Maximized">
                             <Setter TargetName="MaximizeButton" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
                             <Setter TargetName="MaximizeButton" Property="Style" Value="{StaticResource ToolWindowRestoreButtonStyle}" />
