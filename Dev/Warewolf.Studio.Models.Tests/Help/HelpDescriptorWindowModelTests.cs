@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces.Help;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Core;
 using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.Models.Tests.Help

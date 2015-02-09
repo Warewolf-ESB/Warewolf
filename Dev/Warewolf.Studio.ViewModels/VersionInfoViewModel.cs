@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
@@ -121,6 +122,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get; set;
         }
+        public ICollection<IExplorerItemViewModel> Children { get; set; }
 
         public bool IsVisible
         {

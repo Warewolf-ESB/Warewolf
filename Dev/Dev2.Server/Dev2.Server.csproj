@@ -282,6 +282,14 @@
       <Project>{4db41f93-e0b7-454c-b4c4-b7e20671e7ab}</Project>
       <Name>Dev2.Scheduler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{c4ac2140-5663-4d3c-9fcd-6d65004cd54e}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

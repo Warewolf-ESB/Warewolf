@@ -3,6 +3,7 @@ using System.Windows.Media;
 using Dev2.Common.Interfaces.Help;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Core;
 using Warewolf.Studio.Models.Help;
 using Warewolf.Studio.ViewModels.Help;
 

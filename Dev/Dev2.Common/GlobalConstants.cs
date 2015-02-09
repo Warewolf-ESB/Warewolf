@@ -304,6 +304,7 @@ or type_desc LIKE '%Procedure%'";
         // Server WorkspaceID
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
 
+        public static readonly string DropBoxToolId = "e6b86ea3-6479-48a2-b8d4-54bd6cbbdbc5";
         public static readonly string NullPluginValue = "NULL";
 
         // Resource Catalog Constants

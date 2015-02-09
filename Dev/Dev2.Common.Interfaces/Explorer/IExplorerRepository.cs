@@ -18,7 +18,7 @@ namespace Dev2.Common.Interfaces.Explorer
 
         IRollbackResult Rollback(Guid resourceId, string version);
 
-        IExplorerItem CreateFolder(Guid parentGuid, string name, Guid id);
+        void CreateFolder(Guid parentGuid, string name, Guid id);
     }
 
     public interface IStudioUpdateManager

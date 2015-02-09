@@ -20,6 +20,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         readonly ServerProxy _environmentConnection;
         readonly Guid _serverId;
         readonly StudioServerProxy _proxyLayer;
+        IList<IToolDescriptor> _tools;
         IStudioUpdateManager _updateRepository;
 
         /// <summary>
@@ -91,8 +92,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IList<IToolDescriptor> LoadTools()
         {
-            var result = _proxyLayer.QueryManagerProxy.FetchTools();
-            return result;
+            if(_tools== null)
+             _tools = _proxyLayer.QueryManagerProxy.FetchTools();
+            return _tools;
         }
 
         public IExplorerRepository ExplorerRepository

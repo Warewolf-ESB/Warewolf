@@ -5,27 +5,27 @@ using Dev2;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 
-namespace Warewolf.Studio.Models.Toolbox
+namespace Warewolf.Core
 {
     public class ToolDescriptor:IToolDescriptor, IEquatable<ToolDescriptor>
     {
 
 
         // ReSharper disable TooManyDependencies
-        public ToolDescriptor(Guid id, Type designer, Type model, Type activity, string name, DrawingImage icon, Version version, IHelpDescriptor helpdescriptor, bool isSupported, string category, ToolType toolType)
+        public ToolDescriptor(Guid id, IWarewolfType designer,  IWarewolfType activity, string name, string icon, Version version, bool isSupported, string category, ToolType toolType,string iconUri)
             // ReSharper restore TooManyDependencies
         {
             if(id==Guid.Empty) throw  new ArgumentNullException("id","Tool guids are not allowed to be the empty guid");
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "id", id }, { "designer", designer }, { "model", model }, { "activity", activity }, { "name", name }, { "icon", icon }, { "version", version }, { "helpdescriptor", helpdescriptor }, { "category", category } });
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "id", id }, { "designer", designer }, { "activity", activity }, { "name", name }, { "icon", icon }, { "version", version }, { "category", category } });
             ToolType = toolType;
             Category = category;
             IsSupported = isSupported;
-            Helpdescriptor = helpdescriptor;
+            
             Version = version;
             Icon = icon;
             Name = name;
             Activity = activity;
-            Model = model;
+            IconUri = iconUri;
             Designer = designer;
             Id = id;
         }
@@ -40,15 +40,15 @@ namespace Warewolf.Studio.Models.Toolbox
         /// <summary>
         /// The type that will be instantiated as the designer
         /// </summary>
-        public Type Designer { get; private set; }
+        public IWarewolfType Designer { get; private set; }
         /// <summary>
         /// something or the other; //todo: check what this was meant to do in diagram
         /// </summary>
-        public Type Model { get; private set; }
+        public IWarewolfType Model { get; private set; }
         /// <summary>
         /// Server activity that this will instantiate
         /// </summary>
-        public Type Activity { get; private set; }
+        public IWarewolfType Activity { get; private set; }
         /// <summary>
         /// Name of tool as per toolbox
         /// </summary>
@@ -56,7 +56,9 @@ namespace Warewolf.Studio.Models.Toolbox
         /// <summary>
         /// Icon that will be displayed
         /// </summary>
-        public DrawingImage Icon { get; private set; }
+        public string Icon { get; private set; }
+
+        public string IconUri { get; private set; }
         /// <summary>
         /// Version as per dll
         /// </summary>
@@ -64,7 +66,7 @@ namespace Warewolf.Studio.Models.Toolbox
         /// <summary>
         /// Help text for help window
         /// </summary>
-        public IHelpDescriptor Helpdescriptor { get; private set; }
+        //public IHelpDescriptor Helpdescriptor { get; private set; }
         /// <summary>
         /// Is supported locally
         /// </summary>

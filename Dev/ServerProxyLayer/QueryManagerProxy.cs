@@ -101,7 +101,11 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         public IList<IToolDescriptor> FetchTools()
         {
-            return null;
+            var comsController = CommunicationControllerFactory.CreateController("FetchToolsService");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result =  comsController.ExecuteCommand<IList<IToolDescriptor>>(Connection, workspaceId);
+            return result;
         }
     }
          

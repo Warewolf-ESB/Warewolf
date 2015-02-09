@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.Core;
 using Warewolf.Studio.Models.Help;
 using Warewolf.UnittestingUtils;
 

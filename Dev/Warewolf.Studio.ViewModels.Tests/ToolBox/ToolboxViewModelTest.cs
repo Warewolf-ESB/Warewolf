@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Studio.Models.Toolbox;
+using Warewolf.Core;
 using Warewolf.Studio.ViewModels.ToolBox;
 using Warewolf.UnittestingUtils;
 
@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             //------------Setup for test--------------------------
             var localTools = new Mock<IToolboxModel>();
             // ReSharper disable CoVariantArrayConversion
-            IList<IToolDescriptor> tools = new[] { new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native) };
+            IList<IToolDescriptor> tools = new[] { new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "") };
            
             var remoteTools = new Mock<IToolboxModel>();
             localTools.Setup(a => a.GetTools()).Returns(tools);
@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             //------------Setup for test--------------------------
             var localTools = new Mock<IToolboxModel>();
             
-            var tools = new[] { new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native) };
+            var tools = new[] { new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "") };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(true);
             localTools.Setup(a => a.IsEnabled()).Returns(true);
@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
         {
             //------------Setup for test--------------------------
             var localTools = new Mock<IToolboxModel>();
-            var tools = new[] { new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native) };
+            var tools = new[] { new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "") };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(true);
             localTools.Setup(a => a.IsEnabled()).Returns(false);
@@ -101,7 +101,7 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
         {
             //------------Setup for test--------------------------
             var localTools = new Mock<IToolboxModel>();
-            var tools = new[] { new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native) };
+            var tools = new[] { new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "") };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(false);
             localTools.Setup(a => a.IsEnabled()).Returns(true);
@@ -122,8 +122,8 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             var localTools = new Mock<IToolboxModel>();
             var tools = new[]
             {
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native),
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "ded", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native)
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, ""),
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "ded", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "")
             };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(false);
@@ -148,8 +148,8 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             var localTools = new Mock<IToolboxModel>();
             var tools = new[]
             {
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native),
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "ded", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native)
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, ""),
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "ded", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "")
             };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(false);
@@ -174,8 +174,8 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             var localTools = new Mock<IToolboxModel>();
             var tools = new[]
             {
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native),
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "ded", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native)
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, ""),
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "ded", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "")
             };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(false);
@@ -212,8 +212,8 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             var localTools = new Mock<IToolboxModel>();
             var tools = new[]
             {
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native),
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "ded", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native)
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, ""),
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "ded", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "")
             };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(false);
@@ -240,8 +240,8 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             var localTools = new Mock<IToolboxModel>();
             var tools = new[]
             {
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native),
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "ded", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat2", ToolType.Native)
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, ""),
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "ded", "", new Version(1, 2, 3), true, "cat2", ToolType.Native, "")
             };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(false);
@@ -264,8 +264,8 @@ namespace Warewolf.Studio.ViewModels.Tests.ToolBox
             var localTools = new Mock<IToolboxModel>();
             var tools = new[]
             {
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native),
-                new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "ded", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native)
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, ""),
+                new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "ded", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "")
             };
             var remoteTools = new Mock<IToolboxModel>();
             remoteTools.Setup(a => a.IsEnabled()).Returns(false);

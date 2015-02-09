@@ -133,14 +133,14 @@ namespace Dev2.Runtime.Hosting
                 {
                     MoveVersionFolder(path, newPath);
                     Directory.Delete(DirectoryStructureFromPath(path), true);
-                    Reload(workSpaceId);
+                   // Reload(workSpaceId);
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
                 if(resourceCatalogResult.Status == ExecStatus.NoMatch)
                 {
                     Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
                     MoveVersionFolder(path, newPath);
-                    Reload(workSpaceId);
+                    //Reload(workSpaceId);
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
                 Reload(workSpaceId);

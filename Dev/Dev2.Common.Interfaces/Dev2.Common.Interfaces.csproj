@@ -217,6 +217,7 @@
     <Compile Include="Diagnostics\Debug\IDebugState.cs" />
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
+    <Compile Include="enFindMissingType.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="IConnectedServerChangedEvent.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
+    <Compile Include="IDev2Activity.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
     <Compile Include="IWarewolfWebClient.cs" />

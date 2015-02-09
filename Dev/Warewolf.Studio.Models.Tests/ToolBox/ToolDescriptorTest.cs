@@ -4,7 +4,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Studio.Models.Toolbox;
+using Warewolf.Core;
 using Warewolf.UnittestingUtils;
 
 namespace Warewolf.Studio.Models.Tests.ToolBox
@@ -31,17 +31,17 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
         {
             //------------Setup for test--------------------------
             var help = new Mock<IHelpDescriptor>().Object;
-            ToolDescriptor t = new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(Mock), typeof(Guid), "bob", new DrawingImage(), new Version(1, 2, 3), help, true, "cat", ToolType.Native);
+            ToolDescriptor t = new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob", new Version(), "dave"), new WarewolfType("bob", new Version(), "dave"), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "");
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(typeof(Guid),t.Activity);
-            Assert.AreEqual(typeof(Mock), t.Model);
-            Assert.AreEqual(typeof(String), t.Designer);
+            //Assert.AreEqual(typeof(Guid),t.Activity);
+            //Assert.AreEqual(typeof(Mock), t.Model);
+            //Assert.AreEqual(typeof(String), t.Designer);
             Assert.AreNotEqual(t.Id,Guid.Empty);
             Assert.AreEqual("bob",t.Name);
             Assert.AreEqual("icon",t.Icon);
             Assert.AreEqual(t.Version,new Version(1,2,3));
-            Assert.AreEqual(t.Helpdescriptor,help);
+            //Assert.AreEqual(t.Helpdescriptor,help);
 
         }
 
@@ -52,10 +52,10 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
         {
             //------------Setup for test--------------------------
             var help = new Mock<IHelpDescriptor>().Object;
-            ToolDescriptor t = new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(Mock), typeof(Guid), "bob", new DrawingImage(), new Version(1, 2, 3), help, true, "cat", ToolType.Native);
-            ToolDescriptor u = new ToolDescriptor(Guid.NewGuid(), typeof(String), typeof(Mock), typeof(Guid), "bob", new DrawingImage(), new Version(1, 2, 3), help, true, "cat", ToolType.Native);
-            ToolDescriptor v = new ToolDescriptor(t.Id, typeof(String), typeof(Mock), typeof(Guid), "bob", new DrawingImage(), new Version(1, 2, 3), help, true, "cat", ToolType.Native);
-            ToolDescriptor w = new ToolDescriptor(t.Id, typeof(String), typeof(Mock), typeof(Guid), "bob", new DrawingImage(), new Version(1, 2, 4), help, true, "cat", ToolType.Native);
+            ToolDescriptor t = new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob", new Version(), "dave"), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "");
+            ToolDescriptor u = new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob", new Version(), "dave"), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "");
+            ToolDescriptor v = new ToolDescriptor(t.Id, new WarewolfType("bob", new Version(), "dave"), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "");
+            ToolDescriptor w = new ToolDescriptor(t.Id, new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "bob", "", new Version(1, 2, 4), true, "cat", ToolType.Native, "");
 
             //------------Assert Results-------------------------
             //basic

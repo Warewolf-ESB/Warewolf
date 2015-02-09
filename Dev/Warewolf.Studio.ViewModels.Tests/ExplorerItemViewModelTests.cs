@@ -468,7 +468,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             result.Setup(a => a.DisplayName).Returns("New Folder");
          
             // ReSharper disable MaximumChainedReferences
-            expRepo.Setup(a => a.CreateFolder(id, "New Folder",It.IsAny<Guid>())).Returns(result.Object);
+            expRepo.Setup(a => a.CreateFolder(id, "New Folder",It.IsAny<Guid>()));//.Returns(result.Object);
             // ReSharper restore MaximumChainedReferences
             // execute command expect repo called and child added
             explorerViewModel.CreateFolderCommand.Execute(null);

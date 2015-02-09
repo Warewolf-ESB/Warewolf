@@ -38,22 +38,23 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-           
+
             var serializer = new Dev2JsonSerializer();
             var name = (values["name"].ToString());
             var parentGuid = Guid.Parse(values["parentGuid"].ToString());
             var id = Guid.Parse((values["id"].ToString()));
             var parent = ServerExplorerRepo.Find(parentGuid);
-            var itemToAdd = new ServerExplorerItem(name, id, ResourceType.Folder, new List<IExplorerItem>(), Permissions.Contribute, parent.ResourcePath + "\\" + name,"","");
-            parent.Children.Add(itemToAdd);
-            Dev2Logger.Log.Info("Add Folder Service." +itemToAdd);
+            var itemToAdd = new ServerExplorerItem(name, id, ResourceType.Folder, new List<IExplorerItem>(), Permissions.Contribute, parent.ResourcePath + "\\" + name, "", "");
+
+            Dev2Logger.Log.Info("Add Folder Service." + itemToAdd);
             itemToAdd.Permissions = Permissions.Contribute;
-            if(itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
+            if (itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
             {
                 itemToAdd.ResourcePath = itemToAdd.ResourcePath.Remove(0, 5);
             }
 
             var item = ServerExplorerRepo.AddItem(itemToAdd, theWorkspace.ID);
+            parent.Children.Add(itemToAdd);
             return serializer.SerializeToBuilder(item);
         }
 

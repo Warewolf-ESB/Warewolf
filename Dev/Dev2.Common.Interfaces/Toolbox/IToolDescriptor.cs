@@ -1,9 +1,21 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Media;
 using Dev2.Common.Interfaces.Help;
 
 namespace Dev2.Common.Interfaces.Toolbox
 {
+
+    public interface IToolManager
+    {
+
+        IList<IToolDescriptor> LoadTools();
+
+    }
+
+
+
     public interface IToolDescriptor
     {
         /// <summary>
@@ -13,18 +25,12 @@ namespace Dev2.Common.Interfaces.Toolbox
         /// <summary>
         /// The type that will be instantiated as the designer
         /// </summary>
-        Type Designer { get; }
-
-        /// <summary>
-        /// something or the other; //todo: check what this was meant to do in diagram
-        /// </summary>
-        
-        Type Model { get; }
+        IWarewolfType Designer { get; }
 
         /// <summary>
         /// Server activity that this will instantiate
         /// </summary>
-        Type Activity { get; }
+        IWarewolfType Activity { get; }
         
         /// <summary>
         /// Name of tool as per toolbox
@@ -33,7 +39,7 @@ namespace Dev2.Common.Interfaces.Toolbox
         /// <summary>
         /// Icon that will be displayed
         /// </summary>
-        DrawingImage Icon { get; }
+        string Icon { get; }
         /// <summary>
         /// Version as per dll
         /// </summary>
@@ -41,7 +47,7 @@ namespace Dev2.Common.Interfaces.Toolbox
         /// <summary>
         /// Help text for help window
         /// </summary>
-        IHelpDescriptor Helpdescriptor { get; }
+        //IHelpDescriptor Helpdescriptor { get; }
         
         /// <summary>
         /// Is supported locally
@@ -57,6 +63,17 @@ namespace Dev2.Common.Interfaces.Toolbox
         /// Native or user
         /// </summary>
         ToolType ToolType{get;}
+        string IconUri { get; }
+    }
+
+    public interface IWarewolfType  
+    {
+        string FullyQualifiedName{get;}
+        Version Version { get; }
+        string ContainingAssemblyPath { get; }
+
+
+
     }
 
     public enum ToolType

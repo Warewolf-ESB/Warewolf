@@ -6,7 +6,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
 {
     public interface IEnvironmentViewModel : IExplorerTreeItem
     {
-        ICollection<IExplorerItemViewModel> Children { get; set; }
+      
         string DisplayName { get; set; }
         bool IsConnected { get; }
         bool IsLoaded { get; }

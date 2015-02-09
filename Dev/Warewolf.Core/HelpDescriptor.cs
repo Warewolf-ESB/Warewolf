@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using Dev2.Common.Interfaces.Help;
 
-namespace Warewolf.Studio.Models.Help
+namespace Warewolf.Core
 {
     public class HelpDescriptor:IHelpDescriptor
     {
@@ -11,6 +11,7 @@ namespace Warewolf.Studio.Models.Help
             Description = description;
             Name = name;
         }
+
 
         #region Implementation of IHelpDescriptor
 

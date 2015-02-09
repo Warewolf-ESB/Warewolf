@@ -92,6 +92,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.JScript" />
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Moq">
+      <HintPath>..\Binaries\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -176,7 +179,6 @@
     <Compile Include="Activities\EmailSender.cs" />
     <Compile Include="Activities\FindRecordsTO.cs" />
     <Compile Include="Activities\GetSystemInformationHelper.cs" />
-    <Compile Include="Activities\IDev2Activity.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />
     <Compile Include="Activities\SqlBulkInsert\ISqlBulkInserter.cs" />
@@ -212,7 +214,6 @@
     <Compile Include="BussinessLogic\RsOpNotHex.cs" />
     <Compile Include="BussinessLogic\RsOpNotRegex.cs" />
     <Compile Include="BussinessLogic\RsOpNotStartsWith.cs" />
-    <Compile Include="Enums\enFindMissingType.cs" />
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
     <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Interfaces\IFindMissingStrategy.cs" />
     <Compile Include="Interfaces\IOutputTOConvert.cs" />
     <Compile Include="Interfaces\IWizardEditable.cs" />
+    <Compile Include="ToolBox\ServerToolRepository.cs" />
     <Compile Include="TO\ActivityDTO.cs" />
     <Compile Include="Activities\DsfActivity.cs" />
     <Compile Include="Activities\DsfAssignActivity.cs" />
@@ -344,6 +346,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>

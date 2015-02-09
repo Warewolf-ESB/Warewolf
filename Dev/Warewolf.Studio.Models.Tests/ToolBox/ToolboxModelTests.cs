@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Core;
 using Warewolf.Studio.Models.Toolbox;
 using Warewolf.UnittestingUtils;
 
@@ -63,8 +64,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             //------------Execute Test---------------------------
@@ -87,8 +88,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             //------------Execute Test---------------------------
@@ -110,8 +111,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -134,14 +135,14 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
             //------------Execute Test---------------------------
             var model = new ToolboxModel(server.Object, localserver.Object, pluginProxy.Object);
-            var supported = model.IsToolSupported(new ToolDescriptor(Guid.NewGuid(), typeof(FileStyleUriParser), typeof(Assert), typeof(BadImageFormatException), "name", new DrawingImage(), new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, false, "cate", ToolType.User));
+            var supported = model.IsToolSupported(new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "name", "", new Version(1, 2, 3), false, "cate", ToolType.User, ""));
             //------------Assert Results-------------------------
             Assert.IsFalse(supported);
         }
@@ -159,14 +160,14 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
             //------------Execute Test---------------------------
             var model = new ToolboxModel(server.Object, localserver.Object, pluginProxy.Object);
-            var supported = model.IsToolSupported(new ToolDescriptor(servertools[0].Id, typeof(FileStyleUriParser), typeof(Assert), typeof(BadImageFormatException), "name", new DrawingImage(), new Version(1, 2, 4), new Mock<IHelpDescriptor>().Object, false, "cate", ToolType.User));
+            var supported = model.IsToolSupported(new ToolDescriptor(servertools[0].Id, new WarewolfType("bob",new Version(),"dave" ), new WarewolfType("bob",new Version(),"dave" ), "name", "", new Version(1, 2, 4), false, "cate", ToolType.User, ""));
             //------------Assert Results-------------------------
             Assert.IsFalse(supported);
         }
@@ -185,8 +186,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -208,8 +209,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -233,8 +234,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -260,8 +261,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -283,8 +284,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -308,8 +309,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -332,8 +333,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"dar",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"dar","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -355,8 +356,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"dar",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"dar","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -380,8 +381,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"dar",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"dar","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -405,8 +406,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"dar",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"dar","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);
@@ -430,8 +431,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
             var pluginProxy = new Mock<IPluginProxy>();
             IList<IToolDescriptor> servertools = new IToolDescriptor[]
             {
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"name",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User), 
-                new ToolDescriptor(Guid.NewGuid(),typeof(FileStyleUriParser),typeof(Assert),typeof(BadImageFormatException),"dar",new DrawingImage(),new Version(1,2,3),new Mock<IHelpDescriptor>().Object,false,"cate",ToolType.User)
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"name","",new Version(1,2,3),false,"cate",ToolType.User, ""), 
+                new ToolDescriptor(Guid.NewGuid(),new WarewolfType("bob",new Version(),"dave" ),new WarewolfType("bob",new Version(),"dave" ),"dar","",new Version(1,2,3),false,"cate",ToolType.User, "")
             };
             server.Setup(a => a.LoadTools()).Returns(servertools);
             localserver.Setup(a => a.LoadTools()).Returns(servertools);

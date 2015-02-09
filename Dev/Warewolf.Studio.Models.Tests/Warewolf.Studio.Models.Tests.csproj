@@ -70,6 +70,10 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
       <Project>{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}</Project>
       <Name>Warewolf.Studio.Models</Name>

@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Warewolf.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Models.Help;
 
@@ -43,6 +44,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canCreateServerSource;
         bool _canCreateFolder;
         IWindowsGroupPermission _permission ;
+        string _filter;
         private bool _isSelected;
         bool _canShowVersions;
 
@@ -138,7 +140,7 @@ namespace Warewolf.Studio.ViewModels
                 IsExpanded = true;
                 var id = Guid.NewGuid();
                 var name = GetChildNameFromChildren();
-                var folder = _explorerRepository.CreateFolder(ResourceId,name,id);
+                _explorerRepository.CreateFolder(ResourceId,name,id);
                 var child = new ExplorerItemViewModel(_shellViewModel, Server, Builder, this)
                {
                    ResourceName = name,
@@ -301,7 +303,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return new ObservableCollection<IExplorerItemViewModel>(_children.Where(a=>a.IsVisible));
+                return String.IsNullOrEmpty(_filter) ?_children: new ObservableCollection<IExplorerItemViewModel>(_children.Where(a=>a.IsVisible));
             }
             set
             {
@@ -660,6 +662,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Filter(string filter)
         {
+            _filter = filter;
             foreach (var explorerItemViewModel in _children)
             {
                 explorerItemViewModel.Filter(filter);

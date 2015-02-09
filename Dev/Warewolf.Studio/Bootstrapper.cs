@@ -26,9 +26,11 @@ using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Help;
+using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.ViewModels.DummyModels;
 using Warewolf.Studio.ViewModels.Help;
+using Warewolf.Studio.ViewModels.ToolBox;
 using Warewolf.Studio.ViewModels.VariableList;
 using Warewolf.Studio.Views;
 
@@ -61,7 +63,7 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IExplorerViewModel>(new ExplorerViewModel(Container.Resolve<IShellViewModel>(), Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IMenuViewModel>(new MenuViewModel(Container.Resolve<IShellViewModel>()));
-            Container.RegisterInstance<IToolboxViewModel>(new DummyToolboxViewModel());
+      
             Container.RegisterInstance<IHelpWindowModel>(new HelpModel(Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IHelpWindowViewModel>(new HelpWindowViewModel(new HelpDescriptorViewModel(new HelpDescriptor("","<body>This is the default help</body>",null)) , Container.Resolve<IHelpWindowModel>()));
 

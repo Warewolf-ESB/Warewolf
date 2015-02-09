@@ -14,11 +14,11 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities

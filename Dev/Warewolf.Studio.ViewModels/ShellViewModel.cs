@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.ServerDialogue;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
@@ -22,10 +23,13 @@ using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
+using Moq;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Help;
+using Warewolf.Studio.Models.Toolbox;
+using Warewolf.Studio.ViewModels.ToolBox;
 using IVariableListViewModel = Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel;
 
 namespace Warewolf.Studio.ViewModels
@@ -60,6 +64,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void Initialize()
         {
+
+            _unityContainer.RegisterInstance<IToolboxViewModel>(new ToolboxViewModel(new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object), new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object)));
+           
             InitializeRegion<IExplorerView,IExplorerViewModel>(RegionNames.Explorer);
             InitializeRegion<IToolboxView, IToolboxViewModel>(RegionNames.Toolbox);
             InitializeRegion<IMenuView, IMenuViewModel>(RegionNames.Menu);

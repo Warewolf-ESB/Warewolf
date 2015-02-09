@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
@@ -23,7 +24,6 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

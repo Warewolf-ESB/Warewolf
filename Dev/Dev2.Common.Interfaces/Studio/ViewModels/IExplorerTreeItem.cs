@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels
@@ -29,5 +30,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand RollbackCommand { get; set; }
         IServer Server { get; set; }
         ICommand Expand { get; set; }
+        ICollection<IExplorerItemViewModel> Children { get; set; }
     }
 }

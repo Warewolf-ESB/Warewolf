@@ -11,9 +11,10 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <summary>
         /// Add a folder to a warewolf server
         /// </summary>
-        /// <param name="path">relative path</param>
+        /// <param name="parentGuid"></param>
         /// <param name="name"></param>
-        IExplorerItem AddFolder(Guid path, string name);
+        /// <param name="id"></param>
+        void AddFolder(Guid parentGuid, string name, Guid id);
         /// <summary>
         /// delete a folder from a warewolf server
         /// </summary>

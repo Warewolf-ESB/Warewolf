@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -50,6 +52,26 @@ namespace Warewolf.Studio.ViewModels
            
             });
             ShowServerVersionCommand = new DelegateCommand(ShowServerVersionAbout);
+            CanCreateFolder = Server.UserPermissions == Permissions.Administrator || server.UserPermissions == Permissions.Contribute;
+            CreateFolderCommand = new DelegateCommand(CreateFolder);
+        }
+
+        void CreateFolder()
+        {
+                IsExpanded = true;
+                var id = Guid.NewGuid();
+                var name = GetChildNameFromChildren();
+                 Server.ExplorerRepository.CreateFolder(GlobalConstants.ServerWorkspaceID,name,id);
+                var child = new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
+               {
+                   ResourceName = name,
+                   ResourceId = id,
+                   ResourceType = ResourceType.Folder
+                  
+               };
+               Children.Add(child);
+               child.IsRenaming = true;
+            
         }
 
         public ICommand ShowServerVersionCommand { get; set; }
@@ -201,6 +223,20 @@ namespace Warewolf.Studio.ViewModels
             var studioVersion = Utils.FetchVersionInfo();
             _shellViewModel.ShowPopup(PopupMessages.GetServerVersionMessage(studioVersion, serverVersion));
         }
+
+        string GetChildNameFromChildren()
+        {
+            const string NewFolder = "New Folder";
+            int count = 0;
+            string folderName = NewFolder;
+            while (Children.Any(a => a.ResourceName == folderName))
+            {
+                count++;
+                folderName = NewFolder + " " + count;
+            }
+            return folderName;
+        }
+
         public ICommand RenameCommand { get; set; }
         public ICommand CreateFolderCommand { get; set; }
         public ICommand DeleteCommand { get; set; }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
@@ -10,6 +12,13 @@ namespace Warewolf.Studio.ViewModels.ToolBox
     {
         IToolDescriptor _tool;
         bool _isEnabled;
+
+              static ResourceDictionary Resources;
+        static ToolDescriptorViewModel()
+        {
+            
+
+        }
 
         public ToolDescriptorViewModel(IToolDescriptor tool, bool isEnabled)
         {
@@ -45,8 +54,14 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             get
             {
-                return Tool.Icon;
+                return GetImage( Tool.Icon,Tool.IconUri);
             }
+        }
+
+        DrawingImage GetImage(string icon,string iconUri)
+        {
+           return (DrawingImage)((ResourceDictionary)Application.LoadComponent(new Uri(iconUri,
+               UriKind.RelativeOrAbsolute)))[icon];
         }
 
         public bool IsEnabled

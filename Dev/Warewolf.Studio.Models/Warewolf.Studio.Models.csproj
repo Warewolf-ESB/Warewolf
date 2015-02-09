@@ -54,12 +54,10 @@
     <Compile Include="Deploy\NewForDeployPredicate.cs" />
     <Compile Include="Deploy\ResouceTypeAndPathPredicate.cs" />
     <Compile Include="Deploy\SelectedForDeployPredicate.cs" />
-    <Compile Include="Help\HelpDescriptor.cs" />
     <Compile Include="Help\HelpModel.cs" />
     <Compile Include="Help\IHelpChangedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Toolbox\ToolBoxModel.cs" />
-    <Compile Include="Toolbox\ToolDescriptor.cs" />
     <Compile Include="Toolbox\WarewolfUnsupportedToolException.cs" />
     <Compile Include="WarewolfPermissionsException.cs" />
   </ItemGroup>

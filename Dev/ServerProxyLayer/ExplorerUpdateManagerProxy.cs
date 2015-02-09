@@ -1,6 +1,6 @@
 ﻿using System;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
@@ -26,25 +26,21 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// <param name="parentGuid"></param>
         /// <param name="name"></param>
         /// <param name="id"></param>
-        public IExplorerItem AddFolder(Guid parentGuid, string name, Guid id)
+        public void AddFolder(Guid parentGuid, string name, Guid id)
         {
             var controller = CommunicationControllerFactory.CreateController("AddFolderService");
             controller.AddPayloadArgument("name", name);
             controller.AddPayloadArgument("parentGuid", parentGuid.ToString());
             controller.AddPayloadArgument("id", id.ToString());
-            controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
-            return null;
+            var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
+            if(result.Status != ExecStatus.Success)
+            {
+                throw new WarewolfSaveException(result.Message,null);
+            }
+            
         }
 
-        /// <summary>
-        /// Add a folder to a warewolf server
-        /// </summary>
-        /// <param name="path">relative path</param>
-        /// <param name="name"></param>
-        public IExplorerItem AddFolder(Guid path, string name)
-        {
-            return null;
-        }
+
 
         /// <summary>
         /// delete a folder from a warewolf server

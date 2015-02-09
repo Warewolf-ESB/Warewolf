@@ -1,28 +1,34 @@
-﻿<UserControl x:Class="Warewolf.Studio.Views.ToolboxView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:toolbox="clr-namespace:Dev2.Common.Interfaces.Toolbox;assembly=Dev2.Common.Interfaces"
-             x:Name="UserControl"
-             d:DataContext="{d:DesignInstance Type={x:Type dummyModels:DummyToolboxViewModel}}"
-             mc:Ignorable="d">
-    <UserControl.Resources />
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:toolbox="clr-namespace:Dev2.Common.Interfaces.Toolbox;assembly=Dev2.Common.Interfaces"
+	xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
+	xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+	xmlns:fa="http://schemas.fontawesome.io/icons/"
+	xmlns:toolBox="clr-namespace:Warewolf.Studio.ViewModels.ToolBox;assembly=Warewolf.Studio.ViewModels"
+	mc:Ignorable="d"
+	x:Class="Warewolf.Studio.Views.ToolboxView"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480"
+    d:DataContext="{d:DesignInstance Type={x:Type toolBox:ToolboxViewModel}}">
+    <UserControl.Resources>
+
+    </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
-            <RowDefinition Height="29" />
+            <RowDefinition Height="29"/>
             <RowDefinition Height="5" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
 
@@ -31,7 +37,7 @@
         <Grid Grid.Row="1" Grid.Column="1">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="29" />
+                <RowDefinition Height="29"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -39,44 +45,32 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Row="0"
-                     Grid.Column="0"
-                     Text="{Binding SearchTerm,
+            <TextBox 
+                Grid.Column="0" 
+                Grid.Row="0"  
+                Text="{Binding SearchTerm,
                                     Delay=300,
                                     UpdateSourceTrigger=PropertyChanged}"
+                    customControls:TextBoxHelper.Watermark="Filter" 
                      customControls:TextBoxHelper.ShowWatermark="True"
-                     customControls:TextBoxHelper.Watermark="Filter" />
-            <Button Grid.Row="0"
-                    Grid.Column="1"
-                    Width="25"
+                />
+           <Button Width="25" Grid.Column="2" Grid.Row="0"
                     Height="25"
                     Padding="4">
-                <fa:FontAwesome HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                FontSize="16"
-                                Icon="Refresh"
-                                TextOptions.TextFormattingMode="Display" />
+               <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
             </Button>
-
+            
         </Grid>
 
-        <!--  TOOL BUTTONS  -->
-
-        <ListBox Grid.Row="3"
-                 Grid.Column="1"
-                 ItemTemplate="{DynamicResource ToolboxItemTemplate}"
-                 ItemsSource="{Binding CategorisedTools}">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
+        <!--TOOL BUTTONS-->
+        <ListBox ItemTemplate="{DynamicResource ToolboxItemTemplate}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding CategorisedTools}">
+            <!-- This style is used as a way to disable the selection for this list box which represents the category -->
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
-
-
-        <!--  TOOL BUTTONS  -->
-
-
-
     </Grid>
 </UserControl>

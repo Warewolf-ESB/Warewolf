@@ -11,7 +11,7 @@
 
 using System;
 using Dev2.Common;
-using Dev2.Enums;
+using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
 
 namespace Dev2.Factories

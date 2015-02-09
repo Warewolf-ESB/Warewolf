@@ -24,6 +24,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             _remoteModel = remoteModel;
             _localModel.OnserverDisconnected += _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
+            ClearFilter();
         }
 
 
