@@ -44,6 +44,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canCreateFolder;
         IWindowsGroupPermission _permission ;
         private bool _isSelected;
+        bool _canShowVersions;
 
         // ReSharper disable TooManyDependencies
         public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent)
@@ -55,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
                 parent.ShowVersionHistory.Execute(null);
                 parent.ResourceName = output.DisplayName;
             });
-           
+            _canShowVersions = true;
             Parent = parent;
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } });
             _shellViewModel = shellViewModel;
@@ -468,7 +469,12 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return ResourceType == ResourceType.WorkflowService;
+                return ResourceType == ResourceType.WorkflowService && _canShowVersions;
+            }
+            set
+            {
+                _canShowVersions = value;
+                OnPropertyChanged(() => CanShowVersions);
             }
         }
         public bool CanRollback

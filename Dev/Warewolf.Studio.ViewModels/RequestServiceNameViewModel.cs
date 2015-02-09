@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels
             }
 
             environmentViewModel.Connect();
-            environmentViewModel.Load();
+            environmentViewModel.LoadDialog();
             _view = view;
             OkCommand = new DelegateCommand(SetServiceName,() => String.IsNullOrEmpty(ErrorMessage));            
             CancelCommand = new DelegateCommand(CloseView);

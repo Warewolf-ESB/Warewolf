@@ -11,7 +11,6 @@
                     Width="700"
                     Height="420"
                     CloseButtonVisibility="Collapsed"
-                    Header="Please enter a service name"
                     HeaderIconVisibility="Collapsed"
                     MaximizeButtonVisibility="Collapsed"
                     MinimizeButtonVisibility="Collapsed"
@@ -53,23 +52,42 @@
         </DockPanel>
 
 
-        <DockPanel Grid.Row="2"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center">
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                Name:
+            </TextBlock>
+            <TextBox Grid.Column="1"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center"
+                     Margin="10,0,10,0"
+                     Text="{Binding Name,
+                                    UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
 
-            <TextBlock Margin="10,0,10,0">Name:</TextBlock>
-            <TextBox Width="300" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-
-        </DockPanel>
 
         <DockPanel Grid.Row="4"
                    Grid.Column="1"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Center">
+
+
+            <TextBlock HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource ErrorTextBlockStyle}"
+                           Text="{Binding Path=ErrorMessage}"
+                           TextAlignment="Right" />
+            
             <Button x:Name="OkButton"
                     Width="60"
                     Command="{Binding Path=OkCommand}"
+                    Margin="10,0,0,0"
                     Content="Ok"
                     Style="{StaticResource ButtonStyle}" />
             <Button x:Name="CancelButton"

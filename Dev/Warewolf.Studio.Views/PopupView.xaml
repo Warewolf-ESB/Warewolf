@@ -13,23 +13,21 @@
                     MinimizeButtonVisibility="Collapsed"
                     StartupPosition="Center"
                     Style="{StaticResource XamDialogWindowStyle}"
-                    d:DesignHeight="200"
-                    d:DesignWidth="150"
                     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="8" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="32" />
             <RowDefinition Height="*"/>
             <RowDefinition Height="30" />
-            <RowDefinition Height="8" />
+            <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="10" />
             <ColumnDefinition Width="32" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Row="1"
@@ -40,12 +38,12 @@
             <Image x:Name="MessageImage"  />
 
         </DockPanel>
-        <TextBlock Grid.Row="1" Grid.Column="2"  Grid.RowSpan="2"  Grid.ColumnSpan="2" Margin="8,0,8,8"
+        <TextBlock Grid.Row="1" Grid.Column="2"  Grid.RowSpan="2"  Grid.ColumnSpan="2" Margin="10,0,10,8"
             
                    x:Name="MessageText"
-    		FontSize="12"
+    		FontSize="11"
                    TextWrapping="Wrap"
-    		 VerticalAlignment="Top" HorizontalAlignment="Left" />
+    		 VerticalAlignment="Stretch" HorizontalAlignment="Left" />
 
         <DockPanel Grid.Row="3"
                     Grid.Column="2"
