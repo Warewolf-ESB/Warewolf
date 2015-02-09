@@ -158,58 +158,7 @@
                                 <Border x:Name="innerBorderHighlight"
                                         BorderBrush="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneNotActiveCaptionInnerBorderFillKey}}"
                                         BorderThickness="1,1,1,0" />
-                            </Grid>
-                            <!--
-                                <ControlTemplate.Triggers>
-                                <DataTrigger Binding="{Binding Path=Pane.IsActivePane, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneActiveCaptionFillKey}}" />
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}}" />
-                                <Setter TargetName="innerBorderHighlight" Property="BorderBrush" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneActiveCaptionInnerBorderFillKey}}" />
-                            -->
-                            <!--
-                                AS 4/7/08 BR31678
-                                Foreground is an inherited property so we don't have to set it on the buttons themselves. Doing so
-                                is actually leading to an exception in the wpf framework.
-                                <Setter Property="Foreground" TargetName="closeBtn" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}}" />
-                                <Setter Property="Foreground" TargetName="unpinBtn" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}}" />
-                                <Setter Property="Foreground" TargetName="PART_PositionMenuItem" Value="{DynamicResource {x:Static igDock:DockManagerBrushKeys.PaneHeaderActiveTextFillKey}}" />
-                            -->
-                            <!--  </DataTrigger>  -->
-                            <!--  AS 6/24/11 FloatingWindowCaptionSource  -->
-                            <!--
-                                <DataTrigger Binding="{Binding Path=Pane.IsProvidingFloatingWindowCaption, RelativeSource={x:Static RelativeSource.Self}}" Value="True">
-                                <Setter TargetName="maxBtn" Property="Visibility" Value="{Binding Path=(igWindows:ToolWindow.ToolWindow).MaximizeButtonVisibility, RelativeSource={x:Static RelativeSource.Self}}" />
-                                <Setter TargetName="minBtn" Property="Visibility" Value="{Binding Path=(igWindows:ToolWindow.ToolWindow).MinimizeButtonVisibility, RelativeSource={x:Static RelativeSource.Self}}" />
-                                </DataTrigger>
-                                <Trigger Property="igDock:XamDockManager.PaneLocation"  Value="FloatingOnly">
-                                <Setter TargetName="unpinBtn" Property="Visibility" Value="Collapsed" />
-                                </Trigger>
-                                <Trigger Property="igDock:XamDockManager.PaneLocation"  Value="Floating">
-                                <Setter TargetName="unpinBtn" Property="Visibility" Value="Collapsed" />
-                                </Trigger>
-                            -->
-                            <!--  AS 1/4/12 TFS85418  -->
-                            <!--
-                                <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=Pane.IsProvidingFloatingWindowCaption, RelativeSource={x:Static RelativeSource.Self}}" Value="True" />
-                                <Condition Binding="{Binding Path=(igWindows:ToolWindow.ToolWindow).WindowState, RelativeSource={x:Static RelativeSource.Self}}" Value="Minimized" />
-                                </MultiDataTrigger.Conditions>
-                                <Setter TargetName="closeBtn" Property="VerticalAlignment" Value="Center" />
-                                <Setter TargetName="unpinBtn" Property="VerticalAlignment" Value="Center" />
-                                <Setter TargetName="maxBtn" Property="VerticalAlignment" Value="Center" />
-                                <Setter TargetName="minBtn" Property="VerticalAlignment" Value="Center" />
-                                <Setter TargetName="positionMenu" Property="VerticalAlignment" Value="Center" />
-                                <Setter TargetName="positionMenu" Property="Visibility" Value="Collapsed" />
-                                </MultiDataTrigger>
-                                <DataTrigger Binding="{Binding Path=(igWindows:ToolWindow.ToolWindow).WindowState, RelativeSource={x:Static RelativeSource.Self}}" Value="Minimized">
-                                <Setter TargetName="minBtn" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Path=(igWindows:ToolWindow.ToolWindow).WindowState, RelativeSource={x:Static RelativeSource.Self}}" Value="Maximized">
-                                <Setter TargetName="maxBtn" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
-                                </DataTrigger>
-                                </ControlTemplate.Triggers>
-                            -->
+                            </Grid>                            
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -1023,33 +972,35 @@
                         <Border x:Name="windowCenterBorder" Margin="0" BorderThickness="1" BorderBrush="{StaticResource MenuPanelGradient}" Background="{StaticResource WarewolfPanelGreyBrush}">
                             <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition x:Name="captionRow" Height="25" />
+                                    <RowDefinition x:Name="captionRow" Height="28" />
                                     <RowDefinition x:Name="contentRow" Height="*" />
                                 </Grid.RowDefinitions>
                                 <!-- AS 6/24/11 FloatingWindowCaptionSource - Bind Visibility -->
                                 <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource MenuPanelGradient}">
                                 <igWindows:CardPanel x:Name="PART_Caption" Background="White" Visibility="{TemplateBinding CaptionVisibility}">
-                                    <DockPanel x:Name="captionPanel" Margin="6,0">
+                                    <DockPanel x:Name="captionPanel" Margin="3,0">
                                         <Button x:Name="MaximizeButton"
-												 DockPanel.Dock="Right" Margin="0"
-                                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+												 DockPanel.Dock="Right" 
+                                                 Margin="0,5,5,5"
+                                                    HorizontalAlignment="Center" 
+                                                    VerticalAlignment="Center" 
                                                     Height="20" Width="20" Style="{StaticResource MetroWindowButtonStyle}"
                                                 Command="{x:Static igWindows:ToolWindow.MaximizeCommand}" 
 												Visibility="{TemplateBinding MaximizeButtonVisibility}"
                                                 >
                                             <Path Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
-                                                      Stretch="Uniform" Fill="Black" Width="8" Margin="0,0,0,0" ></Path>
+                                                      Stretch="Uniform" Fill="Black" Width="10" Margin="0,0,0,0" ></Path>
                                         </Button>
                                         <Button x:Name="MinimizeButton" 
-                                                    HorizontalAlignment="Stretch"
-                                                    VerticalAlignment="Bottom"
-                                                    Style="{StaticResource MetroWindowButtonStyle}"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    VerticalContentAlignment="Bottom"
                                                 Command="{x:Static igWindows:ToolWindow.MinimizeCommand}" 
 												Visibility="{TemplateBinding MinimizeButtonVisibility}"
                                                     Height="20" Width="20"
-                                                    Margin="0,0,0,0"
+                                                    Margin="0,5,5,5"
                                                 DockPanel.Dock="Right">
-                                            <fa:FontAwesome Icon="Minus" FontSize="8" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="Transparent"></fa:FontAwesome>
+                                                <fa:FontAwesome Icon="Minus" Margin="1,1,1,1" VerticalAlignment="Bottom"></fa:FontAwesome>
                                         </Button>
 
                                         <TextBlock x:Name="txtCaption"
