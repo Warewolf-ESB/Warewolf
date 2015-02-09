@@ -75,7 +75,7 @@ namespace Warewolf.Studio.ViewModels
                 //shellViewModel.UpdateHelpDescriptor(builder.Build(this, ExplorerEventContext.Selected));
             });
             Server = server;
-            NewCommand = new DelegateCommand<ResourceType?>(shellViewModel.NewResource);
+            NewCommand = new DelegateCommand<ResourceType?>(type => shellViewModel.NewResource(type, ResourceId));
             CanCreateDbService = true;
             CanCreateWorkflowService = true;
             CanCreateServerSource = true;
@@ -152,6 +152,18 @@ namespace Warewolf.Studio.ViewModels
                child.IsRenaming = true;
             }
 
+        }
+
+        public void Apply(Action<IExplorerItemViewModel> action)
+        {
+            action(this);
+            if(Children != null)
+            {
+                foreach(var explorerItemViewModel in Children)
+                {
+                    explorerItemViewModel.Apply(action);
+                }
+            }
         }
 
         string GetChildNameFromChildren()
@@ -636,6 +648,10 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if(Parent != null && Parent.IsExpanded != value)
+                {
+                    Parent.IsExpanded = value;
+                }
                 _isExpanded = value;
                 OnPropertyChanged(()=>IsExpanded);
             }

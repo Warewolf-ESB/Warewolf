@@ -53,7 +53,7 @@
                                                                          Storyboard.TargetProperty="Height"
                                                                          To="25" />
         </Storyboard>
-      
+
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
@@ -202,49 +202,11 @@
     </Window.Resources>
 
     <!--  START OF LAYOUT  -->
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel x:Name="ExitFullScreenPanel"
-                    Width="250"
-                    Height="60"
-                    Margin="0,-90,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Background="White"
-                    Opacity="0"
-                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
-            <TextBlock Margin="25,10,0,10"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Background="White"
-                       FontSize="22">
-                <Hyperlink Click="CloseSuperMaximised">
-                    <Run Text="Exit Full Screen (F11)" />
-                </Hyperlink>
-            </TextBlock>
-            <StackPanel.Effect>
-                <DropShadowEffect BlurRadius="10"
-                                  Direction="300"
-                                  ShadowDepth="10" />
-            </StackPanel.Effect>
-        </StackPanel>
-        <Rectangle x:Name="ShowFullScreenPanel"
-                   Height="15"
-                   Margin="0,-6,0,0"
-                   VerticalAlignment="Top"
-                   Fill="#00000000"
-                   IsHitTestVisible="True"
-                   MouseEnter="ShowFullScreenPanel_OnMouseEnter" />
-        <Rectangle x:Name="HideFullScreenPanel"
-                   Height="20"
-                   Margin="0,45,0,0"
-                   VerticalAlignment="Top"
-                   Fill="#00000000"
-                   IsHitTestVisible="True"
-                   MouseEnter="HideFullScreenPanel_OnMouseEnter" />
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"
@@ -365,11 +327,45 @@
                             <dockManager:TabGroupPane x:Name="Workspace"
                                                       SelectedItem="{Binding ActiveItem}"
                                                       regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
-                            
+
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>
             </Grid>
         </Grid>
+        <StackPanel x:Name="ExitFullScreenPanel"
+                    Width="250"
+                    Height="60"
+                    Margin="0,-90,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Background="White"
+                    Opacity="0"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <StackPanel.Effect>
+                <DropShadowEffect BlurRadius="10"
+                                  Direction="300"
+                                  ShadowDepth="10" />
+            </StackPanel.Effect>
+            <TextBlock Margin="25,10,0,10"
+        		HorizontalAlignment="Center"
+        		VerticalAlignment="Center"
+        		Background="White"
+        		FontSize="22"><Hyperlink Click="CloseSuperMaximised"><Run Text="Exit Full Screen (F11)" /></Hyperlink></TextBlock>
+        </StackPanel>
+        <Rectangle x:Name="ShowFullScreenPanel"
+                   Height="15"
+                   Margin="0,-6,0,0"
+                   VerticalAlignment="Top"
+                   Fill="#00000000"
+                   IsHitTestVisible="True"
+                   MouseEnter="ShowFullScreenPanel_OnMouseEnter" />
+        <Rectangle x:Name="HideFullScreenPanel"
+                   Height="20"
+                   Margin="0,45,0,0"
+                   VerticalAlignment="Top"
+                   Fill="#00000000"
+                   IsHitTestVisible="True"
+                   MouseEnter="HideFullScreenPanel_OnMouseEnter" />
     </Grid>
 </Window>

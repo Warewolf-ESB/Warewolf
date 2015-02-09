@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             Server.NetworkStateChanged += Server_NetworkStateChanged;
             _children = new ObservableCollection<IExplorerItemViewModel>();
-            NewCommand = new DelegateCommand<ResourceType?>(_shellViewModel.NewResource);
+            NewCommand = new DelegateCommand<ResourceType?>(type => _shellViewModel.NewResource(type, Guid.Empty));
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(Load);
             IsServerIconVisible = true;
@@ -53,6 +53,21 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ICommand ShowServerVersionCommand { get; set; }
+
+        public void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction)
+        {
+            foreach (var explorerItemViewModel in Children)
+            {
+                explorerItemViewModel.Apply(a =>
+                {
+                    if (a.ResourceId == id)
+                    {
+                        a.IsExpanded = true;
+                        foundAction(a);
+                    }
+                });
+            }
+        }
 
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
         {
@@ -164,6 +179,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _isExpanded; }
             set
             {
+                
                 _isExpanded = value;
                 OnPropertyChanged(() => IsExpanded);
             }
@@ -255,7 +271,7 @@ namespace Warewolf.Studio.ViewModels
                 IsExpanded = true;
             }
         }
-        public async void LoadDialog()
+        public async void LoadDialog(Guid selectedId)
         {
             if (IsConnected)
             {
@@ -267,8 +283,11 @@ namespace Warewolf.Studio.ViewModels
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
+               
             }
         }
+
+
 
         public void Filter(string filter)
         {

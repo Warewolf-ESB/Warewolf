@@ -59,12 +59,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             ResourceType? resourceTypeParameter = null;
             var shellViewModelMock = new Mock<IShellViewModel>();
-            shellViewModelMock.Setup(model => model.NewResource(It.IsAny<ResourceType?>())).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
+            shellViewModelMock.Setup(model => model.NewResource(It.IsAny<ResourceType?>(), Guid.Empty)).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
             //------------Execute Test---------------------------
             var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             //------------Assert Results-------------------------
             explorerViewModel.NewCommand.Execute(ResourceType.DbService);
-            shellViewModelMock.Verify(model => model.NewResource(It.IsAny<ResourceType>()), Times.Once());
+            shellViewModelMock.Verify(model => model.NewResource(It.IsAny<ResourceType>(), Guid.Empty), Times.Once());
             Assert.IsNotNull(resourceTypeParameter);
             Assert.AreEqual(ResourceType.DbService,resourceTypeParameter);
         }

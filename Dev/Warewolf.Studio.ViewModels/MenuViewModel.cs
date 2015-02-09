@@ -28,7 +28,7 @@ namespace Warewolf.Studio.ViewModels
             _viewModel = shellViewModel;
             _isOverLock = false;
             _viewModel.ActiveServerChanged += ShellViewModelOnActiveServerChanged;
-            NewCommand = new DelegateCommand<ResourceType?>(_viewModel.NewResource, type => CanCreateNewService);
+            NewCommand = new DelegateCommand<ResourceType?>(type => _viewModel.NewResource(type, Guid.Empty), type => CanCreateNewService);
             DeployCommand = new DelegateCommand(() => _viewModel.DeployService(null), () => CanDeploy);
             SaveCommand = new DelegateCommand(_viewModel.SaveService, () => CanSave);
             OpenSchedulerCommand = new DelegateCommand(_viewModel.OpenScheduler, () => CanSetSchedules);
