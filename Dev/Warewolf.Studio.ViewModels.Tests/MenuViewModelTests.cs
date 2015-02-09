@@ -31,12 +31,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             ResourceType? resourceTypeParameter = null;
             var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.NewResource(It.IsAny<ResourceType?>())).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
+            mockShellViewModel.Setup(model => model.NewResource(It.IsAny<ResourceType?>(), Guid.Empty)).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
             var menuViewModel = new MenuViewModel(mockShellViewModel.Object);
             //------------Execute Test---------------------------
             menuViewModel.NewCommand.Execute(ResourceType.Unknown);
             //------------Assert Results-------------------------
-            mockShellViewModel.Verify(model => model.NewResource(It.IsAny<ResourceType>()), Times.Once());
+            mockShellViewModel.Verify(model => model.NewResource(It.IsAny<ResourceType>(), Guid.Empty), Times.Once());
             Assert.AreEqual(ResourceType.Unknown,resourceTypeParameter);
         }
 
@@ -48,12 +48,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             ResourceType? resourceTypeParameter = null;
             var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.NewResource(It.IsAny<ResourceType?>())).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
+            mockShellViewModel.Setup(model => model.NewResource(It.IsAny<ResourceType?>(), Guid.Empty)).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
             var menuViewModel = new MenuViewModel(mockShellViewModel.Object);
             //------------Execute Test---------------------------
             menuViewModel.NewCommand.Execute(ResourceType.WorkflowService);
             //------------Assert Results-------------------------
-            mockShellViewModel.Verify(model => model.NewResource(It.IsAny<ResourceType>()), Times.Once());
+            mockShellViewModel.Verify(model => model.NewResource(It.IsAny<ResourceType>(), Guid.Empty), Times.Once());
             Assert.AreEqual(ResourceType.WorkflowService, resourceTypeParameter);
         }
 

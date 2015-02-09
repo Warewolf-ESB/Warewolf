@@ -143,6 +143,14 @@ namespace Warewolf.Studio.ViewModels
 
         public event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
 
+        public void SelectItem(Guid id)
+        {
+            foreach(var environmentViewModel in Environments)
+            {
+                environmentViewModel.SelectItem(id, (a=>SelectedItem =a));  
+            }
+        }
+
         public IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc)
         {
             return null;

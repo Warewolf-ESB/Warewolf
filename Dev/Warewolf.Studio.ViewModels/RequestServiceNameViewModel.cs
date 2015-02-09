@@ -18,9 +18,10 @@ namespace Warewolf.Studio.ViewModels
         private string _errorMessage;
         private ResourceName _resourceName;
         private IRequestServiceNameView _view;
+        readonly Guid _selectedGuid;
         public MessageBoxResult ViewResult { get; private set; }
 
-        public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel,IRequestServiceNameView view)
+        public RequestServiceNameViewModel(IEnvironmentViewModel environmentViewModel,IRequestServiceNameView view,Guid selectedGuid)
         {
             if (environmentViewModel == null)
             {
@@ -32,8 +33,10 @@ namespace Warewolf.Studio.ViewModels
             }
 
             environmentViewModel.Connect();
-            environmentViewModel.LoadDialog();
+            _selectedGuid = selectedGuid;
+            environmentViewModel.LoadDialog(_selectedGuid);
             _view = view;
+           
             OkCommand = new DelegateCommand(SetServiceName,() => String.IsNullOrEmpty(ErrorMessage));            
             CancelCommand = new DelegateCommand(CloseView);
             SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(environmentViewModel);
@@ -94,7 +97,9 @@ namespace Warewolf.Studio.ViewModels
 
         public MessageBoxResult ShowSaveDialog()
         {
+            SingleEnvironmentExplorerViewModel.SelectItem(_selectedGuid);
             _view.ShowView();
+            
             return ViewResult;
         }
 

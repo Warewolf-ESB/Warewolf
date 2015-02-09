@@ -44,7 +44,7 @@ namespace Warewolf.Studio.ViewModels
         public NewServerViewModel(IServerSource newServerSource,
             IStudioUpdateManager updateManager, IRequestServiceNameViewModel requestServiceNameViewModel,
             IShellViewModel shellViewModel,
-            string connectedServer)
+            string connectedServer, Guid originationSource)
         // ReSharper restore TooManyDependencies
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "newServerSource", newServerSource }, { "updateManager", updateManager }, { "requestServiceNameViewModel", requestServiceNameViewModel } ,{"shellViewModel",shellViewModel},{"connectedServer",connectedServer}});
@@ -57,7 +57,8 @@ namespace Warewolf.Studio.ViewModels
             _requestServiceNameViewModel = requestServiceNameViewModel;
             _shellViewModel = shellViewModel;
             _connectedServer = connectedServer;
-      
+            OriginationSource = originationSource;
+
             ServerSource = newServerSource;
             _headerText = String.IsNullOrEmpty(newServerSource.Name) ? "New Server Source" : SetToEdit(newServerSource);
 
@@ -188,6 +189,8 @@ namespace Warewolf.Studio.ViewModels
             return Validate;
         }
 
+
+
         /// <summary>
         /// Is valid 
         /// </summary>
@@ -221,6 +224,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Header);
             }
         }
+        public Guid OriginationSource { get; private set; }
 
         #endregion
 

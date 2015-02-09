@@ -45,7 +45,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
 
         void CreateNewFolder();
 
-  
+        void Apply(Action<IExplorerItemViewModel> action);
     }
 
     public enum ExplorerEventContext

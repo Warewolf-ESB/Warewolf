@@ -221,24 +221,24 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void NewResource(ResourceType? type)
+        public void NewResource(ResourceType? type,Guid selectedId)
         {
             if (type == null)
                 return;
             switch (type.Value)
             {
                 case ResourceType.ServerSource:
-                    CreateNewServerSource();
+                    CreateNewServerSource(selectedId);
                     break;
                 default: return;
 
             }
         }
 
-        void CreateNewServerSource()
+        void CreateNewServerSource(Guid selectedId)
         {
-            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer,this), _unityContainer.Resolve<IRequestServiceNameView>()),this,
-                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", System.StringComparison.Ordinal))) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
+            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer,this), _unityContainer.Resolve<IRequestServiceNameView>(),selectedId),this,
+                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", System.StringComparison.Ordinal)),selectedId) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
             GetRegion("Workspace").Add(server);
 
         }

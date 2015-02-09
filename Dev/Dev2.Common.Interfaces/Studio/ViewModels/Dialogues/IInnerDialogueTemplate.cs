@@ -29,5 +29,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
       
 
         string HeaderText { get; }
+
+        Guid OriginationSource { get; }
     }
 }
