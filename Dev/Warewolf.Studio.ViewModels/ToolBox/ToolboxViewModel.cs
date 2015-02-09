@@ -123,8 +123,10 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         {
             // not sure about this warning ofr pure methods.
             // ReSharper disable MaximumChainedReferences
+            if(searchString == "")
+                ClearFilter();
             Tools = new ObservableCollection<IToolDescriptorViewModel>( _remoteModel.GetTools()
-                .Where(a => a.Name.Contains(searchString))
+                .Where(a => a.Name.ToLower().Contains(searchString.ToLower()))
                 .Select(a => new ToolDescriptorViewModel(a, _localModel.GetTools().Contains(a))));
             // ReSharper restore MaximumChainedReferences
         }
