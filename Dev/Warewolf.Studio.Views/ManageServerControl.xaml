@@ -26,20 +26,21 @@
             <Grid Grid.Row="0" Background="{StaticResource WareWolfMenuBrush}">
                 <Grid x:Name="Header">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10" ></RowDefinition>
-                        <RowDefinition Height="16" ></RowDefinition>
-                        <RowDefinition Height="10" ></RowDefinition>
+                        <RowDefinition Height="40" ></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="24"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="24"></ColumnDefinition>
+                        <ColumnDefinition Width="10"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <!--<Button Grid.Row="0"  Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="10" Height="10" Padding="0,0,0,0" Background="{StaticResource WarewolfPanelGreyBrush}">
                     <fa:ImageAwesome Width="10" Height="10" Foreground="{StaticResource WareWolfButtonBrush}" Icon="Times" HorizontalAlignment="Right" Grid.Column="2"/>
 
                 </Button>-->
-                    <TextBlock Style="{StaticResource SourceHeader}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding Path=HeaderText}" Visibility="Visible"/>
+                    <TextBlock 
+                         Grid.Column="1" Grid.Row="0" 
+                        Style="{StaticResource SourceHeader}" 
+                        Text="{Binding Path=HeaderText}" Visibility="Visible"/>
                 </Grid>
             </Grid>
 

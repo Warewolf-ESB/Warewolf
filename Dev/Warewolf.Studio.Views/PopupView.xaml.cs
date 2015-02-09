@@ -34,7 +34,8 @@ namespace Warewolf.Studio.Views
             var textBlock = new TextBlock();
             textBlock.FontSize = 16.0;
             textBlock.Text = message.Header;
-            Header = textBlock; 
+            Header = textBlock;
+            textBlock.Margin = new Thickness(5, 0, 0, 0);
             
             var imageSource = new MessageBoxImageToSystemIconConverter().Convert(message.Image, null, null, null) as string;
             if(imageSource != null)
@@ -67,27 +68,28 @@ namespace Warewolf.Studio.Views
                     CancelButton.Visibility = Visibility.Collapsed;
                     NoButton.Visibility = Visibility.Collapsed;
                     YesButton.Visibility = Visibility.Collapsed;
+                    OkButton.Margin = new Thickness(0, 0, 2, 0);
                     break;
                 case MessageBoxButton.OKCancel:
                     OkButton.Visibility = Visibility.Visible;
                     CancelButton.Visibility = Visibility.Visible;
                     NoButton.Visibility = Visibility.Collapsed;
                     YesButton.Visibility = Visibility.Collapsed;
-                    YesButton.Margin = new Thickness(0, 0, 8, 0);
+                    OkButton.Margin = new Thickness(0, 0, 10, 0);
                     break;
                 case MessageBoxButton.YesNoCancel:
                     OkButton.Visibility = Visibility.Collapsed;
                     CancelButton.Visibility = Visibility.Visible;
                     NoButton.Visibility = Visibility.Visible;
                     YesButton.Visibility = Visibility.Visible;
-                    YesButton.Margin = new Thickness(0, 0, 8, 0);
+                    YesButton.Margin = new Thickness(0, 0,10, 0);
                     break;
                 case MessageBoxButton.YesNo:
                     OkButton.Visibility = Visibility.Collapsed;
                     CancelButton.Visibility = Visibility.Collapsed;
                     NoButton.Visibility = Visibility.Visible;
                     YesButton.Visibility = Visibility.Visible;
-                    YesButton.Margin = new Thickness(0, 0,8, 0);
+                    YesButton.Margin = new Thickness(0, 0,10, 0);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

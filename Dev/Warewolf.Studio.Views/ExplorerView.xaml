@@ -79,7 +79,8 @@
                     Width="25"
                     Height="25"
                     Command="{Binding RefreshCommand}"
-                    Padding="4"
+                    Margin="4,0,0,0"
+                    Padding="2.5"
                     ToolTip="{Binding Path=RefreshToolTip}"
                     Visibility="{Binding Path=IsRefreshing,
                                          Converter={StaticResource NotConverter}}">
@@ -90,7 +91,8 @@
                                        Grid.Column="1"
                                        Width="25"
                                        Height="25"
-                                       Padding="2"
+                                       Margin="4,0,0,0"
+                                       Padding="2.5"
                                        Visibility="{Binding Path=IsRefreshing,
                                                             Converter={StaticResource BoolToVisibilityConverter}}" />
 

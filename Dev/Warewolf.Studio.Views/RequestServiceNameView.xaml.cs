@@ -17,6 +17,13 @@ namespace Warewolf.Studio.Views
         public RequestServiceNameView()
         {
             InitializeComponent();
+
+            var textBlock = new TextBlock();
+            textBlock.FontSize = 16.0;
+            textBlock.Margin = new Thickness(10, 0, 0, 0);
+            textBlock.Text = "Please enter a service name";
+            Header = textBlock; 
+
         }
 
         public void ShowView()
