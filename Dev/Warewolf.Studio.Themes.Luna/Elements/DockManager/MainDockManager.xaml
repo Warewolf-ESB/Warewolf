@@ -1038,10 +1038,10 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <!--  NA 2011.1 - ToolWindow changes  -->
-                        <Trigger Property="WindowState" Value="Minimized">
-                            <Setter TargetName="MinimizeButton" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
-                            <Setter TargetName="MinimizeButton" Property="Style" Value="{StaticResource ToolWindowRestoreButtonStyle}" />
-                        </Trigger>
+<!--                        <Trigger Property="WindowState" Value="Minimized">-->
+<!--                            <Setter TargetName="MinimizeButton" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />-->
+<!--                            <Setter TargetName="MinimizeButton" Property="Style" Value="{StaticResource ToolWindowRestoreButtonStyle}" />-->
+<!--                        </Trigger>-->
                         <Trigger Property="WindowState" Value="Maximized">
                             <Setter TargetName="MaximizeButton" Property="Command" Value="{x:Static igWindows:ToolWindow.RestoreCommand}" />
                             <Setter TargetName="MaximizeButton" Property="Style" Value="{StaticResource ToolWindowRestoreButtonStyle}" />
