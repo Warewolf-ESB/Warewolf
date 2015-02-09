@@ -350,7 +350,6 @@
                                                      WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Toolbox}" />
                             <dockManager:ContentPane x:Name="Help"
-                                                     Height="400"
                                                      AllowClose="False"
                                                      AllowInDocumentHost="False"
                                                      CloseButtonVisibility="Hidden"
