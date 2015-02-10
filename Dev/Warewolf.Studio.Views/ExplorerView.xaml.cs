@@ -150,7 +150,7 @@ namespace Warewolf.Studio.Views
 	    {
             if (((TextBox)sender).Visibility == Visibility.Visible)
             {
-                Keyboard.Focus((IInputElement)sender);
+                //Keyboard.Focus((IInputElement)sender);
                 //var parent = FindParent<XamDataTreeNodeControl>((TextBox)sender);
                 //if (parent != null && parent.Node != null)
                 //{

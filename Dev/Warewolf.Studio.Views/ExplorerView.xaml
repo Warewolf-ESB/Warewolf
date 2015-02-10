@@ -12,6 +12,7 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -683,8 +684,10 @@
                                     </TextBlock>
                                     <TextBox x:Name="PropertySearch"
                                              IsVisibleChanged="UIElement_OnIsVisibleChanged"
+                                       
                                              Text="{Binding Path=Data.ResourceName,
                                                             UpdateSourceTrigger=LostFocus}"
+                                             CaretIndex="{x:Static system:Int32.MaxValue}"
                                              ToolTip="{Binding Path=RenameToolTip}"
                                              Visibility="{Binding Path=Data.IsRenaming,
                                                                   Converter={StaticResource BoolToVisibilityConverter}}"
@@ -694,8 +697,11 @@
                                             <i:EventTrigger EventName="LostFocus">
                                                 <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}" />
                                             </i:EventTrigger>
-                                            
-                                        </i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="LostKeyboardFocus">
+                                               <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}" />
+                                            </i:EventTrigger>
+
+                                            </i:Interaction.Triggers>
                                     </TextBox>
                                 </StackPanel>
                              

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 using Infragistics.Controls.Primitives;
 
 namespace Warewolf.Studio.Views
@@ -33,11 +34,11 @@ namespace Warewolf.Studio.Views
             DependencyPropertyChangedEventArgs e)
         {
             var uie = (UIElement)d;
-            //if ((bool)e.NewValue)
-            //{
-            //    uie.Focus(); // Don't care about false values.
-            //    Keyboard.Focus(uie);
-            //}
+            if ((bool)e.NewValue)
+            {
+                uie.Focus(); // Don't care about false values.
+                Keyboard.Focus(uie);
+            }
         }
     }
 
