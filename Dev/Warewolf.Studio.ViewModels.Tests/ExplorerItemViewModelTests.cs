@@ -425,12 +425,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 ResourceType = ResourceType.Folder,
                 CanCreateFolder = false
+                ,ResourceId = Guid.NewGuid()
             };
-            explorerViewModel.UpdatePermissions( new PermissionsChangedArgs(new List<IWindowsGroupPermission>{new WindowsGroupPermission {Administrator = true}}));
+            explorerViewModel.UpdatePermissions( new PermissionsChangedArgs(new List<IWindowsGroupPermission>{new WindowsGroupPermission {Administrator = true , ResourceID = Guid.Empty ,IsServer = true}}));
             Assert.IsTrue(explorerViewModel.CanCreateFolder);
-            explorerViewModel.UpdatePermissions(new PermissionsChangedArgs(new List<IWindowsGroupPermission> { new WindowsGroupPermission { Administrator = false,Contribute = false} }));
+            explorerViewModel.UpdatePermissions(new PermissionsChangedArgs(new List<IWindowsGroupPermission> { new WindowsGroupPermission { Administrator = false, Contribute = false, ResourceID = Guid.Empty, IsServer = true } }));
             Assert.IsFalse(explorerViewModel.CanCreateFolder);
-            explorerViewModel.UpdatePermissions(new PermissionsChangedArgs(new List<IWindowsGroupPermission> { new WindowsGroupPermission { Contribute = true } }));
+            explorerViewModel.UpdatePermissions(new PermissionsChangedArgs(new List<IWindowsGroupPermission> { new WindowsGroupPermission { Contribute = true, ResourceID = Guid.Empty, IsServer = true } }));
             Assert.IsTrue(explorerViewModel.CanCreateFolder);
             explorerViewModel.ResourceType = ResourceType.DbService;
             Assert.IsFalse(explorerViewModel.CanCreateFolder);

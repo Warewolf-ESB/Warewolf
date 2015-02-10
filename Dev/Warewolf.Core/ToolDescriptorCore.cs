@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media;
 using Dev2;
-using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 
 namespace Warewolf.Core
@@ -15,8 +13,8 @@ namespace Warewolf.Core
         public ToolDescriptor(Guid id, IWarewolfType designer,  IWarewolfType activity, string name, string icon, Version version, bool isSupported, string category, ToolType toolType,string iconUri)
             // ReSharper restore TooManyDependencies
         {
-            if(id==Guid.Empty) throw  new ArgumentNullException("id","Tool guids are not allowed to be the empty guid");
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "id", id }, { "designer", designer }, { "activity", activity }, { "name", name }, { "icon", icon }, { "version", version }, { "category", category } });
+            if(id==Guid.Empty) throw  new ArgumentNullException("id",Studio.Resources.Languages.Core.ToolDescriptor_ToolDescriptor_Tool_guids_are_not_allowed_to_be_the_empty_guid);
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "id", id }, { "designer", designer }, { "activity", activity }, { "name", name }, { "icon", icon }, { "version", version }, { "category", category }, { iconUri, "iconUri" } });
             ToolType = toolType;
             Category = category;
             IsSupported = isSupported;
@@ -44,7 +42,7 @@ namespace Warewolf.Core
         /// <summary>
         /// something or the other; //todo: check what this was meant to do in diagram
         /// </summary>
-        public IWarewolfType Model { get; private set; }
+        //public IWarewolfType Model { get; private set; }
         /// <summary>
         /// Server activity that this will instantiate
         /// </summary>

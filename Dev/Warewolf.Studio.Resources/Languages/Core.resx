@@ -908,4 +908,7 @@ You need Administrator permission.</value>
   <data name="ServerDialogWindowsAuthenticationToolTip" xml:space="preserve">
     <value>ServerDialogWindowsAuthenticationToolTip</value>
   </data>
+  <data name="ToolDescriptor_ToolDescriptor_Tool_guids_are_not_allowed_to_be_the_empty_guid" xml:space="preserve">
+    <value>Tool guids are not allowed to be the empty guid</value>
+  </data>
 </root>

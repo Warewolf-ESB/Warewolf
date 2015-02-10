@@ -19,8 +19,8 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
         public void ToolDescriptor_Ctor_NullParams_ExpectExceptions()
 
         {
- 
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[]{  Guid.NewGuid(), typeof(String), typeof(String), typeof(string), "bob", "icon", new Version(1, 2, 3), new Mock<IHelpDescriptor>().Object, true, "cat", ToolType.Native},typeof(ToolDescriptor));
+
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { Guid.NewGuid(), new WarewolfType("bob", new Version(), "dave"), new WarewolfType("bob", new Version(), "dave"), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "" }, typeof(ToolDescriptor));
 
         }
 
@@ -31,7 +31,7 @@ namespace Warewolf.Studio.Models.Tests.ToolBox
         {
             //------------Setup for test--------------------------
             var help = new Mock<IHelpDescriptor>().Object;
-            ToolDescriptor t = new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob", new Version(), "dave"), new WarewolfType("bob", new Version(), "dave"), "bob", "", new Version(1, 2, 3), true, "cat", ToolType.Native, "");
+            ToolDescriptor t = new ToolDescriptor(Guid.NewGuid(), new WarewolfType("bob", new Version(), "dave"), new WarewolfType("bob", new Version(), "dave"), "bob", "icon", new Version(1, 2, 3), true, "cat", ToolType.Native, "");
 
             //------------Assert Results-------------------------
             //Assert.AreEqual(typeof(Guid),t.Activity);
