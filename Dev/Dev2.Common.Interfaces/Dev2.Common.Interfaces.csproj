@@ -355,6 +355,7 @@
     <Compile Include="Studio\ViewModels\IExplorerViewModel.cs" />
     <Compile Include="Toolbox\IToolboxModel.cs" />
     <Compile Include="Toolbox\IToolDescriptorViewModel.cs" />
+    <Compile Include="Toolbox\IToolManager.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
     <Compile Include="UndoFramework\IActionHistory.cs" />
     <Compile Include="UndoFramework\IMultiAction.cs" />

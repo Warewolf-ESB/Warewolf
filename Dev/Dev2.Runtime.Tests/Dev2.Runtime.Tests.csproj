@@ -191,6 +191,7 @@
     <Compile Include="Hosting\ResourceUpgradeTest.cs" />
     <Compile Include="Hosting\ServerExplorerRepositoryTests.cs" />
     <Compile Include="Hosting\ServerVersionRepositoryTests.cs" />
+    <Compile Include="Hosting\ToolManagerTests.cs" />
     <Compile Include="Hosting\UpgradePathTests.cs" />
     <Compile Include="Hosting\VersionStrategyTests.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />

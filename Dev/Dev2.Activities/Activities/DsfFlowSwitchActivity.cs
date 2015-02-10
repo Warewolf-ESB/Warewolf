@@ -12,11 +12,14 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Toolbox;
+using Warewolf.Core;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
+    [ToolDescriptorInfo("ControlFlow-Switch", "Switch", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfFlowSwitchActivity : DsfFlowNodeActivity<string>
     {
         #region Ctor
