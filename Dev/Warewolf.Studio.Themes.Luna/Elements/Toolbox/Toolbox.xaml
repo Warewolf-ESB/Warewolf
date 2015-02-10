@@ -7,6 +7,8 @@
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Colors.xaml" />
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Styles.xaml" />
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Common/Brushes.xaml" />
+        
+        <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ListBox.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 
@@ -32,11 +34,12 @@
                   IsExpanded="True"
                   Style="{DynamicResource ExpanderStyleWithHiddenExpandButton}">
             <ListBox Width="200"
+                     Style="{DynamicResource ListBoxToolboxStyle}"
                      ItemTemplate="{DynamicResource ToolboxCategoryItemTemplate}"
                      ItemsSource="{Binding Tools}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True" ItemWidth="100" />
+                        <WrapPanel IsItemsHost="True" ItemWidth="86" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
@@ -44,6 +47,49 @@
     </DataTemplate>
 
 
+    <!-- THE BUTTON Button size = 102 H 86 W -->
+    <DataTemplate x:Key="ToolboxCategoryItemTemplate" DataType="toolbox:IToolDescriptor">
+
+
+        <Grid HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch"
+              Background="{StaticResource WarewolfPanelGreyBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="14" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="34" />
+                <RowDefinition Height="14" />
+
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="18" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Row="1"
+                   Grid.Column="2"
+                   Width="40"
+                   Height="40"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"
+                   Source="{Binding Icon}" />
+            <TextBlock Grid.Row="2"
+                       Grid.Column="1"
+                       Grid.ColumnSpan="3"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom"
+                       FontFamily="{StaticResource DefaultFontFamily}"
+                       FontSize="{StaticResource FontSize-Normal}"
+                       Text="{Binding Name}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" 
+                       Margin="0,3,0,0"/>
+
+        </Grid>
+    </DataTemplate>
 
 
 
@@ -500,50 +546,6 @@
 
     
     
-    <!--Button size = 102 H 86 W -->
-
-    <DataTemplate x:Key="ToolboxCategoryItemTemplate" DataType="toolbox:IToolDescriptor">
-
-
-        <Grid HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch"
-              Background="{StaticResource WarewolfPanelGreyBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="14" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="34" />
-                <RowDefinition Height="14" />
-
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="18" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="40" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="18" />
-            </Grid.ColumnDefinitions>
-
-            <Image Grid.Row="1"
-                   Grid.Column="2"
-                   Width="40"
-                   Height="40"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Source="{Binding Icon}" />
-            <TextBlock Grid.Row="2"
-                       Grid.Column="1"
-                       Grid.ColumnSpan="3"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Bottom"
-                       FontFamily="{StaticResource DefaultFontFamily}"
-                       FontSize="{StaticResource FontSize-Normal}"
-                       Text="{Binding Name}"
-                       TextAlignment="Center"
-                       TextWrapping="Wrap" 
-                       Margin="0,3,0,0"/>
-
-        </Grid>
-    </DataTemplate>
 
 
 

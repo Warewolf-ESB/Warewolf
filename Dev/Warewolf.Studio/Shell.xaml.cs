@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Dev2.Common.Interfaces;
 using FontAwesome.WPF;
-using Infragistics.Windows;
-using Infragistics.Windows.Controls;
-using Infragistics.Windows.DockManager;
-using Infragistics.Windows.DockManager.Dragging;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
 using Application = System.Windows.Application;
