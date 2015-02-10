@@ -104,7 +104,7 @@
                         Grid.Row="5"
                         Grid.Column="1"
                         ActiveDataItem="{Binding SelectedItem, Mode=TwoWay}"
-                       
+                      
                         DisplayMemberPath="DisplayName"
                         IsDraggable="True"
                         IsDropTarget="True"
@@ -114,8 +114,12 @@
                                          
                         >
 
-            
-            <ig:XamDataTree.EditingSettings>
+                <ig:DragDropManager.DragSource>
+                    <ig:DragSource  IsDraggable="True"
+              DragChannels="ExplorerChannel" >
+                    </ig:DragSource>
+                </ig:DragDropManager.DragSource>
+                <ig:XamDataTree.EditingSettings>
                 <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="True"
                                         IsEnterKeyEditingEnabled="False"

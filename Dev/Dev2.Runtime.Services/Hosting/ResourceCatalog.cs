@@ -1767,10 +1767,13 @@ namespace Dev2.Runtime.Hosting
                 var hasError = false;
                 foreach(var resource in resourcesToUpdate)
                 {
-                    var resourceCatalogResult = UpdateResourcePath(workspaceID, resource, oldCategory, newCategory);
-                    if(resourceCatalogResult.Status != ExecStatus.Success)
+                    if(resource != null)
                     {
-                        hasError = true;
+                        var resourceCatalogResult = UpdateResourcePath(workspaceID, resource, oldCategory, newCategory);
+                        if(resourceCatalogResult.Status != ExecStatus.Success)
+                        {
+                            hasError = true;
+                        }
                     }
                 }
                 var failureResult = new ResourceCatalogResult

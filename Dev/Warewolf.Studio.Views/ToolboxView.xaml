@@ -9,6 +9,7 @@
 	xmlns:itoolbox="clr-namespace:Dev2.Common.Interfaces.Toolbox;assembly=Dev2.Common.Interfaces"
 	xmlns:views="clr-namespace:Warewolf.Studio.Views"
 	xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+	xmlns:ig="http://schemas.infragistics.com/xaml"
 	mc:Ignorable="d"
 	x:Class="Warewolf.Studio.Views.ToolboxView"
 	x:Name="UserControl"
@@ -31,7 +32,12 @@
                                                                 <Grid HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
                       Background="{StaticResource WarewolfPanelGreyBrush}">
-                                                                    <Grid.RowDefinitions>
+                <ig:DragDropManager.DragSource>
+                    <ig:DragSource IsDraggable="True"
+          DragChannels="Tool"  >
+                    </ig:DragSource>
+                </ig:DragDropManager.DragSource>
+                <Grid.RowDefinitions>
                                                                         <RowDefinition Height="14" />
                                                                         <RowDefinition Height="40" />
                                                                         <RowDefinition Height="34" />
@@ -112,7 +118,7 @@
             
         </Grid>
 
-        <ListBox ItemTemplate="{StaticResource ToolDataTemplate}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource ToolViewSource}}">
+        <ListBox ItemTemplate="{StaticResource ToolDataTemplate}"  Style ="{StaticResource ListBoxToolboxStyle}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource ToolViewSource}}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate >
                     <WrapPanel Orientation="Horizontal" MaxWidth="{Binding Converter={StaticResource ListBoxWidthToItemsPanelWidthConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}, Path=ActualWidth}"
