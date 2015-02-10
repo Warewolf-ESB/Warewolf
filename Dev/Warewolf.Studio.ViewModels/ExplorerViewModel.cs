@@ -50,7 +50,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _selectedItem = value;
                 OnPropertyChanged(() => SelectedItem);
-                OnPropertyChanged(() => SelectedItems);
+
             }
         }
 
