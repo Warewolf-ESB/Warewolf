@@ -209,6 +209,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SaveDialog.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Toolbox.feature</DependentUpon>
+    </Compile>
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +228,10 @@
     <None Include="SaveDialog.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SaveDialog.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Toolbox.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
