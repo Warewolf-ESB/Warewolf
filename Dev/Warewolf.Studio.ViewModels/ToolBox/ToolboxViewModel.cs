@@ -43,9 +43,10 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
             protected set
             {
+                _tools = value;
                 OnPropertyChanged("Tools");
                 OnPropertyChanged("CategorisedTools");
-                _tools = value;
+                
             }
         }
         /// <summary>

@@ -14,7 +14,6 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Core;
 using Warewolf.Studio.Core.Popup;
-using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -38,13 +37,10 @@ namespace Warewolf.Studio.ViewModels
         bool _userShouldEditValueNow;
         string _versionNumber;
         ICollection<IExplorerItemViewModel> _children;
-        bool _canDrop;
-        bool _canDrag;
         Guid _resourceId;
         bool _isExpanded;
         bool _canCreateServerSource;
         bool _canCreateFolder;
-        IWindowsGroupPermission _permission ;
         string _filter;
         private bool _isSelected;
         bool _canShowVersions;
@@ -147,7 +143,18 @@ namespace Warewolf.Studio.ViewModels
                {
                    ResourceName = name,
                    ResourceId = id,
-                   ResourceType = ResourceType.Folder
+                   ResourceType = ResourceType.Folder,
+                   CanCreateDbService = CanCreateDbService,
+                   CanCreateFolder = CanCreateFolder,
+                   CanCreateDbSource = CanCreateDbSource,
+                   CanCreatePluginService = CanCreatePluginService,
+                   CanShowVersions = CanShowVersions,
+                   CanRename = CanRename,
+                   CanCreatePluginSource = CanCreatePluginSource,
+                   CanCreateServerSource = CanCreateServerSource,
+                   CanCreateWebService = CanCreateWebService,
+                   CanCreateWebSource = CanCreateDbService,
+                   CanCreateWorkflowService = CanCreateWorkflowService 
                   
                };
                child.SetFromServer(Server.Permissions.FirstOrDefault(a=>a.IsServer));     
@@ -220,7 +227,6 @@ namespace Warewolf.Studio.ViewModels
 
         void SetFromServer(IWindowsGroupPermission serverPermission)
         {
-            _permission = serverPermission;
             CanEdit = serverPermission.Contribute;
             CanExecute = serverPermission.Contribute || serverPermission.Execute;
             CanView = serverPermission.View || serverPermission.Contribute;
@@ -231,7 +237,6 @@ namespace Warewolf.Studio.ViewModels
 
         void SetFromPermission(IWindowsGroupPermission resourcePermission)
         {
-            _permission = resourcePermission;
             CanEdit = resourcePermission.Contribute;
             CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
             CanView = resourcePermission.View || resourcePermission.Contribute;
