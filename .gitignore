@@ -180,6 +180,12 @@
 /Dev/Studio.UI.Load.Specs/obj
 /Dev/Test.Localisation/bin
 /Dev/Test.Localisation/obj
+/Dev/Warewolf.AcceptanceTesting.Core/bin
+/Dev/Warewolf.AcceptanceTesting.Core/obj
+/Dev/Warewolf.AcceptanceTesting.Help/bin
+/Dev/Warewolf.AcceptanceTesting.Help/obj
+/Dev/Warewolf.AcceptanceTesting.Explorer/bin
+/Dev/Warewolf.AcceptanceTesting.Explorer/obj
 /Dev/Warewolf.Studio/bin
 /Dev/Warewolf.Studio/obj
 /Dev/Warewolf.Studio.Core/bin
