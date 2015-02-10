@@ -91,6 +91,8 @@
         </Grid>
     </DataTemplate>
 
+    
+
 
 
     <Style x:Key="ExpanderRightHeaderStyle" TargetType="{x:Type ToggleButton}">

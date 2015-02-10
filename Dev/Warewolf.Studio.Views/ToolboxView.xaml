@@ -3,18 +3,68 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:toolbox="clr-namespace:Dev2.Common.Interfaces.Toolbox;assembly=Dev2.Common.Interfaces"
-	xmlns:dummyModels="clr-namespace:Warewolf.Studio.ViewModels.DummyModels;assembly=Warewolf.Studio.ViewModels"
 	xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
 	xmlns:fa="http://schemas.fontawesome.io/icons/"
 	xmlns:toolBox="clr-namespace:Warewolf.Studio.ViewModels.ToolBox;assembly=Warewolf.Studio.ViewModels"
+	xmlns:itoolbox="clr-namespace:Dev2.Common.Interfaces.Toolbox;assembly=Dev2.Common.Interfaces"
+	xmlns:views="clr-namespace:Warewolf.Studio.Views"
+	xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
 	mc:Ignorable="d"
 	x:Class="Warewolf.Studio.Views.ToolboxView"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="480"
     d:DataContext="{d:DesignInstance Type={x:Type toolBox:ToolboxViewModel}}">
     <UserControl.Resources>
+        <CollectionViewSource 
+        x:Key="ToolViewSource" 
+        Source="{Binding Tools}">
 
+
+            <!-- Grouping -->
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Tool.Category" />
+            </CollectionViewSource.GroupDescriptions>
+
+        </CollectionViewSource>
+
+                                                            <DataTemplate x:Key="ToolDataTemplate" DataType="toolBox:ToolDescriptorViewModel">
+                                                                <Grid HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      Background="{StaticResource WarewolfPanelGreyBrush}">
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="14" />
+                                                                        <RowDefinition Height="40" />
+                                                                        <RowDefinition Height="34" />
+                                                                        <RowDefinition Height="14" />
+                                                                    </Grid.RowDefinitions>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="18" />
+                                                                        <ColumnDefinition Width="5" />
+                                                                        <ColumnDefinition Width="40" />
+                                                                        <ColumnDefinition Width="5" />
+                                                                        <ColumnDefinition Width="18" />
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Image Grid.Row="1"
+                           Grid.Column="2"
+                           Width="40"
+                           Height="40"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Source="{Binding Icon}" />
+                                                                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                               Grid.ColumnSpan="3"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Bottom"
+                               FontFamily="{StaticResource DefaultFontFamily}"
+                               FontSize="{StaticResource FontSize-Normal}"
+                               Text="{Binding Name}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" 
+                               Margin="0,3,0,0"/>
+                                                                </Grid>
+                                                            </DataTemplate>
+        <core:WidthConvertForWrapPanel x:Key="ListBoxWidthToItemsPanelWidthConverter" />
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -62,15 +112,35 @@
             
         </Grid>
 
-        <!--TOOL BUTTONS-->
-        <ListBox ItemTemplate="{DynamicResource ToolboxItemTemplate}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding CategorisedTools}">
-            <!-- This style is used as a way to disable the selection for this list box which represents the category -->
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Focusable" Value="False"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
+        <ListBox ItemTemplate="{StaticResource ToolDataTemplate}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource ToolViewSource}}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate >
+                    <WrapPanel Orientation="Horizontal" MaxWidth="{Binding Converter={StaticResource ListBoxWidthToItemsPanelWidthConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}, Path=ActualWidth}"
+                     />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.GroupStyle>
+                <GroupStyle>                    
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander Margin="0"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Header="{Binding Name}"
+                  IsExpanded="True"
+                  Style="{DynamicResource ExpanderStyleWithHiddenExpandButton}">
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListBox.GroupStyle>
         </ListBox>
     </Grid>
 </UserControl>

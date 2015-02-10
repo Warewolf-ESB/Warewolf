@@ -109,6 +109,7 @@
     <Compile Include="View Interfaces\ViewInterfaces.cs" />
     <Compile Include="ViewFolderIcon.cs" />
     <Compile Include="WarewolfWebClient.cs" />
+    <Compile Include="WidthConvertForWrapPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
