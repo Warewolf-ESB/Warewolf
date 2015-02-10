@@ -1,21 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Windows.Media;
 using Dev2.Common.Interfaces.Help;
 
 namespace Dev2.Common.Interfaces.Toolbox
 {
-
-    public interface IToolManager
-    {
-
-        IList<IToolDescriptor> LoadTools();
-
-    }
-
-
-
     public interface IToolDescriptor
     {
         /// <summary>

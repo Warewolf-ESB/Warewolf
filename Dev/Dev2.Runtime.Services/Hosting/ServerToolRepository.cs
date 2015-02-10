@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
-using Moq;
 using Warewolf.Core;
 
 namespace Dev2.ToolBox
@@ -18,6 +16,8 @@ namespace Dev2.ToolBox
 
         public ServerToolRepository(IEnumerable<string> nativeToolPaths, IEnumerable<string> searchFolders)
         {
+            VerifyArgument.IsNotNull("nativeToolPaths",nativeToolPaths );
+            VerifyArgument.IsNotNull("searchFolders",searchFolders);
             _tools = new List<IToolDescriptor>();
             _tools.AddRange(nativeToolPaths.SelectMany(CreateTools));
             _tools.AddRange(searchFolders.SelectMany(CreateToolsFromFolders));

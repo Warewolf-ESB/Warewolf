@@ -11,6 +11,8 @@
 
 using System.Collections.Generic;
 using Dev2.Activities;
+using Dev2.Common.Interfaces.Toolbox;
+using Warewolf.Core;
 
 // ReSharper disable CheckNamespace
 
@@ -18,6 +20,7 @@ using Dev2.Activities;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
+   // [ToolDescriptorInfo("RecordSet-FindRecords", "Find Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "RecordSet", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]             
     public class DsfFlowDecisionActivity : DsfFlowNodeActivity<bool>
     {
         #region Ctor
