@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22310.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
@@ -94,8 +94,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Resources", "Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj", "{CB565C94-8833-4911-B20F-0921EE3C286C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Core", "Warewolf.Core\Warewolf.Core.csproj", "{8FD23CE0-02BB-48E1-A914-BA467938CE78}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Themes.Luna", "Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj", "{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1845,42 +1843,6 @@ Global
 		{8FD23CE0-02BB-48E1-A914-BA467938CE78}.Trial|Mixed Platforms.Build.0 = Release|Any CPU
 		{8FD23CE0-02BB-48E1-A914-BA467938CE78}.Trial|x64.ActiveCfg = Release|Any CPU
 		{8FD23CE0-02BB-48E1-A914-BA467938CE78}.Trial|x86.ActiveCfg = Release|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Beta|Any CPU.Build.0 = Beta|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Beta|Mixed Platforms.ActiveCfg = Beta|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Beta|Mixed Platforms.Build.0 = Beta|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Beta|x64.ActiveCfg = Beta|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Beta|x86.ActiveCfg = Beta|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.CTP|Any CPU.ActiveCfg = CTP|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.CTP|Any CPU.Build.0 = CTP|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.CTP|Mixed Platforms.ActiveCfg = CTP|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.CTP|Mixed Platforms.Build.0 = CTP|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.CTP|x64.ActiveCfg = CTP|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.CTP|x86.ActiveCfg = CTP|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Japan|Any CPU.ActiveCfg = Japan|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Japan|Any CPU.Build.0 = Japan|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Japan|Mixed Platforms.ActiveCfg = Japan|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Japan|Mixed Platforms.Build.0 = Japan|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Japan|x64.ActiveCfg = Japan|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Japan|x86.ActiveCfg = Japan|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Release|x64.ActiveCfg = Release|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Release|x86.ActiveCfg = Release|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|Any CPU.ActiveCfg = Trial|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|Any CPU.Build.0 = Trial|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|Mixed Platforms.ActiveCfg = Trial|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|Mixed Platforms.Build.0 = Trial|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|x64.ActiveCfg = Trial|Any CPU
-		{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}.Trial|x86.ActiveCfg = Trial|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
