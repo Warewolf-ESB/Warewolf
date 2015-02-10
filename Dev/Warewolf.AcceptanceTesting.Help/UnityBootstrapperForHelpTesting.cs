@@ -30,15 +30,7 @@ namespace Warewolf.AcceptanceTesting.Help
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
-            AppSettings.LocalHost = "http://myserver:3124/";
-            // ReSharper disable ObjectCreationAsStatement
-            new Application();
-            // ReSharper restore ObjectCreationAsStatement
-            ThemeManager.ApplicationTheme = new LunaTheme();
-
-            Container.RegisterType<IServer, ServerForTesting>(new InjectionConstructor());
-            Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));
-
+           
             Container.RegisterInstance<IHelpWindowModel>(new HelpModel(Container.Resolve<IEventAggregator>()));
             Container.RegisterInstance<IHelpWindowViewModel>(new HelpWindowViewModel(new HelpDescriptorViewModel(new HelpDescriptor("", "<body>This is the default help</body>", null)), Container.Resolve<IHelpWindowModel>()));
 
