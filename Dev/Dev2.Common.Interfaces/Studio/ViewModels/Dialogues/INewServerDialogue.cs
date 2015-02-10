@@ -1,11 +1,10 @@
 ﻿using System.Windows.Input;
-using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 {
 
-    public interface INewServerDialogue : IInnerDialogueTemplate
+    public interface INewServerDialogue
     {
         /// <summary>
         /// The server address that we are trying to connect to
@@ -50,6 +49,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
 
         string TestLabel { get; }
 
-  
+        /// <summary>
+        /// Command for save/ok
+        /// </summary>
+        ICommand OkCommand { get; set; }
     }
 }

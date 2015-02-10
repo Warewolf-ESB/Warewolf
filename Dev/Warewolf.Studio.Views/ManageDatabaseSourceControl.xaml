@@ -1,0 +1,66 @@
+<UserControl x:Class="Warewolf.Studio.Views.ManageDatabaseSourceControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:serviceModel="clr-namespace:Dev2.Common.Interfaces.Runtime.ServiceModel;assembly=Dev2.Common.Interfaces"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:wpfTextBoxAutoComplete="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" BorderBrush="White">
+
+    <UserControl.Resources>
+        <views:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid Background="White">      
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="6*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+    <TextBlock Text="{Binding HeaderText}" Style="{StaticResource SourceHeader}" Grid.ColumnSpan="2"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Type:"/>
+        <ComboBox Grid.Row="1" Grid.Column="1"></ComboBox>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Server:"/>
+        <TextBox Grid.Row="2" Grid.Column="1"></TextBox>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Authentication Type:"/>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+            <RadioButton ToolTip="{Binding Path=WindowsAuthenticationToolTip}" Padding="5,0" VerticalAlignment="Center"  HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows</RadioButton>
+            <RadioButton ToolTip="{Binding Path=UserAuthenticationToolTip}"  Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User</RadioButton>
+        </StackPanel>
+        <Grid Grid.Row="4" Grid.Column="0" ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="User Name:"/>
+            <TextBox Grid.Row="0" Grid.Column="1"></TextBox>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Password:"/>        
+            <PasswordBox Grid.Row="1" Grid.Column="1"></PasswordBox>
+        </Grid>
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Database:"/>
+        <ComboBox Grid.Row="6" Grid.Column="1"></ComboBox>
+        <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <TextBlock></TextBlock>
+            <Button></Button>
+            <Button></Button>
+        </StackPanel>
+        <Button Grid.Row="8" Grid.Column="1"></Button>
+    </Grid>
+</UserControl>

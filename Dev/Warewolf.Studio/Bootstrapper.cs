@@ -71,8 +71,6 @@ namespace Warewolf.Studio
             Container.RegisterInstance<IToolboxView>(new ToolboxView());
             Container.RegisterInstance<IMenuView>(new MenuView());
             Container.RegisterInstance<IExceptionHandler>(new WarewolfExceptionHandler(new Dictionary<Type, Action>()));
-            Container.RegisterInstance<IActionDialogueWindow>(new DialogWindow());
-            Container.RegisterInstance<IDialogueTemplate>(new DialogueViewModel());
     
             Container.RegisterInstance<IHelpView>(new HelpView());
 
