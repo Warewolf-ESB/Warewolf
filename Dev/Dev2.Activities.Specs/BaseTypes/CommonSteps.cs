@@ -29,6 +29,7 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 namespace Dev2.Activities.Specs.BaseTypes
