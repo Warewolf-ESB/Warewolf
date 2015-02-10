@@ -3,7 +3,7 @@
 	As a Warewolf user
 	I want to save resources 
 
-@Save Dialog
+@SaveDialog
 Scenario: Creating Folder from Save Dialog under localhost
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
