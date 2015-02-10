@@ -214,7 +214,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Toolbox.feature</DependentUpon>
     </Compile>
+    <Compile Include="ToolboxSteps.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
+    <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -262,6 +264,10 @@
     <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
       <Project>{1bd5cc42-66c7-4a1b-af1f-e6f2d4372b44}</Project>
       <Name>Warewolf.Studio.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
+      <Project>{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}</Project>
+      <Name>Warewolf.Studio.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}</Project>
