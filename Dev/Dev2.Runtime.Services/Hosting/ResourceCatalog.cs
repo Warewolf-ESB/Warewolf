@@ -208,7 +208,7 @@ namespace Dev2.Runtime.Hosting
         #endregion
 
         #region GetResourceContents
-
+        object workspaceLock = new object();
         /// <summary>
         /// Gets the contents of the resource with the given name.
         /// </summary>
@@ -217,8 +217,26 @@ namespace Dev2.Runtime.Hosting
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID)
         {
-            var resource = GetResource(workspaceID, resourceID);
-            return GetResourceContents(resource);
+            //var resource = GetResource(workspaceID, resourceID);
+            IResource foundResource = null;
+            List<IResource> resources;
+            
+            lock (workspaceLock)
+            {
+                if (_workspaceResources.TryGetValue(workspaceID, out resources))
+                {
+                    foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                }
+
+                if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                {
+                    if (_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
+                    {
+                        foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                    }
+                }
+            }
+            return GetResourceContents(foundResource);
         }
 
         /// <summary>
