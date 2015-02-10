@@ -53,5 +53,10 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Command for save/ok
         /// </summary>
         ICommand OkCommand { get; set; }
+
+        /// <summary>
+        /// Header text that is used on the view
+        /// </summary>
+        string HeaderText { get; set; }
     }
 }
