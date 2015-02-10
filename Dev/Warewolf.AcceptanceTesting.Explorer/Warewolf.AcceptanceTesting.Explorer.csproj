@@ -204,6 +204,11 @@
     </Compile>
     <Compile Include="ExplorerSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveDialog.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaveDialog.feature</DependentUpon>
+    </Compile>
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +219,10 @@
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="SaveDialog.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SaveDialog.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

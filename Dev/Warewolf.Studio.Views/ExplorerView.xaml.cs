@@ -148,11 +148,47 @@ namespace Warewolf.Studio.Views
 
         void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 	    {
-            Keyboard.Focus((IInputElement)sender);
+            if (((TextBox)sender).Visibility == Visibility.Visible)
+            {
+                Keyboard.Focus((IInputElement)sender);
+                //var parent = FindParent<XamDataTreeNodeControl>((TextBox)sender);
+                //if (parent != null && parent.Node != null)
+                //{
+                //    ExplorerTree.ScrollNodeIntoView(parent.Node);
+                //}
+            }
 	    }	    
 
 	    private void FocusManager_OnGotFocus(object sender, RoutedEventArgs e)
 	    {
 	    }
+
+	    void ExplorerTree_OnActiveNodeChanged(object sender, ActiveNodeChangedEventArgs e)
+	    {
+          // ExplorerTree.ScrollNodeIntoView(e.NewActiveTreeNode);
+	    }
+
+	    void ExplorerTree_OnActiveNodeChanging(object sender, ActiveNodeChangingEventArgs e)
+	    {
+	    }
+
+	    void ExplorerTree_OnSelectedNodesCollectionChanged(object sender, NodeSelectionEventArgs e)
+	    {
+	    }
+
+        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            //get parent item
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            //we've reached the end of the tree
+            if (parentObject == null) return null;
+
+            //check if the parent matches the type we're looking for
+            T parent = parentObject as T;
+            if (parent != null)
+                return parent;
+            return FindParent<T>(parentObject);
+        }
 	}
 }

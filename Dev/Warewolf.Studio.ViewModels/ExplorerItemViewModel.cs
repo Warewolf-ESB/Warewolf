@@ -21,6 +21,7 @@ namespace Warewolf.Studio.ViewModels
     public class ExplorerItemViewModel : BindableBase,IExplorerItemViewModel
     {
         readonly IShellViewModel _shellViewModel;
+        readonly IExplorerViewModel _explorer;
         string _resourceName;
         private bool _isVisible;
         bool _allowEditing;
@@ -49,7 +50,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canShowVersions;
 
         // ReSharper disable TooManyDependencies
-        public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent)
+        public ExplorerItemViewModel(IShellViewModel shellViewModel,IServer server,IExplorerHelpDescriptorBuilder builder,IExplorerItemViewModel parent,IExplorerViewModel explorer)
             // ReSharper restore TooManyDependencies
         {
             RollbackCommand = new DelegateCommand(() =>
@@ -62,6 +63,7 @@ namespace Warewolf.Studio.ViewModels
             Parent = parent;
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } });
             _shellViewModel = shellViewModel;
+            _explorer = explorer;
             LostFocus = new DelegateCommand(LostFocusCommand);
 
             Children = new ObservableCollection<IExplorerItemViewModel>();
@@ -137,11 +139,11 @@ namespace Warewolf.Studio.ViewModels
         {
             if(ResourceType == ResourceType.Folder)
             {
-                IsExpanded = true;
+               IsExpanded = true;
                 var id = Guid.NewGuid();
                 var name = GetChildNameFromChildren();
                 _explorerRepository.CreateFolder(ResourceId,name,id);
-                var child = new ExplorerItemViewModel(_shellViewModel, Server, Builder, this)
+                var child = new ExplorerItemViewModel(_shellViewModel, Server, Builder, this, _explorer)
                {
                    ResourceName = name,
                    ResourceId = id,
@@ -151,7 +153,9 @@ namespace Warewolf.Studio.ViewModels
                child.SetFromServer(Server.Permissions.FirstOrDefault(a=>a.IsServer));     
                
                AddChild(child);
+               _explorer.SelectedItem = child;
                child.IsRenaming = true;
+
             }
 
         }
@@ -511,7 +515,7 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    _children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(_shellViewModel,Server,Builder,this)
+                    _children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new ExplorerItemViewModel(_shellViewModel,Server,Builder,this, _explorer)
                     {
                         ResourceName = a.VersionNumber +" "+ a.DateTimeStamp.ToString(CultureInfo.InvariantCulture)+" " + a.Reason,
                         VersionNumber = a.VersionNumber,

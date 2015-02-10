@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Services.Security;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Moq;
@@ -20,6 +21,7 @@ namespace Warewolf.Studio.ViewModels
     public class EnvironmentViewModel:BindableBase, IEnvironmentViewModel
     {
         readonly IShellViewModel _shellViewModel;
+        readonly IExplorerViewModel _explorer;
         ICollection<IExplorerItemViewModel> _children;
         bool _isConnecting;
         bool _isConnected;
@@ -30,12 +32,14 @@ namespace Warewolf.Studio.ViewModels
         bool _canCreateServerSource;
         private bool _isExpanded;
         private bool _isSelected;
+        bool _canCreateFolder;
 
-        public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
+        public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel,IExplorerViewModel explorer)
         {
             if(server==null) throw new ArgumentNullException("server");
             if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
             _shellViewModel = shellViewModel;
+            _explorer = explorer;
             Server = server;
             Server.NetworkStateChanged += Server_NetworkStateChanged;
             _children = new ObservableCollection<IExplorerItemViewModel>();
@@ -43,6 +47,7 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(Load);
             IsServerIconVisible = true;
+            //CanCreateFolder = server.UserPermissions.HasFlag(Permissions.Administrator) || server.UserPermissions.HasFlag(Permissions.Contribute);
             Expand = new DelegateCommand<int?>(clickCount =>
             {
                 if (clickCount != null && clickCount == 2)
@@ -62,15 +67,18 @@ namespace Warewolf.Studio.ViewModels
                 var id = Guid.NewGuid();
                 var name = GetChildNameFromChildren();
                  Server.ExplorerRepository.CreateFolder(GlobalConstants.ServerWorkspaceID,name,id);
-                var child = new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
+                var child = new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, _explorer)
                {
                    ResourceName = name,
                    ResourceId = id,
                    ResourceType = ResourceType.Folder
-                  
+                   
                };
-               Children.Add(child);
+               _children.Add(child);
+               OnPropertyChanged(() => Children);
+               _explorer.SelectedItem = child;
                child.IsRenaming = true;
+             
             
         }
 
@@ -185,7 +193,18 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreatePluginSource { get; set; }
         public bool CanRename { get; set; }
         public bool CanDelete { get; set; }
-        public bool CanCreateFolder { get; set; }
+        public bool CanCreateFolder
+        {
+            get
+            {
+                return Server.Permissions.Any(a=>(a.Contribute || a.Administrator) && a.IsServer);
+            }
+            set
+            {
+                _canCreateFolder = value;
+                OnPropertyChanged(()=>CanCreateFolder);
+            }
+        }
         public bool CanDeploy { get; set; }
         public bool CanShowVersions
         {
@@ -403,7 +422,7 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
-                var itemCreated = new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object,parent)
+                var itemCreated = new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object,parent, _explorer)
                 {
                     ResourceName = explorerItem.DisplayName,
                     ResourceId = explorerItem.ResourceId,

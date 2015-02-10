@@ -9,6 +9,7 @@ using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
 using Warewolf.AcceptanceTesting.Core;
+using Warewolf.Core;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Help;
 using Warewolf.Studio.Themes.Luna;

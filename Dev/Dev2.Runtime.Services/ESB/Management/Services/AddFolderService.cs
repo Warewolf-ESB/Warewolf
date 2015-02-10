@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var parentGuid = Guid.Parse(values["parentGuid"].ToString());
             var id = Guid.Parse((values["id"].ToString()));
             var parent = ServerExplorerRepo.Find(parentGuid);
-            var itemToAdd = new ServerExplorerItem(name, id, ResourceType.Folder, new List<IExplorerItem>(), Permissions.Contribute, parent.ResourcePath + "\\" + name, "", "");
+            var itemToAdd = new ServerExplorerItem(name, id, ResourceType.Folder, new List<IExplorerItem>(), Permissions.Contribute, String.IsNullOrEmpty(parent.ResourcePath) ? name : parent.ResourcePath + "\\" + name, "", "");
 
             Dev2Logger.Log.Info("Add Folder Service." + itemToAdd);
             itemToAdd.Permissions = Permissions.Contribute;
