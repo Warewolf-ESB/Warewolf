@@ -103,29 +103,34 @@
                         Grid.Row="5"
                         Grid.Column="1"
                         ActiveDataItem="{Binding SelectedItem, Mode=TwoWay}"
-                        
+                       
                         DisplayMemberPath="DisplayName"
                         IsDraggable="True"
                         IsDropTarget="True"
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
                         NodeLineVisibility="Hidden"         
-                        
+                                         
                         >
+
+            
             <ig:XamDataTree.EditingSettings>
                 <ig:TreeEditingSettings AllowDeletion="False"
                                         AllowEditing="True"
                                         IsEnterKeyEditingEnabled="False"
                                         IsF2EditingEnabled="True"
                                         IsMouseActionEditingEnabled="None"
-                                        IsOnNodeActiveEditingEnabled="False" />
+                                        IsOnNodeActiveEditingEnabled="False"
+                                        />
             </ig:XamDataTree.EditingSettings>
 
             <ig:XamDataTree.GlobalNodeLayouts>
                 <ig:NodeLayout Key="Environments"
                                DisplayMemberPath="DisplayName"
                                IsExpandedMemberPath="IsExpanded"
-                               TargetTypeName="IEnvironmentViewModel">
+                               TargetTypeName="IEnvironmentViewModel"
+                               
+                              >
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -334,6 +339,7 @@
                                IsExpandedMemberPath="IsExpanded"
                                IsSelectedMemberPath="IsSelected"
                                TargetTypeName="IExplorerItemViewModel"
+                               
                                Visibility="{Binding Path=Data.IsVisible,
                                
                                                     Converter={StaticResource BoolToVisibilityConverter}}">

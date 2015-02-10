@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Moq;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -15,7 +16,7 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper disable TooManyDependencies
         public ExplorerItemNodeViewModel(IShellViewModel shellViewModel, IServer server, IExplorerHelpDescriptorBuilder builder, IExplorerItemViewModel parent)
             // ReSharper restore TooManyDependencies
-            : base(shellViewModel, server, builder, parent)
+            : base(shellViewModel, server, builder, parent, new Mock<IExplorerViewModel>().Object)
         {
             Self = this;
             Weight = 1;

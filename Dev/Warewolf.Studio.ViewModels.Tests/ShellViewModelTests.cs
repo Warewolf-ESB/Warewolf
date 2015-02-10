@@ -278,7 +278,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
-            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
+            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
             shellViewModel.DeployService(shell);
             //------------Assert Results-------------------------
             dep.Verify(a=>a.SelectSourceItem(shell));
@@ -301,7 +301,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
-            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
+            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
             shellViewModel.DeployService(shell);
             //------------Assert Results-------------------------
             dep.Verify(a => a.SelectSourceItem(shell));
@@ -326,7 +326,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager, new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
-            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
+            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
             shellViewModel.UpdateHelpDescriptor(null);
 
 
@@ -350,7 +350,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager, aggregator.Object);
 
             //------------Execute Test---------------------------
-            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
+            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
             shellViewModel.UpdateHelpDescriptor(new HelpDescriptor("bob","the",new DrawingImage()));
             aggregator.Verify(a=>a.GetEvent<HelpChangedEvent>());
 

@@ -21,6 +21,7 @@ namespace Warewolf.Studio.ViewModels
     public class EnvironmentViewModel:BindableBase, IEnvironmentViewModel
     {
         readonly IShellViewModel _shellViewModel;
+        readonly IExplorerViewModel _explorer;
         ICollection<IExplorerItemViewModel> _children;
         bool _isConnecting;
         bool _isConnected;
@@ -33,11 +34,12 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSelected;
         bool _canCreateFolder;
 
-        public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
+        public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel,IExplorerViewModel explorer)
         {
             if(server==null) throw new ArgumentNullException("server");
             if (shellViewModel == null) throw new ArgumentNullException("shellViewModel");
             _shellViewModel = shellViewModel;
+            _explorer = explorer;
             Server = server;
             Server.NetworkStateChanged += Server_NetworkStateChanged;
             _children = new ObservableCollection<IExplorerItemViewModel>();
@@ -65,15 +67,18 @@ namespace Warewolf.Studio.ViewModels
                 var id = Guid.NewGuid();
                 var name = GetChildNameFromChildren();
                  Server.ExplorerRepository.CreateFolder(GlobalConstants.ServerWorkspaceID,name,id);
-                var child = new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
+                var child = new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, _explorer)
                {
                    ResourceName = name,
                    ResourceId = id,
                    ResourceType = ResourceType.Folder
-                  
+                   
                };
-               Children.Add(child);
+               _children.Add(child);
+               OnPropertyChanged(() => Children);
+               _explorer.SelectedItem = child;
                child.IsRenaming = true;
+             
             
         }
 
@@ -417,7 +422,7 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
-                var itemCreated = new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object,parent)
+                var itemCreated = new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object,parent, _explorer)
                 {
                     ResourceName = explorerItem.DisplayName,
                     ResourceId = explorerItem.ResourceId,

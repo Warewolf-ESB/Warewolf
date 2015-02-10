@@ -49,6 +49,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _selectedItem = value;
+                OnPropertyChanged(() => SelectedItem);
+                OnPropertyChanged(() => SelectedItems);
             }
         }
 
@@ -143,6 +145,8 @@ namespace Warewolf.Studio.ViewModels
 
         public event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
 
+    
+
         public void SelectItem(Guid id)
         {
             foreach(var environmentViewModel in Environments)
@@ -182,7 +186,7 @@ namespace Warewolf.Studio.ViewModels
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server,IShellViewModel shellViewModel)
         {
-            return new EnvironmentViewModel(server, shellViewModel);
+            return new EnvironmentViewModel(server, shellViewModel, this);
         }
     }
 
