@@ -18,6 +18,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -26,9 +27,13 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 
 namespace Dev2.Activities
 {
+
+         [ToolDescriptorInfo("RecordSet-UniqueRecords", "Unique Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "RecordSet", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+
     public class DsfUniqueActivity : DsfActivityAbstract<string>
     {
 

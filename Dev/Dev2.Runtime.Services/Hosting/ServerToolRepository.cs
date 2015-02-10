@@ -64,7 +64,7 @@ namespace Dev2.ToolBox
 
         public IList<IToolDescriptor> LoadTools()
         {
-            return _tools.Where(a=>a!= null).ToList();
+            return _tools.Where(a => a != null).OrderBy(a => a.Category).ToList();
         }
 
         #endregion

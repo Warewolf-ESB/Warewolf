@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Services.Security;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Moq;
@@ -30,6 +31,7 @@ namespace Warewolf.Studio.ViewModels
         bool _canCreateServerSource;
         private bool _isExpanded;
         private bool _isSelected;
+        bool _canCreateFolder;
 
         public EnvironmentViewModel(IServer server,IShellViewModel shellViewModel)
         {
@@ -43,6 +45,7 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(Load);
             IsServerIconVisible = true;
+            //CanCreateFolder = server.UserPermissions.HasFlag(Permissions.Administrator) || server.UserPermissions.HasFlag(Permissions.Contribute);
             Expand = new DelegateCommand<int?>(clickCount =>
             {
                 if (clickCount != null && clickCount == 2)
@@ -185,7 +188,18 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreatePluginSource { get; set; }
         public bool CanRename { get; set; }
         public bool CanDelete { get; set; }
-        public bool CanCreateFolder { get; set; }
+        public bool CanCreateFolder
+        {
+            get
+            {
+                return Server.Permissions.Any(a=>(a.Contribute || a.Administrator) && a.IsServer);
+            }
+            set
+            {
+                _canCreateFolder = value;
+                OnPropertyChanged(()=>CanCreateFolder);
+            }
+        }
         public bool CanDeploy { get; set; }
         public bool CanShowVersions
         {

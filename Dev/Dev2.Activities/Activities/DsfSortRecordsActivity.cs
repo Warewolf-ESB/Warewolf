@@ -16,6 +16,7 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -23,11 +24,14 @@ using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
+    [ToolDescriptorInfo("RecordSet-SortRecords", "Sort Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "RecordSet", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+
     public class DsfSortRecordsActivity : DsfActivityAbstract<string>
     {
 

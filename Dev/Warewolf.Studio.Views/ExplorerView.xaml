@@ -279,7 +279,7 @@
                                                 </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewFolder"
                                                                 InputGestureText="[Ctrl+Shift+F]"
-                                                                Command="{Binding Path=Data.NewFolderCommand}"
+                                                                Command="{Binding Path=Data.CreateFolderCommand}"
                                                                 CommandParameter="{x:Static data:ResourceType.PluginService}"
                                                                 Header="New Folder"
                                                                 Visibility="{Binding Path=Data.CanCreateFolder,
