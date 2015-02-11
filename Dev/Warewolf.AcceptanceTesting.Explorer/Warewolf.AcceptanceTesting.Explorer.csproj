@@ -209,6 +209,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SaveDialog.feature</DependentUpon>
     </Compile>
+    <Compile Include="SaveDialogSteps.cs" />
     <Compile Include="Toolbox.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -216,6 +217,7 @@
     </Compile>
     <Compile Include="ToolboxSteps.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
+    <Compile Include="UnityBootstrapperForSaveDialogTesting.cs" />
     <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
   </ItemGroup>
   <ItemGroup>
