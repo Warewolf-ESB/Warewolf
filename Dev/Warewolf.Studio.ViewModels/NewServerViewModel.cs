@@ -163,12 +163,12 @@ namespace Warewolf.Studio.ViewModels
 
                 if (!Testrun)
                 {
-                    return Resources.Languages.Core.ServerDialogNoTestMessage;
+                    return Resources.Languages.Core.ServerSourceDialogNoTestMessage;
                 }
 
                 if (TestFailed)
                 {
-                    return Resources.Languages.Core.ServerDialogTestConnectionLabel; 
+                    return Resources.Languages.Core.TestConnectionLabel; 
                 }
 
                 IsValid = true;
@@ -395,7 +395,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogAddressLabel;
+                return Resources.Languages.Core.ServerSourceDialogAddressLabel;
             }
         }
 
@@ -403,7 +403,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogUserNameLabel;
+                return Resources.Languages.Core.UserNameLabel;
             }
         }
 
@@ -411,7 +411,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogAuthenticationTypeLabel;
+                return Resources.Languages.Core.AuthenticationTypeLabel;
             }
         }
 
@@ -419,7 +419,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogPasswordLabel;
+                return Resources.Languages.Core.PasswordLabel;
 
             }
         }
@@ -428,7 +428,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogTestConnectionLabel;
+                return Resources.Languages.Core.TestConnectionLabel;
             }
         }
 
@@ -546,70 +546,70 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogAddressToolTip; 
+                return Resources.Languages.Core.ServerSourceDialogAddressToolTip; 
             }
         }
         public string ProtocolToolTip
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogProtocolToolTip;
+                return Resources.Languages.Core.ServerSourceDialogProtocolToolTip;
             }
         }
         public string PortToolTip
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogAddressPortTip;
+                return Resources.Languages.Core.ServerSourceDialogAddressPortTip;
             }
         }
         public string WindowsAuthenticationToolTip
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogWindowsAuthenticationToolTip;
+                return Resources.Languages.Core.WindowsAuthenticationToolTip;
             }
         }
         public string UserAuthenticationToolTip
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogAddressUserAuthenticationToolTip;
+                return Resources.Languages.Core.UserAuthenticationToolTip;
             }
         }
         public string PublicToolTip
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogPublicToolTip;
+                return Resources.Languages.Core.ServerSourceDialogPublicToolTip;
             }
         }
         public string UserNameToolTip
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogUserNameToolTip;
+                return Resources.Languages.Core.UserNameToolTip;
             }
         }
         public string PasswordToolTip
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogPasswordToolTip;
+                return Resources.Languages.Core.PasswordToolTip;
             }
         }
         public string TestToolTip
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogsTestToolTip;
+                return Resources.Languages.Core.ServerSourceDialogsTestToolTip;
             }
         }
         public string SaveToolTip
         {
             get
             {
-                return Resources.Languages.Core.ServerDialogAddressSaveTip;
+                return Resources.Languages.Core.ServerSourceDialogAddressSaveTip;
             }
         }
 

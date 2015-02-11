@@ -237,9 +237,18 @@ namespace Warewolf.Studio.ViewModels
                 case ResourceType.ServerSource:
                     CreateNewServerSource(selectedId);
                     break;
+                case ResourceType.DbSource:
+                    CreateDatabaseSource();
+                    break;
                 default: return;
 
             }
+        }
+
+        private void CreateDatabaseSource()
+        {
+            var mockDbSourceViewModel = new ManageDatabaseSourceViewModel();
+            GetRegion("Workspace").Add(mockDbSourceViewModel);
         }
 
         void CreateNewServerSource(Guid selectedId)

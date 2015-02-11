@@ -8,6 +8,7 @@ using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels.ToolBox;
 using Warewolf.Studio.Views;
+using Microsoft.Practices.Unity;
 
 namespace Warewolf.AcceptanceTesting.Explorer
 {
