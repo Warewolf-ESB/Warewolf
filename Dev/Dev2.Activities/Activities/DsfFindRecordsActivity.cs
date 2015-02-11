@@ -41,7 +41,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// <New>
     /// Activity for finding records accoring to a search criteria that the user specifies
     /// </New>
-    [ToolDescriptorInfo("RecordSet-FindRecords", "Find Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "RecordSet", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("RecordSet-FindRecords", "Find", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
 
     public class DsfFindRecordsActivity : DsfActivityAbstract<string>, IRecsetSearch
     {

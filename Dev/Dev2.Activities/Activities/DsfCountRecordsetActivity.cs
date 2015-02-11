@@ -32,7 +32,7 @@ using Warewolf.Core;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
-    [ToolDescriptorInfo("RecordSet-CountRecords", "Count Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+    [ToolDescriptorInfo("RecordSet-CountRecords", "Count", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfCountRecordsetActivity : DsfActivityAbstract<string>
     {
         #region Fields

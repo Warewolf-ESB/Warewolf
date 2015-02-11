@@ -38,17 +38,17 @@
                     </ig:DragSource>
                 </ig:DragDropManager.DragSource>
                 <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="14" />
+                                                                        <RowDefinition Height="10" />
                                                                         <RowDefinition Height="40" />
-                                                                        <RowDefinition Height="34" />
-                                                                        <RowDefinition Height="14" />
+                                                                        <RowDefinition Height="42" />
+                                                                        <RowDefinition Height="10" />
                                                                     </Grid.RowDefinitions>
                                                                     <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="18" />
-                                                                        <ColumnDefinition Width="5" />
+                                                                        <ColumnDefinition Width="10" />
+                                                                        <ColumnDefinition Width="13" />
                                                                         <ColumnDefinition Width="40" />
-                                                                        <ColumnDefinition Width="5" />
-                                                                        <ColumnDefinition Width="18" />
+                                                                        <ColumnDefinition Width="13" />
+                                                                        <ColumnDefinition Width="10" />
                                                                     </Grid.ColumnDefinitions>
                                                                     <Image Grid.Row="1"
                            Grid.Column="2"
