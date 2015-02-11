@@ -32,7 +32,7 @@ using Warewolf.Core;
 
 namespace Dev2.Activities
 {
-   [ToolDescriptorInfo("Utility-GetWebRequests", "Web Request", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+   [ToolDescriptorInfo("Utility-GetWebRequest", "Web Request", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfWebGetRequestActivity : DsfActivityAbstract<string>
     {
         IWebRequestInvoker _webRequestInvoker;
