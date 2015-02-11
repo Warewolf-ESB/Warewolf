@@ -128,6 +128,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication Type:.
+        /// </summary>
+        public static string AuthenticationTypeLabel {
+            get {
+                return ResourceManager.GetString("AuthenticationTypeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Business Design Studio Administrators.
         /// </summary>
         public static string BDSAdminRole {
@@ -173,6 +182,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel Test.
+        /// </summary>
+        public static string CancelTest {
+            get {
+                return ResourceManager.GetString("CancelTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ConnectControlConnectionsToolTip.
         /// </summary>
         public static string ConnectControlConnectionsToolTip {
@@ -214,6 +232,60 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CriticalExceptionMessage {
             get {
                 return ResourceManager.GetString("CriticalExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database:.
+        /// </summary>
+        public static string DatabaseSourceDatabaseLabel {
+            get {
+                return ResourceManager.GetString("DatabaseSourceDatabaseLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DatabaseSourceDatabaseToolTip.
+        /// </summary>
+        public static string DatabaseSourceDatabaseToolTip {
+            get {
+                return ResourceManager.GetString("DatabaseSourceDatabaseToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server:.
+        /// </summary>
+        public static string DatabaseSourceServerLabel {
+            get {
+                return ResourceManager.GetString("DatabaseSourceServerLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DatabaseSourceServerToolTip.
+        /// </summary>
+        public static string DatabaseSourceServerToolTip {
+            get {
+                return ResourceManager.GetString("DatabaseSourceServerToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type:.
+        /// </summary>
+        public static string DatabaseSourceTypeLabel {
+            get {
+                return ResourceManager.GetString("DatabaseSourceTypeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DatabaseSourceTypeTooltip.
+        /// </summary>
+        public static string DatabaseSourceTypeToolTip {
+            get {
+                return ResourceManager.GetString("DatabaseSourceTypeToolTip", resourceCulture);
             }
         }
         
@@ -1296,6 +1368,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password:.
+        /// </summary>
+        public static string PasswordLabel {
+            get {
+                return ResourceManager.GetString("PasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PasswordToolTip.
+        /// </summary>
+        public static string PasswordToolTip {
+            get {
+                return ResourceManager.GetString("PasswordToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png.
         /// </summary>
         public static string RemoteWarewolfIconPath {
@@ -1486,189 +1576,117 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Address:.
         /// </summary>
-        public static string ServerDialogAddressLabel {
+        public static string ServerSourceDialogAddressLabel {
             get {
-                return ResourceManager.GetString("ServerDialogAddressLabel", resourceCulture);
+                return ResourceManager.GetString("ServerSourceDialogAddressLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ServerDialogAddressPortTip.
         /// </summary>
-        public static string ServerDialogAddressPortTip {
+        public static string ServerSourceDialogAddressPortTip {
             get {
-                return ResourceManager.GetString("ServerDialogAddressPortTip", resourceCulture);
+                return ResourceManager.GetString("ServerSourceDialogAddressPortTip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ServerDialogAddressSaveTip.
         /// </summary>
-        public static string ServerDialogAddressSaveTip {
+        public static string ServerSourceDialogAddressSaveTip {
             get {
-                return ResourceManager.GetString("ServerDialogAddressSaveTip", resourceCulture);
+                return ResourceManager.GetString("ServerSourceDialogAddressSaveTip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ServerDialogAddressToolTip.
         /// </summary>
-        public static string ServerDialogAddressToolTip {
+        public static string ServerSourceDialogAddressToolTip {
             get {
-                return ResourceManager.GetString("ServerDialogAddressToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ServerDialogAddressUserAuthenticationToolTip.
-        /// </summary>
-        public static string ServerDialogAddressUserAuthenticationToolTip {
-            get {
-                return ResourceManager.GetString("ServerDialogAddressUserAuthenticationToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Authentication Type:.
-        /// </summary>
-        public static string ServerDialogAuthenticationTypeLabel {
-            get {
-                return ResourceManager.GetString("ServerDialogAuthenticationTypeLabel", resourceCulture);
+                return ResourceManager.GetString("ServerSourceDialogAddressToolTip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The server address cannot be empty.
         /// </summary>
-        public static string ServerDialogNoAddressErrorMessage {
+        public static string ServerSourceDialogNoAddressErrorMessage {
             get {
-                return ResourceManager.GetString("ServerDialogNoAddressErrorMessage", resourceCulture);
+                return ResourceManager.GetString("ServerSourceDialogNoAddressErrorMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The server connection must be tested with a valid address before you can save.
         /// </summary>
-        public static string ServerDialogNoTestMessage {
+        public static string ServerSourceDialogNoTestMessage {
             get {
-                return ResourceManager.GetString("ServerDialogNoTestMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password.
-        /// </summary>
-        public static string ServerDialogPasswordLabel {
-            get {
-                return ResourceManager.GetString("ServerDialogPasswordLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ServerDialogAddressPasswordToolTip.
-        /// </summary>
-        public static string ServerDialogPasswordToolTip {
-            get {
-                return ResourceManager.GetString("ServerDialogPasswordToolTip", resourceCulture);
+                return ResourceManager.GetString("ServerSourceDialogNoTestMessage", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ServerDialogProtocolToolTip.
         /// </summary>
-        public static string ServerDialogProtocolToolTip {
+        public static string ServerSourceDialogProtocolToolTip {
             get {
-                return ResourceManager.GetString("ServerDialogProtocolToolTip", resourceCulture);
+                return ResourceManager.GetString("ServerSourceDialogProtocolToolTip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ServerDialogPublicToolTip.
         /// </summary>
-        public static string ServerDialogPublicToolTip {
+        public static string ServerSourceDialogPublicToolTip {
             get {
-                return ResourceManager.GetString("ServerDialogPublicToolTip", resourceCulture);
+                return ResourceManager.GetString("ServerSourceDialogPublicToolTip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ServerDialogsTestToolTip.
         /// </summary>
-        public static string ServerDialogsTestToolTip {
+        public static string ServerSourceDialogsTestToolTip {
             get {
-                return ResourceManager.GetString("ServerDialogsTestToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Test Connection.
-        /// </summary>
-        public static string ServerDialogTestConnectionLabel {
-            get {
-                return ResourceManager.GetString("ServerDialogTestConnectionLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Name:.
-        /// </summary>
-        public static string ServerDialogUserNameLabel {
-            get {
-                return ResourceManager.GetString("ServerDialogUserNameLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ServerDialogUserNameToolTip.
-        /// </summary>
-        public static string ServerDialogUserNameToolTip {
-            get {
-                return ResourceManager.GetString("ServerDialogUserNameToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ServerDialogWindowsAuthenticationToolTip.
-        /// </summary>
-        public static string ServerDialogWindowsAuthenticationToolTip {
-            get {
-                return ResourceManager.GetString("ServerDialogWindowsAuthenticationToolTip", resourceCulture);
+                return ResourceManager.GetString("ServerSourceDialogsTestToolTip", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Server is not connected.
         /// </summary>
-        public static string ServerNotConnected {
+        public static string ServerSourceNotConnected {
             get {
-                return ResourceManager.GetString("ServerNotConnected", resourceCulture);
+                return ResourceManager.GetString("ServerSourceNotConnected", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to You can not change the settings for a server that is offline..
         /// </summary>
-        public static string ServerNotConnectedSettingsDescription {
+        public static string ServerSourceNotConnectedSettingsDescription {
             get {
-                return ResourceManager.GetString("ServerNotConnectedSettingsDescription", resourceCulture);
+                return ResourceManager.GetString("ServerSourceNotConnectedSettingsDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Server is unreachable.
         /// </summary>
-        public static string ServerUnreachableErrorHeader {
+        public static string ServerSourceUnreachableErrorHeader {
             get {
-                return ResourceManager.GetString("ServerUnreachableErrorHeader", resourceCulture);
+                return ResourceManager.GetString("ServerSourceUnreachableErrorHeader", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Unable to reach {0}: Connection timed out.{1} Make sure the remote computer is powered on.{1}{1} Would you like to re-try? {1}.
         /// </summary>
-        public static string ServerUnreachableHeaderMessage {
+        public static string ServerSourceUnreachableHeaderMessage {
             get {
-                return ResourceManager.GetString("ServerUnreachableHeaderMessage", resourceCulture);
+                return ResourceManager.GetString("ServerSourceUnreachableHeaderMessage", resourceCulture);
             }
         }
         
@@ -1691,7 +1709,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;ettings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings..
+        ///   Looks up a localized string similar to &quot;Settings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings..
         /// </summary>
         public static string SettingsChangedDescription {
             get {
@@ -1786,6 +1804,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Test_SPN_Endpoint_Identity {
             get {
                 return ResourceManager.GetString("Test_SPN_Endpoint_Identity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Connection.
+        /// </summary>
+        public static string TestConnectionLabel {
+            get {
+                return ResourceManager.GetString("TestConnectionLabel", resourceCulture);
             }
         }
         
@@ -1907,6 +1934,33 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ServerDialogAddressUserAuthenticationToolTip.
+        /// </summary>
+        public static string UserAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("UserAuthenticationToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Name:.
+        /// </summary>
+        public static string UserNameLabel {
+            get {
+                return ResourceManager.GetString("UserNameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogUserNameToolTip.
+        /// </summary>
+        public static string UserNameToolTip {
+            get {
+                return ResourceManager.GetString("UserNameToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to http://warewolf.io/checksum.txt.
         /// </summary>
         public static string Warewolf_Checksum {
@@ -1957,6 +2011,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string Window_Title_Property_Editor {
             get {
                 return ResourceManager.GetString("Window_Title_Property_Editor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerDialogWindowsAuthenticationToolTip.
+        /// </summary>
+        public static string WindowsAuthenticationToolTip {
+            get {
+                return ResourceManager.GetString("WindowsAuthenticationToolTip", resourceCulture);
             }
         }
         

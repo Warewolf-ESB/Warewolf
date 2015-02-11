@@ -13,6 +13,7 @@
         xmlns:studio="clr-namespace:Warewolf.Studio"
         xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+        xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
         x:Name="MainWindow"
         Title="Warewolf Studio"
         Background="{StaticResource WareWolfBackGroundBrush}"
@@ -198,6 +199,10 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
             <views:ManageServerControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:ManageDatabaseSourceViewModel}">
+            <views:ManageDatabaseSourceControl />
         </DataTemplate>
     </Window.Resources>
 
