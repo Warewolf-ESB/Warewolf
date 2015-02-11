@@ -120,5 +120,30 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
             explorerView.PerformSearch(searchTerm);
         }
+
+        [When(@"I create ""(.*)"" in ""(.*)""")]
+        public void WhenICreateIn(string folder, string server)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddNewFolder(folder,server);
+        }
+
+        [Then(@"I should see ""(.*)"" in ""(.*)"" server")]
+        public void ThenIShouldSeeInServer(string folder, string server)
+        {
+            //var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            //explorerView.VerifyItemExists(folder, server);
+     
+        }
+
+        [Then(@"I should see the path ""(.*)""")]
+        public void ThenIShouldSeeThePath(string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.VerifyItemExists(path);
+        }
+
+
+
     }
 }

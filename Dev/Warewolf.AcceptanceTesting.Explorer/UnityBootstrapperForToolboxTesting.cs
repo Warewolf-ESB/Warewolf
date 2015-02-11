@@ -1,13 +1,11 @@
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
-using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.Unity;
 using Moq;
 using Warewolf.AcceptanceTesting.Core;
 using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Toolbox;
-using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.ViewModels.ToolBox;
 using Warewolf.Studio.Views;
 

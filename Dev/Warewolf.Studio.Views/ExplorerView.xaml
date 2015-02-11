@@ -687,7 +687,7 @@
 
                                     </TextBlock>
                                     <TextBox x:Name="PropertySearch"
-                                             IsVisibleChanged="UIElement_OnIsVisibleChanged"
+                                             
                                        
                                              Text="{Binding Path=Data.ResourceName,
                                                             UpdateSourceTrigger=LostFocus}"

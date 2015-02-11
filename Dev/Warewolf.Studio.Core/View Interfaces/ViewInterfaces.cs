@@ -13,6 +13,10 @@ namespace Warewolf.Studio.Core.View_Interfaces
         int GetVisibleChildrenCount(string folderName);
         void PerformFolderRename(string originalFolderName, string newFolderName);
         void PerformSearch(string searchTerm);
+
+        void AddNewFolder(string folder, string server);
+
+        void VerifyItemExists(string path);
     }
     public interface IToolboxView : IView { }
     public interface IHelpView : IView {

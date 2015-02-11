@@ -27,37 +27,50 @@
             </CollectionViewSource.GroupDescriptions>
 
         </CollectionViewSource>
-
-                                                            <DataTemplate x:Key="ToolDataTemplate" DataType="toolBox:ToolDescriptorViewModel">
-                                                                <Grid HorizontalAlignment="Stretch"
+        <Cursor x:Key="Grab"  > Grab.cur</Cursor>
+        <Cursor x:Key="Grabbing"  >Grabbing.cur</Cursor>
+        <DataTemplate x:Key="ToolDataTemplate" DataType="toolBox:ToolDescriptorViewModel">
+            <Grid HorizontalAlignment="Stretch" Cursor="{StaticResource Grab}"
                       VerticalAlignment="Stretch"
                       Background="{StaticResource WarewolfPanelGreyBrush}">
                 <ig:DragDropManager.DragSource>
-                    <ig:DragSource IsDraggable="True"
-          DragChannels="Tool"  >
+                    <ig:DragSource IsDraggable="True" DragChannels="Tool"  >
+                        <ig:DragSource.DropNotAllowedCursorTemplate>
+                            <DataTemplate>
+                                <fa:ImageAwesome TextOptions.TextFormattingMode="Display" Width="12" Height="12"  Icon="Ban" Foreground="{StaticResource ValidationErrorElement}" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </ig:DragSource.DropNotAllowedCursorTemplate>
+                        <ig:DragSource.DragTemplate>
+                            
+                            <DataTemplate>
+                                <Border BorderThickness="1" BorderBrush="{StaticResource WareWolfOrangeBrush}">
+                                    <ContentControl Content="{Binding Path=DragImage}"/>
+                                </Border>
+                            </DataTemplate>
+                        </ig:DragSource.DragTemplate>
                     </ig:DragSource>
                 </ig:DragDropManager.DragSource>
                 <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="10" />
-                                                                        <RowDefinition Height="40" />
-                                                                        <RowDefinition Height="42" />
-                                                                        <RowDefinition Height="10" />
-                                                                    </Grid.RowDefinitions>
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="10" />
-                                                                        <ColumnDefinition Width="13" />
-                                                                        <ColumnDefinition Width="40" />
-                                                                        <ColumnDefinition Width="13" />
-                                                                        <ColumnDefinition Width="10" />
-                                                                    </Grid.ColumnDefinitions>
-                                                                    <Image Grid.Row="1"
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="42" />
+                    <RowDefinition Height="10" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="13" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="13" />
+                    <ColumnDefinition Width="10" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Row="1"
                            Grid.Column="2"
                            Width="40"
                            Height="40"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Stretch"
                            Source="{Binding Icon}" />
-                                                                    <TextBlock Grid.Row="2"
+                <TextBlock Grid.Row="2"
                                Grid.Column="1"
                                Grid.ColumnSpan="3"
                                HorizontalAlignment="Center"
@@ -68,8 +81,10 @@
                                TextAlignment="Center"
                                TextWrapping="Wrap" 
                                Margin="0,3,0,0"/>
-                                                                </Grid>
-                                                            </DataTemplate>
+     
+            </Grid>
+            
+        </DataTemplate>
         <core:WidthConvertForWrapPanel x:Key="ListBoxWidthToItemsPanelWidthConverter" />
     </UserControl.Resources>
 
@@ -110,12 +125,12 @@
                     customControls:TextBoxHelper.Watermark="Filter" 
                      customControls:TextBoxHelper.ShowWatermark="True"
                 />
-           <Button Width="25" Grid.Column="2" Grid.Row="0"
+            <Button Width="25" Grid.Column="2" Grid.Row="0"
                     Height="25"
                     Padding="4">
-               <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
             </Button>
-            
+
         </Grid>
 
         <ListBox ItemTemplate="{StaticResource ToolDataTemplate}"  Style ="{StaticResource ListBoxToolboxStyle}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource ToolViewSource}}">
@@ -126,7 +141,7 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.GroupStyle>
-                <GroupStyle>                    
+                <GroupStyle>
                     <GroupStyle.ContainerStyle>
                         <Style TargetType="{x:Type GroupItem}">
                             <Setter Property="Template">
