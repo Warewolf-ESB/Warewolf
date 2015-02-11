@@ -78,12 +78,12 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// The localized text for the Database Server label
         /// </summary>
-        string ServerLabel { get; set; }
+        string ServerLabel { get;  }
 
         /// <summary>
         /// The localized text for the Database label
         /// </summary>
-        string DatabaseLabel { get; set; }
+        string DatabaseLabel { get;  }
 
         /// <summary>
         /// Command for save/ok
@@ -104,6 +104,11 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// Tooltip for the User Authentication option
         /// </summary>
         string UserAuthenticationToolTip { get; }
+
+        /// <summary>
+        /// Tooltip for the Database Server Type
+        /// </summary>
+        string ServerTypeTool { get; }
 
         /// <summary>
         /// List of database names for the user to choose from based on the server entered

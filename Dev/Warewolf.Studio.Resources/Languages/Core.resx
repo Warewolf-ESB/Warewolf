@@ -734,43 +734,43 @@ You need Administrator permission.</value>
   <data name="SchedulerChangesHeader" xml:space="preserve">
     <value>Scheduler Task has changes</value>
   </data>
-  <data name="ServerNotConnected" xml:space="preserve">
+  <data name="ServerSourceNotConnected" xml:space="preserve">
     <value>Server is not connected</value>
   </data>
-  <data name="ServerNotConnectedSettingsDescription" xml:space="preserve">
+  <data name="ServerSourceNotConnectedSettingsDescription" xml:space="preserve">
     <value>You can not change the settings for a server that is offline.</value>
   </data>
-  <data name="ServerUnreachableErrorHeader" xml:space="preserve">
+  <data name="ServerSourceUnreachableErrorHeader" xml:space="preserve">
     <value>Server is unreachable</value>
   </data>
-  <data name="ServerUnreachableHeaderMessage" xml:space="preserve">
+  <data name="ServerSourceUnreachableHeaderMessage" xml:space="preserve">
     <value>Unable to reach {0}: Connection timed out.{1} Make sure the remote computer is powered on.{1}{1} Would you like to re-try? {1}</value>
   </data>
   <data name="SettingsChangedDescription" xml:space="preserve">
-    <value>"ettings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings.</value>
+    <value>"Settings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings.</value>
   </data>
   <data name="SettingsChangedHeader" xml:space="preserve">
     <value>Settings have changed</value>
   </data>
-  <data name="ServerDialogAddressLabel" xml:space="preserve">
+  <data name="ServerSourceDialogAddressLabel" xml:space="preserve">
     <value>Address:</value>
   </data>
-  <data name="ServerDialogAuthenticationTypeLabel" xml:space="preserve">
+  <data name="AuthenticationTypeLabel" xml:space="preserve">
     <value>Authentication Type:</value>
   </data>
-  <data name="ServerDialogNoAddressErrorMessage" xml:space="preserve">
+  <data name="ServerSourceDialogNoAddressErrorMessage" xml:space="preserve">
     <value>The server address cannot be empty</value>
   </data>
-  <data name="ServerDialogNoTestMessage" xml:space="preserve">
+  <data name="ServerSourceDialogNoTestMessage" xml:space="preserve">
     <value>The server connection must be tested with a valid address before you can save</value>
   </data>
-  <data name="ServerDialogPasswordLabel" xml:space="preserve">
-    <value>Password</value>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Password:</value>
   </data>
-  <data name="ServerDialogTestConnectionLabel" xml:space="preserve">
+  <data name="TestConnectionLabel" xml:space="preserve">
     <value>Test Connection</value>
   </data>
-  <data name="ServerDialogUserNameLabel" xml:space="preserve">
+  <data name="UserNameLabel" xml:space="preserve">
     <value>User Name:</value>
   </data>
   <data name="MenuDialogDatabaseLabel" xml:space="preserve">
@@ -878,37 +878,55 @@ You need Administrator permission.</value>
   <data name="MenuWebServiceToolTip" xml:space="preserve">
     <value>MenuWebServiceToolTip</value>
   </data>
-  <data name="ServerDialogAddressPortTip" xml:space="preserve">
+  <data name="ServerSourceDialogAddressPortTip" xml:space="preserve">
     <value>ServerDialogAddressPortTip</value>
   </data>
-  <data name="ServerDialogAddressSaveTip" xml:space="preserve">
+  <data name="ServerSourceDialogAddressSaveTip" xml:space="preserve">
     <value>ServerDialogAddressSaveTip</value>
   </data>
-  <data name="ServerDialogAddressToolTip" xml:space="preserve">
+  <data name="ServerSourceDialogAddressToolTip" xml:space="preserve">
     <value>ServerDialogAddressToolTip</value>
   </data>
-  <data name="ServerDialogAddressUserAuthenticationToolTip" xml:space="preserve">
+  <data name="UserAuthenticationToolTip" xml:space="preserve">
     <value>ServerDialogAddressUserAuthenticationToolTip</value>
   </data>
-  <data name="ServerDialogPasswordToolTip" xml:space="preserve">
-    <value>ServerDialogAddressPasswordToolTip</value>
+  <data name="PasswordToolTip" xml:space="preserve">
+    <value>PasswordToolTip</value>
   </data>
-  <data name="ServerDialogProtocolToolTip" xml:space="preserve">
+  <data name="ServerSourceDialogProtocolToolTip" xml:space="preserve">
     <value>ServerDialogProtocolToolTip</value>
   </data>
-  <data name="ServerDialogPublicToolTip" xml:space="preserve">
+  <data name="ServerSourceDialogPublicToolTip" xml:space="preserve">
     <value>ServerDialogPublicToolTip</value>
   </data>
-  <data name="ServerDialogsTestToolTip" xml:space="preserve">
+  <data name="ServerSourceDialogsTestToolTip" xml:space="preserve">
     <value>ServerDialogsTestToolTip</value>
   </data>
-  <data name="ServerDialogUserNameToolTip" xml:space="preserve">
+  <data name="UserNameToolTip" xml:space="preserve">
     <value>ServerDialogUserNameToolTip</value>
   </data>
-  <data name="ServerDialogWindowsAuthenticationToolTip" xml:space="preserve">
+  <data name="WindowsAuthenticationToolTip" xml:space="preserve">
     <value>ServerDialogWindowsAuthenticationToolTip</value>
   </data>
   <data name="ToolDescriptor_ToolDescriptor_Tool_guids_are_not_allowed_to_be_the_empty_guid" xml:space="preserve">
     <value>Tool guids are not allowed to be the empty guid</value>
+  </data>
+  <data name="DatabaseSourceDatabaseLabel" xml:space="preserve">
+    <value>Database:</value>
+  </data>
+  <data name="DatabaseSourceDatabaseToolTip" xml:space="preserve">
+    <value>DatabaseSourceDatabaseToolTip</value>
+  </data>
+  <data name="DatabaseSourceServerLabel" xml:space="preserve">
+    <value>Server:</value>
+  </data>
+  <data name="DatabaseSourceServerToolTip" xml:space="preserve">
+    <value>DatabaseSourceServerToolTip</value>
+  </data>
+  <data name="DatabaseSourceTypeLabel" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="DatabaseSourceTypeToolTip" xml:space="preserve">
+    <value>DatabaseSourceTypeTooltip</value>
   </data>
 </root>

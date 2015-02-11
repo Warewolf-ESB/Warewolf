@@ -14,8 +14,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.OK,
-                Header = Resources.Languages.Core.ServerNotConnected,
-                Description = Resources.Languages.Core.ServerNotConnectedSettingsDescription,
+                Header = Resources.Languages.Core.ServerSourceNotConnected,
+                Description = Resources.Languages.Core.ServerSourceNotConnectedSettingsDescription,
                 Image = MessageBoxImage.Error
             };
         }
@@ -105,8 +105,8 @@ namespace Warewolf.Studio.Core.Popup
             return new PopupMessage
             {
                 Buttons = MessageBoxButton.YesNo,
-                Header = Resources.Languages.Core.ServerUnreachableErrorHeader,
-                Description = string.Format(Resources.Languages.Core.ServerUnreachableHeaderMessage, serverName, Environment.NewLine),
+                Header = Resources.Languages.Core.ServerSourceUnreachableErrorHeader,
+                Description = string.Format(Resources.Languages.Core.ServerSourceUnreachableHeaderMessage, serverName, Environment.NewLine),
                 Image = MessageBoxImage.Error,
 
             };
