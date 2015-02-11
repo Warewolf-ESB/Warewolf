@@ -182,6 +182,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel Test.
+        /// </summary>
+        public static string CancelTest {
+            get {
+                return ResourceManager.GetString("CancelTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ConnectControlConnectionsToolTip.
         /// </summary>
         public static string ConnectControlConnectionsToolTip {

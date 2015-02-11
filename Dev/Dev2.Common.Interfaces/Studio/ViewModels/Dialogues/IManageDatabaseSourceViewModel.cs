@@ -114,5 +114,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// List of database names for the user to choose from based on the server entered
         /// </summary>
         List<string> DatabaseNames { get; set; }
+
+        string CancelTestLabel { get; }
     }
 }

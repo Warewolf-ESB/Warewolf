@@ -142,6 +142,14 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.TestConnectionLabel;
             }
         }
+        
+        public string CancelTestLabel
+        {
+            get
+            {
+                return Resources.Languages.Core.CancelTest;
+            }
+        }
 
 
         public string ServerLabel

@@ -1,9 +1,9 @@
-﻿Feature: SaveDialog
-	In order to save resources in save dialog
+﻿@SaveDialog
+Feature: SaveDialog
+	In order to save resources
 	As a Warewolf user
-	I want to save resources 
+	I want a save dialog
 
-@SaveDialog
 Scenario: Creating Folder from Save Dialog under localhost
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog

@@ -929,4 +929,7 @@ You need Administrator permission.</value>
   <data name="DatabaseSourceTypeToolTip" xml:space="preserve">
     <value>DatabaseSourceTypeTooltip</value>
   </data>
+  <data name="CancelTest" xml:space="preserve">
+    <value>Cancel Test</value>
+  </data>
 </root>

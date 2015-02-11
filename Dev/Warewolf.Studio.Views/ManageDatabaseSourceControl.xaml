@@ -67,9 +67,9 @@
         <ComboBox ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Row="5" Grid.Column="1"></ComboBox>
         <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <TextBlock></TextBlock>
-            <Button></Button>
-            <Button></Button>
+            <Button Content="{Binding TestLabel}"></Button>
+            <Button Content="{Binding CancelTestLabel}"></Button>
         </StackPanel>
-        <Button Grid.Row="8" Grid.Column="1"></Button>
+        <Button Grid.Row="8" Grid.Column="1">Save</Button>
     </Grid>
 </UserControl>
