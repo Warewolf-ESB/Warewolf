@@ -255,8 +255,7 @@
     <Compile Include="Help\IHelpDescriptor.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />
     <Compile Include="Studio\IVariableListViewModel.cs" />
-    <Compile Include="Studio\ViewModels\Dialogues\IDialogueTemplate.cs" />
-    <Compile Include="Studio\ViewModels\Dialogues\IInnerDialogueTemplate.cs" />
+    <Compile Include="Studio\ViewModels\Dialogues\IManageDatabaseSourceViewModel.cs" />
     <Compile Include="Studio\ViewModels\Dialogues\INewServerDialogue.cs" />
     <Compile Include="Studio\ViewModels\IDeployItemMessage.cs" />
     <Compile Include="Studio\ViewModels\IExplorerHelpDescriptorBuilder.cs" />

@@ -180,14 +180,6 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool Testrun { get; set; }
 
-        /// <summary>
-        /// called by outer when validating
-        /// </summary>
-        /// <returns></returns>
-        string IInnerDialogueTemplate.Validate()
-        {
-            return Validate;
-        }
 
 
 

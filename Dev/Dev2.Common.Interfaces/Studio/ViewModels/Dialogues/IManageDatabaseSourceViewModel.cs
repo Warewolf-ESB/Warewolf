@@ -1,0 +1,113 @@
+﻿using System.Collections.Generic;
+using System.Windows.Input;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
+{
+    public interface IManageDatabaseSourceViewModel
+    {
+        /// <summary>
+        /// The Database Server Type
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        enSourceType ServerType { get; set; }
+        /// <summary>
+        ///  Windows or user or publlic
+        /// </summary>
+        AuthenticationType AuthenticationType { get; set; }
+
+        /// <summary>
+        /// The Database Server Name
+        /// </summary>
+        string ServerName { get; set; }
+        
+        /// <summary>
+        /// The Database that the source is reading from
+        /// </summary>
+        string DatabaseName { get; set; }
+        /// <summary>
+        /// User Name
+        /// </summary>
+        string UserName { get; set; }
+        /// <summary>
+        /// Password
+        /// </summary>
+        string Password { get; set; }
+        /// <summary>
+        /// Test if connection is successful
+        /// </summary>
+        ICommand TestCommand { get; set; }
+        
+        /// <summary>
+        /// Cancel a test that has started
+        /// </summary>
+        ICommand CancelTestCommand { get; set; }
+        /// <summary>
+        /// The message that will be set if the test is either successful or not
+        /// </summary>
+        string TestMessage { get; }
+
+        /// <summary>
+        /// Localized text for the Server Type label
+        /// </summary>
+        string ServerTypeLabel { get; }
+
+        /// <summary>
+        /// Localized text for the UserName label
+        /// </summary>
+        string UserNameLabel { get; }
+
+        /// <summary>
+        /// Localized text for the Authentication Type label
+        /// </summary>
+        string AuthenticationLabel { get; }
+
+        /// <summary>
+        /// Localized text for the Password label
+        /// </summary>
+        string PasswordLabel { get; }
+
+        /// <summary>
+        /// Localized text for the Test label
+        /// </summary>
+        string TestLabel { get; }
+
+        /// <summary>
+        /// The localized text for the Database Server label
+        /// </summary>
+        string ServerLabel { get; set; }
+
+        /// <summary>
+        /// The localized text for the Database label
+        /// </summary>
+        string DatabaseLabel { get; set; }
+
+        /// <summary>
+        /// Command for save/ok
+        /// </summary>
+        ICommand OkCommand { get; set; }
+
+        /// <summary>
+        /// Header text that is used on the view
+        /// </summary>
+        string HeaderText { get; set; }
+
+        /// <summary>
+        /// Tooltip for the Windows Authentication option
+        /// </summary>
+        string WindowsAuthenticationToolTip { get; }
+
+        /// <summary>
+        /// Tooltip for the User Authentication option
+        /// </summary>
+        string UserAuthenticationToolTip { get; }
+
+        /// <summary>
+        /// List of database names for the user to choose from based on the server entered
+        /// </summary>
+        List<string> DatabaseNames { get; set; }
+    }
+}

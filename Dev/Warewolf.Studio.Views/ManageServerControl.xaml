@@ -83,8 +83,7 @@
                             </ComboBox.ItemsPanel>
                         </ComboBox>
                         <TextBlock Grid.Column="3" HorizontalAlignment="Center" Text=":"></TextBlock>
-                        <TextBox Grid.Column="4" Text="{Binding SelectedPort}" PreviewTextInput="Preview_TextInput"
-                                wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Ports}"  ToolTip="{Binding Path=PortToolTip}"></TextBox>
+                        <TextBox Grid.Column="4" Text="{Binding SelectedPort}" wpfTextBoxAutoComplete:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding Ports}"  ToolTip="{Binding Path=PortToolTip}"></TextBox>
                     </Grid>
 
                     <TextBlock Grid.Row="1" Grid.Column="0"  Text="{Binding Path=AuthenticationLabel}" ></TextBlock>

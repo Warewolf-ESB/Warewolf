@@ -1,12 +1,11 @@
-﻿
-namespace Warewolf.Studio.Views
+﻿namespace Warewolf.Studio.Views
 {
     /// <summary>
     /// Interaction logic for ManageServerControl.xaml
     /// </summary>
-    public partial class ManageServerControl
+    public partial class ManageDatabaseSourceControl
     {
-        public ManageServerControl()
+        public ManageDatabaseSourceControl()
         {
             InitializeComponent();
         }
