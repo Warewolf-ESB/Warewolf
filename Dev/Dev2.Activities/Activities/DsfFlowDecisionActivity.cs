@@ -20,7 +20,7 @@ using Warewolf.Core;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
-   // [ToolDescriptorInfo("RecordSet-FindRecords", "Find Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "RecordSet", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]             
+   [ToolDescriptorInfo("ControlFlow-Descision", "Decision", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]             
     public class DsfFlowDecisionActivity : DsfFlowNodeActivity<bool>
     {
         #region Ctor
