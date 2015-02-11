@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Warewolf.Studio.Views.ConnectControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             d:DataContext="{d:DesignInstance Type=interfaces:IConnectControlViewModel,
+                                              IsDesignTimeCreatable=False}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="29" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="30" />
+        </Grid.ColumnDefinitions>
+
+        <ComboBox Grid.Row="0"
+                  Grid.Column="0"
+                  ToolTip="{Binding Path=ConnectionsToolTip}"
+                  ItemsSource="{Binding Servers}"
+                  SelectedItem="{Binding SelectedConnection}">
+            
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
+
+
+        <Button Grid.Row="0"
+                Grid.Column="1"
+                Width="26"
+                Height="26"
+                Command="{Binding EditConnectionCommand}"
+                Padding="4"
+                VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left"
+                ToolTip="{Binding Path=EditConnectionToolTip}"
+                >
+            <TextBlock>
+            <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
+            <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
+            <fa:FontAwesome FontSize="4" Icon="Square" HorizontalAlignment="Left"/>
+            </TextBlock>
+        </Button>
+        <Button Grid.Row="0"
+                Grid.Column="2"
+                Width="26"
+                Height="26"
+                Command="{Binding ToggleConnectionStateCommand}"
+                ToolTip ="{Binding Path=ToggleConnectionToolTip}"
+                Padding="4"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" FontWeight="DemiBold" Icon="Link" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        </Button>
+    </Grid>
+
+</UserControl>

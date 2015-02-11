@@ -1,0 +1,2961 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Documents.TextDocument.TSql.v14.2</name>
+    </assembly>
+    <members>
+        <member name="T:Infragistics.Documents.Parsing.TSqlLanguage">
+            <summary>
+            Represents the T-SQL language.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.TSqlLanguage.#ctor">
+            <summary>
+            Creates a new <see cref="T:Infragistics.Documents.Parsing.TSqlLanguage"/> instance.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.TSqlLanguage.CreateLexerStates(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Creates the LexerStates for the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.TSqlLanguage.CreateNonTerminalSymbols(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Creates the NonTerminalSymbols for the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.TSqlLanguage.CreateProductions(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Creates the productions for the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.TSqlLanguage.CreateSyntaxRules(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Creates the syntax rules for the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.TSqlLanguage.GetParseTable">
+            <summary>
+            Gets the parse table for a GLR parser.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.TSqlLanguage.InitializeGrammarProperties(Infragistics.Documents.Parsing.Grammar)">
+            <summary>
+            Initializes the properties of the associated Grammar.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.TSqlLanguage.GetErrorAlias(Infragistics.Documents.Parsing.Symbol)">
+            <summary>
+            Returns a customized error alias for the specified symbol or null to use the default alias.
+            </summary>
+            <remarks>
+            <p class="body">
+            If null is returned, the default alias for non-terminal symbols is the symbol name. For terminal symbols
+            it is the value for literal comparison terminals and the symbol name for regular expression comparison 
+            terminals.
+            </p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Documents.Parsing.TSqlLanguage.OnGlobalAmbiguityDetected(Infragistics.Documents.Parsing.GlobalAmbiguityContext)">
+            <summary>
+            Gets called when a global ambiguity is detected while parsing a document.
+            </summary>
+            <remarks>
+            <p class="body">
+            A global ambiguity occurs when the same span of text in a document can be interpreted in two or more different ways based on the grammar
+            rules for the language and the context in which text occurs. The specified <paramref name="context"/> contains two alternate parses for
+            the text (if there are more than two alternate parses, this method will be called multiple times). A derived implementation of this method 
+            can determine which of the two alternate parse sub-trees should be used in the final tree by setting
+            <see cref="P:Infragistics.Documents.Parsing.GlobalAmbiguityContext.PreferredSubTreeRoot"/> on the specified context.
+            </p>
+            <p class="body">
+            A grammar creator can override this method in a derived language to get notified of global ambiguities and know which rules need to be
+            re-written or mark with priority.
+            </p>
+            </remarks>
+            <param name="context">An object containing the relevant information about the global ambiguity.</param>
+            <seealso cref="P:Infragistics.Documents.Parsing.NonTerminalSymbol.HasPriority"/>
+            <seealso cref="E:Infragistics.Documents.Parsing.CustomLanguage.GlobalAmbiguityDetected"/>
+        </member>
+        <member name="P:Infragistics.Documents.Parsing.TSqlLanguage.Instance">
+            <summary>
+            Returns a static instance of the language (read-only)
+            </summary>
+        </member>
+        <member name="T:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames">
+            <summary>
+            Symbol name constants for the <see cref="T:Infragistics.Documents.Parsing.TSqlLanguage"/>.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AbsentKeyword">
+            <summary>
+            Name for the AbsentKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AcpKeyword">
+            <summary>
+            Name for the AcpKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AddExpression">
+            <summary>
+            Name for the AddExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AddKeyword">
+            <summary>
+            Name for the AddKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AdhocDataSource">
+            <summary>
+            Name for the AdhocDataSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AdhocTableSource">
+            <summary>
+            Name for the AdhocTableSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AllExpression">
+            <summary>
+            Name for the AllExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AllKeyword">
+            <summary>
+            Name for the AllKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AllowPageLocksKeyword">
+            <summary>
+            Name for the AllowPageLocksKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AllowRowLocksKeyword">
+            <summary>
+            Name for the AllowRowLocksKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AlterKeyword">
+            <summary>
+            Name for the AlterKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AmpersandEqualsToken">
+            <summary>
+            Name for the AmpersandEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AmpersandToken">
+            <summary>
+            Name for the AmpersandToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AndExpression">
+            <summary>
+            Name for the AndExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AndKeyword">
+            <summary>
+            Name for the AndKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AnyExpression">
+            <summary>
+            Name for the AnyExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AnyKeyword">
+            <summary>
+            Name for the AnyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ApplyKeyword">
+            <summary>
+            Name for the ApplyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.Argument">
+            <summary>
+            Name for the Argument symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AscKeyword">
+            <summary>
+            Name for the AscKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AsKeyword">
+            <summary>
+            Name for the AsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AssignmentSetClause">
+            <summary>
+            Name for the AssignmentSetClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AsteriskEqualsToken">
+            <summary>
+            Name for the AsteriskEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AsteriskToken">
+            <summary>
+            Name for the AsteriskToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AuthorizationKeyword">
+            <summary>
+            Name for the AuthorizationKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AutoKeyword">
+            <summary>
+            Name for the AutoKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.AvgKeyword">
+            <summary>
+            Name for the AvgKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BackupKeyword">
+            <summary>
+            Name for the BackupKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BarEqualsToken">
+            <summary>
+            Name for the BarEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BarToken">
+            <summary>
+            Name for the BarToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.Base64Keyword">
+            <summary>
+            Name for the Base64Keyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BeginEndBlockStatement">
+            <summary>
+            Name for the BeginEndBlockStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BeginKeyword">
+            <summary>
+            Name for the BeginKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BetweenExpression">
+            <summary>
+            Name for the BetweenExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BetweenKeyword">
+            <summary>
+            Name for the BetweenKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BigintKeyword">
+            <summary>
+            Name for the BigintKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BinaryKeyword">
+            <summary>
+            Name for the BinaryKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BitKeyword">
+            <summary>
+            Name for the BitKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BitwiseAndExpression">
+            <summary>
+            Name for the BitwiseAndExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BitwiseNotExpression">
+            <summary>
+            Name for the BitwiseNotExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BitwiseOrExpression">
+            <summary>
+            Name for the BitwiseOrExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BitwiseXorExpression">
+            <summary>
+            Name for the BitwiseXorExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BreakKeyword">
+            <summary>
+            Name for the BreakKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BrowseForClause">
+            <summary>
+            Name for the BrowseForClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BrowseKeyword">
+            <summary>
+            Name for the BrowseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BulkKeyword">
+            <summary>
+            Name for the BulkKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.BulkOpenRowset">
+            <summary>
+            Name for the BulkOpenRowset symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ByKeyword">
+            <summary>
+            Name for the ByKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CallerKeyword">
+            <summary>
+            Name for the CallerKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CaretEqualsToken">
+            <summary>
+            Name for the CaretEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CaretToken">
+            <summary>
+            Name for the CaretToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CascadeKeyword">
+            <summary>
+            Name for the CascadeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CaseKeyword">
+            <summary>
+            Name for the CaseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CastKeyword">
+            <summary>
+            Name for the CastKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CharKeyword">
+            <summary>
+            Name for the CharKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CheckConstraint">
+            <summary>
+            Name for the CheckConstraint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CheckKeyword">
+            <summary>
+            Name for the CheckKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CheckpointKeyword">
+            <summary>
+            Name for the CheckpointKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CloseKeyword">
+            <summary>
+            Name for the CloseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CloseParenToken">
+            <summary>
+            Name for the CloseParenToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ClusteredKeyword">
+            <summary>
+            Name for the ClusteredKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CoalesceKeyword">
+            <summary>
+            Name for the CoalesceKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CodePageKeyword">
+            <summary>
+            Name for the CodePageKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CollateKeyword">
+            <summary>
+            Name for the CollateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ColonColonToken">
+            <summary>
+            Name for the ColonColonToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ColumnAlias">
+            <summary>
+            Name for the ColumnAlias symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ColumnAliasList">
+            <summary>
+            Name for the ColumnAliasList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ColumnConstraints">
+            <summary>
+            Name for the ColumnConstraints symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ColumnDefinition">
+            <summary>
+            Name for the ColumnDefinition symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ColumnKeyword">
+            <summary>
+            Name for the ColumnKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CommaToken">
+            <summary>
+            Name for the CommaToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CommitKeyword">
+            <summary>
+            Name for the CommitKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CommonTableExpression">
+            <summary>
+            Name for the CommonTableExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CompositeGroupingSpecification">
+            <summary>
+            Name for the CompositeGroupingSpecification symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CompressionPartitionRange">
+            <summary>
+            Name for the CompressionPartitionRange symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CompressionPartitionsClause">
+            <summary>
+            Name for the CompressionPartitionsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ComputeKeyword">
+            <summary>
+            Name for the ComputeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ConcatKeyword">
+            <summary>
+            Name for the ConcatKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ConstraintKeyword">
+            <summary>
+            Name for the ConstraintKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ContainsKeyword">
+            <summary>
+            Name for the ContainsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ContainsTableKeyword">
+            <summary>
+            Name for the ContainsTableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ContentKeyword">
+            <summary>
+            Name for the ContentKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ContinueKeyword">
+            <summary>
+            Name for the ContinueKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ConvertKeyword">
+            <summary>
+            Name for the ConvertKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CountKeyword">
+            <summary>
+            Name for the CountKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CreateKeyword">
+            <summary>
+            Name for the CreateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CreateProcedureStatement">
+            <summary>
+            Name for the CreateProcedureStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CrossKeyword">
+            <summary>
+            Name for the CrossKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CubeGroupingSpecification">
+            <summary>
+            Name for the CubeGroupingSpecification symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CubeKeyword">
+            <summary>
+            Name for the CubeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CurrencyLiteralToken">
+            <summary>
+            Name for the CurrencyLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CurrentDateKeyword">
+            <summary>
+            Name for the CurrentDateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CurrentKeyword">
+            <summary>
+            Name for the CurrentKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CurrentTimeKeyword">
+            <summary>
+            Name for the CurrentTimeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CurrentTimestampKeyword">
+            <summary>
+            Name for the CurrentTimestampKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CurrentUserKeyword">
+            <summary>
+            Name for the CurrentUserKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CursorId">
+            <summary>
+            Name for the CursorId symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.CursorKeyword">
+            <summary>
+            Name for the CursorKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DatabaseKeyword">
+            <summary>
+            Name for the DatabaseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DataCompressionKeyword">
+            <summary>
+            Name for the DataCompressionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DataCompressionOption">
+            <summary>
+            Name for the DataCompressionOption symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DataModificationTopRowFilter">
+            <summary>
+            Name for the DataModificationTopRowFilter symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DataModificationWhereClause">
+            <summary>
+            Name for the DataModificationWhereClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DateKeyword">
+            <summary>
+            Name for the DateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.Datetime2Keyword">
+            <summary>
+            Name for the Datetime2Keyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DatetimeKeyword">
+            <summary>
+            Name for the DatetimeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DatetimeOffsetKeyword">
+            <summary>
+            Name for the DatetimeOffsetKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DbccKeyword">
+            <summary>
+            Name for the DbccKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DeallocateKeyword">
+            <summary>
+            Name for the DeallocateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DecimalKeyword">
+            <summary>
+            Name for the DecimalKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DeclareKeyword">
+            <summary>
+            Name for the DeclareKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DeclareTableBody">
+            <summary>
+            Name for the DeclareTableBody symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DeclareTableStatement">
+            <summary>
+            Name for the DeclareTableStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DeclareVariableElement">
+            <summary>
+            Name for the DeclareVariableElement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DeclareVariableStatement">
+            <summary>
+            Name for the DeclareVariableStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DefaultKeyword">
+            <summary>
+            Name for the DefaultKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DeletedKeyword">
+            <summary>
+            Name for the DeletedKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DeleteKeyword">
+            <summary>
+            Name for the DeleteKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DeleteStatement">
+            <summary>
+            Name for the DeleteStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DenyKeyword">
+            <summary>
+            Name for the DenyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DescKeyword">
+            <summary>
+            Name for the DescKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DiskKeyword">
+            <summary>
+            Name for the DiskKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DistinctKeyword">
+            <summary>
+            Name for the DistinctKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DistributedKeyword">
+            <summary>
+            Name for the DistributedKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DivideExpression">
+            <summary>
+            Name for the DivideExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DocumentKeyword">
+            <summary>
+            Name for the DocumentKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DollarSignIdentityKeyword">
+            <summary>
+            Name for the DollarSignIdentityKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DollarSignRowGuidKeyword">
+            <summary>
+            Name for the DollarSignRowGuidKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DotToken">
+            <summary>
+            Name for the DotToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DoubleKeyword">
+            <summary>
+            Name for the DoubleKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DropDefaultStatement">
+            <summary>
+            Name for the DropDefaultStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DropExistingKeyword">
+            <summary>
+            Name for the DropExistingKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DropKeyword">
+            <summary>
+            Name for the DropKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DropProcedureStatement">
+            <summary>
+            Name for the DropProcedureStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DropTableStatement">
+            <summary>
+            Name for the DropTableStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DumpKeyword">
+            <summary>
+            Name for the DumpKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.DynamicKeyword">
+            <summary>
+            Name for the DynamicKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ElementsKeyword">
+            <summary>
+            Name for the ElementsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ElseClause">
+            <summary>
+            Name for the ElseClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ElseKeyword">
+            <summary>
+            Name for the ElseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.EncryptionKeyword">
+            <summary>
+            Name for the EncryptionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.EndKeyword">
+            <summary>
+            Name for the EndKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.EndOfStreamToken">
+            <summary>
+            Name for the EndOfStreamToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.EqualsExpression">
+            <summary>
+            Name for the EqualsExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.EqualsToken">
+            <summary>
+            Name for the EqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ErrlvlKeyword">
+            <summary>
+            Name for the ErrlvlKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ErrorFileKeyword">
+            <summary>
+            Name for the ErrorFileKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.EscapeKeyword">
+            <summary>
+            Name for the EscapeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExceptKeyword">
+            <summary>
+            Name for the ExceptKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExceptQueryExpression">
+            <summary>
+            Name for the ExceptQueryExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExclamationEqualsToken">
+            <summary>
+            Name for the ExclamationEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExclamationGreaterThanToken">
+            <summary>
+            Name for the ExclamationGreaterThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExclamationLessThanToken">
+            <summary>
+            Name for the ExclamationLessThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExecKeyword">
+            <summary>
+            Name for the ExecKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExecuteAsClause">
+            <summary>
+            Name for the ExecuteAsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExecuteKeyword">
+            <summary>
+            Name for the ExecuteKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExistsExpression">
+            <summary>
+            Name for the ExistsExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExistsKeyword">
+            <summary>
+            Name for the ExistsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExitKeyword">
+            <summary>
+            Name for the ExitKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExpandKeyword">
+            <summary>
+            Name for the ExpandKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExplicitKeyword">
+            <summary>
+            Name for the ExplicitKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExpressionCallTarget">
+            <summary>
+            Name for the ExpressionCallTarget symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExpressionGroupingSpecification">
+            <summary>
+            Name for the ExpressionGroupingSpecification symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExpressionName">
+            <summary>
+            Name for the ExpressionName symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExpressionWithSortOrder">
+            <summary>
+            Name for the ExpressionWithSortOrder symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ExternalKeyword">
+            <summary>
+            Name for the ExternalKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FalseKeyword">
+            <summary>
+            Name for the FalseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FastFirstRowKeyword">
+            <summary>
+            Name for the FastFirstRowKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FastForwardKeyword">
+            <summary>
+            Name for the FastForwardKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FastKeyword">
+            <summary>
+            Name for the FastKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FetchKeyword">
+            <summary>
+            Name for the FetchKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FileKeyword">
+            <summary>
+            Name for the FileKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FillFactorKeyword">
+            <summary>
+            Name for the FillFactorKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FirstRowKeyword">
+            <summary>
+            Name for the FirstRowKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FloatKeyword">
+            <summary>
+            Name for the FloatKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ForcedKeyword">
+            <summary>
+            Name for the ForcedKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ForceKeyword">
+            <summary>
+            Name for the ForceKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ForceSeekKeyword">
+            <summary>
+            Name for the ForceSeekKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ForeignKeyword">
+            <summary>
+            Name for the ForeignKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ForKeyword">
+            <summary>
+            Name for the ForKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FormatFileKeyword">
+            <summary>
+            Name for the FormatFileKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FormsOfKeyword">
+            <summary>
+            Name for the FormsOfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ForwardOnlyKeyword">
+            <summary>
+            Name for the ForwardOnlyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FreeTextKeyword">
+            <summary>
+            Name for the FreeTextKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FreeTextTableKeyword">
+            <summary>
+            Name for the FreeTextTableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FromKeyword">
+            <summary>
+            Name for the FromKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FullKeyword">
+            <summary>
+            Name for the FullKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FullTextColumns">
+            <summary>
+            Name for the FullTextColumns symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FullTextPredicate">
+            <summary>
+            Name for the FullTextPredicate symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FunctionCall">
+            <summary>
+            Name for the FunctionCall symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FunctionCallSetClause">
+            <summary>
+            Name for the FunctionCallSetClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.FunctionKeyword">
+            <summary>
+            Name for the FunctionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GetdateKeyword">
+            <summary>
+            Name for the GetdateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GlobalKeyword">
+            <summary>
+            Name for the GlobalKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GoKeyword">
+            <summary>
+            Name for the GoKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GoStatement">
+            <summary>
+            Name for the GoStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GotoKeyword">
+            <summary>
+            Name for the GotoKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GrantKeyword">
+            <summary>
+            Name for the GrantKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GreaterThanEqualsToken">
+            <summary>
+            Name for the GreaterThanEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GreaterThanExpression">
+            <summary>
+            Name for the GreaterThanExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GreaterThanOrEqualExpression">
+            <summary>
+            Name for the GreaterThanOrEqualExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GreaterThanToken">
+            <summary>
+            Name for the GreaterThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GroupByClause">
+            <summary>
+            Name for the GroupByClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GroupingKeyword">
+            <summary>
+            Name for the GroupingKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GroupingSetsGroupingSpecification">
+            <summary>
+            Name for the GroupingSetsGroupingSpecification symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.GroupKeyword">
+            <summary>
+            Name for the GroupKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.HashIdentifierToken">
+            <summary>
+            Name for the HashIdentifierToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.HashKeyword">
+            <summary>
+            Name for the HashKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.HavingClause">
+            <summary>
+            Name for the HavingClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.HavingKeyword">
+            <summary>
+            Name for the HavingKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.HierarchyidKeyword">
+            <summary>
+            Name for the HierarchyidKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.HintKeyword">
+            <summary>
+            Name for the HintKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.HoldLockKeyword">
+            <summary>
+            Name for the HoldLockKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IdentifiersCallTarget">
+            <summary>
+            Name for the IdentifiersCallTarget symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IdentifierToken">
+            <summary>
+            Name for the IdentifierToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IdentityColKeyword">
+            <summary>
+            Name for the IdentityColKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IdentityInsertKeyword">
+            <summary>
+            Name for the IdentityInsertKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IdentityKeyword">
+            <summary>
+            Name for the IdentityKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IfKeyword">
+            <summary>
+            Name for the IfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IfStatement">
+            <summary>
+            Name for the IfStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IgnoreConstraintsKeyword">
+            <summary>
+            Name for the IgnoreConstraintsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IgnoreDupKeyKeyword">
+            <summary>
+            Name for the IgnoreDupKeyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IgnoreNonClusteredColumnStoreIndexKeyword">
+            <summary>
+            Name for the IgnoreNonClusteredColumnStoreIndexKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IgnoreTriggersKeyword">
+            <summary>
+            Name for the IgnoreTriggersKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ImageKeyword">
+            <summary>
+            Name for the ImageKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.InColumns">
+            <summary>
+            Name for the InColumns symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IndexExpressionOption">
+            <summary>
+            Name for the IndexExpressionOption symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IndexKeyword">
+            <summary>
+            Name for the IndexKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IndexStateOption">
+            <summary>
+            Name for the IndexStateOption symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IndexTableHint">
+            <summary>
+            Name for the IndexTableHint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.InExpression">
+            <summary>
+            Name for the InExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.InflectionalKeyword">
+            <summary>
+            Name for the InflectionalKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.InKeyword">
+            <summary>
+            Name for the InKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.InnerKeyword">
+            <summary>
+            Name for the InnerKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.InsertColumnList">
+            <summary>
+            Name for the InsertColumnList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.InsertedKeyword">
+            <summary>
+            Name for the InsertedKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.InsertKeyword">
+            <summary>
+            Name for the InsertKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.InsertStatement">
+            <summary>
+            Name for the InsertStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IntersectKeyword">
+            <summary>
+            Name for the IntersectKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IntersectQueryExpression">
+            <summary>
+            Name for the IntersectQueryExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IntKeyword">
+            <summary>
+            Name for the IntKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IntoClause">
+            <summary>
+            Name for the IntoClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IntoKeyword">
+            <summary>
+            Name for the IntoKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IsAboutKeyword">
+            <summary>
+            Name for the IsAboutKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IsKeyword">
+            <summary>
+            Name for the IsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IsNotNullExpression">
+            <summary>
+            Name for the IsNotNullExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.IsNullExpression">
+            <summary>
+            Name for the IsNullExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.JoinKeyword">
+            <summary>
+            Name for the JoinKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.JoinParenthesis">
+            <summary>
+            Name for the JoinParenthesis symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.KeepDefaultsKeyword">
+            <summary>
+            Name for the KeepDefaultsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.KeepFixedKeyword">
+            <summary>
+            Name for the KeepFixedKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.KeepIdentityKeyword">
+            <summary>
+            Name for the KeepIdentityKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.KeepKeyword">
+            <summary>
+            Name for the KeepKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.KeyKeyword">
+            <summary>
+            Name for the KeyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.KeysetKeyword">
+            <summary>
+            Name for the KeysetKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.KillKeyword">
+            <summary>
+            Name for the KillKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LanguageKeyword">
+            <summary>
+            Name for the LanguageKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LastRowKeyword">
+            <summary>
+            Name for the LastRowKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LeftKeyword">
+            <summary>
+            Name for the LeftKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LessThanEqualsToken">
+            <summary>
+            Name for the LessThanEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LessThanExpression">
+            <summary>
+            Name for the LessThanExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LessThanGreaterThanToken">
+            <summary>
+            Name for the LessThanGreaterThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LessThanOrEqualExpression">
+            <summary>
+            Name for the LessThanOrEqualExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LessThanToken">
+            <summary>
+            Name for the LessThanToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LikeExpression">
+            <summary>
+            Name for the LikeExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LikeKeyword">
+            <summary>
+            Name for the LikeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LineNoKeyword">
+            <summary>
+            Name for the LineNoKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LoadKeyword">
+            <summary>
+            Name for the LoadKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.LoopKeyword">
+            <summary>
+            Name for the LoopKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MaxDopKeyword">
+            <summary>
+            Name for the MaxDopKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MaxErrorsKeyword">
+            <summary>
+            Name for the MaxErrorsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MaxKeyword">
+            <summary>
+            Name for the MaxKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MaxRecursionKeyword">
+            <summary>
+            Name for the MaxRecursionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MergeKeyword">
+            <summary>
+            Name for the MergeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MethodSpecifier">
+            <summary>
+            Name for the MethodSpecifier symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MinKeyword">
+            <summary>
+            Name for the MinKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MinusEqualsToken">
+            <summary>
+            Name for the MinusEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MinusToken">
+            <summary>
+            Name for the MinusToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ModuloExpression">
+            <summary>
+            Name for the ModuloExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MoneyKeyword">
+            <summary>
+            Name for the MoneyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MultilineCommentAsteriskContent">
+            <summary>
+            Name for the MultilineCommentAsteriskContent symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MultilineCommentContent">
+            <summary>
+            Name for the MultilineCommentContent symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MultilineCommentEnd">
+            <summary>
+            Name for the MultilineCommentEnd symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MultilineCommentStart">
+            <summary>
+            Name for the MultilineCommentStart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.MultiplyExpression">
+            <summary>
+            Name for the MultiplyExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NameKeyword">
+            <summary>
+            Name for the NameKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NationalKeyword">
+            <summary>
+            Name for the NationalKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NcharKeyword">
+            <summary>
+            Name for the NcharKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NegateExpression">
+            <summary>
+            Name for the NegateExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NewLineToken">
+            <summary>
+            Name for the NewLineToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NoCheckKeyword">
+            <summary>
+            Name for the NoCheckKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NoExpandKeyword">
+            <summary>
+            Name for the NoExpandKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NoLockKeyword">
+            <summary>
+            Name for the NoLockKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NonClusteredKeyword">
+            <summary>
+            Name for the NonClusteredKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NoneKeyword">
+            <summary>
+            Name for the NoneKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NotBetweenExpression">
+            <summary>
+            Name for the NotBetweenExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NotEqualsExpression">
+            <summary>
+            Name for the NotEqualsExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NotExpression">
+            <summary>
+            Name for the NotExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NotGreaterThanExpression">
+            <summary>
+            Name for the NotGreaterThanExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NotInExpression">
+            <summary>
+            Name for the NotInExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NotKeyword">
+            <summary>
+            Name for the NotKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NotLessThanExpression">
+            <summary>
+            Name for the NotLessThanExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NotLikeExpression">
+            <summary>
+            Name for the NotLikeExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NoWaitKeyword">
+            <summary>
+            Name for the NoWaitKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NtextKeyword">
+            <summary>
+            Name for the NtextKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NullableConstraint">
+            <summary>
+            Name for the NullableConstraint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NullIfKeyword">
+            <summary>
+            Name for the NullIfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NullKeyword">
+            <summary>
+            Name for the NullKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NumericDecimalLiteralToken">
+            <summary>
+            Name for the NumericDecimalLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NumericHexadecimalLiteralToken">
+            <summary>
+            Name for the NumericHexadecimalLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NumericIntegerLiteralToken">
+            <summary>
+            Name for the NumericIntegerLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NumericKeyword">
+            <summary>
+            Name for the NumericKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.NvarcharKeyword">
+            <summary>
+            Name for the NvarcharKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OemKeyword">
+            <summary>
+            Name for the OemKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OffKeyword">
+            <summary>
+            Name for the OffKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OffsetsKeyword">
+            <summary>
+            Name for the OffsetsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OfKeyword">
+            <summary>
+            Name for the OfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OnKeyword">
+            <summary>
+            Name for the OnKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OnlineKeyword">
+            <summary>
+            Name for the OnlineKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OnlyKeyword">
+            <summary>
+            Name for the OnlyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenDataSourceKeyword">
+            <summary>
+            Name for the OpenDataSourceKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenKeyword">
+            <summary>
+            Name for the OpenKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenParenToken">
+            <summary>
+            Name for the OpenParenToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenQueryKeyword">
+            <summary>
+            Name for the OpenQueryKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenQueryTableSource">
+            <summary>
+            Name for the OpenQueryTableSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenRowsetDataModificationTarget">
+            <summary>
+            Name for the OpenRowsetDataModificationTarget symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenRowsetDataSource">
+            <summary>
+            Name for the OpenRowsetDataSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenRowSetKeyword">
+            <summary>
+            Name for the OpenRowSetKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenRowsetProvider">
+            <summary>
+            Name for the OpenRowsetProvider symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenRowsetQuery">
+            <summary>
+            Name for the OpenRowsetQuery symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenRowsetTableSource">
+            <summary>
+            Name for the OpenRowsetTableSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenXmlKeyword">
+            <summary>
+            Name for the OpenXmlKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OpenXmlTableSource">
+            <summary>
+            Name for the OpenXmlTableSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OptimisticKeyword">
+            <summary>
+            Name for the OptimisticKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OptimizeForOptimizerHint">
+            <summary>
+            Name for the OptimizeForOptimizerHint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OptimizeKeyword">
+            <summary>
+            Name for the OptimizeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OptionClause">
+            <summary>
+            Name for the OptionClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OptionKeyword">
+            <summary>
+            Name for the OptionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OrderByClause">
+            <summary>
+            Name for the OrderByClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OrderKeyword">
+            <summary>
+            Name for the OrderKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OrExpression">
+            <summary>
+            Name for the OrExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OrKeyword">
+            <summary>
+            Name for the OrKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OuterKeyword">
+            <summary>
+            Name for the OuterKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OutKeyword">
+            <summary>
+            Name for the OutKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OutputClause">
+            <summary>
+            Name for the OutputClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OutputKeyword">
+            <summary>
+            Name for the OutputKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OverKeyword">
+            <summary>
+            Name for the OverKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.OwnerKeyword">
+            <summary>
+            Name for the OwnerKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PadIndexKeyword">
+            <summary>
+            Name for the PadIndexKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PageKeyword">
+            <summary>
+            Name for the PageKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PagLockKeyword">
+            <summary>
+            Name for the PagLockKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ParameterizationKeyword">
+            <summary>
+            Name for the ParameterizationKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ParenthesisExpression">
+            <summary>
+            Name for the ParenthesisExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PartitionsKeyword">
+            <summary>
+            Name for the PartitionsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PathKeyword">
+            <summary>
+            Name for the PathKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PercentEqualsToken">
+            <summary>
+            Name for the PercentEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PercentKeyword">
+            <summary>
+            Name for the PercentKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PercentToken">
+            <summary>
+            Name for the PercentToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PivotColumn">
+            <summary>
+            Name for the PivotColumn symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PivotedTableSource">
+            <summary>
+            Name for the PivotedTableSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PivotKeyword">
+            <summary>
+            Name for the PivotKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PlanKeyword">
+            <summary>
+            Name for the PlanKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PlusEqualsToken">
+            <summary>
+            Name for the PlusEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PlusExpression">
+            <summary>
+            Name for the PlusExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PlusToken">
+            <summary>
+            Name for the PlusToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PrecisionKeyword">
+            <summary>
+            Name for the PrecisionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PrimaryKeyword">
+            <summary>
+            Name for the PrimaryKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PrintKeyword">
+            <summary>
+            Name for the PrintKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PrintStatement">
+            <summary>
+            Name for the PrintStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ProcedureKeyword">
+            <summary>
+            Name for the ProcedureKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ProcedureOption">
+            <summary>
+            Name for the ProcedureOption symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ProcedureOptionsClause">
+            <summary>
+            Name for the ProcedureOptionsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ProcedureParameter">
+            <summary>
+            Name for the ProcedureParameter symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ProcedureReference">
+            <summary>
+            Name for the ProcedureReference symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ProcKeyword">
+            <summary>
+            Name for the ProcKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PropertyFieldOrMethod">
+            <summary>
+            Name for the PropertyFieldOrMethod symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PropertyKeyword">
+            <summary>
+            Name for the PropertyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.PublicKeyword">
+            <summary>
+            Name for the PublicKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.QualifiedJoin">
+            <summary>
+            Name for the QualifiedJoin symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.QueryDerivedTable">
+            <summary>
+            Name for the QueryDerivedTable symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.QueryExpression">
+            <summary>
+            Name for the QueryExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.QueryParenthesis">
+            <summary>
+            Name for the QueryParenthesis symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.QuerySpecification">
+            <summary>
+            Name for the QuerySpecification symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RaiseErrorKeyword">
+            <summary>
+            Name for the RaiseErrorKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RawKeyword">
+            <summary>
+            Name for the RawKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReadCommittedKeyword">
+            <summary>
+            Name for the ReadCommittedKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReadCommittedLockKeyword">
+            <summary>
+            Name for the ReadCommittedLockKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReadKeyword">
+            <summary>
+            Name for the ReadKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReadOnlyForClause">
+            <summary>
+            Name for the ReadOnlyForClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReadOnlyKeyword">
+            <summary>
+            Name for the ReadOnlyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReadPastKeyword">
+            <summary>
+            Name for the ReadPastKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReadTextKeyword">
+            <summary>
+            Name for the ReadTextKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReadUncommittedKeyword">
+            <summary>
+            Name for the ReadUncommittedKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReadUnderscoreOnlyKeyword">
+            <summary>
+            Name for the ReadUnderscoreOnlyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RealKeyword">
+            <summary>
+            Name for the RealKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RecompileKeyword">
+            <summary>
+            Name for the RecompileKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReconfigureKeyword">
+            <summary>
+            Name for the ReconfigureKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReferencesKeyword">
+            <summary>
+            Name for the ReferencesKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RemoteKeyword">
+            <summary>
+            Name for the RemoteKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RepeatableKeyword">
+            <summary>
+            Name for the RepeatableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RepeatableReadKeyword">
+            <summary>
+            Name for the RepeatableReadKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RepeatSeedClause">
+            <summary>
+            Name for the RepeatSeedClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReplicationKeyword">
+            <summary>
+            Name for the ReplicationKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RestoreKeyword">
+            <summary>
+            Name for the RestoreKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RestrictKeyword">
+            <summary>
+            Name for the RestrictKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ReturnKeyword">
+            <summary>
+            Name for the ReturnKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RevertKeyword">
+            <summary>
+            Name for the RevertKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RevokeKeyword">
+            <summary>
+            Name for the RevokeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RightKeyword">
+            <summary>
+            Name for the RightKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RobustKeyword">
+            <summary>
+            Name for the RobustKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RollbackKeyword">
+            <summary>
+            Name for the RollbackKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RollupGroupingSpecification">
+            <summary>
+            Name for the RollupGroupingSpecification symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RollupKeyword">
+            <summary>
+            Name for the RollupKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RootKeyword">
+            <summary>
+            Name for the RootKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RowCountKeyword">
+            <summary>
+            Name for the RowCountKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RowGuidColKeyword">
+            <summary>
+            Name for the RowGuidColKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RowKeyword">
+            <summary>
+            Name for the RowKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RowLockKeyword">
+            <summary>
+            Name for the RowLockKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RowsKeyword">
+            <summary>
+            Name for the RowsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RowsPerBatchKeyword">
+            <summary>
+            Name for the RowsPerBatchKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RowValue">
+            <summary>
+            Name for the RowValue symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.RuleKeyword">
+            <summary>
+            Name for the RuleKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SampleNumberClause">
+            <summary>
+            Name for the SampleNumberClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SaveKeyword">
+            <summary>
+            Name for the SaveKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SchemaDeclarationItem">
+            <summary>
+            Name for the SchemaDeclarationItem symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SchemaKeyword">
+            <summary>
+            Name for the SchemaKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SchemaObjectDataModificationTarget">
+            <summary>
+            Name for the SchemaObjectDataModificationTarget symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SchemaObjectName">
+            <summary>
+            Name for the SchemaObjectName symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SchemaObjectTableSource">
+            <summary>
+            Name for the SchemaObjectTableSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ScrollKeyword">
+            <summary>
+            Name for the ScrollKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ScrollLocksKeyword">
+            <summary>
+            Name for the ScrollLocksKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SecurityAuditKeyword">
+            <summary>
+            Name for the SecurityAuditKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SelectColumn">
+            <summary>
+            Name for the SelectColumn symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SelectKeyword">
+            <summary>
+            Name for the SelectKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SelectStatement">
+            <summary>
+            Name for the SelectStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SelfKeyword">
+            <summary>
+            Name for the SelfKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SemanticKeyphraseTableKeyword">
+            <summary>
+            Name for the SemanticKeyphraseTableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SemanticSimilarityDetailsTableKeyword">
+            <summary>
+            Name for the SemanticSimilarityDetailsTableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SemanticSimilarityTableKeyword">
+            <summary>
+            Name for the SemanticSimilarityTableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SemicolonToken">
+            <summary>
+            Name for the SemicolonToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SerializableKeyword">
+            <summary>
+            Name for the SerializableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SessionUserKeyword">
+            <summary>
+            Name for the SessionUserKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SetKeyword">
+            <summary>
+            Name for the SetKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SetLocalVariableStatement">
+            <summary>
+            Name for the SetLocalVariableStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SetsKeyword">
+            <summary>
+            Name for the SetsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SetUserKeyword">
+            <summary>
+            Name for the SetUserKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ShutdownKeyword">
+            <summary>
+            Name for the ShutdownKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SimpleBulkInsertOption">
+            <summary>
+            Name for the SimpleBulkInsertOption symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SimpleKeyword">
+            <summary>
+            Name for the SimpleKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SimpleOptimizerHint">
+            <summary>
+            Name for the SimpleOptimizerHint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SimpleTableHint">
+            <summary>
+            Name for the SimpleTableHint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SingleBlobKeyword">
+            <summary>
+            Name for the SingleBlobKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SingleClobKeyword">
+            <summary>
+            Name for the SingleClobKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SingleLineComment">
+            <summary>
+            Name for the SingleLineComment symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SingleNclobKeyword">
+            <summary>
+            Name for the SingleNclobKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SlashEqualsToken">
+            <summary>
+            Name for the SlashEqualsToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SlashToken">
+            <summary>
+            Name for the SlashToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SmallDatetimeKeyword">
+            <summary>
+            Name for the SmallDatetimeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SmallintKeyword">
+            <summary>
+            Name for the SmallintKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SmallmoneyKeyword">
+            <summary>
+            Name for the SmallmoneyKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SomeExpression">
+            <summary>
+            Name for the SomeExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SomeKeyword">
+            <summary>
+            Name for the SomeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SortInTempDBKeyword">
+            <summary>
+            Name for the SortInTempDBKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SqlDataType">
+            <summary>
+            Name for the SqlDataType symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SqlvariantKeyword">
+            <summary>
+            Name for the SqlvariantKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StatementList">
+            <summary>
+            Name for the StatementList symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StaticKeyword">
+            <summary>
+            Name for the StaticKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StatisticsKeyword">
+            <summary>
+            Name for the StatisticsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StatisticsNoRecomputeKeyword">
+            <summary>
+            Name for the StatisticsNoRecomputeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StdevKeyword">
+            <summary>
+            Name for the StdevKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StdevpKeyword">
+            <summary>
+            Name for the StdevpKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StringLiteral">
+            <summary>
+            Name for the StringLiteral symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StringLiteralContent">
+            <summary>
+            Name for the StringLiteralContent symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StringLiteralDoubleQuoteContent">
+            <summary>
+            Name for the StringLiteralDoubleQuoteContent symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StringLiteralDoubleQuoteEnd">
+            <summary>
+            Name for the StringLiteralDoubleQuoteEnd symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StringLiteralDoubleQuoteStart">
+            <summary>
+            Name for the StringLiteralDoubleQuoteStart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StringLiteralDoubleQuoteToken">
+            <summary>
+            Name for the StringLiteralDoubleQuoteToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StringLiteralEnd">
+            <summary>
+            Name for the StringLiteralEnd symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StringLiteralStart">
+            <summary>
+            Name for the StringLiteralStart symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.StringLiteralToken">
+            <summary>
+            Name for the StringLiteralToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.Subquery">
+            <summary>
+            Name for the Subquery symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SubtractExpression">
+            <summary>
+            Name for the SubtractExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SumKeyword">
+            <summary>
+            Name for the SumKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SystemKeyword">
+            <summary>
+            Name for the SystemKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.SystemUserKeyword">
+            <summary>
+            Name for the SystemUserKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TableAlias">
+            <summary>
+            Name for the TableAlias symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TableHintsOptimizerHint">
+            <summary>
+            Name for the TableHintsOptimizerHint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TableKeyword">
+            <summary>
+            Name for the TableKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TableSampleClause">
+            <summary>
+            Name for the TableSampleClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TableSampleKeyword">
+            <summary>
+            Name for the TableSampleKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TabLockKeyword">
+            <summary>
+            Name for the TabLockKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TabLockxKeyword">
+            <summary>
+            Name for the TabLockxKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TextKeyword">
+            <summary>
+            Name for the TextKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TextSizeKeyword">
+            <summary>
+            Name for the TextSizeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ThenKeyword">
+            <summary>
+            Name for the ThenKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ThesaurusKeyword">
+            <summary>
+            Name for the ThesaurusKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TiesKeyword">
+            <summary>
+            Name for the TiesKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TildeToken">
+            <summary>
+            Name for the TildeToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TimeKeyword">
+            <summary>
+            Name for the TimeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TimestampKeyword">
+            <summary>
+            Name for the TimestampKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TinyintKeyword">
+            <summary>
+            Name for the TinyintKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ToKeyword">
+            <summary>
+            Name for the ToKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TopKeyword">
+            <summary>
+            Name for the TopKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TopRowFilter">
+            <summary>
+            Name for the TopRowFilter symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TranKeyword">
+            <summary>
+            Name for the TranKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TransactionKeyword">
+            <summary>
+            Name for the TransactionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TriggerKeyword">
+            <summary>
+            Name for the TriggerKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TrueKeyword">
+            <summary>
+            Name for the TrueKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TruncateKeyword">
+            <summary>
+            Name for the TruncateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TryConvertKeyword">
+            <summary>
+            Name for the TryConvertKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TSEqualKeyword">
+            <summary>
+            Name for the TSEqualKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TSqlBatch">
+            <summary>
+            Name for the TSqlBatch symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TSqlScript">
+            <summary>
+            Name for the TSqlScript symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TypeKeyword">
+            <summary>
+            Name for the TypeKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.TypeWarningKeyword">
+            <summary>
+            Name for the TypeWarningKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UnionAllQueryExpression">
+            <summary>
+            Name for the UnionAllQueryExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UnionKeyword">
+            <summary>
+            Name for the UnionKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UnionQueryExpression">
+            <summary>
+            Name for the UnionQueryExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UniqueConstraint">
+            <summary>
+            Name for the UniqueConstraint symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UniqueIdentifierKeyword">
+            <summary>
+            Name for the UniqueIdentifierKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UniqueKeyword">
+            <summary>
+            Name for the UniqueKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UniqueRowFilter">
+            <summary>
+            Name for the UniqueRowFilter symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UnknownKeyword">
+            <summary>
+            Name for the UnknownKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UnpivotedTableSource">
+            <summary>
+            Name for the UnpivotedTableSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UnpivotKeyword">
+            <summary>
+            Name for the UnpivotKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UnqualifiedJoin">
+            <summary>
+            Name for the UnqualifiedJoin symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UnrecognizedToken">
+            <summary>
+            Name for the UnrecognizedToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UpdateForClause">
+            <summary>
+            Name for the UpdateForClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UpdateKeyword">
+            <summary>
+            Name for the UpdateKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UpdateStatement">
+            <summary>
+            Name for the UpdateStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UpdateTextKeyword">
+            <summary>
+            Name for the UpdateTextKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UpdlockKeyword">
+            <summary>
+            Name for the UpdlockKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UseKeyword">
+            <summary>
+            Name for the UseKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UserDataType">
+            <summary>
+            Name for the UserDataType symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UserDefinedTypeCallTarget">
+            <summary>
+            Name for the UserDefinedTypeCallTarget symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UserDefinedTypePropertyAccess">
+            <summary>
+            Name for the UserDefinedTypePropertyAccess symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UserKeyword">
+            <summary>
+            Name for the UserKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.UseStatement">
+            <summary>
+            Name for the UseStatement symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ValueColumn">
+            <summary>
+            Name for the ValueColumn symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ValuesExpression">
+            <summary>
+            Name for the ValuesExpression symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ValuesInsertSource">
+            <summary>
+            Name for the ValuesInsertSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ValuesKeyword">
+            <summary>
+            Name for the ValuesKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VarbinaryKeyword">
+            <summary>
+            Name for the VarbinaryKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VarcharKeyword">
+            <summary>
+            Name for the VarcharKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VariableDataModificationTarget">
+            <summary>
+            Name for the VariableDataModificationTarget symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VariableFunctionCall">
+            <summary>
+            Name for the VariableFunctionCall symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VariableTableSource">
+            <summary>
+            Name for the VariableTableSource symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VariableToken">
+            <summary>
+            Name for the VariableToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VariableValuePair">
+            <summary>
+            Name for the VariableValuePair symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VarKeyword">
+            <summary>
+            Name for the VarKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VarpKeyword">
+            <summary>
+            Name for the VarpKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.VaryingKeyword">
+            <summary>
+            Name for the VaryingKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ViewKeyword">
+            <summary>
+            Name for the ViewKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.ViewsKeyword">
+            <summary>
+            Name for the ViewsKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WaitForKeyword">
+            <summary>
+            Name for the WaitForKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WeightKeyword">
+            <summary>
+            Name for the WeightKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WhenKeyword">
+            <summary>
+            Name for the WhenKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WhereClause">
+            <summary>
+            Name for the WhereClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WhereKeyword">
+            <summary>
+            Name for the WhereKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WhileKeyword">
+            <summary>
+            Name for the WhileKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WhitespaceToken">
+            <summary>
+            Name for the WhitespaceToken symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WithCommonTableExpressions">
+            <summary>
+            Name for the WithCommonTableExpressions symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WithinKeyword">
+            <summary>
+            Name for the WithinKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WithKeyword">
+            <summary>
+            Name for the WithKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WithTableHintsClause">
+            <summary>
+            Name for the WithTableHintsClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WriteKeyword">
+            <summary>
+            Name for the WriteKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.WriteTextKeyword">
+            <summary>
+            Name for the WriteTextKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.XLockKeyword">
+            <summary>
+            Name for the XLockKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.XmlDataKeyword">
+            <summary>
+            Name for the XmlDataKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.XmlDataType">
+            <summary>
+            Name for the XmlDataType symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.XmlForClause">
+            <summary>
+            Name for the XmlForClause symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.XmlKeyword">
+            <summary>
+            Name for the XmlKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.XmlSchemaKeyword">
+            <summary>
+            Name for the XmlSchemaKeyword symbol.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Documents.Parsing.TSqlLanguage.SymbolNames.XsinilKeyword">
+            <summary>
+            Name for the XsinilKeyword symbol.
+            </summary>
+        </member>
+    </members>
+</doc>

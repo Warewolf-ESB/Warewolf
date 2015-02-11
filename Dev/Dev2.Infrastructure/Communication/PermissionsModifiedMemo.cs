@@ -10,6 +10,7 @@
 */
 
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Services.Security;
 
 namespace Dev2.Communication
@@ -18,8 +19,8 @@ namespace Dev2.Communication
     {
         public PermissionsModifiedMemo()
         {
-            ModifiedPermissions = new List<WindowsGroupPermission>();
+            ModifiedPermissions = new List<IWindowsGroupPermission>();
         }
-        public List<WindowsGroupPermission> ModifiedPermissions { get; set; }
+        public List<IWindowsGroupPermission> ModifiedPermissions { get; set; }
     }
 }

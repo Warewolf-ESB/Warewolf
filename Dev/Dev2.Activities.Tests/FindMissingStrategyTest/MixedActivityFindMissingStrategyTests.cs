@@ -12,7 +12,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities;
-using Dev2.Enums;
+using Dev2.Common.Interfaces;
 using Dev2.Factories;
 using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;

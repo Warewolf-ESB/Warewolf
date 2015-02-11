@@ -9,10 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
@@ -35,23 +38,29 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-           
+
             var serializer = new Dev2JsonSerializer();
-            var itemToAdd = serializer.Deserialize<ServerExplorerItem>(values["itemToAdd"]);
-            Dev2Logger.Log.Info("Add Folder Service." +itemToAdd);
+            var name = (values["name"].ToString());
+            var parentGuid = Guid.Parse(values["parentGuid"].ToString());
+            var id = Guid.Parse((values["id"].ToString()));
+            var parent = ServerExplorerRepo.Find(parentGuid);
+            var itemToAdd = new ServerExplorerItem(name, id, ResourceType.Folder, new List<IExplorerItem>(), Permissions.Contribute, String.IsNullOrEmpty(parent.ResourcePath) ? name : parent.ResourcePath + "\\" + name, "", "");
+
+            Dev2Logger.Log.Info("Add Folder Service." + itemToAdd);
             itemToAdd.Permissions = Permissions.Contribute;
-            if(itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
+            if (itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
             {
                 itemToAdd.ResourcePath = itemToAdd.ResourcePath.Remove(0, 5);
             }
 
             var item = ServerExplorerRepo.AddItem(itemToAdd, theWorkspace.ID);
+            parent.Children.Add(itemToAdd);
             return serializer.SerializeToBuilder(item);
         }
 
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToAdd ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><name ColumnIODirection=\"Input\"/><parentGuid ColumnIODirection=\"Input\"/><id ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
             var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 

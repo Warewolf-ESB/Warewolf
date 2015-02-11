@@ -1,0 +1,1721 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.DataPresenter.WordWriter.v14.2</name>
+    </assembly>
+    <members>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+        <member name="M:InternalDynamicResourceString.#ctor(Infragistics.Shared.ResourceCustomizer,System.Globalization.CultureInfo,System.String,System.Object[])">
+            <summary>
+            This constructor is for internal use only.
+            </summary>
+        </member>
+        <member name="M:InternalDynamicResourceString.GetStringFromResource(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            For internal use only.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter">
+            <summary>
+            Provides functionality for exporting <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> derived controls to Microsoft Word.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportDurationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportDuration"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportIntervalProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportInterval"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.CellSettingsForDataRecordProperty">
+            <summary>
+            CellSettingsForDataRecord Attached Dependency Property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.GetCellSettingsForDataRecord(System.Windows.DependencyObject)">
+            <summary>
+            Returns the format settings applied to Word Table Cell that represents a given field.
+            </summary>
+            <remarks>
+            <p class="body">All the word cells that are associated with a given <see cref="T:Infragistics.Windows.DataPresenter.DataRecord"/> will use these settings. To affect all 
+            DataRecords through out the control you can set this property on the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>. To affect all the 
+            DataRecords for a given <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>. To 
+            affect cells for a specific <see cref="T:Infragistics.Windows.DataPresenter.Field"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/> of that Field.
+            </p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the Field's settings then the 
+            FieldLayout's FieldSettings and lastly by the DataPresenter's FieldSettings.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SetCellSettingsForDataRecord(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings)">
+            <summary>
+            Sets the format settings applied to a <see cref="T:Infragistics.Windows.DataPresenter.Cell"/> when exported to word.
+            </summary>
+            <remarks>
+            <p class="body">All the word cells that are associated with a given <see cref="T:Infragistics.Windows.DataPresenter.DataRecord"/> will use these settings. To affect all 
+            DataRecords through out the control you can set this property on the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>. To affect all the 
+            DataRecords for a given <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>. To 
+            affect cells for a specific <see cref="T:Infragistics.Windows.DataPresenter.Field"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/> of that Field.
+            </p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the Field's settings then the 
+            FieldLayout's FieldSettings and lastly by the DataPresenter's FieldSettings.</p>
+            </remarks>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.CellSettingsForExpandableFieldRecordProperty">
+            <summary>
+            CellSettingsForExpandableFieldRecord Attached Dependency Property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.GetCellSettingsForExpandableFieldRecord(System.Windows.DependencyObject)">
+            <summary>
+            Returns the format settings applied to Word Table Cell that represents an <see cref="T:Infragistics.Windows.DataPresenter.ExpandableFieldRecord"/> header.
+            </summary>
+            <remarks>
+            <p class="body">All the word cells that are associated with a given <see cref="T:Infragistics.Windows.DataPresenter.ExpandableFieldRecord"/> will use these settings. To affect all 
+            ExpandableFieldRecords through out the control you can set this property on the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>. To affect all the 
+            ExpandableFieldRecords for a given parent <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/> (i.e. for all expandable field record headers that are children of a given field 
+            layout), you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>. To affect cells for a specific <see cref="P:Infragistics.Windows.DataPresenter.ExpandableFieldRecord.Field"/>, 
+            you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/> of that Field.</p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the Field's settings then the 
+            FieldLayout's FieldSettings and lastly by the DataPresenter's FieldSettings.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SetCellSettingsForExpandableFieldRecord(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings)">
+            <summary>
+            Sets the format settings applied to a <see cref="T:Infragistics.Windows.DataPresenter.ExpandableFieldRecord"/> when exported to word.
+            </summary>
+            <remarks>
+            <p class="body">All the word cells that are associated with a given <see cref="T:Infragistics.Windows.DataPresenter.ExpandableFieldRecord"/> will use these settings. To affect all 
+            ExpandableFieldRecords through out the control you can set this property on the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>. To affect all the 
+            ExpandableFieldRecords for a given parent <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/> (i.e. for all expandable field record headers that are children of a given field 
+            layout), you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>. To affect cells for a specific <see cref="P:Infragistics.Windows.DataPresenter.ExpandableFieldRecord.Field"/>, 
+            you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/> of that Field.</p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the Field's settings then the 
+            FieldLayout's FieldSettings and lastly by the DataPresenter's FieldSettings.</p>
+            </remarks>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.CellSettingsForGroupByRecordProperty">
+            <summary>
+            CellSettingsForGroupByRecord Attached Dependency Property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.GetCellSettingsForGroupByRecord(System.Windows.DependencyObject)">
+            <summary>
+            Returns the format settings applied to Word Table Cells that represents a <see cref="T:Infragistics.Windows.DataPresenter.GroupByRecord"/>.
+            </summary>
+            <remarks>
+            <p class="body">All the word cells that are associated with a given GroupByRecord will use these settings including summaries within 
+            the GroupByRecord. To affect all GroupByRecords through out the control you can set this property on the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>. To affect all the 
+            GroupByRecords for a given <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>. To 
+            affect GroupByRecords grouped for a specific <see cref="P:Infragistics.Windows.DataPresenter.GroupByRecord.GroupByField"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/> 
+            of that Field.
+            </p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the Field's settings then the 
+            FieldLayout's FieldSettings and lastly by the DataPresenter's FieldSettings.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SetCellSettingsForGroupByRecord(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings)">
+            <summary>
+            Sets the format settings applied to Word Table Cells that represents a <see cref="T:Infragistics.Windows.DataPresenter.GroupByRecord"/>.
+            </summary>
+            <remarks>
+            <p class="body">All the word cells that are associated with a given GroupByRecord will use these settings including summaries within 
+            the GroupByRecord. To affect all GroupByRecords through out the control you can set this property on the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>. To affect all the 
+            GroupByRecords for a given <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>. To 
+            affect GroupByRecords grouped for a specific <see cref="P:Infragistics.Windows.DataPresenter.GroupByRecord.GroupByField"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/>.
+            </p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the Field's settings then the 
+            FieldLayout's FieldSettings and lastly by the DataPresenter's FieldSettings.</p>
+            </remarks>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.CellSettingsForLabelProperty">
+            <summary>
+            CellSettingsForLabel Attached Dependency Property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.GetCellSettingsForLabel(System.Windows.DependencyObject)">
+            <summary>
+            Returns the format settings applied to a <see cref="P:Infragistics.Windows.DataPresenter.Field.Label"/> when exported to word.
+            </summary>
+            <remarks>
+            <p class="body">All the word cells within a header record and all the labels within a record when the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.LabelLocationResolved"/> 
+            is <b>InCells</b> will use these settings. To affect all labels through out the control you can set this property on the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>. 
+            To affect all the labels for a given <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>. To 
+            affect labels for a specific <see cref="T:Infragistics.Windows.DataPresenter.Field"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/> of that Field.
+            </p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the Field's settings then the 
+            FieldLayout's FieldSettings and lastly by the DataPresenter's FieldSettings.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SetCellSettingsForLabel(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings)">
+            <summary>
+            Sets the format settings applied to a <see cref="P:Infragistics.Windows.DataPresenter.Field.Label"/> when exported to word.
+            </summary>
+            <remarks>
+            <p class="body">All the word cells within a header record and all the labels within a record when the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.LabelLocationResolved"/> 
+            is <b>InCells</b> will use these settings. To affect all labels through out the control you can set this property on the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>. 
+            To affect all the labels for a given <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>. To 
+            affect labels for a specific <see cref="T:Infragistics.Windows.DataPresenter.Field"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/> of that Field.
+            </p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the Field's settings then the 
+            FieldLayout's FieldSettings and lastly by the DataPresenter's FieldSettings.</p>
+            </remarks>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.CellSettingsForSummaryRecordProperty">
+            <summary>
+            CellSettingsForSummaryRecord Attached Dependency Property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.GetCellSettingsForSummaryRecord(System.Windows.DependencyObject)">
+            <summary>
+            Returns the format settings applied to Word Table Cells that represents a <see cref="T:Infragistics.Windows.DataPresenter.SummaryRecord"/>.
+            </summary>
+            <remarks>
+            <p class="body">All the word cells that are associated with a given SummaryRecord will use these settings. To affect all 
+            SummaryRecords through out the control you can set this property on the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>. To affect all the 
+            SummaryRecords for a given <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>, you can set this property on the <see cref="P:Infragistics.Windows.DataPresenter.FieldLayout.FieldSettings"/>. To 
+            affect SummaryRecords positioned for a specific <see cref="P:Infragistics.Windows.DataPresenter.SummaryDefinition.PositionFieldName"/>, you can set this property on 
+            the <see cref="P:Infragistics.Windows.DataPresenter.Field.Settings"/> of that Field.
+            </p>
+            <p class="note"><b>Note:</b> This only affects the appearance of SummaryRecord objects and not the 
+            summaries that are displayed within a group by record even when the summaries are aligned to the cells.</p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the Field's settings then the 
+            FieldLayout's FieldSettings and lastly by the DataPresenter's FieldSettings.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SetCellSettingsForSummaryRecord(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings)">
+            <summary>
+            Sets the format settings applied to Word Table Cells that represents a <see cref="T:Infragistics.Windows.DataPresenter.SummaryRecord"/>.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> This only affects the appearance of SummaryRecord objects and not the 
+            summaries that are displayed within a group by record even when the summaries are aligned to the cells.</p>
+            </remarks>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultFontSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultFontSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultParagraphSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultParagraphSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultTableSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultTableSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DocumentSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DocumentSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeExpandedStateProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeExpandedState"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldLayoutSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldLayoutSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeGroupBySettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeGroupBySettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeRecordFiltersProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeRecordFilters"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeRecordVisibilityProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeRecordVisibility"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeSortOrderProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeSortOrder"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeSummariesProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeSummaries"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.FinalSectionSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.FinalSectionSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.IgnoreFieldProperty">
+            <summary>
+            IgnoreField Attached Dependency Property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.GetIgnoreField(System.Windows.DependencyObject)">
+            <summary>
+            Gets the IgnoreField property.  This dependency property indicates whether the specified field should be collapsed/excluded from an export to Word using the DataPresenterWordWriter.
+            </summary>
+            <remarks>
+            <para class="body">By default all fields that are displayed within the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> being exported are included in the 
+            output. Setting this property to false for a given <see cref="T:Infragistics.Windows.DataPresenter.Field"/> will cause the export to set the <see cref="P:Infragistics.Windows.DataPresenter.Field.Visibility"/> to 
+            collapsed when the field is exported. In addition, any summaries, sorted fields and filter references are removed from the containing 
+            <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>.</para>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SetIgnoreField(System.Windows.DependencyObject,System.Nullable{System.Boolean})">
+            <summary>
+            Sets the IgnoreField property.  This dependency property indicates whether the specified field should be collapsed/exclude from an export to Word using the DataPresenterWordWriter.
+            </summary>
+            <remarks>
+            <para class="body">By default all fields that are displayed within the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> being exported are included in the 
+            output. Setting this property to false for a given <see cref="T:Infragistics.Windows.DataPresenter.Field"/> will cause the export to set the <see cref="P:Infragistics.Windows.DataPresenter.Field.Visibility"/> to 
+            collapsed when the field is exported. In addition, any summaries, sorted fields and filter references are removed from the containing 
+            <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>.</para>
+            </remarks>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.IsExportingProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.IsExporting"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ShowAsyncExportStatusProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ShowAsyncExportStatus"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.TableSettingsForFieldLayoutProperty">
+            <summary>
+            TableSettingsForFieldLayout Attached Dependency Property
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.GetTableSettingsForFieldLayout(System.Windows.DependencyObject)">
+            <summary>
+            Returns the format settings applied to a <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/> when exported to word.
+            </summary>
+            <remarks>
+            <p class="body">This property provides the settings applied to a Table created in the word export for a given <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>.</p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the FieldLayout's Settings and 
+            lastly by the DataPresenter's FieldLayoutSettings.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SetTableSettingsForFieldLayout(System.Windows.DependencyObject,Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings)">
+            <summary>
+            Sets the format settings applied to a <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/> when exported to word.
+            </summary>
+            <remarks>
+            <p class="body">This property provides the settings applied to a Table created in the word export for a given <see cref="T:Infragistics.Windows.DataPresenter.FieldLayout"/>.</p>
+            <p class="note"><b>Note:</b> The settings for these properties will be merged together giving precedence to the FieldLayout's Settings and 
+            lastly by the DataPresenter's FieldLayoutSettings.</p>
+            </remarks>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.CancelExport(Infragistics.Windows.DataPresenter.DataPresenterBase)">
+            <summary>
+            Cancels any asynchronous export operations for the specified <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> that were initiated by this instance.
+            </summary>
+            <remarks>
+            <p class="body">An export operation may be canceled by handling the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.InitializeRecord"/> event and setting the 
+            <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs.TerminateExport"/> to true. However, for an asynchronous export the operation may be 
+            pending while another asynchronous operation is pending or the export may still be preparing the source control. For those 
+            situations this method may be used to cancel the operation.</p>
+            </remarks>
+            <param name="dataPresenter">The datapresenter whose asynchronous export is to be canceled</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,System.String)">
+            <summary>
+            Exports the specified DataPresenter derived control to the specified file.
+            </summary>
+            <param name="dataPresenter">The control whose records are to be exported</param>
+            <param name="fileName">The file to which the Word document should be written.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="dataPresenter"/> and <paramref name="fileName"/> must be non-null values.</exception>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,System.IO.Stream)">
+            <summary>
+            Exports the specified DataPresenter derived control to the specified file.
+            </summary>
+            <param name="dataPresenter">The control whose records are to be exported</param>
+            <param name="stream">The stream to which the Word document should be written.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="dataPresenter"/> and <paramref name="stream"/> must be non-null values.</exception>
+            <exception cref="T:System.InvalidOperationException">The CanWrite of the <paramref name="stream"/> must be true.</exception>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,System.String)">
+            <summary>
+            Asynchronously exports the specified DataPresenter derived control to the specified file.
+            </summary>
+            <param name="dataPresenter">The control whose records are to be exported</param>
+            <param name="fileName">The file to which the Word document should be written.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="dataPresenter"/> and <paramref name="fileName"/> must be non-null values.</exception>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,System.IO.Stream,System.Boolean)">
+            <summary>
+            Asynchronously exports the specified DataPresenter derived control to the specified file.
+            </summary>
+            <param name="dataPresenter">The control whose records are to be exported</param>
+            <param name="stream">The stream to which the Word document should be written.</param>
+            <param name="closeStream">A boolean indicating whether the <paramref name="stream"/> should be explicitly closed after the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnding"/> event has been raised.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="dataPresenter"/> and <paramref name="stream"/> must be non-null values.</exception>
+            <exception cref="T:System.InvalidOperationException">The CanWrite of the <paramref name="stream"/> must be true.</exception>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.OnExportStarted(Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportStarted"/> event.
+            </summary>
+            <param name="e">Provides data for the event.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.OnCellExporting(Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.CellExporting"/> event.
+            </summary>
+            <param name="e">Provides data for the event.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.OnExportEnding(Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnding"/> event.
+            </summary>
+            <param name="e">Provides data for the event.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.OnExportEnded(Infragistics.Windows.DataPresenter.WordWriter.ExportEndedEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnded"/> event.
+            </summary>
+            <param name="e">Provides data for the event.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.OnInitializeRecord(Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.InitializeRecord"/> event.
+            </summary>
+            <param name="e">Provides data for the event.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.OnLabelExporting(Infragistics.Windows.DataPresenter.WordWriter.LabelExportingEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.LabelExporting"/> event.
+            </summary>
+            <param name="e">Provides data for the event.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.OnSummaryResultsExporting(Infragistics.Windows.DataPresenter.WordWriter.SummaryResultsExportingEventArgs)">
+            <summary>
+            Used to invoke the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SummaryResultsExporting"/> event.
+            </summary>
+            <param name="e">Provides data for the event.</param>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportDuration">
+            <summary>
+            Returns or sets the amount of time that should be spent processing the export each time the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportInterval"/> elapses.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">The TimeSpan must be greater than 0.</exception>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportDurationProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportInterval"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ShowAsyncExportStatus"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,System.String)"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,System.IO.Stream,System.Boolean)"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportInterval">
+            <summary>
+            Returns or sets the amount of time to wait after performing an asynchronous export for the amount of time specified by the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportDuration"/>.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">The TimeSpan must be greater than 0.</exception>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportIntervalProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportDuration"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ShowAsyncExportStatus"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,System.String)"/>
+            <seealso cref="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportAsync(Infragistics.Windows.DataPresenter.DataPresenterBase,System.IO.Stream,System.Boolean)"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultFontSettings">
+            <summary>
+            Returns/sets an object that is used to initialize the <see cref="P:Infragistics.Documents.Word.WordDocumentWriter.DefaultFont"/> when the exporter creates the writer.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultFontSettingsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.WordDocumentWriter.DefaultFont"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultParagraphSettings">
+            <summary>
+            Returns/sets an object that is used to initialize the <see cref="P:Infragistics.Documents.Word.WordDocumentWriter.DefaultTableProperties"/> when the exporter creates the writer.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultParagraphSettingsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.WordDocumentWriter.DefaultTableProperties"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultTableSettings">
+            <summary>
+            Returns/sets an object that is used to initialize the <see cref="P:Infragistics.Documents.Word.WordDocumentWriter.DefaultTableProperties"/> when the exporter creates the writer.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultTableSettingsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.WordDocumentWriter.DefaultTableProperties"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DocumentSettings">
+            <summary>
+            Returns/sets an object that is used to initialize the <see cref="P:Infragistics.Documents.Word.WordDocumentWriter.DocumentProperties"/> when the exporter creates the writer.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DocumentSettingsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.WordDocumentWriter.DocumentProperties"/>
+            <seealso cref="T:Infragistics.Documents.Word.WordDocumentProperties"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeExpandedState">
+            <summary>
+            Returns/sets a value indicating whether the expanded state of the source records will be copied to the records being exported.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeExpandedStateProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldLayoutSettings">
+            <summary>
+            Returns/sets a boolean indicating whether to copy the <see cref="T:Infragistics.Windows.DataPresenter.FieldLayoutSettings"/> from the control being exported.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldLayoutSettingsProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldSettings"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldSettings">
+            <summary>
+            Returns/sets a boolean indicating whether to copy the <see cref="T:Infragistics.Windows.DataPresenter.FieldSettings"/>  from the control being exported.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldSettingsProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeFieldLayoutSettings"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeGroupBySettings">
+            <summary>
+            Returns/sets a boolean indicating whether to copy the GroupBy state of the fields from the control being exported.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeGroupBySettingsProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeRecordFilters">
+            <summary>
+            Returns/sets a boolean indicating whether to copy the RecordFilter state of the fields from the control being exported.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeRecordFiltersProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeRecordVisibility">
+            <summary>
+            Returns/sets a boolean indicating whether to copy the Visibility setting of the records from the control being exported.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeRecordVisibilityProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeSortOrder">
+            <summary>
+            Returns/sets a boolean indicating whether to copy the sorted fields from the control being exported.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeSortOrderProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeSummaries">
+            <summary>
+            Returns/sets a boolean indicating whether to copy the summaries of the FieldLayouts from the control being exported.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExcludeSummariesProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.FinalSectionSettings">
+            <summary>
+            Returns/sets an object that is used to initialize the <see cref="P:Infragistics.Documents.Word.WordDocumentWriter.FinalSectionProperties"/> when the exporter creates the writer.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.FinalSectionSettingsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.WordDocumentWriter.FinalSectionProperties"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.IsExporting">
+            <summary>
+            Returns a boolean indicating if the exporter is in the process of an export operation.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.IsExportingProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ShowAsyncExportStatus">
+            <summary>
+            Returns or sets a value that indicates whether a control containing the export status is displayed to the end user while an asynchronous export is in progress.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ShowAsyncExportStatusProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportInterval"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.AsyncExportDuration"/>
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportStarted">
+            <summary>
+            Occurs at the beginning of the export process.  The <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs.ExportControl"/> has been initialized but the <see cref="P:Infragistics.Windows.DataPresenter.DataPresenterBase.DataSource"/> has not yet been set.
+            </summary>
+            <remarks>
+            <p class="body">The <i>ExportControl</i> argument returns a reference to the cloned object that is about to be exported.</p>        
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.CellExporting">
+            <summary>
+            Occurs when a <see cref="T:Infragistics.Windows.DataPresenter.Cell"/> of a <see cref="T:Infragistics.Windows.DataPresenter.DataRecord"/> is about to be written to the Word document.
+            </summary>
+            <remarks>
+            <p class="body">This event provides an opportunity to change the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Value"/> that will 
+            written out for the specified cell.</p>
+            </remarks>
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnding">
+            <summary>
+            Occurs at the end of the export process.
+            </summary>
+            <remarks>
+            <p class="body">The ExportEnding event is invoked when the export process has completed to give the developer 
+            an opportunity to manipulate the Writer being used. This is particularly important when using an 
+            overload of the Export method that takes a filename as the file will be saved after the ExportEnding is complete 
+            but before the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnded"/>. Also, since the file will not have been created until after the ExportEnding, 
+            if you wanted to copy the file to another location or display the file to the end user, the ExportEnded event should be used to do that.</p>
+            <p class="body">The <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs.Canceled"/> property can be used to determine if the export operation was canceled.</p>
+            <p class="note"><b>Note:</b> The <see cref="M:Infragistics.Documents.Word.WordDocumentWriter.EndDocument(System.Boolean)"/> of the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs.Writer"/> will be invoked after this event is raised if the DataPresenterWordWriter created the writer.</p>
+            </remarks>   
+            <seealso cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnded"/>
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnded">
+            <summary>
+            Occurs after the export process has completed.
+            </summary>
+            <remarks>
+            <p class="body">The ExportEnded event is raised after the export process has been completed. If an overload of 
+            the Export method that accepts a filename was used, then the file would be available at this point since the file 
+            is saved after the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnding"/> event has been completed but before the ExportEnded. Therefore any 
+            manipulations of the Writer should be done in the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnding"/> event.</p>
+            </remarks>        
+            <seealso cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnding"/>
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.InitializeRecord">
+            <summary>
+            Occurs when a record is about to be processed.
+            </summary>
+            <remarks>
+            <p class="body">The <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs"/> exposes properties that can be used to prevent the current record, its 
+            descendants or its siblings from being exported. The <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs.TerminateExport"/> property can be 
+            set to true to end the export operation.</p>
+            </remarks>        
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.LabelExporting">
+            <summary>
+            Occurs when the <see cref="P:Infragistics.Windows.DataPresenter.Field.Label"/> of a <see cref="T:Infragistics.Windows.DataPresenter.Field"/> is about to be written to the Word document.
+            </summary>
+            <remarks>
+            <p class="body">This event provides an opportunity to change the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Value"/> that will 
+            written out for the specified Field label.</p>
+            </remarks>
+        </member>
+        <member name="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SummaryResultsExporting">
+            <summary>
+            Occurs when one or more <see cref="T:Infragistics.Windows.DataPresenter.SummaryResult"/> instances are being written to the Word document.
+            </summary>
+            <remarks>
+            <p class="body">This event provides an opportunity to change the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Value"/> that will 
+            written out based upon the specified <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.SummaryResultsExportingEventArgs.SummaryResults"/>. The results are aggregated 
+            together for a given <see cref="T:Infragistics.Windows.DataPresenter.SummaryRecord"/> or <see cref="T:Infragistics.Windows.DataPresenter.GroupByRecord"/> based upon the resolved SummaryPosition. For 
+            example the event will be raised once for all summaries within a SummaryRecord whose SummaryPosition is set to Left, Center or 
+            Right. It will also be raised for each Field that has summaries positioned based on the Field location.</p>
+            <p class="note"><b>Note:</b> The event is not raised for any position for which there are no summaries.</p>
+            </remarks>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphLineSpacingRule">
+            <summary>
+            Enumeration used to indicate the type of line spacing in a paragraph.
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphLineSpacingRule.Auto">
+            <summary>
+            Specifies that the spacing between lines in a paragraph is expressed as a multiple of the line height for the paragraph.
+            </summary>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.LineSpacingAuto"/>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphLineSpacingRule.AtLeast">
+            <summary>
+            Specifies that the spacing between lines in a paragraph is at least the specified value.
+            </summary>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.LineSpacingMinimum"/>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphLineSpacingRule.Exact">
+            <summary>
+            Specifies that the spacing between lines in a paragraph is exactly the specified value.
+            </summary>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.LineSpacingExact"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs">
+            <summary>
+            Event arguments for the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportStarted"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs.#ctor(Infragistics.Documents.Word.WordDocumentWriter,Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Windows.DataPresenter.DataPresenterBase)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs"/>
+            </summary>
+            <param name="writer">The writer being used for the exporter operation.</param>
+            <param name="source">The control being exported</param>
+            <param name="exportControl">The copy of the <paramref name="source"/> that is being used for the export operation.</param>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs.ExportControl">
+            <summary>
+            Returns the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> created for the export operation whose settings were initialized based on the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs.Source"/> control provided to the <see cref="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,System.IO.Stream)"/> method.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note: </b>The DataPresenter has been intialized from the original
+            <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs.Source"/>, but the <see cref="P:Infragistics.Windows.DataPresenter.DataPresenterBase.DataSource"/> property has not been copied.  
+            Attempting to set the DataSource manually will result in an exception.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs.Source">
+            <summary>
+            Returns the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> passed into the <see cref="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,System.IO.Stream)"/> method.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportStartedEventArgs.Writer">
+            <summary>
+            Returns the writer that will be used to perform the export operation and generate the Word document.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs">
+            <summary>
+            Event arguments for the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnding"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs.#ctor(Infragistics.Documents.Word.WordDocumentWriter,Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Windows.DataPresenter.RecordExportCancellationInfo)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs"/>
+            </summary>
+            <param name="writer">The writer being used for the exporter operation.</param>
+            <param name="source">The control being exported</param>
+            <param name="exportControl">The copy of the <paramref name="source"/> that is being used for the export operation.</param>
+            <param name="cancelInfo">Provides information about the cancellation or is null if the operation completed successfully.</param>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs.CancelInfo">
+            <summary>
+            Returns an object that provides information about action that canceled the export.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs.Canceled">
+            <summary>
+            Returns a boolean indicating if the export operation was canceled.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs.ExportControl">
+            <summary>
+            Returns the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> created for the export operation whose settings were initialized based on the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs.Source"/> control provided to the <see cref="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,System.IO.Stream)"/> method.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs.Source">
+            <summary>
+            Returns the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> passed into the <see cref="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,System.IO.Stream)"/> method.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndingEventArgs.Writer">
+            <summary>
+            Returns the writer that will be used to perform the export operation and generate the Word document.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.ExportEndedEventArgs">
+            <summary>
+            Event arguments for the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.ExportEnded"/> event.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.ExportEndedEventArgs.#ctor(Infragistics.Windows.DataPresenter.DataPresenterBase,Infragistics.Windows.DataPresenter.RecordExportCancellationInfo)">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.ExportEndedEventArgs"/>
+            </summary>
+            <param name="source">The control being exported</param>
+            <param name="cancelInfo">Provides information about the cancellation or is null if the operation completed successfully.</param>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndedEventArgs.CancelInfo">
+            <summary>
+            Returns an object that provides information about action that canceled the export.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndedEventArgs.Canceled">
+            <summary>
+            Returns a boolean indicating if the export operation was canceled.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.ExportEndedEventArgs.Source">
+            <summary>
+            Returns the <see cref="T:Infragistics.Windows.DataPresenter.DataPresenterBase"/> passed into the <see cref="M:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.Export(Infragistics.Windows.DataPresenter.DataPresenterBase,System.IO.Stream)"/> method.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs">
+            <summary>
+            Event parameters used for the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.InitializeRecord"/> event.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs.Record">
+            <summary>
+            Returns the record that is going to be exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs.SkipDescendants">
+            <summary>
+            Specifies whether to skip the descendants of the current record.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs.SkipRecord">
+            <summary>
+            Specifies whether to skip the current record.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs.SkipSiblings">
+            <summary>
+            Specifies whether to skip sibling records of the current record.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.InitializeRecordEventArgs.TerminateExport">
+            <summary>
+            Specifies whether to terminate the export process.  The current record will 
+            not be processed.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase">
+            <summary>
+            Base class for an export event involving a value of a record.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.CellSettings">
+            <summary>
+            Returns the resolved settings to be applied to the cell.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Field">
+            <summary>
+            Returns the Field associated with the value being exported or null if there is no field associated with the value.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Record">
+            <summary>
+            Returns the associated Record.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Value">
+            <summary>
+            Returns or sets the value that should be written for the cell.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgs">
+            <summary>
+            Event arguments for the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.CellExporting"/> event
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> The <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Value"/> does not necessarily represent the 
+            <see cref="P:Infragistics.Windows.DataPresenter.Cell.Value"/>. Instead it returns the formatted display text as provided by the ValueEditor associated with 
+            the Field.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgs.Cell">
+            <summary>
+            Returns the cell whose value is being exported.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgs.Record">
+            <summary>
+            Returns the DataRecord whose cell is being exported.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.LabelExportingEventArgs">
+            <summary>
+            Event arguments for the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.LabelExporting"/> event
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Record"/> property returns the 
+            record for which the header is being generated. Depending on setting of the DataPresenter being exported 
+            the header may be separated from the record (e.g. if the ChildRecordsDisplayOrder is BeforeParent.</p>
+            </remarks>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.SummaryResultsExportingEventArgs">
+            <summary>
+            Event arguments for the <see cref="E:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.SummaryResultsExporting"/> event
+            </summary>
+            <remarks>
+            <p class="body">The <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Record"/> property returns the record 
+            associated with the summaries and could be either a <see cref="T:Infragistics.Windows.DataPresenter.GroupByRecord"/> or a 
+            <see cref="T:Infragistics.Windows.DataPresenter.SummaryRecord"/> although it is possible that in future this could return another 
+            type if required.</p>
+            <p class="body">The <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.CellExportingEventArgsBase.Field"/> property represents the 
+            Field with which the summaries are being aligned when the <see cref="P:Infragistics.Windows.DataPresenter.SummaryDefinition.Position"/> 
+            is set to <b>UseSummaryPositionField</b> and will be null for all other cases.</p>
+            </remarks>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.SummaryResultsExportingEventArgs.Position">
+            <summary>
+            Returns an enumeration indicating the position of the summary.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.SummaryResultsExportingEventArgs.SummaryResults">
+            <summary>
+            Returns a read-only collection of the results being output.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.Resources">
+            <summary>
+            Exposes a <see cref="T:Infragistics.Shared.ResourceCustomizer"/> instance for this assembly. 
+            </summary>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.Resources.Customizer"/> 
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.Resources.GetString(System.String,System.Object[])">
+            <summary>
+            Returns the resource string using the specified name and default culture.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.Resources.GetString(System.String)">
+            <summary>
+            Returns the resource string using the specified resource name and default culture. The string is then formatted using the arguments specified.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.Resources.GetDynamicResourceString(System.String)">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.Resources.GetDynamicResourceString(System.String,System.Object[])">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.Resources.GetDynamicResourceString(System.String,System.Object[],System.Globalization.CultureInfo)">
+            <summary>
+            Returns a DynamicResourceString object that tracks customization changes to a resource and raises an event when the resource value is changed.
+            </summary>
+            <param name="name">Name of the string resource to return.</param>
+            <param name="args">Arguments supplied to the string.Format method when formatting the string.</param>
+            <param name="culture">Culture whose resource should loaded. The resource will go through a fallback process to locate the appropriate resources.</param>
+            <returns>A <see cref="T:Infragistics.Shared.DynamicResourceString"/> object to track changes in the resource customizations.</returns>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.SetCustomizedString(System.String,System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetCustomizedString(System.String)"/>
+            <seealso cref="M:Infragistics.Shared.ResourceCustomizer.ResetAllCustomizedStrings"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.Resources.GetObject(System.String)">
+            <summary>
+            Returns the resource object using the specified name.
+            </summary>
+            <param name="name">Name of the resource item</param>
+            <returns>An object containing the specified resource</returns>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.Resources.Customizer">
+            <summary>
+            Returns the <see cref="T:Infragistics.Shared.ResourceCustomizer"/> for this assembly.
+            </summary>
+            <seealso cref="T:Infragistics.Shared.ResourceCustomizer"/> 
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings">
+            <summary>
+            Exposes border settings for table cells when exporting to Word
+            </summary>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.BorderSettings"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.BorderSettings"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.ColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.Color"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.StyleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.Style"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.WidthProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.Width"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.Color">
+            <summary>
+            Returns or sets the color of the borders
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.ColorProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableBorderProperties.Color"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.Style">
+            <summary>
+            Returns or sets the style of the borders
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.StyleProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableBorderProperties.Style"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.Width">
+            <summary>
+            Returns or sets the width of the border in twips.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordBorderSettings.WidthProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableBorderProperties.Width"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase">
+            <summary>
+            Base class for an object that exposes format settings for table cells when exporting to Word
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.BackColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.BackColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.MarginsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.Margins"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.VerticalAlignmentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.VerticalAlignment"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.BackColor">
+            <summary>
+            Returns or sets the background color for the object
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.BackColorProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableCellPropertiesBase.BackColor"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.Margins">
+            <summary>
+            Returns or sets the amount of padding between the cell content and its borders.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.MarginsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableCellPropertiesBase.Margins"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.VerticalAlignment">
+            <summary>
+            Returns or sets a value indicating how the cell content is arranged vertically.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettingsBase.VerticalAlignmentProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableCellPropertiesBase.VerticalAlignment"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableCellSettings">
+            <summary>
+            Exposes settings for the <see cref="P:Infragistics.Documents.Word.WordDocumentWriter.DefaultTableProperties"/>
+            </summary>
+            <seealso cref="T:Infragistics.Documents.Word.DefaultTableProperties"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultTableSettings"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableCellSettings.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableSettings"/>
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings">
+            <summary>
+            Exposes format settings for table cells when exporting to Word
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.BorderSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.BorderSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.FontSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.FontSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.HorizontalAlignmentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.HorizontalAlignment"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.ParagraphSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.ParagraphSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.TextDirectionProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.TextDirection"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.BorderSettings">
+            <summary>
+            Returns or sets settings for the border of the cell.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> Since the DataPresenter is comprised of many table cells for the export it is recommended that 
+            border settings only be applied at the table level or in such a way that this affects a relatively few number of cells.</p>
+            </remarks>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.BorderSettingsProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.BorderSettings"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableCellProperties.BorderProperties"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.FontSettings">
+            <summary>
+            Returns or sets settings for the Font of the cell contents.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.FontSettingsProperty"/>
+            <seealso cref="T:Infragistics.Documents.Word.Font"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.HorizontalAlignment">
+            <summary>
+            Returns or sets a value indicating how the cell content is arranged vertically.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> This property affects the alignment of the parapgraph and is provided as an easy way 
+            of initializing the horizontal alignment of the cell's content without setting the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.ParagraphSettings"/> 
+            property. If the value of the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.Alignment"/> 
+            is set on any of the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.ParagraphSettings"/> when the properties are being resolved then that value will be 
+            taken first even if the HorizontalAlignment was set on the WordCellSettings of a Field's Settings and the Alignment 
+            was set on the ParagraphSettings of a WordCellSettings set on the FieldLayout's FieldSettings for example.</p>
+            </remarks>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.HorizontalAlignmentProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphPropertiesBase.Alignment"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.Alignment"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.ParagraphSettings">
+            <summary>
+            Returns or sets the paragraph settings for the cell contents.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.ParagraphSettingsProperty"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.TextDirection">
+            <summary>
+            Returns or sets the direction of the text flow for the text within the table cell.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.TextDirectionProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableCellProperties.TextDirection"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings.ForeColor">
+            <summary>
+            Returns/sets the default forecolor.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings">
+            <summary>
+            Exposes sections settings for the Word export.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.ApplicationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Application"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.AuthorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Author"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.CategoryProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Category"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.CommentsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Comments"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.CompanyProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Company"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.ComplexScriptCultureProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.ComplexScriptCulture"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.EastAsiaCultureProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.EastAsiaCulture"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.KeywordsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Keywords"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.LatinCultureProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.LatinCulture"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.ManagerProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Manager"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.StatusProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Status"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.SubjectProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Subject"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.TitleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Title"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Application">
+            <summary>
+            Returns or sets the name of the application that created the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.ApplicationProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Application"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Author">
+            <summary>
+            Returns or sets the author of the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.AuthorProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Author"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Category">
+            <summary>
+            Returns or sets the category for the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.CategoryProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Category"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Comments">
+            <summary>
+            Returns or sets the comments for the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.CommentsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Comments"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Company">
+            <summary>
+            Returns or sets the company for the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.CompanyProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Company"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.ComplexScriptCulture">
+            <summary>
+            Returns or sets the language used to check spelling and grammar when processing text runs which contain complex script characters.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.ComplexScriptCultureProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.WordDocumentProperties.ComplexScriptCulture"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.EastAsiaCulture">
+            <summary>
+            Returns or sets the language used to check spelling and grammar when processing text runs which contain East Asian characters.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.EastAsiaCultureProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.WordDocumentProperties.EastAsiaCulture"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Keywords">
+            <summary>
+            Returns or sets the keywords for the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.KeywordsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Keywords"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.LatinCulture">
+            <summary>
+            Returns or sets the language used to check spelling and grammar when processing text runs which contain Latin characters.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.LatinCultureProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.WordDocumentProperties.LatinCulture"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Manager">
+            <summary>
+            Returns or sets the manager for the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.ManagerProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Manager"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Status">
+            <summary>
+            Returns or sets the status for the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.StatusProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Status"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Subject">
+            <summary>
+            Returns or sets the subject for the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.SubjectProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Subject"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.Title">
+            <summary>
+            Returns or sets the title for the document.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDocumentSettings.TitleProperty"/>
+            <seealso cref="P:Infragistics.Documents.Core.OfficeDocumentProperties.Title"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings">
+            <summary>
+            Custom object used to provide font settings for the Word export.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.BoldProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.Bold"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.FontFamilyProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.FontFamily"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.ForeColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.ForeColor"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.ItalicProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.Italic"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.SizeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.Size"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.UnderlineProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.Underline"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.UnderlineColorProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.UnderlineColor"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.Bold">
+            <summary>
+            Returns or sets a value indicating whether the font is bolded
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.BoldProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.Font.Bold"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.FontFamily">
+            <summary>
+            Returns or sets the FontFamily of the font
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.FontFamilyProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.Font.Name"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.ForeColor">
+            <summary>
+            Returns or sets the color of the text
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.ForeColorProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.Font.ForeColor"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.Italic">
+            <summary>
+            Returns or sets a value indicating if the font is italicized.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.ItalicProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.Font.Italic"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.Size">
+            <summary>
+            Returns or sets the size of the font in twips.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.SizeProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.Font.Size"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.Underline">
+            <summary>
+            Returns or sets the type of underline for the font.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.UnderlineProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.Font.Underline"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.UnderlineColor">
+            <summary>
+            Returns or sets the color of the underline.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordFontSettings.UnderlineColorProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.Font.UnderlineColor"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings">
+            <summary>
+            Exposes format settings for table cells when exporting to Word
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.AlignmentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.Alignment"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LeftIndentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LeftIndent"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacingProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacing"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacingRuleProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacingRule"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.RightToLeftProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.RightToLeft"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.RightIndentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.RightIndent"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingAfterProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingAfter"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingBeforeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingBefore"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.Alignment">
+            <summary>
+            Returns or sets the horizontal alignment for the paragraph.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.AlignmentProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphPropertiesBase.Alignment"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LeftIndent">
+            <summary>
+            Returns or sets the amount of indentation from the left margin for the paragraph.
+            </summary>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.RightIndent"/>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LeftIndentProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphPropertiesBase.LeftIndent"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacing">
+            <summary>
+            Returns or sets the amount of vertical spacing that appears between lines of text within the paragraph based on the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacingRule"/>.
+            </summary>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacingRule"/>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacingProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.LineSpacingAuto"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.LineSpacingExact"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.LineSpacingMinimum"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacingRule">
+            <summary>
+            Returns or sets the amount of vertical spacing that appears between lines of text within the paragraph based on the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacingRule"/>.
+            </summary>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacing"/>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LineSpacingRuleProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.LineSpacingAuto"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.LineSpacingExact"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.LineSpacingMinimum"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.RightToLeft">
+            <summary>
+            Returns or sets whether the paragraph is presented in a right to left direction.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.RightToLeftProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.RightToLeft"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.RightIndent">
+            <summary>
+            Returns or sets the amount of indentation from the right margin for the paragraph.
+            </summary>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.LeftIndent"/>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.RightIndentProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.RightIndent"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingAfter">
+            <summary>
+            Returns or sets the amount of spacing below the paragraph.
+            </summary>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingBefore"/>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingAfterProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.SpacingAfter"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingBefore">
+            <summary>
+            Returns or sets the amount of spacing above the paragraph.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingBeforeProperty"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordParagraphSettings.SpacingAfter"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphProperties.SpacingBefore"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings">
+            <summary>
+            Exposes sections settings for the Word export.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageMarginsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageMargins"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageOrientationProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageOrientation"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageSizeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageSize"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PaperCodeProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PaperCode"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageMargins">
+            <summary>
+            Returns or sets the margins for all pages in the section to which the settings are applied.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageMarginsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.SectionProperties.PageMargins"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageOrientation">
+            <summary>
+            Returns or sets the orientation for all the pages in the section to which the settings are applied.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageOrientationProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.SectionProperties.PageOrientation"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageSize">
+            <summary>
+            Returns or sets the size of the pages in the section to which the settings are applied.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PageSizeProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.SectionProperties.PageSize"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PaperCode">
+            <summary>
+            Returns or sets a value which represents a printer specific paper code for the paper type for all pages for the section to which the settings are applied.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordSectionSettings.PaperCodeProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.SectionProperties.PaperCode"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase">
+            <summary>
+            Base class that exposes settings for the Word table related settings used by the <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter"/>
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableSettings"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.AlignmentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.Alignment"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.BorderSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.BorderSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.LeftIndentProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.LeftIndent"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.NestedTableMarginsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.NestedTableMargins"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.Alignment">
+            <summary>
+            Returns or sets the horizontal alignment for the table.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.AlignmentProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphPropertiesBase.Alignment"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.BorderSettings">
+            <summary>
+            Returns or sets settings for the border of the cell.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> Since the DataPresenter is comprised of many table cells for the export it is recommended that 
+            border settings only be applied at the table level or in such a way that this affects a relatively few number of cells.</p>
+            </remarks>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.BorderSettingsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TablePropertiesBase.BorderProperties"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.LeftIndent">
+            <summary>
+            Returns or sets the amount of indentation from the left margin for the table.
+            </summary>
+            <remarks>
+            <p class="note"><b>Note:</b> Word does not exclude this value from the size available for the table so that 
+            table may be pushed outside the viewable area if using a Fixed layout.</p>
+            </remarks>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.LeftIndentProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.ParagraphPropertiesBase.LeftIndent"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.NestedTableMargins">
+            <summary>
+            Returns or sets the amount of space to put around nested child tables.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettingsBase.NestedTableMarginsProperty"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableSettings">
+            <summary>
+            Exposes settings for the <see cref="P:Infragistics.Documents.Word.WordDocumentWriter.DefaultTableProperties"/>
+            </summary>
+            <seealso cref="T:Infragistics.Documents.Word.DefaultTableProperties"/>
+            <seealso cref="P:Infragistics.Windows.DataPresenter.WordWriter.DataPresenterWordWriter.DefaultTableSettings"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableSettings.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableSettings"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableSettings.CellSettingsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableSettings.CellSettings"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableSettings.CellSettings">
+            <summary>
+            Returns or sets default settings for the cells in the table.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordDefaultTableSettings.CellSettingsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.DefaultTableProperties.CellProperties"/>
+        </member>
+        <member name="T:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings">
+            <summary>
+            Exposes settings for the tables created during an export of a DataPresenterBase to Word.
+            </summary>
+            <seealso cref="T:Infragistics.Documents.Word.DefaultTableProperties"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings"/>
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.CellMarginsProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.CellMargins"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.LayoutProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.Layout"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.PreferredWidthProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.PreferredWidth"/> dependency property
+            </summary>
+        </member>
+        <member name="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.PreferredWidthAsPercentageProperty">
+            <summary>
+            Identifies the <see cref="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.PreferredWidthAsPercentage"/> dependency property
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.CellMargins">
+            <summary>
+            Returns or sets the amount of padding between the cell content and its borders.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.CellMarginsProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableProperties.CellMargins"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.Layout">
+            <summary>
+            Returns or sets the layout algorithm used to determine the size and cells of the table.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.LayoutProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableProperties.Layout"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.PreferredWidth">
+            <summary>
+            Returns or sets the preferred width of the table in twips.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.PreferredWidthProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableProperties.PreferredWidth"/>
+        </member>
+        <member name="P:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.PreferredWidthAsPercentage">
+            <summary>
+            Returns or sets the preferred width of the table expressed as a percent of the containing element.
+            </summary>
+            <seealso cref="F:Infragistics.Windows.DataPresenter.WordWriter.WordTableSettings.PreferredWidthAsPercentageProperty"/>
+            <seealso cref="P:Infragistics.Documents.Word.TableProperties.PreferredWidthAsPercentage"/>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordExporter.Merge``1(``0@,``0[])">
+            <summary>
+            Copies the settings of the specified dependency object using the specified method.
+            </summary>
+            <typeparam name="T">The type of object to merge</typeparam>
+            <param name="mergedItem">The item into which the state should be merged or null to have the item lazily allocated</param>
+            <param name="sourceItems">The items whose properties are being copied</param>
+            <returns>The merged object or null if there were no objects to copy</returns>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordExporter.AddFreeFormSummaries(Infragistics.Windows.DataPresenter.WordWriter.WordExporter.TableInfo,System.Int32,Infragistics.Windows.DataPresenter.Record,Infragistics.Documents.Word.TableBorderSides,System.Collections.Generic.Dictionary{Infragistics.Windows.DataPresenter.SummaryPosition,System.Collections.Generic.IList{Infragistics.Windows.DataPresenter.SummaryResult}},Infragistics.Windows.DataPresenter.WordWriter.WordTableCellSettings)">
+            <summary>
+            Creates a row for the free form summaries (i.e. those aligned left/right/center).
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.DataPresenter.WordWriter.WordExporter.EndTable(System.Boolean)">
+            <summary>
+            Ends the current table and pops it off the stack and returns it.
+            </summary>
+            <param name="isCancellingExport">True if the export is being canceled.</param>
+            <returns>The TableInfo that was on top of the stack</returns>
+        </member>
+    </members>
+</doc>

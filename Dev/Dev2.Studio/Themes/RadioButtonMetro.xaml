@@ -1,15 +1,14 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/RadioButtonMetroBrushes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/RadioButtonMetroBrushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
-    <!-- ********************************** RadioButton Style **********************************-->
+
+    <!--  ********************************** RadioButton Style **********************************  -->
     <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -26,25 +25,40 @@
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="hover" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="hover"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pressed" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="pressed"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To=".55" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="contentPresenter" />
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="disabled" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="contentPresenter"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To=".55" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="disabled"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="CheckStates">
                                 <VisualState x:Name="Checked">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Checked1" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="Checked1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Unchecked" />
@@ -53,7 +67,10 @@
                             <VisualStateGroup x:Name="FocusStates">
                                 <VisualState x:Name="Focused">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="focused" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="focused"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Unfocused" />
@@ -62,12 +79,18 @@
                                 <VisualState x:Name="Valid" />
                                 <VisualState x:Name="InvalidUnfocused">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="invalidUnfocused" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="invalidUnfocused"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="InvalidFocused">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="invalidFocused" />
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="invalidFocused"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -76,22 +99,73 @@
                             <ColumnDefinition Width="18" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Rectangle Fill="{StaticResource TransparentBrush}" Margin="-6,0" />
-                        <Ellipse x:Name="normal" Opacity="1" Stroke="{StaticResource RadioButtonBorderBrush}" StrokeThickness="1" Fill="{StaticResource RadioButtonBackgroundBrush}" Width="18" Height="18" />
-                        <Ellipse x:Name="hover" Stroke="{StaticResource RadioButtonHoverBorderBrush}" StrokeThickness="1" Fill="{StaticResource RadioButtonHoverBackgroundBrush}" Opacity="0" Width="18" Height="18" />
-                        <Ellipse x:Name="pressed" Opacity="0" Stroke="{StaticResource RadioButtonPressedBorderBrush}" StrokeThickness="1" Fill="{StaticResource RadioButtonPressedBackgroundBrush}" Width="18" Height="18" />
-                        <Ellipse x:Name="focused" Opacity="0" Stroke="{StaticResource RadioButtonFocusedBorderBrush}" StrokeThickness="1" Fill="{StaticResource RadioButtonFocusedBackgroundBrush}" Width="18" Height="18" />
-                        <Ellipse x:Name="invalidUnfocused" Opacity="0" Stroke="{StaticResource RadioButtonInvalidUnfocusedBorderBrush}" StrokeThickness="1" Fill="{StaticResource RadioButtonInvalidUnfocusedBackgroundBrush}" Width="18" Height="18" />
-                        <Ellipse x:Name="invalidFocused" Opacity="0" Stroke="{StaticResource RadioButtonInvalidFocusedBorderBrush}" StrokeThickness="1" Fill="{StaticResource RadioButtonInvalidFocusedBackgroundBrush}" Width="18" Height="18" />
-                        <Ellipse x:Name="Checked1" Fill="{StaticResource RadioButtonCheckBackgroundBrush}" Opacity="0" Width="10" Height="10" />
-                        <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                        <Ellipse x:Name="disabled" Opacity="0" StrokeThickness="1" Fill="{StaticResource DisabledVisualElement}" Width="18" Height="18" />
+                        <Rectangle Margin="-6,0" Fill="{StaticResource TransparentBrush}" />
+                        <Ellipse x:Name="normal"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonBackgroundBrush}"
+                                 Opacity="1"
+                                 Stroke="{StaticResource RadioButtonBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="hover"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonHoverBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonHoverBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="pressed"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonPressedBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonPressedBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="focused"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonFocusedBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonFocusedBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="invalidUnfocused"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonInvalidUnfocusedBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonInvalidUnfocusedBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="invalidFocused"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource RadioButtonInvalidFocusedBackgroundBrush}"
+                                 Opacity="0"
+                                 Stroke="{StaticResource RadioButtonInvalidFocusedBorderBrush}"
+                                 StrokeThickness="1" />
+                        <Ellipse x:Name="Checked1"
+                                 Width="10"
+                                 Height="10"
+                                 Fill="{StaticResource RadioButtonCheckBackgroundBrush}"
+                                 Opacity="0" />
+                        <Ellipse x:Name="disabled"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="{StaticResource DisabledVisualElement}"
+                                 Opacity="0"
+                                 StrokeThickness="1" />
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Grid.Column="1"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <!-- *********************************  Implicit Styles  ********************************* -->
+
+    <!--  *********************************  Implicit Styles  *********************************  -->
     <Style BasedOn="{StaticResource RadioButtonStyle}" TargetType="{x:Type RadioButton}" />
 </ResourceDictionary>

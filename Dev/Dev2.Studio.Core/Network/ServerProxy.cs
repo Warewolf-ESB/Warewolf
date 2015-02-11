@@ -26,8 +26,14 @@ using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Common.Interfaces.Studio.Core.Network;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel.Messages;
@@ -35,10 +41,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
 using Dev2.ExtMethods;
 using Dev2.Messages;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
-using Dev2.Services.Security;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
@@ -125,7 +128,7 @@ namespace Dev2.Network
             }
         }
 
-        public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage {get;set;}
+        public Action<Guid, ICompileMessageList> ReceivedResourceAffectedMessage {get;set;}
         void OnReceiveResourcesAffectedMemo(string objString)
         {
             var obj = _serializer.Deserialize<CompileMessageList>(objString);
@@ -194,6 +197,54 @@ namespace Dev2.Network
         public bool IsConnected { get; set; }
         public string Alias { get; set; }
         public string DisplayName { get; set; }
+
+
+        public async Task<bool> ConnectAsync(Guid id)
+        {
+            ID = id;
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+                await HubConnection.Start();
+                if (HubConnection.State == ConnectionState.Connected)
+                {
+                    IsConnected = true;
+                    return true;
+                }
+
+            }
+            catch (AggregateException aex)
+            {
+                aex.Flatten();
+                return false;
+//                aex.Flatten();
+//                aex.Handle(ex =>
+//                {
+//                    Dev2Logger.Log.Error(this, aex);
+//                    var hex = ex as HttpClientException;
+//                    if (hex != null)
+//                    {
+//                        switch (hex.Response.StatusCode)
+//                        {
+//                            case HttpStatusCode.Unauthorized:
+//                            case HttpStatusCode.Forbidden:
+//                                UpdateIsAuthorized(false);
+//                                throw new UnauthorizedAccessException();
+//                        }
+//                    }
+//                    throw new NotConnectedException();
+//                });
+            }
+//            catch (NotConnectedException)
+//            {
+//                throw;
+//            }
+//            catch (Exception e)
+//            {
+//                HandleConnectError(e);
+//            }
+            return false;
+        }
 
         public void Connect(Guid id)
         {
@@ -496,9 +547,9 @@ namespace Dev2.Network
             }
         } 
         
-        public event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
+        public event EventHandler<List<IWindowsGroupPermission>> PermissionsModified;
 
-        void RaisePermissionsModified(List<WindowsGroupPermission> args)
+        void RaisePermissionsModified(List<IWindowsGroupPermission> args)
         {
             if (PermissionsModified != null)
             {

@@ -11,14 +11,14 @@
 
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Communication
 {
-
     /// <summary>
     /// Internal Service Request Object - Used mainly by the studio, but server can send request if service is web based
     /// </summary>
-    public class EsbExecuteRequest
+    public class EsbExecuteRequest : IEsbExecuteRequest
     {
         public string ServiceName { get; set; }
 

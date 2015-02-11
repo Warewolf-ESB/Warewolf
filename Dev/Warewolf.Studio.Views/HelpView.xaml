@@ -1,0 +1,25 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:help="clr-namespace:Warewolf.Studio.ViewModels.Help;assembly=Warewolf.Studio.ViewModels"
+	xmlns:ig="http://schemas.infragistics.com/xaml"
+	mc:Ignorable="d"
+	x:Class="Warewolf.Studio.Views.HelpView"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type help:HelpWindowViewModel}}"
+    Background="{StaticResource WareWolfBackGroundBrush}">
+
+    <Grid Background="{StaticResource WareWolfBackGroundBrush}">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        
+	</Grid>
+</UserControl>

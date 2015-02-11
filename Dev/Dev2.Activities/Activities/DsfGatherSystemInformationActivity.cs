@@ -19,7 +19,9 @@ using System.Security.Principal;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
 using Dev2.Data.TO;
@@ -27,12 +29,14 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 
 namespace Dev2.Activities
 {
+     [ToolDescriptorInfo("Utility-SystemInformation", "System Information", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+
     public class DsfGatherSystemInformationActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
         #region Fields

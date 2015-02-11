@@ -18,14 +18,16 @@ using System.Text;
 using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
 using Dev2.Controller;
@@ -215,13 +217,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         string append = sAppend;
                         if(GetStudioResourceRepository().FindItem(a => a.ResourcePath == append && a.EnvironmentId == _environmentModel.ID) == null)
                         {
-                            item = new ServerExplorerItem(s, Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(), Permissions.Administrator, sAppend) { ServerId = _environmentModel.ID };
+                            item = new ServerExplorerItem(s, Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(), Permissions.Administrator, sAppend,resource.Inputs,resource.Outputs) { ServerId = _environmentModel.ID };
                             GetStudioResourceRepository().ItemAddedMessageHandler(item);
                         }
                     }
                     ResourceType type;
                     Enum.TryParse(resource.ServerResourceType, out type);
-                    GetStudioResourceRepository().ItemAddedMessageHandler(new ServerExplorerItem(resource.DisplayName, resource.ID, type, new List<IExplorerItem>(), resource.UserPermissions, resource.Category) { ServerId = _environmentModel.ID, Parent = item });
+                    GetStudioResourceRepository().ItemAddedMessageHandler(new ServerExplorerItem(resource.DisplayName, resource.ID, type, new List<IExplorerItem>(), resource.UserPermissions, resource.Category,resource.Inputs,resource.Outputs) { ServerId = _environmentModel.ID, Parent = item });
                 }
             }
         }
@@ -1182,7 +1184,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _cachedServices = new HashSet<Guid>();
         }
 
-        void AuthorizationServiceOnPermissionsModified(object sender, List<WindowsGroupPermission> windowsGroupPermissions)
+        void AuthorizationServiceOnPermissionsModified(object sender, List<IWindowsGroupPermission> windowsGroupPermissions)
         {
             lock(_updatingPermissions)
             {
@@ -1191,9 +1193,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        void ReceivePermissionsModified(List<WindowsGroupPermission> modifiedPermissions)
+        void ReceivePermissionsModified(List<IWindowsGroupPermission> modifiedPermissions)
         {
-            var windowsGroupPermissions = modifiedPermissions as IList<WindowsGroupPermission> ?? modifiedPermissions.ToList();
+            var windowsGroupPermissions = modifiedPermissions as IList<IWindowsGroupPermission> ?? modifiedPermissions.ToList();
 //            var exclusionResourceIds = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer).Select(permission => permission.ResourceID);
             var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
 //            UpdateServerBasedOnPermissions(windowsGroupPermissions, exclusionResourceIds, serverPermissions);
@@ -1233,7 +1235,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
-        void UpdateResourcesBasedOnPermissions(IList<WindowsGroupPermission> windowsGroupPermissions)
+        void UpdateResourcesBasedOnPermissions(IList<IWindowsGroupPermission> windowsGroupPermissions)
         // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
@@ -1247,7 +1249,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             foreach(var perm in windowsGroupPermissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer))
             {
-                WindowsGroupPermission permission = perm;
+                IWindowsGroupPermission permission = perm;
                 var resourceModel = FindSingle(model => model.ID == permission.ResourceID);
                 if(resourceModel != null)
                 {

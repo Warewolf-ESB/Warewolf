@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestSettings name="Environment Pool Acceptance Run" id="7627ff19-3746-4d6a-ad03-ad30ffd0d7ed" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>These are default test settings for a remote acceptance test run.</Description>
+  <Deployment>
+      <!--Project specific outputs-->
+    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+    <DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
+
+      <!--Dynamicly loaded when initializing a view-->
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.DataVisualization.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Persistence.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.dll" />
+    <DeploymentItem filename="Binaries\InfragisticsWPF4.Math.Calculators.v14.2.dll" />
+    <DeploymentItem filename="packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll" />
+    <DeploymentItem filename="packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll" />
+    <DeploymentItem filename="Warewolf.Studio.CustomControls\bin\Debug\Warewolf.Studio.CustomControls.dll" />
+  </Deployment>
+  <NamingScheme baseName="UT" />
+  <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
+  <RemoteController name="rsaklfsvrtfsbld:6901" />
+  <Execution location="Remote" hostProcessPlatform="MSIL">
+    <Timeouts testTimeout="180000" />
+    <Buckets size="1" />
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+      <WebTestRunConfiguration testTypeId="4e7599fa-5ecb-43e9-a887-cd63cf72d207">
+        <Browser name="Internet Explorer 9.0" MaxConnections="6">
+          <Headers>
+            <Header name="User-Agent" value="Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)" />
+            <Header name="Accept" value="*/*" />
+            <Header name="Accept-Language" value="{{$IEAcceptLanguage}}" />
+            <Header name="Accept-Encoding" value="GZIP" />
+          </Headers>
+        </Browser>
+      </WebTestRunConfiguration>
+    </TestTypeSpecific>
+    <AgentRule name="Run in the Acceptance Testing Environment Pool">
+      <SelectionCriteria>
+        <AgentProperty name="Pool" value="Acceptance Testing" />
+      </SelectionCriteria>
+    </AgentRule>
+  </Execution>
+  <Properties />
+</TestSettings>

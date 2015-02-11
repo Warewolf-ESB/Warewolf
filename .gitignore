@@ -10,6 +10,7 @@
 *.suo
 *.user
 *.ide
+*.bkp
 
 ####################################################################################
 # Build working directories
@@ -18,6 +19,7 @@
 /Dev/TestResults
 /bin
 /TestResults
+/Logs
 
 ####################################################################################
 # Server Build Output Folders
@@ -41,6 +43,16 @@
 /Dev/Dev2.Server/bin/Debug/*.manifest
 /Dev/Dev2.Server/bin/Debug/*.log
 /Dev/Dev2.Server/bin/Debug/*.cer
+/Dev/Dev2.Server/bin/Debug/de
+/Dev/Dev2.Server/bin/Debug/en
+/Dev/Dev2.Server/bin/Debug/en-gb
+/Dev/Dev2.Server/bin/Debug/es
+/Dev/Dev2.Server/bin/Debug/fr
+/Dev/Dev2.Server/bin/Debug/it
+/Dev/Dev2.Server/bin/Debug/ja
+/Dev/Dev2.Server/bin/Debug/ko
+/Dev/Dev2.Server/bin/Debug/zh-Hans
+/Dev/Dev2.Server/bin/Debug/zh-Hant
 ####################################################################################
 # Other Build Output Folders
 ####################################################################################
@@ -156,12 +168,60 @@
 /Dev/Dev2.Sql.Tests/obj
 /Dev/Dev2.TaskScheduler.Wrappers.Test/bin
 /Dev/Dev2.TaskScheduler.Wrappers.Test/obj
+/Dev/Example Shipper/Example Shipper/bin
+/Dev/Example Shipper/Example Shipper/obj
+/Dev/ServerProxyLayer/bin
+/Dev/ServerProxyLayer/obj
+/Dev/ServerProxyLayerTests/bin
+/Dev/ServerProxyLayerTests/obj
 /Dev/SFTPServer/bin
 /Dev/SFTPServer/obj
 /Dev/Studio.UI.Load.Specs/bin
 /Dev/Studio.UI.Load.Specs/obj
-/Dev/Example Shipper/Example Shipper/bin
-/Dev/Example Shipper/Example Shipper/obj
+/Dev/Test.Localisation/bin
+/Dev/Test.Localisation/obj
+/Dev/Warewolf.AcceptanceTesting.Core/bin
+/Dev/Warewolf.AcceptanceTesting.Core/obj
+/Dev/Warewolf.AcceptanceTesting.Help/bin
+/Dev/Warewolf.AcceptanceTesting.Help/obj
+/Dev/Warewolf.AcceptanceTesting.Explorer/bin
+/Dev/Warewolf.AcceptanceTesting.Explorer/obj
+/Dev/Warewolf.Studio/bin
+/Dev/Warewolf.Studio/obj
+/Dev/Warewolf.Studio.Core/bin
+/Dev/Warewolf.Studio.Core/obj
+/Dev/Warewolf.Studio.Resources/bin
+/Dev/Warewolf.Studio.Resources/obj
+/Dev/Warewolf.Studio.Specs/bin
+/Dev/Warewolf.Studio.Specs/obj
+/Dev/Warewolf.Studio.ViewModels/bin
+/Dev/Warewolf.Studio.ViewModels/obj
+/Dev/Warewolf.Studio.ViewModels.Tests/bin
+/Dev/Warewolf.Studio.ViewModels.Tests/obj
+/Dev/Warewolf.Studio.Views/bin
+/Dev/Warewolf.Studio.Views/obj
+/Dev/Warewolf.Core/bin
+/Dev/Warewolf.Core/obj
+/Dev/Warewolf.Core.Test/bin
+/Dev/Warewolf.Core.Test/obj
+/Dev/Warewolf.Studio.Core.Test/bin
+/Dev/Warewolf.Studio.Core.Test/obj
+/Dev/Warewolf.Studio.Models/bin
+/Dev/Warewolf.Studio.Models/obj
+/Dev/Warewolf.Studio.Models.Tests/bin
+/Dev/Warewolf.Studio.Models.Tests/obj
+/Dev/Warewolf.Studio.Themes.Luna/bin
+/Dev/Warewolf.Studio.Themes.Luna/obj
+/Dev/Warewolf.UnittestingUtils/bin
+/Dev/Warewolf.UnittestingUtils/obj
+/Dev/Warewolf.Studio.AntiCorruptionLayer/bin
+/Dev/Warewolf.Studio.AntiCorruptionLayer/obj
+/Dev/Warewolf.Studio.AntiCorruptionLayer.Tests/bin
+/Dev/Warewolf.Studio.AntiCorruptionLayer.Tests/obj
+/Dev/Warewolf.Studio.CustomControls/bin
+/Dev/Warewolf.Studio.CustomControls/obj
+/Dev/Warewolf.Studio.CustomControls.Tests/bin
+/Dev/Warewolf.Studio.CustomControls.Tests/obj
 
 ####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
@@ -238,41 +298,3 @@
 /Dev/Dev2.Server/bin/Debug/Resources/Sample Project/WarewolfShoppingCartDB.xml
 /Dev/Dev2.Server/bin/Debug/Resources/SqlServers/DemoDB.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Hello World.xml
-Dev/ConsoleAppToTestExecuteCommandLineActivity/backup/ConsoleAppToTestExecuteCommandLineActivity.csproj.bkp
-Dev/Dev2.Activities.Designers.Tests/backup/Dev2.Activities.Designers.Tests.csproj.bkp
-Dev/Dev2.Activities.Tests/backup/Dev2.Activities.Tests.csproj.bkp
-Dev/Dev2.Activities/backup/Dev2.Activities.csproj.bkp
-Dev/Dev2.Common.Interfaces/backup/Dev2.Common.Interfaces.csproj.bkp
-Dev/Dev2.Common.Test/backup/Dev2.Common.Tests.csproj.bkp
-Dev/Dev2.Common/backup/Dev2.Common.csproj.bkp
-Dev/Dev2.Core.Tests/backup/Dev2.Core.Tests.csproj.bkp
-Dev/Dev2.Core.Tests/backup/MathOperationTest/FunctionTest.cs.bkp
-Dev/Dev2.Core.Tests/backup/MathOperationTest/InfragisticsEvaluationTest.cs.bkp
-Dev/Dev2.Crypto.HashGenerator/backup/Dev2.Crypto.HashGenerator.csproj.bkp
-Dev/Dev2.CustomControls.Tests/backup/Dev2.CustomControls.Tests.csproj.bkp
-Dev/Dev2.Data.Tests/backup/Dev2.Data.Tests.csproj.bkp
-Dev/Dev2.Data/backup/Dev2.Data.csproj.bkp
-Dev/Dev2.Data/backup/MathOperations/Function.cs.bkp
-Dev/Dev2.Data/backup/MathOperations/FunctionEvaluator.cs.bkp
-Dev/Dev2.Data/backup/MathOperations/FunctionRepository.cs.bkp
-Dev/Dev2.Data/backup/MathOperations/Interfaces/IFunction.cs.bkp
-Dev/Dev2.Development.Languages/backup/Dev2.Development.Languages.csproj.bkp
-Dev/Dev2.Diagnostics/backup/Dev2.Diagnostics.csproj.bkp
-Dev/Dev2.Infrastructure.Tests/backup/Dev2.Infrastructure.Tests.csproj.bkp
-Dev/Dev2.Infrastructure/backup/Dev2.Infrastructure.csproj.bkp
-Dev/Dev2.Instrumentation/backup/Dev2.Instrumentation.csproj.bkp
-Dev/Dev2.Network/backup/Dev2.Network.csproj.bkp
-Dev/Dev2.OutputLibraries/backup/Dev2.OutputLibraries.csproj.bkp
-Dev/Dev2.Scheduler.Test/backup/Dev2.Scheduler.Tests.csproj.bkp
-Dev/Dev2.Scheduler/backup/Dev2.Scheduler.csproj.bkp
-Dev/Dev2.Services.Execution/backup/Dev2.Services.Execution.csproj.bkp
-Dev/Dev2.Services.Sql/backup/Dev2.Services.Sql.csproj.bkp
-Dev/Dev2.Studio.Core.Tests/backup/Dock/ContentPaneFactoryTests.cs.bkp
-Dev/Dev2.Studio.Core/backup/AppResources/ExtensionMethods/PaneLocationExtensions.cs.bkp
-Dev/Dev2.Studio.Core/backup/AppResources/WindowManagers/IDockAwareWindowManager.cs.bkp
-Dev/Dev2.Studio.Core/backup/AppResources/WindowManagers/XamDockManagerDockAwareWindowManager.cs.bkp
-Dev/Dev2.TaskScheduler.Wrappers.Test/backup/Dev2.TaskScheduler.Wrappers.Tests.csproj.bkp
-Dev/Dev2.TaskScheduler.Wrappers/backup/Dev2.TaskScheduler.Wrappers.csproj.bkp
-Dev/Dev2.UndoFramework.Tests/backup/Dev2.UndoFramework.Tests.csproj.bkp
-Dev/Dev2.UndoFramework/backup/Dev2.UndoFramework.csproj.bkp
-Dev/Dev2.Util/backup/Dev2.Util.csproj.bkp

@@ -1,4 +1,11 @@
-﻿using Dev2.Common.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
@@ -11,7 +18,7 @@ namespace Warewolf.Studio.Specs
         [Given(@"I have connected to localhost")]
         public void GivenIHaveConnectedToLocalhost()
         {
-            var localHostEnvironment = new EnvironmentViewModel(new Server())
+            var localHostEnvironment = new EnvironmentViewModel(new Server(null),null,null)
             {
                 DisplayName = "localhost"                
             };
@@ -40,15 +47,92 @@ namespace Warewolf.Studio.Specs
         }
     }
 
-    public class Server : IServer
+    public class Server : Resource,IServer
     {
+        readonly IStudioResourceRepository _resourceRepository;
+        IExplorerRepository _explorerRepository;
+        IStudioUpdateManager _updateRepository;
+
         #region Implementation of IServer
 
-        public bool Connect()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public Server(IStudioResourceRepository resourceRepository)
         {
-            return true;
+            _resourceRepository = resourceRepository;
+            Permissions = new List<IWindowsGroupPermission>();
+        }
+
+        public Task<bool> Connect()
+        {
+            return new Task<bool>(() => true);
+        }
+
+        public List<IResource> Load()
+        {
+            return new List<IResource>();
+        }
+
+        public Task<IExplorerItem> LoadExplorer()
+        {
+            return new Task<IExplorerItem>(() => null);
+        }
+
+        public IList<IServer> GetServerConnections()
+        {
+            return new List<IServer>();
+        }
+
+        public IList<IToolDescriptor> LoadTools()
+        {
+            return new List<IToolDescriptor>();
+        }
+
+        public IExplorerRepository ExplorerRepository
+        {
+            get
+            {
+                return _explorerRepository;
+            }
+        }
+
+        public bool IsConnected()
+        {
+            return false;
+        }
+
+        public void ReloadTools()
+        {
+        }
+
+        public void Disconnect()
+        {
+        }
+
+        public void Edit()
+        {
+        }
+
+        public List<IWindowsGroupPermission> Permissions { get; private set; }
+
+        public event PermissionsChanged PermissionsChanged;
+        public event NetworkStateChanged NetworkStateChanged;
+        public IStudioUpdateManager UpdateRepository
+        {
+            get
+            {
+                return _updateRepository;
+            }
+        }
+
+        public string GetServerVersion()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion
+
+
     }
 }

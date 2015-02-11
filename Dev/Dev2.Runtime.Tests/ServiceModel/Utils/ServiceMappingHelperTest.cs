@@ -16,6 +16,7 @@ using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Utils;
 using Dev2.Tests.Runtime.XML;

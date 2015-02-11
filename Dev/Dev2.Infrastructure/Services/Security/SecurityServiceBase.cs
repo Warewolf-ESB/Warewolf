@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Dev2.Common.Interfaces.Infrastructure;
 
 namespace Dev2.Services.Security
 {
@@ -21,13 +22,13 @@ namespace Dev2.Services.Security
     {
         readonly ReaderWriterLockSlim _permissionsLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-        protected List<WindowsGroupPermission> _permissions = new List<WindowsGroupPermission>();
+        protected List<IWindowsGroupPermission> _permissions = new List<IWindowsGroupPermission>();
 
         public event EventHandler PermissionsChanged;
 
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
 
-        public IReadOnlyList<WindowsGroupPermission> Permissions
+        public IReadOnlyList<IWindowsGroupPermission> Permissions
         {
             get
             {
@@ -89,7 +90,7 @@ namespace Dev2.Services.Security
             LogStart();
             _permissionsLock.EnterWriteLock();
             var previousPermissions = _permissions.ToList();
-            List<WindowsGroupPermission> newPermissions;
+            List<IWindowsGroupPermission> newPermissions;
             try
             {
                 newPermissions = ReadPermissions();
@@ -111,7 +112,7 @@ namespace Dev2.Services.Security
             LogEnd();
         }
 
-        void RaisePermissionsModified(IEnumerable<WindowsGroupPermission> oldPermissions, IEnumerable<WindowsGroupPermission> newPermissions)
+        void RaisePermissionsModified(IEnumerable<IWindowsGroupPermission> oldPermissions, IEnumerable<IWindowsGroupPermission> newPermissions)
         {
             if(oldPermissions != null && newPermissions != null)
             {
@@ -141,23 +142,10 @@ namespace Dev2.Services.Security
             LogEnd();
         }
 
-        protected abstract List<WindowsGroupPermission> ReadPermissions();
-        protected abstract void WritePermissions(List<WindowsGroupPermission> permissions);
+        protected abstract List<IWindowsGroupPermission> ReadPermissions();
+        protected abstract void WritePermissions(List<IWindowsGroupPermission> permissions);
         protected abstract void LogStart([CallerMemberName] string methodName = null);
         protected abstract void LogEnd([CallerMemberName] string methodName = null);
 
-    }
-
-    public class PermissionsModifiedEventArgs
-    {
-        public List<WindowsGroupPermission> ModifiedWindowsGroupPermissions { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public PermissionsModifiedEventArgs(List<WindowsGroupPermission> modifiedWindowsGroupPermissions)
-        {
-            ModifiedWindowsGroupPermissions = modifiedWindowsGroupPermissions;
-        }
     }
 }

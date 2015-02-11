@@ -17,13 +17,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common;
-using Dev2.Models;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Threading;
 
 namespace Dev2.ViewModels.Deploy
 {

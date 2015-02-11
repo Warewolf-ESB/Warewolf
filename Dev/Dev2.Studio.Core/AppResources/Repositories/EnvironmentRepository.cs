@@ -17,6 +17,7 @@ using System.Linq.Expressions;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;

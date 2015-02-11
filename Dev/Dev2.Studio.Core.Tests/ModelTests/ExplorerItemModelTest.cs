@@ -18,11 +18,12 @@ using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
-using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
@@ -1861,12 +1862,13 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             var aggregator = new Mock<EventAggregator>();
-#pragma warning disable 219
+            // ReSharper disable NotAccessedVariable
             Guid resourceGuid;
 
             string oldName;
             string newName;
-#pragma warning restore 219
+            // ReSharper restore NotAccessedVariable
+
             aggregator.Setup(a => a.Publish(It.IsAny<UpdateWorksurfaceFlowNodeDisplayName>())).Callback<object>(msg =>
                 {
                     var workSurfaceObject = (msg as UpdateWorksurfaceFlowNodeDisplayName);
@@ -3343,7 +3345,7 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_SetIsChecked")]
         public void ExplorerItemModel_SetIsChecked_ExpectNULLSet()
@@ -3422,7 +3424,7 @@ namespace Dev2.Core.Tests.ModelTests
             connectControlSingleton.Verify(c => c.Remove(It.IsAny<Guid>()), Times.Once());
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_SetIsChecked")]
         public void ExplorerItemModel_SetIsChecked_ExpectChildrenUpdated()
@@ -3437,7 +3439,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         }
 
-        [TestMethod]
+        [TestMethod, Timeout(3000)]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_SetIsChecked")]
         public void ExplorerItemModel_SetIsChecked_ExpectParentOverwriteChanged()

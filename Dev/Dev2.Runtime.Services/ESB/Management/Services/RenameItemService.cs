@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
@@ -45,19 +46,35 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentNullException("values");
                 }
                 StringBuilder itemToBeRenamed;
-                StringBuilder newName;
+                StringBuilder sb;
                 if(!values.TryGetValue("itemToRename", out itemToBeRenamed))
                 {
                     throw new ArgumentException("itemToRename value not supplied.");
                 }
-                if(!values.TryGetValue("newName", out newName))
+                if(!values.TryGetValue("newName", out sb))
                 {
                     throw new ArgumentException("newName value not supplied.");
                 }
-                
-                var itemToRename = serializer.Deserialize<ServerExplorerItem>(itemToBeRenamed);
-                Dev2Logger.Log.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", itemToBeRenamed, newName));
-                item = ServerExplorerRepo.RenameItem(itemToRename, newName.ToString(), GlobalConstants.ServerWorkspaceID);
+                var newName = sb.ToString();
+                var itemToRename = Guid.Parse(itemToBeRenamed.ToString());
+               
+                var foundItem = ServerExplorerRepo.Find(itemToRename);
+            
+                if (foundItem == null)
+                {
+                    item = new ExplorerRepositoryResult(ExecStatus.Fail, "Item Not found");
+                }
+                else
+                {
+                    if (foundItem.ResourceType == ResourceType.Folder)
+                    {
+                        if(foundItem.ResourcePath != foundItem.DisplayName)
+                       newName = ( foundItem.ResourcePath.Substring(0, foundItem.ResourcePath.LastIndexOf(foundItem.DisplayName, System.StringComparison.Ordinal)) + newName);
+                    }
+
+                    Dev2Logger.Log.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", itemToBeRenamed, newName));
+                    item = ServerExplorerRepo.RenameItem(foundItem, newName, GlobalConstants.ServerWorkspaceID);
+                }
             }
             catch(Exception e)
             {

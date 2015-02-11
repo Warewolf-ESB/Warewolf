@@ -12,8 +12,8 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Models;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;

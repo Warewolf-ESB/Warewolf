@@ -1,0 +1,129 @@
+﻿<Window x:Class="Warewolf.Studio.ControlStyleTestingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+       
+          xmlns:ig="http://schemas.infragistics.com/xaml"
+          xmlns:studio="clr-namespace:Warewolf.Studio"
+                    xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+          Title="ControlStyleTestingWindow" Height="800" Width="600">
+        
+
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter" />
+        </Window.Resources>
+    <WrapPanel Orientation="Vertical">
+       
+       
+        <CheckBox AutomationProperties.AutomationId="Testing_CheckBox">This is a check box</CheckBox>
+        <ComboBox Name="ComboBox" AutomationProperties.AutomationId="Testing_Combobox">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
+        <RadioButton AutomationProperties.AutomationId="Testing_RadioButton"></RadioButton>
+        
+        <Label AutomationProperties.AutomationId="Testing_Lable"></Label>
+        <!-- Normal Buttons-->
+        <Button AutomationProperties.AutomationId="Testing_NormalButton">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button AutomationProperties.AutomationId="Testing_NormalRoundedButton" Style="{StaticResource RoundedButtonStyle}">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button AutomationProperties.AutomationId="Testing_PopupButton" Style="{StaticResource PopupButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock></StackPanel>
+        </Button>
+        <Button AutomationProperties.AutomationId="Testing_PopupRoundedButton" Style="{StaticResource PopupRoundedCornerButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock></StackPanel>
+        </Button>  
+        <!-- Disabled Buttons-->
+        <Button AutomationProperties.AutomationId="Testing_NormalButton_Disabled" IsEnabled="False">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button IsEnabled="False" AutomationProperties.AutomationId="Testing_NormalRoundedButton_Disabled" Style="{StaticResource RoundedButtonStyle}">
+            <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="18" Icon="Link" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Button>
+        <Button IsEnabled="False" AutomationProperties.AutomationId="Testing_PopupButton_Disabled" Style="{StaticResource PopupButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock>
+            </StackPanel>
+        </Button>
+        <Button IsEnabled="False" AutomationProperties.AutomationId="Testing_PopupRoundedButton_Disabled" Style="{StaticResource PopupRoundedCornerButtonStyle}" Width="150">
+            <StackPanel Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <fa:FontAwesome Icon="LightningBolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ask An Expert</TextBlock>
+            </StackPanel>
+        </Button>
+        <PasswordBox AutomationProperties.AutomationId="Testing_PasswordBox"
+                     customControls:PasswordBoxAssistant.BindPassword="true"
+                     customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        </PasswordBox>
+        <TextBox Style="{StaticResource SearchTextboxStyle}"></TextBox>
+        <TextBox Style="{StaticResource VariableListTextBox}"></TextBox>
+        <TextBox Style="{StaticResource MultiLineTextBoxStyle}" ToolTip="Bob the builder" TextWrapping="Wrap" Height="90" AcceptsReturn="True"  VerticalScrollBarVisibility="Auto"> Multi Line </TextBox>
+        <TextBox ToolTip="Bob the builder">ToolTip</TextBox>
+       
+        <TextBox>
+            <TextBox.ToolTip>
+                <ToolTip Style="{StaticResource ToolTipStyleValidationStyle}"> Bad Bob the builder</ToolTip>
+            </TextBox.ToolTip> Validation tool tip</TextBox>
+        <DataGrid Width="400" Name="BobDataGrid" GridLinesVisibility="Vertical" CanUserSortColumns="True" AutoGenerateColumns="False" BorderBrush="Transparent"   ItemsSource="{Binding}" 
+                  CanUserResizeColumns="True" CanUserReorderColumns="True" VerticalGridLinesBrush="Transparent" 
+                  >
+
+        <DataGrid.Columns>
+            <DataGridTemplateColumn Header="IsLoadShedded" CanUserResize="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Path=IsLoadShedded, Mode=TwoWay}"></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Name" CanUserResize="True" SortMemberPath="Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"> </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Url" CanUserResize="True" SortMemberPath="Url">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Width="Auto">
+                               <Hyperlink NavigateUri="http://www.google.com">Click here</Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+        </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock Width="Auto">
+            <Hyperlink NavigateUri="http://www.google.co.in">Click here</Hyperlink>
+       </TextBlock>
+        <ProgressBar Name="ProgressBar" Height="30" Width="200"  Minimum="0" Maximum="100" Value="0"></ProgressBar>
+
+
+
+        <TextBox AutomationProperties.AutomationId="Testing_SearchTextBox" Style="{StaticResource SearchTextboxStyle}"></TextBox>
+        <TextBox AutomationProperties.AutomationId="Testing_VariableListTextBox" Style="{StaticResource VariableListTextBox}"></TextBox>
+        <TextBox AutomationProperties.AutomationId="Testing_TextBox"></TextBox>
+        <GroupBox Width="200" AutomationProperties.AutomationId="Testing_GroupBox" Header="My Group Box" Height="100"></GroupBox>
+        <ListBox x:Name="TestingListBox" Style="{StaticResource ListBoxStyle}" ItemsSource="{Binding}" AutomationProperties.AutomationId="Testing_ListBox"></ListBox>
+       
+        
+        <TextBlock Text="Standard Label/textbox styling"></TextBlock>
+        <TextBlock Style="{StaticResource SourceHeader}"  VerticalAlignment="Center" Text="Sources header label yyyAAAxxxggg" Visibility="Visible"/>
+
+    </WrapPanel>
+</Window>

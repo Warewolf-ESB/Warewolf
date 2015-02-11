@@ -16,6 +16,8 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <ExpressionBlendVersion>12.0.51001.0</ExpressionBlendVersion>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,6 +75,9 @@
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism.Composition">
       <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
@@ -140,7 +145,9 @@
     <Compile Include="Activity\IWorkflowActivityMessage.cs" />
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
+    <Compile Include="Communication\IServerConnectionTest.cs" />
     <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
+    <Compile Include="ConnectionEnumerations.cs" />
     <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />
     <Compile Include="Core\Convertors\Base\IBaseConverter.cs" />
@@ -169,8 +176,20 @@
     <Compile Include="Core\Graph\IPath.cs" />
     <Compile Include="Core\Graph\IPathSegment.cs" />
     <Compile Include="Core\Graph\OutputFormats.cs" />
+    <Compile Include="Core\ServerSource.cs" />
     <Compile Include="DataList\Contract\enTranslationDepth.cs" />
     <Compile Include="DataList\Contract\IBinaryDataListItem.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListItemViewModel.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListViewColumnViewModel.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListViewModelFactory.cs" />
+    <Compile Include="DataList\DatalistView\IVariablelistViewRecordSet.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListViewColumn.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListViewItem.cs" />
+    <Compile Include="DataList\DatalistView\IVariablelistViewRecordSetViewModel.cs" />
+    <Compile Include="DataList\DatalistView\IEmptyExpression.cs" />
+    <Compile Include="DataList\DatalistView\IStorageExpression.cs" />
+    <Compile Include="DataList\DatalistView\IValiableListViewModel.cs" />
+    <Compile Include="DataList\DatalistView\IVariableListViewScalarViewModel.cs" />
     <Compile Include="Data\IDev2Definition.cs" />
     <Compile Include="Data\IInputOutputViewModel.cs" />
     <Compile Include="Data\IResource.cs" />
@@ -182,6 +201,13 @@
     <Compile Include="Data\TO\IErrorResultTO.cs" />
     <Compile Include="DB\IDataProviderSanitizer.cs" />
     <Compile Include="DB\IDBHelper.cs" />
+    <Compile Include="Deploy\IConflict.cs" />
+    <Compile Include="Deploy\IConflictHandlerViewModel.cs" />
+    <Compile Include="Deploy\IDeployModel.cs" />
+    <Compile Include="Deploy\IDeployPredicate.cs" />
+    <Compile Include="Deploy\IDeployStatsCalculator.cs" />
+    <Compile Include="Deploy\IDeployStatsTO.cs" />
+    <Compile Include="Deploy\IDeployViewModel.cs" />
     <Compile Include="Diagnostics\Debug\Enums.cs" />
     <Compile Include="Diagnostics\Debug\IDebugDispatcher.cs" />
     <Compile Include="Diagnostics\Debug\IDebugItem.cs" />
@@ -191,18 +217,72 @@
     <Compile Include="Diagnostics\Debug\IDebugState.cs" />
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
+    <Compile Include="enFindMissingType.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />
+    <Compile Include="ErrorHandling\IExceptionHandler.cs" />
+    <Compile Include="ErrorHandling\IWarewolfEventWriter.cs" />
+    <Compile Include="ErrorHandling\WarewolfException.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
+    <Compile Include="Explorer\IExplorerRepository.cs" />
+    <Compile Include="Help\IHelpDescriptorViewModel.cs" />
+    <Compile Include="Help\IHelpWindowModel.cs" />
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
+    <Compile Include="IAsyncWorker.cs" />
+    <Compile Include="IConnectControlEnvironment.cs" />
+    <Compile Include="IConnectControlSingleton.cs" />
+    <Compile Include="IConnectControlViewModel.cs" />
+    <Compile Include="IConnectedServerChangedEvent.cs" />
+    <Compile Include="IConnection.cs" />
+    <Compile Include="IConnectionStatusChangedEventArg.cs" />
+    <Compile Include="IDev2Activity.cs" />
+    <Compile Include="INetworkStateChangedEventArgs.cs" />
+    <Compile Include="IRequestServiceNameView.cs" />
+    <Compile Include="IWarewolfWebClient.cs" />
+    <Compile Include="IEsbRequestResult.cs" />
+    <Compile Include="IServiceDesignerViewModel.cs" />
+    <Compile Include="IShellViewModel.cs" />
+    <Compile Include="IVersionChecker.cs" />
+    <Compile Include="IWebLatestVersionDialog.cs" />
+    <Compile Include="IXamlResource.cs" />
+    <Compile Include="NetworkStateChangedState.cs" />
+    <Compile Include="PermissionsChangedArgs.cs" />
+    <Compile Include="SaveDialog\IRequestServiceNameViewModel.cs" />
+    <Compile Include="ServerDialogue\IServerSource.cs" />
+    <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
+    <Compile Include="Help\IHelpDescriptor.cs" />
+    <Compile Include="Studio\IMenuViewModel.cs" />
+    <Compile Include="Studio\IVariableListViewModel.cs" />
+    <Compile Include="Studio\ViewModels\Dialogues\IManageDatabaseSourceViewModel.cs" />
+    <Compile Include="Studio\ViewModels\Dialogues\INewServerDialogue.cs" />
+    <Compile Include="Studio\ViewModels\IDeployItemMessage.cs" />
+    <Compile Include="Studio\ViewModels\IExplorerHelpDescriptorBuilder.cs" />
+    <Compile Include="Studio\ViewModels\IExplorerItemNodeViewModel.cs" />
+    <Compile Include="Studio\ViewModels\IExplorerTreeItem.cs" />
+    <Compile Include="Studio\ViewModels\INewItemMessage.cs" />
+    <Compile Include="Studio\ViewModels\IVersionInfoViewModel.cs" />
+    <Compile Include="Toolbox\IToolboxCatergoryViewModel.cs" />
+    <Compile Include="Toolbox\IToolboxViewModel.cs" />
+    <Compile Include="Toolbox\IToolDescriptor.cs" />
+    <Compile Include="PopupController\IDev2MessageBoxViewModel.cs" />
+    <Compile Include="PopupController\IMessage.cs" />
+    <Compile Include="PopupController\IPopupController.cs" />
+    <Compile Include="PopupController\IPopupMessageBoxFactory.cs" />
+    <Compile Include="PopupController\IPopupMessages.cs" />
+    <Compile Include="Studio\ViewModels\IEnvironmentViewModel.cs" />
+    <Compile Include="IEsbExecuteRequest.cs" />
+    <Compile Include="IExplorerItemModel.cs" />
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="Infrastructure\Communication\IExecuteMessage.cs" />
     <Compile Include="Infrastructure\Events\IEventPublisher.cs" />
     <Compile Include="Infrastructure\IExplorerRepositorySync.cs" />
     <Compile Include="Infrastructure\IExplorerResourceRepository.cs" />
     <Compile Include="Infrastructure\IExplorerServerResourceRepository.cs" />
+    <Compile Include="Infrastructure\IWindowsGroupPermission.cs" />
+    <Compile Include="Infrastructure\Logging\ILogSettings.cs" />
+    <Compile Include="Infrastructure\Logging\LogLevel.cs" />
     <Compile Include="Infrastructure\Providers\Errors\ErrorType.cs" />
     <Compile Include="Infrastructure\Providers\Errors\FixType.cs" />
     <Compile Include="Infrastructure\Providers\Errors\IActionableErrorInfo.cs" />
@@ -217,15 +297,18 @@
     <Compile Include="Infrastructure\SharedModels\ICompileMessageTO.cs" />
     <Compile Include="Infrastructure\SharedModels\IDbColumn.cs" />
     <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
+    <Compile Include="Infrastructure\SharedModels\IDbTable.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="IServer.cs" />
+    <Compile Include="IStudioResourceRepository.cs" />
     <Compile Include="IVersionStrategy.cs" />
     <Compile Include="PathOperations\IResult.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
     <Compile Include="Runtime\IExplorerItemFactory.cs" />
+    <Compile Include="Runtime\ServiceModel\AuthenticationType.cs" />
     <Compile Include="Scheduler\Interfaces\IClientSchedulerFactory.cs" />
     <Compile Include="Scheduler\Interfaces\IDirectoryHelper.cs" />
     <Compile Include="Scheduler\Interfaces\IEventInfo.cs" />
@@ -241,17 +324,37 @@
     <Compile Include="Scheduler\Interfaces\ScheduleRunStatus.cs" />
     <Compile Include="Scripting\IScriptingContext.cs" />
     <Compile Include="Security\Permissions.cs" />
+    <Compile Include="ServerProxyLayer\IAdminManager.cs" />
+    <Compile Include="ServerProxyLayer\IAdminProxyFactory.cs" />
+    <Compile Include="ServerProxyLayer\IExplorerUpdateManager.cs" />
+    <Compile Include="ServerProxyLayer\ILoggingManager.cs" />
+    <Compile Include="ServerProxyLayer\IQueryManager.cs" />
+    <Compile Include="ServerProxyLayer\ISecurityManager.cs" />
+    <Compile Include="ServerProxyLayer\IScheduleManager.cs" />
+    <Compile Include="ServerProxyLayer\IUpdateManager.cs" />
+    <Compile Include="ServerProxyLayer\IVersionManager.cs" />
     <Compile Include="ServerStats.cs" />
+    <Compile Include="Services\Security\AuthorizationContext.cs" />
+    <Compile Include="Services\Security\ReasonAttribute.cs" />
     <Compile Include="Services\Sql\IDbFactory.cs" />
     <Compile Include="Services\Sql\IDbServer.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2Tokenizer.cs" />
     <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
     <Compile Include="Studio\Controller\IPopUp.cs" />
     <Compile Include="Studio\Core\Activities\IServiceXmlTranslator.cs" />
+    <Compile Include="Studio\Core\Controller\ICommunicationController.cs" />
+    <Compile Include="Studio\Core\Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="Studio\Core\IAutoMappingOutputAction.cs" />
+    <Compile Include="Studio\Core\IEnvironmentConnection.cs" />
+    <Compile Include="Studio\Core\Network\Enums.cs" />
     <Compile Include="Studio\IDialogueViewModel.cs" />
     <Compile Include="Studio\IdialogViewModelFactory.cs" />
+    <Compile Include="Threading\IAsyncWorker.cs" />
+    <Compile Include="Studio\ViewModels\IExplorerItemViewModel.cs" />
     <Compile Include="Studio\ViewModels\IExplorerViewModel.cs" />
+    <Compile Include="Toolbox\IToolboxModel.cs" />
+    <Compile Include="Toolbox\IToolDescriptorViewModel.cs" />
+    <Compile Include="Toolbox\IToolManager.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
     <Compile Include="UndoFramework\IActionHistory.cs" />
     <Compile Include="UndoFramework\IMultiAction.cs" />
@@ -288,6 +391,7 @@
     <Folder Include="Core\Convertors\DateTime\" />
     <Folder Include="Core\Data\" />
     <Folder Include="Infrastructure\Services\" />
+    <Folder Include="Services\Securty\" />
     <Folder Include="Studio\Core\AppResources\Enums\" />
     <Folder Include="Studio\Core\DataList\" />
   </ItemGroup>
@@ -300,6 +404,13 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

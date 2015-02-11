@@ -11,8 +11,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.AppResources.Repositories;
-using Dev2.ConnectionHelpers;
+using Dev2.Common.Interfaces;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
@@ -34,7 +33,7 @@ namespace Dev2.Core.Tests
         public void ThrowsNullExceptionForEnvironmentRepo()
         {
             // ReSharper disable ObjectCreationAsStatement
-            new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IMainViewModel>().Object, connectControlViewModel: new Mock<IConnectControlViewModel>().Object);
+            new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IMainViewModel>().Object, connectControlViewModel: new Mock<CustomControls.Connections.IConnectControlViewModel>().Object);
             // ReSharper restore ObjectCreationAsStatement
         }
 

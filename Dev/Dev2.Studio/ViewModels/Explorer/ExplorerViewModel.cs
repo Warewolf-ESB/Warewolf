@@ -12,9 +12,9 @@
 using System;
 using System.Linq;
 using Caliburn.Micro;
-using Dev2.AppResources.Repositories;
 using Dev2.Common;
-using Dev2.ConnectionHelpers;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.CustomControls.Connections;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
@@ -23,7 +23,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Threading;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Explorer
@@ -34,13 +33,13 @@ namespace Dev2.Studio.ViewModels.Explorer
     {
         #region Class Members
         private Guid? _context;
-        IConnectControlViewModel _connectControlViewModel;
+        Dev2.CustomControls.Connections.IConnectControlViewModel _connectControlViewModel;
 
         #endregion Class Members
 
         #region Constructor
 
-        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton,IMainViewModel mainViewModel, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action updateWorkSpaceItems = null, IConnectControlViewModel connectControlViewModel = null)
+        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton,IMainViewModel mainViewModel, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action updateWorkSpaceItems = null, Dev2.CustomControls.Connections.IConnectControlViewModel connectControlViewModel = null)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -75,7 +74,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
 
-        public IConnectControlViewModel ConnectControlViewModel
+        public Dev2.CustomControls.Connections.IConnectControlViewModel ConnectControlViewModel
         {
             get
             {

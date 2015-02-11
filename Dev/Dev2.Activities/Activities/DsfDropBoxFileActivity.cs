@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.ServiceModel;
@@ -10,9 +12,12 @@ using Dev2.Util;
 using DropNet;
 using DropNet.Models;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
 
 namespace Dev2.Activities
 {
+
+    [ToolDescriptorInfo("ControlFlow-Descision", "Drop box", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
     public class DsfDropBoxFileActivity : DsfBaseActivity
     {
         IDropNetClient _dropnetClient;

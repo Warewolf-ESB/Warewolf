@@ -25,10 +25,13 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.CustomControls.Connections;
 using Dev2.DataList.Contract;
 using Dev2.Dialogs;
@@ -84,7 +87,7 @@ namespace Dev2.Settings.Scheduler
         string _connectionError;
         bool _hasConnectionError;
         IEnvironmentModel _currentEnvironment;
-        IConnectControlViewModel _connectControlViewModel;
+        CustomControls.Connections.IConnectControlViewModel _connectControlViewModel;
 
         #endregion
 
@@ -96,7 +99,7 @@ namespace Dev2.Settings.Scheduler
         }
 
 
-        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IConnectControlViewModel connectControlViewModel)
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, CustomControls.Connections.IConnectControlViewModel connectControlViewModel)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
@@ -179,7 +182,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public IConnectControlViewModel ConnectControlViewModel
+        public CustomControls.Connections.IConnectControlViewModel ConnectControlViewModel
         {
             get
             {

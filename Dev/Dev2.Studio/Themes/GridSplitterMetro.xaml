@@ -2,14 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/CommonMetro.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Warewolf Studio;component/Themes/GridSplitterMetroBrushes.xaml"/>
+        <ResourceDictionary Source="pack://Themes/CommonMetro.xaml"/>
+        <ResourceDictionary Source="pack://Themes/GridSplitterMetroBrushes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- *********************************  RepeatButton Style  ********************************* -->
     <Style x:Key="RepeatButtonStyle" TargetType="{x:Type RepeatButton}">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
         <Setter Property="Padding" Value="10,0,10,2" />
         <Setter Property="MinHeight" Value="30" />

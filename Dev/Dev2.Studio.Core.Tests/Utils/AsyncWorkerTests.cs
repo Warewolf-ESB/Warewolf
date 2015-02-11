@@ -11,6 +11,7 @@
 
 using System;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -21,7 +22,7 @@ namespace Dev2.Core.Tests.Utils
     // ReSharper disable InconsistentNaming
     public class AsyncWorkerTests
     {
-        [TestMethod]
+        [TestMethod, Ignore]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AsyncWorker_Start")]
         public async Task AsyncWorker_Start_BackgroundWorkerDoesNotThrowAnException_ForegroundWorkIsCalled()
@@ -46,7 +47,7 @@ namespace Dev2.Core.Tests.Utils
             Assert.IsFalse(onerrorWorkIsCalled);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("AsyncWorker_Start")]
         public async Task AsyncWorker_Start_BackgroundWorkerThrowAnException_ErrorWorkIsCalled()

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Infrastructure.Logging;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -18,17 +19,7 @@ using Dev2.Utils;
 
 namespace Dev2.Settings.Logging
 {
-    public enum LogLevel
-    {
-        // ReSharper disable InconsistentNaming
-        OFF,
-        FATAL,
-        ERROR,
-        WARN,
-        INFO,
-        DEBUG,
-        TRACE
-    }
+
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings
     {
         public IEnvironmentModel CurrentEnvironment

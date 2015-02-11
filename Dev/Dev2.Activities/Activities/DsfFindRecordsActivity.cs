@@ -19,6 +19,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList;
@@ -31,6 +32,7 @@ using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -39,6 +41,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// <New>
     /// Activity for finding records accoring to a search criteria that the user specifies
     /// </New>
+    [ToolDescriptorInfo("RecordSet-FindRecords", "Find", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+
     public class DsfFindRecordsActivity : DsfActivityAbstract<string>, IRecsetSearch
     {
         #region Fields

@@ -1,0 +1,89 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:igPrim="http://schemas.infragistics.com/xaml/primitives"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
+
+    <!--  *********************************  COLORS  *********************************  -->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  Warewolf Brushes  -->
+    <SolidColorBrush x:Key="WareWolfOrangeBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="WareWolfBackGroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="WarewolfPanelGreyBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="WareWolfBlackBrush" Color="{StaticResource WarewolfBlack}" />
+    <SolidColorBrush x:Key="WarewolfHeaderGreyBrush" Color="{StaticResource WarewolfHeaderGrey}" />
+    <SolidColorBrush x:Key="WarewolfSubHeaderGreyBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
+    <SolidColorBrush x:Key="WareWolfLighkGreyBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="WareWolfButtonBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="WareWolfHeaderButtonBrush" Color="{StaticResource WarewolfHeaderButtonGrey}" />
+    <SolidColorBrush x:Key="WareWolfWhiteBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="WareWolfMenuBrush" Color="{StaticResource WarewolfMenuGrey}" />
+
+
+    <!--  ********************************** THEME BRUSHES - For Color Tuner **********************************  -->
+    <SolidColorBrush x:Key="Brush01" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="Brush02" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="Brush03" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="Brush04" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="Brush05" Color="{StaticResource WarewolfMenuGrey}" />
+
+
+
+    <!--  WORKFLOW BRUSHES  **********************************  -->
+
+    <SolidColorBrush x:Key="WorkflowBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="WorkflowSelectedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ShellBarViewBackground" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="DesignerBackground" Color="{StaticResource WarewolfHeaderGrey}" />
+    <SolidColorBrush x:Key="SolidWhite" Color="{StaticResource WarewolfWhite}" />
+
+
+    <!--  Standard Button Brushes  -->
+    <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="ButtonHoverBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ButtonHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ButtonPressedBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="ButtonPressedBorderBrush" Color="{StaticResource WarewolfOrange}" />
+
+
+    <!--  *********************************  BRUSHES  *********************************  -->
+
+    <SolidColorBrush x:Key="BrushForeground" Color="{StaticResource WarewolfDisabledText}" />
+    <SolidColorBrush x:Key="BrushDarkForeground" Color="{StaticResource WarewolfEnabledText}" />
+    <SolidColorBrush x:Key="BrushTransparent" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="BrushNearTransparent" Color="{StaticResource WarewolfSubHeaderGrey}" />
+    <SolidColorBrush x:Key="BrushDisabledForeground" Color="{StaticResource WarewolfDisabledText}" />
+    <SolidColorBrush x:Key="BrushLightForeground" Color="{StaticResource WarewolfSubHeaderGrey}" />
+    <SolidColorBrush x:Key="BrushHighlightedForeground" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="BrushAccentColor" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="BrushSelected" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="BrushMouseOver" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="BrushSelectedBorder" Color="{StaticResource Color_002}" />
+    <SolidColorBrush x:Key="BrushMouseOverBorder" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ButtonNormalBorder" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="BrushBackground" Color="{StaticResource WarewolfPanelGrey}" />
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource WarewolfEnabledText}" />
+    <SolidColorBrush x:Key="LightForegroundBrush" Color="{StaticResource WarewolfDisabledText}" />
+    <SolidColorBrush x:Key="TransparentBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="DisabledVisualElement" Color="{StaticResource WarewolfDisabledText}" />
+    <SolidColorBrush x:Key="ValidationErrorElement"
+                     igPrim:XamlHelper.IsExcludedFromWash="True"
+                     Color="{StaticResource Color_028}" />
+
+
+
+    <!--  Visual Glyphs brushes  -->
+    <SolidColorBrush x:Key="GlyphBackgroundBrush" Color="{StaticResource WarewolfButtonGrey}" />
+    <SolidColorBrush x:Key="GlyphHoverBackgroundBrush" Color="{StaticResource WarewolfMenuGrey}" />
+    <SolidColorBrush x:Key="GlyphPressedBackgroundBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="GlyphDisabledBackgroundBrush" Color="{StaticResource WarewolfSubHeaderGrey}" />
+
+
+
+
+</ResourceDictionary>

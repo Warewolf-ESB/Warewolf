@@ -16,8 +16,10 @@ using System.Network;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Communication;
 using Dev2.Providers.Events;
 using Dev2.Security;
@@ -211,7 +213,7 @@ namespace Dev2.Core.Tests.Security
             IEventPublisher eventPublisher = new EventPublisher();
             connection.Setup(c => c.ServerEvents).Returns(eventPublisher);
             var clientSecurityService = new TestClientSecurityService(connection.Object);
-            var currentPermissions = new List<WindowsGroupPermission>();
+            var currentPermissions = new List<IWindowsGroupPermission>();
             Guid resourceID = Guid.NewGuid();
 
             var resourcePermission = new WindowsGroupPermission();
@@ -228,7 +230,7 @@ namespace Dev2.Core.Tests.Security
             clientSecurityService.SetCurrentPermissions(currentPermissions);
             clientSecurityService.ReadAsync().Wait();
 
-            var changedPermissions = new List<WindowsGroupPermission>();
+            var changedPermissions = new List<IWindowsGroupPermission>();
 
             var changedResourcePermission = new WindowsGroupPermission();
             changedResourcePermission.ResourceID = resourceID;
@@ -261,7 +263,7 @@ namespace Dev2.Core.Tests.Security
 
     public class TestClientSecurityService : ClientSecurityService
     {
-        List<WindowsGroupPermission> _currentPermissions;
+        List<IWindowsGroupPermission> _currentPermissions;
 
         public TestClientSecurityService(IEnvironmentConnection environmentConnection)
             : base(environmentConnection)
@@ -282,9 +284,9 @@ namespace Dev2.Core.Tests.Security
 
         #region Overrides of ClientSecurityService
 
-        protected override List<WindowsGroupPermission> ReadPermissions()
+        protected override List<IWindowsGroupPermission> ReadPermissions()
         {
-            var currentPermissions = new List<WindowsGroupPermission>();
+            var currentPermissions = new List<IWindowsGroupPermission>();
             if(_currentPermissions != null)
             {
                 currentPermissions = _currentPermissions;
@@ -294,7 +296,7 @@ namespace Dev2.Core.Tests.Security
 
         #endregion
 
-        public void SetCurrentPermissions(List<WindowsGroupPermission> windowsGroupPermissions)
+        public void SetCurrentPermissions(List<IWindowsGroupPermission> windowsGroupPermissions)
         {
             _currentPermissions = windowsGroupPermissions;
         }

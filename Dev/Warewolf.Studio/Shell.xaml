@@ -1,83 +1,376 @@
 ﻿<Window x:Class="Warewolf.Studio.Shell"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:dockManager="http://infragistics.com/DockManager"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:igWindows="http://infragistics.com/Windows"
+        xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+        xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationFramework"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        xmlns:studio="clr-namespace:Warewolf.Studio"
+        xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
+        xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+        xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
+        x:Name="MainWindow"
         Title="Warewolf Studio"
-        WindowState="Maximized">
+        Background="{StaticResource WareWolfBackGroundBrush}"
+        FontFamily="{StaticResource DefaultFontFamily}"
+        ShowInTaskbar="True"
+        Style="{DynamicResource MetroWindowStyle}"
+        TextOptions.TextFormattingMode="Display"
+        WindowState="Maximized"
+        d:DataContext="{d:DesignInstance Type={x:Type interfaces:IShellViewModel}}"
+        mc:Ignorable="d">
 
-    <Grid Background="White">
+    <Window.Resources>
+
+        <Storyboard x:Key="AnimateExitFullScreenPanelOpen" TargetName="ExitFullScreenPanel">
+            <ThicknessAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="Margin">
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,0,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
+                <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="AnimateExitFullScreenPanelClose" TargetName="ExitFullScreenPanel">
+            <ThicknessAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="Margin">
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-90,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity">
+                <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="AnimateCloseTitleBorder">
+            <DoubleAnimation Duration="0:0:0.3"
+                                                                         Storyboard.TargetProperty="Height"
+                                                                         To="0" />
+        </Storyboard>
+        <Storyboard x:Key="AnimateOpenTitleBorder">
+            <DoubleAnimation Duration="0:0:0.3"
+                                                                         Storyboard.TargetProperty="Height"
+                                                                         To="25" />
+        </Storyboard>
+
+        <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="WindowStyle" Value="None" />
+            <Setter Property="AllowsTransparency" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <Grid>
+                            <Border x:Name="MainBorder"
+                                    Background="White"
+                                    BorderThickness="0">
+                                <DockPanel LastChildFill="True">
+                                    <Border x:Name="PART_TITLEBAR" 
+                                            Height="25"
+                                            Margin="0,0,0,0"
+                                            Background="Transparent"
+                                            BorderBrush="{StaticResource MenuPanelGradient}"
+                                            BorderThickness="0,0,0,1"
+                                            DockPanel.Dock="Top"
+                                            MouseLeftButtonDown="PART_TITLEBAR_MouseLeftButtonDown">
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Margin="5,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="16"
+                                                       Foreground="#FFAAAAAA"
+                                                       Text="{TemplateBinding Title}"
+                                                       TextWrapping="NoWrap" />
+                                            <Button x:Name="PART_CLOSE"
+                                                    Width="20"
+                                                    Height="20"
+                                                    Margin="0,5,5,5"
+                                                    VerticalAlignment="Center"
+                                                    Click="PART_CLOSE_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <Path Width="10"
+                                                      Margin="0,0,0,0"
+                                                      Data="F1M54.0573,47.8776L38.1771,31.9974 54.0547,16.1198C55.7604,14.4141 55.7604,11.6511 54.0573,9.94531 52.3516,8.23962 49.5859,8.23962 47.8802,9.94531L32.0026,25.8229 16.1224,9.94531C14.4167,8.23962 11.6511,8.23962 9.94794,9.94531 8.24219,11.6511 8.24219,14.4141 9.94794,16.1198L25.8255,32 9.94794,47.8776C8.24219,49.5834 8.24219,52.3477 9.94794,54.0534 11.6511,55.7572 14.4167,55.7585 16.1224,54.0534L32.0026,38.1745 47.8802,54.0534C49.5859,55.7585 52.3516,55.7572 54.0573,54.0534 55.7604,52.3477 55.763,49.5834 54.0573,47.8776z"
+                                                      Fill="Black"
+                                                      Stretch="Uniform" />
+                                            </Button>
+                                            <Button x:Name="PART_MAXIMIZE_RESTORE" 
+                                                    Width="20"
+                                                    Height="20"
+                                                    Margin="0,5,5,5"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Click="PART_MAXIMIZE_RESTORE_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <Path Width="10"
+                                                      Margin="0,0,0,0"
+                                                      Data="M4.3685131,23.127279L4.3685131,47.283243 47.117023,47.283243 47.117023,23.127279z M0,10.684L53.755001,10.684 53.755001,51.668001 0,51.668001z M8.5679998,0L58.668022,0 64,0 64,5.6864691 64,45.317999 58.668022,45.317999 58.668022,5.6864691 8.5679998,5.6864691z"
+                                                      Fill="Black"
+                                                      Stretch="Uniform" />
+                                            </Button>
+                                            <Button x:Name="PART_SUPER_MAXIMIZE_RESTORE" 
+                                                    Width="20"
+                                                    Height="20"
+                                                    Margin="0,5,5,5"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Click="PART_SUPER_MAXIMIZE_RESTORE_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <fa:FontAwesome Icon="ArrowsAlt" />
+                                            </Button>
+                                            <Button x:Name="PART_MINIMIZE" 
+                                                    Width="20"
+                                                    Height="20"
+                                                    Margin="0,5,5,5"
+                                                    HorizontalAlignment="Center" 
+                                                    VerticalAlignment="Center"
+                                                    VerticalContentAlignment="Bottom"
+                                                    Click="PART_MINIMIZE_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <fa:FontAwesome VerticalAlignment="Bottom" Icon="Minus" />
+                                            </Button>
+                                            <Button x:Name="PART_LOCK"
+                                                    Width="20"
+                                                    Height="20"
+                                                    Margin="0,5,5,5"
+                                                    VerticalAlignment="Center"
+                                                    Click="PART_LOCK_Click"
+                                                    DockPanel.Dock="Right"
+                                                    Style="{StaticResource MetroWindowButtonStyle}">
+                                                <fa:FontAwesome Icon="Lock" />
+                                            </Button>
+                                        </DockPanel>
+                                    </Border>
+                                    <AdornerDecorator DockPanel.Dock="Bottom">
+                                        <ContentPresenter Content="{TemplateBinding Content}"
+                                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                    </AdornerDecorator>
+                                </DockPanel>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="ResizeMode" Value="CanResizeWithGrip">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Window}">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Grid>
+                                        <AdornerDecorator>
+                                            <ContentPresenter Content="{TemplateBinding Content}"
+                                                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                        </AdornerDecorator>
+                                        <ResizeGrip x:Name="WindowResizeGrip"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Bottom"
+                                                    IsTabStop="False"
+                                                    Visibility="Collapsed" />
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+                                            <Condition Property="WindowState" Value="Normal" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible" />
+                                    </MultiTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
+            <views:WorkflowDesignerView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
+            <views:ManageServerControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:ManageDatabaseSourceViewModel}">
+            <views:ManageDatabaseSourceControl />
+        </DataTemplate>
+    </Window.Resources>
+
+    <!--  START OF LAYOUT  -->
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"
+                                  MinWidth="60"
+                                  MaxWidth="150" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" />
-
+            <Grid Grid.Column="0">
+                <ContentControl Width="60"
+                                SizeChanged="SlidingMenuPane_OnSizeChanged"
+                                regions:RegionManager.RegionName="{x:Static core:RegionNames.Menu}">
+                    <ContentControl.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MenuExpanded}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.5"
+                                                                 From="60"
+                                                                 Storyboard.TargetProperty="Width"
+                                                                 To="150" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:0.5"
+                                                                 From="150"
+                                                                 Storyboard.TargetProperty="Width"
+                                                                 To="60" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </Grid>
             <Grid Grid.Column="1">
-                <dockManager:XamDockManager AllowMaximizeFloatingWindows="True"
+                <dockManager:XamDockManager x:Name="DockManager"
+                                            AllowMaximizeFloatingWindows="True"
                                             AllowMinimizeFloatingWindows="True"
-                                            Theme="[current]">
+                                            Background="{StaticResource WareWolfBackGroundBrush}"
+                                            FlyoutAnimation="Resize"
+                                            LayoutMode="FillContainer"
+                                            ToolWindowLoaded="DockManager_OnToolWindowLoaded"
+                                            FloatingWindowDoubleClickAction="ToggleDockedState"
+                                            UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
+
+
+
                         <dockManager:SplitPane Width="300"
-                                               SplitterOrientation="Vertical"
+                                               SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedRight">
-                            <dockManager:TabGroupPane>
-                                <dockManager:ContentPane x:Name="Variables"
-                                                         AllowClose="False"
-                                                         AllowInDocumentHost="False"
-                                                         Header="Variables"
-                                                         IsPinned="True"
-                                                         regions:RegionManager.RegionName="Variables" />
 
-                                <dockManager:ContentPane x:Name="OutputPane"
-                                                         AllowClose="False"
-                                                         AllowInDocumentHost="False"
-                                                         Header="Output"
-                                                         IsPinned="True"
-                                                         regions:RegionManager.RegionName="OutputPane" />
-                            </dockManager:TabGroupPane>
+
+                            <dockManager:ContentPane x:Name="Variables"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="VARIABLES"
+                                                     IsPinned="True"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
+                                                     regions:RegionManager.RegionName="Variables" />
+
+                            <dockManager:ContentPane x:Name="OutputPane"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="OUTPUT"
+                                                     IsPinned="True"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
+                                                     regions:RegionManager.RegionName="OutputPane" />
 
                         </dockManager:SplitPane>
 
                         <dockManager:SplitPane Width="300"
-                                               SplitterOrientation="Vertical"
+                                               SplitterOrientation="Horizontal"
                                                dockManager:XamDockManager.InitialLocation="DockedLeft">
-                            <dockManager:TabGroupPane>
-                                <dockManager:ContentPane x:Name="Explorer"
-                                                         AllowClose="False"
-                                                         AllowInDocumentHost="False"
-                                                         Header="Explorer"
-                                                         IsPinned="True"
-                                                         regions:RegionManager.RegionName="Explorer" />
-                                <dockManager:ContentPane x:Name="Toolbox"
-                                                         AllowClose="False"
-                                                         AllowInDocumentHost="False"
-                                                         Header="Toolbox"
-                                                         IsPinned="True"
-                                                         regions:RegionManager.RegionName="Toolbox" />
-                                <dockManager:ContentPane x:Name="Help"
-                                                         AllowClose="False"
-                                                         AllowInDocumentHost="False"
-                                                         Header="Variables"
-                                                         IsPinned="True"
-                                                         regions:RegionManager.RegionName="Help" />
-                            </dockManager:TabGroupPane>
+                            <dockManager:ContentPane x:Name="Explorer"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="EXPLORER"
+                                                     IsPinned="True"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
+                                                     regions:RegionManager.RegionName="{x:Static core:RegionNames.Explorer}" />
+                            <dockManager:ContentPane x:Name="Toolbox"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     AllowClose="False"
+                                                     Header="TOOL BOX"
+                                                     IsPinned="True"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
+                                                     regions:RegionManager.RegionName="{x:Static core:RegionNames.Toolbox}" />
+                            <dockManager:ContentPane x:Name="Help"
+                                                     AllowClose="False"
+                                                     AllowInDocumentHost="False"
+                                                     CloseButtonVisibility="Hidden"
+                                                     Header="WHAT DOES THIS DO?"
+                                                     IsPinned="True"
+                                                     Style="{DynamicResource DockmangerToolPaneStyle}"
+                                                     WindowPositionMenuVisibility="Hidden"
+                                                     regions:RegionManager.RegionName="{x:Static core:RegionNames.Help}" />
                         </dockManager:SplitPane>
-
                     </dockManager:XamDockManager.Panes>
-                    <dockManager:DocumentContentHost>
+                    <dockManager:DocumentContentHost Background="{StaticResource WarewolfPanelGreyBrush}">
                         <dockManager:SplitPane>
-                            <dockManager:TabGroupPane regions:RegionManager.RegionName="Workflows" />
+                            <dockManager:TabGroupPane x:Name="Workspace"
+                                                      SelectedItem="{Binding ActiveItem}"
+                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Workspace}" />
+
                         </dockManager:SplitPane>
                     </dockManager:DocumentContentHost>
                 </dockManager:XamDockManager>
             </Grid>
         </Grid>
+        <StackPanel x:Name="ExitFullScreenPanel"
+                    Width="250"
+                    Height="60"
+                    Margin="0,-90,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Background="White"
+                    Opacity="0"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <StackPanel.Effect>
+                <DropShadowEffect BlurRadius="10"
+                                  Direction="300"
+                                  ShadowDepth="10" />
+            </StackPanel.Effect>
+            <TextBlock Margin="25,10,0,10"
+        		HorizontalAlignment="Center"
+        		VerticalAlignment="Center"
+        		Background="White"
+        		FontSize="22"><Hyperlink Click="CloseSuperMaximised"><Run Text="Exit Full Screen (F11)" /></Hyperlink></TextBlock>
+        </StackPanel>
+        <Rectangle x:Name="ShowFullScreenPanel"
+                   Height="15"
+                   Margin="0,-6,0,0"
+                   VerticalAlignment="Top"
+                   Fill="#00000000"
+                   IsHitTestVisible="True"
+                   MouseEnter="ShowFullScreenPanel_OnMouseEnter" />
+        <Rectangle x:Name="HideFullScreenPanel"
+                   Height="20"
+                   Margin="0,45,0,0"
+                   VerticalAlignment="Top"
+                   Fill="#00000000"
+                   IsHitTestVisible="True"
+                   MouseEnter="HideFullScreenPanel_OnMouseEnter" />
     </Grid>
 </Window>

@@ -121,16 +121,17 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var renameItemService = new RenameItemService();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "");
+            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "", "", "");
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
+            var id = Guid.NewGuid();
             repo.Setup(a => a.RenameItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Success, "")).Verifiable();
-
+            repo.Setup(a => a.Find(id)).Returns(item);
             var serializer = new Dev2JsonSerializer();
             var inputs = new Dictionary<string, StringBuilder>
                 {
                     {
-                        "itemToRename", serializer.SerializeToBuilder(item)
+                        "itemToRename", new StringBuilder(id.ToString())
                     },
                     {
                         "newName", new StringBuilder("bob")

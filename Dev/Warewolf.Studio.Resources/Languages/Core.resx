@@ -442,4 +442,256 @@ You need Administrator permission.</value>
   <data name="DragRemoteNotSupportedHeader" xml:space="preserve">
     <value>Invalid Designer Operation</value>
   </data>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete {0}?</value>
+  </data>
+  <data name="DeleteVersionMessage" xml:space="preserve">
+    <value>"Are you sure you want to delete {0}?"</value>
+  </data>
+  <data name="DeleteVersionMessageHeader" xml:space="preserve">
+    <value>Delete Version</value>
+  </data>
+  <data name="DidYouKnow" xml:space="preserve">
+    <value>Did you know?</value>
+  </data>
+  <data name="GenericConfirmation" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="InputVariablesTip" xml:space="preserve">
+    <value>You can pass variables into your workflow{0}by selecting the Input checkbox{0}in the Variables window.</value>
+  </data>
+  <data name="InvalidTextHeader" xml:space="preserve">
+    <value>"Invalid text"</value>
+  </data>
+  <data name="InvalidTextMessage" xml:space="preserve">
+    <value>"{0} is invalid. Warewolf only supports latin characters"</value>
+  </data>
+  <data name="InvalidPermissionHeader" xml:space="preserve">
+    <value>"Invalid text"</value>
+  </data>
+  <data name="InvalidPermissionMessage" xml:space="preserve">
+    <value>"{0} is invalid. Warewolf only supports latin characters"</value>
+  </data>
+  <data name="RenameConflictDescription" xml:space="preserve">
+    <value>The following task has been renamed {0} -&gt; {1}. You will lose the history for the old task.{2} Would you like to save the new name?{2}-------------------------------------------------------------------" + "Yes - Save with the new name.{2}No - Save with the old name.{2}Cancel - Returns you to Scheduler.</value>
+  </data>
+  <data name="RenameConflictHeader" xml:space="preserve">
+    <value>Rename conflict</value>
+  </data>
+  <data name="RollbackHeader" xml:space="preserve">
+    <value>Make current version</value>
+  </data>
+  <data name="RollbackMessage" xml:space="preserve">
+    <value>"{0} will become the current version.{1}Do you want to proceed ?"</value>
+  </data>
+  <data name="SaveErrorHeader" xml:space="preserve">
+    <value>Saving Error</value>
+  </data>
+  <data name="SaveErrorMessage" xml:space="preserve">
+    <value>The following error occurred on save:</value>
+  </data>
+  <data name="SchedulerChangesDescription" xml:space="preserve">
+    <value>Scheduler Task has not been saved.{0}Would you like to save the Task? {0}-------------------------------------------------------------------Yes - Save the Task.{0}No - Discard your changes.{0}Cancel - Returns you to Scheduler.</value>
+  </data>
+  <data name="SchedulerChangesHeader" xml:space="preserve">
+    <value>Scheduler Task has changes</value>
+  </data>
+  <data name="ServerSourceNotConnected" xml:space="preserve">
+    <value>Server is not connected</value>
+  </data>
+  <data name="ServerSourceNotConnectedSettingsDescription" xml:space="preserve">
+    <value>You can not change the settings for a server that is offline.</value>
+  </data>
+  <data name="ServerSourceUnreachableErrorHeader" xml:space="preserve">
+    <value>Server is unreachable</value>
+  </data>
+  <data name="ServerSourceUnreachableHeaderMessage" xml:space="preserve">
+    <value>Unable to reach {0}: Connection timed out.{1} Make sure the remote computer is powered on.{1}{1} Would you like to re-try? {1}</value>
+  </data>
+  <data name="SettingsChangedDescription" xml:space="preserve">
+    <value>"Settings have not been saved.{0}Would you like to save the settings? {0}-------------------------------------------------------------------Yes - Save the settings.{0}No - Discard your changes.{0}Cancel - Returns you to settings.</value>
+  </data>
+  <data name="SettingsChangedHeader" xml:space="preserve">
+    <value>Settings have changed</value>
+  </data>
+  <data name="ServerSourceDialogAddressLabel" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="AuthenticationTypeLabel" xml:space="preserve">
+    <value>Authentication Type:</value>
+  </data>
+  <data name="ServerSourceDialogNoAddressErrorMessage" xml:space="preserve">
+    <value>The server address cannot be empty</value>
+  </data>
+  <data name="ServerSourceDialogNoTestMessage" xml:space="preserve">
+    <value>The server connection must be tested with a valid address before you can save</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="TestConnectionLabel" xml:space="preserve">
+    <value>Test Connection</value>
+  </data>
+  <data name="UserNameLabel" xml:space="preserve">
+    <value>User Name:</value>
+  </data>
+  <data name="MenuDialogDatabaseLabel" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="MenuDialogDebugLabel" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="MenuDialogDeployLabel" xml:space="preserve">
+    <value>Deploy</value>
+  </data>
+  <data name="MenuDialogDLLLabel" xml:space="preserve">
+    <value>DLL</value>
+  </data>
+  <data name="MenuDialogForumsLabel" xml:space="preserve">
+    <value>Forums</value>
+  </data>
+  <data name="MenuDialogLockLabel" xml:space="preserve">
+    <value>Lock Menu</value>
+  </data>
+  <data name="MenuDialogNewLabel" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="MenuDialogNewVersionLabel" xml:space="preserve">
+    <value>New Version</value>
+  </data>
+  <data name="MenuDialogSaveLabel" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="MenuDialogSettingsLabel" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="MenuDialogSupportLabel" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="MenuDialogTaskLabel" xml:space="preserve">
+    <value>Task</value>
+  </data>
+  <data name="MenuDialogToursLabel" xml:space="preserve">
+    <value>Tours</value>
+  </data>
+  <data name="MenuDialogUnLockLabel" xml:space="preserve">
+    <value>Unlock Menu</value>
+  </data>
+  <data name="MenuDialogWebLabel" xml:space="preserve">
+    <value>Web</value>
+  </data>
+  <data name="ConnectControlConnectionsToolTip" xml:space="preserve">
+    <value>ConnectControlConnectionsToolTip</value>
+  </data>
+  <data name="ConnectControlEditConnectionToolTip" xml:space="preserve">
+    <value>ConnectControlEditConnectionToolTip</value>
+  </data>
+  <data name="ConnectControlToggleConnectionToolTip" xml:space="preserve">
+    <value>ConnectControlToggleConnectionToolTip</value>
+  </data>
+  <data name="DebugToolTip" xml:space="preserve">
+    <value>DebugToolTip</value>
+  </data>
+  <data name="EnvironmentExplorerRefreshToolTip" xml:space="preserve">
+    <value>EnvironmentExplorerRefreshToolTip</value>
+  </data>
+  <data name="ExplorerItemEditToolTip" xml:space="preserve">
+    <value>ExplorerItemEditToolTip</value>
+  </data>
+  <data name="ExplorerItemExecuteToolTip" xml:space="preserve">
+    <value>ExplorerItemExecuteToolTip</value>
+  </data>
+  <data name="ExplorerRefreshToolTip" xml:space="preserve">
+    <value>ExplorerRefreshToolTip</value>
+  </data>
+  <data name="ExplorerSearchToolTip" xml:space="preserve">
+    <value>ExplorerSearchToolTip</value>
+  </data>
+  <data name="MenuDatabaseToolTip" xml:space="preserve">
+    <value>MenuDatabaseToolTip</value>
+  </data>
+  <data name="MenuDeployToolTip" xml:space="preserve">
+    <value>MenuDeployToolTip</value>
+  </data>
+  <data name="MenuDownloadToolTip" xml:space="preserve">
+    <value>MenuDownloadToolTip</value>
+  </data>
+  <data name="MenuHelpToolTip" xml:space="preserve">
+    <value>MenuHelpToolTip</value>
+  </data>
+  <data name="MenuLockToolTip" xml:space="preserve">
+    <value>MenuLockToolTip</value>
+  </data>
+  <data name="MenuNewServiceToolTip" xml:space="preserve">
+    <value>MenuNewServiceToolTip</value>
+  </data>
+  <data name="MenuPluginToolTip" xml:space="preserve">
+    <value>MenuPluginToolTip</value>
+  </data>
+  <data name="MenuSaveToolTip" xml:space="preserve">
+    <value>MenuSaveToolTip</value>
+  </data>
+  <data name="MenuSchedulerToolTip" xml:space="preserve">
+    <value>MenuSchedulerToolTip</value>
+  </data>
+  <data name="MenuSettingsToolTip" xml:space="preserve">
+    <value>MenuSettingsToolTip</value>
+  </data>
+  <data name="MenuWebServiceToolTip" xml:space="preserve">
+    <value>MenuWebServiceToolTip</value>
+  </data>
+  <data name="ServerSourceDialogAddressPortTip" xml:space="preserve">
+    <value>ServerDialogAddressPortTip</value>
+  </data>
+  <data name="ServerSourceDialogAddressSaveTip" xml:space="preserve">
+    <value>ServerDialogAddressSaveTip</value>
+  </data>
+  <data name="ServerSourceDialogAddressToolTip" xml:space="preserve">
+    <value>ServerDialogAddressToolTip</value>
+  </data>
+  <data name="UserAuthenticationToolTip" xml:space="preserve">
+    <value>ServerDialogAddressUserAuthenticationToolTip</value>
+  </data>
+  <data name="PasswordToolTip" xml:space="preserve">
+    <value>PasswordToolTip</value>
+  </data>
+  <data name="ServerSourceDialogProtocolToolTip" xml:space="preserve">
+    <value>ServerDialogProtocolToolTip</value>
+  </data>
+  <data name="ServerSourceDialogPublicToolTip" xml:space="preserve">
+    <value>ServerDialogPublicToolTip</value>
+  </data>
+  <data name="ServerSourceDialogsTestToolTip" xml:space="preserve">
+    <value>ServerDialogsTestToolTip</value>
+  </data>
+  <data name="UserNameToolTip" xml:space="preserve">
+    <value>ServerDialogUserNameToolTip</value>
+  </data>
+  <data name="WindowsAuthenticationToolTip" xml:space="preserve">
+    <value>ServerDialogWindowsAuthenticationToolTip</value>
+  </data>
+  <data name="ToolDescriptor_ToolDescriptor_Tool_guids_are_not_allowed_to_be_the_empty_guid" xml:space="preserve">
+    <value>Tool guids are not allowed to be the empty guid</value>
+  </data>
+  <data name="DatabaseSourceDatabaseLabel" xml:space="preserve">
+    <value>Database:</value>
+  </data>
+  <data name="DatabaseSourceDatabaseToolTip" xml:space="preserve">
+    <value>DatabaseSourceDatabaseToolTip</value>
+  </data>
+  <data name="DatabaseSourceServerLabel" xml:space="preserve">
+    <value>Server:</value>
+  </data>
+  <data name="DatabaseSourceServerToolTip" xml:space="preserve">
+    <value>DatabaseSourceServerToolTip</value>
+  </data>
+  <data name="DatabaseSourceTypeLabel" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="DatabaseSourceTypeToolTip" xml:space="preserve">
+    <value>DatabaseSourceTypeTooltip</value>
+  </data>
+  <data name="CancelTest" xml:space="preserve">
+    <value>Cancel Test</value>
+  </data>
 </root>

@@ -10,13 +10,14 @@
 */
 
 using System;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Newtonsoft.Json;
 
 namespace Dev2.Services.Security
 {
-    public class WindowsGroupPermission : ObservableObject
+    public class WindowsGroupPermission : ObservableObject, IWindowsGroupPermission
     {
         public WindowsGroupPermission()
         {

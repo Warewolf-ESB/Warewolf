@@ -10,10 +10,11 @@
 */
 
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Infrastructure;
 
 namespace Dev2.Services.Security
 {
-    public class WindowsGroupPermissionEqualityComparer : IEqualityComparer<WindowsGroupPermission>
+    public class WindowsGroupPermissionEqualityComparer : IEqualityComparer<IWindowsGroupPermission>
     {
         #region Implementation of IEqualityComparer<in WindowsGroupPermission>
 
@@ -23,10 +24,8 @@ namespace Dev2.Services.Security
         /// <returns>
         /// true if the specified objects are equal; otherwise, false.
         /// </returns>
-        // ReSharper disable CSharpWarnings::CS1584
         /// <param name="x">The first object of type <paramref name="T"/> to compare.</param><param name="y">The second object of type <paramref name="T"/> to compare.</param>
-        // ReSharper restore CSharpWarnings::CS1584
-        public bool Equals(WindowsGroupPermission x, WindowsGroupPermission y)
+        public bool Equals(IWindowsGroupPermission x, IWindowsGroupPermission y)
         {
             var isEqual = x.Permissions.Equals(y.Permissions) && x.ResourceID.Equals(y.ResourceID);
             if(!string.IsNullOrEmpty(x.ResourceName) && !string.IsNullOrEmpty(y.ResourceName))
@@ -47,7 +46,7 @@ namespace Dev2.Services.Security
         /// A hash code for the specified object.
         /// </returns>
         /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
-        public int GetHashCode(WindowsGroupPermission obj)
+        public int GetHashCode(IWindowsGroupPermission obj)
         {
             var hashCode = 0;
             hashCode += obj.Permissions.GetHashCode() + obj.ResourceID.GetHashCode();

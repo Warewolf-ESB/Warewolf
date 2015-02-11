@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Models;
 using Dev2.Studio.Views.Explorer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

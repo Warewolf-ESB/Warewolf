@@ -1,15 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ExplorerViewModel:BindableBase,IExplorerViewModel
+    public class ExplorerViewModelBase : BindableBase, IExplorerViewModel
     {
-        ICollection<IEnvironmentViewModel> _environments;
+        private ICollection<IEnvironmentViewModel> _environments;
+        private string _searchText;
+        private bool _isRefreshing;
+        private IExplorerItemViewModel _selectedItem;
+
+        public ExplorerViewModelBase()
+        {
+            
+            RefreshCommand = new DelegateCommand(Refresh);
+            
+        }
+
+        public ICommand RefreshCommand { get; set; }
+
+        public bool IsRefreshing
+        {
+            get
+            {
+                return _isRefreshing;
+            }
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged(()=>IsRefreshing);
+            }
+        }
+
+        public bool ShowConnectControl { get; set; }
+
+        public IExplorerItemViewModel SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                _selectedItem = value;
+                OnPropertyChanged(() => SelectedItem);
+
+            }
+        }
+
         public ICollection<IEnvironmentViewModel> Environments
         {
             get
@@ -22,75 +66,136 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Environments);
             }
         }
-    }
 
-    public class ExplorerItemViewModel : BindableBase,IExplorerItemViewModel
-    {
-        string _resourceName;
+        public IEnvironmentViewModel SelectedEnvironment { get; set; }
+        public IServer SelectedServer { get { return SelectedEnvironment.Server; }  }
+        
 
-        public ExplorerItemViewModel()
-        {
-            Children = new ObservableCollection<IExplorerItemViewModel>();
-        }
-
-        #region Implementation of IExplorerItemViewModel
-
-        public string ResourceName
+        public string SearchText
         {
             get
             {
-                return _resourceName;
+                return _searchText;
             }
             set
             {
-                _resourceName = value;
-                OnPropertyChanged(() => ResourceName);
+                if(_searchText == value)
+                {
+                    return;
+                }
+                _searchText = value;
+                Filter(_searchText);
+                OnPropertyChanged(() => SearchText);
             }
         }
-        public ICollection<IExplorerItemViewModel> Children
+
+        public string SearchToolTip
         {
-            get;
-            set;
+            get
+            {
+                return Resources.Languages.Core.ExplorerSearchToolTip;
+            }
         }
 
-        #endregion
+        public string RefreshToolTip
+        {
+            get
+            {
+                return Resources.Languages.Core.ExplorerRefreshToolTip;
+            }
+        }
+
+        private void Refresh()
+        {
+            IsRefreshing = true;
+            Environments.ForEach(model =>
+                              {
+                                  if (model.IsConnected)
+                                  {
+                                      model.Load();
+                                  }
+                              });
+            IsRefreshing = false;
+        }
+
+        public void Filter(string filter)
+        {
+            if (Environments != null)
+            {
+                foreach(var environmentViewModel in Environments)
+                {
+                    environmentViewModel.Filter(filter);
+                }
+                OnPropertyChanged(() => Environments);
+            }
+        }
+
+        public void RemoveItem(IExplorerItemViewModel item)
+        {
+            if (Environments != null)
+            {
+                var env = Environments.FirstOrDefault(a => a.Server == item.Server);
+                if(env!= null)
+                {
+                    env.RemoveItem(item);
+                }
+                OnPropertyChanged(() => Environments);
+            }
+        }
+
+        public event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
+
+    
+
+        public void SelectItem(Guid id)
+        {
+            foreach(var environmentViewModel in Environments)
+            {
+                environmentViewModel.SelectItem(id, (a=>SelectedItem =a));  
+            }
+        }
+
+        public IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc)
+        {
+            return null;
+        }
+        public IConnectControlViewModel ConnectControlViewModel { get; internal set; }
+        protected virtual void OnSelectedEnvironmentChanged(IEnvironmentViewModel e)
+        {
+            var handler = SelectedEnvironmentChanged;
+            if (handler != null) handler(this, e);
+        }
     }
 
-    public class EnvironmentViewModel:BindableBase,IEnvironmentViewModel
+    public class ExplorerViewModel:ExplorerViewModelBase
     {
-        public IServer Server { get; set; }
-
-        public EnvironmentViewModel(IServer server)
+        public ExplorerViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
         {
-            if(server==null) throw new ArgumentNullException("server");
-            Server = server;
+            if (shellViewModel == null)
+            {
+                throw new ArgumentNullException("shellViewModel");
+            }
+            var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer, shellViewModel);
+            Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
+            localhostEnvironment.Connect();
+            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator);
+            ShowConnectControl = true;
         }
 
-        #region Implementation of IEnvironmentViewModel
+        
 
-        public ICollection<IExplorerItemViewModel> ExplorerItemViewModels
+        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server,IShellViewModel shellViewModel)
         {
-            get;
-            set;
+            return new EnvironmentViewModel(server, shellViewModel, this);
         }
-        public string DisplayName
-        {
-            get;
-            set;
-        }
-        public bool IsConnected { get; private set; }
-        public bool IsLoaded { get; private set; }
+    }
 
-        #endregion
-
-        public void Connect()
+    public class SingleEnvironmentExplorerViewModel : ExplorerViewModelBase
+    {
+        public SingleEnvironmentExplorerViewModel(IEnvironmentViewModel environmentViewModel)
         {
-            IsConnected = Server.Connect();
-        }
-
-        public void Load()
-        {
-            IsLoaded = true;
+            Environments = new ObservableCollection<IEnvironmentViewModel> { environmentViewModel };
+            ShowConnectControl = false;
         }
     }
 }

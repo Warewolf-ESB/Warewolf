@@ -116,24 +116,28 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("MoveItem_Execute")]
-        public void MoveItem_Execute_ExpectRename()
+        public void MoveItem_Execute_ExpectMove()
         {
             //------------Setup for test--------------------------
             var MoveItemService = new MoveItemService();
-
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "");
+            var idFrom = Guid.NewGuid();
+            var IdTo = Guid.NewGuid();
+            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "dave", "", "");
+            ServerExplorerItem itemTo = new ServerExplorerItem("a", Guid.NewGuid(), ResourceType.Folder, null, Permissions.DeployFrom, "", "", "");
+            itemTo.ResourcePath = "bob";
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
             repo.Setup(a => a.MoveItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Success, "")).Verifiable();
-
+            repo.Setup(a => a.Find(idFrom)).Returns(item);
+            repo.Setup(a => a.Find(IdTo)).Returns(itemTo);
             var serializer = new Dev2JsonSerializer();
             var inputs = new Dictionary<string, StringBuilder>
                 {
                     {
-                        "itemToMove", serializer.SerializeToBuilder(item)
+                        "itemToMove", new StringBuilder(idFrom.ToString())
                     },
                     {
-                        "newPath", new StringBuilder("bob")
+                        "newPath", new StringBuilder(IdTo.ToString())
                     }
                 };
             ws.Setup(a => a.ID).Returns(Guid.Empty);
@@ -141,7 +145,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             MoveItemService.Execute(inputs, ws.Object);
             //------------Assert Results-------------------------
-            repo.Verify(a => a.MoveItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()));
+            repo.Verify(a => a.MoveItem(item, "bob", It.IsAny<Guid>()));
         }
 
         [TestMethod]

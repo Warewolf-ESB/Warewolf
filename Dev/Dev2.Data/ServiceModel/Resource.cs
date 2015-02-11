@@ -23,6 +23,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
@@ -282,6 +283,23 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         [JsonIgnore]
         public string Outputs { get; set; }
+        public Permissions UserPermissions
+        {
+            get
+            {
+                return Permissions.None;
+            }
+            set
+            {
+            }
+        }
+        public IList<IResource> Children
+        {
+            get;
+            set;
+        }
+//todo: this is temporary using it for deploy but wont need to soon enough
+        public bool IsSelected { get; set; }
 
         [JsonIgnore]
         public bool IsNewResource { get; set; }

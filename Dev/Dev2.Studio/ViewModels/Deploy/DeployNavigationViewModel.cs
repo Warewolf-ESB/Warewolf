@@ -16,6 +16,11 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Services.Security;
+using Dev2.Common.Interfaces.Threading;
+
+
+using Dev2.Common.Interfaces;
 using Dev2.ConnectionHelpers;
 using Dev2.Models;
 using Dev2.Runtime.Configuration.ViewModels.Base;

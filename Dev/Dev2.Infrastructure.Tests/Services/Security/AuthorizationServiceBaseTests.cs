@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Services.Security;
 using Dev2.Services.Security;
 using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

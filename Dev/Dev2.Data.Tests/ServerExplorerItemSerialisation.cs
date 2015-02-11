@@ -5,7 +5,9 @@ using Dev2.Communication;
 using Dev2.Explorer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Common.Tests.Serialization
+    // ReSharper restore CheckNamespace
 {
     [TestClass]
     public class ResourceJsonConvertorTests
@@ -17,7 +19,7 @@ namespace Dev2.Common.Tests.Serialization
         {
             //------------Setup for test--------------------------
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, Dev2.Common.Interfaces.Data.ResourceType.DbService, null, Permissions.Administrator, "bob"));
+            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob","",""));
             
             //------------Execute Test---------------------------
             Assert.IsTrue(data.Contains("DbService"));
@@ -31,7 +33,7 @@ namespace Dev2.Common.Tests.Serialization
         {
             //------------Setup for test--------------------------
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, Dev2.Common.Interfaces.Data.ResourceType.DbService, null, Permissions.Administrator, "bob"));
+            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob", "", ""));
             
             //------------Execute Test---------------------------
             Assert.IsTrue(data.Contains("DbService"));
@@ -49,7 +51,7 @@ namespace Dev2.Common.Tests.Serialization
         {
             //------------Setup for test--------------------------
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, Dev2.Common.Interfaces.Data.ResourceType.DbService, null, Permissions.Administrator, "bob"));
+            var data = serializer.Serialize(new ServerExplorerItem("a", Guid.Empty, ResourceType.DbService, null, Permissions.Administrator, "bob", "", ""));
 
             //------------Execute Test---------------------------
             Assert.IsTrue(data.Contains("DbService"));

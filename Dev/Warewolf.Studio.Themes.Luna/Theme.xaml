@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+
+
+        <!--  IMAGES  -->
+        <ResourceDictionary Source="Images.xaml" />
+
+        <!--  THEME ELEMENTS  -->
+
+        <ResourceDictionary Source="Elements/Button.xaml" />
+        <ResourceDictionary Source="Elements/ComboBox.xaml" />
+        <ResourceDictionary Source="Elements/CheckBox.xaml" />
+        <ResourceDictionary Source="Elements/DataGrid.xaml" />
+        <ResourceDictionary Source="Elements/DataTemplatesIntellisense.xaml" />
+        <ResourceDictionary Source="Elements/Expander.xaml" />
+        <ResourceDictionary Source="Elements/GridSplitter.xaml" />
+        <ResourceDictionary Source="Elements/GroupBox.xaml" />
+        <ResourceDictionary Source="Elements/Label.xaml" />
+        <ResourceDictionary Source="Elements/ListBox.xaml" />
+        <ResourceDictionary Source="Elements/PasswordBox.xaml" />
+        <ResourceDictionary Source="Elements/ProgressBar.xaml" />
+        <ResourceDictionary Source="Elements/RadioButton.xaml" />
+        <ResourceDictionary Source="Elements/Slider.xaml" />
+        <ResourceDictionary Source="Elements/TabControl.xaml" />
+        <ResourceDictionary Source="Elements/TextBlock.xaml" />
+        <ResourceDictionary Source="Elements/TextBox.xaml" />
+        <ResourceDictionary Source="Elements/ToggleButton.xaml" />
+        <ResourceDictionary Source="Elements/ToolTip.xaml" />
+
+        <ResourceDictionary Source="Elements/TreeView.xaml" />
+        <ResourceDictionary Source="Elements/Window.xaml" />
+        <ResourceDictionary Source="Elements/TabControl.xaml" />
+        <ResourceDictionary Source="Elements/ValidationToolTip.xaml" />
+        <ResourceDictionary Source="Elements/StackPanel.xaml" />
+
+        <!--  CUSTOMISED THEME ELEMENTS  -->
+
+        <ResourceDictionary Source="Elements/MenuBar/MenuBar.xaml" />
+        <ResourceDictionary Source="Elements/ToolBox/ToolBox.xaml" />
+<!--        <ResourceDictionary Source="Elements/DockManager/MainDockManager.xaml" />-->
+
+        <ResourceDictionary Source="Elements/Explorer/Explorer.xaml" />
+        <ResourceDictionary Source="Elements/xamMenu.xaml" />
+        <ResourceDictionary Source="Elements/xamDialogWindow.xaml" />
+        <ResourceDictionary Source="Elements/HyperLink.xaml" />
+        <ResourceDictionary Source="Elements/xamNetworkNode.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

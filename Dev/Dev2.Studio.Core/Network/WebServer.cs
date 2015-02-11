@@ -12,6 +12,8 @@
 using System;
 using System.Diagnostics;
 using System.Net.Sockets;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;

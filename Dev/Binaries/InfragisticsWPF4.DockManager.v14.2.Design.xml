@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.DockManager.v14.2.Design</name>
+    </assembly>
+    <members>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.DockManager.TabGroupPaneDefaultInitializer">
+            <summary>
+            Provides default values for various TabGroupPane properties.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.DockManager.TabGroupPaneDefaultInitializer.InitializeDefaults(Microsoft.Windows.Design.Model.ModelItem)">
+            <summary>
+            Initializes various defaults for the element wrapped by the specified Modelitem.
+            </summary>
+            <param name="item">The ModeItem that wraps the element whose defaults are to be set.</param>
+        </member>
+        <member name="T:Infragistics.Windows.Design.DockManager.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.DockManager.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.DockManager.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:Infragistics.Windows.Design.DockManager.SplitPaneOptionsDialog">
+            <summary>
+            Interaction logic for SplitPaneOptionsDialog.xaml
+            </summary>
+            <summary>
+            SplitPaneOptionsDialog
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.DockManager.SplitPaneOptionsDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.DockManager.SplitPaneOptionsDialog.string_SplitPaneLocation">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.DockManager.SplitPaneOptionsDialog.string_SplitterOrientation">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.DockManager.SplitPaneOptionsDialog.string_OK">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>

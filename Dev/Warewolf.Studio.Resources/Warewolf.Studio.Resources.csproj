@@ -30,10 +30,80 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.Design, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamSlider.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.Design, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.Design, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.Design, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamSpellChecker.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.Design, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v14.2, Version=14.2.20142.2024, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Design.Extensibility, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +116,11 @@
       <DependentUpon>Core.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Languages\Core.en-gb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Core.en-gb.resx</DependentUpon>
     </Compile>
     <Compile Include="Languages\ExampleResource.Designer.cs">
       <DependentUpon>ExampleResource.resx</DependentUpon>
@@ -71,15 +146,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Resize_Grip.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Refresh-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ServiceStatusOK-32.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Languages\Core.en-gb.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Core.en-gb.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Languages\Core.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Core.Designer.cs</LastGenOutput>
@@ -101,353 +171,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Services.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\plus.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Rename.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\transform.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\viewinbrowser.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="StyleElements\Brushes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="StyleElements\Colors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ActionSuccessful-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\AuthExecute-12.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\AuthNone-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\AuthView-12.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Close_Box_Red.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\DatabaseService-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\DatabaseSource-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\DependencyGraph-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Deploy-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Deploy-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\dropbox-windows.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\EmailSource-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ExecuteDebugStart-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ExecuteDebugStop-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ExplorerFolder-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ExplorerFolderOpen-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ExplorerSources-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ExplorerWarewolfConnection-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\GenericHelp-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\GenericHelp-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\GroupCollapser-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\GroupExpander-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\HelpCommunity-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\HelpLanguage-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\HelpShortcutKeys-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\PluginService-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\PluginSource-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\PopupError-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\PopupInformation-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\PopupNotSavedWarning-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\PropertyEdit-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Refresh-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\RemoteWarewolf-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ReportsManager-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ServiceCollapseMapping-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ServiceExpandMapping-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ServiceHelp-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ServicePropertyEdit-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ServiceQuickVariableInput-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ServiceSettings-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ServiceStatusError-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ServiceStatusWarning-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Settings-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\SplashImage_New_2014.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\StartNode.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\StartPage-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\TaskScheduler-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolAssign-32.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolBaseConversion-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolCalculate-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolCaseConversion-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolCMDLine-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolCMDScript-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolComment-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolCopyRecords-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolCountRecords-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolCreateJSON-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolDataMerge-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolDataSplit-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolDateTime-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolDateTimeDifference-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolDecision-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolDelay-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolDeleteRecord-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolDoWhile-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderCopy-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderCreate-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderDelete-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderMove-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderRead-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderReadFolder-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderRename-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderUnzip-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderWrite-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFileFolderZip-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFindIndex-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFindRecords-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolForEach-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolFormatNumber-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolGetWebRequest-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolIfThen-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolJavaScript-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolLength-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolParallel-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolParallelForEach-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolPowerShelScript-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolRandom-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolReplace-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolRules-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolSendEmail-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolSequence-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolService-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolSortRecords-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolSqlBulkInsert-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolSwitch-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolSystemInformation-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolTransactionScope-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolUniqueRecord-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\ToolUtilityXpath-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\WarewolfInsignia.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\WarewolfLogoMedRes.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\WebService-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\WebSource-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Workflow-32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Themes\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\128x128.png" />
-    <Content Include="Images\16x16.png" />
-    <Content Include="Images\32x32.png" />
-    <Content Include="Images\48x48.png" />
-    <Content Include="Images\64x64.png" />
-    <Content Include="Images\Main.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

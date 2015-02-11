@@ -1,0 +1,618 @@
+﻿<UserControl x:Class="Warewolf.Studio.Views.MenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:interactivity="http://www.codeplex.com/prism"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:studio="clr-namespace:Dev2.Common.Interfaces.Studio;assembly=Dev2.Common.Interfaces"
+             Width="150"
+             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+             d:DataContext="{d:DesignInstance Type={x:Type studio:IMenuViewModel}}"
+             mc:Ignorable="d">
+
+
+    <DockPanel x:Name="MenuPanel" Background="{StaticResource MenuPanelGradient}">
+
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseLeave" SourceName="MenuPanel">
+                <i:InvokeCommandAction Command="{Binding SlideClosedCommand}" />
+            </i:EventTrigger>
+            <i:EventTrigger EventName="MouseEnter" SourceName="MenuPanel">
+                <i:InvokeCommandAction Command="{Binding SlideOpenCommand}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+
+
+        <Grid x:Name="Menu">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+
+
+            <Image Grid.Row="0"
+                   Grid.ColumnSpan="3"
+                   Width="15"
+                   Height="15"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="{StaticResource System-Spacer}" />
+
+            <Image x:Name="LogoImage"
+                   Grid.Row="1"
+                   Grid.ColumnSpan="3"
+                   Width="35"
+                   Height="35"
+                   Margin="12,0,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Source="{StaticResource System-Logo}"
+                   Stretch="Fill" />
+
+
+            <Separator Grid.Row="2"
+                       Grid.ColumnSpan="3"
+                       Margin="0,10,0,10"
+                       Style="{StaticResource MenuSeparator}" />
+
+            <Button Grid.Row="3"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding Path=NewServiceToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <i:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="20"
+                                        FontWeight="Light"
+                                        Icon="Plus" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=NewLabel}" />
+                </DockPanel>
+
+            </Button>
+
+
+            <Button Grid.Row="4"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding Path=SaveToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="20"
+                                        FontWeight="Light"
+                                        Icon="Save" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=SaveLabel}" />
+                </DockPanel>
+
+            </Button>
+
+
+
+            <Button Grid.Row="5"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding Path=DeployToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="6.5,8.5,10.5,8.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="18"
+                                        FontWeight="Light"
+                                        Icon="PaperPlaneOutlined" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=DeployLabel}" />
+                </DockPanel>
+
+            </Button>
+
+
+            <Separator Grid.Row="6"
+                       Grid.ColumnSpan="3"
+                       Margin="0,5,0,5"
+                       Style="{StaticResource MenuSeparator}" />
+
+
+            <Button Grid.Row="7"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding Path=DatabaseToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="20"
+                                        FontWeight="Light"
+                                        Icon="Database" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=DatabaseLabel}" />
+                </DockPanel>
+
+            </Button>
+
+
+            <Button Grid.Row="8"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding Path=PluginToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="6.5,7.5,8.5,7.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="20"
+                                        FontWeight="Light"
+                                        Icon="Plug" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=DLLLabel}" />
+                </DockPanel>
+
+            </Button>
+
+
+
+
+            <Button Grid.Row="9"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding Path=WebServiceToolTip}">
+
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+
+
+                        <Grid>
+                            <Rectangle Name="Bd"
+                                       Fill="{StaticResource WareWolfMenuBrush}"
+                                       Stroke="{StaticResource WareWolfMenuBrush}"
+                                       StrokeThickness="1" />
+
+                            <DockPanel Width="{Binding ButtonWidth}"
+                                       Height="35"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       Background="Transparent">
+
+                                <Image Name="image1"
+                                       Width="20"
+                                       Height="20"
+                                       Margin="7.5,7.5,7.5,7.5"
+                                       Source="{StaticResource Menu-System-WebService}"
+                                       Visibility="Visible" />
+
+                                <TextBlock Height="35"
+                                           HorizontalAlignment="Left"
+                                           Padding="16,8,0,5"
+                                           Style="{StaticResource MenuTextBlockStyle}"
+                                           Text="{Binding Path=WebLabel}" />
+                            </DockPanel>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="image1" Property="Source" Value="{StaticResource Menu-System-WebService-MouseOver}" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="false">
+                                <Setter TargetName="image1" Property="Source" Value="{StaticResource Menu-System-WebService}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="image1" Property="Source" Value="{StaticResource Menu-System-WebService}" />
+                                <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource WareWolfOrangeBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="false">
+                                <Setter TargetName="Bd" Property="Stroke" Value="{StaticResource WareWolfMenuBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </Button>
+
+            <Separator Grid.Row="10"
+                       Grid.ColumnSpan="3"
+                       Margin="0,5,0,5"
+                       Style="{StaticResource MenuSeparator}" />
+
+            <Button Grid.Row="11"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding Path=SchedulerToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="20"
+                                        FontWeight="Light"
+                                        Icon="History" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=TaskLabel}" />
+                </DockPanel>
+
+            </Button>
+
+            <Button Grid.Row="12"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding DebugToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,7.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="20"
+                                        FontWeight="Light"
+                                        Icon="Play" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=DebugLabel}" />
+                </DockPanel>
+
+            </Button>
+
+
+
+            <Separator Grid.Row="13"
+                       Grid.ColumnSpan="3"
+                       Margin="0,5,0,5"
+                       Style="{StaticResource MenuSeparator}" />
+
+            <Button Grid.Row="14"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding Path=SettingsToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <i:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="5.5,8.5,9.5,8.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="18"
+                                        FontWeight="Light"
+                                        Icon="Cogs" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=SettingsLabel}" />
+                </DockPanel>
+
+            </Button>
+
+
+
+            <Separator Grid.Row="15"
+                       Grid.ColumnSpan="3"
+                       Margin="0,5,0,5"
+                       Style="{StaticResource MenuSeparator}" />
+
+            <Button Grid.Row="16"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding Path=HelpToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <interactivity:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="8.5,6.5,.5,6.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="22"
+                                        FontWeight="Light"
+                                        Icon="Question" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=SupportLabel}" />
+                </DockPanel>
+
+            </Button>
+
+
+
+            <Button Grid.Row="17"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding DownloadToolTip}">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <i:InvokeCommandAction Command="{Binding CheckForNewVersionCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="7.5,7.5,7.5,6.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="20"
+                                        FontWeight="Light"
+                                        Foreground="{StaticResource WareWolfOrangeBrush}"
+                                        Icon="ArrowCircleDown" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               FontSize="{StaticResource FontSize-Normal}"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=NewVersionLabel}" />
+                </DockPanel>
+
+            </Button>
+
+            <Separator Grid.Row="18"
+                       Grid.ColumnSpan="3"
+                       Margin="0,5,0,5"
+                       Style="{StaticResource MenuSeparator}" />
+
+            <Button Grid.Row="19"
+                    Grid.Column="1"
+                    Width="{Binding ButtonWidth}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Command="{Binding LockCommand}"
+                    Style="{StaticResource SideMenuButtonStyle}"
+                    ToolTip="{Binding LockToolTip}">
+
+                <DockPanel Width="{Binding ButtonWidth}"
+                           Height="35"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           Background="Transparent">
+                    <TextBlock Width="35"
+                               Height="35"
+                               MaxWidth="35"
+                               MaxHeight="35"
+                               Padding="9.5,7.5,5.5,7.5"
+                               Style="{StaticResource MenuTextBlockStyle}">
+                        <fa:FontAwesome FontSize="20" Icon="{Binding Path=LockImage}" />
+                    </TextBlock>
+                    <TextBlock Height="35"
+                               HorizontalAlignment="Left"
+                               FontSize="{StaticResource FontSize-Normal}"
+                               Padding="15,8,0,5"
+                               Style="{StaticResource MenuTextBlockStyle}"
+                               Text="{Binding Path=LockLabel}" />
+                </DockPanel>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseEnter">
+                        <i:InvokeCommandAction Command="{Binding IsOverLockCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseLeave">
+                        <i:InvokeCommandAction Command="{Binding IsNotOverLockCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+            <Image Grid.Row="20"
+                   Grid.ColumnSpan="3"
+                   Width="15"
+                   Height="5"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Source="{StaticResource System-Spacer}" />
+
+        </Grid>
+    </DockPanel>
+
+
+
+</UserControl>

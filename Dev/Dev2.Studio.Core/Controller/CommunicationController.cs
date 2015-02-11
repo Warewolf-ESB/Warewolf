@@ -11,55 +11,23 @@
 
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Communication;
-using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Controller
 {
-    public interface ICommunicationController
-    {
-        string ServiceName { get; set; }
-        EsbExecuteRequest ServicePayload { get; }
 
-        /// <summary>
-        /// Adds the payload argument.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
-        void AddPayloadArgument(string key, string value);
-
-        /// <summary>
-        /// Adds the payload argument.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
-        void AddPayloadArgument(string key, StringBuilder value);
-
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <returns></returns>
-        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId);
-
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="dataListId">The data list unique identifier.</param>
-        /// <returns></returns>
-        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId, Guid dataListId);
-    }
 
     public class CommunicationController : ICommunicationController
     {
         public string ServiceName { get; set; }
 
-        public EsbExecuteRequest ServicePayload { get; private set; }
+        public IEsbExecuteRequest ServicePayload { get; private set; }
 
         /// <summary>
         /// Adds the payload argument.
@@ -95,6 +63,17 @@ namespace Dev2.Controller
         public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId)
         {
             return ExecuteCommand<T>(connection, workspaceId, Guid.Empty);
+        }
+
+        /// <summary>
+        /// Executes the command async.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <returns></returns>
+        public Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId)
+        {
+            return Task.FromResult(ExecuteCommand<T>(connection,workspaceId));
         }
 
         /// <summary>
@@ -139,5 +118,16 @@ namespace Dev2.Controller
             return default(T);
         }
 
+    }
+
+    public static class CommunicationsControllerExtensions
+    {
+        public static T ExecuteCommandWithErrorHandling<T>(this ICommunicationController controller, IEnvironmentConnection connection, Guid workspaceId)
+        {
+            var result = controller.ExecuteCommand<IEsbRequestResult<T>>(connection,workspaceId);
+            if (result.HasErrors)
+                throw result.Error;
+            return result.Value;
+        }
     }
 }

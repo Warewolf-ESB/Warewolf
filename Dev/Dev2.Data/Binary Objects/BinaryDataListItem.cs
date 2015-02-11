@@ -28,8 +28,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         #endregion
 
         #region Properties
-
-
+        
         public string TheValue
         {
             get

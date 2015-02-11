@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InfragisticsWPF4.Ribbon.v14.2.Design</name>
+    </assembly>
+    <members>
+        <member name="M:LocalizedCategoryAttribute.GetLocalizedString(System.String)">
+            <summary>
+            Returns the localized category name
+            </summary>
+            <param name="value">Name of the category to retreive</param>
+            <returns>The localized string value</returns>
+        </member>
+        <member name="T:Infragistics.Windows.Design.Ribbon.XamRibbonDefaultInitializer">
+            <summary>
+            Provides default values for various XamRibbon properties.
+            </summary>
+        </member>
+        <member name="M:Infragistics.Windows.Design.Ribbon.XamRibbonDefaultInitializer.InitializeDefaults(Microsoft.Windows.Design.Model.ModelItem)">
+            <summary>
+            Initializes various defaults for the element wrapped by the specified Modelitem.
+            </summary>
+            <param name="item">The ModeItem that wraps the element whose defaults are to be set.</param>
+        </member>
+        <member name="T:Infragistics.Windows.Design.Ribbon.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.Ribbon.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Infragistics.Windows.Design.Ribbon.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>

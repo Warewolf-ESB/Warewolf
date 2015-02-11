@@ -19,14 +19,14 @@
                         <Paragraph>
                             <Bold>Author, Test, Build and Deploy Workflow and other types of Services</Bold>
                             <LineBreak/>
-                            <Run FontSize="{StaticResource DefaultFontSize}" />
+                            <Run FontSize="{StaticResource FontSize-Normal}" />
                         </Paragraph>
                     </ListItem>
                     <ListItem>
                         <Paragraph>
                             <Bold>Create and Edit new workflow activities that will make up the building blocks of workflow services </Bold>
                             <LineBreak/>
-                            <Run FontSize="{StaticResource DefaultFontSize}" />
+                            <Run FontSize="{StaticResource FontSize-Normal}" />
                         </Paragraph>
                     </ListItem>                    
 
