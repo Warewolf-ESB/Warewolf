@@ -23,6 +23,17 @@ Scenario: Creating Folder from Save Dialog under folder
 	When I create "New Folder" in "Folder 1"
 	Then I should see "9" children for "Folder 1"
 
+Scenario: Right click Items on folder
+    Given the Save Dialog is opened 
+	And the "localhost" server is visible in save dialog
+	And I should see "5" folders in "localhost" save dialog
+	When I right click on "folder 1"
+	Then I should see "Rename"
+	And I should see "Delete"
+	And I should see "New Folder"
+	And I shouldn't see "New workflow service"
+	And I shouldn't see "New Plugin service"
+
 
 Scenario: Saving a Workflow in localhost
 	Given the Save Dialog is opened
@@ -125,13 +136,13 @@ Scenario: Refresh resources in save dialog
 	Then save dilog localhost is refreshed "True"
 
 Scenario: Opening saved workflow and saving
-    Given I have an "unsaved" workflow open
+    Given I have an "Saved" workflow open
 	When I press "Ctrl+s"
-	Then the "unsaved" workflow is saved "True"
+	Then the "Saved" workflow is saved "True"
 
 
 Scenario: Opening New workflow and saving
-    Given I have an New workflow open
+    Given I have an New workflow "Unsaved1" is open
 	When I press "Ctrl+s"
 	Given the Save Dialog is opened
 	Then save button is "Disabled"
@@ -143,7 +154,7 @@ Scenario: Opening New workflow and saving
 
 
 Scenario: Opening Save dialog and canceling
-    Given I have an New workflow open
+    Given I have an New workflow "Unsaved1" is open
 	When I press "Ctrl+s"
 	Given the Save Dialog is opened
 	Then save button is "Disabled"
@@ -155,8 +166,18 @@ Scenario: Opening Save dialog and canceling
 	Then the "New" workflow is saved "False"
 
 
-
-
-
+Scenario: Saving multiple workflows by using shortcutkey
+    Given I have an New workflow "Unsaved1" is open
+	And I have an New workflow "Unsaved2" is open
+	And I have an "Saved1" workflow open
+	And I have an "Saved2" workflow open
+	And I have an "Saved3" workflow open
+	When I press "Ctrl+Shift+S"
+	Then the "Saved1" workflow is saved "True" 
+	Then the "Saved2" workflow is saved "True" 
+	Then the "Saved3" workflow is saved "True" 
+    And the Save Dialog is opened 
+	When I cancel the save dialog
+	And the Save Dialog is opened 
 
 
