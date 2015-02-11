@@ -80,9 +80,11 @@ namespace Dev2.Runtime.WebServer
             {
                 return AuthenticationSchemes.Anonymous;
             }
-            return AuthenticationSchemes.Negotiate;
+            //DO NOT USE NEGOTIATE BREAKS SERVER to SERVER coms when using public authentication and hostname.
+            return AuthenticationSchemes.Ntlm | AuthenticationSchemes.Basic;
         }
     }
+
 
     public class AuthenticationMiddleware : OwinMiddleware
     {
