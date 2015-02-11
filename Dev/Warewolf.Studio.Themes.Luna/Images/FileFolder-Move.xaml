@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-<DrawingImage x:Key="FileFolder-Move">
+    <DrawingImage x:Key="FileFolder-Move">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
-				<GeometryDrawing Brush="#FF2BAEA4" Geometry="M 127.273,-173.787L 124.649,-173.787L 124.649,-176.588"/>
-				</DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF2BAEA4" Geometry="M 127.273,-176.588L 127.273,-178.455L 130.251,-175.188L 127.273,-171.922L 127.273,-173.787L 124.649,-173.787L 124.649,-176.588M 131.996,-179.3C 131.595,-179.702 131.128,-179.896 130.573,-179.896L 124.537,-179.896L 124.537,-180.182C 124.537,-180.738 124.343,-181.204 123.951,-181.602C 123.553,-181.988 123.081,-182.188 122.531,-182.188L 119.661,-182.188C 119.105,-182.188 118.639,-181.988 118.237,-181.602C 117.841,-181.204 117.649,-180.738 117.649,-180.182L 117.649,-171.595C 117.649,-171.039 117.841,-170.572 118.237,-170.175C 118.639,-169.78 119.105,-169.587 119.661,-169.587L 130.573,-169.587C 131.128,-169.587 131.595,-169.78 131.996,-170.175C 132.384,-170.572 132.584,-171.039 132.584,-171.595L 132.584,-177.895C 132.584,-178.438 132.384,-178.903 131.996,-179.3 Z " />
+                </DrawingGroup.Children>
             </DrawingGroup>
         </DrawingImage.Drawing>
-		</DrawingImage>
-	</ResourceDictionary>
+    </DrawingImage>
+</ResourceDictionary>
