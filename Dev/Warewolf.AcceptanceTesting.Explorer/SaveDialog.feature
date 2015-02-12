@@ -7,11 +7,11 @@ Feature: SaveDialog
 Scenario: Creating Folder from Save Dialog under localhost
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
+	And I should see "5" folders
+	When I open "Folder 1"
 	Then I should see "8" children for "Folder 1"
 	When I create "New Folder" in "localhost"
-	And I should see "6" folders in "localhost" save dialog
+	And I should see "6" folders
 
 Scenario: Creating Folder from Save Dialog under folder
 	Given the Save Dialog is opened

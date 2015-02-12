@@ -1,21 +1,66 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Threading;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.SaveDialog;
+using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using Warewolf.Studio.Views;
 
 namespace Warewolf.AcceptanceTesting.Explorer
 {
     [Binding]
     public class SaveDialogSteps
     {
+        [BeforeFeature("SaveDialog")]
+        public static void SetupSaveDialogDependencies()
+        {
+            var bootstrapper = new UnityBootstrapperForExplorerTesting();
+            bootstrapper.Run();
+            FeatureContext.Current.Add("container", bootstrapper.Container);
+            var view = bootstrapper.Container.Resolve<IRequestServiceNameView>();
+            var window = new Window {Content = view};
+            var app = Application.Current;
+            app.MainWindow = window;
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                var viewWindow = (RequestServiceNameView)Application.Current.MainWindow.Content;
+                Assert.IsNotNull(viewWindow);
+                Assert.IsNotNull(viewWindow.DataContext);
+                Assert.IsInstanceOfType(viewWindow.DataContext, typeof(IRequestServiceNameViewModel));
+                Application.Current.Shutdown();
+            }));
+
+            Application.Current.Run(Application.Current.MainWindow);
+        }
+
+
+        [BeforeScenario("SaveDialog")]
+        public void SetupForSave()
+        {
+            var container = FeatureContext.Current.Get<IUnityContainer>("saveView");
+            var view = container.Resolve<IRequestServiceNameView>();
+            ScenarioContext.Current.Add("saveView", view);
+
+        }
+
         [Given(@"the Save Dialog is opened")]
         public void GivenTheSaveDialogIsOpened()
         {
-            ScenarioContext.Current.Pending();
+            IRequestServiceNameView saveView;
+            var gotView = ScenarioContext.Current.TryGetValue("saveView", out saveView);
+            Assert.IsTrue(gotView);
+            Assert.IsNotNull(saveView);
         }
 
         [Given(@"the ""(.*)"" server is visible in save dialog")]
-        public void GivenTheServerIsVisibleInSaveDialog(string p0)
+        public void GivenTheServerIsVisibleInSaveDialog(string serverName)
         {
-            ScenarioContext.Current.Pending();
+            IRequestServiceNameView saveView;
+            var gotView = ScenarioContext.Current.TryGetValue("saveView", out saveView);
+            Assert.IsTrue(gotView);
+            saveView.HasServer(serverName);
         }
 
         [Given(@"I should see ""(.*)"" folders in ""(.*)"" save dialog")]
@@ -43,9 +88,15 @@ namespace Warewolf.AcceptanceTesting.Explorer
         }
 
         [When(@"I create ""(.*)"" in ""(.*)""")]
-        public void WhenICreateIn(string p0, string p1)
+        public void WhenICreateIn(string newFolderName, string rootPath)
         {
-            ScenarioContext.Current.Pending();
+            IRequestServiceNameView saveView;
+            ScenarioContext.Current.TryGetValue("saveView", out saveView);
+            Assert.IsNotNull(saveView);
+
+            saveView.CreateNewFolder(newFolderName, rootPath);
+
+
         }
 
         [When(@"I should see ""(.*)"" folders in ""(.*)"" save dialog")]
