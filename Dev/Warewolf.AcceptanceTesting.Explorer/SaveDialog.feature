@@ -7,11 +7,11 @@ Feature: SaveDialog
 Scenario: Creating Folder from Save Dialog under localhost
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
+	And I should see "5" folders
+	When I open "Folder 1"
 	Then I should see "8" children for "Folder 1"
 	When I create "New Folder" in "localhost"
-	And I should see "6" folders in "localhost" save dialog
+	And I should see "6" folders
 
 Scenario: Creating Folder from Save Dialog under folder
 	Given the Save Dialog is opened
@@ -22,22 +22,23 @@ Scenario: Creating Folder from Save Dialog under folder
 	When I create "New Folder" in "Folder 1"
 	Then I should see "9" children for "Folder 1"
 
-Scenario: Right click Items on folder
-    Given the Save Dialog is opened 
-	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I right click on "folder 1"
-	Then I should see "Rename"
-	And I should see "Delete"
-	And I should see "New Folder"
-	And I shouldn't see "New workflow service"
-	And I shouldn't see "New Plugin service"
+#CODED UI
+#Scenario: Right click Items on folder
+#    Given the Save Dialog is opened 
+#	And the "localhost" server is visible in save dialog
+#	And I should see "5" folders in "localhost" save dialog
+#	When I right click on "folder 1"
+#	Then I should see "Rename"
+#	And I should see "Delete"
+#	And I should see "New Folder"
+#	And I shouldn't see "New workflow service"
+#	And I shouldn't see "New Plugin service"
 
 Scenario: Saving a Workflow in localhost
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
 	And I should see "5" folders in "localhost" save dialog
-	When I save "Newworkflow" in "localhost"
+	When I save "localhost/Newworkflow"
 	Then "NewWorkflow" is visible in "localhost"
 	
 Scenario: Saving a Workflow in localhost folder
@@ -46,7 +47,7 @@ Scenario: Saving a Workflow in localhost folder
 	And I should see "5" folders in "localhost" save dialog
 	When I open "Folder 1" in "localhost" save dialog 
 	Then I should see "8" children for "Folder 1"
-	When I save "Newworkflow" in "Folder 1"
+	When I save "Folder 1/Newworkflow"
 	Then "NewWorkflow" is visible in "Folder 1"	
 	
 Scenario: Save button is Enabled when I enter new name for resource
@@ -76,7 +77,7 @@ Scenario: Save with duplicate name and expect validation
 	And I should see "5" folders in "localhost" save dialog
 	When I open "Folder 1" in "localhost" save dialog 
 	Then I should see "8" children for "Folder 1"
-	When I save "Savewf" in "Folder 1"
+	When I save "Folder 1/Savewf"
 	And validation message is ""
 	Then I should see "9" children for "Folder 1"
 	When I enter name "Savewf"
@@ -141,7 +142,7 @@ Scenario: Opening New workflow and saving
 	And cancel button is "Enabled"
 	When I enter name "New"
 	Then save button is "Enabled"
-	When I save "New" in "localhost"
+	When I save "localhost/New"
 	Then the "New" workflow is saved "True"
 
 Scenario: Opening Save dialog and canceling
@@ -178,12 +179,12 @@ Scenario: Savve textbox is updating names when selecting resource names
 	And cancel button is "Enabled"
     And the "localhost" server is visible in save dialog
 	And I should see "5" folders in "localhost" save dialog
-	When I select "Folder 1" in "localhost" save dialog 
+	When I select "localhost/Folder 1"
 	When I open "Folder 1" in "localhost" save dialog 
 	Then I should see "8" children for "Folder 1"
-	When I select "children1" of "Folder 1" in "localhost" save dialog   
+	When I select "localhost/Folder 1/children1"
 	Then save textbox  name is "children1"
-	When I save "children1"
+	When I save "localhost/children1"
 	Then validation message is thrown "True"
 	Then validation message is "Name already exists"
 	Then the "children1" workflow is saved "False"
@@ -195,7 +196,7 @@ Scenario: Path is updating on save dialog when selcting folders
 	And the path in the title as "localhost\"
 	And the "localhost" server is visible in save dialog
 	And I should see "5" folders in "localhost" save dialog
-	When I select "Folder 1" in "localhost" save dialog
+	When I select "localhost/Folder 1"
 	Then the path in the title as "localhost\Folder 1\"
 
 Scenario: Star is representing the workflow is unsaved

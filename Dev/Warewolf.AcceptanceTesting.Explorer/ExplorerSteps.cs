@@ -74,6 +74,8 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsNotNull(environmentViewModel);
         }
 
+        [Given(@"I should see ""(.*)"" folders")]
+        [When(@"I should see ""(.*)"" folders")]
         [Then(@"I should see ""(.*)"" folders")]
         public void ThenIShouldSeeFolders(int numberOfFoldersVisible)
         {

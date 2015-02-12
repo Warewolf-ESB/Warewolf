@@ -47,6 +47,7 @@
                                 VerticalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 VerticalContentAlignment="Stretch"
+                                x:Name="ExplorerView"
                                 DataContext="{Binding SingleEnvironmentExplorerViewModel}" />
 
         </DockPanel>

@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -58,6 +59,19 @@ namespace Warewolf.Studio.Views
         {
             RemoveBlackOutEffect();
             _window.Close();
+        }
+
+        public bool HasServer(string serverName)
+        {
+            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            var environmentViewModel = viewTestClass.OpenEnvironmentNode(serverName);
+            return environmentViewModel != null;
+        }
+
+        public void CreateNewFolder(string newFolderName, string rootPath)
+        {
+            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            viewTestClass.PerformFolderAdd(newFolderName,rootPath);
         }
     }
 }
