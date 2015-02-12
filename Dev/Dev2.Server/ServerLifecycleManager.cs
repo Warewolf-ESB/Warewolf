@@ -293,6 +293,7 @@ namespace Dev2
             _configFile = DefaultConfigFileName;
             _externalDependencies = AssemblyReference.EmptyReferences;
             _workflowGroups = new Dictionary<string, WorkflowEntry[]>(StringComparer.OrdinalIgnoreCase);
+            SetWorkingDirectory();
             const string settingsConfigFile = "Settings.config";
             if (!File.Exists(settingsConfigFile))
             {
@@ -484,12 +485,7 @@ namespace Dev2
 
             try
             {
-                // Brendon.Page - The following line is has had it warning suppressed because if the working directory can't be set
-                //                then it can't be guaranteed that the server will operate correctly, and in this case the desired
-                //                behavior is a fail with an exception.
-                // ReSharper disable AssignNullToNotNullAttribute
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                // ReSharper restore AssignNullToNotNullAttribute
             }
             catch(Exception e)
             {
