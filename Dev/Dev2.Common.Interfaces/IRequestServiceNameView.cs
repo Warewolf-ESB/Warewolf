@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Common.Interfaces
@@ -13,5 +15,6 @@ namespace Dev2.Common.Interfaces
         void EnterName(string serviceName);
         bool IsSaveButtonEnabled();
         string GetValidationMessage();
+        List<IExplorerItemViewModel> GetFoldersVisible();
     }
 }

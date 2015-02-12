@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -103,6 +105,12 @@ namespace Warewolf.Studio.Views
                 be.UpdateTarget();
             }
             return ErrorMessageTextBlock.Text;
+        }
+
+        public List<IExplorerItemViewModel> GetFoldersVisible()
+        {
+            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            return viewTestClass.GetFoldersVisible();
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.Views;
 
-namespace Warewolf.AcceptanceTesting.Explorer
+namespace Warewolf.AcceptanceTesting.SaveDialog
 {
     [Binding]
     public class SaveDialogSteps
@@ -62,6 +62,18 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var gotView = ScenarioContext.Current.TryGetValue("saveView", out saveView);
             Assert.IsTrue(gotView);
             saveView.HasServer(serverName);
+        }
+
+        [Given(@"I should see ""(.*)"" folders")]
+        [When(@"I should see ""(.*)"" folders")]
+        [Then(@"I should see ""(.*)"" folders")]
+        public void GivenIShouldSeeFolders(int numberOfFoldersVisible)
+        {
+            IRequestServiceNameView saveView;
+            ScenarioContext.Current.TryGetValue("saveView", out saveView);
+            Assert.IsNotNull(saveView);
+            var explorerItemViewModels = saveView.GetFoldersVisible();
+            Assert.AreEqual(numberOfFoldersVisible, explorerItemViewModels.Count);
         }
 
         [Given(@"I should see ""(.*)"" folders in ""(.*)"" save dialog")]
