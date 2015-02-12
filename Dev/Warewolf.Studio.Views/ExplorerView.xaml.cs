@@ -8,10 +8,10 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
-using Warewolf.Studio.Core.View_Interfaces;
 
 namespace Warewolf.Studio.Views
 {
@@ -145,50 +145,5 @@ namespace Warewolf.Studio.Views
             e.Handled = true;
             
 	    }
-
-        void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-	    {
-            if (((TextBox)sender).Visibility == Visibility.Visible)
-            {
-                //Keyboard.Focus((IInputElement)sender);
-                //var parent = FindParent<XamDataTreeNodeControl>((TextBox)sender);
-                //if (parent != null && parent.Node != null)
-                //{
-                //    ExplorerTree.ScrollNodeIntoView(parent.Node);
-                //}
-            }
-	    }	    
-
-	    private void FocusManager_OnGotFocus(object sender, RoutedEventArgs e)
-	    {
-	    }
-
-	    void ExplorerTree_OnActiveNodeChanged(object sender, ActiveNodeChangedEventArgs e)
-	    {
-          // ExplorerTree.ScrollNodeIntoView(e.NewActiveTreeNode);
-	    }
-
-	    void ExplorerTree_OnActiveNodeChanging(object sender, ActiveNodeChangingEventArgs e)
-	    {
-	    }
-
-	    void ExplorerTree_OnSelectedNodesCollectionChanged(object sender, NodeSelectionEventArgs e)
-	    {
-	    }
-
-        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            //get parent item
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
-
-            //we've reached the end of the tree
-            if (parentObject == null) return null;
-
-            //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
-            if (parent != null)
-                return parent;
-            return FindParent<T>(parentObject);
-        }
 	}
 }

@@ -194,9 +194,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <DataTemplate DataType="{x:Type interfaces:IWorkflowServiceDesignerViewModel}">
-            <views:WorkflowDesignerView />
-        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:NewServerViewModel}">
             <views:ManageServerControl />
         </DataTemplate>

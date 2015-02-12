@@ -35,7 +35,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New 
     /// Purpose : To provide an activity that can zip the contents of a file/folder from FTP, FTPS and file system
     /// </summary>
- [ToolDescriptorInfo("FileFolder-Zip", "Unzip", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "File And Folder", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
+ [ToolDescriptorInfo("FileFolder-Zip", "Zip", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Bob", "1.0.0.0", "c:\\", "File And Folder", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
  
     public class DsfZip : DsfAbstractMultipleFilesActivity, IZip, IPathInput, IPathOutput, IPathOverwrite,
                           IDestinationUsernamePassword

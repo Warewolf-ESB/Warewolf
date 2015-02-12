@@ -3,7 +3,6 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Unity;
 using Warewolf.AcceptanceTesting.Core;
-using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 

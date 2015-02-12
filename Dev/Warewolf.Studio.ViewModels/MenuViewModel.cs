@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.Core.View_Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {

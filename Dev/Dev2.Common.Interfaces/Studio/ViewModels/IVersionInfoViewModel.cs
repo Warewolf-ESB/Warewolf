@@ -11,10 +11,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         DateTime VersionDate { get; set; }
         bool CanRollBack { get; set; }
         ICommand OpenCommand { get; set; }
-
-        bool IsVisible { get; set; }
-   
-        string VersionHeader { get; set; }
+        bool IsVisible { get; set; }   
+        string VersionHeader { get;  }
         string Reason { get; set; }
     }
 }

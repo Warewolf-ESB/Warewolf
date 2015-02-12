@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Data;
@@ -130,6 +131,33 @@ namespace Warewolf.Studio.Views
                 yield return node;
                 foreach (var n in node.Nodes) nodes.Push(n);
             }
+        }
+
+        public void PerformFolderAdd(string folder, string server)
+        {
+            var node = _explorerView.ExplorerTree.Nodes.FirstOrDefault(a => ((IEnvironmentViewModel)a.Data).DisplayName.Contains(server));
+
+            if (node != null)
+            {
+                var env = (node.Data as IEnvironmentViewModel);
+                if (env != null)
+                {
+                    env.CreateFolderCommand.Execute(null);
+                    var explorerItemViewModel = env.Children.FirstOrDefault(a => a.IsRenaming);
+                    if (explorerItemViewModel != null)
+                    {
+                        explorerItemViewModel.ResourceName = folder;
+                        explorerItemViewModel.IsRenaming = false;
+
+                    }
+                    else
+                        throw new Exception("Folder was not found after adding");
+
+                }
+
+            }
+            else
+                throw new Exception("Server Not found in explorer");
         }
     }
 }

@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Moq;
 using Warewolf.AcceptanceTesting.Core;
-using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.ViewModels.ToolBox;

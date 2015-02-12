@@ -27,7 +27,6 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
-using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Help;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod
@@ -47,7 +46,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Hagashen Naidu")]
         [TestCategory("ShellViewModel_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
-
         // ReSharper disable InconsistentNaming
         public void ShellViewModel_Constructor_NullContainer_NullExceptionThrown()
 
@@ -55,6 +53,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
+            // ReSharper disable once ObjectCreationAsStatement
             new ShellViewModel(null, new Mock<IRegionManager>().Object,new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
         } 
@@ -68,6 +67,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
+            // ReSharper disable once ObjectCreationAsStatement
             new ShellViewModel(new Mock<IUnityContainer>().Object, null,new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
         }
@@ -278,7 +278,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
-            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             shellViewModel.DeployService(shell);
             //------------Assert Results-------------------------
             dep.Verify(a=>a.SelectSourceItem(shell));
@@ -301,7 +301,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
-            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            var shell = new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             shellViewModel.DeployService(shell);
             //------------Assert Results-------------------------
             dep.Verify(a => a.SelectSourceItem(shell));
@@ -326,7 +326,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager, new Mock<IEventAggregator>().Object);
 
             //------------Execute Test---------------------------
-            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            // ReSharper disable once ObjectCreationAsStatement
+            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             shellViewModel.UpdateHelpDescriptor(null);
 
 
@@ -350,7 +351,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager, aggregator.Object);
 
             //------------Execute Test---------------------------
-            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            // ReSharper disable once ObjectCreationAsStatement
+            new ExplorerItemViewModel(shellViewModel, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             shellViewModel.UpdateHelpDescriptor(new HelpDescriptor("bob","the",new DrawingImage()));
             aggregator.Verify(a=>a.GetEvent<HelpChangedEvent>());
 
@@ -425,7 +427,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
     public class MockServer:IServer
     {
-        IStudioUpdateManager _updateRepository;
 
         public MockServer()
         {
@@ -634,10 +635,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public event NetworkStateChanged NetworkStateChanged;
         public IStudioUpdateManager UpdateRepository
         {
-            get
-            {
-                return _updateRepository;
-            }
+            get { return new Mock<IStudioUpdateManager>().Object; }
         }
 
         public string GetServerVersion()

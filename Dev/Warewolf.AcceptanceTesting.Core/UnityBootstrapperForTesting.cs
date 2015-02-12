@@ -15,7 +15,7 @@ namespace Warewolf.AcceptanceTesting.Core
     {
         protected override DependencyObject CreateShell()
         {
-            return Container.Resolve<ShellForTesting>();
+            return new DependencyObject();
         }
 
         protected override void ConfigureContainer()
@@ -27,7 +27,7 @@ namespace Warewolf.AcceptanceTesting.Core
             // ReSharper restore ObjectCreationAsStatement
             ThemeManager.ApplicationTheme = new LunaTheme();
 
-            Container.RegisterType<IServer, ServerForTesting>(new InjectionConstructor());
+            Container.RegisterInstance<IServer>(new ServerForTesting());
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));         
         }
     }
