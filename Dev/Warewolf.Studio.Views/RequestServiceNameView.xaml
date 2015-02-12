@@ -68,6 +68,7 @@
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Center"
                      Margin="10,0,10,0"
+                     x:Name="ServiceNameTextBox"
                      Text="{Binding Name,
                                     UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
@@ -81,6 +82,7 @@
 
             <TextBlock HorizontalAlignment="Right"
                            VerticalAlignment="Center"
+                           x:Name="ErrorMessageTextBlock"
                            Style="{StaticResource ErrorTextBlockStyle}"
                            Text="{Binding Path=ErrorMessage}"
                            TextAlignment="Right" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -91,7 +92,7 @@ namespace Warewolf.Studio.ViewModels
             var command = OkCommand as DelegateCommand;
             if (command != null)
             {
-                command.RaiseCanExecuteChanged();
+                command.RaiseCanExecuteChanged();                
             }
         }
 
@@ -123,11 +124,25 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ErrorMessage = "'Name' contains invalid characters.";
                 }
+                else if (HasDuplicateName(Name))
+                {
+                    ErrorMessage = string.Format("Service with name '{0}' already exists.", Name);
+                }
                 else
                 {
                     ErrorMessage = "";
                 }
             }
+        }
+
+        private bool HasDuplicateName(string requestedServiceName)
+        {
+            var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
+            if (explorerTreeItem != null)
+            {
+                return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType!=ResourceType.Folder);
+            }
+            return false;
         }
 
         private bool NameHasInvalidCharacters(string name)

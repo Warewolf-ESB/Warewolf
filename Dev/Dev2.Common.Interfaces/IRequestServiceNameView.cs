@@ -9,5 +9,9 @@ namespace Dev2.Common.Interfaces
         bool HasServer(string serverName);
         void CreateNewFolder(string newFolderName, string rootPath);
         IExplorerView GetExplorerView();
+        void OpenFolder(string folderName);
+        void EnterName(string serviceName);
+        bool IsSaveButtonEnabled();
+        string GetValidationMessage();
     }
 }

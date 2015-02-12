@@ -90,9 +90,9 @@ namespace Warewolf.Studio.Views
 	    {
 	        SearchTextBox.Text = searchTerm;
             BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
-	        if(be != null)
+	        if (be != null)
 	        {
-            be.UpdateSource();
+	            be.UpdateSource();
 	        }
 	    }
 
