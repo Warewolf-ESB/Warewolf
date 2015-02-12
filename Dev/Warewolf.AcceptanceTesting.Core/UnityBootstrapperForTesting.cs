@@ -15,7 +15,7 @@ namespace Warewolf.AcceptanceTesting.Core
     {
         protected override DependencyObject CreateShell()
         {
-            return Container.Resolve<ShellForTesting>();
+            return new DependencyObject();
         }
 
         protected override void ConfigureContainer()

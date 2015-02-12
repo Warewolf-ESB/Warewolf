@@ -71,7 +71,7 @@ namespace Warewolf.Studio.Views
         public void CreateNewFolder(string newFolderName, string rootPath)
         {
             ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
-            
+            viewTestClass.PerformFolderAdd(newFolderName,rootPath);
         }
     }
 }
