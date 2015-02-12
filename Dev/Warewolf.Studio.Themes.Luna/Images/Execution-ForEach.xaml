@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-<DrawingImage x:Key="Execution-ForEach">
+    <DrawingImage x:Key="Execution-ForEach">
         <DrawingImage.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
-				<GeometryDrawing Brush="#FFD01F3C" Geometry="M 42.1939,-671.003L 42.1939,-662.294L 35.7912,-662.331L 35.8192,-663.778L 38.4606,-663.778"/>
-				</DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFD01F3C" Geometry="M 34.1619,-674.115L 34.1619,-672.892L 33.9939,-672.892C 33.798,-672.892 33.6392,-672.734 33.6392,-672.538L 33.6392,-670.092C 33.6392,-669.896 33.798,-669.738 33.9939,-669.738L 34.1619,-669.738L 34.1619,-668.514L 34.8619,-668.514L 34.8619,-669.738L 35.0352,-669.738C 35.2299,-669.738 35.3886,-669.896 35.3886,-670.092L 35.3886,-672.538C 35.3886,-672.734 35.2299,-672.892 35.0352,-672.892L 34.8619,-672.892L 34.8619,-674.115M 37.2712,-674.115L 37.2712,-671.003L 42.1939,-671.003L 42.1939,-662.294L 35.7912,-662.331L 35.8192,-663.778L 38.4608,-663.778L 34.4179,-668.132L 30.3722,-663.778L 33.0192,-663.778L 32.9579,-659.18L 45.3071,-659.18L 45.3071,-674.115L 37.2712,-674.115 Z " />
+                </DrawingGroup.Children>
             </DrawingGroup>
         </DrawingImage.Drawing>
-		</DrawingImage>
-	</ResourceDictionary>
+    </DrawingImage>
+</ResourceDictionary>
