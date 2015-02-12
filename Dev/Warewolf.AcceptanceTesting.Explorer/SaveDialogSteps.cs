@@ -16,7 +16,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         [BeforeFeature("SaveDialog")]
         public static void SetupSaveDialogDependencies()
         {
-            var bootstrapper = new UnityBootstrapperForExplorerTesting();
+            var bootstrapper = new UnityBootstrapperForSaveDialogTesting();
             bootstrapper.Run();
             FeatureContext.Current.Add("container", bootstrapper.Container);
             var view = bootstrapper.Container.Resolve<IRequestServiceNameView>();
@@ -39,7 +39,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         [BeforeScenario("SaveDialog")]
         public void SetupForSave()
         {
-            var container = FeatureContext.Current.Get<IUnityContainer>("saveView");
+            var container = FeatureContext.Current.Get<IUnityContainer>("container");
             var view = container.Resolve<IRequestServiceNameView>();
             ScenarioContext.Current.Add("saveView", view);
 

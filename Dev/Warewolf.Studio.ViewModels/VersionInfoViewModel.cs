@@ -18,15 +18,15 @@ namespace Warewolf.Studio.ViewModels
         DateTime _versionDate;
         bool _canRollBack;
         bool _isVisible;
-        string _versionHeader;
         string _reason;
         bool _canRollback;
-        IExplorerItemViewModel _parent;
+        IExplorerTreeItem _parent;
         ICommand _renameCommand;
         ICommand _deleteCommand;
         IServer _server;
         bool _isExpanderVisible;
         bool _isExpanded;
+        private string _resourceName;
 
         #region Implementation of IVersionInfoViewModel
 
@@ -53,6 +53,13 @@ namespace Warewolf.Studio.ViewModels
 
         public string DisplayName { get; set; }
         public ResourceType ResourceType { get; set; }
+
+        public string ResourceName
+        {
+            get { return _resourceName; }
+            set { _resourceName = value; }
+        }
+
         public bool AreVersionsVisible { get; set; }
         public string VersionName
         {
@@ -123,6 +130,20 @@ namespace Warewolf.Studio.ViewModels
             get; set;
         }
         public ICollection<IExplorerItemViewModel> Children { get; set; }
+
+        public IExplorerTreeItem Parent
+        {
+            get { return _parent; }
+            set { _parent = value; }
+        }
+
+        public void AddChild(IExplorerItemViewModel child)
+        {            
+        }
+
+        public void RemoveChild(IExplorerItemViewModel child)
+        {
+        }
 
         public bool IsVisible
         {
@@ -215,11 +236,7 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 return  string.Format("{0} {1} {2}", Version, VersionDate.ToLongDateString(), Reason);
-            }
-            set
-            {
-                _versionHeader = value;
-            }
+            }            
         }
         public string Reason
         {

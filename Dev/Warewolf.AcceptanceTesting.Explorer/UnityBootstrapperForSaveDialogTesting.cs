@@ -16,7 +16,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             base.ConfigureContainer();
             var view = new RequestServiceNameView();
-            Container.RegisterInstance<IRequestServiceNameViewModel>(new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object,view,Guid.NewGuid()));
+            Container.RegisterInstance<IRequestServiceNameViewModel>(new RequestServiceNameViewModel(new EnvironmentViewModel(Container.Resolve<IServer>(),Container.Resolve<IShellViewModel>()), view,Guid.NewGuid()));
             Container.RegisterInstance<IRequestServiceNameView>(view);
         }
     }

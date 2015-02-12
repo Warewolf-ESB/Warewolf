@@ -104,10 +104,11 @@
                         Grid.Row="5"
                         Grid.Column="1"
                         ActiveDataItem="{Binding SelectedItem, Mode=TwoWay}"
-                      
+                        IsSelectedMemberPath="IsSelected"
                         DisplayMemberPath="DisplayName"
                         IsDraggable="True"
                         IsDropTarget="True"
+                        SelectedDataItems="{Binding SelectedDataItems}"
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
                         NodeLineVisibility="Hidden"         
@@ -342,7 +343,6 @@
                 <ig:NodeLayout Key="Children"
                                DisplayMemberPath="ResourceName"
                                IsExpandedMemberPath="IsExpanded"
-                               IsSelectedMemberPath="IsSelected"
                                TargetTypeName="IExplorerItemViewModel"
                                
                                Visibility="{Binding Path=Data.IsVisible,
@@ -687,8 +687,6 @@
 
                                     </TextBlock>
                                     <TextBox x:Name="PropertySearch"
-                                             IsVisibleChanged="UIElement_OnIsVisibleChanged"
-                                       
                                              Text="{Binding Path=Data.ResourceName,
                                                             UpdateSourceTrigger=LostFocus}"
                                              CaretIndex="{x:Static system:Int32.MaxValue}"

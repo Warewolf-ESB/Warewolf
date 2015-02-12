@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             shellViewModelMock.Setup(model => model.AddService(It.IsAny<IResource>())).Verifiable();
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object,new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null, new Mock<IExplorerViewModel>().Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object,new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null);
             //------------Assert Results-------------------------
             explorerViewModel.OpenCommand.Execute(null);
             shellViewModelMock.Verify(model => model.AddService(It.IsAny<IResource>()),Times.Once());
@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             shellViewModelMock.Setup(model => model.NewResource(It.IsAny<ResourceType?>(), Guid.Empty)).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             //------------Assert Results-------------------------
             explorerViewModel.NewCommand.Execute(ResourceType.DbService);
             shellViewModelMock.Verify(model => model.NewResource(It.IsAny<ResourceType>(), Guid.Empty), Times.Once());
@@ -78,7 +78,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             var mockServer = new Mock<IServer>();
             var resourceId = Guid.NewGuid();
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, mockServer.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object) { ResourceId = resourceId };
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, mockServer.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) { ResourceId = resourceId };
             //------------Execute Test---------------------------
             mockServer.Raise(server => server.PermissionsChanged += null, new PermissionsChangedArgs(new List<IWindowsGroupPermission>{new WindowsGroupPermission
             {
@@ -102,7 +102,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             var mockServer = new Mock<IServer>();
             var resourceId = Guid.NewGuid();
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, mockServer.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object) { ResourceId = resourceId };
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, mockServer.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) { ResourceId = resourceId };
             //------------Execute Test---------------------------
             mockServer.Raise(server => server.PermissionsChanged += null, new PermissionsChangedArgs(new List<IWindowsGroupPermission>{new WindowsGroupPermission
             {
@@ -126,7 +126,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             var mockServer = new Mock<IServer>();
             var resourceId = Guid.NewGuid();
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, mockServer.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object) { ResourceId = resourceId };
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, mockServer.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) { ResourceId = resourceId };
             //------------Execute Test---------------------------
             mockServer.Raise(server => server.PermissionsChanged += null, new PermissionsChangedArgs(new List<IWindowsGroupPermission>{
                 new WindowsGroupPermission
@@ -160,7 +160,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var shellViewModelMock = new Mock<IShellViewModel>();
                     //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object) { IsRenaming = true };
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) { IsRenaming = true };
             //------------Assert Results-------------------------
             Assert.IsTrue(explorerViewModel.IsRenaming);
             Assert.IsFalse(explorerViewModel.IsNotRenaming);
@@ -179,7 +179,7 @@ namespace Warewolf.Studio.ViewModels.Tests
            
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
                         //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             expRepo.Setup(a => a.Rename(explorerViewModel, "bob")).Returns(true);
             //------------Assert Results-------------------------
             explorerViewModel.IsRenaming = true;
@@ -199,7 +199,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object) { ResourceName = "dave" };
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) { ResourceName = "dave" };
             expRepo.Setup(a => a.Rename(explorerViewModel, "bob")).Throws(new Exception());
             //------------Assert Results-------------------------
             explorerViewModel.IsRenaming = true;
@@ -221,7 +221,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             explorerViewModel.Move(expMovedInto);
             expRepo.Verify(a=>a.Move(explorerViewModel,expMovedInto));
         }
@@ -240,7 +240,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
           
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             expRepo.Setup(a => a.Move(explorerViewModel, expMovedInto)).Throws(new Exception());
             explorerViewModel.Move(expMovedInto);
             shellViewModelMock.Verify(a=>a.Handle(It.IsAny<Exception>()));
@@ -259,7 +259,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
 
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object) { ResourceType = ResourceType.DbService };
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) { ResourceType = ResourceType.DbService };
             Assert.IsFalse(explorerViewModel.CanShowVersions);
             Assert.IsFalse(explorerViewModel.AreVersionsVisible);
             Assert.AreEqual("Show Version History",explorerViewModel.VersionHeader);
@@ -279,8 +279,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             
             //------------Execute Test---------------------------
-            var parent = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, parent, new Mock<IExplorerViewModel>().Object)
+            var parent = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, parent)
             {
                 VersionNumber = "3",ResourceId = Guid.NewGuid()
             
@@ -305,7 +305,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
 
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object) { ResourceId = Guid.NewGuid(), ResourceType = ResourceType.DbService };
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) { ResourceId = Guid.NewGuid(), ResourceType = ResourceType.DbService };
             Assert.IsFalse(explorerViewModel.CanShowVersions);
             Assert.IsFalse(explorerViewModel.AreVersionsVisible);
             Assert.AreEqual("Show Version History", explorerViewModel.VersionHeader);
@@ -337,7 +337,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             explorerViewModel.DeleteCommand.Execute(null);
             expRepo.Verify(a => a.Delete(explorerViewModel));
             shellViewModelMock.Verify(a=>a.RemoveServiceFromExplorer(explorerViewModel));
@@ -357,22 +357,22 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object) 
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) 
             { ResourceName = "mat",
                 Children = new ObservableCollection<IExplorerItemViewModel>
                 {
-                     new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null, new Mock<IExplorerViewModel>().Object)
+                     new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null)
                      {
                          ResourceName = "bob",
                          Children = new ObservableCollection<IExplorerItemViewModel>
                          {
-                              new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null, new Mock<IExplorerViewModel>().Object) {ResourceName = "The"},
-                               new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null, new Mock<IExplorerViewModel>().Object) {ResourceName = "Builder"}
+                              new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null) {ResourceName = "The"},
+                               new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null) {ResourceName = "Builder"}
 
                          }
                      },
-                      new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null, new Mock<IExplorerViewModel>().Object){ResourceName = "moot"},
-                       new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null, new Mock<IExplorerViewModel>().Object){ResourceName = "boot"}
+                      new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null){ResourceName = "moot"},
+                       new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null){ResourceName = "boot"}
                 }
             };
             Assert.AreEqual(explorerViewModel.Children.Count,3);
@@ -401,7 +401,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object);
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null);
             explorerViewModel.DeleteCommand.Execute(null);
             expRepo.Verify(a => a.Delete(explorerViewModel),Times.Never());
             shellViewModelMock.Verify(a => a.RemoveServiceFromExplorer(explorerViewModel),Times.Never());
@@ -421,7 +421,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
 
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object)
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
             {
                 ResourceType = ResourceType.Folder,
                 CanCreateFolder = false
@@ -455,7 +455,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
             server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission>() { new WindowsGroupPermission() { Contribute = true,IsServer = true} });
             //------------Execute Test---------------------------
-            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null, new Mock<IExplorerViewModel>().Object)
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
             {
                 ResourceType = ResourceType.Folder,
                 CanCreateFolder = true,

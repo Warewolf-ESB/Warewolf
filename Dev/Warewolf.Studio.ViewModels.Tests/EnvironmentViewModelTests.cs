@@ -27,7 +27,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             
             //------------Execute Test---------------------------
-            IEnvironmentViewModel environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            IEnvironmentViewModel environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(environmentViewModel);
             Assert.IsNotNull(environmentViewModel.Server);
@@ -43,7 +43,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             
             //------------Execute Test---------------------------
-            new EnvironmentViewModel(null,shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            // ReSharper disable once ObjectCreationAsStatement
+            new EnvironmentViewModel(null,shellViewModelMock.Object);
             //------------Assert Results-------------------------
         }  
         
@@ -57,7 +58,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockServer = new Mock<IServer>();
             
             //------------Execute Test---------------------------
-            new EnvironmentViewModel(mockServer.Object,null, new Mock<IExplorerViewModel>().Object);
+            // ReSharper disable once ObjectCreationAsStatement
+            new EnvironmentViewModel(mockServer.Object,null);
             //------------Assert Results-------------------------
         }
 
@@ -70,7 +72,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var server = new Mock<IServer>();
             var shellViewModelMock = new Mock<IShellViewModel>();
             server.Setup(server1 => server1.Connect()).Returns(new Task<bool>(() => false));
-            var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             
             //------------Execute Test---------------------------
             environmentViewModel.Connect();
@@ -88,7 +90,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var server = new Mock<IServer>();
             var shellViewModelMock = new Mock<IShellViewModel>();
             server.Setup(server1 => server1.Connect()).Returns(Task.FromResult(true)).Verifiable();
-            var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             //------------Execute Test---------------------------
             environmentViewModel.Connect();
             //------------Assert Results-------------------------
@@ -109,7 +111,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var server = new Mock<IServer>();
             shellViewModelMock.Setup(model => model.NewResource(It.IsAny<ResourceType?>(), Guid.Empty)).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
             //------------Execute Test---------------------------
-            var environmentViewModel = new EnvironmentViewModel(server.Object,shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            var environmentViewModel = new EnvironmentViewModel(server.Object,shellViewModelMock.Object);
             //------------Assert Results-------------------------
             environmentViewModel.NewCommand.Execute(ResourceType.DbService);
             shellViewModelMock.Verify(model => model.NewResource(It.IsAny<ResourceType>(), Guid.Empty), Times.Once());
@@ -126,7 +128,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var server = new Mock<IServer>();
             var shellViewModelMock = new Mock<IShellViewModel>();
             server.Setup(server1 => server1.LoadExplorer()).Returns(new Task<IExplorerItem>(() => null)).Verifiable();
-            var environmentModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            var environmentModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             
             //------------Execute Test---------------------------
             environmentModel.Load();
@@ -145,7 +147,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModelMock = new Mock<IShellViewModel>();
             server.Setup(server1 => server1.Connect()).Returns(Task.FromResult(true));
             server.Setup(server1 => server1.LoadExplorer()).Returns(Task.FromResult(new Mock<IExplorerItem>().Object)).Verifiable();
-            var environmentModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            var environmentModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             environmentModel.Connect();
             //------------Execute Test---------------------------
             environmentModel.Load();
@@ -179,7 +181,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mock = new Mock<IExplorerItem>();
             mock.Setup(item => item.Children).Returns(new List<IExplorerItem> { resourceWithNoChildren.Object, resourceWithOneLevelChildren.Object, resourceWithMultipleLevelChildren.Object });
             server.Setup(server1 => server1.LoadExplorer()).Returns(Task.FromResult(mock.Object)).Verifiable();
-            var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             environmentViewModel.Connect();
             //------------Execute Test---------------------------
             environmentViewModel.Load();
@@ -215,7 +217,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mock = new Mock<IExplorerItem>();
             mock.Setup(item => item.Children).Returns(new List<IExplorerItem> { resourceWithNoChildren.Object, resourceWithOneLevelChildren.Object, resourceWithMultipleLevelChildren.Object });
             server.Setup(server1 => server1.LoadExplorer()).Returns(Task.FromResult(mock.Object)).Verifiable();
-            var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            var environmentViewModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             environmentViewModel.Connect();
             environmentViewModel.Load();
             //------------Assert Preconditions-------------------
@@ -246,7 +248,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             server.Setup(server1 => server1.Connect()).Returns(Task.FromResult(true));
             server.Setup(server1 => server1.GetServerVersion()).Returns("1.0.0");
             server.Setup(server1 => server1.LoadExplorer()).Returns(Task.FromResult(new Mock<IExplorerItem>().Object)).Verifiable();
-            var environmentModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object, new Mock<IExplorerViewModel>().Object);
+            var environmentModel = new EnvironmentViewModel(server.Object, shellViewModelMock.Object);
             //------------Execute Test---------------------------
             environmentModel.ShowServerVersionCommand.Execute(null);
             //------------Assert Results-------------------------

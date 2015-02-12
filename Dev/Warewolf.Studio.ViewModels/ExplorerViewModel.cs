@@ -17,7 +17,8 @@ namespace Warewolf.Studio.ViewModels
         private ICollection<IEnvironmentViewModel> _environments;
         private string _searchText;
         private bool _isRefreshing;
-        private IExplorerItemViewModel _selectedItem;
+        private IExplorerTreeItem _selectedItem;
+        private object[] _selectedDataItems;
 
         public ExplorerViewModelBase()
         {
@@ -43,7 +44,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool ShowConnectControl { get; set; }
 
-        public IExplorerItemViewModel SelectedItem
+        public IExplorerTreeItem SelectedItem
         {
             get { return _selectedItem; }
             set
@@ -51,6 +52,16 @@ namespace Warewolf.Studio.ViewModels
                 _selectedItem = value;
                 OnPropertyChanged(() => SelectedItem);
 
+            }
+        }
+
+        public object[] SelectedDataItems
+        {
+            get { return _selectedDataItems; }
+            set
+            {
+                _selectedDataItems = value;
+                OnPropertyChanged(() => SelectedDataItems);
             }
         }
 
@@ -186,7 +197,7 @@ namespace Warewolf.Studio.ViewModels
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server,IShellViewModel shellViewModel)
         {
-            return new EnvironmentViewModel(server, shellViewModel, this);
+            return new EnvironmentViewModel(server, shellViewModel);
         }
     }
 
