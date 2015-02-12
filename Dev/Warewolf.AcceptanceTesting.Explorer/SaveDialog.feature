@@ -11,15 +11,6 @@ Scenario: Creating Folder from Save Dialog under localhost
 	When I create "New Folder" in "localhost"
 	And I should see "6" folders
 
-Scenario: Creating Folder from Save Dialog under folder
-	Given the Save Dialog is opened
-	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
-	When I create "New Folder" in "Folder 1"
-	Then I should see "9" children for "Folder 1"
-
 #CODED UI
 #Scenario: Right click Items on folder
 #    Given the Save Dialog is opened 
@@ -42,9 +33,7 @@ Scenario: Saving a Workflow in localhost
 Scenario: Saving a Workflow in localhost folder
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
+	And I open "Folder 1" in "localhost" save dialog 
 	When I save "Folder 1/Newworkflow"
 	Then "NewWorkflow" is visible in "Folder 1"	
 	

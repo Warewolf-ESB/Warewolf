@@ -27,7 +27,6 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
-using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Help;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod

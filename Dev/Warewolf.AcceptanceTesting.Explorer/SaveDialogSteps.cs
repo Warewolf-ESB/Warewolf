@@ -82,7 +82,9 @@ namespace Warewolf.AcceptanceTesting.Explorer
             ScenarioContext.Current.Pending();
         }
 
+        [Given(@"I open ""(.*)"" in ""(.*)"" save dialog")]
         [When(@"I open ""(.*)"" in ""(.*)"" save dialog")]
+        [Then(@"I open ""(.*)"" in ""(.*)"" save dialog")]
         public void WhenIOpenInSaveDialog(string p0, string p1)
         {
             ScenarioContext.Current.Pending();
