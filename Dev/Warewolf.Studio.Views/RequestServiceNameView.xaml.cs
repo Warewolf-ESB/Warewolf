@@ -73,5 +73,10 @@ namespace Warewolf.Studio.Views
             ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
             viewTestClass.PerformFolderAdd(newFolderName,rootPath);
         }
+
+        public IExplorerView GetExplorerView()
+        {
+            return ExplorerView;
+        }
     }
 }

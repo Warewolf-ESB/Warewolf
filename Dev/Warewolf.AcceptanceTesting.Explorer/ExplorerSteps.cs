@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Views;
 
 namespace Warewolf.AcceptanceTesting.Explorer

@@ -42,6 +42,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var container = FeatureContext.Current.Get<IUnityContainer>("container");
             var view = container.Resolve<IRequestServiceNameView>();
             ScenarioContext.Current.Add("saveView", view);
+            ScenarioContext.Current.Add("explorerView",view.GetExplorerView());
 
         }
 

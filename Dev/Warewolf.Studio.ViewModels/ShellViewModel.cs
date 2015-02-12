@@ -26,7 +26,6 @@ using Microsoft.Practices.Unity;
 using Moq;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
-using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.Models.Help;
 using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels.ToolBox;

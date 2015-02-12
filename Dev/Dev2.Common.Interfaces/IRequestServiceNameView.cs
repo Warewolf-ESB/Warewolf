@@ -8,5 +8,6 @@ namespace Dev2.Common.Interfaces
         void RequestClose();
         bool HasServer(string serverName);
         void CreateNewFolder(string newFolderName, string rootPath);
+        IExplorerView GetExplorerView();
     }
 }
