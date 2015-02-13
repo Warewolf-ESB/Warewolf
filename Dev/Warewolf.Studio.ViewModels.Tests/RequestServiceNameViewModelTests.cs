@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Navigation;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
@@ -92,6 +92,71 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual("'Name' cannot be empty.", viewModel.ErrorMessage);
         }
+
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_ValidateName")]
+        public void ValidateName_DuplicateServiceName_ShouldReturnErrorMessage()
+        {
+            //---------------Set up test pack-------------------
+            var mockView = new Mock<IRequestServiceNameView>();
+            mockView.Setup(view => view.RequestClose()).Verifiable();
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object, Guid.Empty);
+            const string resourceName = "Test";
+            viewModel.Name = resourceName;
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            var mockExplorerItemViewModelParent1 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent1.Setup(model => model.ResourceName).Returns("Parent 1");
+            var mockExplorerItemViewModelParent2 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent2.Setup(model => model.ResourceName).Returns("Parent 2");
+            mockExplorerItemViewModelParent1.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent2.Object);
+            mockExplorerItemViewModel.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent1.Object);
+            mockExplorerItemViewModel.Setup(model => model.ResourceName).Returns("Service 1");
+            mockExplorerItemViewModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
+            mockExplorerItemViewModelParent1.Setup(model => model.Children)
+                .Returns(new List<IExplorerItemViewModel> {mockExplorerItemViewModel.Object});
+            viewModel.SingleEnvironmentExplorerViewModel.SelectedItem = mockExplorerItemViewModelParent1.Object;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            viewModel.Name = "Service 1";
+            //---------------Test Result -----------------------
+            Assert.AreEqual("Service with name 'Service 1' already exists.", viewModel.ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("RequestServiceNameViewModel_ValidateName")]
+        public void ValidateName_DuplicateServiceName_FolderMatch_ShouldNotReturnErrorMessage()
+        {
+            //---------------Set up test pack-------------------
+            var mockView = new Mock<IRequestServiceNameView>();
+            mockView.Setup(view => view.RequestClose()).Verifiable();
+            var viewModel = new RequestServiceNameViewModel(new Mock<IEnvironmentViewModel>().Object, mockView.Object, Guid.Empty);
+            const string resourceName = "Test";
+            viewModel.Name = resourceName;
+            var mockExplorerItemViewModel = new Mock<IExplorerItemViewModel>();
+            var mockExplorerItemViewModelParent1 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent1.Setup(model => model.ResourceName).Returns("Parent 1");
+            var mockExplorerItemViewModelParent2 = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemViewModelParent2.Setup(model => model.ResourceName).Returns("Parent 2");
+            mockExplorerItemViewModelParent1.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent2.Object);
+            mockExplorerItemViewModel.Setup(model => model.Parent).Returns(mockExplorerItemViewModelParent1.Object);
+            mockExplorerItemViewModel.Setup(model => model.ResourceName).Returns("Service 1");
+            mockExplorerItemViewModel.Setup(model => model.ResourceType).Returns(ResourceType.Folder);
+            mockExplorerItemViewModelParent1.Setup(model => model.Children)
+                .Returns(new List<IExplorerItemViewModel> {mockExplorerItemViewModel.Object});
+            viewModel.SingleEnvironmentExplorerViewModel.SelectedItem = mockExplorerItemViewModelParent1.Object;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            viewModel.Name = "Service 1";
+            //---------------Test Result -----------------------
+            Assert.AreEqual("", viewModel.ErrorMessage);
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

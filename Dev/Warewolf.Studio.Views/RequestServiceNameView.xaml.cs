@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
@@ -77,6 +79,38 @@ namespace Warewolf.Studio.Views
         public IExplorerView GetExplorerView()
         {
             return ExplorerView;
+        }
+
+        public void OpenFolder(string folderName)
+        {
+            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            viewTestClass.OpenFolderNode(folderName);
+        }
+
+        public void EnterName(string serviceName)
+        {
+            ServiceNameTextBox.Text = serviceName;            
+        }
+
+        public bool IsSaveButtonEnabled()
+        {
+            return OkButton.Command.CanExecute(null); ;
+        }
+
+        public string GetValidationMessage()
+        {
+            BindingExpression be = ErrorMessageTextBlock.GetBindingExpression(TextBlock.TextProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
+            return ErrorMessageTextBlock.Text;
+        }
+
+        public List<IExplorerItemViewModel> GetFoldersVisible()
+        {
+            ExplorerViewTestClass viewTestClass = new ExplorerViewTestClass(ExplorerView);
+            return viewTestClass.GetFoldersVisible();
         }
     }
 }

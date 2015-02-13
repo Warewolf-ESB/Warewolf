@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
+using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
@@ -78,7 +79,15 @@ namespace Warewolf.Studio.Views
             if (foundFolder != null)
             {
                 foundFolder.IsExpanded = true;
-                return foundFolder.Data as IExplorerItemViewModel;
+                _explorerView.ExplorerTree.ScrollNodeIntoView(foundFolder);
+                var explorerItemViewModel = foundFolder.Data as IExplorerItemViewModel;
+                var explorerViewModelBase = _explorerView.DataContext as ExplorerViewModelBase;
+                if (explorerViewModelBase != null)
+                {
+                    explorerViewModelBase.SelectedItem = explorerItemViewModel;
+                }
+
+                return explorerItemViewModel;
             }
             return null;
         }

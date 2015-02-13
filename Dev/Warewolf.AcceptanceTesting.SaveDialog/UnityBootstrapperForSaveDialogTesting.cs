@@ -1,14 +1,12 @@
 using System;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.SaveDialog;
-using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Unity;
-using Moq;
 using Warewolf.AcceptanceTesting.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 
-namespace Warewolf.AcceptanceTesting.Explorer
+namespace Warewolf.AcceptanceTesting.SaveDialog
 {
     internal class UnityBootstrapperForSaveDialogTesting : UnityBootstrapperForTesting
     {
