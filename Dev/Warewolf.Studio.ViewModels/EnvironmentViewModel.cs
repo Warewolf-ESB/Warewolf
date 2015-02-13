@@ -97,6 +97,23 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void SetPropertiesForDialog()
+        {
+            CanCreateDbService = false;
+            CanCreateDbSource = false;
+            CanCreateFolder = true;
+            CanCreatePluginService = false;
+            CanCreatePluginSource = false;
+            CanCreateServerSource = false;
+            CanCreateWebService = false;
+            CanCreateWebSource = false;
+            CanDelete = true;
+            CanDeploy = false;
+            CanRename = true;
+            CanRollback = false;
+            CanShowVersions = false;            
+        }
+
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
         {
             switch (args.State)
@@ -308,9 +325,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 IsConnected = false;
-                IsConnected = await Server.Connect();
-                Load();
-             
+                IsConnected = await Server.Connect();             
                 IsConnecting = false ;
             }
             
@@ -333,27 +348,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async void Load()
+        public void Load()
         {
-            if (IsConnected)
-            {
-                IsConnecting = true;
-                var explorerItems = await Server.LoadExplorer();
-                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null);
-                Children = explorerItemViewModels;
-                IsLoaded = true;
-                IsConnecting = false;
-                IsExpanded = true;
-            }
+            LoadDialog(null);
         }
-        public async void LoadDialog(Guid selectedId)
+        public async void LoadDialog(Guid? selectedId)
         {
             if (IsConnected)
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
 
-                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null,true);
+                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null,selectedId!=null);
                 Children = explorerItemViewModels;
                 IsLoaded = true;
                 IsConnecting = false;

@@ -113,8 +113,7 @@
                         SelectedDataItems="{Binding SelectedDataItems}"
                         ItemsSource="{Binding Environments}"
                         NodeDragDrop="ExplorerTree_OnNodeDragDrop"
-                        NodeLineVisibility="Hidden"         
-                                         
+                        NodeLineVisibility="Hidden"                                    
                         >
 
                 <ig:DragDropManager.DragSource>
@@ -678,35 +677,16 @@
                                                MinWidth="5"
                                                Focusable="True"
                                                Text="{Binding Path=Data.ResourceName}"
-                                               Visibility="{Binding Path=Data.IsNotRenaming,
-                                                                    Converter={StaticResource BoolToVisibilityConverter}}" >
+                                               >
                                                                             <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="MouseLeftButtonDown">
-                                             <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
+                                                <interactivity:InvokeCommandAction Command="{Binding Path=Data.Expand}" TriggerParameterPath="ClickCount" />
                                             </i:EventTrigger>
                                            
                                             </i:Interaction.Triggers>
 
                                     </TextBlock>
-                                    <TextBox x:Name="PropertySearch"
-                                             Text="{Binding Path=Data.ResourceName,
-                                                            UpdateSourceTrigger=LostFocus}"
-                                             CaretIndex="{x:Static system:Int32.MaxValue}"
-                                             ToolTip="{Binding Path=RenameToolTip}"
-                                             Visibility="{Binding Path=Data.IsRenaming,
-                                                                  Converter={StaticResource BoolToVisibilityConverter}}"
-                                             views:FocusExtension.IsFocused="{Binding Path=Data.IsRenaming}">
-                               
-                                            <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="LostFocus">
-                                                <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}" />
-                                            </i:EventTrigger>
-                                                <i:EventTrigger EventName="LostKeyboardFocus">
-                                               <i:InvokeCommandAction Command="{Binding Path=Data.LostFocus}" />
-                                            </i:EventTrigger>
-
-                                            </i:Interaction.Triggers>
-                                    </TextBox>
+                                    
                                 </StackPanel>
                              
                             </DockPanel>

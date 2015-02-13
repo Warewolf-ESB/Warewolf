@@ -32,7 +32,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new ArgumentNullException("view");
             }
-
             environmentViewModel.Connect();
             _selectedGuid = selectedGuid;
             environmentViewModel.LoadDialog(_selectedGuid);

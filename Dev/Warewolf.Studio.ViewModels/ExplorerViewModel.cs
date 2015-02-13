@@ -191,6 +191,7 @@ namespace Warewolf.Studio.ViewModels
             var localhostEnvironment = CreateEnvironmentFromServer(shellViewModel.LocalhostServer, shellViewModel);
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             localhostEnvironment.Connect();
+            localhostEnvironment.Load();
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator);
             ShowConnectControl = true;
         }
@@ -207,8 +208,13 @@ namespace Warewolf.Studio.ViewModels
     {
         public SingleEnvironmentExplorerViewModel(IEnvironmentViewModel environmentViewModel)
         {
-            Environments = new ObservableCollection<IEnvironmentViewModel> { environmentViewModel };
+            environmentViewModel.SetPropertiesForDialog();
+            Environments = new ObservableCollection<IEnvironmentViewModel>
+            {
+                environmentViewModel
+            };
             ShowConnectControl = false;
+            
         }
     }
 }

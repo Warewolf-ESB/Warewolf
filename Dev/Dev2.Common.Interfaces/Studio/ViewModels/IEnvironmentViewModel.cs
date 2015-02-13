@@ -13,7 +13,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void Connect();
         bool IsConnecting { get; }
         void Load();
-        void LoadDialog(Guid selectedId);
+        void LoadDialog(Guid? selectedId);
         void Filter(string filter);
         ICollection<IExplorerItemViewModel> AsList();
         void SetItemCheckedState(Guid id, bool state);
@@ -24,5 +24,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand ShowServerVersionCommand { get; set; }
 
         void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction);
+        void SetPropertiesForDialog();
     }
 }

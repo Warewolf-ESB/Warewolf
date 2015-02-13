@@ -458,8 +458,10 @@
                       >
                             <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent},
                                        Path=ClearSearchCommand}"
+                                    x:Name="ClearSearchButton"
                                     HorizontalContentAlignment="Left"
-                                    HorizontalAlignment="Left">
+                                    HorizontalAlignment="Left"                                    
+                                    >
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
                                         <Grid>
@@ -476,14 +478,13 @@
                                             <Trigger Property="IsMouseOver" Value="True">
                                                 <Setter  TargetName="ClearSearch" Property="Foreground" Value="{StaticResource ClearSearchButtonHoverBorderBrush}"/>
                                             </Trigger>
+                                            
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
-                        </Border>
-                        
+                        </Border>                        
                     </Grid>
-
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="True">
                             <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}"/>
