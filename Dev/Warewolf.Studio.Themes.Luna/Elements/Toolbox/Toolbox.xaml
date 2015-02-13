@@ -11,8 +11,11 @@
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ListBox.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
+    <!--<Cursor x:Key="CursorGrab" Cursor="grab.cur"/>
+    <TextBlock x:Key="CursorGrabbing" Cursor="grabbing.cur"/>-->
+   
 
-    <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="#FF3C7FB1" />
+        <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="#FF3C7FB1" />
     <SolidColorBrush x:Key="Expander.MouseOver.Circle.Fill" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="#222" />
     <SolidColorBrush x:Key="Expander.Pressed.Circle.Stroke" Color="#FF526C7B" />

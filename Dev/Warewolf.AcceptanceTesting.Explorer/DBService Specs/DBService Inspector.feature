@@ -3,7 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@Action Inspector
+@ActionInspector
 Scenario: Opening Action Inspector and closing
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
@@ -20,7 +20,7 @@ Scenario: Opening Action Inspector and closing
    And "close" button is visible
    And "Action Inspector" popup is "movable"
    When I close Action inspector
-   Then Action Inspector is closed
+   Then Action Inspector is closed 
 
 
 

@@ -106,6 +106,11 @@ namespace Warewolf.AcceptanceTesting.SaveDialog
 
         }
 
+        //[When(@"I create ""(.*)"" in ""(.*)""")]
+        //public void WhenICreateIn(string p0, string p1)
+        //{
+        //    ScenarioContext.Current.Pending();
+        //}
         [When(@"I create ""(.*)"" in ""(.*)""")]
         public void WhenICreateIn(string newFolderName, string rootPath)
         {

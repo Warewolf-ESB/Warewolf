@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
@@ -58,7 +59,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public bool Delete(IExplorerItemViewModel explorerItemViewModel)
         {
-            UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
+            if (explorerItemViewModel.ResourceType == ResourceType.Version)
+                VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber);
+            else
+                UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
             return true;
         }
 

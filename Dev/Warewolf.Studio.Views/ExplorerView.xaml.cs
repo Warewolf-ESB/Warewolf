@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
@@ -20,7 +17,7 @@ namespace Warewolf.Studio.Views
 	/// </summary>
 	public partial class ExplorerView : IExplorerView
 	{
-	    private readonly ExplorerViewTestClass _explorerViewTestClass;
+	    readonly ExplorerViewTestClass _explorerViewTestClass;
 	    Grid _blackoutGrid;
 
 	    public ExplorerView()
@@ -63,27 +60,27 @@ namespace Warewolf.Studio.Views
 
         public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
         {
-            return _explorerViewTestClass.OpenEnvironmentNode(nodeName);
+            return ExplorerViewTestClass.OpenEnvironmentNode(nodeName);
         }
 
 	    public List<IExplorerItemViewModel> GetFoldersVisible()
 	    {
-	        return _explorerViewTestClass.GetFoldersVisible();
+	        return ExplorerViewTestClass.GetFoldersVisible();
 	    }
 
 	    public IExplorerItemViewModel OpenFolderNode(string folderName)
 	    {
-	        return _explorerViewTestClass.OpenFolderNode(folderName);
+	        return ExplorerViewTestClass.OpenFolderNode(folderName);
 	    }
 
 	    public int GetVisibleChildrenCount(string folderName)
 	    {
-	        return _explorerViewTestClass.GetVisibleChildrenCount(folderName);
+	        return ExplorerViewTestClass.GetVisibleChildrenCount(folderName);
 	    }
 
 	    public void PerformFolderRename(string originalFolderName, string newFolderName)
 	    {
-	        _explorerViewTestClass.PerformFolderRename(originalFolderName, newFolderName);
+	        ExplorerViewTestClass.PerformFolderRename(originalFolderName, newFolderName);
 	    }
 
 	    public void PerformSearch(string searchTerm)
@@ -92,8 +89,43 @@ namespace Warewolf.Studio.Views
             BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
 	        if (be != null)
 	        {
-	            be.UpdateSource();
+            be.UpdateSource();
 	        }
+	    }
+
+	    public void AddNewFolder(string folder, string server)
+	    {
+            ExplorerViewTestClass.PerformFolderAdd(server, folder);
+	    }
+
+	    public void VerifyItemExists(string path)
+	    {
+            ExplorerViewTestClass.VerifyItemExists(path);
+	    }
+
+	    public void DeletePath(string path)
+	    {
+            ExplorerViewTestClass.DeletePath(path);
+	    }
+
+	    public void AddNewFolderFromPath(string path)
+	    {
+            ExplorerViewTestClass.PerformFolderAdd(path);
+	    }
+
+	    public void AddNewResource(string path, string itemType)
+	    {
+            ExplorerViewTestClass.PerformItemAdd(path,itemType);
+	    }
+
+	    public void AddResources(int resourceNumber, string path, string type)
+	    {
+            ExplorerViewTestClass.AddChildren(resourceNumber, path,type);
+	    }
+
+	    public int GetResourcesVisible(string path)
+	    {
+            return ExplorerViewTestClass.GetFoldersResourcesVisible(path);
 	    }
 
 	    public void Blur()
@@ -145,5 +177,24 @@ namespace Warewolf.Studio.Views
             e.Handled = true;
             
 	    }
+
+
+
+	 
+
+        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            //get parent item
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            //we've reached the end of the tree
+            if (parentObject == null) return null;
+
+            //check if the parent matches the type we're looking for
+            T parent = parentObject as T;
+            if (parent != null)
+                return parent;
+            return FindParent<T>(parentObject);
+        }
 	}
 }

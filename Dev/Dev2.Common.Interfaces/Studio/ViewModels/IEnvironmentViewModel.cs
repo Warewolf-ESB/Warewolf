@@ -24,5 +24,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         ICommand ShowServerVersionCommand { get; set; }
 
         void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction);
+
+        void RemoveChild(IExplorerItemViewModel item);
     }
 }

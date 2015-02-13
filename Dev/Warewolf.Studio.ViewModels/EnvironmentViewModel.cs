@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             Server.NetworkStateChanged += Server_NetworkStateChanged;
             _children = new ObservableCollection<IExplorerItemViewModel>();
-            NewCommand = new DelegateCommand<ResourceType?>(type => _shellViewModel.NewResource(type, Guid.Empty));
+            NewCommand = new DelegateCommand<ResourceType?>(type => ShellViewModel.NewResource(type, Guid.Empty));
             DisplayName = server.ResourceName;
             RefreshCommand = new DelegateCommand(Load);
             IsServerIconVisible = true;
@@ -65,12 +65,11 @@ namespace Warewolf.Studio.ViewModels
                 var id = Guid.NewGuid();
                 var name = GetChildNameFromChildren();
                  Server.ExplorerRepository.CreateFolder(GlobalConstants.ServerWorkspaceID,name,id);
-                var child = new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
+                var child = new ExplorerItemViewModel(ShellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
                {
                    ResourceName = name,
                    ResourceId = id,
-                   ResourceType = ResourceType.Folder
-                   
+                   ResourceType = ResourceType.Folder,
                };
                _children.Add(child);
                OnPropertyChanged(() => Children);
@@ -97,6 +96,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public void RemoveChild(IExplorerItemViewModel item)
+        {
+            _children.Remove(item);
+            OnPropertyChanged(()=>Children);
+        }
+
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
         {
             switch (args.State)
@@ -105,12 +110,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Server.Connect();
                     if (!IsConnecting)
-                        _shellViewModel.ExecuteOnDispatcher(Load);
+                        ShellViewModel.ExecuteOnDispatcher(Load);
                     break;
                 }
                 case ConnectionNetworkState.Disconnected:
                 {
-                    _shellViewModel.ExecuteOnDispatcher(() =>
+                    ShellViewModel.ExecuteOnDispatcher(() =>
                     {
                         IsConnected = false;
                         Children = new ObservableCollection<IExplorerItemViewModel>();
@@ -120,7 +125,7 @@ namespace Warewolf.Studio.ViewModels
                     break;
                 case ConnectionNetworkState.Connecting:
                 {
-                    _shellViewModel.ExecuteOnDispatcher(() =>
+                    ShellViewModel.ExecuteOnDispatcher(() =>
                     {
                         if (!IsConnecting)
                             IsConnected = false;
@@ -155,15 +160,15 @@ namespace Warewolf.Studio.ViewModels
         public IExplorerTreeItem Parent { get; set; }
         public void AddChild(IExplorerItemViewModel child)
         {
-            Children.Add(child);
+            _children.Add(child);
             OnPropertyChanged(() => Children);
         }
 
-        public void RemoveChild(IExplorerItemViewModel child)
-        {
-            Children.Remove(child);
-            OnPropertyChanged(() => Children);
-        }
+        //public void RemoveChild(IExplorerItemViewModel child)
+        //{
+        //    Children.Remove(child);
+        //    OnPropertyChanged(() => Children);
+        //}
 
         public ResourceType ResourceType { get; set; }
 
@@ -260,7 +265,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var serverVersion = Server.GetServerVersion();
             var studioVersion = Utils.FetchVersionInfo();
-            _shellViewModel.ShowPopup(PopupMessages.GetServerVersionMessage(studioVersion, serverVersion));
+            ShellViewModel.ShowPopup(PopupMessages.GetServerVersionMessage(studioVersion, serverVersion));
         }
 
         string GetChildNameFromChildren()
@@ -442,7 +447,7 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var explorerItem in explorerItems)
             {
-                var itemCreated = new ExplorerItemViewModel(_shellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object,parent)
+                var itemCreated = new ExplorerItemViewModel(ShellViewModel, server, new Mock<IExplorerHelpDescriptorBuilder>().Object,parent)
                 {
                     ResourceName = explorerItem.DisplayName,
                     ResourceId = explorerItem.ResourceId,
@@ -477,6 +482,13 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 return Resources.Languages.Core.EnvironmentExplorerRefreshToolTip;
+            }
+        }
+        public IShellViewModel ShellViewModel
+        {
+            get
+            {
+                return _shellViewModel;
             }
         }
     }

@@ -201,6 +201,7 @@
     <Compile Include="Data\TO\IErrorResultTO.cs" />
     <Compile Include="DB\IDataProviderSanitizer.cs" />
     <Compile Include="DB\IDBHelper.cs" />
+    <Compile Include="DB\IDbServiceViewModel.cs" />
     <Compile Include="Deploy\IConflict.cs" />
     <Compile Include="Deploy\IConflictHandlerViewModel.cs" />
     <Compile Include="Deploy\IDeployModel.cs" />
