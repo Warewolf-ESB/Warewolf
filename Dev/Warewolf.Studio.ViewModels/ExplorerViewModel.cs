@@ -147,8 +147,14 @@ namespace Warewolf.Studio.ViewModels
             if (Environments != null)
             {
                 var env = Environments.FirstOrDefault(a => a.Server == item.Server);
+        
                 if(env!= null)
                 {
+                    if (env.Children.Contains(item))
+                    {
+                        env.RemoveChild(item);
+                    }
+                    else
                     env.RemoveItem(item);
                 }
                 OnPropertyChanged(() => Environments);

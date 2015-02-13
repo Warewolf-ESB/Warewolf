@@ -64,7 +64,9 @@ namespace Dev2.ToolBox
 
         public IList<IToolDescriptor> LoadTools()
         {
-            return _tools.Where(a => a != null).OrderBy(a => a.Category).ToList();
+            // ReSharper disable MaximumChainedReferences
+            return _tools.Where(a => a != null).OrderBy(a => a.Category.ToLower() == "connectors" ?"zzzzzzz":a.Category ).ToList();
+            // ReSharper restore MaximumChainedReferences
         }
 
         #endregion

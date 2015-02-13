@@ -168,6 +168,10 @@
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Windows.Design.Extensibility, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86" />
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -222,6 +226,9 @@
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
     <Compile Include="InteractiveCommand.cs" />
+    <Compile Include="ManageDatabaseServiceControl.xaml.cs">
+      <DependentUpon>ManageDatabaseServiceControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ManageDatabaseSourceControl.xaml.cs" />
     <Compile Include="MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
@@ -285,6 +292,10 @@
     <Page Include="HelpView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ManageDatabaseServiceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ManageDatabaseSourceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -363,6 +374,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="grab.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="grabbing.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

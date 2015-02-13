@@ -16,15 +16,15 @@ namespace Warewolf.AcceptanceTesting.Core
 {
     public class ServerForTesting : Resource, IServer
     {
-        public ServerForTesting()
+        public ServerForTesting(Mock<IExplorerRepository> explorerRepository)
         {
-            var mockExplorerRepo = new Mock<IExplorerRepository>();
-            mockExplorerRepo.Setup(repository => repository.Rename(It.IsAny<IExplorerItemViewModel>(), It.IsAny<string>())).Returns(true);
-            _explorerProxy = mockExplorerRepo.Object;
+            MockExplorerRepo = explorerRepository;
+            _explorerProxy = explorerRepository.Object;
             ResourceName = "localhost";
         }
 
         private IExplorerRepository _explorerProxy;
+        Mock<IExplorerRepository> _mockExplorerRepo;
 
         public ServerForTesting(IResource copy) : base(copy)
         {
@@ -168,6 +168,17 @@ namespace Warewolf.AcceptanceTesting.Core
         public IStudioUpdateManager UpdateRepository
         {
             get { throw new NotImplementedException(); }
+        }
+        public Mock<IExplorerRepository> MockExplorerRepo
+        {
+            get
+            {
+                return _mockExplorerRepo;
+            }
+            set
+            {
+                _mockExplorerRepo = value;
+            }
         }
 
         public string GetServerVersion()

@@ -12,5 +12,19 @@ namespace Dev2.Common.Interfaces
         int GetVisibleChildrenCount(string folderName);
         void PerformFolderRename(string originalFolderName, string newFolderName);
         void PerformSearch(string searchTerm);
+
+        void AddNewFolder(string folder, string server);
+
+        void VerifyItemExists(string path);
+
+        void DeletePath(string path);
+
+        void AddNewFolderFromPath(string path);
+
+        void AddNewResource(string path, string itemType);
+
+        void AddResources(int resourceNumber, string path, string type);
+
+        int GetResourcesVisible (string path);
     }
 }

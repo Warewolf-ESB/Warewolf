@@ -1,28 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Threading;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
+using Dev2.Common.Interfaces.Versioning;
+using Dev2.Explorer;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using TechTalk.SpecFlow;
+using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 
 namespace Warewolf.AcceptanceTesting.Explorer
 {
     
     [Binding]    
+    // ReSharper disable UnusedMember.Global
     public class ExplorerSteps
+      
     {
         [BeforeFeature("Explorer")]
         public static void SetupExplorerDependencies()
         {
             var bootstrapper = new UnityBootstrapperForExplorerTesting();
+
             bootstrapper.Run();
             FeatureContext.Current.Add("container", bootstrapper.Container);
+            FeatureContext.Current.Add("bootstrapper", bootstrapper);
             var explorerView = bootstrapper.Container.Resolve<IExplorerView>();
-            var window = new Window();
-            window.Content = explorerView;
+            var window = new Window { Content = explorerView };
             var app = Application.Current;
             app.MainWindow = window;
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
@@ -116,11 +128,230 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsNotNull(environmentViewModel);
         }
 
+        [Then(@"I should see ""(.*)"" resources in ""(.*)""")]
+        public void ThenIShouldSeeResourcesIn(int numberOfresources, string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            var explorerItemViewModels = explorerView.GetResourcesVisible(path);
+            Assert.AreEqual(numberOfresources, explorerItemViewModels);
+        }
+
+
         [When(@"I search for ""(.*)""")]
         public void WhenISearchFor(string searchTerm)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
             explorerView.PerformSearch(searchTerm);
         }
+
+        //[When(@"I create ""(.*)"" in ""(.*)""")]
+        //public void WhenICreateIn(string folder, string server)
+        //{
+        //    var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+        //    explorerView.AddNewFolder(folder,server);
+        //}
+
+        //[Then(@"I should see ""(.*)"" in ""(.*)"" server")]
+        //public void ThenIShouldSeeInServer(string folder, string server)
+        //{
+        //    //var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+        //    //explorerView.VerifyItemExists(folder, server);
+     
+        //}
+
+        [Then(@"I should see the path ""(.*)""")]
+        public void ThenIShouldSeeThePath(string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.VerifyItemExists(path);
+        }
+
+        [Then(@"I setup (.*) resources in ""(.*)""")]
+        public void ThenISetupResourcesIn(int resourceNumber, string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddResources(resourceNumber, path,"WorkflowService");
+        }
+
+        [Then(@"I Create ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
+        public void ThenICreateResourcesOfTypeIn(int resourceNumber, string type, string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddResources(resourceNumber, path,type);
+        }
+
+        [When(@"I Show Version History for ""(.*)""")]
+        public void WhenIShowVersionHistoryFor(string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+            var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
+            
+          
+            if(explorerView != null)
+            {
+                // ReSharper disable MaximumChainedReferences
+                boot.ExplorerRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IVersionInfo>
+                {
+                    new VersionInfo(DateTime.Now,"bob","Leon","3",Guid.Empty,Guid.Empty),
+                    new VersionInfo(DateTime.Now,"bob","Leon","2",Guid.Empty,Guid.Empty),
+                    new VersionInfo(DateTime.Now,"bob","Leon","1",Guid.Empty,Guid.Empty)
+                });
+                // ReSharper restore MaximumChainedReferences
+                explorerView.ExplorerViewTestClass.ShowVersionHistory(path);
+            }
+        }
+
+
+        [Then(@"I should see ""(.*)"" versions with ""(.*)"" Icons in ""(.*)""")]
+        public void ThenIShouldSeeVersionsWithIconsIn(int count, string iconVisible, string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+            if(explorerView != null)
+            {
+                var node = explorerView.ExplorerViewTestClass.VerifyItemExists(path);
+                foreach(var node1 in node.Nodes)
+                {
+                    var itm = node1.Data as ExplorerItemViewModel;
+                    // ReSharper disable PossibleNullReferenceException
+                    Assert.IsFalse(itm.CanExecute);
+                    Assert.AreEqual(itm.ResourceType,ResourceType.Version);
+                    Assert.IsFalse(itm.CanEdit);
+                    // ReSharper restore PossibleNullReferenceException
+                }
+            }
+        }
+        [When(@"I Make ""(.*)"" the current version of ""(.*)""")]
+        public void WhenIMakeTheCurrentVersionOf(string versionPath, string resourcePath)
+        {
+             var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
+            // ReSharper disable once MaximumChainedReferences
+             boot.ExplorerRepository.Setup(a => a.Rollback(Guid.Empty, "1")).Returns(new RollbackResult()
+                {
+                    DisplayName = "Resource 1" , 
+                     VersionHistory = new List<IExplorerItem>()
+                 }
+             );
+            // ReSharper disable once MaximumChainedReferences
+             boot.ExplorerRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IVersionInfo>()
+                {
+                     new VersionInfo(DateTime.Now,"bob","Leon","4",Guid.Empty,Guid.Empty),
+                    new VersionInfo(DateTime.Now,"bob","Leon","3",Guid.Empty,Guid.Empty),
+                    new VersionInfo(DateTime.Now,"bob","Leon","2",Guid.Empty,Guid.Empty),
+                    new VersionInfo(DateTime.Now,"bob","Leon","1",Guid.Empty,Guid.Empty)
+                });
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+            if(explorerView != null)
+            {
+                var tester = explorerView.ExplorerViewTestClass;
+                tester.PerformVersionRollback(versionPath);
+            }
+        }
+
+
+        [When(@"I Delete Version ""(.*)""")]
+        public void WhenIDeleteVersion(string versionPath)
+        {
+            var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
+            boot.ExplorerRepository.Setup(a => a.Delete(It.IsAny<IExplorerItemViewModel>()));
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+            if (explorerView != null)
+            {
+                var tester = explorerView.ExplorerViewTestClass;
+                tester.PerformVersionDelete(versionPath);
+            }
+
+    
+        }
+
+
+
+        [Then(@"I Setup  ""(.*)"" Versions to be returned for ""(.*)""")]
+        public void ThenISetupVersionsToBeReturnedFor(int count, string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+            // ReSharper disable once PossibleNullReferenceException
+            var tester = explorerView.ExplorerViewTestClass;
+            var nodes = tester.CreateChildNodes(count, path);
+            ScenarioContext.Current.Add("versions", count);
+        }
+
+
+        [Then(@"I Setup  ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
+        public void ThenISetupResourcesOfTypeIn(int count, string path, string type)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+
+
+        [When(@"I delete ""(.*)"" in ""(.*)"" server")]
+        public void WhenIDeleteInServer(string p0, string p1)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I delete ""(.*)""")]
+        public void WhenIDelete(string path)
+        {
+            var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            if(ScenarioContext.Current.ContainsKey("popupResult"))
+            {
+                var popupResult = ScenarioContext.Current.Get<string>("popupResult");
+                if(popupResult.ToLower()=="cancel")
+                {
+                    // ReSharper disable once MaximumChainedReferences
+                    boot.PopupController.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Cancel);
+                }
+                else
+                    // ReSharper disable once MaximumChainedReferences
+                    boot.PopupController.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.OK);
+            }
+            else
+                // ReSharper disable once MaximumChainedReferences
+                boot.PopupController.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.OK);
+           
+            
+            
+            // ReSharper disable MaximumChainedReferences
+      
+            // ReSharper restore MaximumChainedReferences
+            explorerView.DeletePath(path);
+        }
+
+        [Then(@"I choose to ""(.*)"" Any Popup Messages")]
+        public void ThenIChooseToAnyPopupMessages(string result)
+        {
+            if (!ScenarioContext.Current.ContainsKey("popupResult")) 
+                    ScenarioContext.Current.Add("popupResult",result);
+            else
+            {
+                ScenarioContext.Current["popupResult"] = result;
+            }
+        }
+
+        [When(@"I create ""(.*)""")]
+        public void WhenICreate(string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddNewFolderFromPath(path);
+        }
+        [When(@"I add ""(.*)"" in ""(.*)""")]
+        public void WhenIAddIn(string folder , string server)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddNewFolder(server, folder);
+        }
+
+        [When(@"I create the ""(.*)"" of type ""(.*)""")]
+        public void WhenICreateTheOfType(string path, string type)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddNewResource(path, type);
+        }
+
+
+
     }
 }
+// ReSharper restore UnusedMember.Global

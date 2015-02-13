@@ -197,10 +197,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DB Service.feature.cs">
+    <Compile Include="DBService Specs\DB Service.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DB Service.feature</DependentUpon>
+    </Compile>
+    <Compile Include="DBService Specs\DBService Inspector.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBService Inspector.feature</DependentUpon>
+    </Compile>
+    <Compile Include="DBService Specs\New Database Source.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>New Database Source.feature</DependentUpon>
     </Compile>
     <Compile Include="Explorer.feature.cs">
       <AutoGen>True</AutoGen>
@@ -208,6 +218,11 @@
       <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
     <Compile Include="ExplorerSteps.cs" />
+    <Compile Include="NewServerSource.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NewServerSource.feature</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Toolbox.feature.cs">
       <AutoGen>True</AutoGen>
@@ -220,13 +235,25 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="DB Service.feature">
+    <None Include="DBService Specs\DB Service.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DB Service.feature.cs</LastGenOutput>
+    </None>
+    <None Include="DBService Specs\DBService Inspector.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DBService Inspector.feature.cs</LastGenOutput>
+    </None>
+    <None Include="DBService Specs\New Database Source.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>New Database Source.feature.cs</LastGenOutput>
     </None>
     <None Include="Explorer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Explorer.feature.cs</LastGenOutput>
+    </None>
+    <None Include="NewServerSource.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>NewServerSource.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
