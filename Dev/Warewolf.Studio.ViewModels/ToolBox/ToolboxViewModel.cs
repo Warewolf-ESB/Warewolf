@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels.ToolBox
@@ -25,9 +27,10 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             _localModel.OnserverDisconnected += _localModel_OnserverDisconnected;
             _remoteModel.OnserverDisconnected += _remoteModel_OnserverDisconnected;
             ClearFilter();
+            ClearFilterCommand = new DelegateCommand(ClearFilter);
         }
 
-
+        public ICommand ClearFilterCommand { get; set; }
 
         #region Implementation of IToolboxViewModel
 

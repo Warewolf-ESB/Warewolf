@@ -24,6 +24,7 @@ namespace Warewolf.Studio.ViewModels
         {
             
             RefreshCommand = new DelegateCommand(Refresh);
+            ClearSearchTextCommand = new DelegateCommand(() => SearchText="");
             
         }
 
@@ -156,7 +157,8 @@ namespace Warewolf.Studio.ViewModels
 
         public event SelectedExplorerEnvironmentChanged SelectedEnvironmentChanged;
 
-    
+
+        public ICommand ClearSearchTextCommand { get; private set; }
 
         public void SelectItem(Guid id)
         {

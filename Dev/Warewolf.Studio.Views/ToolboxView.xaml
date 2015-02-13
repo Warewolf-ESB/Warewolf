@@ -10,6 +10,7 @@
 	xmlns:views="clr-namespace:Warewolf.Studio.Views"
 	xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
 	xmlns:ig="http://schemas.infragistics.com/xaml"
+	xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 	mc:Ignorable="d"
 	x:Class="Warewolf.Studio.Views.ToolboxView"
 	x:Name="UserControl"
@@ -101,14 +102,15 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <TextBox 
+            <customControls:SearchTextBox
                 Grid.Column="0" 
                 Grid.Row="0"  
+                LabelText="Filter"
+                Style="{StaticResource SearchTextboxStyle}"
+                ClearSearchCommand="{Binding ClearFilterCommand}"
                 Text="{Binding SearchTerm,
                                     Delay=300,
                                     UpdateSourceTrigger=PropertyChanged}"
-                    customControls:TextBoxHelper.Watermark="Filter" 
-                     customControls:TextBoxHelper.ShowWatermark="True"
                 />
            <Button Width="25" Grid.Column="2" Grid.Row="0"
                     Height="25"

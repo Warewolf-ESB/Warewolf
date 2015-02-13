@@ -94,7 +94,7 @@ namespace Warewolf.Studio.Views
 
         public bool IsSaveButtonEnabled()
         {
-            return OkButton.Command.CanExecute(null); ;
+            return OkButton.Command.CanExecute(null);
         }
 
         public string GetValidationMessage()

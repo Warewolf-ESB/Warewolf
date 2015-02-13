@@ -13,6 +13,7 @@
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              x:Name="ExplorerViewControl"
              d:DataContext="{d:DesignInstance Type=viewModels:IExplorerViewModel,
                                               IsDesignTimeCreatable=False}"
@@ -66,11 +67,12 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Row="0"
+            <customControls:SearchTextBox Grid.Row="0"
                      Grid.Column="0"
-                     x:Name="SearchTextBox"
-                     customControls:TextBoxHelper.Watermark="Search" 
-                     customControls:TextBoxHelper.ShowWatermark="True"
+                     x:Name="SearchTextBox"     
+                                          Style="{StaticResource SearchTextboxStyle}"
+                                          ClearSearchCommand="{Binding ClearSearchTextCommand}"
+                                          LabelText="Filter"
                      Text="{Binding SearchText,
                                     Delay=300,
                                     UpdateSourceTrigger=PropertyChanged}"
