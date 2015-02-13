@@ -299,8 +299,7 @@
                     <Grid x:Name="RootElement" SnapsToDevicePixels="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent},
-                                                Path=ActualHeight}" />
+                            <ColumnDefinition Width="17" />
                         </Grid.ColumnDefinitions>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
@@ -405,7 +404,7 @@
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                               Padding="{TemplateBinding Padding}" />
                                 <Label x:Name="LabelText"
-                     Margin="2"
+                     Margin="2,4,2,2"
                      Grid.Column="0"
                      Foreground="{StaticResource SearchBoxWatermarkTextForeground}"
                      Content="{Binding RelativeSource={RelativeSource TemplatedParent},
@@ -450,26 +449,22 @@
                                       Data="M 0,0 L2,0 L 8,6 L8,8"
                                       Fill="{StaticResource LightForegroundBrush}" />
 
-
                             </Grid>
                         </Border>
                         <Border x:Name="PART_SearchIconBorder"
                       Grid.Column="1"
-                      BorderThickness="1"
-                      Padding="1"
                       VerticalAlignment="Stretch"
-                      HorizontalAlignment="Stretch"
+                      HorizontalAlignment="Stretch" Margin="0,0,0,0" Padding="0,1,0,0"
                       >
                             <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent},
                                        Path=ClearSearchCommand}"
-                                    HorizontalContentAlignment="Left">
+                                    HorizontalContentAlignment="Left"
+                                    HorizontalAlignment="Left">
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*">                                                    
-                                                </RowDefinition>
-                                                <RowDefinition Height="2">
                                                 </RowDefinition>
                                             </Grid.RowDefinitions>
                                             <fa:ImageAwesome x:Name="ClearSearch"  Icon="Times" Width="10" Height="10"  HorizontalAlignment="Left"/>
