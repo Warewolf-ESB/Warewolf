@@ -122,9 +122,10 @@
                 Text="{Binding SearchTerm,
                                     Delay=300,
                                     UpdateSourceTrigger=PropertyChanged}"
-                    customControls:TextBoxHelper.Watermark="Filter" 
-                     customControls:TextBoxHelper.ShowWatermark="True"
+
                 />
+            <!--customControls:TextBoxHelper.Watermark="Filter" 
+                     customControls:TextBoxHelper.ShowWatermark="True"-->
             <Button Width="25" Grid.Column="2" Grid.Row="0"
                     Height="25"
                     Padding="4">
