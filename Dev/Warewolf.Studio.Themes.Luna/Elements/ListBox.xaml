@@ -111,18 +111,17 @@
                         <Rectangle x:Name="BgSelected"
                                    Fill="{StaticResource ListBoxItemSelectedBackgroundBrush}"
                                    Stroke="{StaticResource ListBoxItemSelectedBorderBrush}"
-                                  
                                    Visibility="Collapsed" />
-                        <ContentControl x:Name="ContentControl" IsTabStop="false"
+                        <ContentControl x:Name="ContentControl"
                                         Margin="{TemplateBinding Padding}"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        Foreground="{TemplateBinding Foreground}">
+                                        Foreground="{TemplateBinding Foreground}"
+                                        IsTabStop="false">
                             <ContentPresenter x:Name="contentPresenter" />
                         </ContentControl>
                         <Rectangle x:Name="FocusedVisualElement"
                                    IsHitTestVisible="False"
-                                   
                                    Stroke="{StaticResource ListBoxItemPressedBorderBrush}"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
@@ -147,12 +146,12 @@
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItemStyle}" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
-                    <Grid >
+                    <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="ValidationStates">
                                 <VisualState x:Name="Valid" />
@@ -230,7 +229,6 @@
                                   Margin="0,-4,-4,0"
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Top"
-                                  
                                   Background="{StaticResource TransparentBrush}">
                                 <Path Margin="-1,3,0,0"
                                       Data="M 1,0 L6,0 A 2,2 90 0 1 8,2 L8,7 z"
@@ -335,18 +333,17 @@
                         <Rectangle x:Name="BgSelected"
                                    Fill="{StaticResource WareWolfOrangeBrush}"
                                    Stroke="{StaticResource WareWolfOrangeBrush}"
-                                  
                                    Visibility="Collapsed" />
-                        <ContentControl x:Name="ContentControl" IsTabStop="false"
+                        <ContentControl x:Name="ContentControl"
                                         Margin="1,1,1,1"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                        Foreground="{TemplateBinding Foreground}">
+                                        Foreground="{TemplateBinding Foreground}"
+                                        IsTabStop="false">
                             <ContentPresenter x:Name="contentPresenter" />
                         </ContentControl>
                         <Rectangle x:Name="FocusedVisualElement"
                                    IsHitTestVisible="False"
-                                   
                                    Stroke="{StaticResource ListBoxItemPressedBorderBrush}"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
@@ -371,12 +368,12 @@
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxToolBoxItemStyle}" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
-                    <Grid >
+                    <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="ValidationStates">
                                 <VisualState x:Name="Valid" />
@@ -413,7 +410,7 @@
                         </VisualStateManager.VisualStateGroups>
                         <Border Background="Transparent"
                                 BorderBrush="Transparent"
-                                BorderThickness="0" >
+                                BorderThickness="0">
                             <ScrollViewer x:Name="ScrollViewer"
                                           BorderThickness="0"
                                           Padding="{TemplateBinding Padding}"
@@ -454,7 +451,6 @@
                                   Margin="0,-4,-4,0"
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Top"
-                                  
                                   Background="{StaticResource TransparentBrush}">
                                 <Path Margin="-1,3,0,0"
                                       Data="M 1,0 L6,0 A 2,2 90 0 1 8,2 L8,7 z"
