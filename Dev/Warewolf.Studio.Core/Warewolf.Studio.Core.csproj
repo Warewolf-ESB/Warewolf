@@ -106,7 +106,6 @@
     <Compile Include="RegionNames.cs" />
     <Compile Include="Popup\WarewolfPopupMessage.cs" />
     <Compile Include="VersionChecker.cs" />
-    <Compile Include="View Interfaces\ViewInterfaces.cs" />
     <Compile Include="ViewFolderIcon.cs" />
     <Compile Include="WarewolfWebClient.cs" />
     <Compile Include="WidthConvertForWrapPanel.cs" />
@@ -132,6 +131,9 @@
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

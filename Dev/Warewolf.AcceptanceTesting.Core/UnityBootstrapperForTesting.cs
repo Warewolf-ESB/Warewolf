@@ -31,6 +31,8 @@ namespace Warewolf.AcceptanceTesting.Core
             PopupController = new Mock<IPopupController>();
             Container.RegisterType<IServer, ServerForTesting>(new InjectionConstructor());
             Container.RegisterInstance(PopupController.Object);
+
+            Container.RegisterInstance<IServer>(new ServerForTesting());
             Container.RegisterInstance<IShellViewModel>(new ShellViewModel(Container, Container.Resolve<IRegionManager>(), Container.Resolve<IEventAggregator>()));         
         }
     }

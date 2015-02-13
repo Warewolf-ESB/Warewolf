@@ -4,9 +4,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Dev2.Common.Interfaces;
 using Infragistics.Documents.RichText;
 using Infragistics.Documents.RichText.Html;
-using Warewolf.Studio.Core.View_Interfaces;
 using Warewolf.Studio.ViewModels.Help;
 
 namespace Warewolf.Studio.Views

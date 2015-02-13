@@ -36,8 +36,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             if(result.Status != ExecStatus.Success)
             {
                 throw new WarewolfSaveException(result.Message,null);
-            }
-            
+            }            
         }
 
 

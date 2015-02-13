@@ -239,8 +239,13 @@
     <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionStatusChangedEventArg.cs" />
     <Compile Include="IDev2Activity.cs" />
+    <Compile Include="IExplorerView.cs" />
+    <Compile Include="IHelpView.cs" />
+    <Compile Include="IMenuView.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
+    <Compile Include="IToolboxView.cs" />
+    <Compile Include="IVariableListView.cs" />
     <Compile Include="IWarewolfWebClient.cs" />
     <Compile Include="IEsbRequestResult.cs" />
     <Compile Include="IServiceDesignerViewModel.cs" />

@@ -16,7 +16,7 @@ namespace Warewolf.Studio.ViewModels
         // ReSharper disable TooManyDependencies
         public ExplorerItemNodeViewModel(IShellViewModel shellViewModel, IServer server, IExplorerHelpDescriptorBuilder builder, IExplorerItemViewModel parent)
             // ReSharper restore TooManyDependencies
-            : base(shellViewModel, server, builder, parent, new Mock<IExplorerViewModel>().Object)
+            : base(shellViewModel, server, builder, parent)
         {
             Self = this;
             Weight = 1;

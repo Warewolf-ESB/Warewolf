@@ -7,20 +7,9 @@ Feature: SaveDialog
 Scenario: Creating Folder from Save Dialog under localhost
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
+	And I should see "5" folders
 	When I create "New Folder" in "localhost"
-	And I should see "6" folders in "localhost" save dialog
-
-Scenario: Creating Folder from Save Dialog under folder
-	Given the Save Dialog is opened
-	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
-	When I create "New Folder" in "Folder 1"
-	Then I should see "9" children for "Folder 1"
+	And I should see "6" folders
 
 #CODED UI
 #Scenario: Right click Items on folder
@@ -34,106 +23,63 @@ Scenario: Creating Folder from Save Dialog under folder
 #	And I shouldn't see "New workflow service"
 #	And I shouldn't see "New Plugin service"
 
+@ignore
 Scenario: Saving a Workflow in localhost
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
+	And I should see "5" folders
 	When I save "localhost/Newworkflow"
 	Then "NewWorkflow" is visible in "localhost"
-	
+
+@ignore	
 Scenario: Saving a Workflow in localhost folder
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
+	And I open "Folder 1" in save dialog 
 	When I save "Folder 1/Newworkflow"
 	Then "NewWorkflow" is visible in "Folder 1"	
+
 	
 Scenario: Save button is Enabled when I enter new name for resource
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
+	And I open "Folder 1" in save dialog 
 	When I enter name "Savewf"
 	Then save button is "Enabled"
 	And validation message is ""
-	Then I should see "9" children for "Folder 1"
 
 Scenario: Save button is disabled when name is empty
 	Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
+	When I open "Folder 1" in save dialog 
 	When I enter name ""
 	Then save button is "Disabled"
-	And validation message is "'Name' cannot be empty"
+	And validation message is "'Name' cannot be empty."
 
 Scenario: Save with duplicate name and expect validation
     Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
-	When I save "Folder 1/Savewf"
-	And validation message is ""
-	Then I should see "9" children for "Folder 1"
-	When I enter name "Savewf"
+	When I open "Folder 2" in save dialog 
+	When I enter name "Folder 2 Child 1"
 	Then save button is "Disabled"
-	And validation message is "Name already exists"
+	And validation message is "Service with name 'Folder 2 Child 1' already exists."
 
 Scenario: Save resource names with special character expect validation
     Given the Save Dialog is opened
 	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
+	When I open "Folder 1" in save dialog 
 	When I enter name "Save@#$"
 	Then save button is "Disabled"
 	And validation message is "'Name' contains invalid characters."
 
-Scenario: Renaming Folders in Save Dialog
-	Given the Save Dialog is opened
-	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
-	When I rename "Folder 1" to "renamed" in "localhost" save dialog
-	Then I should see "8" children for "renamed"
-	And I should not see "Folder 1" in "localhost"
-
-Scenario: Renaming Folders with duplicate names
-	Given the Save Dialog is opened
-	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I open "Folder 1" in "localhost" save dialog 
-	Then I should see "8" children for "Folder 1"
-	When I rename "Folder 1" to "renamed" in "localhost" save dialog
-	Then I should see "8" children for "renamed"
-	And I should not see "Folder 1" in "localhost"
-	When I rename "Folder 2" to "renamed" in "localhost" save dialog
-	Then validation message is thrown "True"
-
-Scenario: Filtering Resources in save dialog
-	Given the Save Dialog is opened
-	And the "localhost" server is visible in save dialog
-	And I should see "5" folders in "localhost" save dialog
-	When I search for "deleteresouce" in save dialog
-    Then I should see "deleteresouce" in "Follder 1"
-
-Scenario: Refresh resources in save dialog
-    Given the Save Dialog is opened
-    And the "localhost" server is visible in save dialog
-    When I refresh resources in savedialog
-	Then save dilog localhost is refreshed "True"
-
+#FEATURES TO BE IMPLEMENTED
+@ignore
 Scenario: Opening saved workflow and saving
     Given I have an "Saved" workflow open
 	When I press "Ctrl+s"
 	Then the "Saved" workflow is saved "True"
 
+@ignore
 Scenario: Opening New workflow and saving
     Given I have an New workflow "Unsaved1" is open
 	When I press "Ctrl+s"
@@ -145,6 +91,7 @@ Scenario: Opening New workflow and saving
 	When I save "localhost/New"
 	Then the "New" workflow is saved "True"
 
+@ignore
 Scenario: Opening Save dialog and canceling
     Given I have an New workflow "Unsaved1" is open
 	When I press "Ctrl+s"
@@ -157,6 +104,7 @@ Scenario: Opening Save dialog and canceling
 	Then the save dialog is closed
 	Then the "New" workflow is saved "False"
 
+@ignore
 Scenario: Saving multiple workflows by using shortcutkey
     Given I have an New workflow "Unsaved1" is open
 	And I have an New workflow "Unsaved2" is open
@@ -171,7 +119,8 @@ Scenario: Saving multiple workflows by using shortcutkey
 	When I cancel the save dialog
 	And the Save Dialog is opened 
 
-Scenario: Savve textbox is updating names when selecting resource names
+@ignore
+Scenario: Save textbox is updating names when selecting resource names
     Given I have an New workflow "Unsaved1" is open
 	When I press "Ctrl+s"
 	Given the Save Dialog is opened
@@ -180,7 +129,7 @@ Scenario: Savve textbox is updating names when selecting resource names
     And the "localhost" server is visible in save dialog
 	And I should see "5" folders in "localhost" save dialog
 	When I select "localhost/Folder 1"
-	When I open "Folder 1" in "localhost" save dialog 
+	When I open "Folder 1" in save dialog 
 	Then I should see "8" children for "Folder 1"
 	When I select "localhost/Folder 1/children1"
 	Then save textbox  name is "children1"
@@ -189,6 +138,7 @@ Scenario: Savve textbox is updating names when selecting resource names
 	Then validation message is "Name already exists"
 	Then the "children1" workflow is saved "False"
 
+@ignore
 Scenario: Path is updating on save dialog when selcting folders
     Given I have an New workflow "Unsaved1" is open
 	When click "Save"
@@ -199,6 +149,7 @@ Scenario: Path is updating on save dialog when selcting folders
 	When I select "localhost/Folder 1"
 	Then the path in the title as "localhost\Folder 1\"
 
+@ignore
 Scenario: Star is representing the workflow is unsaved
    Given I have an New workflow "Unsaved1" is open 
    When I edit "Unsaved1"

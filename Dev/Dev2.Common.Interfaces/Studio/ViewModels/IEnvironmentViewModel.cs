@@ -16,7 +16,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void LoadDialog(Guid selectedId);
         void Filter(string filter);
         ICollection<IExplorerItemViewModel> AsList();
-        void SetItemCheckedState(System.Guid id, bool state);
+        void SetItemCheckedState(Guid id, bool state);
         void RemoveItem(IExplorerItemViewModel vm);
         ICommand RefreshCommand { get; set; }
         bool IsServerIconVisible { get; set; }

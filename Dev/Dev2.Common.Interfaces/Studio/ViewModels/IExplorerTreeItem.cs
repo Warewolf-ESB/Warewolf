@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Common.Interfaces.Studio.ViewModels
 {
     public interface IExplorerTreeItem
     {
+        ResourceType ResourceType { get; set; }
+        string ResourceName { get; set; } 
         bool IsExpanderVisible { get; set; }
         ICommand NewCommand { get; set; }
         ICommand DeployCommand { get; set; }
@@ -22,7 +25,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanShowVersions { get; set; }
         bool CanRollback { get;  }
         bool IsExpanded { get; set; }
-  
+        bool IsSelected { get; set; }
         ICommand RenameCommand { get; set; }
         ICommand CreateFolderCommand { get; set; }
         ICommand DeleteCommand { get; set; }
@@ -31,6 +34,9 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         IServer Server { get; set; }
         ICommand Expand { get; set; }
         ICollection<IExplorerItemViewModel> Children { get; set; }
+        IExplorerTreeItem Parent { get; set; }
+        void AddChild(IExplorerItemViewModel child);
+        void RemoveChild(IExplorerItemViewModel child);
 
     }
 }

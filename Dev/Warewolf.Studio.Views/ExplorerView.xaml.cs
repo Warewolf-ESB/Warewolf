@@ -4,9 +4,11 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
-using Warewolf.Studio.Core.View_Interfaces;
 
 namespace Warewolf.Studio.Views
 {
@@ -85,7 +87,7 @@ namespace Warewolf.Studio.Views
 	    {
 	        SearchTextBox.Text = searchTerm;
             BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
-	        if(be != null)
+	        if (be != null)
 	        {
             be.UpdateSource();
 	        }

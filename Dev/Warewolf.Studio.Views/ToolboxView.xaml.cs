@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using Warewolf.Studio.Core.View_Interfaces;
+using Dev2.Common.Interfaces;
 
 namespace Warewolf.Studio.Views
 {

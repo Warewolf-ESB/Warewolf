@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6A7E2E66-2DCC-486E-B34D-5FA7C1096821}</ProjectGuid>
+    <ProjectGuid>{5F815BEC-AA7C-4510-8C97-2FE52E16D3A8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Warewolf.AcceptanceTesting.Explorer</RootNamespace>
-    <AssemblyName>Warewolf.AcceptanceTesting.Explorer</AssemblyName>
+    <RootNamespace>Warewolf.AcceptanceTesting.SaveDialog</RootNamespace>
+    <AssemblyName>Warewolf.AcceptanceTesting.SaveDialog</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -37,12 +37,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FontAwesome.WPF">
-      <HintPath>..\packages\FontAwesome.WPF.4.2.0.2\lib\FontAwesome.WPF.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamCalendar.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamCalendar.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v14.2, Version=14.2.20142.2024, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v14.2.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamCalendar.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamCalendar.v14.2.Design.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamColorPicker.v14.2.dll</HintPath>
@@ -53,8 +52,32 @@
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamDateTimeInput.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamDateTimeInput.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamDateTimeInput.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamDateTimeInput.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamMaskedInput.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamMaskedInput.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamMaskedInput.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamMaskedInput.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamPropertyGrid.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamPropertyGrid.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamPropertyGrid.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamPropertyGrid.v14.2.Design.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v14.2.Design.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamSlider.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.dll</HintPath>
@@ -62,14 +85,28 @@
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.Design">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSlider.v14.2.Design.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamSyntaxEditor.v14.2.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.DateTimeColumn.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.DateTimeColumn.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.MultiColumnComboColumn.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.MultiColumnComboColumn.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.SparklineColumn.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.SparklineColumn.v14.2.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.Design">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v14.2.Design.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2, Version=14.2.20142.2024, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v14.2.Design">
@@ -85,20 +122,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v14.2.Design.dll</HintPath>
-    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v14.2.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.dll</HintPath>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.Design">
-      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamTagCloud.v14.2.Design.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Data.AnnotationsDataManager.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Data.AnnotationsDataManager.v14.2.dll</HintPath>
@@ -107,12 +132,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="InfragisticsWPF4.DataVisualization.v14.2">
-      <HintPath>..\Binaries\InfragisticsWPF4.DataVisualization.v14.2.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.DataPresenter.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v14.2, Version=14.2.20142.2024, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DockManager.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.Core.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Documents.Core.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Documents.IO.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Documents.IO.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Documents.RichTextDocument.Html.v14.2.dll</HintPath>
@@ -120,6 +151,9 @@
     <Reference Include="InfragisticsWPF4.DragDrop.v14.2, Version=14.2.20142.2024, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.DragDrop.v14.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Editors.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Editors.v14.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Math.Calculators.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Math.Calculators.v14.2.dll</HintPath>
@@ -130,37 +164,46 @@
     <Reference Include="InfragisticsWPF4.Persistence.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.Persistence.v14.2.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Undo.v14.2">
+      <HintPath>..\Binaries\InfragisticsWPF4.Undo.v14.2.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.v14.2">
       <HintPath>..\Binaries\InfragisticsWPF4.v14.2.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="InfragisticsWPF4.v14.2.Design">
+      <HintPath>..\Binaries\InfragisticsWPF4.v14.2.Design.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Composition">
+    <Reference Include="Microsoft.Practices.Prism.Composition, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism.Interactivity">
       <HintPath>..\packages\Prism.Interactivity.5.0.0\lib\NET45\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm">
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
+    <Reference Include="Microsoft.Practices.Prism.PubSubEvents, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.PubSubEvents.1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces">
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
+    <Reference Include="Microsoft.Practices.Prism.UnityExtensions, Version=5.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.UnityExtensions.5.0.1\lib\NET45\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity.Configuration">
@@ -169,16 +212,10 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\Binaries\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Xaml" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml.Serialization" />
     <Reference Include="TechTalk.SpecFlow">
       <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
@@ -197,43 +234,23 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DB Service.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DB Service.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Explorer.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Explorer.feature</DependentUpon>
-    </Compile>
-    <Compile Include="ExplorerSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Toolbox.feature.cs">
+    <Compile Include="SaveDialog.feature.cs">
+      <DependentUpon>SaveDialog.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Toolbox.feature</DependentUpon>
     </Compile>
-    <Compile Include="ToolboxSteps.cs" />
-    <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
-    <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
+    <Compile Include="SaveDialogSteps.cs" />
+    <Compile Include="UnityBootstrapperForSaveDialogTesting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="DB Service.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DB Service.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Explorer.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Explorer.feature.cs</LastGenOutput>
-    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Toolbox.feature">
+    <None Include="SaveDialog.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Toolbox.feature.cs</LastGenOutput>
+      <LastGenOutput>SaveDialog.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -241,24 +258,24 @@
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
-      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
-      <Name>Dev2.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
-      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
-      <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
-      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
-      <Name>Dev2.Util</Name>
+    <ProjectReference Include="..\ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
+      <Project>{97a827ff-65c4-4267-99d2-dce6803b2348}</Project>
+      <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.AcceptanceTesting.Core\Warewolf.AcceptanceTesting.Core.csproj">
       <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>
       <Name>Warewolf.AcceptanceTesting.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj">
+      <Project>{cc1b89cd-3222-4019-a0d1-58664f92cc47}</Project>
+      <Name>Warewolf.Studio.AntiCorruptionLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
-      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
+      <Project>{f9fe2ce9-625e-4e7f-8f4c-fce28bb59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
@@ -266,11 +283,15 @@
       <Name>Warewolf.Studio.CustomControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Models\Warewolf.Studio.Models.csproj">
-      <Project>{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}</Project>
+      <Project>{3d7eb0d0-41a4-4a83-93df-45a40e2cbb31}</Project>
       <Name>Warewolf.Studio.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
-      <Project>{C4AC2140-5663-4D3C-9FCD-6D65004CD54E}</Project>
+      <Project>{c4ac2140-5663-4d3c-9fcd-6d65004cd54e}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
@@ -280,6 +301,10 @@
     <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
       <Project>{81414783-9990-46EA-9668-DFA61E1AAD18}</Project>
       <Name>Warewolf.Studio.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio\Warewolf.Studio.csproj">
+      <Project>{6f16414c-99a2-444d-93f0-34eab82a2ff0}</Project>
+      <Name>Warewolf.Studio</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

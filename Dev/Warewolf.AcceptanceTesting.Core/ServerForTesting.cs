@@ -21,6 +21,7 @@ namespace Warewolf.AcceptanceTesting.Core
             var mockExplorerRepo = new Mock<IExplorerRepository>();
             mockExplorerRepo.Setup(repository => repository.Rename(It.IsAny<IExplorerItemViewModel>(), It.IsAny<string>())).Returns(true);
             _explorerProxy = mockExplorerRepo.Object;
+            ResourceName = "localhost";
         }
 
         private IExplorerRepository _explorerProxy;
