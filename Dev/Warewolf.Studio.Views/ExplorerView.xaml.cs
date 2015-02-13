@@ -17,7 +17,7 @@ namespace Warewolf.Studio.Views
 	/// </summary>
 	public partial class ExplorerView : IExplorerView
 	{
-	    private readonly ExplorerViewTestClass _explorerViewTestClass;
+	    readonly ExplorerViewTestClass _explorerViewTestClass;
 	    Grid _blackoutGrid;
 
 	    public ExplorerView()
@@ -60,27 +60,27 @@ namespace Warewolf.Studio.Views
 
         public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
         {
-            return _explorerViewTestClass.OpenEnvironmentNode(nodeName);
+            return ExplorerViewTestClass.OpenEnvironmentNode(nodeName);
         }
 
 	    public List<IExplorerItemViewModel> GetFoldersVisible()
 	    {
-	        return _explorerViewTestClass.GetFoldersVisible();
+	        return ExplorerViewTestClass.GetFoldersVisible();
 	    }
 
 	    public IExplorerItemViewModel OpenFolderNode(string folderName)
 	    {
-	        return _explorerViewTestClass.OpenFolderNode(folderName);
+	        return ExplorerViewTestClass.OpenFolderNode(folderName);
 	    }
 
 	    public int GetVisibleChildrenCount(string folderName)
 	    {
-	        return _explorerViewTestClass.GetVisibleChildrenCount(folderName);
+	        return ExplorerViewTestClass.GetVisibleChildrenCount(folderName);
 	    }
 
 	    public void PerformFolderRename(string originalFolderName, string newFolderName)
 	    {
-	        _explorerViewTestClass.PerformFolderRename(originalFolderName, newFolderName);
+	        ExplorerViewTestClass.PerformFolderRename(originalFolderName, newFolderName);
 	    }
 
 	    public void PerformSearch(string searchTerm)
@@ -95,22 +95,37 @@ namespace Warewolf.Studio.Views
 
 	    public void AddNewFolder(string folder, string server)
 	    {
-            _explorerViewTestClass.PerformFolderAdd(server, folder);
+            ExplorerViewTestClass.PerformFolderAdd(server, folder);
 	    }
 
 	    public void VerifyItemExists(string path)
 	    {
-            _explorerViewTestClass.VerifyItemExists(path);
+            ExplorerViewTestClass.VerifyItemExists(path);
 	    }
 
 	    public void DeletePath(string path)
 	    {
-            _explorerViewTestClass.DeletePath(path);
+            ExplorerViewTestClass.DeletePath(path);
 	    }
 
 	    public void AddNewFolderFromPath(string path)
 	    {
-            _explorerViewTestClass.PerformFolderAdd(path);
+            ExplorerViewTestClass.PerformFolderAdd(path);
+	    }
+
+	    public void AddNewResource(string path, string itemType)
+	    {
+            ExplorerViewTestClass.PerformItemAdd(path,itemType);
+	    }
+
+	    public void AddResources(int resourceNumber, string path, string type)
+	    {
+            ExplorerViewTestClass.AddChildren(resourceNumber, path,type);
+	    }
+
+	    public int GetResourcesVisible(string path)
+	    {
+            return ExplorerViewTestClass.GetFoldersResourcesVisible(path);
 	    }
 
 	    public void Blur()

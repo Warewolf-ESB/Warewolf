@@ -20,5 +20,11 @@ namespace Dev2.Common.Interfaces
         void DeletePath(string path);
 
         void AddNewFolderFromPath(string path);
+
+        void AddNewResource(string path, string itemType);
+
+        void AddResources(int resourceNumber, string path, string type);
+
+        int GetResourcesVisible (string path);
     }
 }

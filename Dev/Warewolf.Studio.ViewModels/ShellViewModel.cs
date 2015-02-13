@@ -39,7 +39,6 @@ namespace Warewolf.Studio.ViewModels
         readonly IRegionManager _regionManager;
         readonly IEventAggregator _aggregator;
         IExceptionHandler _handler;
-        IPopupController _popupController;
         object _activeItem;
         IServer _activeServer;
         double _menuPanelWidth;
@@ -64,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
         public void Initialize()
         {
 
-            _popupController = _unityContainer.Resolve<IPopupController>();
+            PopupController = _unityContainer.Resolve<IPopupController>();
             _unityContainer.RegisterInstance<IToolboxViewModel>(new ToolboxViewModel(new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object), new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object)));
            
             InitializeRegion<IExplorerView,IExplorerViewModel>(RegionNames.Explorer);
@@ -75,10 +74,11 @@ namespace Warewolf.Studio.ViewModels
 
             _handler = _unityContainer.Resolve<IExceptionHandler>();
            
-            _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => { _popupController.Show(PopupMessages.GetInvalidPermissionException()); });
+            _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => { PopupController.Show(PopupMessages.GetInvalidPermissionException()); });
 
         }
 
+        public IPopupController PopupController { get;  set; }
         public void InitializeRegion<T,TU>(string regionName) where T:IView
         {
             var region = _regionManager.Regions[regionName];
@@ -329,7 +329,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool ShowPopup(IPopupMessage msg)
         {
-            var res = _popupController.Show(msg);
+            var res = PopupController.Show(msg);
             return res == MessageBoxResult.OK || res == MessageBoxResult.Yes;
         }
 

@@ -59,7 +59,7 @@ Scenario: Creating And Deleting Folder and Popup says cancel in localhost
   Given the explorer is visible
   When I open "localhost" server
   Then I should see "5" folders
-  When I create "MyOtherNewFolder" in "localhost"
+  When I add "MyOtherNewFolder" in "localhost"
   Then I should see the path "localhost/MyOtherNewFolder" 
   And I should see "6" folders
   #Deleting Folders
@@ -70,62 +70,58 @@ Scenario: Creating And Deleting Folder and Popup says cancel in localhost
   Then I should see "18" children for "Folder 2"
   When I create "localhost/Folder 2/myNewFolder"
   Then I should see "19" children for "Folder 2"
-#  And I should see "New Folder" in "Folder 2"
-#  #Deleting Sub Folder
-#  When I delete "New Folder" in "Folder 2"
-#  Then I should see "18" children for "Folder 2" 
-#  And I should not see "New Folder" in "Folder 2"
+  Then I should see the path "localhost/Folder 2/myNewFolder"
+  #Deleting Sub Folder
+  And I choose to "OK" Any Popup Messages
+  When I delete "localhost/Folder 2/myNewFolder"
+  Then I should see "18" children for "Folder 2" 
+  And I should not see "New Folder" in "Folder 2"
 #
 #
 #
-#cenario: Deleting Resource in folders
-#   Given the explorer is visible
-#   When I open "localhost" server
-#   Then I should see "5" folders
-#	When I open "Folder 6"
-#	Then I should see "4" children for "Folder 6"
-#	And I should see "deleteresouce" in "Folder 6"
-#	When I delete "deleteresouce" in "Folder 6"
-#   Then I should not see "deleteresouce" in "Folder 6"
-#	And I should see "3" children for "Folder 6"
+Scenario: Deleting Resource in folders
+   Given the explorer is visible
+   When I open "localhost" server
+   Then I should see "5" folders
+   When I open "Folder 5"
+   And I create the "localhost/Folder 5/deleteresource" of type "WorkflowService" 
+   Then I should see the path "localhost/Folder 5/deleteresource"
+   When I delete "localhost/Folder 5/deleteresource"
+   Then I should not see "deleteresouce" in "Folder 5"
+
+Scenario: Deleting Resource in localhost Server
+   Given the explorer is visible
+   When I open "localhost" server
+   Then I should see "5" folders
+   And I setup 5 resources in "localhost"
+   And I should see "5" resources in "localhost"
+   Then I should see the path "localhost/Resource 1"
+   When I delete "localhost/Resource 1"
+   Then I should not see "Resource 1" in "localhost"
+
 #
-#cenario: Deleting Resource in localhost Server
-#   Given the explorer is visible
-#   When I open "localhost" server
-#   Then I should see "5" folders
-#	And I should see "5" resources in "localhost"
-#	And I should see "Resource" in "localhost" 
-#	When I delete "Resource" in "localhost"
-#   Then I should not see "Resource" in "localhost"
-#	And I should see "4" resources in "localhost"
 #
 #
-#
-#cenario: Opening Versions in Explorer
-#  Given the explorer is visible
-#  When I open "localhost" server
-#  Then I should see "5" folders
-#  When I open "Folder 1" 
-#  #Testing Resource Icons
-#  Then I should see "2" workflows with "View,Execute" Icons
-#  And I should see "2" DB Services with "View,Execute" Icons
-#  And I should see "2" Web Services with "View,Execute" Icons
-#  And I should see "2" Plugin Services with "View,Execute" Icons
-#  When I open "WF1" in "Folder 1"
-#  Then "WF1" is opened
-#  #Opening Version History
-#  When I Show Version History for "WF1" in "Folder 1"
-#  Then I should see "3" versions with "View" Icons
-#  And I should not see "3" versions with "View,Execute" Icons
-#  When I open "v.1" of "WF1" in "Folder 1"
-#  Then "v.1" is opened
-#  When I Make "v.1" the current version of "WF1" in "Folder 1"
-#  Then I should see "4" versions with "View" Icons
-#  Then I should see "OldVersion" in "Folder 1"
-#  #Deleting Versions
-#  When I Delete Version "v.2"
-#  Then I should not see "v.2"
-#  And I should see "3" versions with "View" Icons
+Scenario: Opening Versions in Explorer
+  Given the explorer is visible
+  When I open "localhost" server
+  Then I should see "5" folders
+  And I setup 2 resources in "localhost/Folder 1"
+  And I should see "2" resources in "localhost/Folder 1"
+  And I Setup  "3" Versions to be returned for "localhost/Folder 1/Resource 1"
+  #Testing Resource Icons  
+ # #Opening Version History
+ When I Show Version History for "localhost/Folder 1/Resource 1"
+ Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
+ # And I should not see "3" versions with "View,Execute" Icons
+ # When I open "v.1" of "WF1" in "Folder 1"
+ # Then "v.1" is opened
+  When I Make "localhost/Folder 1/Resource 1/v.1" the current version of "localhost/Folder 1/Resource 1" 
+ Then I should see "4" versions with "View" Icons in "localhost/Folder 1/Resource 1"
+ # #Deleting Versions
+ When I Delete Version "localhost/Folder 1/Resource 1/v.1"
+ # Then I should not see "v.2"
+ Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
 #
 #
 #cenario: No Version history option for services and sources.

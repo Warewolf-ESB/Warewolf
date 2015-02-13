@@ -5,6 +5,7 @@ using Dev2.AppResources.DependencyVisualization;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
+using Moq;
 using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
@@ -170,32 +171,32 @@ namespace Warewolf.Studio.Views
                 throw new Exception("Server Not found in explorer");
         }
 
-        public void PerformFolderAdd(string folder, string server)
-        {
-            var node = _explorerView.ExplorerTree.Nodes.FirstOrDefault(a => ((IEnvironmentViewModel)a.Data).DisplayName.Contains(server));
+        //public void PerformFolderAdd(string folder, string server)
+        //{
+        //    var node = _explorerView.ExplorerTree.Nodes.FirstOrDefault(a => ((IEnvironmentViewModel)a.Data).DisplayName.Contains(server));
            
-            if(node != null)
-            {
-                var env = (node.Data as IEnvironmentViewModel);
-                if(env != null)
-                {
-                    env.CreateFolderCommand.Execute(null);
-                    var explorerItemViewModel  = env.Children.FirstOrDefault(a => a.IsRenaming);
-                    if(explorerItemViewModel != null)
-                    {
-                        explorerItemViewModel.ResourceName = folder;
-                        explorerItemViewModel.IsRenaming = false;
+        //    if(node != null)
+        //    {
+        //        var env = (node.Data as IEnvironmentViewModel);
+        //        if(env != null)
+        //        {
+        //            env.CreateFolderCommand.Execute(null);
+        //            var explorerItemViewModel  = env.Children.FirstOrDefault(a => a.IsRenaming);
+        //            if(explorerItemViewModel != null)
+        //            {
+        //                explorerItemViewModel.ResourceName = folder;
+        //                explorerItemViewModel.IsRenaming = false;
 
-                    }
-                    else
-                    throw  new Exception("Folder was not found after adding");
+        //            }
+        //            else
+        //            throw  new Exception("Folder was not found after adding");
                    
-                }
+        //        }
                 
-            }
-            else
-            throw  new Exception("Server Not found in explorer");
-        }
+        //    }
+        //    else
+        //    throw  new Exception("Server Not found in explorer");
+        //}
 
         public XamDataTreeNode VerifyItemExists(string path)
         {
@@ -283,6 +284,127 @@ namespace Warewolf.Studio.Views
                 {
                     throw new Exception("Path requires server and sub folder");
                 }
+            }
+        }
+
+        public void PerformItemAdd(string path, string itemType)
+        {
+             if(path.Contains("/"))
+            {
+                var node = VerifyItemExists(path.Substring(0, path.LastIndexOf("/", System.StringComparison.Ordinal)));
+                if(node == null)
+                    throw  new Exception("Invalid path");
+                var type = Enum.Parse(typeof(ResourceType), itemType);
+
+                var item = (node.Data as ExplorerItemViewModel);
+                if(item != null)
+                {
+                    item.AddChild(new ExplorerItemViewModel(item.ShellViewModel,item.Server,new Mock<IExplorerHelpDescriptorBuilder>().Object,item){ ResourceName = path.Substring(1+ path.LastIndexOf("/", System.StringComparison.Ordinal))});
+                }
+            }
+             else
+             {
+                 throw new Exception("must have a path of form server/resource");
+             }
+        }
+
+
+
+        public void AddChildren(int resourceNumber, string path, string type)
+        {
+            var resourceType = (ResourceType)Enum.Parse(typeof(ResourceType), type);
+            if (path.Contains("/"))
+            {
+                var node = VerifyItemExists(path);
+                var item = (node.Data as ExplorerItemViewModel);
+                string name = "Resource ";
+                for(int i = 0; i < resourceNumber; i++)
+                {
+                    if(item != null)
+                    {
+                        item.AddChild(new ExplorerItemViewModel(item.ShellViewModel, item.Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, item) { ResourceName = name + i, ResourceType = resourceType });
+                    }
+                }
+            }
+            else
+            {
+                var node = VerifyItemExists(path);
+                var item = (node.Data as EnvironmentViewModel);
+                string name = "Resource ";
+                for (int i = 0; i < resourceNumber; i++)
+                {
+                    if(item != null)
+                    {
+                        item.AddChild(new ExplorerItemViewModel(item.ShellViewModel, item.Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) { ResourceName = name + i, ResourceType = resourceType });
+                    }
+                }
+            }
+        }
+
+        public int GetFoldersResourcesVisible(string path)
+        {
+            var node = VerifyItemExists(path);
+            int count = 0;
+            foreach(var child in node.Nodes)
+            {
+                var childitem = (child.Data as ExplorerItemViewModel);
+                if (childitem.ResourceType == ResourceType.WorkflowService)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        public void ShowVersionHistory(string path)
+        {
+            var node = VerifyItemExists(path);
+            var explorerItemViewModel    = node.Data as IExplorerItemViewModel;
+            if(explorerItemViewModel != null)
+            {
+                explorerItemViewModel.ShowVersionHistory.Execute(null);
+            }
+        }
+
+        public ICollection<IExplorerItemViewModel> CreateChildNodes(int count, string path)
+        {
+
+      
+                var node = VerifyItemExists(path);
+                var item = (node.Data as ExplorerItemViewModel);
+                var items = new List<IExplorerItemViewModel>();
+                string name = "Resource ";
+                for (int i = 0; i < count; i++)
+                {
+                    if (item != null)
+                    {
+                        items.Add(new ExplorerItemViewModel(item.ShellViewModel, item.Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, item) { ResourceName = name + i, ResourceType = ResourceType.Version });
+                    }
+                }
+                return items;
+          
+        }
+
+        public void PerformVersionRollback(string versionPath)
+        {
+            var node = VerifyItemExists(versionPath.Substring(0,versionPath.LastIndexOf("/", System.StringComparison.Ordinal)));
+            
+            var explorerItemViewModel = node.Data as IExplorerItemViewModel;
+            if(explorerItemViewModel != null)
+            {
+                var child = explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1+versionPath.LastIndexOf("/", System.StringComparison.Ordinal))));
+                child.RollbackCommand.Execute(null);
+            }
+        }
+
+        public void PerformVersionDelete(string versionPath)
+        {
+            var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("/", System.StringComparison.Ordinal)));
+            var explorerItemViewModel = node.Data as IExplorerItemViewModel;
+            if (explorerItemViewModel != null)
+            {
+                var child = explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("/", System.StringComparison.Ordinal))));
+                child.DeleteVersionCommand.Execute(null);
             }
         }
     }

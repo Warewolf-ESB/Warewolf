@@ -232,7 +232,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 61
   testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 62
-  testRunner.When("I create \"MyOtherNewFolder\" in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("I add \"MyOtherNewFolder\" in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 63
   testRunner.Then("I should see the path \"localhost/MyOtherNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 64
@@ -249,6 +249,112 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.When("I create \"localhost/Folder 2/myNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 72
   testRunner.Then("I should see \"19\" children for \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 73
+  testRunner.Then("I should see the path \"localhost/Folder 2/myNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 75
+  testRunner.And("I choose to \"OK\" Any Popup Messages", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 76
+  testRunner.When("I delete \"localhost/Folder 2/myNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 77
+  testRunner.Then("I should see \"18\" children for \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 78
+  testRunner.And("I should not see \"New Folder\" in \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deleting Resource in folders")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
+        public virtual void DeletingResourceInFolders()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting Resource in folders", ((string[])(null)));
+#line 82
+this.ScenarioSetup(scenarioInfo);
+#line 83
+   testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 84
+   testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 85
+   testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 86
+   testRunner.When("I open \"Folder 5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 87
+   testRunner.And("I create the \"localhost/Folder 5/deleteresource\" of type \"WorkflowService\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 88
+   testRunner.Then("I should see the path \"localhost/Folder 5/deleteresource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 89
+   testRunner.When("I delete \"localhost/Folder 5/deleteresource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 90
+   testRunner.Then("I should not see \"deleteresouce\" in \"Folder 5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deleting Resource in localhost Server")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
+        public virtual void DeletingResourceInLocalhostServer()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deleting Resource in localhost Server", ((string[])(null)));
+#line 92
+this.ScenarioSetup(scenarioInfo);
+#line 93
+   testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 94
+   testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 95
+   testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 96
+   testRunner.And("I setup 5 resources in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 97
+   testRunner.And("I should see \"5\" resources in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 98
+   testRunner.Then("I should see the path \"localhost/Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 99
+   testRunner.When("I delete \"localhost/Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 100
+   testRunner.Then("I should not see \"Resource 1\" in \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Versions in Explorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Explorer")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Explorer")]
+        public virtual void OpeningVersionsInExplorer()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Versions in Explorer", ((string[])(null)));
+#line 105
+this.ScenarioSetup(scenarioInfo);
+#line 106
+  testRunner.Given("the explorer is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 107
+  testRunner.When("I open \"localhost\" server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 108
+  testRunner.Then("I should see \"5\" folders", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 109
+  testRunner.And("I setup 2 resources in \"localhost/Folder 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 110
+  testRunner.And("I should see \"2\" resources in \"localhost/Folder 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 111
+  testRunner.And("I Setup  \"3\" Versions to be returned for \"localhost/Folder 1/Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 114
+ testRunner.When("I Show Version History for \"localhost/Folder 1/Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 115
+ testRunner.Then("I should see \"3\" versions with \"View\" Icons in \"localhost/Folder 1/Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 119
+  testRunner.When("I Make \"localhost/Folder 1/Resource 1/v.1\" the current version of \"localhost/Fold" +
+                    "er 1/Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 120
+ testRunner.Then("I should see \"4\" versions with \"View\" Icons in \"localhost/Folder 1/Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 122
+ testRunner.When("I Delete Version \"localhost/Folder 1/Resource 1/v.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 124
+ testRunner.Then("I should see \"3\" versions with \"View\" Icons in \"localhost/Folder 1/Resource 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
