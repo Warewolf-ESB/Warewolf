@@ -3,7 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@DB Service
+@DBService
 Scenario: Creating DB Service
 	Given I click "New Data Base Service Connector"
 	Then "New DB Service" tab is opened

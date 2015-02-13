@@ -3,7 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@Action Inspector
+@ActionInspector
 Scenario: Opening Action Inspector and closing
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
