@@ -109,10 +109,7 @@ Scenario: Editing Saved DB Service By selecting Source
    And Save Dialog is not opened 
 
 
-
-
-
- Scenario: Creating DB Service Mappings
+Scenario: Creating DB Service Mappings
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
    And "" is focused
