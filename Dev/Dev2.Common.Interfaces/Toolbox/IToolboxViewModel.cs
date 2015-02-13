@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces.Toolbox
 {
@@ -36,5 +37,6 @@ namespace Dev2.Common.Interfaces.Toolbox
 
 
         IToolDescriptorViewModel SelectedTool { get; set; }
+        ICommand ClearFilterCommand { get; set; }
     }
 }

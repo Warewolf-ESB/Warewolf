@@ -23,7 +23,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
 	    bool ShowConnectControl { get; set; }
 	    IExplorerTreeItem SelectedItem { get; set; }
 	    object[] SelectedDataItems { get; set; }
-        void SelectItem(Guid id);
+	    ICommand ClearSearchTextCommand { get; }
+	    void SelectItem(Guid id);
 	    IList<IExplorerItemViewModel> FindItems(Func<IExplorerItemViewModel, bool> filterFunc);
 	}
 }

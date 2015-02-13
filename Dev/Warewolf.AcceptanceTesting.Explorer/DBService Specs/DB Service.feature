@@ -3,8 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-
-
+@DBService
 Scenario: Creating DB Service
 	Given I click "New Data Base Service Connector"
 	Then "New DB Service" tab is opened
@@ -12,12 +11,14 @@ Scenario: Creating DB Service
 	And "1 Data Source" is "Enabled"
 	And "2 Select Action" is "Disabled"
 	And "3 Test Connector and Calculate Outputs" is "Disabled" 
+	And "inspect Data Connector" hyper link is "Invisible"
 	And "4 Edit Dfault and Mapping Names" is "Disabled" 
 	And "Save" is "Disabled"
 	When I select "DemoDB" as data source
 	Then "2 Select Action" is "Enabled"
 	And I Select "dbo.ConverToint" as the action
 	Then "3 Test Connector and Calculate Outputs" is "Enabled" 
+	And "inspect Data Connector" hyper link is "Visible"
 	And "Test" is "Enabled"
 	And "3 Test Connector" Inputs looks like
 	| charValue |
@@ -47,6 +48,7 @@ Scenario: Opening Saved DB Service
    And "1 Data Source" is "Enabled"
    And "2 Select Action" is "Enabled"
    And "3 Test Connector and Calculate Outputs" is "Enabled" 
+   And "inspect Data Connector" hyper link is "Visible"
    And "3 Test Connector" Inputs looks like
    | fname | Iname | usernam | password | lastAccessDate |
    | Test  | Ware  | wolf    | Dev      | 12/1/1990      |
@@ -88,6 +90,7 @@ Scenario: Editing Saved DB Service By selecting Source
    Then "2 Select Action" is "Enabled"
    And I Select "dbo.ConverToint" as the action
    Then "3 Test Connector and Calculate Outputs" is "Enabled" 
+   And "inspect Data Connector" hyper link is "Visible"
    And "Test" is "Enabled"
    And "3 Test Connector" Inputs looks like
    | charValue |
@@ -110,13 +113,17 @@ Scenario: Editing Saved DB Service By selecting Source
    And Save Dialog is not opened 
 
 
-Scenario: Creating DB Service Mappings
+
+
+
+ Scenario: Editing DB Service Mappings
    Given I open "InsertDummyUser" service
    And "InsertDummyUser" tab is opened
    And "" is focused
    And "1 Data Source" is "Enabled"
    And "2 Select Action" is "Enabled"
    And "3 Test Connector and Calculate Outputs" is "Enabled" 
+   And "inspect Data Connector" hyper link is "Visible"
    And "Save" is "Disabled"
    When I edit "3 Test Connector" Inputs 
       | fname  | Iname | usernam | password | lastAccessDate |
@@ -145,12 +152,41 @@ Scenario: Creating DB Service Mappings
 
 
 
-   
-
-
-
-
-
+ Scenario: Editing DB Service and Test Execution is unsuccesful
+   Given I open "InsertDummyUser" service
+   And "InsertDummyUser" tab is opened
+   And "" is focused
+   And "1 Data Source" is "Enabled"
+   And "2 Select Action" is "Enabled"
+   And "3 Test Connector and Calculate Outputs" is "Enabled" 
+   And "inspect Data Connector" hyper link is "Visible"
+   And "3 Test Connector" Inputs looks like
+   | fname | Iname | usernam | password | lastAccessDate |
+   | Test  | Ware  | wolf    | Dev      | 12/1/1990      |
+   And "Test" is "Enabled"
+   Then "3 Test Connector" Outputs looks like
+	| Recordset Name         | UserID |
+	| ddo_InsertDummyUser(1) | 14378  |
+   And "4 Edit Dfault and Mapping Names" is "Enabled" 
+   And "4 Mappings" Inputs looks like
+	  | Inputs         | Default Value | Required Field | Empty is Null |
+	  | fname          |               |                |               |
+	  | iname          |               |                |               |
+	  | username       |               |                |               |
+	  | password       |               |                |               |
+	  | lastAccessDate |               |                |               |
+	And "4 Mappings" Output looks like
+	| Output | Output Alias | Recordset Name      |
+	| UserID | UserID       | dbo_InsertDummyUser |
+   And "Save" is "Disabled"  
+   When I test the action
+   And when Execution is "unsuccessful"
+   And "4 Edit Dfault and Mapping Names" is "Disabled" 
+   And "4 Mappings" Inputs looks like
+	||
+	And "4 Mappings" Output looks like
+	||
+	And "Save" is "Disabled"
 
    
 
