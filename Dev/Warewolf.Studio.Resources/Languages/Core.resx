@@ -819,94 +819,94 @@ You need Administrator permission.</value>
     <value>Web</value>
   </data>
   <data name="ConnectControlConnectionsToolTip" xml:space="preserve">
-    <value>ConnectControlConnectionsToolTip</value>
+    <value>Select the Warewolf server you want to use or add a new one</value>
   </data>
   <data name="ConnectControlEditConnectionToolTip" xml:space="preserve">
-    <value>ConnectControlEditConnectionToolTip</value>
+    <value>Edit the selected server</value>
   </data>
   <data name="ConnectControlToggleConnectionToolTip" xml:space="preserve">
-    <value>ConnectControlToggleConnectionToolTip</value>
+    <value>Connect / disconnect the selected server</value>
   </data>
   <data name="DebugToolTip" xml:space="preserve">
-    <value>DebugToolTip</value>
+    <value>Run and debug your workflow service</value>
   </data>
   <data name="EnvironmentExplorerRefreshToolTip" xml:space="preserve">
     <value>EnvironmentExplorerRefreshToolTip</value>
   </data>
   <data name="ExplorerItemEditToolTip" xml:space="preserve">
-    <value>ExplorerItemEditToolTip</value>
+    <value>You have view permission on this item. Click to open</value>
   </data>
   <data name="ExplorerItemExecuteToolTip" xml:space="preserve">
-    <value>ExplorerItemExecuteToolTip</value>
+    <value>You have execute permission on this item. Click to execute</value>
   </data>
   <data name="ExplorerRefreshToolTip" xml:space="preserve">
-    <value>ExplorerRefreshToolTip</value>
+    <value>Refresh the connected resources</value>
   </data>
   <data name="ExplorerSearchToolTip" xml:space="preserve">
-    <value>ExplorerSearchToolTip</value>
+    <value>Filter the connected resources</value>
   </data>
   <data name="MenuDatabaseToolTip" xml:space="preserve">
-    <value>MenuDatabaseToolTip</value>
+    <value>Create a new database connector</value>
   </data>
   <data name="MenuDeployToolTip" xml:space="preserve">
-    <value>MenuDeployToolTip</value>
+    <value>Move resources between Warewolf servers</value>
   </data>
   <data name="MenuDownloadToolTip" xml:space="preserve">
-    <value>MenuDownloadToolTip</value>
+    <value>A new version of Warewolf is available for download</value>
   </data>
   <data name="MenuHelpToolTip" xml:space="preserve">
-    <value>MenuHelpToolTip</value>
+    <value>Get some help from the community and other resources</value>
   </data>
   <data name="MenuLockToolTip" xml:space="preserve">
-    <value>MenuLockToolTip</value>
+    <value>Lock / unlock the menu</value>
   </data>
   <data name="MenuNewServiceToolTip" xml:space="preserve">
-    <value>MenuNewServiceToolTip</value>
+    <value>Create a new service</value>
   </data>
   <data name="MenuPluginToolTip" xml:space="preserve">
-    <value>MenuPluginToolTip</value>
+    <value>Create a new plugin connector</value>
   </data>
   <data name="MenuSaveToolTip" xml:space="preserve">
-    <value>MenuSaveToolTip</value>
+    <value>Save this tab</value>
   </data>
   <data name="MenuSchedulerToolTip" xml:space="preserve">
-    <value>MenuSchedulerToolTip</value>
+    <value>Schedule a service to run</value>
   </data>
   <data name="MenuSettingsToolTip" xml:space="preserve">
-    <value>MenuSettingsToolTip</value>
+    <value>Configure settings</value>
   </data>
   <data name="MenuWebServiceToolTip" xml:space="preserve">
-    <value>MenuWebServiceToolTip</value>
+    <value>Create a new web-service</value>
   </data>
   <data name="ServerSourceDialogAddressPortTip" xml:space="preserve">
-    <value>ServerDialogAddressPortTip</value>
+    <value>Enter the port on the server</value>
   </data>
   <data name="ServerSourceDialogAddressSaveTip" xml:space="preserve">
-    <value>ServerDialogAddressSaveTip</value>
+    <value />
   </data>
   <data name="ServerSourceDialogAddressToolTip" xml:space="preserve">
-    <value>ServerDialogAddressToolTip</value>
+    <value>Enter the IP address, domain name or computer name of the server you want to connect to</value>
   </data>
   <data name="UserAuthenticationToolTip" xml:space="preserve">
-    <value>ServerDialogAddressUserAuthenticationToolTip</value>
+    <value>Connect using a specific account</value>
   </data>
   <data name="PasswordToolTip" xml:space="preserve">
-    <value>PasswordToolTip</value>
+    <value>Enter the corresponding password</value>
   </data>
   <data name="ServerSourceDialogProtocolToolTip" xml:space="preserve">
-    <value>ServerDialogProtocolToolTip</value>
+    <value>Select the protocol you want to connect on</value>
   </data>
   <data name="ServerSourceDialogPublicToolTip" xml:space="preserve">
-    <value>ServerDialogPublicToolTip</value>
+    <value>Connect using Public credentials only</value>
   </data>
   <data name="ServerSourceDialogsTestToolTip" xml:space="preserve">
-    <value>ServerDialogsTestToolTip</value>
+    <value>Test the connection to the server using these credentials</value>
   </data>
   <data name="UserNameToolTip" xml:space="preserve">
-    <value>ServerDialogUserNameToolTip</value>
+    <value>Enter the user name you want to connect with</value>
   </data>
   <data name="WindowsAuthenticationToolTip" xml:space="preserve">
-    <value>ServerDialogWindowsAuthenticationToolTip</value>
+    <value>Connect using the logged on users credentials</value>
   </data>
   <data name="ToolDescriptor_ToolDescriptor_Tool_guids_are_not_allowed_to_be_the_empty_guid" xml:space="preserve">
     <value>Tool guids are not allowed to be the empty guid</value>
@@ -915,19 +915,19 @@ You need Administrator permission.</value>
     <value>Database:</value>
   </data>
   <data name="DatabaseSourceDatabaseToolTip" xml:space="preserve">
-    <value>DatabaseSourceDatabaseToolTip</value>
+    <value>Select the database this source will use</value>
   </data>
   <data name="DatabaseSourceServerLabel" xml:space="preserve">
     <value>Server:</value>
   </data>
   <data name="DatabaseSourceServerToolTip" xml:space="preserve">
-    <value>DatabaseSourceServerToolTip</value>
+    <value>Select the database source you want to use</value>
   </data>
   <data name="DatabaseSourceTypeLabel" xml:space="preserve">
     <value>Type:</value>
   </data>
   <data name="DatabaseSourceTypeToolTip" xml:space="preserve">
-    <value>DatabaseSourceTypeTooltip</value>
+    <value>Select the type of database you want to connect to</value>
   </data>
   <data name="CancelTest" xml:space="preserve">
     <value>Cancel Test</value>
