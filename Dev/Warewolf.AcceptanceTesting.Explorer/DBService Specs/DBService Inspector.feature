@@ -20,7 +20,7 @@ Scenario: Opening Action Inspector and closing
    And "close" button is visible
    And "Action Inspector" popup is "movable"
    When I close Action inspector
-   Then Action Inspector is closed
+   Then Action Inspector is closed 
 
 
 

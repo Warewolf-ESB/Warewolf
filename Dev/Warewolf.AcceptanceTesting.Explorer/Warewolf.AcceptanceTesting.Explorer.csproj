@@ -224,12 +224,6 @@
       <DependentUpon>NewServerSource.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaveDialog.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SaveDialog.feature</DependentUpon>
-    </Compile>
-    <Compile Include="SaveDialogSteps.cs" />
     <Compile Include="Toolbox.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -237,7 +231,6 @@
     </Compile>
     <Compile Include="ToolboxSteps.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
-    <Compile Include="UnityBootstrapperForSaveDialogTesting.cs" />
     <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -264,10 +257,6 @@
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="SaveDialog.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SaveDialog.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
