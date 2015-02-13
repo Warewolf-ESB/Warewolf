@@ -497,6 +497,16 @@
                         <Trigger Property="HasText" Value="True">
                             <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
                         </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Visibility" TargetName="LabelText" Value="Hidden" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False"/>
+                                <Condition Property="HasText" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="LabelText" Value="Visible" />
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
 
                 </ControlTemplate>
