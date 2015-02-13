@@ -71,8 +71,7 @@ namespace Warewolf.Studio.ViewModels
                {
                    ResourceName = name,
                    ResourceId = id,
-                   ResourceType = ResourceType.Folder
-                   
+                   ResourceType = ResourceType.Folder,
                };
                _children.Add(child);
                OnPropertyChanged(() => Children);
@@ -97,6 +96,12 @@ namespace Warewolf.Studio.ViewModels
                     }
                 });
             }
+        }
+
+        public void RemoveChild(IExplorerItemViewModel item)
+        {
+            _children.Remove(item);
+            OnPropertyChanged(()=>Children);
         }
 
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)

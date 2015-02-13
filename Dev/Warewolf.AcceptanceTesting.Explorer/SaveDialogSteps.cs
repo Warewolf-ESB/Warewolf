@@ -42,11 +42,11 @@ namespace Warewolf.AcceptanceTesting.Explorer
             ScenarioContext.Current.Pending();
         }
 
-        [When(@"I create ""(.*)"" in ""(.*)""")]
-        public void WhenICreateIn(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
+        //[When(@"I create ""(.*)"" in ""(.*)""")]
+        //public void WhenICreateIn(string p0, string p1)
+        //{
+        //    ScenarioContext.Current.Pending();
+        //}
 
         [When(@"I should see ""(.*)"" folders in ""(.*)"" save dialog")]
         public void WhenIShouldSeeFoldersInSaveDialog(int p0, string p1)

@@ -57,7 +57,7 @@ namespace Warewolf.Studio.ViewModels
             LocalhostServer = unityContainer.Resolve<IServer>(new ParameterOverrides { { "uri", localhostUri } });
             LocalhostServer.ResourceName = "localhost (" + localHostString + ")";
             ActiveServer = LocalhostServer;
-
+        
             _menuPanelWidth = 60;
             _menuExpanded = false;
         }
@@ -65,6 +65,7 @@ namespace Warewolf.Studio.ViewModels
         public void Initialize()
         {
 
+            _popupController = _unityContainer.Resolve<IPopupController>();
             _unityContainer.RegisterInstance<IToolboxViewModel>(new ToolboxViewModel(new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object), new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object)));
            
             InitializeRegion<IExplorerView,IExplorerViewModel>(RegionNames.Explorer);
@@ -74,7 +75,7 @@ namespace Warewolf.Studio.ViewModels
             InitializeRegion<IHelpView, IHelpWindowViewModel>(RegionNames.Help);
 
             _handler = _unityContainer.Resolve<IExceptionHandler>();
-            _popupController = _unityContainer.Resolve<IPopupController>();
+           
             _handler.AddHandler(typeof(WarewolfInvalidPermissionsException), () => { _popupController.Show(PopupMessages.GetInvalidPermissionException()); });
 
         }

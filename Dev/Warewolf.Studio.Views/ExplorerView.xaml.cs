@@ -93,12 +93,22 @@ namespace Warewolf.Studio.Views
 
 	    public void AddNewFolder(string folder, string server)
 	    {
-            _explorerViewTestClass.PerformFolderAdd(folder, server);
+            _explorerViewTestClass.PerformFolderAdd(server, folder);
 	    }
 
 	    public void VerifyItemExists(string path)
 	    {
             _explorerViewTestClass.VerifyItemExists(path);
+	    }
+
+	    public void DeletePath(string path)
+	    {
+            _explorerViewTestClass.DeletePath(path);
+	    }
+
+	    public void AddNewFolderFromPath(string path)
+	    {
+            _explorerViewTestClass.PerformFolderAdd(path);
 	    }
 
 	    public void Blur()

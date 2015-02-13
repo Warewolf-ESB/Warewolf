@@ -151,73 +151,103 @@ namespace Warewolf.Studio.Views
                         explorerItemViewModel.IsRenaming = false;
 
                     }
+                    else
                     throw  new Exception("Folder was not found after adding");
                    
                 }
                 
             }
+            else
             throw  new Exception("Server Not found in explorer");
         }
 
-        public void VerifyItemExists( string path )
+        public XamDataTreeNode VerifyItemExists(string path)
         {
-            if(!path.Contains("//"))
+            if(!path.Contains("/"))
             {
 
                var childnode = _explorerView.ExplorerTree.Nodes.FirstOrDefault(a => ((IEnvironmentViewModel)a.Data).DisplayName.Contains(path));
             
                 if (childnode == null)
                     throw new Exception("Folder or environment not found. Name" + path);
+                return childnode;
    
             }
             else
             {
-                var toSearch = path.Substring(0, path.IndexOf("//", System.StringComparison.Ordinal));
+                var toSearch = path.Substring(0, path.IndexOf("/", System.StringComparison.Ordinal));
                 var childnode = _explorerView.ExplorerTree.Nodes.FirstOrDefault(a => ((IEnvironmentViewModel)a.Data).DisplayName.Contains(toSearch));
-                if (path.Length > 1 + path.IndexOf("//", System.StringComparison.Ordinal))
+                if (path.Length > 1 + path.IndexOf("/", System.StringComparison.Ordinal))
                 {
-                    VerifyItemExists(path.Substring(1 + path.IndexOf("//", System.StringComparison.Ordinal)),  childnode);
+                   return VerifyItemExists(path.Substring(1 + path.IndexOf("/", System.StringComparison.Ordinal)),  childnode);
                 }
-                else
-                {
-                    throw new Exception("Invalid path");
-                }
+                throw new Exception("Invalid path");
             }
         }
 
-        public void VerifyItemExists( string path, XamDataTreeNode node )
+        public XamDataTreeNode VerifyItemExists(string path, XamDataTreeNode node)
         {
-            if(!path.Contains("//"))
+            if(!path.Contains("/"))
             {
 
-                   GetNodeWithName(path);
+                  return GetNodeWithName(path,node);
                    
                 
             }
-            else
+            var toSearch = path.Substring(0, path.IndexOf("/", System.StringComparison.Ordinal));
+            var childnode = GetNodeWithName(toSearch,node);
+            if(path.Length > 1 + path.IndexOf("/", System.StringComparison.Ordinal))
             {
-                var toSearch = path.Substring(0, path.IndexOf("//", System.StringComparison.Ordinal));
-                var childnode = GetNodeWithName(toSearch);
-                if(path.Length > 1 + path.IndexOf("//", System.StringComparison.Ordinal))
-                {
-                    VerifyItemExists(path.Substring(1 + path.IndexOf("//", System.StringComparison.Ordinal)), childnode);
-                }
-                else
-                {
-                    throw  new Exception("Invalid path");
-                }
+                return  VerifyItemExists(path.Substring(1 + path.IndexOf("/", System.StringComparison.Ordinal)), childnode);
             }
-            
+            throw  new Exception("Invalid path");
         }
 
-        XamDataTreeNode GetNodeWithName(string path)
+        XamDataTreeNode GetNodeWithName(string path,XamDataTreeNode node)
         {
-            var node = _explorerView.ExplorerTree.Nodes.FirstOrDefault(a => ((IExplorerItemViewModel)a.Data).ResourceName.Equals(path));
-            if(node == null)
+            var found = node.Nodes.FirstOrDefault(a => ((IExplorerItemViewModel)a.Data).ResourceName.Equals(path));
+            if (found == null)
             {
                 throw new Exception("Folder or environment not found. Name" + path);
             }
-            return node;
+            return found;
+        }
+
+        public void DeletePath(string path)
+        {
+            var node = VerifyItemExists(path);
+            if(node!= null)
+            {
+                ((IExplorerItemViewModel)node.Data).DeleteCommand.Execute(null);
+            }
+        }
+
+        internal void PerformFolderAdd(string path)
+        {
+            if(path.Contains("/"))
+            {
+                var node = VerifyItemExists(path.Substring(0, path.LastIndexOf("/", System.StringComparison.Ordinal)));
+                var env = node.Data as IExplorerTreeItem;
+                if (env != null)
+                {
+                   
+                    env.CreateFolderCommand.Execute(null);
+                    var explorerItemViewModel = env.Children.FirstOrDefault(a => a.IsRenaming);
+                    if (explorerItemViewModel != null)
+                    {
+                        explorerItemViewModel.ResourceName = path.Substring(1+ path.LastIndexOf("/", System.StringComparison.Ordinal));
+                        explorerItemViewModel.IsRenaming = false;
+
+                    }
+                    else
+                        throw new Exception("Folder was not found after adding");
+
+                }
+                else
+                {
+                    throw new Exception("Path requires server and sub folder");
+                }
+            }
         }
     }
 }

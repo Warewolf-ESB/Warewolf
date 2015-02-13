@@ -37,26 +37,39 @@ Scenario: Creating Folder in localhost
    Given the explorer is visible
    When I open "localhost" server
    Then I should see "5" folders
-   When I create "MyNewFolder" in "localhost"
+   When I add "MyNewFolder" in "localhost"
    Then I should see the path "localhost/MyNewFolder" 
 
-#Scenario: Creating And Deleting Folder in localhost
-#  #Creating Folder
-#  Given the explorer is visible
-#  When I open "localhost" server
-#  Then I should see "5" folders
-#  When I create "New Folder" in "localhost"
-#  Then I should see "New Folder" in "localhost" server
-#  And I should see "6" folders
-#  #Deleting Folders
-#  When I delete "New Folder" in "localhost" server
-#  Then I should see "5" folders
-#  And I should not see "New Folder"
+Scenario: Creating And Deleting Folder in localhost
+  #Creating Folder
+  Given the explorer is visible
+  When I open "localhost" server
+  Then I should see "5" folders
+  When I add "MyNewFolder" in "localhost"
+  Then I should see the path "localhost/MyNewFolder" 
+  And I should see "6" folders
+  #Deleting Folders
+  When I delete "localhost/MyNewFolder"
+  Then I should see "5" folders
+  And I should not see "New Folder"
+
+  
+Scenario: Creating And Deleting Folder and Popup says cancel in localhost
+  #Creating Folder
+  Given the explorer is visible
+  When I open "localhost" server
+  Then I should see "5" folders
+  When I create "MyOtherNewFolder" in "localhost"
+  Then I should see the path "localhost/MyOtherNewFolder" 
+  And I should see "6" folders
+  #Deleting Folders
+  And I choose to "Cancel" Any Popup Messages
+  Then I should see "6" folders
 #  #Creating Subfolder In a Folder
-#  When I open "Folder 2"
-#  Then I should see "18" children for "Folder 2"
-#  When I create "New Folder" in "Folder 2"
-#  Then I should see "19" children for "Folder 2"
+  When I open "Folder 2"
+  Then I should see "18" children for "Folder 2"
+  When I create "localhost/Folder 2/myNewFolder"
+  Then I should see "19" children for "Folder 2"
 #  And I should see "New Folder" in "Folder 2"
 #  #Deleting Sub Folder
 #  When I delete "New Folder" in "Folder 2"

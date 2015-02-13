@@ -17,6 +17,10 @@ namespace Warewolf.Studio.Core.View_Interfaces
         void AddNewFolder(string folder, string server);
 
         void VerifyItemExists(string path);
+
+        void DeletePath(string path);
+
+        void AddNewFolderFromPath(string path);
     }
     public interface IToolboxView : IView { }
     public interface IHelpView : IView {
