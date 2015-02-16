@@ -51,22 +51,23 @@
                     </ig:DragSource>
                 </ig:DragDropManager.DragSource>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="42" />
-                    <RowDefinition Height="10" />
+                    <RowDefinition Height="4.8" />
+                    <RowDefinition Height="24" />
+                    <RowDefinition Height="27.6" />
+                    <RowDefinition Height="4.8" />
+
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="13" />
-                    <ColumnDefinition Width="40" />
-                    <ColumnDefinition Width="13" />
-                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="3" />
+                    <ColumnDefinition Width="10.8" />
+                    <ColumnDefinition Width="24" />
+                    <ColumnDefinition Width="10.8" />
+                    <ColumnDefinition Width="3" />
                 </Grid.ColumnDefinitions>
                 <Image Grid.Row="1"
                            Grid.Column="2"
-                           Width="40"
-                           Height="40"
+                           Width="24"
+                           Height="24"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Stretch"
                            Source="{Binding Icon}" />
@@ -76,10 +77,10 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Bottom"
                                FontFamily="{StaticResource DefaultFontFamily}"
-                               FontSize="{StaticResource FontSize-Normal}"
+                               FontSize="{StaticResource FontSize-Smaller}"
                                Text="{Binding Name}"
                                TextAlignment="Center"
-                               TextWrapping="Wrap" 
+                               TextWrapping="WrapWithOverflow" TextTrimming="None" 
                                Margin="0,3,0,0"/>
      
             </Grid>

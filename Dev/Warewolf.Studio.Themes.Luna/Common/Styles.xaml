@@ -19,6 +19,7 @@
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
     
     <system:Double x:Key="FontSize-Smallest">8</system:Double>
+    <system:Double x:Key="FontSize-Toolbox">9</system:Double>
     <system:Double x:Key="FontSize-Smaller">10</system:Double>
     <system:Double x:Key="FontSize-Normal">12</system:Double>
     <system:Double x:Key="FontSize-Large">16</system:Double>
