@@ -256,7 +256,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 76
   testRunner.When("I delete \"localhost/Folder 2/myNewFolder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 77
-  testRunner.Then("I should see \"18\" children for \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("I should see \"19\" children for \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 78
   testRunner.And("I should not see \"New Folder\" in \"Folder 2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

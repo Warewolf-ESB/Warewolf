@@ -74,7 +74,7 @@ Scenario: Creating And Deleting Folder and Popup says cancel in localhost
   #Deleting Sub Folder
   And I choose to "OK" Any Popup Messages
   When I delete "localhost/Folder 2/myNewFolder"
-  Then I should see "18" children for "Folder 2" 
+  Then I should see "19" children for "Folder 2" 
   And I should not see "New Folder" in "Folder 2"
 #
 #

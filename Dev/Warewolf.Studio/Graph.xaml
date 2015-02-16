@@ -6,7 +6,7 @@
        
           xmlns:ig="http://schemas.infragistics.com/xaml"
           xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-        Title="Graph" Height="800" Width="650">
+        Title="Graph" Height="800" Width="800">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
