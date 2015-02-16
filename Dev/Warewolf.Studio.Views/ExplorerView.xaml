@@ -723,6 +723,6 @@
                 </ig:NodeLayout>
             </ig:XamDataTree.GlobalNodeLayouts>
         </ig:XamDataTree>
-    </Grid>
+        </Grid>
     </Grid>
 </UserControl>

@@ -98,15 +98,13 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
 
 
         <!--  TOOL SEARCH BOX  -->
-        <Grid Grid.Row="1" Grid.Column="1">
+        <Grid Grid.Row="1">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="29"/>
@@ -114,22 +112,21 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
-                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
 
-            <TextBox 
+            <customControls:SearchTextBox 
                 Grid.Column="0" 
                 Grid.Row="0"  
+                LabelText="Filter"
+                Style="{StaticResource SearchTextboxStyle}"
                 Text="{Binding SearchTerm,
                                     Delay=300,
                                     UpdateSourceTrigger=PropertyChanged}"
 
                 />
-            <!--customControls:TextBoxHelper.Watermark="Filter" 
-                     customControls:TextBoxHelper.ShowWatermark="True"-->
-            <Button Width="25" Grid.Column="2" Grid.Row="0"
+            <Button Width="25" Grid.Column="1" Grid.Row="0"
                     Height="25"
-                    Padding="4">
+                    >
                 <fa:FontAwesome TextOptions.TextFormattingMode="Display" FontSize="16" Icon="Refresh" VerticalAlignment="Top" HorizontalAlignment="Center"/>
             </Button>
 
