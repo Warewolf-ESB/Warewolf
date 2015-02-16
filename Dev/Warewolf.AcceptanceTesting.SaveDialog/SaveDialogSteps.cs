@@ -155,35 +155,6 @@ namespace Warewolf.AcceptanceTesting.SaveDialog
             Assert.AreEqual(serviceName,requestServiceNameViewModel.Name);
         }
 
-        [When(@"validation message is ""(.*)""")]
-        public void WhenValidationMessageIs(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I rename ""(.*)"" to ""(.*)"" in ""(.*)"" save dialog")]
-        public void WhenIRenameToInSaveDialog(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I search for ""(.*)"" in save dialog")]
-        public void WhenISearchForInSaveDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I refresh resources in savedialog")]
-        public void WhenIRefreshResourcesInSavedialog()
-        {
-            ScenarioContext.Current.Pending();
-        }
-
-        [When(@"I press ""(.*)""")]
-        public void WhenIPress(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
 
         [When(@"I cancel the save dialog")]
         public void WhenICancelTheSaveDialog()

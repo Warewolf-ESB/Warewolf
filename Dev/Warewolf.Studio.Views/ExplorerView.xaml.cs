@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
+using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
@@ -111,11 +111,6 @@ namespace Warewolf.Studio.Views
                 Overlay.Opacity = 0.75;
           
             }
-	    }
-
-	    public void UnBlur()
-	    {
-            RemoveVisualChild(_blackoutGrid);
 	    }
 
 	    void ExplorerTree_OnNodeDragDrop(object sender, TreeDropEventArgs e)
