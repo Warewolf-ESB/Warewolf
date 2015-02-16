@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
         xmlns:dockManager="http://infragistics.com/DockManager"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:igWindows="http://infragistics.com/Windows"
@@ -13,7 +14,6 @@
         xmlns:studio="clr-namespace:Warewolf.Studio"
         xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
         xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
-        xmlns:dialogues="clr-namespace:Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;assembly=Dev2.Common.Interfaces"
         x:Name="MainWindow"
         Title="Warewolf Studio"
         Background="{StaticResource WareWolfBackGroundBrush}"
@@ -46,13 +46,13 @@
 
         <Storyboard x:Key="AnimateCloseTitleBorder">
             <DoubleAnimation Duration="0:0:0.3"
-                                                                         Storyboard.TargetProperty="Height"
-                                                                         To="0" />
+                             Storyboard.TargetProperty="Height"
+                             To="0" />
         </Storyboard>
         <Storyboard x:Key="AnimateOpenTitleBorder">
             <DoubleAnimation Duration="0:0:0.3"
-                                                                         Storyboard.TargetProperty="Height"
-                                                                         To="25" />
+                             Storyboard.TargetProperty="Height"
+                             To="25" />
         </Storyboard>
 
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
@@ -68,7 +68,7 @@
                                     Background="White"
                                     BorderThickness="0">
                                 <DockPanel LastChildFill="True">
-                                    <Border x:Name="PART_TITLEBAR" 
+                                    <Border x:Name="PART_TITLEBAR"
                                             Height="25"
                                             Margin="0,0,0,0"
                                             Background="Transparent"
@@ -97,7 +97,7 @@
                                                       Fill="Black"
                                                       Stretch="Uniform" />
                                             </Button>
-                                            <Button x:Name="PART_MAXIMIZE_RESTORE" 
+                                            <Button x:Name="PART_MAXIMIZE_RESTORE"
                                                     Width="20"
                                                     Height="20"
                                                     Margin="0,5,5,5"
@@ -112,7 +112,7 @@
                                                       Fill="Black"
                                                       Stretch="Uniform" />
                                             </Button>
-                                            <Button x:Name="PART_SUPER_MAXIMIZE_RESTORE" 
+                                            <Button x:Name="PART_SUPER_MAXIMIZE_RESTORE"
                                                     Width="20"
                                                     Height="20"
                                                     Margin="0,5,5,5"
@@ -123,11 +123,11 @@
                                                     Style="{StaticResource MetroWindowButtonStyle}">
                                                 <fa:FontAwesome Icon="ArrowsAlt" />
                                             </Button>
-                                            <Button x:Name="PART_MINIMIZE" 
+                                            <Button x:Name="PART_MINIMIZE"
                                                     Width="20"
                                                     Height="20"
                                                     Margin="0,5,5,5"
-                                                    HorizontalAlignment="Center" 
+                                                    HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
                                                     VerticalContentAlignment="Bottom"
                                                     Click="PART_MINIMIZE_Click"
@@ -255,10 +255,10 @@
                                             AllowMaximizeFloatingWindows="True"
                                             AllowMinimizeFloatingWindows="True"
                                             Background="{StaticResource WareWolfBackGroundBrush}"
+                                            FloatingWindowDoubleClickAction="ToggleDockedState"
                                             FlyoutAnimation="Resize"
                                             LayoutMode="FillContainer"
                                             ToolWindowLoaded="DockManager_OnToolWindowLoaded"
-                                            FloatingWindowDoubleClickAction="ToggleDockedState"
                                             UnpinnedTabHoverAction="Flyout">
                     <dockManager:XamDockManager.Panes>
 
@@ -305,9 +305,9 @@
                                                      WindowPositionMenuVisibility="Hidden"
                                                      regions:RegionManager.RegionName="{x:Static core:RegionNames.Explorer}" />
                             <dockManager:ContentPane x:Name="Toolbox"
+                                                     AllowClose="False"
                                                      AllowInDocumentHost="False"
                                                      CloseButtonVisibility="Hidden"
-                                                     AllowClose="False"
                                                      Header="TOOL BOX"
                                                      IsPinned="True"
                                                      Style="{DynamicResource DockmangerToolPaneStyle}"
@@ -349,7 +349,7 @@
                                   Direction="300"
                                   ShadowDepth="10" />
             </StackPanel.Effect>
-            <TextBlock Margin="25,10,0,10"
+            <TextBlock Margin="0,20,0,0"
         		HorizontalAlignment="Center"
         		VerticalAlignment="Center"
         		Background="White"

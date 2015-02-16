@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using FontAwesome.WPF;
 using Infragistics.Windows.DockManager.Events;
 using Warewolf.Studio.ViewModels;
+using Warewolf.Studio.Views;
 using Application = System.Windows.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -130,6 +131,12 @@ namespace Warewolf.Studio
             {
                 var testingWindow = new Graph();
                 testingWindow.Show();
+            }
+            if (e.Key == Key.I && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                var testingWindow = new DbSyntaxEditor();
+                testingWindow.ShowView();
+              
             }
             if (e.Key == Key.F11)
             {

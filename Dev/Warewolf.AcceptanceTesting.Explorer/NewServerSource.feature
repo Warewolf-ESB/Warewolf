@@ -1,9 +1,10 @@
-﻿Feature: NewServerSource
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+﻿@NewServerSource
+Feature: NewServerSource
+	In order to connect to other Warewolf servers
+	As a Warewolf user
+	I want to be able to manager connections to Warewolf servers
 
-@NewServerSource
+
 Scenario: Opening New Server Source
 	Given I have New Server Source opened
 	And "Textbox" is focussed 
@@ -24,7 +25,7 @@ Scenario: Creating New Source as windows
    And I selcted prtocall as "http" from dropdown
    And I server port as "3142" 
    And Save is "Disabled"
-   And I Select Authentication Typ as
+   And I Select Authentication Type as
     | Windows  | User | Public |
     | Selected |      |        |
    When I Test Connection
@@ -39,7 +40,7 @@ Scenario: Windows Test connection is unsuccessfull
    And I selcted prtocall as "http" from dropdown
    And I server port as "3142" 
    And Save is "Disabled"
-   And I Select Authentication Typ as
+   And I Select Authentication Type as
     | Windows  | User | Public |
     | Selected |      |        |
    When I Test Connection
@@ -55,7 +56,7 @@ Scenario: Test connection is unsuccessfull
    And I selcted prtocall as "http" from dropdown
    And I server port as "3142" 
    And Save is "Disabled"
-   And I Select Authentication Typ as
+   And I Select Authentication Type as
     | Windows  | User | Public |
     | Selected |      |        |
    When I Test Connection
@@ -70,7 +71,7 @@ Scenario: Creating New Source as User
    And I selcted prtocall as "http" from dropdown
    And I server port as "3142" 
    And Save is "Disabled"
-   And I Select Authentication Typ as
+   And I Select Authentication Type as
     | Windows | User     | Public |
     |         | Selected |        |
    Then Username field is "Visible"
@@ -92,7 +93,7 @@ Scenario: User Test Connection is Unssuccesful
    And I selcted prtocall as "http" from dropdown
    And I server port as "3142" 
    And Save is "Disabled"
-   And I Select Authentication Typ as
+   And I Select Authentication Type as
     | Windows | User     | Public |
     |         | Selected |        |
    Then Username field is "Visible"
@@ -114,7 +115,7 @@ Scenario: Creating server source Authentication error
    And I selcted prtocall as "http" from dropdown
    And I server port as "3142" 
    And Save is "Disabled"
-   And I Select Authentication Typ as
+   And I Select Authentication Type as
     | Windows | User     | Public |
     |         | Selected |        |
    Then Username field is "Visible"
@@ -136,7 +137,7 @@ Scenario: Creating New Source as Public
    And I selcted prtocall as "http" from dropdown
    And I server port as "3142" 
    And Save is "Disabled"
-   And I Select Authentication Typ as
+   And I Select Authentication Type as
     | Windows | User | Public   |
     |         |      | Selected |
    Then Username field is "InVisible"
@@ -157,7 +158,7 @@ Scenario: Connecting to server which has no permissions
    And I selcted prtocall as "http" from dropdown
    And I server port as "3142" 
    And Save is "Disabled"
-   And I Select Authentication Typ as
+   And I Select Authentication Type as
     | Windows | User | Public   |
     |         |      | Selected |
    Then Username field is "InVisible"

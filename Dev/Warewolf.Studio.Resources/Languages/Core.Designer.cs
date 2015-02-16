@@ -191,7 +191,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConnectControlConnectionsToolTip.
+        ///   Looks up a localized string similar to Select the Warewolf server you want to use or add a new one.
         /// </summary>
         public static string ConnectControlConnectionsToolTip {
             get {
@@ -200,7 +200,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConnectControlEditConnectionToolTip.
+        ///   Looks up a localized string similar to Edit the selected server.
         /// </summary>
         public static string ConnectControlEditConnectionToolTip {
             get {
@@ -209,7 +209,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConnectControlToggleConnectionToolTip.
+        ///   Looks up a localized string similar to Connect / disconnect the selected server.
         /// </summary>
         public static string ConnectControlToggleConnectionToolTip {
             get {
@@ -245,7 +245,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DatabaseSourceDatabaseToolTip.
+        ///   Looks up a localized string similar to Select the database this source will use.
         /// </summary>
         public static string DatabaseSourceDatabaseToolTip {
             get {
@@ -263,7 +263,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DatabaseSourceServerToolTip.
+        ///   Looks up a localized string similar to Select the database source you want to use.
         /// </summary>
         public static string DatabaseSourceServerToolTip {
             get {
@@ -281,7 +281,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DatabaseSourceTypeTooltip.
+        ///   Looks up a localized string similar to Select the type of database you want to connect to.
         /// </summary>
         public static string DatabaseSourceTypeToolTip {
             get {
@@ -317,7 +317,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DebugToolTip.
+        ///   Looks up a localized string similar to Run and debug your workflow service.
         /// </summary>
         public static string DebugToolTip {
             get {
@@ -747,7 +747,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExplorerItemEditToolTip.
+        ///   Looks up a localized string similar to You have view permission on this item. Click to open.
         /// </summary>
         public static string ExplorerItemEditToolTip {
             get {
@@ -756,7 +756,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExplorerItemExecuteToolTip.
+        ///   Looks up a localized string similar to You have execute permission on this item. Click to execute.
         /// </summary>
         public static string ExplorerItemExecuteToolTip {
             get {
@@ -765,7 +765,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExplorerRefreshToolTip.
+        ///   Looks up a localized string similar to Refresh the connected resources.
         /// </summary>
         public static string ExplorerRefreshToolTip {
             get {
@@ -774,7 +774,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExplorerSearchToolTip.
+        ///   Looks up a localized string similar to Filter the connected resources.
         /// </summary>
         public static string ExplorerSearchToolTip {
             get {
@@ -945,7 +945,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuDatabaseToolTip.
+        ///   Looks up a localized string similar to Create a new database connector.
         /// </summary>
         public static string MenuDatabaseToolTip {
             get {
@@ -954,7 +954,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuDeployToolTip.
+        ///   Looks up a localized string similar to Move resources between Warewolf servers.
         /// </summary>
         public static string MenuDeployToolTip {
             get {
@@ -1098,7 +1098,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuDownloadToolTip.
+        ///   Looks up a localized string similar to A new version of Warewolf is available for download.
         /// </summary>
         public static string MenuDownloadToolTip {
             get {
@@ -1107,7 +1107,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuHelpToolTip.
+        ///   Looks up a localized string similar to Get some help from the community and other resources.
         /// </summary>
         public static string MenuHelpToolTip {
             get {
@@ -1116,7 +1116,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuLockToolTip.
+        ///   Looks up a localized string similar to Lock / unlock the menu.
         /// </summary>
         public static string MenuLockToolTip {
             get {
@@ -1125,7 +1125,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuNewServiceToolTip.
+        ///   Looks up a localized string similar to Create a new service.
         /// </summary>
         public static string MenuNewServiceToolTip {
             get {
@@ -1134,7 +1134,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuPluginToolTip.
+        ///   Looks up a localized string similar to Create a new plugin connector.
         /// </summary>
         public static string MenuPluginToolTip {
             get {
@@ -1143,7 +1143,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuSaveToolTip.
+        ///   Looks up a localized string similar to Save this tab.
         /// </summary>
         public static string MenuSaveToolTip {
             get {
@@ -1152,7 +1152,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuSchedulerToolTip.
+        ///   Looks up a localized string similar to Schedule a service to run.
         /// </summary>
         public static string MenuSchedulerToolTip {
             get {
@@ -1161,7 +1161,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuSettingsToolTip.
+        ///   Looks up a localized string similar to Configure settings.
         /// </summary>
         public static string MenuSettingsToolTip {
             get {
@@ -1170,7 +1170,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MenuWebServiceToolTip.
+        ///   Looks up a localized string similar to Create a new web-service.
         /// </summary>
         public static string MenuWebServiceToolTip {
             get {
@@ -1377,7 +1377,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PasswordToolTip.
+        ///   Looks up a localized string similar to Enter the corresponding password.
         /// </summary>
         public static string PasswordToolTip {
             get {
@@ -1583,7 +1583,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerDialogAddressPortTip.
+        ///   Looks up a localized string similar to Enter the port on the server.
         /// </summary>
         public static string ServerSourceDialogAddressPortTip {
             get {
@@ -1592,7 +1592,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerDialogAddressSaveTip.
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string ServerSourceDialogAddressSaveTip {
             get {
@@ -1601,7 +1601,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerDialogAddressToolTip.
+        ///   Looks up a localized string similar to Enter the IP address, domain name or computer name of the server you want to connect to.
         /// </summary>
         public static string ServerSourceDialogAddressToolTip {
             get {
@@ -1628,7 +1628,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerDialogProtocolToolTip.
+        ///   Looks up a localized string similar to Select the protocol you want to connect on.
         /// </summary>
         public static string ServerSourceDialogProtocolToolTip {
             get {
@@ -1637,7 +1637,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerDialogPublicToolTip.
+        ///   Looks up a localized string similar to Connect using Public credentials only.
         /// </summary>
         public static string ServerSourceDialogPublicToolTip {
             get {
@@ -1646,7 +1646,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerDialogsTestToolTip.
+        ///   Looks up a localized string similar to Test the connection to the server using these credentials.
         /// </summary>
         public static string ServerSourceDialogsTestToolTip {
             get {
@@ -1934,7 +1934,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerDialogAddressUserAuthenticationToolTip.
+        ///   Looks up a localized string similar to Connect using a specific account.
         /// </summary>
         public static string UserAuthenticationToolTip {
             get {
@@ -1952,7 +1952,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerDialogUserNameToolTip.
+        ///   Looks up a localized string similar to Enter the user name you want to connect with.
         /// </summary>
         public static string UserNameToolTip {
             get {
@@ -2015,7 +2015,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ServerDialogWindowsAuthenticationToolTip.
+        ///   Looks up a localized string similar to Connect using the logged on users credentials.
         /// </summary>
         public static string WindowsAuthenticationToolTip {
             get {

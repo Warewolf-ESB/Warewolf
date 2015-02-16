@@ -75,7 +75,13 @@ namespace Warewolf.Studio.CustomControls {
         public SearchTextBox()
         {
             _searchEventDelayTimer = new DispatcherTimer {Interval = SearchEventTimeDelay.TimeSpan};
-            _searchEventDelayTimer.Tick += OnSeachEventDelayTimerTick;
+            _searchEventDelayTimer.Tick += OnSeachEventDelayTimerTick;                       
+        }
+
+        protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        {
+            base.OnLostKeyboardFocus(e);
+            HasText = Text.Length != 0;
         }
 
         void OnSeachEventDelayTimerTick(object o, EventArgs e) {
@@ -95,7 +101,11 @@ namespace Warewolf.Studio.CustomControls {
         protected override void OnTextChanged(TextChangedEventArgs e) {
             base.OnTextChanged(e);
             
-            HasText = Text.Length != 0;            
+            HasText = Text.Length != 0;
+            if (!HasText)
+            {
+                Focus();
+            }
         }
 
        
