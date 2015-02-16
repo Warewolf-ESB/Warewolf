@@ -23,6 +23,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Enums;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -498,8 +499,13 @@ namespace Dev2.Runtime.ESB.Control
             else
             {
                 // we have a scoped datalist ;)
+                
                 compiler.SetParentID(shapeID, oldID);
-                shapeID = compiler.Shape(oldID, enDev2ArgumentType.Input, inputDefs, out invokeErrors, shapeID);
+                var inputID = compiler.Shape(oldID, enDev2ArgumentType.Input, inputDefs, out invokeErrors, shapeID);
+                errors.MergeErrors(invokeErrors);
+                var outputID = compiler.Shape(shapeID, enDev2ArgumentType.Output, outputDefs, out invokeErrors);
+                errors.MergeErrors(invokeErrors);
+                shapeID = compiler.Merge(outputID,inputID, enDataListMergeTypes.Union,enTranslationDepth.Shape,false, out invokeErrors);             
                 errors.MergeErrors(invokeErrors);
             }
 
