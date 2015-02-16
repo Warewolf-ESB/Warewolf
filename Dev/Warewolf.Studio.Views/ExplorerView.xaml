@@ -36,29 +36,21 @@
             <!-- Add controls as needed -->
         </Grid>
 
-        <Grid x:Name="LayoutRoot">
+        <Grid x:Name="LayoutRoot" Margin="{StaticResource ContainerBorder}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="5" />
             <RowDefinition Height="29" />
-            <RowDefinition Height="5" />
+            <RowDefinition Height="29" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
 
-
         <!--  URI LOOKUP  -->
-            <Grid Grid.Row="1" Height="29" Grid.Column="1" Visibility="{Binding ShowConnectControl,Converter={StaticResource BoolToVisibilityConverter}}">
-            <views:ConnectControlView DataContext="{Binding ConnectControlViewModel}" />
-        </Grid>
+        <views:ConnectControlView DataContext="{Binding ConnectControlViewModel}" />
 
         <!--  SERVICE FILTER  -->
-        <Grid Grid.Row="3" Grid.Column="1">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="29" />
             </Grid.RowDefinitions>
@@ -103,8 +95,7 @@
         <!--  EXPLORER TREE  -->
 
         <ig:XamDataTree x:Name="ExplorerTree"
-                        Grid.Row="5"
-                        Grid.Column="1"
+                        Grid.Row="2"
                         ActiveDataItem="{Binding SelectedItem, Mode=TwoWay}"
                         IsSelectedMemberPath="IsSelected"
                         DisplayMemberPath="DisplayName"
