@@ -700,7 +700,10 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                IsVisible = ResourceName.Contains(filter);
+                if (!String.IsNullOrEmpty(ResourceName))
+                {
+                    IsVisible = ResourceName.Contains(filter);
+                }
             }
             OnPropertyChanged(() => Children);
         }

@@ -61,24 +61,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Source not specified on Input.
-        /// </summary>
-        public static string CompilerError_InputSourceNotFound {
-            get {
-                return ResourceManager.GetString("CompilerError_InputSourceNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error: Service action name containing invalid characters was found &apos;{0}.{1}&apos;.
-        /// </summary>
-        public static string CompilerError_InvalidServiceActionName {
-            get {
-                return ResourceManager.GetString("CompilerError_InvalidServiceActionName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error: Invalid Source Type.
         /// </summary>
         public static string CompilerError_InvalidSourceType {
@@ -93,15 +75,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CompilerError_InvalidUri {
             get {
                 return ResourceManager.GetString("CompilerError_InvalidUri", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error: The xaml provided is invalid and could not be parsed.
-        /// </summary>
-        public static string CompilerError_InvalidWorkflowXaml {
-            get {
-                return ResourceManager.GetString("CompilerError_InvalidWorkflowXaml", resourceCulture);
             }
         }
         
@@ -133,47 +106,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Missing BizRuleName on object &apos;{0}.{1}&apos;.
-        /// </summary>
-        public static string CompilerError_MissingBizRuleName {
-            get {
-                return ResourceManager.GetString("CompilerError_MissingBizRuleName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error: Missing ConnectionString on object &apos;{0}.{1}&apos;.
         /// </summary>
         public static string CompilerError_MissingConnectionString {
             get {
                 return ResourceManager.GetString("CompilerError_MissingConnectionString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error: Missing DataElementName on object &apos;{0}.{1}&apos;.
-        /// </summary>
-        public static string CompilerError_MissingDataElementName {
-            get {
-                return ResourceManager.GetString("CompilerError_MissingDataElementName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error: Missing Expression on object &apos;{0}.{1}&apos;.
-        /// </summary>
-        public static string CompilerError_MissingExpression {
-            get {
-                return ResourceManager.GetString("CompilerError_MissingExpression", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error: Missing ExpressionColumns on object &apos;{0}.{1}&apos;.
-        /// </summary>
-        public static string CompilerError_MissingExpressionColumns {
-            get {
-                return ResourceManager.GetString("CompilerError_MissingExpressionColumns", resourceCulture);
             }
         }
         
@@ -192,15 +129,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CompilerError_MissingName {
             get {
                 return ResourceManager.GetString("CompilerError_MissingName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error:  Regular Expression not found on object &apos;{0}.{1}&apos;.
-        /// </summary>
-        public static string CompilerError_MissingRegularExpression {
-            get {
-                return ResourceManager.GetString("CompilerError_MissingRegularExpression", resourceCulture);
             }
         }
         
@@ -241,15 +169,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Missing value on object &apos;{0}.{1}&apos;.
-        /// </summary>
-        public static string CompilerError_MissingValue {
-            get {
-                return ResourceManager.GetString("CompilerError_MissingValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error: Service defined with no actions on object &apos;{0}.{1}&apos;.
         /// </summary>
         public static string CompilerError_ServiceHasNoActions {
@@ -277,15 +196,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Switch with no default case found on object &apos;{0}.{1}&apos;.
-        /// </summary>
-        public static string CompilerError_SwitchHasNoDefault {
-            get {
-                return ResourceManager.GetString("CompilerError_SwitchHasNoDefault", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Message: Failed to stop the workflow execution. It may have completed already..
         /// </summary>
         public static string CompilerError_TerminationFailed {
@@ -300,15 +210,6 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string CompilerMessage_BuildFailed {
             get {
                 return ResourceManager.GetString("CompilerMessage_BuildFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Message: Build Succeeded.
-        /// </summary>
-        public static string CompilerMessage_BuildSucceeded {
-            get {
-                return ResourceManager.GetString("CompilerMessage_BuildSucceeded", resourceCulture);
             }
         }
         
@@ -331,24 +232,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warning: No cases found on object &apos;{0}.{1}&apos;.
-        /// </summary>
-        public static string CompilerWarning_SwitchCasesNotFound {
-            get {
-                return ResourceManager.GetString("CompilerWarning_SwitchCasesNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unexpected Object Type Expected only BizRule, Source and DynamicService.
-        /// </summary>
-        public static string ContainerError_UnexpectedDynamicServiceObjectType {
-            get {
-                return ResourceManager.GetString("ContainerError_UnexpectedDynamicServiceObjectType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Binary value must be greater than 8 characters.
         /// </summary>
         public static string Dev2BinaryConverterPayloadToSmallException {
@@ -358,101 +241,11 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to xr.
-        /// </summary>
-        public static string DynamicService_ActionResponseTag {
-            get {
-                return ResourceManager.GetString("DynamicService_ActionResponseTag", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to DynamicService.Framework.
-        /// </summary>
-        public static string DynamicService_EventLogSource {
-            get {
-                return ResourceManager.GetString("DynamicService_EventLogSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Application.
-        /// </summary>
-        public static string DynamicService_EventLogTarget {
-            get {
-                return ResourceManager.GetString("DynamicService_EventLogTarget", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to sr.
-        /// </summary>
-        public static string DynamicService_ServiceResponseTag {
-            get {
-                return ResourceManager.GetString("DynamicService_ServiceResponseTag", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 500.
-        /// </summary>
-        public static string DynamicServiceError_BadRequestErrorCode {
-            get {
-                return ResourceManager.GetString("DynamicServiceError_BadRequestErrorCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error: Bad Request.
-        /// </summary>
-        public static string DynamicServiceError_BadRequestMessage {
-            get {
-                return ResourceManager.GetString("DynamicServiceError_BadRequestMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error: Service not found in service directory.
-        /// </summary>
-        public static string DynamicServiceError_ServiceNotFound {
-            get {
-                return ResourceManager.GetString("DynamicServiceError_ServiceNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error: Service was not specified.
         /// </summary>
         public static string DynamicServiceError_ServiceNotSpecified {
             get {
                 return ResourceManager.GetString("DynamicServiceError_ServiceNotSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ERROR.
-        /// </summary>
-        public static string TraceMessageType_Error {
-            get {
-                return ResourceManager.GetString("TraceMessageType_Error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MESSAGE.
-        /// </summary>
-        public static string TraceMessageType_Message {
-            get {
-                return ResourceManager.GetString("TraceMessageType_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WARNING.
-        /// </summary>
-        public static string TraceMessageType_Warning {
-            get {
-                return ResourceManager.GetString("TraceMessageType_Warning", resourceCulture);
             }
         }
     }
