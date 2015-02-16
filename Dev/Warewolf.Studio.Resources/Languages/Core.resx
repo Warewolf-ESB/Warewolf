@@ -117,140 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BDSAdminRole" xml:space="preserve">
-    <value>Business Design Studio Administrators</value>
-  </data>
-  <data name="BDSDeveloperRole" xml:space="preserve">
-    <value>Business Design Studio Developers</value>
-    <comment>TUW-UKIIS01/dsf</comment>
-  </data>
-  <data name="BDSTestingRole" xml:space="preserve">
-    <value>Business Design Studio Testers</value>
-  </data>
-  <data name="BDSUserRole" xml:space="preserve">
-    <value>Business Design Studio Users</value>
-  </data>
-  <data name="DsfChannelName_Development_Environment" xml:space="preserve">
-    <value>Development Environment</value>
-  </data>
-  <data name="DsfChannelName_Live_Environment" xml:space="preserve">
-    <value>Live Environment</value>
-  </data>
-  <data name="DsfChannelName_Testing_Environment" xml:space="preserve">
-    <value>Testing Environment</value>
-  </data>
-  <data name="HelpContent_CaseValue" xml:space="preserve">
-    <value>Provide a value for the case that you are creating. E.g If you want to do specific visual logic for Durban then you will provide Durban as a case value</value>
-  </data>
-  <data name="HelpContent_SwitchValue" xml:space="preserve">
-    <value>Provides the name of the type of data that will be used to switch logic. E.g If you want visual logic to be defined for different cities you would use a Switch value of City. If you are unsure of what the actual switch values are then contact your administrator </value>
-  </data>
-  <data name="StringWindow_CaseLabelValue" xml:space="preserve">
-    <value>For the case of:</value>
-  </data>
-  <data name="StringWindow_CaseWindowTitle" xml:space="preserve">
-    <value>Provide the case value</value>
-  </data>
-  <data name="StringWindow_SwitchLabelValue" xml:space="preserve">
-    <value>Switch On:</value>
-  </data>
-  <data name="StringWindow_SwitchWindowTitle" xml:space="preserve">
-    <value>Provide the identifier to switch on</value>
-  </data>
-  <data name="Uri_Start_Page" xml:space="preserve">
-    <value>http://www.google.co.za/</value>
-    <comment>http://tuw-hubps/Pages/Business%20Design%20Studio.aspx</comment>
-  </data>
-  <data name="SPN_Endpoint_Identity" xml:space="preserve">
-    <value>TUW-DEVFS/dsfDev</value>
-    <comment>TUW-DEVFS/dsfDev</comment>
-  </data>
-  <data name="AllowedRoles_DevelopmentEnvironment" xml:space="preserve">
-    <value>Business Design Studio Administrators,Business Design Studio Developers,Business Design Studio Users</value>
-  </data>
-  <data name="AllowedRoles_LiveEnvironment" xml:space="preserve">
-    <value>Business Design Studio Administrators,Business Design Studio Testers</value>
-  </data>
-  <data name="AllowedRoles_TestingEnvironment" xml:space="preserve">
-    <value>Business Design Studio Administrators,Business Design Studio Testers,Business Design Studio Developers</value>
-  </data>
-  <data name="Dev_SPN_Endpoint_Identity" xml:space="preserve">
-    <value>TUW-DEVFS/dsfDev</value>
-    <comment>TUW-DEVFS/dsfDev</comment>
-  </data>
-  <data name="Live_SPN_Endpoint_Identity" xml:space="preserve">
-    <value>TUW-DEVFS/dsfLive</value>
-    <comment>TUW-DEVFS/dsfLive</comment>
-  </data>
-  <data name="Test_SPN_Endpoint_Identity" xml:space="preserve">
-    <value>TUW-DEVFS/dsfTest</value>
-    <comment>TUW-DEVFS/dsfTest</comment>
-  </data>
-  <data name="Icon_Default_Path" xml:space="preserve">
-    <value>\\tuw-devfs\bdsimages\activity.png</value>
-  </data>
   <data name="Environments_Directory" xml:space="preserve">
     <value>Environments</value>
   </data>
   <data name="Error_Connect_Failed" xml:space="preserve">
     <value>Connection Failed</value>
   </data>
-  <data name="Error_DSF_Address_Not_Valid" xml:space="preserve">
-    <value>Address not valid</value>
-  </data>
   <data name="Error_DSF_Name_Not_Provided" xml:space="preserve">
     <value>Name not provided</value>
   </data>
-  <data name="Error_Environments_Directory_Not_Found" xml:space="preserve">
-    <value>Directory Not found</value>
-  </data>
-  <data name="Window_Title_Property_Editor" xml:space="preserve">
-    <value>{0} Editor</value>
-  </data>
-  <data name="Default_WebServer_Port" xml:space="preserve">
-    <value>3142</value>
-  </data>
-  <data name="UI_Layout_Grid_Default_Height" xml:space="preserve">
-    <value>80</value>
-  </data>
-  <data name="UI_Layout_Grid_Default_Width" xml:space="preserve">
-    <value>150</value>
-  </data>
-  <data name="Webpage_Default_Website" xml:space="preserve">
-    <value>System</value>
-  </data>
-  <data name="Services_Add_Resource" xml:space="preserve">
-    <value>ResourceUpload</value>
-  </data>
-  <data name="Services_Delete_Resource" xml:space="preserve">
-    <value>ThemeResourceDelete</value>
-  </data>
-  <data name="Supported_WebResource_Folders" xml:space="preserve">
-    <value>css,images,js</value>
-  </data>
-  <data name="Navigation_Folder_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolder-32.png</value>
-  </data>
-  <data name="Navigation_Environment_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/Warewolf.ico</value>
-  </data>
   <data name="Pack_Uri_Application_Image_Home" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/StartPage-16.png</value>
-  </data>
-  <data name="Pack_Uri_Application_Image_Webpage" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/User.png</value>
-  </data>
-  <data name="Pack_Uri_Application_Image_Website" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/webpagebuilder.png</value>
-  </data>
-  <data name="DebugData_FilePath" xml:space="preserve">
-    <value>DebugData</value>
-  </data>
-  <data name="DataMapping_InputXpathExpression" xml:space="preserve">
-    <value>//Inputs</value>
-  </data>
-  <data name="DataMapping_OutputXpathExpression" xml:space="preserve">
-    <value>//Outputs</value>
   </data>
   <data name="ErrorMessageDuplicateValue" xml:space="preserve">
     <value>Variable names must be unique.</value>
@@ -264,25 +141,9 @@
   <data name="ErrorMessageInvalidChar" xml:space="preserve">
     <value>Variable name contains invalid character(s).</value>
   </data>
-  <data name="User_Interface_Layouts_Directory" xml:space="preserve">
-    <value>UserInterfaceLayouts</value>
-  </data>
-  <data name="Uri_Studio_Shortcut_Keys_Document" xml:space="preserve">
-    <value>Help\StudioShortCutKeys.htm</value>
-    <comment>Relative to the executable</comment>
-  </data>
-  <data name="Uri_Studio_Homepage" xml:space="preserve">
-    <value>Studio\Help\StudioHomepage.htm</value>
-  </data>
   <data name="About_Content" xml:space="preserve">
     <value>Studio: Version {0}
 Server: Version {1}
-
-Sofware development by: www.dev2.co.za
-</value>
-  </data>
-  <data name="Server_About_Content" xml:space="preserve">
-    <value>Server: Version {1}
 
 Sofware development by: www.dev2.co.za
 </value>
@@ -302,20 +163,6 @@ Sofware development by: www.dev2.co.za
   <data name="SplashImage" xml:space="preserve">
     <value>Images\SplashImage_New_2014.jpg</value>
   </data>
-  <data name="Dev2StudioLDAPEndpoint" xml:space="preserve">
-    <value>LDAP://premier.local</value>
-    <comment>Only used if in LDAP mode, The Unlimited = LDAP://premier.local, Dev2 = LDAP://dev2.local</comment>
-  </data>
-  <data name="Dev2StudioSecurityMode" xml:space="preserve">
-    <value>Offline</value>
-    <comment>Possible values are Offline and LDAP at this point in time</comment>
-  </data>
-  <data name="Pack_Uri_Application_Image" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/</value>
-  </data>
-  <data name="Pack_Uri_Application_Image_Help" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/GenericHelp-16.png</value>
-  </data>
   <data name="ErrorMessageEmptyRecordSet" xml:space="preserve">
     <value>Recordset must contain one or more field(s).</value>
   </data>
@@ -326,17 +173,8 @@ Sofware development by: www.dev2.co.za
     <value>Feedback</value>
     <comment>The directory name in which feedback recordings are placed. This should not be a full or relative path, only a directory name.</comment>
   </data>
-  <data name="NavigationItemViewModel_Unexpected_Resource" xml:space="preserve">
-    <value>Unexpected resource type from delete relay command.</value>
-  </data>
   <data name="Navigation_Category_Unassigned" xml:space="preserve">
     <value>Unassigned</value>
-  </data>
-  <data name="Navigation_RootNode_Name" xml:space="preserve">
-    <value>Explorer</value>
-  </data>
-  <data name="RuntimeConfigurationAssemblyDirectory" xml:space="preserve">
-    <value>RuntimeConfigurationAssemblies</value>
   </data>
   <data name="NewWorkflowBaseName" xml:space="preserve">
     <value>Unsaved</value>
@@ -348,20 +186,6 @@ Would you like to save the workflow?
 Yes - Save the workflow.
 No - Discard your changes.
 Cancel - Returns you to the workflow.</value>
-  </data>
-  <data name="DialogBody_UpdateAvailable" xml:space="preserve">
-    <value>A new version of Warewolf is available:
-    
-Warewolf-{0}.exe
-    
-Would you like to download now?</value>
-  </data>
-  <data name="DialogBody_UpdateReady" xml:space="preserve">
-    <value>A new version of Warewolf has already been downloaded:
-
-Warewolf-{0}.exe
-
-Would you like to start the setup now?</value>
   </data>
   <data name="DialogTitle_NotSaved" xml:space="preserve">
     <value>Workflow not saved...</value>
@@ -380,9 +204,6 @@ Version History will also be deleted.</value>
   <data name="DialogBody_HasDuplicateName" xml:space="preserve">
     <value>The {0} {1} cannot be renamed because a resource with that name already exists on the same server.</value>
   </data>
-  <data name="DialogBody_MissingWizard" xml:space="preserve">
-    <value>Couldn't find the resource needed to display the wizard. Please ensure that a resource with the name 'Dev2ServiceDetails' exists.</value>
-  </data>
   <data name="DialogTitle_ConfirmDelete" xml:space="preserve">
     <value>Confirm delete.</value>
   </data>
@@ -391,9 +212,6 @@ Version History will also be deleted.</value>
   </data>
   <data name="DialogTitle_HasDuplicateName" xml:space="preserve">
     <value>{0} exists</value>
-  </data>
-  <data name="DialogTitle_MissingWizard" xml:space="preserve">
-    <value>Missing Wizard</value>
   </data>
   <data name="Pack_Uri_Debug_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png</value>
@@ -407,12 +225,6 @@ Version History will also be deleted.</value>
   <data name="Ribbon_StopExecution" xml:space="preserve">
     <value>Stop</value>
   </data>
-  <data name="Navigation_OpenFolder_Icon_Pack_Uri" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerFolderOpen-32.png</value>
-  </data>
-  <data name="Resource_Changed_MessageBody" xml:space="preserve">
-    <value>{0} is used by {1} workflow{2}. Please update their mappings.</value>
-  </data>
   <data name="Uri_Community_HomePage" xml:space="preserve">
     <value>http://community.warewolf.io/</value>
   </data>
@@ -421,9 +233,6 @@ Version History will also be deleted.</value>
   </data>
   <data name="Warewolf_Homepage_Start" xml:space="preserve">
     <value>http://warewolf.io/start.html</value>
-  </data>
-  <data name="BrowserCacheFolder" xml:space="preserve">
-    <value>BrowserCache</value>
   </data>
   <data name="Uri_Studio_PageMissing" xml:space="preserve">
     <value>Help\PageMissing.htm</value>
@@ -473,9 +282,6 @@ Version History will also be deleted.</value>
   &lt;/panes&gt;
 &lt;/xamDockManager&gt;</value>
   </data>
-  <data name="RemoteWarewolfIconPath" xml:space="preserve">
-    <value>pack://application:,,,/Warewolf Studio;component/Images/RemoteWarewolf-32.png</value>
-  </data>
   <data name="EULA_Link" xml:space="preserve">
     <value>http://warewolf.io/eula/</value>
   </data>
@@ -488,9 +294,6 @@ Version History will also be deleted.</value>
   <data name="IntellisenseErrorMisMacthingBrackets" xml:space="preserve">
     <value>Invalid expression: Opening and closing brackets dont match.</value>
   </data>
-  <data name="IntellisenseErrorExpressionStartingWithANumber" xml:space="preserve">
-    <value>Invalid Expression: Cant start a variable name with a number.</value>
-  </data>
   <data name="CriticalExceptionMessage" xml:space="preserve">
     <value>Critical : Warewolf Must Restart. All open tabs will be saved. Please take the time to report this error to the community.</value>
   </data>
@@ -502,12 +305,6 @@ Version History will also be deleted.</value>
   </data>
   <data name="CritErrorTitle" xml:space="preserve">
     <value>Critical Error</value>
-  </data>
-  <data name="Warewolf_Version" xml:space="preserve">
-    <value>http://warewolf.io/version.txt</value>
-  </data>
-  <data name="InvalidCategoryNameExceptionMessage" xml:space="preserve">
-    <value>Invalid category name</value>
   </data>
   <data name="xmlServiceDefinition" xml:space="preserve">
     <value>&lt;Service Name="GetCars"&gt;
@@ -544,23 +341,6 @@ Version History will also be deleted.</value>
   &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
 &lt;/Service&gt;</value>
   </data>
-  <data name="xmlDataList" xml:space="preserve">
-    <value>&lt;DataList&gt;
-	&lt;NUD2347 Description=""/&gt;
-	&lt;number Description=""/&gt;
-	&lt;vehicleColor Description=""/&gt;
-	&lt;Fines Description=""&gt;
-		&lt;Speed Description=""/&gt;
-		&lt;Date Description=""/&gt;
-		&lt;Location Description=""/&gt;
-	&lt;/Fines&gt;
-	&lt;Registrations Description=""&gt;
-		&lt;Speed Description=""/&gt;
-		&lt;Date Description=""/&gt;
-		&lt;Location Description=""/&gt;
-	&lt;/Registrations&gt;
-&lt;/DataList&gt;</value>
-  </data>
   <data name="xmlNullSourceMethodServiceDef" xml:space="preserve">
     <value>&lt;Service Name="GetCars"&gt;
   &lt;Actions&gt;
@@ -595,18 +375,6 @@ Version History will also be deleted.</value>
   &lt;XamlDefinition /&gt;
   &lt;DisplayName&gt;Service&lt;/DisplayName&gt;
 &lt;/Service&gt;</value>
-  </data>
-  <data name="InvalidResourceNameExceptionMessage" xml:space="preserve">
-    <value>Invalid resource name</value>
-  </data>
-  <data name="Uri_DownloadPage" xml:space="preserve">
-    <value>https://warewolf.s3.amazonaws.com/Latest/</value>
-  </data>
-  <data name="FeedbackViewModel_Init_ArgException" xml:space="preserve">
-    <value>AttachmentPath must contain exactly one semicolon seperator, between recording log file and server log file.</value>
-  </data>
-  <data name="MappingChangedWarningDialogTitle" xml:space="preserve">
-    <value>Inputs / Outputs Changed</value>
   </data>
   <data name="Uri_Studio_Language_Reference_Document" xml:space="preserve">
     <value>Help\Warewolf Language.htm</value>
@@ -645,9 +413,6 @@ Version History will also be deleted.</value>
   <data name="Uri_Studio_PageRestrictedAccess" xml:space="preserve">
     <value>Help\PageRestrictedAccess.htm</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="Uri_Studio_PageNotAvailable" xml:space="preserve">
     <value>Help\PageNotAvailable.htm</value>
   </data>
@@ -660,9 +425,6 @@ Version History will also be deleted.</value>
   <data name="SaveSettingsPermissionsErrorMsg" xml:space="preserve">
     <value>Error while saving: You don't have permission to change settings on this server.
 You need Administrator permission.</value>
-  </data>
-  <data name="Warewolf_Checksum" xml:space="preserve">
-    <value>http://warewolf.io/checksum.txt</value>
   </data>
   <data name="SaveSettingsDuplicateResourcePermissions" xml:space="preserve">
     <value>There are duplicate permissions for a resource, 
@@ -819,94 +581,94 @@ You need Administrator permission.</value>
     <value>Web</value>
   </data>
   <data name="ConnectControlConnectionsToolTip" xml:space="preserve">
-    <value>ConnectControlConnectionsToolTip</value>
+    <value>Select the Warewolf server you want to use or add a new one</value>
   </data>
   <data name="ConnectControlEditConnectionToolTip" xml:space="preserve">
-    <value>ConnectControlEditConnectionToolTip</value>
+    <value>Edit the selected server</value>
   </data>
   <data name="ConnectControlToggleConnectionToolTip" xml:space="preserve">
-    <value>ConnectControlToggleConnectionToolTip</value>
+    <value>Connect / disconnect the selected server</value>
   </data>
   <data name="DebugToolTip" xml:space="preserve">
-    <value>DebugToolTip</value>
+    <value>Run and debug your workflow service</value>
   </data>
   <data name="EnvironmentExplorerRefreshToolTip" xml:space="preserve">
     <value>EnvironmentExplorerRefreshToolTip</value>
   </data>
   <data name="ExplorerItemEditToolTip" xml:space="preserve">
-    <value>ExplorerItemEditToolTip</value>
+    <value>You have view permission on this item. Click to open</value>
   </data>
   <data name="ExplorerItemExecuteToolTip" xml:space="preserve">
-    <value>ExplorerItemExecuteToolTip</value>
+    <value>You have execute permission on this item. Click to execute</value>
   </data>
   <data name="ExplorerRefreshToolTip" xml:space="preserve">
-    <value>ExplorerRefreshToolTip</value>
+    <value>Refresh the connected resources</value>
   </data>
   <data name="ExplorerSearchToolTip" xml:space="preserve">
-    <value>ExplorerSearchToolTip</value>
+    <value>Filter the connected resources</value>
   </data>
   <data name="MenuDatabaseToolTip" xml:space="preserve">
-    <value>MenuDatabaseToolTip</value>
+    <value>Create a new database connector</value>
   </data>
   <data name="MenuDeployToolTip" xml:space="preserve">
-    <value>MenuDeployToolTip</value>
+    <value>Move resources between Warewolf servers</value>
   </data>
   <data name="MenuDownloadToolTip" xml:space="preserve">
-    <value>MenuDownloadToolTip</value>
+    <value>A new version of Warewolf is available for download</value>
   </data>
   <data name="MenuHelpToolTip" xml:space="preserve">
-    <value>MenuHelpToolTip</value>
+    <value>Get some help from the community and other resources</value>
   </data>
   <data name="MenuLockToolTip" xml:space="preserve">
-    <value>MenuLockToolTip</value>
+    <value>Lock / unlock the menu</value>
   </data>
   <data name="MenuNewServiceToolTip" xml:space="preserve">
-    <value>MenuNewServiceToolTip</value>
+    <value>Create a new service</value>
   </data>
   <data name="MenuPluginToolTip" xml:space="preserve">
-    <value>MenuPluginToolTip</value>
+    <value>Create a new plugin connector</value>
   </data>
   <data name="MenuSaveToolTip" xml:space="preserve">
-    <value>MenuSaveToolTip</value>
+    <value>Save this tab</value>
   </data>
   <data name="MenuSchedulerToolTip" xml:space="preserve">
-    <value>MenuSchedulerToolTip</value>
+    <value>Schedule a service to run</value>
   </data>
   <data name="MenuSettingsToolTip" xml:space="preserve">
-    <value>MenuSettingsToolTip</value>
+    <value>Configure settings</value>
   </data>
   <data name="MenuWebServiceToolTip" xml:space="preserve">
-    <value>MenuWebServiceToolTip</value>
+    <value>Create a new web-service</value>
   </data>
   <data name="ServerSourceDialogAddressPortTip" xml:space="preserve">
-    <value>ServerDialogAddressPortTip</value>
+    <value>Enter the port on the server</value>
   </data>
   <data name="ServerSourceDialogAddressSaveTip" xml:space="preserve">
-    <value>ServerDialogAddressSaveTip</value>
+    <value />
   </data>
   <data name="ServerSourceDialogAddressToolTip" xml:space="preserve">
-    <value>ServerDialogAddressToolTip</value>
+    <value>Enter the IP address, domain name or computer name of the server you want to connect to</value>
   </data>
   <data name="UserAuthenticationToolTip" xml:space="preserve">
-    <value>ServerDialogAddressUserAuthenticationToolTip</value>
+    <value>Connect using a specific account</value>
   </data>
   <data name="PasswordToolTip" xml:space="preserve">
-    <value>PasswordToolTip</value>
+    <value>Enter the corresponding password</value>
   </data>
   <data name="ServerSourceDialogProtocolToolTip" xml:space="preserve">
-    <value>ServerDialogProtocolToolTip</value>
+    <value>Select the protocol you want to connect on</value>
   </data>
   <data name="ServerSourceDialogPublicToolTip" xml:space="preserve">
-    <value>ServerDialogPublicToolTip</value>
+    <value>Connect using Public credentials only</value>
   </data>
   <data name="ServerSourceDialogsTestToolTip" xml:space="preserve">
-    <value>ServerDialogsTestToolTip</value>
+    <value>Test the connection to the server using these credentials</value>
   </data>
   <data name="UserNameToolTip" xml:space="preserve">
-    <value>ServerDialogUserNameToolTip</value>
+    <value>Enter the user name you want to connect with</value>
   </data>
   <data name="WindowsAuthenticationToolTip" xml:space="preserve">
-    <value>ServerDialogWindowsAuthenticationToolTip</value>
+    <value>Connect using the logged on users credentials</value>
   </data>
   <data name="ToolDescriptor_ToolDescriptor_Tool_guids_are_not_allowed_to_be_the_empty_guid" xml:space="preserve">
     <value>Tool guids are not allowed to be the empty guid</value>
@@ -915,19 +677,19 @@ You need Administrator permission.</value>
     <value>Database:</value>
   </data>
   <data name="DatabaseSourceDatabaseToolTip" xml:space="preserve">
-    <value>DatabaseSourceDatabaseToolTip</value>
+    <value>Select the database this source will use</value>
   </data>
   <data name="DatabaseSourceServerLabel" xml:space="preserve">
     <value>Server:</value>
   </data>
   <data name="DatabaseSourceServerToolTip" xml:space="preserve">
-    <value>DatabaseSourceServerToolTip</value>
+    <value>Select the database source you want to use</value>
   </data>
   <data name="DatabaseSourceTypeLabel" xml:space="preserve">
     <value>Type:</value>
   </data>
   <data name="DatabaseSourceTypeToolTip" xml:space="preserve">
-    <value>DatabaseSourceTypeTooltip</value>
+    <value>Select the type of database you want to connect to</value>
   </data>
   <data name="CancelTest" xml:space="preserve">
     <value>Cancel Test</value>

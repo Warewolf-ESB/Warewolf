@@ -117,29 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CompilerError_InputSourceNotFound" xml:space="preserve">
-    <value>Error: Source not specified on Input</value>
-  </data>
   <data name="CompilerError_MissingAssemblyLocation" xml:space="preserve">
     <value>Error: Missing AssemblyLocation on object '{0}.{1}'</value>
   </data>
   <data name="CompilerError_MissingAssemblyName" xml:space="preserve">
     <value>Error: Missing AssemblyName on object '{0}.{1}'</value>
   </data>
-  <data name="CompilerError_MissingBizRuleName" xml:space="preserve">
-    <value>Error: Missing BizRuleName on object '{0}.{1}'</value>
-  </data>
   <data name="CompilerError_MissingConnectionString" xml:space="preserve">
     <value>Error: Missing ConnectionString on object '{0}.{1}'</value>
-  </data>
-  <data name="CompilerError_MissingDataElementName" xml:space="preserve">
-    <value>Error: Missing DataElementName on object '{0}.{1}'</value>
-  </data>
-  <data name="CompilerError_MissingExpression" xml:space="preserve">
-    <value>Error: Missing Expression on object '{0}.{1}'</value>
-  </data>
-  <data name="CompilerError_MissingExpressionColumns" xml:space="preserve">
-    <value>Error: Missing ExpressionColumns on object '{0}.{1}'</value>
   </data>
   <data name="CompilerError_MissingName" xml:space="preserve">
     <value>Error: Missing Name on object '{0}.{1}'</value>
@@ -165,56 +150,14 @@
   <data name="CompilerError_SourceNotFound" xml:space="preserve">
     <value>Error: Source not found on object '{0}.{1}'</value>
   </data>
-  <data name="CompilerError_SwitchHasNoDefault" xml:space="preserve">
-    <value>Error: Switch with no default case found on object '{0}.{1}'</value>
-  </data>
   <data name="CompilerMessage_BuildFailed" xml:space="preserve">
     <value>Message: Build Failed</value>
-  </data>
-  <data name="CompilerMessage_BuildSucceeded" xml:space="preserve">
-    <value>Message: Build Succeeded</value>
-  </data>
-  <data name="CompilerWarning_SwitchCasesNotFound" xml:space="preserve">
-    <value>Warning: No cases found on object '{0}.{1}'</value>
-  </data>
-  <data name="DynamicServiceError_ServiceNotFound" xml:space="preserve">
-    <value>Error: Service not found in service directory</value>
   </data>
   <data name="DynamicServiceError_ServiceNotSpecified" xml:space="preserve">
     <value>Error: Service was not specified</value>
   </data>
-  <data name="DynamicServiceError_BadRequestErrorCode" xml:space="preserve">
-    <value>500</value>
-  </data>
-  <data name="DynamicServiceError_BadRequestMessage" xml:space="preserve">
-    <value>Error: Bad Request</value>
-  </data>
-  <data name="DynamicService_ActionResponseTag" xml:space="preserve">
-    <value>xr</value>
-  </data>
-  <data name="DynamicService_ServiceResponseTag" xml:space="preserve">
-    <value>sr</value>
-  </data>
-  <data name="DynamicService_EventLogSource" xml:space="preserve">
-    <value>DynamicService.Framework</value>
-  </data>
-  <data name="DynamicService_EventLogTarget" xml:space="preserve">
-    <value>Application</value>
-  </data>
-  <data name="CompilerError_MissingValue" xml:space="preserve">
-    <value>Error: Missing value on object '{0}.{1}'</value>
-  </data>
-  <data name="ContainerError_UnexpectedDynamicServiceObjectType" xml:space="preserve">
-    <value>Unexpected Object Type Expected only BizRule, Source and DynamicService</value>
-  </data>
-  <data name="CompilerError_MissingRegularExpression" xml:space="preserve">
-    <value>Error:  Regular Expression not found on object '{0}.{1}'</value>
-  </data>
   <data name="CompilerError_InvalidSourceType" xml:space="preserve">
     <value>Error: Invalid Source Type</value>
-  </data>
-  <data name="CompilerError_InvalidWorkflowXaml" xml:space="preserve">
-    <value>Error: The xaml provided is invalid and could not be parsed</value>
   </data>
   <data name="CompilerError_InvalidUri" xml:space="preserve">
     <value>Error: Uri is invalid</value>
@@ -224,18 +167,6 @@
   </data>
   <data name="CompilerError_MissingIconPath" xml:space="preserve">
     <value>Error: Missing Icon Path</value>
-  </data>
-  <data name="TraceMessageType_Error" xml:space="preserve">
-    <value>ERROR</value>
-  </data>
-  <data name="TraceMessageType_Message" xml:space="preserve">
-    <value>MESSAGE</value>
-  </data>
-  <data name="TraceMessageType_Warning" xml:space="preserve">
-    <value>WARNING</value>
-  </data>
-  <data name="CompilerError_InvalidServiceActionName" xml:space="preserve">
-    <value>Error: Service action name containing invalid characters was found '{0}.{1}'</value>
   </data>
   <data name="CompilerError_TerminationFailed" xml:space="preserve">
     <value>Message: Failed to stop the workflow execution. It may have completed already.</value>

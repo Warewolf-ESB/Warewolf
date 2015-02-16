@@ -19,13 +19,24 @@
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
     
     <system:Double x:Key="FontSize-Smallest">8</system:Double>
+    <system:Double x:Key="FontSize-Toolbox">9</system:Double>
     <system:Double x:Key="FontSize-Smaller">10</system:Double>
     <system:Double x:Key="FontSize-Normal">12</system:Double>
     <system:Double x:Key="FontSize-Large">16</system:Double>
     <system:Double x:Key="FontSize-Larger">17</system:Double>
     <system:Double x:Key="ExplorerFontSize">14</system:Double>
-
-
+    <Thickness x:Key="ContainerBorder">
+        <Thickness.Bottom>7</Thickness.Bottom>
+        <Thickness.Left>7</Thickness.Left>
+        <Thickness.Right>7</Thickness.Right>
+        <Thickness.Top>7</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ElementBorder">
+        <Thickness.Bottom>5</Thickness.Bottom>
+        <Thickness.Left>5</Thickness.Left>
+        <Thickness.Right>5</Thickness.Right>
+        <Thickness.Top>5</Thickness.Top>
+    </Thickness>
 
 
 </ResourceDictionary>

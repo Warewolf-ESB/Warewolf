@@ -11,11 +11,13 @@
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Elements/ListBox.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
-    <!--<Cursor x:Key="CursorGrab" Cursor="grab.cur"/>
-    <TextBlock x:Key="CursorGrabbing" Cursor="grabbing.cur"/>-->
-   
+    <!--
+        <Cursor x:Key="CursorGrab" Cursor="grab.cur"/>
+        <TextBlock x:Key="CursorGrabbing" Cursor="grabbing.cur"/>
+    -->
 
-        <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="#FF3C7FB1" />
+
+    <SolidColorBrush x:Key="Expander.MouseOver.Circle.Stroke" Color="#FF3C7FB1" />
     <SolidColorBrush x:Key="Expander.MouseOver.Circle.Fill" Color="Transparent" />
     <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="#222" />
     <SolidColorBrush x:Key="Expander.Pressed.Circle.Stroke" Color="#FF526C7B" />
@@ -36,13 +38,13 @@
                   Header="{Binding Name}"
                   IsExpanded="True"
                   Style="{DynamicResource ExpanderStyleWithHiddenExpandButton}">
-            <ListBox Width="200"
+            <ListBox Width="256"
                      ItemTemplate="{DynamicResource ToolboxCategoryItemTemplate}"
                      ItemsSource="{Binding Tools}"
                      Style="{DynamicResource ListBoxToolboxStyle}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True" ItemWidth="86" />
+                        <WrapPanel IsItemsHost="True" ItemWidth="64" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
@@ -50,7 +52,7 @@
     </DataTemplate>
 
 
-    <!--  THE BUTTON Button size = 102 H 86 W  -->
+    <!--  THE BUTTON Button size = 102 H 86 W     Scaled to 4  76 H -> W 64  -->
     <DataTemplate x:Key="ToolboxCategoryItemTemplate" DataType="toolbox:IToolDescriptor">
 
 
@@ -58,24 +60,24 @@
               VerticalAlignment="Stretch"
               Background="{StaticResource WarewolfPanelGreyBrush}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="14" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="34" />
-                <RowDefinition Height="14" />
+                <RowDefinition Height="10.5" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="25.5" />
+                <RowDefinition Height="10.5" />
 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="18" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="40" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="13.5" />
+                <ColumnDefinition Width="3.75" />
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="3.75" />
+                <ColumnDefinition Width="13" />
             </Grid.ColumnDefinitions>
 
             <Image Grid.Row="1"
                    Grid.Column="2"
-                   Width="40"
-                   Height="40"
+                   Width="30"
+                   Height="30"
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"
                    Source="{Binding Icon}" />
@@ -451,7 +453,7 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="DockPanel.Dock" Value="Top" />
-        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="FontStyle" Value="Normal" />
         <Setter Property="FontStretch" Value="Normal" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Larger}" />
@@ -500,7 +502,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Expander}">

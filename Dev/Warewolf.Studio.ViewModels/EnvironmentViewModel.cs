@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -40,7 +41,7 @@ namespace Warewolf.Studio.ViewModels
             _children = new ObservableCollection<IExplorerItemViewModel>();
             NewCommand = new DelegateCommand<ResourceType?>(type => ShellViewModel.NewResource(type, Guid.Empty));
             DisplayName = server.ResourceName;
-            RefreshCommand = new DelegateCommand(Load);
+            RefreshCommand = new DelegateCommand(async () => await Load());
             IsServerIconVisible = true;
             //CanCreateFolder = server.UserPermissions.HasFlag(Permissions.Administrator) || server.UserPermissions.HasFlag(Permissions.Contribute);
             Expand = new DelegateCommand<int?>(clickCount =>
@@ -96,10 +97,21 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void RemoveChild(IExplorerItemViewModel item)
+        public void SetPropertiesForDialog()
         {
-            _children.Remove(item);
-            OnPropertyChanged(()=>Children);
+            CanCreateDbService = false;
+            CanCreateDbSource = false;
+            CanCreateFolder = true;
+            CanCreatePluginService = false;
+            CanCreatePluginSource = false;
+            CanCreateServerSource = false;
+            CanCreateWebService = false;
+            CanCreateWebSource = false;
+            CanDelete = true;
+            CanDeploy = false;
+            CanRename = true;
+            CanRollback = false;
+            CanShowVersions = false;            
         }
 
         void Server_NetworkStateChanged(INetworkStateChangedEventArgs args)
@@ -110,7 +122,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Server.Connect();
                     if (!IsConnecting)
-                        ShellViewModel.ExecuteOnDispatcher(Load);
+                        ShellViewModel.ExecuteOnDispatcher(async () => await Load());
                     break;
                 }
                 case ConnectionNetworkState.Disconnected:
@@ -161,6 +173,12 @@ namespace Warewolf.Studio.ViewModels
         public void AddChild(IExplorerItemViewModel child)
         {
             _children.Add(child);
+            OnPropertyChanged(() => Children);
+        }
+
+        public void RemoveChild(IExplorerItemViewModel child)
+        {
+            _children.Remove(child);
             OnPropertyChanged(() => Children);
         }
 
@@ -307,18 +325,17 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsLoaded { get; private set; }
 
-        public async void Connect()
+        public async Task<bool> Connect()
         {
             if(Server != null)
             {
                 IsConnecting = true;
                 IsConnected = false;
                 IsConnected = await Server.Connect();
-                Load();
-             
-                IsConnecting = false ;
+                IsConnecting = false;
+                return IsConnected;
             }
-            
+            return false;
         }
 
         public bool IsConnecting
@@ -338,33 +355,26 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async void Load()
+        public async Task<bool> Load()
         {
-            if (IsConnected)
-            {
-                IsConnecting = true;
-                var explorerItems = await Server.LoadExplorer();
-                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null);
-                Children = explorerItemViewModels;
-                IsLoaded = true;
-                IsConnecting = false;
-                IsExpanded = true;
-            }
+            var result = await LoadDialog(null);
+            return result;
         }
-        public async void LoadDialog(Guid selectedId)
+
+        public async Task<bool> LoadDialog(Guid? selectedId)
         {
             if (IsConnected)
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-
-                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null,true);
+                var explorerItemViewModels = CreateExplorerItems(explorerItems.Children, Server, null,selectedId!=null);
                 Children = explorerItemViewModels;
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
-               
+                return IsLoaded;
             }
+            return false;
         }
 
 

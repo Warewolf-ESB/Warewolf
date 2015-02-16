@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
 
@@ -17,46 +14,20 @@ namespace Warewolf.Studio.Views
 	/// </summary>
 	public partial class ExplorerView : IExplorerView
 	{
-	    readonly ExplorerViewTestClass _explorerViewTestClass;
-	    Grid _blackoutGrid;
+	    private readonly ExplorerViewTestClass _explorerViewTestClass;
 
 	    public ExplorerView()
 	    {
 	        InitializeComponent();
 	        _explorerViewTestClass = new ExplorerViewTestClass(this);
-            ExplorerTree.ActiveNodeChanged+=ExplorerTreeOnActiveNodeChanged;
 	    }
 
-	    private void ExplorerTreeOnActiveNodeChanged(object sender, ActiveNodeChangedEventArgs activeNodeChangedEventArgs)
-	    {
-	        if (activeNodeChangedEventArgs.NewActiveTreeNode==null)
-	        {
-	            activeNodeChangedEventArgs.Cancel = true;
-	        }
-	        if (activeNodeChangedEventArgs.NewActiveTreeNode != null)
-	        {
-	            var explorerItemViewModel = activeNodeChangedEventArgs.NewActiveTreeNode.Data as IExplorerItemViewModel;
-	            if (explorerItemViewModel != null)
-	            {
-	                explorerItemViewModel.ItemSelectedCommand.Execute(null);
-	            }
-	        }
-	    }
+
 
 	    public ExplorerViewTestClass ExplorerViewTestClass
 	    {
 	        get { return _explorerViewTestClass; }
 	    }
-
-
-	    private void ScrollBar_Loaded(object sender, RoutedEventArgs e)
-        {
-	        var scrollBar = sender as ScrollBar;
-	        if (scrollBar != null && scrollBar.Orientation == Orientation.Horizontal)
-            {
-                ExplorerTree.Tag = sender;                
-            }
-        }
 
         public IEnvironmentViewModel OpenEnvironmentNode(string nodeName)
         {
@@ -89,7 +60,7 @@ namespace Warewolf.Studio.Views
             BindingExpression be = SearchTextBox.GetBindingExpression(TextBox.TextProperty);
 	        if (be != null)
 	        {
-            be.UpdateSource();
+	            be.UpdateSource();
 	        }
 	    }
 
@@ -142,11 +113,6 @@ namespace Warewolf.Studio.Views
             }
 	    }
 
-	    public void UnBlur()
-	    {
-            RemoveVisualChild(_blackoutGrid);
-	    }
-
 	    void ExplorerTree_OnNodeDragDrop(object sender, TreeDropEventArgs e)
 	    {
             
@@ -195,6 +161,6 @@ namespace Warewolf.Studio.Views
             if (parent != null)
                 return parent;
             return FindParent<T>(parentObject);
-        }
+	    }
 	}
 }
