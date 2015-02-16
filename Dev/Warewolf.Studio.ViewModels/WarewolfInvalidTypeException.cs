@@ -3,6 +3,7 @@ using Dev2.Common.Interfaces.ErrorHandling;
 
 namespace Warewolf.Studio.ViewModels
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1405:ComVisibleTypeBaseTypesShouldBeComVisible")]
     public class WarewolfInvalidTypeException : WarewolfException
     {
         // ReSharper disable TooManyDependencies
@@ -13,6 +14,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
     }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1405:ComVisibleTypeBaseTypesShouldBeComVisible")]
     public class WarewolfInvalidPermissionsException: WarewolfException
     {
         // ReSharper disable TooManyDependencies

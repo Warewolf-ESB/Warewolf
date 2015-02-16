@@ -268,6 +268,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.ServerProxyLayerTests", "ServerProxyLayerTests\Warewolf.Studio.ServerProxyLayerTests.csproj", "{7832D912-8E26-44C4-B8A2-05449246B070}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Models", "Warewolf.Studio.Models\Warewolf.Studio.Models.csproj", "{3D7EB0D0-41A4-4A83-93DF-45A40E2CBB31}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CC1B89CD-3222-4019-A0D1-58664F92CC47} = {CC1B89CD-3222-4019-A0D1-58664F92CC47}
+		{97A827FF-65C4-4267-99D2-DCE6803B2348} = {97A827FF-65C4-4267-99D2-DCE6803B2348}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Models.Tests", "Warewolf.Studio.Models.Tests\Warewolf.Studio.Models.Tests.csproj", "{0BACFDB5-826A-41AF-9710-6CB8E51007DD}"
 EndProject

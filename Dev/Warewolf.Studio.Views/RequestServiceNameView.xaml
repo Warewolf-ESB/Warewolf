@@ -19,8 +19,8 @@
     <Grid Margin="{StaticResource ContainerBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -47,7 +47,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Margin="{StaticResource ElementBorder}" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TextBlock Grid.Column="0"  Margin="{StaticResource ElementBorder}" HorizontalAlignment="Left" VerticalAlignment="Center">
                 Name:
             </TextBlock>
             <TextBox Grid.Column="1"
@@ -59,8 +59,7 @@
                                     UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <DockPanel Grid.Row="2"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Center">
+                   HorizontalAlignment="Right" VerticalAlignment="Center">
 
 
             <TextBlock HorizontalAlignment="Right"
