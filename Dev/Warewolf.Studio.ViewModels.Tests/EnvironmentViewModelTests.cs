@@ -109,7 +109,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             ResourceType? resourceTypeParameter = null;
             var shellViewModelMock = new Mock<IShellViewModel>();
             var server = new Mock<IServer>();
-            shellViewModelMock.Setup(model => model.NewResource(It.IsAny<ResourceType?>(), Guid.Empty)).Callback((ResourceType? resourceType) => resourceTypeParameter = resourceType);
+            shellViewModelMock.Setup(model => model.NewResource(It.IsAny<ResourceType?>(), Guid.Empty)).Callback((ResourceType? resourceType,Guid selectedGuid) => resourceTypeParameter = resourceType);
             //------------Execute Test---------------------------
             var environmentViewModel = new EnvironmentViewModel(server.Object,shellViewModelMock.Object);
             //------------Assert Results-------------------------
@@ -229,7 +229,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             var filteredList = environmentViewModel.Children.ToList();
             Assert.IsTrue(filteredList[0].IsVisible);
-            Assert.IsFalse(filteredList[1].IsVisible);
             
          }
 
