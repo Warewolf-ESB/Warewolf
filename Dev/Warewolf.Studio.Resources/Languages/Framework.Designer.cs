@@ -77,14 +77,5 @@ namespace Warewolf.Studio.Resources.Languages {
                 return ResourceManager.GetString("Exception_ArgumentCannotBeNullOrEmpty", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;td&gt;,&lt;tr&gt;,&lt;table&gt;,&lt;/table&gt;,&lt;/td&gt;,&lt;/tr&gt;,&lt;head&gt;,&lt;/head&gt;,&lt;form&gt;,&lt;/form&gt;.
-        /// </summary>
-        public static string UnlimitedObject_String_Includes {
-            get {
-                return ResourceManager.GetString("UnlimitedObject_String_Includes", resourceCulture);
-            }
-        }
     }
 }

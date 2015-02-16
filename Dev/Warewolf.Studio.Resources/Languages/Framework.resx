@@ -123,7 +123,4 @@
   <data name="Exception_ArgumentCannotBeNullOrEmpty" xml:space="preserve">
     <value>Argument cannot be null or empty</value>
   </data>
-  <data name="UnlimitedObject_String_Includes" xml:space="preserve">
-    <value>&lt;td&gt;,&lt;tr&gt;,&lt;table&gt;,&lt;/table&gt;,&lt;/td&gt;,&lt;/tr&gt;,&lt;head&gt;,&lt;/head&gt;,&lt;form&gt;,&lt;/form&gt;</value>
-  </data>
 </root>
