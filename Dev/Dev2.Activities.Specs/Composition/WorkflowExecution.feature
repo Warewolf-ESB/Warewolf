@@ -2915,7 +2915,7 @@ Scenario: Workflow by using For Each with Raandom in it
 	And the 'Random' in step 5 for 'ForEachTest123' debug outputs as
          |                      |
          | [[rec(1).a]] = Int32 |
-
+#Wolf - 604
 Scenario: Workflow by using For Each in recordset with Raandom in it 
       Given I have a workflow "WFWithForEachInrecordsetContainsRandomTool"
 	   And "WFWithForEachInrecordsetContainsRandomTool" contains an Assign "Recordset" as
@@ -2928,6 +2928,14 @@ Scenario: Workflow by using For Each in recordset with Raandom in it
 	    | Numbers | [[rec().a]] | 100 | [[result]] |
       When "WFWithForEachContainsRandom" is executed
 	  Then the workflow execution has "NO" error
+	    And the 'ForE' in WorkFlow 'WFWithForEachInrecordsetContainsRandomTool' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs().a]] =  | 1         |
+	  | 2 | [[rec().a]] = | 2         |
+	  And the 'ForE' in Workflow 'WFWithForEachInrecordsetContainsRandomTool' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rs(1).a]] = 10  |
+	  | 2 | [[rec(2).a]] = 20 |
 	  And the 'ForE' in WorkFlow 'WFWithForEachInrecordsetContainsRandomTool' debug inputs as 
 	   |              | Recordset         |
 	   | in Recordset | [[rec(1).a]] = 10 |
@@ -2947,7 +2955,7 @@ Scenario: Workflow by using For Each in recordset with Raandom in it
 	    | [[rec(1).a]] = Int32 |
       
 	 
-
+#Wolf - 604
 Scenario: Workflow by using For Each with workflow in it
       Given I have a workflow "WFWithForEachInrecordsetTesting"
 	  And "WFWithForEachInrecordsetTesting" contains an Assign "Recordset" as
@@ -2985,6 +2993,7 @@ Scenario: Workflow by using For Each with workflow in it
         |                 |
         | [[res]] = Int32 |
 
+#Wolf - 604
 Scenario: Workflow by using For Each with workflow
       Given I have a workflow "WFWithForEachInrecordsetUtilityRandomTesting"
 	  And "WFWithForEachInrecordsetUtilityRandomTesting" contains an Assign "Recordset1" as
