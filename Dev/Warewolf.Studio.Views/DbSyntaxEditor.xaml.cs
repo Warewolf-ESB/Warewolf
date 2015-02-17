@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
-using Dev2.Common.Interfaces.DB;
 using Infragistics.Documents;
 using Infragistics.Documents.Parsing;
 
@@ -18,14 +17,12 @@ namespace Warewolf.Studio.Views
         public DbSyntaxEditor()
         {
             InitializeComponent();
-            SyntaxEditor.Document = new TextDocument();
-            SyntaxEditor.Document.IsReadOnly = true;
-            SyntaxEditor.Document.Language = TSqlLanguage.Instance;
-           
+            SyntaxEditor.Document = new TextDocument { IsReadOnly = true, Language = TSqlLanguage.Instance };
+
             SyntaxEditor.Document.InitializeText(@"USE [Dev2TestingDB]
 GO
 
-/****** Object:  StoredProcedure [dbo].[proc_SmallFetch]    Script Date: 02/16/2015 06:40:55 ******/
+/****** Object:  StoredProcedure [dbo].[proc_SmallFetch]    Script Date: 02/16/2015 06:40:55 *****/
 SET ANSI_NULLS ON
 GO
 
@@ -78,9 +75,7 @@ GO");
             IsModal = true;
             var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
             var content = Application.Current.MainWindow.Content as Grid;
-            _blackoutGrid = new Grid();
-            _blackoutGrid.Background = new SolidColorBrush(Colors.Black);
-            _blackoutGrid.Opacity = 0.75;
+            _blackoutGrid = new Grid { Background = new SolidColorBrush(Colors.Black), Opacity = 0.75 };
             if (content != null)
             {
                 content.Children.Add(_blackoutGrid);
@@ -107,24 +102,12 @@ GO");
             _window.Close();
         }
 
+        // ReSharper disable InconsistentNaming
         private void Button_Click(object sender, RoutedEventArgs e)
+            // ReSharper restore InconsistentNaming
         {
             RequestClose();
         }
 
-    }
-
-    public class HelpTextValue:IDbHelpText
-    {
-        public HelpTextValue(string helpText)
-        {
-            HelpText = helpText;
-        }
-
-        #region Implementation of IDbHelpText
-
-        public string HelpText { get; private set; }
-
-        #endregion
     }
 }

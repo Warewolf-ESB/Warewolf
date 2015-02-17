@@ -10,7 +10,7 @@ namespace Warewolf.Studio.Views
     {
         protected override void Invoke(object parameter)
         {
-            if (base.AssociatedObject != null)
+            if (AssociatedObject != null)
             {
                 ICommand command = ResolveCommand();
                 if ((command != null) && command.CanExecute(parameter))
@@ -27,13 +27,13 @@ namespace Warewolf.Studio.Views
             {
                 return Command;
             }
-            if (base.AssociatedObject != null)
+            if (AssociatedObject != null)
             {
-                foreach (PropertyInfo info in base.AssociatedObject.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                foreach (PropertyInfo info in AssociatedObject.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
                     if (typeof(ICommand).IsAssignableFrom(info.PropertyType) && string.Equals(info.Name, CommandName, StringComparison.Ordinal))
                     {
-                        command = (ICommand)info.GetValue(base.AssociatedObject, null);
+                        command = (ICommand)info.GetValue(AssociatedObject, null);
                     }
                 }
             }
@@ -41,29 +41,37 @@ namespace Warewolf.Studio.Views
         }
 
         private string _commandName;
+        // ReSharper disable MemberCanBePrivate.Global
         public string CommandName
+            // ReSharper restore MemberCanBePrivate.Global
         {
             get
             {
-                base.ReadPreamble();
+                ReadPreamble();
                 return _commandName;
             }
+            // ReSharper disable UnusedMember.Global
             set
+                // ReSharper restore UnusedMember.Global
             {
                 if (CommandName != value)
                 {
-                    base.WritePreamble();
+                    WritePreamble();
                     _commandName = value;
-                    base.WritePostscript();
+                    WritePostscript();
                 }
             }
         }
 
         #region Command
+        // ReSharper disable MemberCanBePrivate.Global
         public ICommand Command
+            // ReSharper restore MemberCanBePrivate.Global
         {
             get { return (ICommand)GetValue(CommandProperty); }
+            // ReSharper disable UnusedMember.Global
             set { SetValue(CommandProperty, value); }
+            // ReSharper restore UnusedMember.Global
         }
 
         // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...

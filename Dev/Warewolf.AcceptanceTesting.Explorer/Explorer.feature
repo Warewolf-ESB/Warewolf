@@ -124,15 +124,19 @@ Scenario: Opening Versions in Explorer
  Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
 #
 #
-#cenario: No Version history option for services and sources.
-#  Given the explorer is visible
-#  When I open "localhost" server
-#  Then I should see "Webservice" in "localhost" server
-#  When I Show Version History for "service" in "localhost" server is "False"
-#  Then I should see "Pluginservice" in "localhost" server
-#  When I Show Version History for "Pluginservice" in "localhost" server is "False"
-#  Then I should see "Remoteserver" in "localhost" server
-#  When I Show Version History for "Remoteserver" in "localhost" server is "False"
+Scenario: No Version history option for services and sources.
+  Given the explorer is visible
+  When I open "localhost" server
+  And I Setup a resource  "1" "WebService" to be returned for "localhost" called "WebService"
+  And I Add  "1" "PluginService" to be returned for "localhost"
+  And I Add  "1" "ServerSource" to be returned for "localhost"
+  Then I should see the path "localhost/WebService"
+  Then I should see the path "localhost/PluginService"
+  Then I should see the path "localhost/ServerSource"
+  And "Show Version History" Context menu  should be "Invisible" for "localhost/WebService 1"
+  And "Show Version History" "localhost/PluginService" should be "Invisible" for "localhost/Webservice"
+  And "Show Version History" "localhost/Remoteserver" should be "Invisible" for "localhost/Webservice"
+
 # 
 #
 #
@@ -214,17 +218,22 @@ Scenario: Opening Versions in Explorer
 #
 #
 #
-#cenario: Renaming Folder And Workflow Service
-#	Given the explorer is visible
-#	And I open "localhost" server
-#	When I rename "Folder 2" to "Folder New"
-#	Then I should see "18" children for "Folder New"
-#	And I should not see "Folder 2"
-#	Given I rename "WF1" of "Follder 1" to "WorkFlow1" in "localhost" server 
-#	Then I should see "WorkFlow1" of "Folder1" in "localhost" server
-#	And I should not see "WF1" in "Folder1"
-#	Given I rename "WF2" of "Follder 1" to "WorkFlow1" in "Localhost" server 
-#	Then Conflict message is occured
+Scenario: Renaming Folder And Workflow Service
+	Given the explorer is visible
+	And I open "localhost" server
+	When I rename "localhost/Folder 2" to "Folder New"
+	Then I should see "18" children for "Folder New"
+	When I open "Folder New"
+	And I create the "localhost/Folder New/Resource 1" of type "WorkflowService" 
+	
+	Then I should see the path "localhost/Folder New"
+	Then I should see the path "localhost/Folder New/Resource 1"
+	And I should not see "Folder 2"
+	And I should not see the path "localhost/Folder 2"
+	When I rename "localhost/Folder New/Resource 1" to "WorkFlow1"	
+	Then I should see the path "localhost/Folder New/WorkFlow1"
+#	Given I rename "WF2" of "Follder 1" to "WorkFlow1" in "Localhost" server #
+#	Then Conflict error message is occurs
 #
 #cenario: Renaming Service in explorer
 #   Given the explorer is visible

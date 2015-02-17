@@ -30,7 +30,8 @@ namespace Warewolf.Studio.ViewModels
             //todo:show popup here
             return false;
         }
-        public  IDeployPredicate ConflictPredicate { get; private set; }
+
+        internal IDeployPredicate ConflictPredicate { get; private set; }
         
         public IList<IConflict> Conflicts { get; set; }
 

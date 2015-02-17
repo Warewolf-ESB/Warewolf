@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.AppResources.DependencyVisualization;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
@@ -19,7 +18,7 @@ namespace Warewolf.Studio.Views
             _explorerView = explorerView;
         }
 
-        public XamDataTreeNode GetNode(string nodeName)
+        XamDataTreeNode GetNode(string nodeName)
         {
             var flattenTree = Descendants(_explorerView.ExplorerTree.Nodes[0]);
             var foundNode = flattenTree.FirstOrDefault(node =>
@@ -106,7 +105,7 @@ namespace Warewolf.Studio.Views
 
         public void PerformFolderRename(string originalFolderName, string newFolderName)
         {
-            var foundFolder = GetFolderXamDataTreeNode(originalFolderName).Data as IExplorerItemViewModel;
+            var foundFolder = VerifyItemExists(originalFolderName).Data as IExplorerItemViewModel;
             if (foundFolder != null)
             {
                 foundFolder.RenameCommand.Execute(null);
@@ -212,17 +211,17 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                var toSearch = path.Substring(0, path.IndexOf("/", System.StringComparison.Ordinal));
+                var toSearch = path.Substring(0, path.IndexOf("/", StringComparison.Ordinal));
                 var childnode = _explorerView.ExplorerTree.Nodes.FirstOrDefault(a => ((IEnvironmentViewModel)a.Data).DisplayName.Contains(toSearch));
-                if (path.Length > 1 + path.IndexOf("/", System.StringComparison.Ordinal))
+                if (path.Length > 1 + path.IndexOf("/", StringComparison.Ordinal))
                 {
-                   return VerifyItemExists(path.Substring(1 + path.IndexOf("/", System.StringComparison.Ordinal)),  childnode);
+                   return VerifyItemExists(path.Substring(1 + path.IndexOf("/", StringComparison.Ordinal)),  childnode);
                 }
                 throw new Exception("Invalid path");
             }
         }
 
-        public XamDataTreeNode VerifyItemExists(string path, XamDataTreeNode node)
+        XamDataTreeNode VerifyItemExists(string path, XamDataTreeNode node)
         {
             if(!path.Contains("/"))
             {
@@ -231,11 +230,11 @@ namespace Warewolf.Studio.Views
                    
                 
             }
-            var toSearch = path.Substring(0, path.IndexOf("/", System.StringComparison.Ordinal));
+            var toSearch = path.Substring(0, path.IndexOf("/", StringComparison.Ordinal));
             var childnode = GetNodeWithName(toSearch,node);
-            if(path.Length > 1 + path.IndexOf("/", System.StringComparison.Ordinal))
+            if(path.Length > 1 + path.IndexOf("/", StringComparison.Ordinal))
             {
-                return  VerifyItemExists(path.Substring(1 + path.IndexOf("/", System.StringComparison.Ordinal)), childnode);
+                return  VerifyItemExists(path.Substring(1 + path.IndexOf("/", StringComparison.Ordinal)), childnode);
             }
             throw  new Exception("Invalid path");
         }
@@ -263,7 +262,7 @@ namespace Warewolf.Studio.Views
         {
             if(path.Contains("/"))
             {
-                var node = VerifyItemExists(path.Substring(0, path.LastIndexOf("/", System.StringComparison.Ordinal)));
+                var node = VerifyItemExists(path.Substring(0, path.LastIndexOf("/", StringComparison.Ordinal)));
                 var env = node.Data as IExplorerTreeItem;
                 if (env != null)
                 {
@@ -272,7 +271,7 @@ namespace Warewolf.Studio.Views
                     var explorerItemViewModel = env.Children.FirstOrDefault(a => a.IsRenaming);
                     if (explorerItemViewModel != null)
                     {
-                        explorerItemViewModel.ResourceName = path.Substring(1+ path.LastIndexOf("/", System.StringComparison.Ordinal));
+                        explorerItemViewModel.ResourceName = path.Substring(1+ path.LastIndexOf("/", StringComparison.Ordinal));
                         explorerItemViewModel.IsRenaming = false;
 
                     }
@@ -287,19 +286,18 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        public void PerformItemAdd(string path, string itemType)
+        public void PerformItemAdd(string path)
         {
              if(path.Contains("/"))
             {
-                var node = VerifyItemExists(path.Substring(0, path.LastIndexOf("/", System.StringComparison.Ordinal)));
+                var node = VerifyItemExists(path.Substring(0, path.LastIndexOf("/", StringComparison.Ordinal)));
                 if(node == null)
                     throw  new Exception("Invalid path");
-                var type = Enum.Parse(typeof(ResourceType), itemType);
 
                 var item = (node.Data as ExplorerItemViewModel);
                 if(item != null)
                 {
-                    item.AddChild(new ExplorerItemViewModel(item.ShellViewModel,item.Server,new Mock<IExplorerHelpDescriptorBuilder>().Object,item){ ResourceName = path.Substring(1+ path.LastIndexOf("/", System.StringComparison.Ordinal))});
+                    item.AddChild(new ExplorerItemViewModel(item.ShellViewModel,item.Server,new Mock<IExplorerHelpDescriptorBuilder>().Object,item){ ResourceName = path.Substring(1+ path.LastIndexOf("/", StringComparison.Ordinal))});
                 }
             }
              else
@@ -310,14 +308,14 @@ namespace Warewolf.Studio.Views
 
 
 
-        public void AddChildren(int resourceNumber, string path, string type)
+        public void AddChildren(int resourceNumber, string path, string type,string name="Resource ")
         {
             var resourceType = (ResourceType)Enum.Parse(typeof(ResourceType), type);
             if (path.Contains("/"))
             {
                 var node = VerifyItemExists(path);
                 var item = (node.Data as ExplorerItemViewModel);
-                string name = "Resource ";
+              
                 for(int i = 0; i < resourceNumber; i++)
                 {
                     if(item != null)
@@ -330,7 +328,7 @@ namespace Warewolf.Studio.Views
             {
                 var node = VerifyItemExists(path);
                 var item = (node.Data as EnvironmentViewModel);
-                string name = "Resource ";
+
                 for (int i = 0; i < resourceNumber; i++)
                 {
                     if(item != null)
@@ -344,16 +342,7 @@ namespace Warewolf.Studio.Views
         public int GetFoldersResourcesVisible(string path)
         {
             var node = VerifyItemExists(path);
-            int count = 0;
-            foreach(var child in node.Nodes)
-            {
-                var childitem = (child.Data as ExplorerItemViewModel);
-                if (childitem.ResourceType == ResourceType.WorkflowService)
-                {
-                    count++;
-                }
-            }
-            return count;
+            return node.Nodes.Select(child => (child.Data as ExplorerItemViewModel)).Count(childitem => childitem != null && childitem.ResourceType == ResourceType.WorkflowService);
         }
 
         public void ShowVersionHistory(string path)
@@ -373,12 +362,12 @@ namespace Warewolf.Studio.Views
                 var node = VerifyItemExists(path);
                 var item = (node.Data as ExplorerItemViewModel);
                 var items = new List<IExplorerItemViewModel>();
-                string name = "Resource ";
+                const string Name = "Resource ";
                 for (int i = 0; i < count; i++)
                 {
                     if (item != null)
                     {
-                        items.Add(new ExplorerItemViewModel(item.ShellViewModel, item.Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, item) { ResourceName = name + i, ResourceType = ResourceType.Version });
+                        items.Add(new ExplorerItemViewModel(item.ShellViewModel, item.Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, item) { ResourceName = Name + i, ResourceType = ResourceType.Version });
                     }
                 }
                 return items;
@@ -387,25 +376,37 @@ namespace Warewolf.Studio.Views
 
         public void PerformVersionRollback(string versionPath)
         {
-            var node = VerifyItemExists(versionPath.Substring(0,versionPath.LastIndexOf("/", System.StringComparison.Ordinal)));
+            var node = VerifyItemExists(versionPath.Substring(0,versionPath.LastIndexOf("/", StringComparison.Ordinal)));
             
             var explorerItemViewModel = node.Data as IExplorerItemViewModel;
             if(explorerItemViewModel != null)
             {
-                var child = explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1+versionPath.LastIndexOf("/", System.StringComparison.Ordinal))));
-                child.RollbackCommand.Execute(null);
+                var child = explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1+versionPath.LastIndexOf("/", StringComparison.Ordinal))));
+                if(child != null)
+                {
+                    child.RollbackCommand.Execute(null);
+                }
             }
         }
 
         public void PerformVersionDelete(string versionPath)
         {
-            var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("/", System.StringComparison.Ordinal)));
+            var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("/", StringComparison.Ordinal)));
             var explorerItemViewModel = node.Data as IExplorerItemViewModel;
             if (explorerItemViewModel != null)
             {
-                var child = explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("/", System.StringComparison.Ordinal))));
-                child.DeleteVersionCommand.Execute(null);
+               explorerItemViewModel.DeleteVersionCommand.Execute(null);
             }
         }
+
+        public void VerifyContextMenu(string option, string visibility, string path)
+        {
+
+        }
+
+
+
+
+       
     }
 }
