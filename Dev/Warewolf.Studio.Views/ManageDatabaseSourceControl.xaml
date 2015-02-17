@@ -65,7 +65,7 @@
         </Grid>
         <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="5" Grid.Column="0" Text="{Binding DatabaseLabel}"/>
         <ComboBox Margin="{StaticResource ElementBorder}" ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Row="5" Grid.Column="1"></ComboBox>
-        <StackPanel Grid.Row="6" Margin="{StaticResource ElementBorder}" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
             <TextBlock Text="{Binding TestMessage}"></TextBlock>
             <fa:ImageAwesome Width="14"  Height="14" Margin="{StaticResource ElementBorder}" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
             <fa:ImageAwesome Width="14" Height="14"  Margin="{StaticResource ElementBorder}" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Ban" HorizontalAlignment="Right" Grid.Column="2"/>
