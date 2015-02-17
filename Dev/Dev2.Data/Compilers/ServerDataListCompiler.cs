@@ -1698,12 +1698,7 @@ namespace Dev2.Server.Datalist
 
             IBinaryDataList result = _dlServer.ReadDatalist(id, out errors);
 
-            if(result == null)
-            {
-                error = "Cache miss for [ " + id + " ]";
-            }
-
-            return result;
+           return result;
         }
 
         /// <summary>

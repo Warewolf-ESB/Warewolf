@@ -501,12 +501,16 @@ namespace Dev2.Runtime.ESB.Control
                 // we have a scoped datalist ;)
                 
                 compiler.SetParentID(shapeID, oldID);
-                var inputID = compiler.Shape(oldID, enDev2ArgumentType.Input, inputDefs, out invokeErrors, shapeID);
+                var inputID = compiler.Shape(oldID, enDev2ArgumentType.Input, inputDefs, out invokeErrors,oldID);
                 errors.MergeErrors(invokeErrors);
-                var outputID = compiler.Shape(shapeID, enDev2ArgumentType.Output, outputDefs, out invokeErrors);
+                var outputID = compiler.Shape(shapeID, enDev2ArgumentType.Output, outputDefs, out invokeErrors,oldID);
                 errors.MergeErrors(invokeErrors);
                 shapeID = compiler.Merge(outputID,inputID, enDataListMergeTypes.Union,enTranslationDepth.Shape,false, out invokeErrors);             
                 errors.MergeErrors(invokeErrors);
+                // ReSharper disable UnusedVariable
+                var dl1 = compiler.ConvertFrom(shapeID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                // ReSharper restore UnusedVariable
             }
 
             // set execution ID ;)

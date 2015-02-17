@@ -483,7 +483,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     _lastStep = content;
                 }
-                return;
+                //return;
             }
 
             _continueDebugDispatch = false;
@@ -770,7 +770,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var contentToDispatch = content;
                 if(dispatcher != null && dispatcher.CheckAccess())
                 {
-                    dispatcher.BeginInvoke(new Action(() => AddItemToTreeImpl(contentToDispatch)), DispatcherPriority.Background);
+                    dispatcher.Invoke(() => AddItemToTreeImpl(contentToDispatch));
                 }
             }
             else
