@@ -212,6 +212,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>New Database Source.feature</DependentUpon>
     </Compile>
+    <Compile Include="Design Surface.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Design Surface.feature</DependentUpon>
+    </Compile>
     <Compile Include="Explorer.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -246,6 +251,10 @@
     <None Include="DBService Specs\New Database Source.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>New Database Source.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Design Surface.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Design Surface.feature.cs</LastGenOutput>
     </None>
     <None Include="Explorer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
