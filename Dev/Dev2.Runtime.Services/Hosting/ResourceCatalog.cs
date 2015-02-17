@@ -1356,9 +1356,14 @@ namespace Dev2.Runtime.Hosting
                 UpdateIsValid(resourceElement);
             }
 
-            StringBuilder contents = resourceElement.ToStringBuilder();
-            contents.WriteToFile(resource.FilePath, Encoding.UTF8);
+            StringBuilder result = resourceElement.ToStringBuilder();
 
+            var signedXml = HostSecurityProvider.Instance.SignXml(result);
+
+            lock (GetFileLock(resource.FilePath))
+            {
+                signedXml.WriteToFile(resource.FilePath, Encoding.UTF8);
+            }
         }
 
         void SetErrors(XElement resourceElement, IList<ICompileMessageTO> compileMessagesTO)
