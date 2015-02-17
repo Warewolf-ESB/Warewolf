@@ -702,7 +702,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (!String.IsNullOrEmpty(ResourceName))
                 {
-                    IsVisible = ResourceName.Contains(filter);
+                    IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
                 }
             }
             OnPropertyChanged(() => Children);
