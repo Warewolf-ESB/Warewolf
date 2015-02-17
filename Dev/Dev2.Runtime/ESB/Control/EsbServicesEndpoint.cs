@@ -381,7 +381,15 @@ namespace Dev2.Runtime.ESB.Control
 #pragma warning disable 168
                         // ReSharper disable UnusedVariable
                         var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                        if (dl1 == null)
+                        {
+
+                        }
                         var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                        if (dl2 == null)
+                        {
+
+                        }
                         // ReSharper restore UnusedVariable
 #pragma warning restore 168
 
@@ -503,16 +511,34 @@ namespace Dev2.Runtime.ESB.Control
             {
                 // we have a scoped datalist ;)
                 
-                compiler.SetParentID(shapeID, oldID);
+                compiler.SetParentID(shapeID, oldID);                
                 var inputID = compiler.Shape(oldID, enDev2ArgumentType.Input, inputDefs, out invokeErrors,oldID);
                 errors.MergeErrors(invokeErrors);
-                var outputID = compiler.Shape(shapeID, enDev2ArgumentType.Output, outputDefs, out invokeErrors,oldID);
+                var outputID = compiler.Merge(oldID, shapeID, enDataListMergeTypes.Union, enTranslationDepth.Shape, false, out invokeErrors);             
                 errors.MergeErrors(invokeErrors);
+//                var dl11 = compiler.ConvertFrom(inputID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+//                if (dl11 == null)
+//                {
+//
+//                }
+//                var dl21 = compiler.ConvertFrom(outputID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+//                if (dl21 == null)
+//                {
+//
+//                }
                 shapeID = compiler.Merge(outputID,inputID, enDataListMergeTypes.Union,enTranslationDepth.Shape,false, out invokeErrors);             
                 errors.MergeErrors(invokeErrors);
                 // ReSharper disable UnusedVariable
                 var dl1 = compiler.ConvertFrom(shapeID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                if (dl1 == null)
+                {
+                    
+                }
                 var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+                if (dl2 == null)
+                {
+
+                }
                 // ReSharper restore UnusedVariable
             }
 

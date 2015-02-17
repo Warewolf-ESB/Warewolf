@@ -1396,7 +1396,10 @@ namespace Dev2.Server.Datalist
                     {
                         // swap extract from and pushTo around for output shaping
                         extractFromId = childDl.UID;
-                        pushToId = childDl.ParentUID;
+                        if (childDl.ParentUID != Guid.Empty)
+                        {
+                            pushToId = childDl.ParentUID;
+                        }
                     }
 
                     var inputExpressionExtractor = BuildInputExpressionExtractor(typeOf);
