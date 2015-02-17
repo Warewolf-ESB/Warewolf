@@ -24,6 +24,9 @@ namespace Warewolf.Studio.ViewModels
         public ManageDatabaseSourceViewModel()
         {
             HeaderText = "New Database Connector Source Server";
+            Testing = true;
+            TestPassed = true;
+            TestMessage = "Test completed";
         }
 
         public enSourceType ServerType
@@ -98,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
                 // ReSharper restore UnusedMember.Local
             {
                 _testMessage = value;
-                OnPropertyChanged(() => _testMessage);
+                OnPropertyChanged(() => TestMessage);
             }
         }
 
@@ -151,6 +154,12 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.CancelTest;
             }
         }
+
+        public bool TestPassed { get; private set; }
+
+        public bool TestFailed { get; private set; }
+
+        public bool Testing { get; private set; }
 
 
         public string ServerLabel
