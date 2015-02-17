@@ -31,9 +31,18 @@ Scenario: Searching for Tool with wrong name
 	 And "Recordset\SQL Bulk Insert" is not visible
 	 And "Recordset\Web Request" is not visible
 	 And "Utility\Format Number" is not visible
-	 And all tools are not visible
+	 And all tools are "Invisible"
 
-	  
+Scenario: Clear filter button is clearing the filter textbox
+     Given warewolf "Localhost" Toolbox is loaded
+	 When I search for "Decision" in toolbox
+	 Then "Controlflow\Decision" is visible
+	 And "Controlflow\Data Merge" is not visible
+	 And "Controlflow\Data Split" is not visible
+	 And "Controlflow\Delete" is not visible
+	 When I clear "Toolbox" Filter
+	 Then toolbox textbox is ""
+	 And all tools are "Visible"
 
 Scenario: Resizing Toolbox
      Given warewolf "Localhost" Toolbox is loaded

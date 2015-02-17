@@ -290,4 +290,14 @@ Scenario: Renaming Folder And Workflow Service
 #  When I Show Version History for "WF1" in "Folder 1"
 #  Then I should see "3" versions with "View" Icons
 #  And I should not see "3" versions with "View,Execute" Icons
-#
+
+
+
+Scenario: Clearing Explorer Filter
+  Given the explorer is visible
+  And I open "localhost" server
+  When I search for "deleteresouce" in explorer
+  Then I should see "deleteresouce" in "Follder 1" 
+  When I clear "Explorer" Filter
+  Then explorer filter is ""
+  And all the resources are visible
