@@ -329,6 +329,16 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
             boot.ExplorerRepository.Setup(a => a.Delete(It.IsAny<IExplorerItemViewModel>()));
+            // ReSharper disable once MaximumChainedReferences
+            boot.PopupController.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.OK);
+            // ReSharper disable once MaximumChainedReferences
+            boot.ExplorerRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IVersionInfo>
+             {
+                    new VersionInfo(DateTime.Now,"bob","Leon","3",Guid.Empty,Guid.Empty),
+                    new VersionInfo(DateTime.Now,"bob","Leon","2",Guid.Empty,Guid.Empty),
+                    new VersionInfo(DateTime.Now,"bob","Leon","1",Guid.Empty,Guid.Empty)
+              });
+
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
             if (explorerView != null)
             {

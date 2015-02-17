@@ -51,7 +51,7 @@ namespace Warewolf.Studio.ViewModels
             RollbackCommand = new DelegateCommand(() =>
             {
                 var output = _explorerRepository.Rollback(ResourceId, VersionNumber);
-                parent.ShowVersionHistory.Execute(null);
+                parent.AreVersionsVisible = true;
                 parent.ResourceName = output.DisplayName;
             });
             _canShowVersions = true;

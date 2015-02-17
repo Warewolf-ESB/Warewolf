@@ -394,6 +394,8 @@ namespace Warewolf.Studio.Views
         {
             var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("/", StringComparison.Ordinal)));
             var explorerItemViewModel = node.Data as IExplorerItemViewModel;
+            explorerItemViewModel= explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("/", StringComparison.Ordinal))));
+
             if (explorerItemViewModel != null)
             {
                explorerItemViewModel.DeleteVersionCommand.Execute(null);
