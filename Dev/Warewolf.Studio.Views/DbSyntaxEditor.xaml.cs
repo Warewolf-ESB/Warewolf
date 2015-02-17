@@ -19,10 +19,7 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
             SyntaxEditor.Document = new TextDocument { IsReadOnly = true, Language = TSqlLanguage.Instance };
 
-            var textBlock = new TextBlock();
-            textBlock.FontSize = 16.0;
-            textBlock.Margin = new Thickness(0, 0, 0, 0);
-            textBlock.Text = "Action Inspector";
+            var textBlock = new TextBlock { FontSize = 16.0, Margin = new Thickness(0, 0, 0, 0), Text = "Action Inspector" };
             Header = textBlock; 
 
 
@@ -89,7 +86,7 @@ GO");
             }
             Application.Current.MainWindow.Effect = effect;
       
-            _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.Manual, ResizeMode = ResizeMode.CanResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
+            _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.Manual, MinWidth = 640 , MinHeight = 480,ResizeMode = ResizeMode.CanResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
             _window.ShowDialog();
         }
 
