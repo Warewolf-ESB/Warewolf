@@ -18,10 +18,11 @@ Scenario: Expand a folder
 Scenario: Rename folder
 	Given the explorer is visible
 	And I open "localhost" server
-	When I rename "Folder 2" to "Folder New"
+	When I rename "localhost/Folder 2" to "Folder New"
 	Then I should see "18" children for "Folder New"
-	And I should not see "Folder 2"
-	
+	Then I should see the path "localhost/Folder New" 
+	Then I should not see the path "localhost/Folder 2" 
+
 Scenario: Search explorer
 	Given the explorer is visible
 	And I open "localhost" server
@@ -74,8 +75,8 @@ Scenario: Creating And Deleting Folder and Popup says cancel in localhost
   #Deleting Sub Folder
   And I choose to "OK" Any Popup Messages
   When I delete "localhost/Folder 2/myNewFolder"
-  Then I should see "19" children for "Folder 2" 
-  And I should not see "New Folder" in "Folder 2"
+  Then I should see "18" children for "Folder 2" 
+  Then I should not see the path "localhost/Folder 2/myNewFolder"
 #
 #
 #
@@ -92,12 +93,11 @@ Scenario: Deleting Resource in folders
 Scenario: Deleting Resource in localhost Server
    Given the explorer is visible
    When I open "localhost" server
+   And I create the "localhost/Folder 1/Resource 1" of type "WorkflowService" 
    Then I should see "5" folders
-   And I setup 5 resources in "localhost"
-   And I should see "5" resources in "localhost"
-   Then I should see the path "localhost/Resource 1"
-   When I delete "localhost/Resource 1"
-   Then I should not see "Resource 1" in "localhost"
+   Then I should see the path "localhost/Folder 1/Resource 1"
+   When I delete "localhost/Folder 1/Resource 1"
+   Then I should not see the path "localhost/Folder 1/Resource 1"
 
 #
 #
@@ -105,9 +105,8 @@ Scenario: Deleting Resource in localhost Server
 Scenario: Opening Versions in Explorer
   Given the explorer is visible
   When I open "localhost" server
-  Then I should see "5" folders
-  And I setup 2 resources in "localhost/Folder 1"
-  And I should see "2" resources in "localhost/Folder 1"
+  And I create the "localhost/Folder 1/Resource 1" of type "WorkflowService" 
+  Then I should see the path "localhost/Folder 1/Resource 1"
   And I Setup  "3" Versions to be returned for "localhost/Folder 1/Resource 1"
   #Testing Resource Icons  
  # #Opening Version History
@@ -124,18 +123,18 @@ Scenario: Opening Versions in Explorer
  Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
 #
 #
-Scenario: No Version history option for services and sources.
-  Given the explorer is visible
-  When I open "localhost" server
-  And I Setup a resource  "1" "WebService" to be returned for "localhost" called "WebService"
-  And I Add  "1" "PluginService" to be returned for "localhost"
-  And I Add  "1" "ServerSource" to be returned for "localhost"
-  Then I should see the path "localhost/WebService"
-  Then I should see the path "localhost/PluginService"
-  Then I should see the path "localhost/ServerSource"
-  And "Show Version History" Context menu  should be "Invisible" for "localhost/WebService 1"
-  And "Show Version History" "localhost/PluginService" should be "Invisible" for "localhost/Webservice"
-  And "Show Version History" "localhost/Remoteserver" should be "Invisible" for "localhost/Webservice"
+#Scenario: No Version history option for services and sources.
+#  Given the explorer is visible
+#  When I open "localhost" server
+#  And I Setup a resource  "1" "WebService" to be returned for "localhost" called "WebService"
+#  And I Add  "1" "PluginService" to be returned for "localhost"
+#  And I Add  "1" "ServerSource" to be returned for "localhost"
+#  Then I should see the path "localhost/WebService"
+#  Then I should see the path "localhost/PluginService"
+#  Then I should see the path "localhost/ServerSource"
+#  And "Show Version History" Context menu  should be "Invisible" for "localhost/WebService 1"
+#  And "Show Version History" "localhost/PluginService" should be "Invisible" for "localhost/Webservice"
+#  And "Show Version History" "localhost/Remoteserver" should be "Invisible" for "localhost/Webservice"
 
 # 
 #
@@ -225,17 +224,19 @@ Scenario: Renaming Folder And Workflow Service
 	Then I should see "18" children for "Folder New"
 	When I open "Folder New"
 	And I create the "localhost/Folder New/Resource 1" of type "WorkflowService" 
-	
+	And I create the "localhost/Folder New/Resource 2" of type "WorkflowService" 
 	Then I should see the path "localhost/Folder New"
 	Then I should see the path "localhost/Folder New/Resource 1"
 	And I should not see "Folder 2"
 	And I should not see the path "localhost/Folder 2"
 	When I rename "localhost/Folder New/Resource 1" to "WorkFlow1"	
 	Then I should see the path "localhost/Folder New/WorkFlow1"
-#	Given I rename "WF2" of "Follder 1" to "WorkFlow1" in "Localhost" server #
-#	Then Conflict error message is occurs
+	When I rename "localhost/Folder New/Resource 2" to "WorkFlow1"	
+	Then Conflict error message is occurs
+
+
 #
-#cenario: Renaming Service in explorer
+#Scenario: Renaming Service in explorer
 #   Given the explorer is visible
 #	And I open "localhost" server
 #	And I should see "Renameresource" in "localhost"
@@ -244,7 +245,7 @@ Scenario: Renaming Folder And Workflow Service
 #	Then Conflict message should be occured
 #
 #
-#cenario: Rename conflicting resources
+#Scenario: Rename conflicting resources
 #   Given the explorer is visible
 #	And I open "localhost" server
 #	And I should see "Conflict" in "localhost"
@@ -256,7 +257,8 @@ Scenario: Renaming Folder And Workflow Service
 #
 #
 #	
-#cenario: Renaming Workflow Service Is Creating Version In Version History
+#********************************Requires server side interaction. Normal specs or Coded UI **********************************
+#Scenario: Renaming Workflow Service Is Creating Version In Version History
 #	Given the explorer is visible
 #	And I open "localhost" server
 #	Given I rename "WF2" of "Follder 1" to "WorkFlow2" in "Localhost" server 
@@ -267,37 +269,60 @@ Scenario: Renaming Folder And Workflow Service
 #   And I should not see "1" version with "Execute" Icons
 #
 #
-#cenario: Opening Resources from remote server
+
+# *************** To be done with remote Servers ****************************
+#Scenario: Opening Resources from remote server
 #   Given the explorer is visible
 #	When I Connected to Remote Server "Remote"
 #	And I open "Remote" server
 #	Then I should see "10" folders
 #	
 #
-#cenario: Searching resources by using filter
-#  Given the explorer is visible
-#  And I open "localhost" server
-#  When I search for "Folder 1" in explorer
-#  Then I should see "Folder 1" in "localhost" server 
-#  And I search for "deleteresouce" in explorer
-#  Then I should see "deleteresouce" in "Follder 1" 
-#
-#cenario: Checking versions 
-#  Given the explorer is visible
-#  And I open "localhost" server
-#  When I search for "WF1" in explorer
-#  Then I should see "WF1" in "Follder 1" 
-#  When I Show Version History for "WF1" in "Folder 1"
-#  Then I should see "3" versions with "View" Icons
-#  And I should not see "3" versions with "View,Execute" Icons
 
-
-
-Scenario: Clearing Explorer Filter
+Scenario: Searching resources by using filter
   Given the explorer is visible
   And I open "localhost" server
-  When I search for "deleteresouce" in explorer
-  Then I should see "deleteresouce" in "Follder 1" 
+  When I open "Folder 1"
+  And I create the "localhost/Folder 1/Resource 1" of type "WorkflowService" 
+  Then I should see the path "localhost/Folder 1/Resource 1"
+  When I search for "Folder 1" in explorer
+  Then I should see the path "localhost/Folder 1"
+  Then I should not see the path "localhost/Folder 1/Resource 1"
+  Then I should not see the path "localhost/Folder 2"
+  When I search for "Resource 1" in explorer
+  When I open "Folder 1"
+  Then I should see the path "localhost/Folder 1/Resource 1"
+
+
+
+Scenario: Checking versions 
+  Given the explorer is visible
+  When I open "localhost" server
+  And I create the "localhost/Folder 1/Resource 1" of type "WorkflowService" 
+  Then I should see "5" folders
+  And I Setup  "3" Versions to be returned for "localhost/Folder 1/Resource 1"
+  When I Show Version History for "localhost/Folder 1/Resource 1"
+  Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
+  When I search for "Resource 1" in explorer
+  Then I should see the path "localhost/Folder 1/Resource 1"
+  Then I should see "3" versions with "View" Icons in "localhost/Folder 1/Resource 1"
+
+
+Scenario: Clear filter
+  Given the explorer is visible
+  And I open "localhost" server
+  When I open "Folder 1"
+  And I create the "localhost/Folder 1/Resource 1" of type "WorkflowService" 
+  Then I should see the path "localhost/Folder 1/Resource 1"
+  When I search for "Folder 1" in explorer
+  Then I should see the path "localhost/Folder 1"
+  Then I should not see the path "localhost/Folder 1/Resource 1"
+  Then I should not see the path "localhost/Folder 2"
+  When I search for "Resource 1" in explorer
+  When I open "Folder 1"
+  Then I should see the path "localhost/Folder 1/Resource 1"
   When I clear "Explorer" Filter
-  Then explorer filter is ""
-  And all the resources are visible
+  Then I should see the path "localhost/Folder 2"
+  Then I should see the path "localhost/Folder 2"
+  Then I should see the path "localhost/Folder 2"
+  Then I should see the path "localhost/Folder 2"

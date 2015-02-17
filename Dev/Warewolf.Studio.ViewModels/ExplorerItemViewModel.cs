@@ -51,7 +51,7 @@ namespace Warewolf.Studio.ViewModels
             RollbackCommand = new DelegateCommand(() =>
             {
                 var output = _explorerRepository.Rollback(ResourceId, VersionNumber);
-                parent.ShowVersionHistory.Execute(null);
+                parent.AreVersionsVisible = true;
                 parent.ResourceName = output.DisplayName;
             });
             _canShowVersions = true;
@@ -138,7 +138,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void RemoveChild(IExplorerItemViewModel child)
         {
-            _children.Remove(child);
+            var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
+            tempChildren.Remove(child);
+            _children = tempChildren;
             OnPropertyChanged(()=>Children);
         }
 
@@ -225,7 +227,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void UpdatePermissions(PermissionsChangedArgs args)
+       public void UpdatePermissions(PermissionsChangedArgs args)
         {
             var resourcePermission = args.Permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
             if (resourcePermission != null)
@@ -313,16 +315,24 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (IsRenaming && _explorerRepository.Rename(this, value)  )
+                if(Parent != null && Parent.Children.Any(a=>a.ResourceName == value))
                 {
-                _resourceName = value;
+                    _shellViewModel.ShowPopup(PopupMessages.GetDuplicateMessage(value));
+
                 }
-                if (!IsRenaming)
+                else
                 {
+                    if (IsRenaming  && _explorerRepository.Rename(this, value)  )
+                    {
                     _resourceName = value;
+                    }
+                    if (!IsRenaming)
+                    {
+                        _resourceName = value;
+                    }
+                    IsRenaming = false;
+                    OnPropertyChanged(() => ResourceName);
                 }
-                IsRenaming = false;
-                OnPropertyChanged(() => ResourceName);
             }
         }
         public ICollection<IExplorerItemViewModel> Children
@@ -702,9 +712,9 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (!String.IsNullOrEmpty(ResourceName))
+                if (!String.IsNullOrEmpty(ResourceName) && ResourceType!= ResourceType.Version)
                 {
-                    IsVisible = ResourceName.Contains(filter);
+                    IsVisible = ResourceName.Contains(filter) ;
                 }
             }
             OnPropertyChanged(() => Children);

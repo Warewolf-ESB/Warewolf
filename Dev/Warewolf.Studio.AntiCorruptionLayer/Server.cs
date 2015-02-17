@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
@@ -21,6 +22,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         readonly Guid _serverId;
         readonly StudioServerProxy _proxyLayer;
         IList<IToolDescriptor> _tools;
+        IExplorerItem _explorerItems;
         IStudioUpdateManager _updateRepository;
 
         /// <summary>
@@ -81,7 +83,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public async Task<IExplorerItem> LoadExplorer()
         {
-            var result = await _proxyLayer.QueryManagerProxy.Load();            
+            var result = await _proxyLayer.QueryManagerProxy.Load();
+            _explorerItems = result;
             return result;
         }
 
@@ -155,5 +158,20 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         }
 
         #endregion
+    }
+
+    public static class DescendantsExtension
+    {
+        public static IEnumerable<T> Descendants<T>(this T root,Func<T,IEnumerable<T>> childrenFunc )
+        {
+            var nodes = new Stack<T>(new[] { root });
+            while (nodes.Any())
+            {
+                T node = nodes.Pop();
+                yield return node;
+                foreach (var n in childrenFunc(root)) nodes.Push(n);
+            }
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
+using Infragistics.Windows.Editors;
 using Moq;
 using Warewolf.Studio.ViewModels;
 
@@ -393,6 +394,8 @@ namespace Warewolf.Studio.Views
         {
             var node = VerifyItemExists(versionPath.Substring(0, versionPath.LastIndexOf("/", StringComparison.Ordinal)));
             var explorerItemViewModel = node.Data as IExplorerItemViewModel;
+            explorerItemViewModel= explorerItemViewModel.Children.FirstOrDefault(a => a.ResourceName.Contains(versionPath.Substring(1 + versionPath.LastIndexOf("/", StringComparison.Ordinal))));
+
             if (explorerItemViewModel != null)
             {
                explorerItemViewModel.DeleteVersionCommand.Execute(null);
@@ -404,9 +407,10 @@ namespace Warewolf.Studio.Views
 
         }
 
-
-
-
-       
+        public void Reset()
+        {
+            var item = (_explorerView.DataContext as ExplorerViewModel);
+            item.RefreshCommand.Execute(null);
+        }
     }
 }
