@@ -19,10 +19,17 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
             SyntaxEditor.Document = new TextDocument { IsReadOnly = true, Language = TSqlLanguage.Instance };
 
+            var textBlock = new TextBlock();
+            textBlock.FontSize = 16.0;
+            textBlock.Margin = new Thickness(0, 0, 0, 0);
+            textBlock.Text = "Action Inspector";
+            Header = textBlock; 
+
+
             SyntaxEditor.Document.InitializeText(@"USE [Dev2TestingDB]
 GO
 
-/****** Object:  StoredProcedure [dbo].[proc_SmallFetch]    Script Date: 02/16/2015 06:40:55 *****/
+/****** Object:  StoredProcedure [dbo].[proc_SmallFetch]    Script Date: 02/16/2015 06:40:55 *************8888888888888888888*********************************************************/
 SET ANSI_NULLS ON
 GO
 
@@ -82,7 +89,7 @@ GO");
             }
             Application.Current.MainWindow.Effect = effect;
       
-            _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
+            _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.Manual, ResizeMode = ResizeMode.CanResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
             _window.ShowDialog();
         }
 

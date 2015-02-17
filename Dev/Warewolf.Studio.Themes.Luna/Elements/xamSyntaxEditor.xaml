@@ -471,7 +471,7 @@
 
                             <igPrim:EditorDocumentViewScrollBarArea  x:Name="HorizontalScrollBarArea"
                                                                     Grid.Row="1"
-                                                                   Visibility="Collapsed"
+                                                                   
                                                                      Grid.Column="0"
                                                                     Orientation="Horizontal"   />
                             <Rectangle Grid.Row="1"
