@@ -193,13 +193,13 @@ namespace Warewolf.Studio.ViewModels
 
         string GetChildNameFromChildren()
         {
-            const string newFolder = "New Folder";
+            const string NewFolder = "New Folder";
             int count = 0;
-            string folderName = newFolder;
+            string folderName = NewFolder;
             while(Children.Any(a=>a.ResourceName == folderName ))
             {
                 count++;
-                folderName = newFolder + " "+ count;
+                folderName = NewFolder + " "+ count;
             }
             return folderName;
         }
@@ -209,7 +209,7 @@ namespace Warewolf.Studio.ViewModels
             IsRenaming = false;
         }
 
-        public IExplorerHelpDescriptorBuilder Builder { get; set; }
+        IExplorerHelpDescriptorBuilder Builder { get; set; }
 
         void Delete()
         {
@@ -225,7 +225,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void UpdatePermissions(PermissionsChangedArgs args)
+        void UpdatePermissions(PermissionsChangedArgs args)
         {
             var resourcePermission = args.Permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
             if (resourcePermission != null)
@@ -264,7 +264,7 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public bool UserShouldEditValueNow
+        bool UserShouldEditValueNow
         {
             get
             {
@@ -411,7 +411,9 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
+        // ReSharper disable MemberCanBePrivate.Global
         public bool CanCreateWorkflowService { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
 
 
 
@@ -708,7 +710,11 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Children);
         }
 
-        public IResource Resource { get; set; }
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        // ReSharper disable MemberCanBePrivate.Global
+        public  IResource Resource { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
         public string Inputs { get; set; }
         public string Outputs { get; set; }
         public string ExecuteToolTip
@@ -732,35 +738,5 @@ namespace Warewolf.Studio.ViewModels
                 return _shellViewModel;
             }
         }
-    }
-
-    public class NewItemMessage : INewItemMessage {
-        readonly IExplorerItemViewModel _parent;
-        readonly ResourceType _type;
-
-        public NewItemMessage(ResourceType type, IExplorerItemViewModel parent)
-        {
-            _type = type;
-            _parent = parent;
-        }
-
-        #region Implementation of INewItemMessage
-
-        public IExplorerItemViewModel Parent
-        {
-            get
-            {
-                return _parent;
-            }
-        }
-        public ResourceType Type
-        {
-            get
-            {
-                return _type;
-            }
-        }
-
-        #endregion
     }
 }

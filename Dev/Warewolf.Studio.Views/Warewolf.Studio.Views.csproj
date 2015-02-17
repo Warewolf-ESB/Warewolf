@@ -243,6 +243,7 @@
     </Compile>
     <Compile Include="ExplorerViewTestClass.cs" />
     <Compile Include="FocusExtension.cs" />
+    <Compile Include="HelpTextValue.cs" />
     <Compile Include="HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>

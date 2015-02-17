@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -10,7 +7,9 @@ using Infragistics.Controls.Primitives;
 
 namespace Warewolf.Studio.Views
 {
+    // ReSharper disable UnusedMember.Global
     public static class FocusExtension
+
     {
         public static bool GetIsFocused(DependencyObject obj)
         {
@@ -61,6 +60,6 @@ namespace Warewolf.Studio.Views
             return _convertor.Convert(!(bool)value, targetType, parameter, culture);
         }
     }
-
+    // ReSharper restore UnusedMember.Global
 
 }

@@ -29,8 +29,7 @@ namespace Warewolf.Studio.ViewModels
             }
             Server = server;
             Servers = Server.GetServerConnections();
-            Servers = new List<IServer>();
-            Servers.Add(server);
+            Servers = new List<IServer> { server };
             aggregator.GetEvent<ServerAddedEvent>().Subscribe(ServerAdded);
             EditConnectionCommand = new DelegateCommand(Edit);
             ToggleConnectionStateCommand = new DelegateCommand(() =>

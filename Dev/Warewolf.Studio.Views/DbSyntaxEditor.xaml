@@ -29,17 +29,19 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="191*"></ColumnDefinition>
+            <ColumnDefinition Width="683*"/>
             <ColumnDefinition Width="5"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-       <!--<StackPanel Grid.Row="TODO" Background="{StaticResource WareWolfMenuBrush}" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <!--<StackPanel Grid.Row="TODO" Background="{StaticResource WareWolfMenuBrush}" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TextBlock Text="Action Inspector" Style="{StaticResource SourceHeader}" />
         </StackPanel>-->
-        <ig:XamSyntaxEditor x:Name="SyntaxEditor" Grid.Row="1" Grid.Column="1" 
-            SplitOptions="SplittingNotAllowed" ErrorDisplayMode="Never" BorderThickness="1" IsLineNumberMarginVisible="False" >
-            
-            
-            </ig:XamSyntaxEditor>
-        <Button Grid.Row="3" Width="80" Grid.Column="1" HorizontalAlignment="Right" Height="40" VerticalAlignment="Top" Click="Button_Click">Close</Button>
+        <ig:XamSyntaxEditor x:Name="SyntaxEditor" Grid.Row="1" Grid.Column="1"  BorderBrush="{StaticResource WareWolfHeaderButtonBrush}"
+            SplitOptions="SplittingNotAllowed" ErrorDisplayMode="Never" BorderThickness="1" IsLineNumberMarginVisible="True" Grid.ColumnSpan="2"  >
+
+
+
+        </ig:XamSyntaxEditor>
+        <Button Grid.Row="3" Width="80" Grid.Column="2" HorizontalAlignment="Right" Height="40" VerticalAlignment="Top" Click="Button_Click">Close</Button>
     </Grid>
 </ig:XamDialogWindow>

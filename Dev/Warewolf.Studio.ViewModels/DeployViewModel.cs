@@ -8,7 +8,9 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
 {
+    // ReSharper disable UnusedMember.Global
     public class DeployViewModel : BindableBase,IDeployViewModel
+        // ReSharper restore UnusedMember.Global
     {
         // ReSharper disable TooManyDependencies
         public DeployViewModel(IExplorerViewModel source, IExplorerViewModel destination, 
@@ -64,7 +66,7 @@ namespace Warewolf.Studio.ViewModels
         /// Conflict handler popup
         /// </summary>
         public IConflictHandlerViewModel ConflictHandlerViewModel { get; private set; }
-        public IDeployModelFactory DeployModelFactory { get; private set; }
+        IDeployModelFactory DeployModelFactory { get; set; }
 
         public void CalculateStats()
         {

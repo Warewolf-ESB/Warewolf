@@ -165,19 +165,51 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
             explorerView.VerifyItemExists(path);
         }
+        [Then(@"I should not see the path ""(.*)""")]
+        public void ThenIShouldNotSeeThePath(string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+           Assert.IsNull( explorerView.ExplorerViewTestClass.VerifyItemExists(path));
+        }
+
+
 
         [Then(@"I setup (.*) resources in ""(.*)""")]
         public void ThenISetupResourcesIn(int resourceNumber, string path)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
-            explorerView.AddResources(resourceNumber, path,"WorkflowService");
+            explorerView.AddResources(resourceNumber, path,"WorkflowService","Resource");
         }
+
+        [When(@"I Add  ""(.*)"" ""(.*)"" to be returned for ""(.*)""")]
+        public void WhenIAddToBeReturnedFor(int count, string type, string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddResources(count, path, type, "Resource");
+        }
+
+        [When(@"I Setup a resource  ""(.*)"" ""(.*)"" to be returned for ""(.*)"" called ""(.*)""")]
+        public void WhenISetupAResourceToBeReturnedForCalled(int count, string type, string path, string name)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddResources(count, path, type,name);
+        }
+
+
+
+        [Then(@"""(.*)"" Context menu  should be ""(.*)"" for ""(.*)""")]
+        public void ThenContextMenuShouldBeFor(string option, string visibility, string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+            explorerView.ExplorerViewTestClass.VerifyContextMenu(option, visibility, path);
+        }
+
 
         [Then(@"I Create ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
         public void ThenICreateResourcesOfTypeIn(int resourceNumber, string type, string path)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
-            explorerView.AddResources(resourceNumber, path,type);
+            explorerView.AddResources(resourceNumber, path, type, "Resource");
         }
 
         [When(@"I Show Version History for ""(.*)""")]
