@@ -51,7 +51,7 @@ namespace Warewolf.Studio.ViewModels
             RollbackCommand = new DelegateCommand(() =>
             {
                 var output = _explorerRepository.Rollback(ResourceId, VersionNumber);
-                parent.ShowVersionHistory.Execute(null);
+                parent.AreVersionsVisible = true;
                 parent.ResourceName = output.DisplayName;
             });
             _canShowVersions = true;
@@ -138,7 +138,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void RemoveChild(IExplorerItemViewModel child)
         {
-            _children.Remove(child);
+            var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
+            tempChildren.Remove(child);
+            _children = tempChildren;
             OnPropertyChanged(()=>Children);
         }
 
@@ -193,13 +195,13 @@ namespace Warewolf.Studio.ViewModels
 
         string GetChildNameFromChildren()
         {
-            const string newFolder = "New Folder";
+            const string NewFolder = "New Folder";
             int count = 0;
-            string folderName = newFolder;
+            string folderName = NewFolder;
             while(Children.Any(a=>a.ResourceName == folderName ))
             {
                 count++;
-                folderName = newFolder + " "+ count;
+                folderName = NewFolder + " "+ count;
             }
             return folderName;
         }
@@ -209,7 +211,7 @@ namespace Warewolf.Studio.ViewModels
             IsRenaming = false;
         }
 
-        public IExplorerHelpDescriptorBuilder Builder { get; set; }
+        IExplorerHelpDescriptorBuilder Builder { get; set; }
 
         void Delete()
         {
@@ -264,7 +266,7 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public bool UserShouldEditValueNow
+        bool UserShouldEditValueNow
         {
             get
             {
@@ -313,8 +315,15 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (IsRenaming && _explorerRepository.Rename(this, value)  )
+                if(Parent != null && Parent.Children.Any(a=>a.ResourceName == value))
                 {
+                    _shellViewModel.ShowPopup(PopupMessages.GetDuplicateMessage(value));
+
+                }
+                else
+                {
+                    if (IsRenaming  && _explorerRepository.Rename(this, value)  )
+                    {
                 _resourceName = value;
                 }
                 if (!IsRenaming)
@@ -324,6 +333,7 @@ namespace Warewolf.Studio.ViewModels
                 IsRenaming = false;
                 OnPropertyChanged(() => ResourceName);
             }
+        }
         }
         public ICollection<IExplorerItemViewModel> Children
         {
@@ -411,7 +421,9 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
+        // ReSharper disable MemberCanBePrivate.Global
         public bool CanCreateWorkflowService { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
 
 
 
@@ -700,7 +712,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (!String.IsNullOrEmpty(ResourceName))
+                if (!String.IsNullOrEmpty(ResourceName) && ResourceType!= ResourceType.Version)
                 {
                     IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
                 }
@@ -708,7 +720,11 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Children);
         }
 
-        public IResource Resource { get; set; }
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        // ReSharper disable MemberCanBePrivate.Global
+        public  IResource Resource { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
         public string Inputs { get; set; }
         public string Outputs { get; set; }
         public string ExecuteToolTip
@@ -732,35 +748,5 @@ namespace Warewolf.Studio.ViewModels
                 return _shellViewModel;
             }
         }
-    }
-
-    public class NewItemMessage : INewItemMessage {
-        readonly IExplorerItemViewModel _parent;
-        readonly ResourceType _type;
-
-        public NewItemMessage(ResourceType type, IExplorerItemViewModel parent)
-        {
-            _type = type;
-            _parent = parent;
-        }
-
-        #region Implementation of INewItemMessage
-
-        public IExplorerItemViewModel Parent
-        {
-            get
-            {
-                return _parent;
-            }
-        }
-        public ResourceType Type
-        {
-            get
-            {
-                return _type;
-            }
-        }
-
-        #endregion
     }
 }

@@ -1,13 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using Dev2.Common.Interfaces;
-using Infragistics.Documents.RichText;
-using Infragistics.Documents.RichText.Html;
-using Warewolf.Studio.ViewModels.Help;
+﻿using Dev2.Common.Interfaces;
 
 namespace Warewolf.Studio.Views
 {

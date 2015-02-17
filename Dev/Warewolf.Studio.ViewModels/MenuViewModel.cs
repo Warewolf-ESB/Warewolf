@@ -13,8 +13,6 @@ namespace Warewolf.Studio.ViewModels
 
         bool _hasNewVersion;
         bool _panelLockedOpen;
-        bool _panelOpen;
-        int _buttonWidth;
         readonly IShellViewModel _viewModel;
         bool _isOverLock;
 
@@ -133,8 +131,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-
-        public void SlideOpen(IShellViewModel shellViewModel)
+        void SlideOpen(IShellViewModel shellViewModel)
         {
             if (IsPanelLockedOpen)
             {
@@ -145,7 +142,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void SlideClosed(IShellViewModel shellViewModel)
+        void SlideClosed(IShellViewModel shellViewModel)
         {
             if (IsPanelLockedOpen && !IsPanelOpen)
             {
@@ -171,20 +168,7 @@ namespace Warewolf.Studio.ViewModels
             HasNewVersion = await shellViewModel.CheckForNewVersion();
         }
 
-
-
-        public int ButtonWidth
-        {
-            get
-            {
-                return _buttonWidth;
-            }
-            set
-            {
-                _buttonWidth = value;
-            }
-        }
-
+        public int ButtonWidth { get; set; }
 
         public bool HasNewVersion
         {
@@ -199,19 +183,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsPanelOpen
-        {
-            get
-            {
-                return _panelOpen;
-            }
-            set
-            {
-                _panelOpen = value;
-            }
-
-        }
-
+        public bool IsPanelOpen { get; set; }
 
         public bool IsPanelLockedOpen
         {

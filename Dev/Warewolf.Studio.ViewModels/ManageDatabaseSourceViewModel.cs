@@ -19,7 +19,6 @@ namespace Warewolf.Studio.ViewModels
         private string _password;
         private string _testMessage;
         private List<string> _databaseNames;
-        private bool _isActive;
         private string _header;
 
         public ManageDatabaseSourceViewModel()
@@ -94,7 +93,9 @@ namespace Warewolf.Studio.ViewModels
         public string TestMessage
         {
             get { return _testMessage; }
+            // ReSharper disable UnusedMember.Local
             private set
+                // ReSharper restore UnusedMember.Local
             {
                 _testMessage = value;
                 OnPropertyChanged(() => _testMessage);
@@ -214,11 +215,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsActive
-        {
-            get { return _isActive; }
-            set { _isActive = value; }
-        }
+        public bool IsActive { get; set; }
 
         public event EventHandler IsActiveChanged;
 

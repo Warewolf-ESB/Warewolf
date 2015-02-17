@@ -14,6 +14,8 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
+using Warewolf.AcceptanceTesting.Core;
+using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 
@@ -67,6 +69,21 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsNotNull(explorerView.DataContext);            
         }
 
+        [When(@"I Connected to Remote Server ""(.*)""")]
+        public void WhenIConnectedToRemoteServer(string name)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            Assert.IsNotNull(explorerView.DataContext);    
+            IExplorerViewModel explorerViewModel = (IExplorerViewModel)explorerView.DataContext;
+            var server = new ServerForTesting(new Mock<IExplorerRepository>());
+            server.ResourceName = name;
+            explorerViewModel.ConnectControlViewModel.Connect(server);
+
+            
+        }
+
+
+
         [Given(@"I open ""(.*)"" server")]
         [When(@"I open ""(.*)"" server")]
         public void WhenIOpenServer(string serverName)
@@ -109,8 +126,18 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
             explorerView.PerformFolderRename(originalFolderName,newFolderName);
+
             
         }
+
+        [Then(@"Conflict error message is occurs")]
+        public void ThenConflictErrorMessageIsOccurs()
+        {
+            var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
+            boot.PopupController.Verify(a => a.Show(It.IsAny<PopupMessage>()));
+
+        }
+
 
         [Then(@"I should not see ""(.*)""")]
         public void ThenIShouldNotSee(string folderName)
@@ -128,6 +155,9 @@ namespace Warewolf.AcceptanceTesting.Explorer
             Assert.IsNotNull(environmentViewModel);
         }
 
+
+
+
         [Then(@"I should see ""(.*)"" resources in ""(.*)""")]
         public void ThenIShouldSeeResourcesIn(int numberOfresources, string path)
         {
@@ -144,20 +174,19 @@ namespace Warewolf.AcceptanceTesting.Explorer
             explorerView.PerformSearch(searchTerm);
         }
 
-        //[When(@"I create ""(.*)"" in ""(.*)""")]
-        //public void WhenICreateIn(string folder, string server)
-        //{
-        //    var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
-        //    explorerView.AddNewFolder(folder,server);
-        //}
+        [When(@"I search for ""(.*)"" in explorer")]
+        public void WhenISearchForInExplorer(string searchTerm)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.PerformSearch(searchTerm);
+        }
 
-        //[Then(@"I should see ""(.*)"" in ""(.*)"" server")]
-        //public void ThenIShouldSeeInServer(string folder, string server)
-        //{
-        //    //var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
-        //    //explorerView.VerifyItemExists(folder, server);
-     
-        //}
+        [When(@"I clear ""(.*)"" Filter")]
+        public void WhenIClearFilter(string p0)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.PerformSearch("");
+        }
 
         [Then(@"I should see the path ""(.*)""")]
         public void ThenIShouldSeeThePath(string path)
@@ -165,19 +194,65 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
             explorerView.VerifyItemExists(path);
         }
+        [Then(@"I should not see the path ""(.*)""")]
+        public void ThenIShouldNotSeeThePath(string path)
+        {
+            bool found = false;
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+            try
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                explorerView.ExplorerViewTestClass.VerifyItemExists(path);
+            }
+            catch(Exception e)
+            {
+                if (e.Message.Contains("Folder or environment not found. Name"))
+                    found = true;
+            
+            }
+           Assert.IsTrue(found);
+        }
+
+
 
         [Then(@"I setup (.*) resources in ""(.*)""")]
         public void ThenISetupResourcesIn(int resourceNumber, string path)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
-            explorerView.AddResources(resourceNumber, path,"WorkflowService");
+            explorerView.AddResources(resourceNumber, path,"WorkflowService","Resource");
         }
+
+        [When(@"I Add  ""(.*)"" ""(.*)"" to be returned for ""(.*)""")]
+        public void WhenIAddToBeReturnedFor(int count, string type, string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddResources(count, path, type, "Resource");
+        }
+
+        [When(@"I Setup a resource  ""(.*)"" ""(.*)"" to be returned for ""(.*)"" called ""(.*)""")]
+        public void WhenISetupAResourceToBeReturnedForCalled(int count, string type, string path, string name)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
+            explorerView.AddResources(count, path, type,name);
+        }
+
+
+
+        [Then(@"""(.*)"" Context menu  should be ""(.*)"" for ""(.*)""")]
+        public void ThenContextMenuShouldBeFor(string option, string visibility, string path)
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+            // ReSharper disable PossibleNullReferenceException
+            explorerView.ExplorerViewTestClass.VerifyContextMenu(option, visibility, path);
+            // ReSharper restore PossibleNullReferenceException
+        }
+
 
         [Then(@"I Create ""(.*)"" resources of Type ""(.*)"" in ""(.*)""")]
         public void ThenICreateResourcesOfTypeIn(int resourceNumber, string type, string path)
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView");
-            explorerView.AddResources(resourceNumber, path,type);
+            explorerView.AddResources(resourceNumber, path, type, "Resource");
         }
 
         [When(@"I Show Version History for ""(.*)""")]
@@ -209,6 +284,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             if(explorerView != null)
             {
                 var node = explorerView.ExplorerViewTestClass.VerifyItemExists(path);
+                Assert.AreEqual(node.Nodes.Count,count);
                 foreach(var node1 in node.Nodes)
                 {
                     var itm = node1.Data as ExplorerItemViewModel;
@@ -225,15 +301,15 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
              var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
             // ReSharper disable once MaximumChainedReferences
-             boot.ExplorerRepository.Setup(a => a.Rollback(Guid.Empty, "1")).Returns(new RollbackResult()
-                {
+             boot.ExplorerRepository.Setup(a => a.Rollback(Guid.Empty, "1")).Returns(new RollbackResult
+             {
                     DisplayName = "Resource 1" , 
                      VersionHistory = new List<IExplorerItem>()
                  }
              );
             // ReSharper disable once MaximumChainedReferences
-             boot.ExplorerRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IVersionInfo>()
-                {
+             boot.ExplorerRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IVersionInfo>
+             {
                      new VersionInfo(DateTime.Now,"bob","Leon","4",Guid.Empty,Guid.Empty),
                     new VersionInfo(DateTime.Now,"bob","Leon","3",Guid.Empty,Guid.Empty),
                     new VersionInfo(DateTime.Now,"bob","Leon","2",Guid.Empty,Guid.Empty),
@@ -253,6 +329,16 @@ namespace Warewolf.AcceptanceTesting.Explorer
         {
             var boot = FeatureContext.Current.Get<UnityBootstrapperForExplorerTesting>("bootstrapper");
             boot.ExplorerRepository.Setup(a => a.Delete(It.IsAny<IExplorerItemViewModel>()));
+            // ReSharper disable once MaximumChainedReferences
+            boot.PopupController.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.OK);
+            // ReSharper disable once MaximumChainedReferences
+            boot.ExplorerRepository.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IVersionInfo>
+             {
+                    new VersionInfo(DateTime.Now,"bob","Leon","3",Guid.Empty,Guid.Empty),
+                    new VersionInfo(DateTime.Now,"bob","Leon","2",Guid.Empty,Guid.Empty),
+                    new VersionInfo(DateTime.Now,"bob","Leon","1",Guid.Empty,Guid.Empty)
+              });
+
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
             if (explorerView != null)
             {
@@ -271,7 +357,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
             // ReSharper disable once PossibleNullReferenceException
             var tester = explorerView.ExplorerViewTestClass;
-            var nodes = tester.CreateChildNodes(count, path);
+            tester.CreateChildNodes(count, path);
             ScenarioContext.Current.Add("versions", count);
         }
 
@@ -350,7 +436,14 @@ namespace Warewolf.AcceptanceTesting.Explorer
             explorerView.AddNewResource(path, type);
         }
 
-
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
+            // ReSharper disable once PossibleNullReferenceException
+            var tester = explorerView.ExplorerViewTestClass;
+            tester.Reset();
+        }
 
     }
 }

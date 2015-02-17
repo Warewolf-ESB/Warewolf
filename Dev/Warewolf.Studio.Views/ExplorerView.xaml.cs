@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Infragistics.Controls.Menus;
@@ -86,12 +85,12 @@ namespace Warewolf.Studio.Views
 
 	    public void AddNewResource(string path, string itemType)
 	    {
-            ExplorerViewTestClass.PerformItemAdd(path,itemType);
+            ExplorerViewTestClass.PerformItemAdd(path);
 	    }
 
-	    public void AddResources(int resourceNumber, string path, string type)
+	    public void AddResources(int resourceNumber, string path, string type, string name)
 	    {
-            ExplorerViewTestClass.AddChildren(resourceNumber, path,type);
+            ExplorerViewTestClass.AddChildren(resourceNumber, path,type,name);
 	    }
 
 	    public int GetResourcesVisible(string path)
@@ -146,21 +145,6 @@ namespace Warewolf.Studio.Views
 
 
 
-	 
 
-        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            //get parent item
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
-
-            //we've reached the end of the tree
-            if (parentObject == null) return null;
-
-            //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
-            if (parent != null)
-                return parent;
-            return FindParent<T>(parentObject);
-	    }
 	}
 }

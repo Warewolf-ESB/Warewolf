@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Windows;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -23,8 +25,10 @@ namespace Dev2.Common.Interfaces
 
         void AddNewResource(string path, string itemType);
 
-        void AddResources(int resourceNumber, string path, string type);
+        void AddResources(int resourceNumber, string path, string type, string name);
 
         int GetResourcesVisible (string path);
+
+
     }
 }
