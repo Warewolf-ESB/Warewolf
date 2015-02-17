@@ -368,8 +368,11 @@ namespace Dev2.Runtime.ESB.Control
                             }
                             else
                             {
-                                compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs, out invokeErrors);
-                                errors.MergeErrors(invokeErrors);
+                                if (!string.IsNullOrEmpty(outputDefs))
+                                {
+                                    compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Output, outputDefs,out invokeErrors);
+                                    errors.MergeErrors(invokeErrors);
+                                }
                             }
                         }
 

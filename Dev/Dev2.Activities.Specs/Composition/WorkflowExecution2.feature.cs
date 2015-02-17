@@ -11741,6 +11741,328 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow by using For Each with workflow in it")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void WorkflowByUsingForEachWithWorkflowInIt()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow by using For Each with workflow in it", ((string[])(null)));
+#line 4860
+  this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4861
+      testRunner.Given("I have a workflow \"WFWithForEachInrecordsetTesting\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table658 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table658.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "1"});
+            table658.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "2"});
+#line 4862
+         testRunner.And("\"WFWithForEachInrecordsetTesting\" contains an Assign \"Recordset\" as", ((string)(null)), table658, "And ");
+#line 4866
+         testRunner.And("\"WFWithForEachInrecordsetTesting\" contains a Foreach \"FEach\" as \"in recordset\" ex" +
+                    "ecutions \"[[rec(*)]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table659 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+#line 4867
+         testRunner.And("\"ForEachTest123\" contains \"SavedWFwithRandom Test\" from server \"localhost\" with m" +
+                    "apings as", ((string)(null)), table659, "And ");
+#line 4869
+         testRunner.When("\"WFWithForEachInrecordsetTesting\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4870
+         testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table660 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table660.AddRow(new string[] {
+                        "1",
+                        "[[rs().a]] =",
+                        "1"});
+            table660.AddRow(new string[] {
+                        "2",
+                        "[[rec().a]] =",
+                        "2"});
+#line 4871
+         testRunner.And("the \'Recordset\' in WorkFlow \'WFWithForEachInrecordsetTesting\' debug inputs as", ((string)(null)), table660, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table661 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table661.AddRow(new string[] {
+                        "1",
+                        "[[rs(1).a]] = 1"});
+            table661.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] = 2"});
+#line 4875
+         testRunner.And("the \'Recordset\' in Workflow \'WFWithForEachInrecordsetTesting\' debug outputs as", ((string)(null)), table661, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table662 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Recordset"});
+            table662.AddRow(new string[] {
+                        "in Recordset",
+                        "[[rec(1).a]] = 1"});
+            table662.AddRow(new string[] {
+                        "",
+                        "[[rec(2).a]] = 10"});
+#line 4879
+         testRunner.And("the \'FEach\' in WorkFlow \'WFWithForEachInrecordsetTesting\' debug inputs as", ((string)(null)), table662, "And ");
+#line 4883
+      testRunner.And("the \'FEach\' in WorkFlow \'WFWithForEachInrecordsetTesting\' has  \"2\" nested childre" +
+                    "n", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table663 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table663.AddRow(new string[] {
+                        "Numbers",
+                        "[[rec(1).a]] = 1",
+                        "5"});
+#line 4884
+      testRunner.And("the \'Random\' in step 1 for \'SavedWFwithRandom Test\' debug inputs as", ((string)(null)), table663, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table664 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table664.AddRow(new string[] {
+                        "[[res]] = Int32"});
+#line 4887
+         testRunner.And("the \'Random\' in step 1 for \'SavedWFwithRandom Test\' debug outputs as", ((string)(null)), table664, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table665 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table665.AddRow(new string[] {
+                        "Numbers",
+                        "[[rec(2).a]] = 10",
+                        "5"});
+#line 4890
+              testRunner.And("the \'Random\' in step 2 for \'SavedWFwithRandom Test\' debug inputs as", ((string)(null)), table665, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table666 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table666.AddRow(new string[] {
+                        "[[res]] = Int32"});
+#line 4893
+         testRunner.And("the \'Random\' in step 2 for \'SavedWFwithRandom Test\' debug outputs as", ((string)(null)), table666, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow by using For Each with workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void WorkflowByUsingForEachWithWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow by using For Each with workflow", ((string[])(null)));
+#line 4898
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4899
+      testRunner.Given("I have a workflow \"WorkFlowWithForEachInRecordsetUtilityRandomTesting\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table667 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table667.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "1"});
+            table667.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "2"});
+#line 4900
+         testRunner.And("\"WorkFlowWithForEachInRecordsetUtilityRandomTesting\" contains an Assign \"Recordse" +
+                    "t1\" as", ((string)(null)), table667, "And ");
+#line 4904
+         testRunner.And("\"WorkFlowWithForEachInRecordsetUtilityRandomTesting\" contains a Foreach \"ForEachT" +
+                    "est123\" as \"InRecordset\" executions \"[[rec()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table668 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+#line 4905
+   testRunner.And("\"ForEachTest123\" contains \"Utility - Random\" from server \"localhost\" with mapping" +
+                    " as", ((string)(null)), table668, "And ");
+#line 4907
+         testRunner.When("\"WorkFlowWithForEachInRecordsetUtilityRandomTesting\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4908
+         testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table669 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table669.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]] =",
+                        "1"});
+            table669.AddRow(new string[] {
+                        "2",
+                        "[[rec().a]] =",
+                        "2"});
+#line 4909
+         testRunner.And("the \'Recordset1\' in WorkFlow \'WorkFlowWithForEachInRecordsetUtilityRandomTesting\'" +
+                    " debug inputs as", ((string)(null)), table669, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table670 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table670.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = 1"});
+            table670.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).a]] = 2"});
+#line 4913
+         testRunner.And("the \'Recordset1\' in Workflow \'WorkFlowWithForEachInRecordsetUtilityRandomTesting\'" +
+                    " debug outputs as", ((string)(null)), table670, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table671 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Recordset"});
+            table671.AddRow(new string[] {
+                        "* in Recordset",
+                        "[[rec(1).a]] = 1"});
+            table671.AddRow(new string[] {
+                        "",
+                        "[[rec(2).a]] = 2"});
+#line 4917
+         testRunner.And("the \'ForEachTest123\' in WorkFlow \'WorkFlowWithForEachInRecordsetUtilityRandomTest" +
+                    "ing\' debug inputs as", ((string)(null)), table671, "And ");
+#line 4921
+      testRunner.And("the \'ForEachTest123\' in WorkFlow \'WorkFlowWithForEachInRecordsetUtilityRandomTest" +
+                    "ing\' has  \"4\" nested children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table672 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table672.AddRow(new string[] {
+                        "Numbers",
+                        "1",
+                        "6"});
+#line 4922
+      testRunner.And("the \'Random1\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug inputs a" +
+                    "s", ((string)(null)), table672, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table673 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table673.AddRow(new string[] {
+                        "[[DiceRoll]] = Int32"});
+#line 4925
+   testRunner.And("the \'Random1\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug outputs " +
+                    "as", ((string)(null)), table673, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table674 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "Length"});
+            table674.AddRow(new string[] {
+                        "Letters",
+                        "7"});
+#line 4928
+   testRunner.And("the \'Random2\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug inputs a" +
+                    "s", ((string)(null)), table674, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table675 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table675.AddRow(new string[] {
+                        "[[Scrabble]] = String"});
+#line 4931
+   testRunner.And("the \'Random2\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug outputs " +
+                    "as", ((string)(null)), table675, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table676 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random"});
+            table676.AddRow(new string[] {
+                        "GUID"});
+#line 4934
+         testRunner.And("the \'Random3\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug inputs a" +
+                    "s", ((string)(null)), table676, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table677 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table677.AddRow(new string[] {
+                        "[[License]] = String"});
+#line 4937
+         testRunner.And("the \'Random3\' in \"Utility - Random\" in step 1 for \'ForEachTest123\' debug outputs " +
+                    "as", ((string)(null)), table677, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table678 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "From",
+                        "To"});
+            table678.AddRow(new string[] {
+                        "Numbers",
+                        "1",
+                        "6"});
+#line 4940
+         testRunner.And("the \'Random1\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug inputs a" +
+                    "s", ((string)(null)), table678, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table679 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table679.AddRow(new string[] {
+                        "[[DiceRoll]] = Int32"});
+#line 4943
+         testRunner.And("the \'Random1\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug outputs " +
+                    "as", ((string)(null)), table679, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table680 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random",
+                        "Length"});
+            table680.AddRow(new string[] {
+                        "Letters",
+                        "7"});
+#line 4946
+          testRunner.And("the \'Random2\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug inputs a" +
+                    "s", ((string)(null)), table680, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table681 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table681.AddRow(new string[] {
+                        "[[Scrabble]] = String"});
+#line 4949
+         testRunner.And("the \'Random2\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug outputs " +
+                    "as", ((string)(null)), table681, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table682 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Random"});
+            table682.AddRow(new string[] {
+                        "GUID"});
+#line 4952
+         testRunner.And("the \'Random3\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug inputs a" +
+                    "s", ((string)(null)), table682, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table683 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table683.AddRow(new string[] {
+                        "[[License]] = String"});
+#line 4955
+         testRunner.And("the \'Random3\' in \"Utility - Random\" in step 2 for \'ForEachTest123\' debug outputs " +
+                    "as", ((string)(null)), table683, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

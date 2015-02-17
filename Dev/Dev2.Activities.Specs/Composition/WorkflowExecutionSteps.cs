@@ -801,7 +801,7 @@ namespace Dev2.Activities.Specs.Composition
             var id =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
             var children = debugStates.Count(a => a.ParentID == id);
-            Assert.AreEqual(children, count);
+            Assert.AreEqual(count, children);
         }
 
 
