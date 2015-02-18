@@ -16,7 +16,6 @@ using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Util;
 using Microsoft.Practices.Prism.Mvvm;
@@ -248,14 +247,14 @@ namespace Warewolf.Studio.ViewModels
         private void CreateDatabaseSource()
         {
             var selectedId = Guid.NewGuid();
-            var mockDbSourceViewModel = new ManageDatabaseSourceViewModel(ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId));
+            var mockDbSourceViewModel = new ManageDatabaseSourceViewModel(ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId),_aggregator);
             GetRegion("Workspace").Add(mockDbSourceViewModel);
         }
 
         void CreateNewServerSource(Guid selectedId)
         {
-            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId), this,
-                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", System.StringComparison.Ordinal)),selectedId) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
+            var server = new NewServerViewModel(new ServerSource { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId), this,
+                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", StringComparison.Ordinal)),selectedId) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
             GetRegion("Workspace").Add(server);
 
         }

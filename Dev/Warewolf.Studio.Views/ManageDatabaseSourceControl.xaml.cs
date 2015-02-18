@@ -63,11 +63,21 @@ namespace Warewolf.Studio.Views
 
         public Visibility GetUsernameVisibility()
         {
+            BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
             return UserNamePasswordContainer.Visibility;
         }
 
         public Visibility GetPasswordVisibility()
         {
+            BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
             return UserNamePasswordContainer.Visibility;
         }
 
@@ -89,6 +99,11 @@ namespace Warewolf.Studio.Views
         public void EnterPassword(string password)
         {
             PasswordTextBox.Password = password;
+        }
+
+        public string GetErrorMessage()
+        {
+            return ErrorTextBlock.Text;
         }
     }
 }

@@ -633,6 +633,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+        public event ItemAddedEvent ItemAddedEvent;
         public IStudioUpdateManager UpdateRepository
         {
             get { return new Mock<IStudioUpdateManager>().Object; }

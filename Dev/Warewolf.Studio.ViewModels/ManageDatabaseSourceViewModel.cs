@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using Dev2;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
@@ -12,6 +13,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -27,15 +29,19 @@ namespace Warewolf.Studio.ViewModels
         private IList<string> _databaseNames;
         private string _header;
         readonly IStudioUpdateManager _updateManager ;
+        readonly IEventAggregator _aggregator;
          IDbSource _dbSource;
         bool _testPassed;
         bool _testFailed;
         bool _testing;
         string _resourceName;
 
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager,IEventAggregator aggregator)
         {
+            VerifyArgument.IsNotNull("updateManager", updateManager);
+            VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
+            _aggregator = aggregator;
        
             HeaderText = "New Database Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection,CanTest);
@@ -45,19 +51,22 @@ namespace Warewolf.Studio.ViewModels
             ServerType = enSourceType.SqlDatabase;
             _testPassed = false;
             _testFailed = false;
+            DatabaseNames = new List<string>();
             
         }
 
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IRequestServiceNameViewModel requestServiceNameViewModel)
-            : this(updateManager)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
+            : this(updateManager, aggregator)
         {
+            VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
 
             RequestServiceNameViewModel = requestServiceNameViewModel;
 
         }
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IDbSource dbSource)
-            : this(updateManager)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IEventAggregator aggregator, IDbSource dbSource)
+            : this(updateManager,  aggregator)
         {
+            VerifyArgument.IsNotNull("dbSource", dbSource);
             _dbSource = dbSource;
             FromDbSource(dbSource);
         }
@@ -138,6 +147,7 @@ namespace Warewolf.Studio.ViewModels
         void Save(IDbSource toDbSource)
         {
             _updateManager.Save(toDbSource);
+           
         }
 
  
@@ -229,10 +239,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (_authenticationType != value)
                 {
-                    _authenticationType = value;
-                    OnPropertyChanged(() => AuthenticationType);
-                    OnPropertyChanged(() => Haschanged);
-                    OnPropertyChanged(() => UserAuthenticationSelected);
+                _authenticationType = value;
+                OnPropertyChanged(() => AuthenticationType);
+                OnPropertyChanged(() => Haschanged);
+                OnPropertyChanged(() => UserAuthenticationSelected);
                     TestPassed = false;
                     RaiseCanExecuteChanged(TestCommand);
                     RaiseCanExecuteChanged(OkCommand);
@@ -247,9 +257,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (value != _serverName)
                 {
-                    _serverName = value;
-                    OnPropertyChanged(() => ServerName);
-                    OnPropertyChanged(() => Haschanged);
+                _serverName = value;
+                OnPropertyChanged(() => ServerName);
+                OnPropertyChanged(() => Haschanged);
                     TestPassed = false;
                     RaiseCanExecuteChanged(TestCommand);
                     RaiseCanExecuteChanged(OkCommand);
@@ -324,7 +334,7 @@ namespace Warewolf.Studio.ViewModels
                 _testPassed = value;
                 OnPropertyChanged(()=>TestPassed);
                 RaiseCanExecuteChanged(OkCommand);
-
+           
             }
         
  

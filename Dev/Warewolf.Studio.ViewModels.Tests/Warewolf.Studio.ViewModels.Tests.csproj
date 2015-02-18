@@ -83,6 +83,7 @@
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="Help\HelpDescriptoViewModelTests.cs" />
     <Compile Include="Help\HelpViewModelTest.cs" />
+    <Compile Include="ManageDatabaseSourceViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="ConnectControlViewModelTests.cs" />
