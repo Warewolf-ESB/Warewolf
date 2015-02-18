@@ -44,6 +44,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
 
             Application.Current.Run(Application.Current.MainWindow);
             FeatureContext.Current.Add("databaseView", databaseSourceControlView);
+            FeatureContext.Current.Add("viewModel", manageDatabaseSourceControlViewModel);
             FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
             FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
         }
@@ -54,6 +55,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             ScenarioContext.Current.Add("databaseView", FeatureContext.Current.Get<ManageDatabaseSourceControl>("databaseView"));
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IStudioUpdateManager>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
+            ScenarioContext.Current.Add("viewModel", FeatureContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel"));
         }
 
         [Given(@"I open New Database Source")]
@@ -69,6 +71,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
             manageDatabaseSourceControl.EnterServerName(serverName);
+            var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
+            Assert.AreEqual(serverName,viewModel.ServerName);
         }
 
         [Given(@"Database dropdown is ""(.*)""")]
@@ -114,6 +118,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
             manageDatabaseSourceControl.SelectDatabase(databaseName);
+            var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
+            Assert.AreEqual(databaseName,viewModel.DatabaseName);
         }
 
         [When(@"I save the source")]
@@ -146,6 +152,28 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             Assert.AreEqual(expectedVisibility, databaseDropDownVisibility);
         }
 
+        [Given(@"I type Username as ""(.*)""")]
+        [When(@"I type Username as ""(.*)""")]
+        [Then(@"I type Username as ""(.*)""")]
+        public void WhenITypeUsernameAs(string userName)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
+            manageDatabaseSourceControl.EnterUserName(userName);
+            var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
+            Assert.AreEqual(userName,viewModel.UserName);
+        }
+
+        [Given(@"I type Password as ""(.*)""")]
+        [When(@"I type Password as ""(.*)""")]
+        [Then(@"I type Password as ""(.*)""")]
+        public void WhenITypePasswordAs(string password)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
+            manageDatabaseSourceControl.EnterPassword(password);
+            var viewModel = ScenarioContext.Current.Get<ManageDatabaseSourceViewModel>("viewModel");
+            Assert.AreEqual(password,viewModel.Password);
+        }
+
         [Then(@"Test Connecton is ""(.*)""")]
         [When(@"Test Connecton is ""(.*)""")]
         public void ThenTestConnectonIs(string successString)
@@ -172,6 +200,19 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             mockRequestServiceNameViewModel.Verify();
+        }
+
+        [AfterScenario("CreatingNewDBSource")]
+        public void Cleanup()
+        {
+            
+            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IStudioUpdateManager>>("updateManager");
+            var viewModel = new ManageDatabaseSourceViewModel(mockUpdateManager.Object,mockRequestServiceNameViewModel.Object);
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
+            manageDatabaseSourceControl.DataContext = viewModel;
+            FeatureContext.Current.Remove("viewModel");
+            FeatureContext.Current.Add("viewModel", viewModel);
         }
     }
 }

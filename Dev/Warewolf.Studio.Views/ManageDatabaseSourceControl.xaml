@@ -56,9 +56,9 @@
                 <ColumnDefinition Width="6*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="0" Grid.Column="0" Text="{Binding UserNameLabel}"/>
-            <TextBox Margin="{StaticResource ElementBorder}" Grid.Row="0" Grid.Column="1" Text="{Binding UserName}"></TextBox>
+            <TextBox x:Name="UserNameTextBox" Margin="{StaticResource ElementBorder}" Grid.Row="0" Grid.Column="1" Text="{Binding UserName,UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="1" Grid.Column="0" Text="{Binding PasswordLabel}"/>
-            <PasswordBox Margin="{StaticResource ElementBorder}" Grid.Row="1" Grid.Column="1"
+            <PasswordBox x:Name="PasswordTextBox" Margin="{StaticResource ElementBorder}" Grid.Row="1" Grid.Column="1"
                          customControls:PasswordBoxAssistant.BindPassword="true"
                          customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </PasswordBox>

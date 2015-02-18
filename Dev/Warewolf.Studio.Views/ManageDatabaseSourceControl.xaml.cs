@@ -80,5 +80,15 @@ namespace Warewolf.Studio.Views
         {
             SaveButton.Command.Execute(null);
         }
+
+        public void EnterUserName(string userName)
+        {
+            UserNameTextBox.Text = userName;
+        }
+
+        public void EnterPassword(string password)
+        {
+            PasswordTextBox.Password = password;
+        }
     }
 }

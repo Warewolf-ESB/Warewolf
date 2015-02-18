@@ -37,34 +37,30 @@ Scenario: Creating New DB Source
    Then the save dialog is opened
 	
 	
-#Scenario: Creating New DB Source under auth type as user
-#    Given I open New Database Source
-#    And I type Server as "RSAKLFSVRGENDEV"
-#    And select "Database" dropdown is "Invisible"
-#    And "Save" is "Disabled"
-#    And "Cancel" is "Enabled"
-#    And "Test Connection" is "Enabled"
-#    And I Select Authentication Typ as
-#	 | Windows    | User     |
-#	 | UnSelected | Selected |
-#    Then Username field is "Visible"
-#    And Password field is "Visible"
-#    And "Test Connection" is "Disbled"
-#    And "Save" is "Disabled"
-#    When I type Username as "testuser"
-#    And I type Password as "test123"
-#    Then "Test Connection" is "Enabled" 
-#    And "Save" is "Enabled"
-#    Then select "Database" dropdown is "InVisible"
-#    And "Test Connection" is "Enabled"
-#    When I Test Connection
-#    Then Test Connecton is "Successful"
-#    And "Save" is "Enabled"
-#    And select "Database" dropdown is "Visible"
-#    When I selct "Dev2TestingDB" as Database
-#    Then "Save" is "Enabled" 
-#    When I save the source
-#    Then the save dialog is opened
+Scenario: Creating New DB Source under auth type as user
+    Given I open New Database Source
+    And I type Server as "RSAKLFSVRGENDEV"
+    And Database dropdown is "Invisible"
+    And "Save" is "Disabled"
+    And "Test Connection" is "Enabled"
+    And I Select Authentication Type as "User"
+    Then Username field is "Visible"
+    And Password field is "Visible"
+    And "Test Connection" is "Disbled"
+    And "Save" is "Disabled"
+    When I type Username as "testuser"
+    And I type Password as "test123"
+    Then "Test Connection" is "Enabled" 
+    And "Save" is "Disabled"
+    Then Database dropdown is "InVisible"
+    And "Test Connection" is "Enabled"
+    Then Test Connecton is "Successful"
+    And "Save" is "Disabled"
+    And Database dropdown is "Visible"
+    When I select "Dev2TestingDB" as Database
+    Then "Save" is "Enabled" 
+    When I save the source
+    Then the save dialog is opened
 #
 #
 #
