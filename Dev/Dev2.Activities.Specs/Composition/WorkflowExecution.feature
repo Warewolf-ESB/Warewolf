@@ -4919,7 +4919,7 @@ Scenario: Workflow by using For Each with workflow
            |                | Recordset         |
            | * in Recordset | [[rec(1).a]] = 1  |
            |                | [[rec(2).a]] = 2 |
-      And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' has  "4" nested children 
+         And the 'ForEachTest123' in WorkFlow 'WorkFlowWithForEachInRecordsetUtilityRandomTesting' has  "4" nested children 
 	     And the 'Random1' in "Utility - Random" in step 1 for 'ForEachTest123' debug inputs as
          | Random  | From | To |
          | Numbers | 1    | 6  |
