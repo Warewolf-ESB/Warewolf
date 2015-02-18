@@ -68,6 +68,7 @@ namespace Warewolf.Studio.ViewModels
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
             _dbSource = dbSource;
+            HeaderText = "Edit Database Service-" + _dbSource.Name;
             FromDbSource(dbSource);
         }
 
