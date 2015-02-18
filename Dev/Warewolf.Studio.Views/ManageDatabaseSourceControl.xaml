@@ -46,7 +46,7 @@
             <RadioButton ToolTip="{Binding Path=WindowsAuthenticationToolTip}" Margin="{StaticResource ElementBorder}" Padding="{StaticResource ElementBorder}" VerticalAlignment="Center"  HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows</RadioButton>
             <RadioButton ToolTip="{Binding Path=UserAuthenticationToolTip}"  Margin="{StaticResource ElementBorder}" Padding="{StaticResource ElementBorder}" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User</RadioButton>
         </StackPanel>
-        <Grid Grid.Row="4" Grid.Column="0" ColumnSpan="2">
+        <Grid Grid.Row="4" Grid.Column="0" ColumnSpan="2" Visibility="{Binding Path=UserAuthenticationSelected,Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height="40"></RowDefinition>
@@ -64,9 +64,9 @@
             </PasswordBox>
         </Grid>
         <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="5" Grid.Column="0" Text="{Binding DatabaseLabel}"/>
-        <ComboBox  Margin="{StaticResource ElementBorderLeftRight}" ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Row="5" Grid.Column="1"></ComboBox>
+        <ComboBox  Margin="{StaticResource ElementBorderLeftRight}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Row="5" Grid.Column="1"></ComboBox>
         <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <TextBlock Text="{Binding TestMessage}"></TextBlock>
+            <TextBlock Text="{Binding TestMessage}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
             <fa:ImageAwesome Width="14"  Height="14" Margin="{StaticResource ElementBorder}" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
             <fa:ImageAwesome Width="14" Height="14"  Margin="{StaticResource ElementBorder}" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Ban" HorizontalAlignment="Right" Grid.Column="2"/>
             <views:CircularProgressBar

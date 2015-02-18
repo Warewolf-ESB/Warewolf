@@ -46,7 +46,6 @@ namespace Warewolf.Studio.ViewModels
             Testing = false;
             Types = new List<enSourceType> { enSourceType.SqlDatabase };
             ServerType = enSourceType.SqlDatabase;
-            TestMessage = "Test completed";
             _testPassed = false;
             _testFailed = false;
             DatabaseNames = new List<string>();
@@ -94,6 +93,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 OnPropertyChanged(_resourceName);
             }
+        }
+
+        public bool UserAuthenticationSelected
+        {
+            get { return AuthenticationType==AuthenticationType.User; }            
         }
 
         void SaveConnection()
@@ -219,6 +223,7 @@ namespace Warewolf.Studio.ViewModels
                 _authenticationType = value;
                 OnPropertyChanged(() => AuthenticationType);
                 OnPropertyChanged(() => Haschanged);
+                OnPropertyChanged(() => UserAuthenticationSelected);
             }
         }
 
