@@ -227,7 +227,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-       public void UpdatePermissions(PermissionsChangedArgs args)
+        public void UpdatePermissions(PermissionsChangedArgs args)
         {
             var resourcePermission = args.Permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
             if (resourcePermission != null)
@@ -324,16 +324,16 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (IsRenaming  && _explorerRepository.Rename(this, value)  )
                     {
-                    _resourceName = value;
-                    }
-                    if (!IsRenaming)
-                    {
-                        _resourceName = value;
-                    }
-                    IsRenaming = false;
-                    OnPropertyChanged(() => ResourceName);
+                _resourceName = value;
                 }
+                if (!IsRenaming)
+                {
+                    _resourceName = value;
+                }
+                IsRenaming = false;
+                OnPropertyChanged(() => ResourceName);
             }
+        }
         }
         public ICollection<IExplorerItemViewModel> Children
         {
@@ -714,7 +714,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (!String.IsNullOrEmpty(ResourceName) && ResourceType!= ResourceType.Version)
                 {
-                    IsVisible = ResourceName.Contains(filter) ;
+                    IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
                 }
             }
             OnPropertyChanged(() => Children);

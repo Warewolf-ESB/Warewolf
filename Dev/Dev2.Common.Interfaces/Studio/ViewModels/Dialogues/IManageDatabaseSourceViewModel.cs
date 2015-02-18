@@ -116,7 +116,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         List<string> DatabaseNames { get; set; }
 
         string CancelTestLabel { get; }
-        bool TestPassed { get; // ReSharper disable UnusedMember.Local
-        }
+        bool TestPassed { get; }
+        bool TestFailed { get; }
+        bool Testing { get; }
     }
 }

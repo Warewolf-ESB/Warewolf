@@ -16,6 +16,11 @@
                     d:DataContext="{d:DesignInstance Type=saveDialog:IRequestServiceNameViewModel,
                                                      IsDesignTimeCreatable=False}"
                     mc:Ignorable="d">
+    <ig:XamDialogWindow.InputBindings>
+        <KeyBinding Command="{Binding Path=CancelCommand}" 
+                Key="Escape" 
+                />
+    </ig:XamDialogWindow.InputBindings>
     <Grid Margin="{StaticResource ContainerBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

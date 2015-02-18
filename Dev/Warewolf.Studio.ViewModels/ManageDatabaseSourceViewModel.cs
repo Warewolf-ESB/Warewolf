@@ -35,6 +35,9 @@ namespace Warewolf.Studio.ViewModels
             HeaderText = "New Database Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection);
             OkCommand = new DelegateCommand(SaveConnection);
+            Testing = true;
+            TestPassed = true;
+            TestMessage = "Test completed";
         }
 
         void SaveConnection()
@@ -234,6 +237,12 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.CancelTest;
             }
         }
+
+        public bool TestPassed { get; private set; }
+
+        public bool TestFailed { get; private set; }
+
+        public bool Testing { get; private set; }
 
 
         public string ServerLabel
