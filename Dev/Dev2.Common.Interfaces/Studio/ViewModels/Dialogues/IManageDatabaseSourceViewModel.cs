@@ -113,11 +113,14 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// <summary>
         /// List of database names for the user to choose from based on the server entered
         /// </summary>
-        List<string> DatabaseNames { get; set; }
+        IList<string> DatabaseNames { get; set; }
 
         string CancelTestLabel { get; }
         bool TestPassed { get; }
         bool TestFailed { get; }
         bool Testing { get; }
+        IList<enSourceType> Types { get; set; }
+        bool IsSaveEnabled { get; set; }
+        string ResourceName { get; set; }
     }
 }

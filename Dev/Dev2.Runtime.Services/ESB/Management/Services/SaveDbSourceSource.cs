@@ -1,15 +1,4 @@
-﻿
-/*
-*  Warewolf - The Easy Service Bus
-*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
-*  Some rights reserved.
-*  Visit our website for more information <http://warewolf.io/>
-*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
-*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
@@ -19,17 +8,14 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-    public class TestDbConnectionService : IEsbManagementEndpoint
+    public class SaveDbSourceSource : IEsbManagementEndpoint
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -38,25 +24,31 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Log.Info("Test DB Connection Service");
+                Dev2Logger.Log.Info("Save Resource Service");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("DbSource", out resourceDefinition);
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
-                var con = new DbSources();
-                DatabaseValidationResult result = con.DoDatabaseValidation(new DbSource
+                var res = new DbSource
                 {
                     AuthenticationType = src.AuthenticationType,
                     Server = src.ServerName,
                     Password = src.Password,
-                    UserID = src.UserName
-
-                });
-
+                    UserID = src.UserName,
+                    ResourceID = src.Id,
+                    DatabaseName = src.DbName,
+                    ResourceName = src.Name,
+                    ResourcePath = src.Path
+                };
+                var con = new DbSources();
+                var result = con.DoDatabaseValidation(res);
+       
+                if (result.IsValid)
+                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
                 msg.HasError = false;
-                msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize( result.DatabaseList) : result.ErrorMessage);
-                msg.HasError = !result.IsValid;
+                msg.Message = new StringBuilder(res.IsValid ? "" : result.ErrorMessage);
+
 
             }
             catch (Exception err)
@@ -72,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><DbSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ServerSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
             ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
@@ -81,8 +73,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string HandlesType()
         {
-            return "TestDbSourceService";
+            return "SaveDbSourceService";
         }
     }
 }
-

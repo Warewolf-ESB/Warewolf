@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
@@ -120,7 +121,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resource"></param>
         /// <returns></returns>
-        public string TestDbConnection(IDbSource resource)
+        public IList<string> TestDbConnection(IDbSource resource)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestDbSourceService");
@@ -128,17 +129,16 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                return "Unable to contact server";
-            if (output.HasError)
-                return output.Message.ToString();
-
-            return output.Message.ToString();
+                throw new WarewolfTestException("unable to contact Server", null);
+            if(output.HasError)
+                throw new WarewolfTestException(output.Message.ToString(),null);
+            return serialiser.Deserialize<List<string>>(output.Message);
         }
 
-        public void SaveDbSource(DbSourceDefinition toDbSource, Guid serverWorkspaceID)
+        public void SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID)
         {
             var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("TestDbSourceService");
+            var comsController = CommunicationControllerFactory.CreateController("SaveDbSourceService");
             Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(toDbSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
@@ -153,6 +153,14 @@ namespace Warewolf.Studio.ServerProxyLayer
     {
         public WarewolfSaveException(string message, Exception innerException)
             : base(message, innerException, ExceptionType.Execution, ExceptionSeverity.Error)
+        {
+        }
+    }
+
+    public class WarewolfTestException : WarewolfException
+    {
+        public WarewolfTestException(string message, Exception innerException)
+            : base(message, innerException, ExceptionType.Execution, ExceptionSeverity.User)
         {
         }
     }

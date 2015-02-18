@@ -23,10 +23,15 @@ namespace Warewolf.Studio.ViewModels
         private string _userName;
         private string _password;
         private string _testMessage;
-        private List<string> _databaseNames;
+        private IList<string> _databaseNames;
         private string _header;
         readonly IStudioUpdateManager _updateManager ;
-        readonly IDbSource _dbSource;
+         IDbSource _dbSource;
+        bool _testPassed;
+        bool _testFailed;
+        bool _testing;
+        bool _isSaveEnabled;
+        string _resourceName;
 
         public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager)
         {
@@ -35,34 +40,17 @@ namespace Warewolf.Studio.ViewModels
             HeaderText = "New Database Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection);
             OkCommand = new DelegateCommand(SaveConnection);
-            Testing = true;
-            TestPassed = true;
+            Testing = false;
+            Types = new List<enSourceType> { enSourceType.SqlDatabase };
+            ServerType = enSourceType.SqlDatabase;
             TestMessage = "Test completed";
+            _testPassed = false;
+            _testFailed = false;
+            
         }
 
-        void SaveConnection()
-        {
-            if(_dbSource != null)
-            {
-                var res = RequestServiceNameViewModel.ShowSaveDialog();
-                if(res==MessageBoxResult.OK)
-                {
-                    Save(ToDbSource());
-                }
-            }
-            else
-            {
-                Save(ToDbSource());
-            }
-        }
-
-        void Save(DbSourceDefinition toDbSource)
-        {
-            _updateManager.Save(toDbSource);
-        }
-
- 
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, RequestServiceNameViewModel requestServiceNameViewModel):this(updateManager)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, RequestServiceNameViewModel requestServiceNameViewModel)
+            : this(updateManager)
         {
 
             RequestServiceNameViewModel = requestServiceNameViewModel;
@@ -72,30 +60,139 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager)
         {
             _dbSource = dbSource;
-
+            FromDbSource(dbSource);
 
         }
+
+        void FromDbSource(IDbSource dbSource)
+        {
+            ResourceName = dbSource.Name;
+            AuthenticationType = dbSource.AuthenticationType;
+            UserName = dbSource.UserName;
+            DatabaseName = dbSource.DbName;
+            ServerName = dbSource.ServerName;
+            Password = dbSource.Password;
+            
+        }
+
+        public string ResourceName
+        {
+            get
+            {
+                return _resourceName;
+            }
+            set
+            {
+                _resourceName = value;
+                if(!String.IsNullOrEmpty(value))
+                {
+                    HeaderText = "Edit Database Service-" + _resourceName;
+                }
+                OnPropertyChanged(_resourceName);
+            }
+        }
+
+        void SaveConnection()
+        {
+            if(_dbSource == null)
+            {
+                var res = RequestServiceNameViewModel.ShowSaveDialog();
+               
+                if(res==MessageBoxResult.OK)
+                {
+                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;
+                    var src = ToDbSource();
+                    src.Path = RequestServiceNameViewModel.ResourceName.Path;
+                    Save(src);
+                    _dbSource = src;
+                    HeaderText = "Edit Database Service-" + _resourceName;
+                }
+            }
+            else
+            {
+                Save(ToDbSource());
+            }
+        }
+
+        void Save(IDbSource toDbSource)
+        {
+            _updateManager.Save(toDbSource);
+        }
+
+ 
+
         void TestConnection()
         {
-            TestMessage = _updateManager.TestDbConnection(ToDbSource());
+            Testing = true;
+            try
+            {
+                TestFailed = false;
+                TestPassed = false;
+             
+                
+                DatabaseNames = _updateManager.TestDbConnection(ToDbSource());
+                TestMessage = "Passed";
+                TestFailed = false;
+                TestPassed = true;
+
+            }
+            catch(Exception err)
+            {
+                TestFailed = true;
+                TestPassed = false;
+                TestMessage = err.Message;
+                DatabaseNames.Clear();
+            }
+            finally
+            {
+                Testing = false;
+            }
+            OnPropertyChanged(() => DatabaseNames);
         }
 
-        DbSourceDefinition ToDbSource()
+        IDbSource ToDbSource()
         {
+            if(_dbSource == null)
             return new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType,
                 ServerName = ServerName ,
                 Password = Password,
                 UserName =  UserName ,
-                Type = ServerType
-
+                Type = ServerType,
+                Name = ResourceName,
+                DbName = DatabaseName,
+                Id =  _dbSource==null?Guid.NewGuid():_dbSource.Id
             };
+                // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                _dbSource.AuthenticationType = AuthenticationType;
+                _dbSource.DbName = DatabaseName;
+                _dbSource.Password = Password;
+                _dbSource.ServerName = ServerName;
+                return _dbSource;
+
+            }
         }
         RequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
         public bool Haschanged
         {
             get { return !ToDbSource().Equals(_dbSource); }
+        }
+
+        public IList<enSourceType> Types { get; set; }
+        public bool IsSaveEnabled
+        {
+            get
+            {
+                return _isSaveEnabled && TestPassed;
+            }
+             set
+            {
+                _isSaveEnabled = value;
+                OnPropertyChanged(()=>IsSaveEnabled);
+            }
         }
 
         public enSourceType ServerType
@@ -184,8 +281,15 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestPassed
         {
-            get { return _testMessage=="Passed"; }
-            // ReSharper disable UnusedMember.Local
+            get { return _testPassed; }
+            set
+            {
+                _testPassed = value;
+                OnPropertyChanged(()=>TestPassed);
+                IsSaveEnabled = _testPassed;
+           
+            }
+        
  
         }
         public string ServerTypeLabel
@@ -238,12 +342,31 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool TestPassed { get; private set; }
+        public bool TestFailed
+        {
+            get
+            {
+                return _testFailed;
+            }
+            set
+            {
+                _testFailed = value;
+                OnPropertyChanged(()=>TestFailed);
+            }
+        }
 
-        public bool TestFailed { get; private set; }
-
-        public bool Testing { get; private set; }
-
+        public bool Testing
+        {
+            get
+            {
+                return _testing;
+            }
+            private set
+            {
+                _testing = value;
+                OnPropertyChanged(()=>Testing);
+            }
+        }
 
         public string ServerLabel
         {
@@ -297,7 +420,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public List<string> DatabaseNames
+        public IList<string> DatabaseNames
         {
             get { return _databaseNames; }
             set

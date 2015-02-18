@@ -28,8 +28,9 @@ namespace Dev2.Common.Interfaces.Explorer
         void Save(IServerSource serverSource);
 
         string TestConnection(IServerSource serverSource);
-        string TestDbConnection(IDbSource serverSource);
+        
+        IList<string> TestDbConnection(IDbSource serverSource);
 
-        void Save(DbSourceDefinition toDbSource);
+        void Save(IDbSource toDbSource);
     }
 }

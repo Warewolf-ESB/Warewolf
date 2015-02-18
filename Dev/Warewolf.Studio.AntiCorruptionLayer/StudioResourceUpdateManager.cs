@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Explorer;
@@ -48,12 +49,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         }
 
-        public string TestDbConnection(IDbSource serverSource)
+        public IList<string> TestDbConnection(IDbSource serverSource)
         {
             return UpdateManagerProxy.TestDbConnection(serverSource);
         }
 
-        public void Save(DbSourceDefinition toDbSource)
+        public void Save(IDbSource toDbSource)
         {
             UpdateManagerProxy.SaveDbSource( toDbSource, GlobalConstants.ServerWorkspaceID);
         }

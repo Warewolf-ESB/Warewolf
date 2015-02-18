@@ -38,7 +38,7 @@
             <TextBlock Margin="10" Text="{Binding HeaderText}" Style="{StaticResource SourceHeader}" />
         </StackPanel>
         <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="1" Grid.Column="0" Text="{Binding ServerTypeLabel}"/>
-        <ComboBox Margin="{StaticResource ElementBorder}" Grid.Row="1" Grid.Column="1"></ComboBox>
+        <ComboBox Margin="{StaticResource ElementBorderLeftRight}"  Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Types}" SelectedValue="{Binding ServerType}"></ComboBox>
         <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="2" Grid.Column="0" Text="{Binding ServerLabel}"/>
         <TextBox Margin="{StaticResource ElementBorder}" Grid.Row="2" Grid.Column="1" Text="{Binding ServerName}"></TextBox>
         <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="3" Grid.Column="0" Text="{Binding AuthenticationLabel}"/>
@@ -64,7 +64,7 @@
             </PasswordBox>
         </Grid>
         <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="5" Grid.Column="0" Text="{Binding DatabaseLabel}"/>
-        <ComboBox Margin="{StaticResource ElementBorder}" ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Row="5" Grid.Column="1"></ComboBox>
+        <ComboBox  Margin="{StaticResource ElementBorderLeftRight}" ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Row="5" Grid.Column="1"></ComboBox>
         <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
             <TextBlock Text="{Binding TestMessage}"></TextBlock>
             <fa:ImageAwesome Width="14"  Height="14" Margin="{StaticResource ElementBorder}" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
@@ -74,9 +74,9 @@
                                        Width="14"
                                        Height="14"
                                        Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
-            <Button Margin="{StaticResource ElementBorder}" Width="120" Height="30" Content="{Binding TestLabel}" ToolTip="{Binding Path=TestToolTip}"></Button>
+            <Button Margin="{StaticResource ElementBorder}" Width="120" Height="30" Command="{Binding TestCommand}" Content="{Binding TestLabel}" ToolTip="{Binding Path=TestToolTip}"></Button>
             <Button Margin="{StaticResource ElementBorder}" Width="120" Height="30" Content="{Binding CancelTestLabel}"></Button>
         </StackPanel>
-        <Button Grid.Row="8" Margin="{StaticResource ElementBorder}" Grid.Column="1" Width="60" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center">Save</Button>
+        <Button Grid.Row="8" Margin="{StaticResource ElementBorder}" Grid.Column="1" Width="60" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding OkCommand}" IsEnabled="{Binding IsSaveEnabled}">Save</Button>
     </Grid>
 </UserControl>
