@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
+using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
@@ -30,7 +31,6 @@ namespace Warewolf.Studio.ViewModels
         bool _testPassed;
         bool _testFailed;
         bool _testing;
-        bool _isSaveEnabled;
         string _resourceName;
 
         public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager)
@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels
        
             HeaderText = "New Database Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection);
-            OkCommand = new DelegateCommand(SaveConnection);
+            OkCommand = new DelegateCommand(SaveConnection,CanSave);
             Testing = false;
             Types = new List<enSourceType> { enSourceType.SqlDatabase };
             ServerType = enSourceType.SqlDatabase;
@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, RequestServiceNameViewModel requestServiceNameViewModel)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IRequestServiceNameViewModel requestServiceNameViewModel)
             : this(updateManager)
         {
 
@@ -60,7 +60,11 @@ namespace Warewolf.Studio.ViewModels
         {
             _dbSource = dbSource;
             FromDbSource(dbSource);
+        }
 
+        public bool CanSave()
+        {
+            return TestPassed && !String.IsNullOrEmpty(DatabaseName);
         }
 
         void FromDbSource(IDbSource dbSource)
@@ -179,25 +183,20 @@ namespace Warewolf.Studio.ViewModels
 
             }
         }
-        RequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
+        IRequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
         public bool Haschanged
         {
             get { return !ToDbSource().Equals(_dbSource); }
         }
-
-        public IList<enSourceType> Types { get; set; }
-        public bool IsSaveEnabled
+        private void RaiseCanExecuteChanged()
         {
-            get
+            var command = OkCommand as DelegateCommand;
+            if (command != null)
             {
-                return _isSaveEnabled && TestPassed;
-            }
-             set
-            {
-                _isSaveEnabled = value;
-                OnPropertyChanged(()=>IsSaveEnabled);
+                command.RaiseCanExecuteChanged();
             }
         }
+        public IList<enSourceType> Types { get; set; }
 
         public enSourceType ServerType
         {
@@ -241,6 +240,7 @@ namespace Warewolf.Studio.ViewModels
                 _databaseName = value;
                 OnPropertyChanged(() => DatabaseName);
                 OnPropertyChanged(() => Haschanged);
+                RaiseCanExecuteChanged();
             }
         }
 
@@ -291,8 +291,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testPassed = value;
                 OnPropertyChanged(()=>TestPassed);
-                IsSaveEnabled = _testPassed;
-           
+                RaiseCanExecuteChanged();
+
             }
         
  

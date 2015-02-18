@@ -436,7 +436,7 @@ namespace Warewolf.AcceptanceTesting.Explorer
             explorerView.AddNewResource(path, type);
         }
 
-        [AfterScenario]
+        [AfterScenario("Explorer")]
         public void AfterScenario()
         {
             var explorerView = ScenarioContext.Current.Get<IExplorerView>("explorerView") as ExplorerView;
