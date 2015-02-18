@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
@@ -112,6 +113,37 @@ namespace Warewolf.Studio.ServerProxyLayer
             return output.Message.ToString();
 
 
+        }
+
+        /// <summary>
+        /// Tests if a valid connection to a server can be made returns 'Success' on a successful connection
+        /// </summary>
+        /// <param name="resource"></param>
+        /// <returns></returns>
+        public string TestDbConnection(IDbSource resource)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestDbSourceService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(resource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if (output == null)
+                return "Unable to contact server";
+            if (output.HasError)
+                return output.Message.ToString();
+
+            return output.Message.ToString();
+        }
+
+        public void SaveDbSource(DbSourceDefinition toDbSource, Guid serverWorkspaceID)
+        {
+            var con = Connection;
+            var comsController = CommunicationControllerFactory.CreateController("TestDbSourceService");
+            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(toDbSource));
+            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            if(output.HasError)
+                throw  new WarewolfSaveException(output.Message.ToString(),null);
         }
 
         #endregion

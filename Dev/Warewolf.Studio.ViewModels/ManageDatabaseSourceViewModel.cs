@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -20,10 +25,74 @@ namespace Warewolf.Studio.ViewModels
         private string _testMessage;
         private List<string> _databaseNames;
         private string _header;
+        readonly IStudioUpdateManager _updateManager ;
+        readonly IDbSource _dbSource;
 
-        public ManageDatabaseSourceViewModel()
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager)
         {
+            _updateManager = updateManager;
+       
             HeaderText = "New Database Connector Source Server";
+            TestCommand = new DelegateCommand(TestConnection);
+            OkCommand = new DelegateCommand(SaveConnection);
+        }
+
+        void SaveConnection()
+        {
+            if(_dbSource != null)
+            {
+                var res = RequestServiceNameViewModel.ShowSaveDialog();
+                if(res==MessageBoxResult.OK)
+                {
+                    Save(ToDbSource());
+                }
+            }
+            else
+            {
+                Save(ToDbSource());
+            }
+        }
+
+        void Save(DbSourceDefinition toDbSource)
+        {
+            _updateManager.Save(toDbSource);
+        }
+
+ 
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, RequestServiceNameViewModel requestServiceNameViewModel):this(updateManager)
+        {
+
+            RequestServiceNameViewModel = requestServiceNameViewModel;
+
+        }
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IDbSource dbSource)
+            : this(updateManager)
+        {
+            _dbSource = dbSource;
+
+
+        }
+        void TestConnection()
+        {
+            TestMessage = _updateManager.TestDbConnection(ToDbSource());
+        }
+
+        DbSourceDefinition ToDbSource()
+        {
+            return new DbSourceDefinition
+            {
+                AuthenticationType = AuthenticationType,
+                ServerName = ServerName ,
+                Password = Password,
+                UserName =  UserName ,
+                Type = ServerType
+
+            };
+        }
+        RequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
+        public bool Haschanged
+        {
+            get { return !ToDbSource().Equals(_dbSource); }
         }
 
         public enSourceType ServerType
@@ -33,6 +102,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _serverType = value;
                 OnPropertyChanged(() => ServerType);
+                OnPropertyChanged(()=>Haschanged);
             }
         }
 
@@ -43,6 +113,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _authenticationType = value;
                 OnPropertyChanged(() => AuthenticationType);
+                OnPropertyChanged(() => Haschanged);
             }
         }
 
@@ -53,6 +124,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _serverName = value;
                 OnPropertyChanged(() => ServerName);
+                OnPropertyChanged(() => Haschanged);
             }
         }
 
@@ -63,6 +135,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _databaseName = value;
                 OnPropertyChanged(() => DatabaseName);
+                OnPropertyChanged(() => Haschanged);
             }
         }
 
@@ -73,6 +146,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _userName = value;
                 OnPropertyChanged(() => UserName);
+                OnPropertyChanged(() => Haschanged);
             }
         }
 
@@ -83,6 +157,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _password = value;
                 OnPropertyChanged(() => Password);
+                OnPropertyChanged(() => Haschanged);
             }
         }
 
@@ -98,10 +173,18 @@ namespace Warewolf.Studio.ViewModels
                 // ReSharper restore UnusedMember.Local
             {
                 _testMessage = value;
-                OnPropertyChanged(() => _testMessage);
+                OnPropertyChanged(() => TestMessage);
+                OnPropertyChanged(()=>TestPassed);
             }
         }
 
+
+        public bool TestPassed
+        {
+            get { return _testMessage=="Passed"; }
+            // ReSharper disable UnusedMember.Local
+ 
+        }
         public string ServerTypeLabel
         {
             get

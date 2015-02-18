@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data;
 using System.Text;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ServerDialogue;
 
@@ -46,5 +48,13 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <returns></returns>
         string TestConnection(IServerSource resource);
 
+        /// <summary>
+        /// Tests if a valid connection to a server can be made returns 'Success' on a successful connection
+        /// </summary>
+        /// <param name="resource"></param>
+        /// <returns></returns>
+        string TestDbConnection(IDbSource resource);
+
+        void SaveDbSource(DbSourceDefinition toDbSource, Guid serverWorkspaceID);
     }
 }

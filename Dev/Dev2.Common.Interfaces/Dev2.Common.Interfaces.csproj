@@ -162,6 +162,7 @@
     <Compile Include="Core\Convertors\DateAndTime\IDateTimeParser.cs" />
     <Compile Include="Core\Convertors\DateAndTime\IDateTimeResultTO.cs" />
     <Compile Include="Core\Convertors\DateAndTime\ITimeZoneTO.cs" />
+    <Compile Include="Core\DbSourceDefinition.cs" />
     <Compile Include="Core\DynamicServices\Globals.cs" />
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
     <Compile Include="Core\Globals.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="PermissionsChangedArgs.cs" />
     <Compile Include="SaveDialog\IRequestServiceNameViewModel.cs" />
     <Compile Include="ServerDialogue\IServerSource.cs" />
+    <Compile Include="ServerProxyLayer\IDbSource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
     <Compile Include="Help\IHelpDescriptor.cs" />
     <Compile Include="Studio\IMenuViewModel.cs" />
