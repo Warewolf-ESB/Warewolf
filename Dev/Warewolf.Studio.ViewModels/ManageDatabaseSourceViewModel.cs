@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using Dev2;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
+using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
@@ -37,6 +39,8 @@ namespace Warewolf.Studio.ViewModels
 
         public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager,IEventAggregator aggregator)
         {
+            VerifyArgument.IsNotNull("updateManager", updateManager);
+            VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
             _aggregator = aggregator;
 
@@ -52,16 +56,18 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, RequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
             : this(updateManager, aggregator)
         {
+            VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
 
             RequestServiceNameViewModel = requestServiceNameViewModel;
 
         }
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IDbSource dbSource,IEventAggregator aggregator)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IEventAggregator aggregator, IDbSource dbSource)
             : this(updateManager,  aggregator)
         {
+            VerifyArgument.IsNotNull("dbSource", dbSource);
             _dbSource = dbSource;
             FromDbSource(dbSource);
 
@@ -184,7 +190,7 @@ namespace Warewolf.Studio.ViewModels
 
             }
         }
-        RequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
+        IRequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
         public bool Haschanged
         {
             get { return !ToDbSource().Equals(_dbSource); }
