@@ -203,9 +203,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Warewolf Studio">
-      <HintPath>..\Dev2.Studio\bin\Debug\Warewolf Studio.exe</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -238,6 +235,7 @@
     <Compile Include="ConnectControlView.xaml.cs">
       <DependentUpon>ConnectControlView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CustomIcons.cs" />
     <Compile Include="Converters\MessageBoxImageToSystemIconConverter.cs" />
     <Compile Include="DbSyntaxEditor.xaml.cs">
       <DependentUpon>DbSyntaxEditor.xaml</DependentUpon>
