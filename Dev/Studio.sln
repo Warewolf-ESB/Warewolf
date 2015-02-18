@@ -17,11 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio", "Warewolf
 		{97A827FF-65C4-4267-99D2-DCE6803B2348} = {97A827FF-65C4-4267-99D2-DCE6803B2348}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework", "Dev2.UndoFramework\Dev2.UndoFramework.csproj", "{632E4898-1B1B-474C-A028-D13A5C914F11}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
@@ -298,6 +293,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.AntiCorruptionLayer", "Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj", "{CC1B89CD-3222-4019-A0D1-58664F92CC47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.AntiCorruptionLayer.Tests", "Warewolf.Studio.AntiCorruptionLayer.Tests\Warewolf.Studio.AntiCorruptionLayer.Tests.csproj", "{5FBDC0FD-3867-4B23-A9A9-45242BA07F6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB565C94-8833-4911-B20F-0921EE3C286C} = {CB565C94-8833-4911-B20F-0921EE3C286C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
