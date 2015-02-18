@@ -247,7 +247,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void CreateDatabaseSource()
         {
-            var mockDbSourceViewModel = new ManageDatabaseSourceViewModel();
+            var selectedId = Guid.NewGuid();
+            var mockDbSourceViewModel = new ManageDatabaseSourceViewModel(ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId));
             GetRegion("Workspace").Add(mockDbSourceViewModel);
         }
 

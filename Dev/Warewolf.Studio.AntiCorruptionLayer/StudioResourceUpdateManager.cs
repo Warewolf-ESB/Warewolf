@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
-using Dev2.Data.ServiceModel;
-using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -48,6 +47,16 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
             return UpdateManagerProxy.TestConnection(serverSource);
 
+        }
+
+        public IList<string> TestDbConnection(IDbSource serverSource)
+        {
+            return UpdateManagerProxy.TestDbConnection(serverSource);
+        }
+
+        public void Save(IDbSource toDbSource)
+        {
+            UpdateManagerProxy.SaveDbSource( toDbSource, GlobalConstants.ServerWorkspaceID);
         }
     }
 }

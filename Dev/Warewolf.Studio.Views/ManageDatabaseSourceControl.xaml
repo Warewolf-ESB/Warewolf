@@ -24,7 +24,7 @@
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
@@ -34,42 +34,49 @@
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="6*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel Background="{StaticResource WareWolfMenuBrush}" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TextBlock Margin="10,10,0,0" Text="{Binding HeaderText}" Style="{StaticResource SourceHeader}" />
+        <StackPanel Background="{StaticResource WareWolfMenuBrush}" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+            <TextBlock Margin="10" Text="{Binding HeaderText}" Style="{StaticResource SourceHeader}" />
         </StackPanel>
-        <TextBlock Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Text="{Binding ServerTypeLabel}"/>
-        <ComboBox Grid.Row="1" Grid.Column="1"></ComboBox>
-        <TextBlock Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Text="{Binding ServerLabel}"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ServerName}"></TextBox>
-        <TextBlock Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" Text="{Binding AuthenticationLabel}"/>
-        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-            <RadioButton ToolTip="{Binding Path=WindowsAuthenticationToolTip}" Padding="5,0" VerticalAlignment="Center"  HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows</RadioButton>
-            <RadioButton ToolTip="{Binding Path=UserAuthenticationToolTip}"  Padding="5,0" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User</RadioButton>
+        <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="1" Grid.Column="0" Text="{Binding ServerTypeLabel}"/>
+        <ComboBox Margin="{StaticResource ElementBorderLeftRight}"  Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Types}" SelectedValue="{Binding ServerType}"></ComboBox>
+        <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="2" Grid.Column="0" Text="{Binding ServerLabel}"/>
+        <TextBox Margin="{StaticResource ElementBorder}" Grid.Row="2" Grid.Column="1" Text="{Binding ServerName}"></TextBox>
+        <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="3" Grid.Column="0" Text="{Binding AuthenticationLabel}"/>
+        <StackPanel Margin="{StaticResource ElementBorder}" Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+            <RadioButton ToolTip="{Binding Path=WindowsAuthenticationToolTip}" Margin="{StaticResource ElementBorder}" Padding="{StaticResource ElementBorder}" VerticalAlignment="Center"  HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.Windows}}">Windows</RadioButton>
+            <RadioButton ToolTip="{Binding Path=UserAuthenticationToolTip}"  Margin="{StaticResource ElementBorder}" Padding="{StaticResource ElementBorder}" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static serviceModel:AuthenticationType.User}}">User</RadioButton>
         </StackPanel>
-        <Grid Grid.Row="4" Grid.Column="0" ColumnSpan="2">
+        <Grid Grid.Row="4" Grid.Column="0" ColumnSpan="2" Visibility="{Binding Path=UserAuthenticationSelected,Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="6*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Text="{Binding UserNameLabel}"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding UserName}"></TextBox>
-            <TextBlock Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Text="{Binding PasswordLabel}"/>
-            <PasswordBox Grid.Row="1" Grid.Column="1"
+            <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="0" Grid.Column="0" Text="{Binding UserNameLabel}"/>
+            <TextBox Margin="{StaticResource ElementBorder}" Grid.Row="0" Grid.Column="1" Text="{Binding UserName}"></TextBox>
+            <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="1" Grid.Column="0" Text="{Binding PasswordLabel}"/>
+            <PasswordBox Margin="{StaticResource ElementBorder}" Grid.Row="1" Grid.Column="1"
                          customControls:PasswordBoxAssistant.BindPassword="true"
                          customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </PasswordBox>
         </Grid>
-        <TextBlock Margin="10,0,0,0" Grid.Row="5" Grid.Column="0" Text="{Binding DatabaseLabel}"/>
-        <ComboBox ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Row="5" Grid.Column="1"></ComboBox>
-        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <TextBlock></TextBlock>
-            <Button Content="{Binding TestLabel}"></Button>
-            <Button Content="{Binding CancelTestLabel}"></Button>
+        <TextBlock Margin="{StaticResource ElementBorder}" Grid.Row="5" Grid.Column="0" Text="{Binding DatabaseLabel}"/>
+        <ComboBox  Margin="{StaticResource ElementBorderLeftRight}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Row="5" Grid.Column="1"></ComboBox>
+        <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <TextBlock Text="{Binding TestMessage}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
+            <fa:ImageAwesome Width="14"  Height="14" Margin="{StaticResource ElementBorder}" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
+            <fa:ImageAwesome Width="14" Height="14"  Margin="{StaticResource ElementBorder}" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Ban" HorizontalAlignment="Right" Grid.Column="2"/>
+            <views:CircularProgressBar
+                Margin="{StaticResource ElementBorder}"
+                                       Width="14"
+                                       Height="14"
+                                       Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
+            <Button Margin="{StaticResource ElementBorder}" Width="120" Height="30" Command="{Binding TestCommand}" Content="{Binding TestLabel}" ToolTip="{Binding Path=TestToolTip}"></Button>
+            <Button Margin="{StaticResource ElementBorder}" Width="120" Height="30" Content="{Binding CancelTestLabel}"></Button>
         </StackPanel>
-        <Button Grid.Row="8" Grid.Column="1">Save</Button>
+        <Button Grid.Row="8" Margin="{StaticResource ElementBorder}" Grid.Column="1" Width="60" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding OkCommand}" IsEnabled="{Binding IsSaveEnabled}">Save</Button>
     </Grid>
 </UserControl>

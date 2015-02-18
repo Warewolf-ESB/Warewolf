@@ -390,6 +390,51 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Filter")]
+        public void ExplorerItemViewModel_FilterSetChildrenInvisible_CaseInsensitive()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(a => a.ShowPopup(It.IsAny<IPopupMessage>())).Returns(true);
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+         
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null) 
+            { ResourceName = "mat",
+                Children = new ObservableCollection<IExplorerItemViewModel>
+                {
+                     new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null)
+                     {
+                         ResourceName = "BoB",
+                         Children = new ObservableCollection<IExplorerItemViewModel>
+                         {
+                              new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null) {ResourceName = "The"},
+                               new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null) {ResourceName = "Builder"}
+
+                         }
+                     },
+                      new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null){ResourceName = "moot"},
+                       new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null){ResourceName = "boot"}
+                }
+            };
+            Assert.AreEqual(explorerViewModel.Children.Count,3);
+            explorerViewModel.Filter("bob");
+            Assert.AreEqual(explorerViewModel.Children.Count,1);
+            Assert.AreEqual(explorerViewModel.Children.First().Children.Count,0);
+            explorerViewModel.Filter("the");
+            Assert.AreEqual(explorerViewModel.Children.Count, 1);
+            Assert.AreEqual(explorerViewModel.Children.First().Children.Count, 1);
+            explorerViewModel.Filter("Sasuke");
+            Assert.AreEqual(explorerViewModel.Children.Count, 0);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemViewModel_Delete")]
         public void ExplorerItemViewModel_Delete_DoesNotOccurIfPopupIsFalse()
         {

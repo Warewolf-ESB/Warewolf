@@ -20,7 +20,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     {
         public int DatabaseValidationHitCount { get; set; }
 
-        protected override DatabaseValidationResult DoDatabaseValidation(DbSource dbSourceDetails)
+        public override DatabaseValidationResult DoDatabaseValidation(DbSource dbSourceDetails)
         {
             //PBI 8720
             DatabaseValidationHitCount++;

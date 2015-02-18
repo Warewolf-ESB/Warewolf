@@ -89,7 +89,7 @@
         <core:WidthConvertForWrapPanel x:Key="ListBoxWidthToItemsPanelWidthConverter" />
     </UserControl.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Margin="{StaticResource ContainerBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
             <RowDefinition Height="29"/>
