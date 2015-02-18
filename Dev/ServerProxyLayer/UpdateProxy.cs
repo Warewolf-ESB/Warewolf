@@ -129,7 +129,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
-                throw new WarewolfTestException("unable to contact Server", null);
+                throw new WarewolfTestException("Unable to contact Server", null);
             if(output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(),null);
             return serialiser.Deserialize<List<string>>(output.Message);

@@ -99,6 +99,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         }
 
         [Given(@"I Select Authentication Type as ""(.*)""")]
+        [When(@"I Select Authentication Type as ""(.*)""")]
+        [Then(@"I Select Authentication Type as ""(.*)""")]
         public void GivenISelectAuthenticationTypeAs(string authenticationTypeString)
         {
             var authenticationType = String.Equals(authenticationTypeString, "Windows",
@@ -188,11 +190,19 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             else
             {
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
-                    .Throws(new WarewolfTestException("Test Failed", null));
+                    .Throws(new WarewolfTestException("Server not found", null));
 
             }
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
             manageDatabaseSourceControl.PerformTestConnection();
+        }
+
+        [When(@"the validation message as ""(.*)""")]
+        public void WhenTheValidationMessageAs(string validationMessage)
+        {
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
+            var errorMessage = manageDatabaseSourceControl.GetErrorMessage();
+            Assert.AreEqual(validationMessage,errorMessage);
         }
 
         [Then(@"the save dialog is opened")]

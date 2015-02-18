@@ -75,7 +75,7 @@
             <ComboBox x:Name="DatabaseComboxBox"  Margin="{StaticResource ElementBorderLeftRight}" ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Column="1"></ComboBox>
         </Grid>
         <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <TextBlock Text="{Binding TestMessage}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
+            <TextBlock x:Name="ErrorTextBlock" Text="{Binding TestMessage}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}"></TextBlock>
             <fa:ImageAwesome Width="14"  Height="14" Margin="{StaticResource ElementBorder}" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestPassed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Check" HorizontalAlignment="Right" Grid.Column="2"/>
             <fa:ImageAwesome Width="14" Height="14"  Margin="{StaticResource ElementBorder}" Foreground="{StaticResource WareWolfOrangeBrush}" Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}" Icon="Ban" HorizontalAlignment="Right" Grid.Column="2"/>
             <views:CircularProgressBar
