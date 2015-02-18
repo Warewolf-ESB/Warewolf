@@ -6,7 +6,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -164,6 +163,7 @@ namespace Warewolf.AcceptanceTesting.Core
         
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+        public event ItemAddedEvent ItemAddedEvent;
 
         public IStudioUpdateManager UpdateRepository
         {

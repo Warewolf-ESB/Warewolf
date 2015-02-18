@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Microsoft.Practices.Prism.Commands;
@@ -38,6 +39,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             Server = server;
             Server.NetworkStateChanged += Server_NetworkStateChanged;
+            server.ItemAddedEvent += ServerItemAddedEvent;
             _children = new ObservableCollection<IExplorerItemViewModel>();
             NewCommand = new DelegateCommand<ResourceType?>(type => ShellViewModel.NewResource(type, Guid.Empty));
             DisplayName = server.ResourceName;
@@ -58,6 +60,36 @@ namespace Warewolf.Studio.ViewModels
             Parent = null;
             ResourceType = ResourceType.ServerSource;
             ResourceName = DisplayName;
+        }
+
+        void ServerItemAddedEvent(IExplorerItem args)
+        {
+            if(args.ResourcePath == args.DisplayName)
+            {
+                Children.Add(new ExplorerItemViewModel(_shellViewModel, Server, new Mock<IExplorerHelpDescriptorBuilder>().Object, null));
+                return;
+            }
+           var found = Find(args.ResourcePath.Substring(0,args.ResourcePath.LastIndexOf("\\", System.StringComparison.Ordinal)));
+            if(found != null)
+            {
+                if(found.Children.All(a => a.ResourceName != args.DisplayName))
+                    _shellViewModel.ExecuteOnDispatcher(()=>
+                    found.AddChild(new ExplorerItemViewModel(_shellViewModel,Server,new Mock<IExplorerHelpDescriptorBuilder>().Object,found)
+                    {
+                        ResourceId = args.ResourceId,
+                        ResourceName = args.DisplayName,
+                        Parent = found,
+                        CanCreateDbService = true,
+                        CanCreateDbSource = false,
+                        ResourceType = args.ResourceType
+                    }
+                    ));
+            }
+        }
+
+        IExplorerItemViewModel Find(string resourcePath)
+        {
+            return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(resourcePath)).FirstOrDefault(found => found != null);
         }
 
         void CreateFolder()

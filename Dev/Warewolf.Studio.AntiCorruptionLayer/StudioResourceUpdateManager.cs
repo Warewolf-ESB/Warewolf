@@ -57,6 +57,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void Save(IDbSource toDbSource)
         {
             UpdateManagerProxy.SaveDbSource( toDbSource, GlobalConstants.ServerWorkspaceID);
+
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
             });
             _canShowVersions = true;
             Parent = parent;
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } });
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } , });
             _shellViewModel = shellViewModel;
             LostFocus = new DelegateCommand(LostFocusCommand);
 
@@ -183,6 +183,18 @@ namespace Warewolf.Studio.ViewModels
                     explorerItemViewModel.Apply(action);
                 }
             }
+        }
+
+        public IExplorerItemViewModel Find(string resourcePath)
+        {
+            if (!resourcePath.Contains("\\") && resourcePath==ResourceName)
+                return this;
+            if (Children != null && resourcePath.Contains("\\"))
+            {
+                string name = resourcePath.Substring(1+resourcePath.IndexOf("\\", StringComparison.Ordinal));
+                return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(name)).FirstOrDefault(item => item != null);
+            }
+            return null;
         }
 
         string GetChildNameFromChildren()

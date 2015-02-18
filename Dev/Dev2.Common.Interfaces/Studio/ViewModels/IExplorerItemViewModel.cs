@@ -36,6 +36,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void AddSibling(IExplorerItemViewModel sibling);
         void CreateNewFolder();
         void Apply(Action<IExplorerItemViewModel> action);
+        IExplorerItemViewModel Find(string resourcePath);
+
     }
 
     public enum ExplorerEventContext

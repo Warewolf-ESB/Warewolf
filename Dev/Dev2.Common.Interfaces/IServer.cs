@@ -23,7 +23,7 @@ namespace Dev2.Common.Interfaces
 
         event PermissionsChanged PermissionsChanged;
         event NetworkStateChanged NetworkStateChanged;
-
+        event ItemAddedEvent ItemAddedEvent;
         IStudioUpdateManager UpdateRepository{get;}
         string GetServerVersion();
 
@@ -32,4 +32,5 @@ namespace Dev2.Common.Interfaces
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);
     public delegate void NetworkStateChanged(INetworkStateChangedEventArgs args);
+    public delegate void ItemAddedEvent(IExplorerItem args);
 }

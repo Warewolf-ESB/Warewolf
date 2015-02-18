@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
@@ -144,6 +143,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if(output.HasError)
                 throw  new WarewolfSaveException(output.Message.ToString(),null);
+            
         }
 
         #endregion
