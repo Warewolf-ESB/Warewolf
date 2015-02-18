@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -66,7 +67,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(dbSource.UserName,manageDatabaseSourceViewModel.UserName);
             Assert.AreEqual(manageDatabaseSourceViewModel.AuthenticationType,dbSource.AuthenticationType);
             Assert.AreEqual(dbSource.Type,manageDatabaseSourceViewModel.ServerType);
-            
+            Assert.AreEqual(manageDatabaseSourceViewModel.Image,ResourceType.DbSource);
+           
         }
 
 
@@ -199,7 +201,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageDatabaseSourceViewModel_CanTest")]
-        public void ManageDatabaseSourceViewModel_CanTest_SetsUpCorrectValues()
+        public void ManageDatabaseSourceViewModel_CanTest_Public()
         {
             var dialog = new Mock<IRequestServiceNameViewModel>();
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
@@ -219,6 +221,29 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ManageDatabaseSourceViewModel_CanTest")]
+        public void ManageDatabaseSourceViewModel_CanTest_User()
+        {
+            var dialog = new Mock<IRequestServiceNameViewModel>();
+            dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
+            dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
+            var updateManager = new Mock<IStudioUpdateManager>();
+
+            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
+            Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
+            manageDatabaseSourceViewModel.Password = "bob";
+            manageDatabaseSourceViewModel.ServerType = enSourceType.SqlDatabase;
+            manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.User;
+           
+            manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
+            manageDatabaseSourceViewModel.ServerName = "mon";
+            Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
+
+            manageDatabaseSourceViewModel.UserName = "dave";
+            Assert.IsTrue(manageDatabaseSourceViewModel.CanTest());
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
@@ -340,6 +341,8 @@ namespace Warewolf.Studio.ViewModels
         
  
         }
+
+        [ExcludeFromCodeCoverage]
         public string ServerTypeLabel
         {
             get
@@ -347,8 +350,9 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.DatabaseSourceTypeLabel;
             }
         }
-       
 
+
+        [ExcludeFromCodeCoverage]
         public string UserNameLabel
         {
             get
@@ -357,6 +361,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public string AuthenticationLabel
         {
             get
@@ -365,6 +370,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public string PasswordLabel
         {
             get
@@ -374,6 +380,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public string TestLabel
         {
             get
@@ -381,7 +388,8 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.TestConnectionLabel;
             }
         }
-        
+
+        [ExcludeFromCodeCoverage]
         public string CancelTestLabel
         {
             get
@@ -416,6 +424,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public string ServerLabel
         {
             get
@@ -424,6 +433,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public string DatabaseLabel
         {
             get
@@ -445,6 +455,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public string WindowsAuthenticationToolTip
         {
             get
@@ -452,6 +463,8 @@ namespace Warewolf.Studio.ViewModels
                 return Resources.Languages.Core.WindowsAuthenticationToolTip;
             }
         }
+
+        [ExcludeFromCodeCoverage]
         public string UserAuthenticationToolTip
         {
             get
@@ -460,6 +473,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public string ServerTypeTool
         {
             get
