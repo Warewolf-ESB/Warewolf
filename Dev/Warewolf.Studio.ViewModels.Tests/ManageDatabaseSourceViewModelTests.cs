@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
@@ -64,14 +67,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(dbSource.UserName,manageDatabaseSourceViewModel.UserName);
             Assert.AreEqual(manageDatabaseSourceViewModel.AuthenticationType,dbSource.AuthenticationType);
             Assert.AreEqual(dbSource.Type,manageDatabaseSourceViewModel.ServerType);
-            
+            Assert.AreEqual(manageDatabaseSourceViewModel.Image,ResourceType.DbSource);
+           
         }
 
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageDatabaseSourceViewModel_Save")]
-        public void ManageDatabaseSourceViewModel__Save_dopesNotBringUpDialogForExisting()
+        public void ManageDatabaseSourceViewModel__Save_DoesNotBringUpDialogForExisting()
         {
             var dbSource = new DbSourceDefinition()
             {
@@ -86,8 +90,9 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Type = enSourceType.SqlDatabase
             };
             var updateManager = new Mock<IStudioUpdateManager>();
-
+          
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, new Mock<IEventAggregator>().Object, dbSource);
+            Assert.AreEqual(manageDatabaseSourceViewModel.Header,  "Edit Database Service-" + dbSource.Name);
             PrivateObject p = new PrivateObject(manageDatabaseSourceViewModel);
             var dialog = new Mock<IRequestServiceNameViewModel>();
             p.SetProperty("RequestServiceNameViewModel",dialog.Object);
@@ -102,18 +107,162 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageDatabaseSourceViewModel_Save")]
-        public void ManageDatabaseSourceViewModel__Save_BringsUpDialogForExisting()
+        public void ManageDatabaseSourceViewModel__Save_BringsUpDialogForNonExisting()
         {
             var dialog = new Mock<IRequestServiceNameViewModel>();
-
+            dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
+            dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
             var updateManager = new Mock<IStudioUpdateManager>();
 
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object,new Mock<IEventAggregator>().Object);
-
+            updateManager.Setup(a => a.TestDbConnection(It.IsAny<IDbSource>())).Returns(new List<string>());
             Assert.IsFalse(manageDatabaseSourceViewModel.OkCommand.CanExecute(null));
             manageDatabaseSourceViewModel.OkCommand.Execute(null);
-            dialog.Verify(a => a.ShowSaveDialog(), Times.Never());
+            dialog.Verify(a => a.ShowSaveDialog(), Times.Once());
             updateManager.Verify(a => a.Save(It.IsAny<DbSourceDefinition>()));
+          
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ManageDatabaseSourceViewModel_Save")]
+        public void ManageDatabaseSourceViewModel__Save_SetsUpCorrectValues()
+        {
+            var dialog = new Mock<IRequestServiceNameViewModel>();
+            dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
+            dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
+            var updateManager = new Mock<IStudioUpdateManager>();
+
+            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
+            manageDatabaseSourceViewModel.Password = "bob";
+            manageDatabaseSourceViewModel.ServerType = enSourceType.SqlDatabase;
+            manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Public;
+            manageDatabaseSourceViewModel.UserName = "dave";
+            manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
+            updateManager.Setup(a => a.TestDbConnection(It.IsAny<IDbSource>())).Returns(new List<string>()).Callback((IDbSource a) =>
+            {
+                Assert.AreEqual(a.AuthenticationType,AuthenticationType.Public);
+                Assert.AreEqual(a.DbName,"dbNAme");
+                Assert.AreEqual(a.Password, "bob");
+                Assert.AreEqual(a.UserName,"dave");
+
+            });
+
+            updateManager.Setup(a => a.Save(It.IsAny<IDbSource>())).Callback((IDbSource a) =>
+            {
+                Assert.AreEqual(a.AuthenticationType, AuthenticationType.Public);
+                Assert.AreEqual(a.DbName, "dbNAme");
+                Assert.AreEqual(a.Password, "bob");
+                Assert.AreEqual(a.UserName, "dave");
+
+            });
+            Assert.IsFalse(manageDatabaseSourceViewModel.OkCommand.CanExecute(null));
+            manageDatabaseSourceViewModel.OkCommand.Execute(null);
+            dialog.Verify(a => a.ShowSaveDialog(), Times.Once());
+            updateManager.Verify(a => a.Save(It.IsAny<DbSourceDefinition>()));
+            Assert.AreEqual(manageDatabaseSourceViewModel.Header, "Edit Database Service-" +"name" );
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ManageDatabaseSourceViewModel_Test")]
+        public void ManageDatabaseSourceViewModel_Test_SetsUpCorrectValues()
+        {
+            var dialog = new Mock<IRequestServiceNameViewModel>();
+            dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
+            dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
+            var updateManager = new Mock<IStudioUpdateManager>();
+
+            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
+            manageDatabaseSourceViewModel.Password = "bob";
+            manageDatabaseSourceViewModel.ServerType = enSourceType.SqlDatabase;
+            manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Public;
+            manageDatabaseSourceViewModel.UserName = "dave";
+            manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
+            updateManager.Setup(a => a.TestDbConnection(It.IsAny<IDbSource>())).Returns(new List<string>(){"moo","roo"}).Callback((IDbSource a) =>
+            {
+                Assert.AreEqual(a.AuthenticationType, AuthenticationType.Public);
+                Assert.AreEqual(a.DbName, "dbNAme");
+                Assert.AreEqual(a.Password, "bob");
+                Assert.AreEqual(a.UserName, "dave");
+
+            });
+            Assert.IsFalse(manageDatabaseSourceViewModel.OkCommand.CanExecute(null));
+            manageDatabaseSourceViewModel.TestCommand.Execute(null);
+            Assert.IsTrue(manageDatabaseSourceViewModel.TestPassed);
+            Assert.AreEqual(manageDatabaseSourceViewModel.DatabaseNames.Count,2);
+
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ManageDatabaseSourceViewModel_CanTest")]
+        public void ManageDatabaseSourceViewModel_CanTest_Public()
+        {
+            var dialog = new Mock<IRequestServiceNameViewModel>();
+            dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
+            dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
+            var updateManager = new Mock<IStudioUpdateManager>();
+
+            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
+            Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
+            manageDatabaseSourceViewModel.Password = "bob";
+            manageDatabaseSourceViewModel.ServerType = enSourceType.SqlDatabase;
+            manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Public;
+            manageDatabaseSourceViewModel.UserName = "dave";
+            manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
+            manageDatabaseSourceViewModel.ServerName = "mon";
+            Assert.IsTrue(manageDatabaseSourceViewModel.CanTest());
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ManageDatabaseSourceViewModel_CanTest")]
+        public void ManageDatabaseSourceViewModel_CanTest_User()
+        {
+            var dialog = new Mock<IRequestServiceNameViewModel>();
+            dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
+            dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
+            var updateManager = new Mock<IStudioUpdateManager>();
+
+            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
+            Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
+            manageDatabaseSourceViewModel.Password = "bob";
+            manageDatabaseSourceViewModel.ServerType = enSourceType.SqlDatabase;
+            manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.User;
+           
+            manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
+            manageDatabaseSourceViewModel.ServerName = "mon";
+            Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
+
+            manageDatabaseSourceViewModel.UserName = "dave";
+            Assert.IsTrue(manageDatabaseSourceViewModel.CanTest());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ManageDatabaseSourceViewModel_CanTest")]
+        public void ManageDatabaseSourceViewModel_Header()
+        {
+            var dialog = new Mock<IRequestServiceNameViewModel>();
+            dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
+            dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
+            var updateManager = new Mock<IStudioUpdateManager>();
+
+            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
+            Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
+            manageDatabaseSourceViewModel.Password = "bob";
+            manageDatabaseSourceViewModel.ServerType = enSourceType.SqlDatabase;
+            manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Public;
+            manageDatabaseSourceViewModel.UserName = "dave";
+            manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
+            Assert.AreEqual(manageDatabaseSourceViewModel.Header, "New Database Connector Source Server");
 
 
         }
