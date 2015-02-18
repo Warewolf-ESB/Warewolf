@@ -64,14 +64,6 @@ namespace Warewolf.Studio.ViewModels
             OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
             RenameCommand = new DelegateCommand(() => IsRenaming = true);
-            ItemSelectedCommand = new DelegateCommand(() =>
-            {
-                //var helpDescriptor = builder.Build(this, ExplorerEventContext.Selected);
-
-                var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>", ResourceName, Inputs, Outputs), null);
-                shellViewModel.UpdateHelpDescriptor(helpDescriptor);
-                //shellViewModel.UpdateHelpDescriptor(builder.Build(this, ExplorerEventContext.Selected));
-            });
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(type => shellViewModel.NewResource(type, ResourceId));
             CanCreateDbService = true; //todo:remove
@@ -411,6 +403,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isSelected = value;
                 OnPropertyChanged(() => IsSelected);
+                if (_isSelected)
+                {
+                    var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>", ResourceName, Inputs, Outputs), null);
+                    _shellViewModel.UpdateHelpDescriptor(helpDescriptor);
+                }
             }
         }
 

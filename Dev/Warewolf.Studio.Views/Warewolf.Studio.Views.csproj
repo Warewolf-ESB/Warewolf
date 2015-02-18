@@ -193,6 +193,7 @@
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -201,6 +202,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Warewolf Studio">
+      <HintPath>..\Dev2.Studio\bin\Debug\Warewolf Studio.exe</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -234,6 +238,7 @@
     <Compile Include="ConnectControlView.xaml.cs">
       <DependentUpon>ConnectControlView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\MessageBoxImageToSystemIconConverter.cs" />
     <Compile Include="DbSyntaxEditor.xaml.cs">
       <DependentUpon>DbSyntaxEditor.xaml</DependentUpon>
     </Compile>
@@ -373,10 +378,6 @@
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
-      <Name>Dev2.Studio</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
@@ -398,9 +399,7 @@
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="grab.cur" />
   </ItemGroup>

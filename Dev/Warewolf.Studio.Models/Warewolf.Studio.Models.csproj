@@ -50,6 +50,7 @@
     <Compile Include="Deploy\DeployConflictHandler.cs" />
     <Compile Include="Deploy\DeployModel.cs" />
     <Compile Include="Deploy\DeployStatsProvider.cs" />
+    <Compile Include="Deploy\DeployStatsTO.cs" />
     <Compile Include="Deploy\ExpectedForDeployPredicate.cs" />
     <Compile Include="Deploy\NewForDeployPredicate.cs" />
     <Compile Include="Deploy\ResouceTypeAndPathPredicate.cs" />
