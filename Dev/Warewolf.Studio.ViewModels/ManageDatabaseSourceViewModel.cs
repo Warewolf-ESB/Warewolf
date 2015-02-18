@@ -30,11 +30,10 @@ namespace Warewolf.Studio.ViewModels
         private string _header;
         readonly IStudioUpdateManager _updateManager ;
         readonly IEventAggregator _aggregator;
-        IDbSource _dbSource;
+         IDbSource _dbSource;
         bool _testPassed;
         bool _testFailed;
         bool _testing;
-        bool _isSaveEnabled;
         string _resourceName;
 
         public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager,IEventAggregator aggregator)
@@ -43,10 +42,10 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
             _aggregator = aggregator;
-
+       
             HeaderText = "New Database Connector Source Server";
-            TestCommand = new DelegateCommand(TestConnection);
-            OkCommand = new DelegateCommand(SaveConnection);
+            TestCommand = new DelegateCommand(TestConnection,CanTest);
+            OkCommand = new DelegateCommand(SaveConnection,CanSave);
             Testing = false;
             Types = new List<enSourceType> { enSourceType.SqlDatabase };
             ServerType = enSourceType.SqlDatabase;
@@ -70,7 +69,24 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("dbSource", dbSource);
             _dbSource = dbSource;
             FromDbSource(dbSource);
+        }
 
+        public bool CanSave()
+        {
+            return TestPassed && !String.IsNullOrEmpty(DatabaseName);
+        }
+
+        public bool CanTest()
+        {
+            if (String.IsNullOrEmpty(ServerName))
+            {
+                return false;
+            }
+            if (AuthenticationType == AuthenticationType.User)
+            {
+                return !String.IsNullOrEmpty(UserName) && !String.IsNullOrEmpty(Password);
+            }
+            return true;
         }
 
         void FromDbSource(IDbSource dbSource)
@@ -130,7 +146,7 @@ namespace Warewolf.Studio.ViewModels
 
         void Save(IDbSource toDbSource)
         {
-             _updateManager.Save(toDbSource);
+            _updateManager.Save(toDbSource);
            
         }
 
@@ -195,20 +211,15 @@ namespace Warewolf.Studio.ViewModels
         {
             get { return !ToDbSource().Equals(_dbSource); }
         }
-
-        public IList<enSourceType> Types { get; set; }
-        public bool IsSaveEnabled
+        private void RaiseCanExecuteChanged(ICommand commandForCanExecuteChange)
         {
-            get
+            var command = commandForCanExecuteChange as DelegateCommand;
+            if (command != null)
             {
-                return _isSaveEnabled && TestPassed;
-            }
-             set
-            {
-                _isSaveEnabled = value;
-                OnPropertyChanged(()=>IsSaveEnabled);
+                command.RaiseCanExecuteChanged();
             }
         }
+        public IList<enSourceType> Types { get; set; }
 
         public enSourceType ServerType
         {
@@ -226,10 +237,16 @@ namespace Warewolf.Studio.ViewModels
             get { return _authenticationType; }
             set
             {
+                if (_authenticationType != value)
+                {
                 _authenticationType = value;
                 OnPropertyChanged(() => AuthenticationType);
                 OnPropertyChanged(() => Haschanged);
                 OnPropertyChanged(() => UserAuthenticationSelected);
+                    TestPassed = false;
+                    RaiseCanExecuteChanged(TestCommand);
+                    RaiseCanExecuteChanged(OkCommand);
+                }
             }
         }
 
@@ -238,9 +255,15 @@ namespace Warewolf.Studio.ViewModels
             get { return _serverName; }
             set
             {
+                if (value != _serverName)
+                {
                 _serverName = value;
                 OnPropertyChanged(() => ServerName);
                 OnPropertyChanged(() => Haschanged);
+                    TestPassed = false;
+                    RaiseCanExecuteChanged(TestCommand);
+                    RaiseCanExecuteChanged(OkCommand);
+                }
             }
         }
 
@@ -249,9 +272,11 @@ namespace Warewolf.Studio.ViewModels
             get { return _databaseName; }
             set
             {
+             
                 _databaseName = value;
                 OnPropertyChanged(() => DatabaseName);
                 OnPropertyChanged(() => Haschanged);
+                RaiseCanExecuteChanged(OkCommand);
             }
         }
 
@@ -263,6 +288,9 @@ namespace Warewolf.Studio.ViewModels
                 _userName = value;
                 OnPropertyChanged(() => UserName);
                 OnPropertyChanged(() => Haschanged);
+                TestPassed = false;
+                RaiseCanExecuteChanged(TestCommand);
+                RaiseCanExecuteChanged(OkCommand);
             }
         }
 
@@ -274,6 +302,9 @@ namespace Warewolf.Studio.ViewModels
                 _password = value;
                 OnPropertyChanged(() => Password);
                 OnPropertyChanged(() => Haschanged);
+                TestPassed = false;
+                RaiseCanExecuteChanged(TestCommand);
+                RaiseCanExecuteChanged(OkCommand);
             }
         }
 
@@ -302,7 +333,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testPassed = value;
                 OnPropertyChanged(()=>TestPassed);
-                IsSaveEnabled = _testPassed;
+                RaiseCanExecuteChanged(OkCommand);
            
             }
         

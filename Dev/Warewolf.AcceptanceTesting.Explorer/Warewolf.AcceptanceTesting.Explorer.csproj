@@ -212,6 +212,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>New Database Source.feature</DependentUpon>
     </Compile>
+    <Compile Include="DBService Specs\NewDatabaseSourceSteps.cs" />
     <Compile Include="Design Surface.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -235,6 +236,7 @@
       <DependentUpon>Toolbox.feature</DependentUpon>
     </Compile>
     <Compile Include="ToolboxSteps.cs" />
+    <Compile Include="UnityBootstrapperForDatabaseSourceConnectorTesting.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
     <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
   </ItemGroup>
@@ -288,6 +290,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
+      <Project>{97A827FF-65C4-4267-99D2-DCE6803B2348}</Project>
+      <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.AcceptanceTesting.Core\Warewolf.AcceptanceTesting.Core.csproj">
       <Project>{CB0F5535-5E1D-41F9-A23C-F59FDC816B75}</Project>

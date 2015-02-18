@@ -243,6 +243,7 @@
     <Compile Include="IDev2Activity.cs" />
     <Compile Include="IExplorerView.cs" />
     <Compile Include="IHelpView.cs" />
+    <Compile Include="IManageDatabaseSourceView.cs" />
     <Compile Include="IMenuView.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
     <Compile Include="IRequestServiceNameView.cs" />

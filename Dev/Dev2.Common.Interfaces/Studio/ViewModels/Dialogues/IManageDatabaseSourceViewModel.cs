@@ -120,7 +120,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         bool TestFailed { get; }
         bool Testing { get; }
         IList<enSourceType> Types { get; set; }
-        bool IsSaveEnabled { get; set; }
         string ResourceName { get; set; }
         bool UserAuthenticationSelected { get; }
     }
