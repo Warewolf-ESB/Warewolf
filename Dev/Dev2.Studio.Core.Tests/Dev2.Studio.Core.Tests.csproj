@@ -452,10 +452,6 @@
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
-      <Name>Dev2.Studio</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
       <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
       <Name>Dev2.TaskScheduler.Wrappers</Name>
