@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -26,17 +27,19 @@ namespace Warewolf.Studio.ViewModels
         private IList<string> _databaseNames;
         private string _header;
         readonly IStudioUpdateManager _updateManager ;
-         IDbSource _dbSource;
+        readonly IEventAggregator _aggregator;
+        IDbSource _dbSource;
         bool _testPassed;
         bool _testFailed;
         bool _testing;
         bool _isSaveEnabled;
         string _resourceName;
 
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager,IEventAggregator aggregator)
         {
             _updateManager = updateManager;
-       
+            _aggregator = aggregator;
+
             HeaderText = "New Database Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection);
             OkCommand = new DelegateCommand(SaveConnection);
@@ -46,18 +49,19 @@ namespace Warewolf.Studio.ViewModels
             TestMessage = "Test completed";
             _testPassed = false;
             _testFailed = false;
+            DatabaseNames = new List<string>();
             
         }
 
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, RequestServiceNameViewModel requestServiceNameViewModel)
-            : this(updateManager)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, RequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
+            : this(updateManager, aggregator)
         {
 
             RequestServiceNameViewModel = requestServiceNameViewModel;
 
         }
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IDbSource dbSource)
-            : this(updateManager)
+        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IDbSource dbSource,IEventAggregator aggregator)
+            : this(updateManager,  aggregator)
         {
             _dbSource = dbSource;
             FromDbSource(dbSource);
@@ -116,7 +120,8 @@ namespace Warewolf.Studio.ViewModels
 
         void Save(IDbSource toDbSource)
         {
-            _updateManager.Save(toDbSource);
+             _updateManager.Save(toDbSource);
+           
         }
 
  

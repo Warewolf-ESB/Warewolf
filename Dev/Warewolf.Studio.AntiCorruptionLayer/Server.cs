@@ -11,7 +11,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Controller;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -40,11 +39,25 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public Server(string uri,ICredentials credentials)
         {
             _environmentConnection = new ServerProxy(uri,credentials,new AsyncWorker());
+            _environmentConnection.ItemAddedMessageAction = ItemAdded;
             _serverId = Guid.NewGuid();
             _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), _environmentConnection);
             UpdateRepository = new StudioResourceUpdateManager(new CommunicationControllerFactory(), _environmentConnection);
             _environmentConnection.PermissionsModified += RaisePermissionsModifiedEvent;
             _environmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
+        }
+
+        void ItemAdded(IExplorerItem obj)
+        {
+            RaiseItemAdded(obj);
+        }
+
+        void RaiseItemAdded(IExplorerItem explorerItem)
+        {
+            if (ItemAddedEvent != null)
+            {
+                ItemAddedEvent(explorerItem);
+            }
         }
 
         public string GetServerVersion()
@@ -130,6 +143,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+        public event ItemAddedEvent ItemAddedEvent;
+
         public IStudioUpdateManager UpdateRepository
         {
             get

@@ -193,6 +193,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public IExplorerItemViewModel Find(string resourcePath)
+        {
+            if (!resourcePath.Contains("\\") && resourcePath==ResourceName)
+                return this;
+            if (Children != null && resourcePath.Contains("\\"))
+            {
+                string name = resourcePath.Substring(0, resourcePath.IndexOf("\\", StringComparison.Ordinal));
+                return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(name)).FirstOrDefault(item => item != null);
+            }
+            return null;
+        }
+
         string GetChildNameFromChildren()
         {
             const string NewFolder = "New Folder";
