@@ -122,5 +122,6 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         IList<enSourceType> Types { get; set; }
         bool IsSaveEnabled { get; set; }
         string ResourceName { get; set; }
+        bool UserAuthenticationSelected { get; }
     }
 }
