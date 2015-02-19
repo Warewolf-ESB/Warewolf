@@ -174,9 +174,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 TestFailed = false;
                 TestPassed = false;
-             
-                
-                DatabaseNames = _updateManager.TestDbConnection(ToDbSource());
+
+
+                DatabaseNames = _updateManager.TestDbConnection(ToNewDbSource());
                 TestMessage = "Passed";
                 TestFailed = false;
                 TestPassed = true;
@@ -194,6 +194,23 @@ namespace Warewolf.Studio.ViewModels
                 Testing = false;
             }
             OnPropertyChanged(() => DatabaseNames);
+        }
+
+
+        IDbSource ToNewDbSource()
+        {
+          
+                return new DbSourceDefinition
+                {
+                    AuthenticationType = AuthenticationType,
+                    ServerName = ServerName,
+                    Password = Password,
+                    UserName = UserName,
+                    Type = ServerType,
+                    Name = ResourceName,
+                    DbName = DatabaseName,
+                    Id = _dbSource == null ? Guid.NewGuid() : _dbSource.Id
+                };
         }
 
         IDbSource ToDbSource()
@@ -217,6 +234,7 @@ namespace Warewolf.Studio.ViewModels
                 _dbSource.DbName = DatabaseName;
                 _dbSource.Password = Password;
                 _dbSource.ServerName = ServerName;
+                _dbSource.UserName = UserName;
                 return _dbSource;
 
             }
@@ -224,7 +242,7 @@ namespace Warewolf.Studio.ViewModels
         IRequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
         public bool Haschanged
         {
-            get { return !ToDbSource().Equals(_dbSource); }
+            get { return !ToNewDbSource().Equals(_dbSource); }
         }
         private void RaiseCanExecuteChanged(ICommand commandForCanExecuteChange)
         {
@@ -243,7 +261,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _serverType = value;
                 OnPropertyChanged(() => ServerType);
-                OnPropertyChanged(()=>Haschanged);
+                OnPropertyChanged(()=>Header);
             }
         }
 
@@ -256,7 +274,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                 _authenticationType = value;
                 OnPropertyChanged(() => AuthenticationType);
-                OnPropertyChanged(() => Haschanged);
+                OnPropertyChanged(() => Header);
                 OnPropertyChanged(() => UserAuthenticationSelected);
                     TestPassed = false;
                     RaiseCanExecuteChanged(TestCommand);
@@ -274,7 +292,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                 _serverName = value;
                 OnPropertyChanged(() => ServerName);
-                OnPropertyChanged(() => Haschanged);
+                OnPropertyChanged(() => Header);
                     TestPassed = false;
                     RaiseCanExecuteChanged(TestCommand);
                     RaiseCanExecuteChanged(OkCommand);
@@ -290,7 +308,7 @@ namespace Warewolf.Studio.ViewModels
              
                 _databaseName = value;
                 OnPropertyChanged(() => DatabaseName);
-                OnPropertyChanged(() => Haschanged);
+                OnPropertyChanged(() => Header);
                 RaiseCanExecuteChanged(OkCommand);
             }
         }
@@ -302,7 +320,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _userName = value;
                 OnPropertyChanged(() => UserName);
-                OnPropertyChanged(() => Haschanged);
+                OnPropertyChanged(() => Header);
                 TestPassed = false;
                 RaiseCanExecuteChanged(TestCommand);
                 RaiseCanExecuteChanged(OkCommand);
@@ -316,7 +334,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _password = value;
                 OnPropertyChanged(() => Password);
-                OnPropertyChanged(() => Haschanged);
+                OnPropertyChanged(() => Header);
                 TestPassed = false;
                 RaiseCanExecuteChanged(TestCommand);
                 RaiseCanExecuteChanged(OkCommand);
@@ -511,7 +529,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string Header
         {
-            get { return _header; }
+            get { return _header + (Haschanged?"*":""); }
             set
             {
                 _header = value;

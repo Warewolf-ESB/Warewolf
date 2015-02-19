@@ -21,7 +21,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ManageDatabaseSourceViewModel_Ctor")]
+        // ReSharper disable InconsistentNaming
         public void ManageDatabaseSourceViewModel_Ctor_NullArgs_ExpectExceptions()
+
         {
             //unused variable so that the test fails at compile time. 
             //------------Setup for test--------------------------
@@ -48,7 +50,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory("ManageDatabaseSourceViewModel_Ctor")]
         public void ManageDatabaseSourceViewModel_Ctor_FromExistingSetsItems()
         {
-            var dbSource = new DbSourceDefinition()
+            var dbSource = new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType.User,
                 UserName = "Bob",
@@ -77,7 +79,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory("ManageDatabaseSourceViewModel_Save")]
         public void ManageDatabaseSourceViewModel__Save_DoesNotBringUpDialogForExisting()
         {
-            var dbSource = new DbSourceDefinition()
+            var dbSource = new DbSourceDefinition
             {
                 AuthenticationType = AuthenticationType.User,
                 UserName = "Bob",
@@ -134,13 +136,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
             var updateManager = new Mock<IStudioUpdateManager>();
 
-            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
-            manageDatabaseSourceViewModel.Password = "bob";
-            manageDatabaseSourceViewModel.ServerType = enSourceType.SqlDatabase;
-            manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Public;
-            manageDatabaseSourceViewModel.UserName = "dave";
-            manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
+            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob", ServerType = enSourceType.SqlDatabase, AuthenticationType = AuthenticationType.Public, UserName = "dave", DatabaseName = "dbNAme" };
+            // ReSharper disable MaximumChainedReferences
             updateManager.Setup(a => a.TestDbConnection(It.IsAny<IDbSource>())).Returns(new List<string>()).Callback((IDbSource a) =>
+                // ReSharper restore MaximumChainedReferences
             {
                 Assert.AreEqual(a.AuthenticationType,AuthenticationType.Public);
                 Assert.AreEqual(a.DbName,"dbNAme");
@@ -175,13 +174,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
             var updateManager = new Mock<IStudioUpdateManager>();
 
-            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
-            manageDatabaseSourceViewModel.Password = "bob";
-            manageDatabaseSourceViewModel.ServerType = enSourceType.SqlDatabase;
-            manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Public;
-            manageDatabaseSourceViewModel.UserName = "dave";
-            manageDatabaseSourceViewModel.DatabaseName = "dbNAme";
+            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob", ServerType = enSourceType.SqlDatabase, AuthenticationType = AuthenticationType.Public, UserName = "dave", DatabaseName = "dbNAme" };
+            // ReSharper disable MaximumChainedReferences
             updateManager.Setup(a => a.TestDbConnection(It.IsAny<IDbSource>())).Returns(new List<string>(){"moo","roo"}).Callback((IDbSource a) =>
+                // ReSharper restore MaximumChainedReferences
             {
                 Assert.AreEqual(a.AuthenticationType, AuthenticationType.Public);
                 Assert.AreEqual(a.DbName, "dbNAme");
@@ -267,4 +263,5 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         }
     }
+    // ReSharper restore InconsistentNaming
 }

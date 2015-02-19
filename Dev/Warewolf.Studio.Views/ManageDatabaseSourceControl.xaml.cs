@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
