@@ -139,7 +139,7 @@ Scenario: Opening Versions in Explorer
 # 
 #
 #
-#cenario: Creating Services Under Localhost 
+Scenario: Creating Services Under Localhost 
 #	Given the explorer is visible
 #	When I open "New Service" in "localhost" server
 #	Then "Unsavesd1" is opened
@@ -326,3 +326,5 @@ Scenario: Clear filter
   Then I should see the path "localhost/Folder 2"
   Then I should see the path "localhost/Folder 2"
   Then I should see the path "localhost/Folder 2"
+
+
