@@ -19,7 +19,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        
-	</Grid>
+        <ig:HtmlDocumentAdapter
+            x:Name="HtmlDocumentAdapter"
+                Document="{Binding Path=Document, ElementName=XamRichTextEditor}"
+                Value="{Binding Path=HelpText, Mode=OneWay, NotifyOnSourceUpdated=True}"
+                 RefreshTrigger="ContentChanged"
+                />
+        <ig:XamRichTextEditor Background="Transparent" FontFamily="Consolas" x:Name="XamRichTextEditor" IsReadOnly="True"></ig:XamRichTextEditor>
+    </Grid>
 </UserControl>

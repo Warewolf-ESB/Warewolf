@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Controller;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -22,34 +23,50 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         readonly Guid _serverId;
         readonly StudioServerProxy _proxyLayer;
         IList<IToolDescriptor> _tools;
-        IExplorerItem _explorerItems;
-        IStudioUpdateManager _updateRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
         public Server(string uri,string userName,string password):this(uri,new NetworkCredential(userName,password))
         {
+            VerifyArgument.IsNotNull("userName", userName);
+            VerifyArgument.IsNotNull("password", password);
         }
 
         public Server(Uri uri)
             : this(uri.ToString(), CredentialCache.DefaultNetworkCredentials)
         {
+       
         }
         
         public Server(string uri,ICredentials credentials)
         {
-            _environmentConnection = new ServerProxy(uri,credentials,new AsyncWorker());
+            VerifyArgument.IsNotNull("uri",uri);
+            VerifyArgument.IsNotNull("credentials", credentials);
+            _environmentConnection = new ServerProxy(uri,credentials,new AsyncWorker()) { ItemAddedMessageAction = ItemAdded };
             _serverId = Guid.NewGuid();
-            _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), _environmentConnection);
-            UpdateRepository = new StudioResourceUpdateManager(new CommunicationControllerFactory(), _environmentConnection);
-            _environmentConnection.PermissionsModified += RaisePermissionsModifiedEvent;
-            _environmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
+            _proxyLayer = new StudioServerProxy(new CommunicationControllerFactory(), EnvironmentConnection);
+            UpdateRepository = new StudioResourceUpdateManager(new CommunicationControllerFactory(), EnvironmentConnection);
+            EnvironmentConnection.PermissionsModified += RaisePermissionsModifiedEvent;
+            EnvironmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
+        }
+
+        void ItemAdded(IExplorerItem obj)
+        {
+            RaiseItemAdded(obj);
+        }
+
+        void RaiseItemAdded(IExplorerItem explorerItem)
+        {
+            if (ItemAddedEvent != null)
+            {
+                ItemAddedEvent(explorerItem);
+            }
         }
 
         public string GetServerVersion()
         {
-            return _proxyLayer.AdminManagerProxy.GetServerVersion();
+            return ProxyLayer.AdminManagerProxy.GetServerVersion();
         }
 
         void RaiseNetworkStateChangeEvent(object sender, System.Network.NetworkStateEventArgs e)
@@ -73,7 +90,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public async Task<bool> Connect()
         {
-            return await _environmentConnection.ConnectAsync(_serverId);
+            return await EnvironmentConnection.ConnectAsync(_serverId);
         }
 
         public List<IResource> Load()
@@ -83,8 +100,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public async Task<IExplorerItem> LoadExplorer()
         {
-            var result = await _proxyLayer.QueryManagerProxy.Load();
-            _explorerItems = result;
+            var result = await ProxyLayer.QueryManagerProxy.Load();
+            ExplorerItems = result;
             return result;
         }
 
@@ -95,22 +112,26 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IList<IToolDescriptor> LoadTools()
         {
-            if(_tools== null)
-             _tools = _proxyLayer.QueryManagerProxy.FetchTools();
-            return _tools;
+            return _tools ?? (_tools = ProxyLayer.QueryManagerProxy.FetchTools());
         }
 
         public IExplorerRepository ExplorerRepository
         {
             get
             {
-                return _proxyLayer;
+                return ProxyLayer;
             }
+        }
+
+        public IQueryManager QueryProxy { get
+        {
+            return _proxyLayer.QueryManagerProxy;
+        }
         }
 
         public bool IsConnected()
         {
-            return _environmentConnection.IsConnected;
+            return EnvironmentConnection.IsConnected;
         }
 
         public void ReloadTools()
@@ -119,7 +140,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public void Disconnect()
         {
-            _environmentConnection.Disconnect();
+            EnvironmentConnection.Disconnect();
         }
 
         public void Edit()
@@ -130,15 +151,22 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
-        public IStudioUpdateManager UpdateRepository
+        public event ItemAddedEvent ItemAddedEvent;
+
+        public IStudioUpdateManager UpdateRepository { get; private set; }
+        public IExplorerItem ExplorerItems { get; set; }
+        public StudioServerProxy ProxyLayer
         {
             get
             {
-                return _updateRepository;
+                return _proxyLayer;
             }
-            private set
+        }
+        public ServerProxy EnvironmentConnection
+        {
+            get
             {
-                _updateRepository = value;
+                return _environmentConnection;
             }
         }
 

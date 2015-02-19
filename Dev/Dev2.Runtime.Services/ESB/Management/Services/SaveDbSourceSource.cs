@@ -4,6 +4,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -17,6 +18,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SaveDbSourceSource : IEsbManagementEndpoint
     {
+        IExplorerServerResourceRepository _serverExplorerRepository;
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
@@ -30,6 +33,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("DbSource", out resourceDefinition);
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
+                if (src.Path.EndsWith("\\"))
+                    src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", System.StringComparison.Ordinal));
                 var res = new DbSource
                 {
                     AuthenticationType = src.AuthenticationType,
@@ -43,11 +48,20 @@ namespace Dev2.Runtime.ESB.Management.Services
                 };
                 var con = new DbSources();
                 var result = con.DoDatabaseValidation(res);
-       
+
                 if (result.IsValid)
+                {
                     ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res);
-                msg.HasError = false;
-                msg.Message = new StringBuilder(res.IsValid ? "" : result.ErrorMessage);
+                    var explorerItem = ServerExplorerRepo.UpdateItem(res);
+                 
+                    msg.HasError = false;
+                }
+                else
+                {
+                    msg.HasError = false;
+                    msg.Message = new StringBuilder(res.IsValid ? "" : result.ErrorMessage); 
+                }
+              
 
 
             }
@@ -70,7 +84,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return newDs;
         }
-
+        public IExplorerServerResourceRepository ServerExplorerRepo
+        {
+            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
+            set { _serverExplorerRepository = value; }
+        }
         public string HandlesType()
         {
             return "SaveDbSourceService";

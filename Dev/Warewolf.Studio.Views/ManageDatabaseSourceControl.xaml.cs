@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
@@ -63,11 +62,21 @@ namespace Warewolf.Studio.Views
 
         public Visibility GetUsernameVisibility()
         {
+            BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
             return UserNamePasswordContainer.Visibility;
         }
 
         public Visibility GetPasswordVisibility()
         {
+            BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
+            if (be != null)
+            {
+                be.UpdateTarget();
+            }
             return UserNamePasswordContainer.Visibility;
         }
 
@@ -79,6 +88,21 @@ namespace Warewolf.Studio.Views
         public void PerformSave()
         {
             SaveButton.Command.Execute(null);
+        }
+
+        public void EnterUserName(string userName)
+        {
+            UserNameTextBox.Text = userName;
+        }
+
+        public void EnterPassword(string password)
+        {
+            PasswordTextBox.Password = password;
+        }
+
+        public string GetErrorMessage()
+        {
+            return ErrorTextBlock.Text;
         }
     }
 }

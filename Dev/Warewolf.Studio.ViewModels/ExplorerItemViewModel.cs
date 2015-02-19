@@ -56,22 +56,14 @@ namespace Warewolf.Studio.ViewModels
             });
             _canShowVersions = true;
             Parent = parent;
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } });
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } , });
             _shellViewModel = shellViewModel;
             LostFocus = new DelegateCommand(LostFocusCommand);
 
             Children = new ObservableCollection<IExplorerItemViewModel>();
-            OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
+            OpenCommand = new DelegateCommand(() => shellViewModel.AddService(ResourceId, Server));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
             RenameCommand = new DelegateCommand(() => IsRenaming = true);
-            ItemSelectedCommand = new DelegateCommand(() =>
-            {
-                //var helpDescriptor = builder.Build(this, ExplorerEventContext.Selected);
-
-                var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>", ResourceName, Inputs, Outputs), null);
-                shellViewModel.UpdateHelpDescriptor(helpDescriptor);
-                //shellViewModel.UpdateHelpDescriptor(builder.Build(this, ExplorerEventContext.Selected));
-            });
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(type => shellViewModel.NewResource(type, ResourceId));
             CanCreateDbService = true; //todo:remove
@@ -104,6 +96,7 @@ namespace Warewolf.Studio.ViewModels
             });
             CreateFolderCommand = new DelegateCommand(CreateNewFolder);
             CanCreateFolder = true;
+            CanView = true;
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
         }
 
@@ -193,6 +186,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public IExplorerItemViewModel Find(string resourcePath)
+        {
+            if (!resourcePath.Contains("\\") && resourcePath==ResourceName)
+                return this;
+            if (Children != null && resourcePath.Contains("\\"))
+            {
+                string name = resourcePath.Substring(1+resourcePath.IndexOf("\\", StringComparison.Ordinal));
+                return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(name)).FirstOrDefault(item => item != null);
+            }
+            return null;
+        }
+
         string GetChildNameFromChildren()
         {
             const string NewFolder = "New Folder";
@@ -248,20 +253,21 @@ namespace Warewolf.Studio.ViewModels
         {
             CanEdit = serverPermission.Contribute;
             CanExecute = serverPermission.Contribute || serverPermission.Execute;
-            CanView = serverPermission.View || serverPermission.Contribute;
+            CanView = serverPermission.View || serverPermission.Contribute || serverPermission.Administrator;
             CanRename = serverPermission.Contribute || serverPermission.Administrator;
             CanDelete = serverPermission.Contribute || serverPermission.Administrator;
             CanCreateFolder =  (serverPermission.Contribute || serverPermission.Administrator);
+
         }
 
         void SetFromPermission(IWindowsGroupPermission resourcePermission)
         {
             CanEdit = resourcePermission.Contribute;
             CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
-            CanView = resourcePermission.View || resourcePermission.Contribute;
+            CanView = resourcePermission.View || resourcePermission.Contribute || resourcePermission.Administrator; ; 
             CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
             CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
-           
+
 
             
         }
@@ -370,6 +376,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceType = value;
+                IsVersion =  _resourceType == ResourceType.Version;
+                OnPropertyChanged(() => CanView);
                 OnPropertyChanged(()=>CanShowVersions);
             }
         }
@@ -399,6 +407,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isSelected = value;
                 OnPropertyChanged(() => IsSelected);
+                if (_isSelected)
+                {
+                    var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>", ResourceName, Inputs, Outputs), null);
+                    _shellViewModel.UpdateHelpDescriptor(helpDescriptor);
+                }
             }
         }
 
@@ -505,17 +518,18 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView;
+                return _canView    && ResourceType<ResourceType.Folder && ResourceType != ResourceType.Version;
             }
             set
             {
                 if (_canView != value)
                 {
-                    _canView = value;
+                    _canView = value ;
                     OnPropertyChanged(() => CanView);
                 }
             }
         }
+
         public bool IsVersion { get; set; }
         public bool CanShowVersions
         {

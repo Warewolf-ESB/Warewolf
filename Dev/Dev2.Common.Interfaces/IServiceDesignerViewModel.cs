@@ -30,7 +30,7 @@ namespace Dev2.Common.Interfaces
         /// <summary>
         /// The resource that is being represented
         /// </summary>
-        IResource Resource { get; set; }       
+        IXamlResource Resource { get; set; }       
     }
 
 }

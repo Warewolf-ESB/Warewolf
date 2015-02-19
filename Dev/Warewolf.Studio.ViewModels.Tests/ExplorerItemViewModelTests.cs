@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            NullArgumentConstructorHelper.AssertNullConstructor( new object[]{new Mock<IShellViewModel>().Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object},typeof(ExplorerItemViewModel));
+            NullArgumentConstructorHelper.AssertNullConstructor( new object[]{new Mock<IShellViewModel>().Object, new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null},typeof(ExplorerItemViewModel));
             //------------Assert Results-------------------------
         }
 
@@ -43,12 +43,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var shellViewModelMock = new Mock<IShellViewModel>();
-            shellViewModelMock.Setup(model => model.AddService(It.IsAny<IResource>())).Verifiable();
+            shellViewModelMock.Setup(model => model.AddService(It.IsAny<Guid>(), new MockServer())).Verifiable();
             //------------Execute Test---------------------------
             var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object,new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null);
             //------------Assert Results-------------------------
             explorerViewModel.OpenCommand.Execute(null);
-            shellViewModelMock.Verify(model => model.AddService(It.IsAny<IResource>()),Times.Once());
+            shellViewModelMock.Verify(model => model.AddService(It.IsAny<Guid>(), new MockServer()), Times.Once());
         }
 
         [TestMethod]
@@ -286,6 +286,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             
             };
             expRepo.Setup(a => a.Rollback(explorerViewModel.ResourceId, "3")).Returns(new RollbackResult {DisplayName = "bob", VersionHistory = new List<IExplorerItem>()});
+            expRepo.Setup(a => a.GetVersions(It.IsAny<Guid>())).Returns(new List<IVersionInfo>());
             explorerViewModel.RollbackCommand.Execute(null);
             Assert.AreEqual(parent.ResourceName,"bob");
             expRepo.Verify(a => a.Rollback(explorerViewModel.ResourceId, "3"));
@@ -318,7 +319,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             expRepo.Setup(a => a.GetVersions(explorerViewModel.ResourceId)).Returns(new List<IVersionInfo> { mockVersion.Object });
             explorerViewModel.AreVersionsVisible = true;
             Assert.IsTrue(explorerViewModel.Children.Count==1);
-            Assert.AreEqual("1" + " " + DateTime.MaxValue.ToString(CultureInfo.InvariantCulture) + " " + "bob", explorerViewModel.Children.First().ResourceName);
+            Assert.AreEqual("v.1" + " " + DateTime.MaxValue.ToString(CultureInfo.InvariantCulture) + " " + "bob", explorerViewModel.Children.First().ResourceName);
             explorerViewModel.AreVersionsVisible = false;
             Assert.AreEqual(0,explorerViewModel.Children.Count);
         }
@@ -385,6 +386,48 @@ namespace Warewolf.Studio.ViewModels.Tests
             explorerViewModel.Filter("Sasuke");
             Assert.AreEqual(explorerViewModel.Children.Count, 0);
 
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemViewModel_Find")]
+        public void ExplorerItemViewModel_Find_FindsSelf()
+        {
+            //------------Setup for test--------------------------
+            var shellViewModelMock = new Mock<IShellViewModel>();
+            shellViewModelMock.Setup(a => a.ShowPopup(It.IsAny<IPopupMessage>())).Returns(true);
+            var server = new Mock<IServer>();
+            var expRepo = new Mock<IExplorerRepository>();
+
+
+            server.Setup(a => a.ExplorerRepository).Returns(expRepo.Object);
+            //------------Execute Test---------------------------
+            var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object, null)
+            {
+                ResourceName = "mat",
+                Children = new ObservableCollection<IExplorerItemViewModel>
+                {
+                     new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null)
+                     {
+                         ResourceName = "bob",
+                         Children = new ObservableCollection<IExplorerItemViewModel>
+                         {
+                              new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null) {ResourceName = "The"},
+                               new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null) {ResourceName = "Builder"}
+
+                         }
+                     },
+                      new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null){ResourceName = "moot"},
+                       new ExplorerItemViewModel(shellViewModelMock.Object, server.Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null){ResourceName = "boot"}
+                }
+            };
+            Assert.AreEqual(explorerViewModel.Find("mat"),explorerViewModel);
+            Assert.AreEqual(explorerViewModel.Find("mat\\bob"), explorerViewModel.Children.First());
+            Assert.AreEqual(explorerViewModel.Find("mat\\boot"), explorerViewModel.Children.Last());
+            Assert.AreEqual(explorerViewModel.Find("mat\\bob\\The"), explorerViewModel.Children.First().Children.First());
+            Assert.IsNull(explorerViewModel.Find("cannot find this"));
 
         }
 

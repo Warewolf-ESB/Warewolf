@@ -1,9 +1,8 @@
 using System.Text;
-using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IXamlResource:IResource
+    public interface IXamlResource:IResourceDefinition
     {
         StringBuilder Xaml { get; set; }
     }
