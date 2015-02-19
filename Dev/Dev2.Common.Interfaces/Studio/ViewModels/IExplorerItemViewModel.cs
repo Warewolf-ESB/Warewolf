@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanExecute { get; set; }
         bool CanEdit { get; set; }
         bool CanView { get; set; }
+
         bool IsVersion { get; set; }
         bool AreVersionsVisible { get; set; }
         string VersionNumber { get; set; }

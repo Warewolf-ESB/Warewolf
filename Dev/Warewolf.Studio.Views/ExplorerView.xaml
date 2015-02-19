@@ -400,6 +400,14 @@
                                                         </ItemsPanelTemplate>
                                                     </ig:XamContextMenu.ItemsPanel>
 
+                                                    <ig:XamMenuItem Name="Open"
+                                                                InputGestureText="[Ctrl+W]"
+                                                                Command="{Binding Path=Data.OpenCommand}"
+                                                                CommandParameter="{x:Static data:ResourceType.WorkflowService}"
+                                                                Header="Open"
+                                                                Visibility="{Binding Path=Data.CanView,
+                                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    </ig:XamMenuItem>
                                                     <ig:XamMenuItem Name="NewService"
                                                                 InputGestureText="[Ctrl+W]"
                                                                 Command="{Binding Path=Data.NewCommand}"
@@ -574,10 +582,10 @@
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
 
 
-                                                    <ig:XamMenuItem Name="Open"
+                                                    <ig:XamMenuItem Name="OpenVersion"
 																Command="{Binding Path=Data.OpenVersionCommand}"
                                                                 CommandParameter="{Binding Data}"
-                                                                Header="Open"
+                                                                Header="Open Version"
                                                                 Visibility="{Binding Path=Data.IsVersion,
                                                                                      Converter={StaticResource BoolToVisibilityConverter}}" />
 

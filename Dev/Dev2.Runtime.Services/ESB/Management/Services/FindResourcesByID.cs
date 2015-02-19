@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             Dev2Logger.Log.Info("Find Resource By Id. "+guidCsv);
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, guidCsv, type);
+            var resources = ResourceCatalog.Instance.GetResourceList(GlobalConstants.ServerWorkspaceID, guidCsv, type);
 
             IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
 

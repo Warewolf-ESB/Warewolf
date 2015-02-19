@@ -159,7 +159,7 @@ namespace Warewolf.Studio.ViewModels
 
            
             var region = GetRegion(RegionNames.Workspace);
-            var resource = server.QueryProxy.FetchResource(resourceId);
+            var resource = server.QueryProxy.FetchResourceWithXaml(resourceId);
             var foundViewModel = region.Views.FirstOrDefault(o =>
             {
                 var viewModel = o as IServiceDesignerViewModel;

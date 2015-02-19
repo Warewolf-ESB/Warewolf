@@ -93,7 +93,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         {
             var comsController = CommunicationControllerFactory.CreateController("FindResourcesByID");
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
-            comsController.AddPayloadArgument("Type", ResourceType.WorkflowService.ToString());
+            comsController.AddPayloadArgument("ResourceType", ResourceType.WorkflowService.ToString());
 
             var result = comsController.ExecuteCommand<List<SerializableResource>>(Connection, Connection.WorkspaceID);
             return result.First();
