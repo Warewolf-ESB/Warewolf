@@ -4,10 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Input;
 using Dev2;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -15,10 +17,12 @@ using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
+using Warewolf.Core;
+using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageDatabaseSourceViewModel : BindableBase, IManageDatabaseSourceViewModel, IDockViewModel
+    public class ManageDatabaseSourceViewModel : BindableBase, IManageDatabaseSourceViewModel, IDockViewModel,IUpdatesHelp
     {
         private enSourceType _serverType;
         private AuthenticationType _authenticationType;
@@ -89,6 +93,14 @@ namespace Warewolf.Studio.ViewModels
                 return !String.IsNullOrEmpty(UserName) && !String.IsNullOrEmpty(Password);
             }
             return true;
+        }
+
+        public void UpdateHelpDescriptor(string helpText)
+        {
+            var helpDescriptor = new HelpDescriptor("",helpText,null);
+            VerifyArgument.IsNotNull("helpDescriptor", helpDescriptor);
+            _aggregator.GetEvent<HelpChangedEvent>().Publish(helpDescriptor);
+
         }
 
         void FromDbSource(IDbSource dbSource)

@@ -248,6 +248,7 @@
     <Compile Include="INetworkStateChangedEventArgs.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
     <Compile Include="IToolboxView.cs" />
+    <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="IVariableListView.cs" />
     <Compile Include="IWarewolfWebClient.cs" />
     <Compile Include="IEsbRequestResult.cs" />
