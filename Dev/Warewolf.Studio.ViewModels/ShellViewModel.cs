@@ -242,9 +242,18 @@ namespace Warewolf.Studio.ViewModels
                 case ResourceType.DbSource:
                     CreateDatabaseSource();
                     break;
+                case ResourceType.WorkflowService:
+                    CreateWorkflowService();
+                    break;
                 default: return;
 
             }
+        }
+
+        private void CreateWorkflowService()
+        {
+            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object);
+            GetRegion(RegionNames.Workspace).Add(viewModel);
         }
 
         private void CreateDatabaseSource()

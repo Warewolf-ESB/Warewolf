@@ -201,6 +201,9 @@
         <DataTemplate DataType="{x:Type viewModels:ManageDatabaseSourceViewModel}">
             <views:ManageDatabaseSourceControl />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:WorkflowServiceDesignerViewModel}">
+            <views:WorkflowDesignerView />
+        </DataTemplate>
     </Window.Resources>
 
     <!--  START OF LAYOUT  -->
