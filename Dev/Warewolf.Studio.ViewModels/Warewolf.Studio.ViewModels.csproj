@@ -81,7 +81,6 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
@@ -98,6 +97,7 @@
     <Compile Include="ConnectControlViewModel.cs" />
     <Compile Include="DeployItemMessage.cs" />
     <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
+    <Compile Include="IDockViewModel.cs" />
     <Compile Include="ExplorerItemNodeViewModel.cs" />
     <Compile Include="ManageDatabaseSourceViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
@@ -124,6 +124,7 @@
     <Compile Include="VariableList\VariableListViewModel.cs" />
     <Compile Include="VersionInfoViewModel.cs" />
     <Compile Include="WarewolfInvalidTypeException.cs" />
+    <Compile Include="WorkflowServiceDesignerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -185,10 +186,6 @@
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{c4ac2140-5663-4d3c-9fcd-6d65004cd54e}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Views.WorkflowDesigner\Warewolf.Studio.Views.WorkflowDesigner.csproj">
-      <Project>{205B4C37-1177-40B8-95A4-1B0CE2821C79}</Project>
-      <Name>Warewolf.Studio.Views.WorkflowDesigner</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,6 @@ using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Models.Help;
 using Warewolf.Studio.Models.Toolbox;
 using Warewolf.Studio.ViewModels.ToolBox;
-using Warewolf.Studio.Views.WorkflowDesigner;
 using IVariableListViewModel = Dev2.Common.Interfaces.DataList.DatalistView.IVariableListViewModel;
 
 namespace Warewolf.Studio.ViewModels
@@ -174,8 +173,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (resource.ResourceType == ResourceType.WorkflowService)
                 {
-                    foundViewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object);
-                }                
+                    foundViewModel = _unityContainer.Resolve<IWorkflowServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
+                }
+                else
+                {
+                    foundViewModel = _unityContainer.Resolve<IServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
+                }
                 region.Add(foundViewModel); //add the viewModel
             }
             region.Activate(foundViewModel); //active the viewModel
@@ -239,18 +242,9 @@ namespace Warewolf.Studio.ViewModels
                 case ResourceType.DbSource:
                     CreateDatabaseSource();
                     break;
-                case ResourceType.WorkflowService:
-                    CreateWorkflowService();
-                    break;
                 default: return;
 
             }
-        }
-
-        private void CreateWorkflowService()
-        {
-            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object);
-            GetRegion("Workspace").Add(viewModel);
         }
 
         private void CreateDatabaseSource()
