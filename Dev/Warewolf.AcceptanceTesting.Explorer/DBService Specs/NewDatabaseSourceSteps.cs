@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -28,7 +29,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             var databaseSourceControlView = new ManageDatabaseSourceControl();
             var mockStudioUpdateManager = new Mock<IStudioUpdateManager>();
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
-            var manageDatabaseSourceControlViewModel = new ManageDatabaseSourceViewModel(mockStudioUpdateManager.Object,mockRequestServiceNameViewModel.Object);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var manageDatabaseSourceControlViewModel = new ManageDatabaseSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object);
             databaseSourceControlView.DataContext = manageDatabaseSourceControlViewModel;
             var window = new Window { Content = databaseSourceControlView };
             var app = Application.Current;
@@ -218,7 +220,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             
             var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IStudioUpdateManager>>("updateManager");
-            var viewModel = new ManageDatabaseSourceViewModel(mockUpdateManager.Object,mockRequestServiceNameViewModel.Object);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var viewModel = new ManageDatabaseSourceViewModel(mockUpdateManager.Object, mockEventAggregator.Object);
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
             manageDatabaseSourceControl.DataContext = viewModel;
             FeatureContext.Current.Remove("viewModel");

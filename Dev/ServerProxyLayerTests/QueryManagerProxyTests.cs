@@ -107,7 +107,7 @@ namespace ServerProxyLayerTests
             factory.Setup(a => a.CreateController("FetchResourceDefinitionService")).Returns(controller.Object);
             var resourceId = Guid.NewGuid();
             //------------Execute Test---------------------------
-            var res = queryProxy.FetchResource(resourceId);
+            var res = queryProxy.FetchResourceXaml(resourceId);
             //------------Assert Results-------------------------
             controller.Verify(a => a.AddPayloadArgument("ResourceId", resourceId.ToString()), Times.Once());
             factory.Verify(a => a.CreateController("FetchResourceDefinitionService"), Times.Once());

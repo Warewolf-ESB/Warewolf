@@ -86,7 +86,7 @@ namespace Warewolf.Studio.Views.WorkflowDesigner
         /// <summary>
         /// The resource that is being represented
         /// </summary>
-        public IResource Resource
+        public IXamlResource Resource
         {
             get;
             set;

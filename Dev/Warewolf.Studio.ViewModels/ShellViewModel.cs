@@ -23,6 +23,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Moq;
+using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Models.Help;
@@ -154,10 +155,12 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        public void AddService(IResource resource)
+        public void AddService(Guid resourceId, IServer server )
         {
 
+           
             var region = GetRegion(RegionNames.Workspace);
+            var resource = server.QueryProxy.FetchResourceWithXaml(resourceId);
             var foundViewModel = region.Views.FirstOrDefault(o =>
             {
                 var viewModel = o as IServiceDesignerViewModel;
