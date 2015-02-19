@@ -202,6 +202,8 @@
 /Dev/Warewolf.Studio.ViewModels.Tests/obj
 /Dev/Warewolf.Studio.Views/bin
 /Dev/Warewolf.Studio.Views/obj
+/Dev/Warewolf.Studio.Views.WorkflowDesigner/bin
+/Dev/Warewolf.Studio.Views.WorkflowDesigner/obj
 /Dev/Warewolf.Core/bin
 /Dev/Warewolf.Core/obj
 /Dev/Warewolf.Core.Test/bin
