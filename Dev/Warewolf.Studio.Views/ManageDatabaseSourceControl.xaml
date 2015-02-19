@@ -126,7 +126,7 @@
                                  DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
-            <Button Margin="{StaticResource ElementBorder}" Width="120" Height="30" Content="{Binding CancelTestLabel}"></Button>
+            <Button Margin="{StaticResource ElementBorder}" Width="120" Height="30" Command="{Binding CancelTestCommand}"  Content="{Binding CancelTestLabel}"></Button>
         </StackPanel>
         <Button x:Name="SaveButton" Grid.Row="8" Margin="{StaticResource ElementBorder}" Grid.Column="1" Width="60" Height="30" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding OkCommand}" Content="Save">
             <i:Interaction.Behaviors>
