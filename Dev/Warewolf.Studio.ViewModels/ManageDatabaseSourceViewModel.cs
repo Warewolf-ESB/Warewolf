@@ -51,6 +51,7 @@ namespace Warewolf.Studio.ViewModels
             HeaderText = "New Database Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection,CanTest);
             OkCommand = new DelegateCommand(SaveConnection,CanSave);
+            CancelTestCommand = new DelegateCommand(() => {});
             Testing = false;
             Types = new List<enSourceType> { enSourceType.SqlDatabase };
             ServerType = enSourceType.SqlDatabase;
