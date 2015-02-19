@@ -31,7 +31,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
             var manageDatabaseSourceControlViewModel = new ManageDatabaseSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object);
-            //databaseSourceControlView.DataContext = manageDatabaseSourceControlViewModel;
+            databaseSourceControlView.DataContext = manageDatabaseSourceControlViewModel;
             var window = new Window { Content = databaseSourceControlView };
             var app = Application.Current;
             app.MainWindow = window;
@@ -39,8 +39,8 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             {
                 var manageDatabaseSourceControl = (ManageDatabaseSourceControl)Application.Current.MainWindow.Content;
                 Assert.IsNotNull(manageDatabaseSourceControl);
-                //Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
-                //Assert.IsInstanceOfType(manageDatabaseSourceControl.DataContext, typeof(IManageDatabaseSourceViewModel));
+                Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
+                Assert.IsInstanceOfType(manageDatabaseSourceControl.DataContext, typeof(IManageDatabaseSourceViewModel));
                 Application.Current.Shutdown();
             }));
 
@@ -223,7 +223,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageDatabaseSourceViewModel(mockUpdateManager.Object, mockEventAggregator.Object);
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
-           // manageDatabaseSourceControl.DataContext = viewModel;
+            manageDatabaseSourceControl.DataContext = viewModel;
             FeatureContext.Current.Remove("viewModel");
             FeatureContext.Current.Add("viewModel", viewModel);
         }
