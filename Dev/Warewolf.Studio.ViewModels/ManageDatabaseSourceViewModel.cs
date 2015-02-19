@@ -173,9 +173,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 TestFailed = false;
                 TestPassed = false;
-             
-                
-                DatabaseNames = _updateManager.TestDbConnection(ToDbSource());
+
+
+                DatabaseNames = _updateManager.TestDbConnection(ToNewDbSource());
                 TestMessage = "Passed";
                 TestFailed = false;
                 TestPassed = true;
@@ -233,6 +233,7 @@ namespace Warewolf.Studio.ViewModels
                 _dbSource.DbName = DatabaseName;
                 _dbSource.Password = Password;
                 _dbSource.ServerName = ServerName;
+                _dbSource.UserName = UserName;
                 return _dbSource;
 
             }
