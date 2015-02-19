@@ -362,6 +362,10 @@
       <Project>{c870fe6d-5889-4dfc-90d9-68fa3e525be2}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Views.WorkflowDesigner\Warewolf.Studio.Views.WorkflowDesigner.csproj">
+      <Project>{205B4C37-1177-40B8-95A4-1B0CE2821C79}</Project>
+      <Name>Warewolf.Studio.Views.WorkflowDesigner</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Views\Warewolf.Studio.Views.csproj">
       <Project>{81414783-9990-46ea-9668-dfa61e1aad18}</Project>
       <Name>Warewolf.Studio.Views</Name>

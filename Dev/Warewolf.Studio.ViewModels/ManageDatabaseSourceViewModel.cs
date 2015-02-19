@@ -18,6 +18,7 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Core;
+using Warewolf.Studio.Core;
 using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels

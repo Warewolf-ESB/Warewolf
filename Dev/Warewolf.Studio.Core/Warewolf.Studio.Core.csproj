@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="CustomMenuIcons.cs" />
     <Compile Include="HelpSetter.cs" />
+    <Compile Include="IDockViewModel.cs" />
     <Compile Include="ResourceTypeToIconConverter.cs" />
     <Compile Include="ResourceTypeToIconVisibility.cs" />
     <Compile Include="Utils.cs" />

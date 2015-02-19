@@ -290,9 +290,6 @@
       <DependentUpon>WebLatestVersionDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="WidthConverter.cs" />
-    <Compile Include="WorkflowDesignerView.xaml.cs">
-      <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
-    </Compile>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -365,10 +362,6 @@
     <Page Include="WebLatestVersionDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WorkflowDesignerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

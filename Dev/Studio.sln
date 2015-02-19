@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22310.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio", "Warewolf.Studio\Warewolf.Studio.csproj", "{6F16414C-99A2-444D-93F0-34EAB82A2FF0}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -282,6 +282,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.AntiCorruptionLayer", "Warewolf.Studio.AntiCorruptionLayer\Warewolf.Studio.AntiCorruptionLayer.csproj", "{CC1B89CD-3222-4019-A0D1-58664F92CC47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.AntiCorruptionLayer.Tests", "Warewolf.Studio.AntiCorruptionLayer.Tests\Warewolf.Studio.AntiCorruptionLayer.Tests.csproj", "{5FBDC0FD-3867-4B23-A9A9-45242BA07F6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Views.WorkflowDesigner", "Warewolf.Studio.Views.WorkflowDesigner\Warewolf.Studio.Views.WorkflowDesigner.csproj", "{205B4C37-1177-40B8-95A4-1B0CE2821C79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -2529,6 +2531,42 @@ Global
 		{5FBDC0FD-3867-4B23-A9A9-45242BA07F6A}.Trial|Mixed Platforms.Build.0 = Release|Any CPU
 		{5FBDC0FD-3867-4B23-A9A9-45242BA07F6A}.Trial|x64.ActiveCfg = Release|Any CPU
 		{5FBDC0FD-3867-4B23-A9A9-45242BA07F6A}.Trial|x86.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Beta|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Beta|Mixed Platforms.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Beta|x64.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Beta|x86.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.CTP|Any CPU.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.CTP|Any CPU.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.CTP|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.CTP|Mixed Platforms.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.CTP|x64.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.CTP|x86.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Japan|Any CPU.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Japan|Any CPU.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Japan|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Japan|Mixed Platforms.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Japan|x64.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Japan|x86.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Release|x64.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Release|x86.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Trial|Any CPU.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Trial|Any CPU.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Trial|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Trial|Mixed Platforms.Build.0 = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Trial|x64.ActiveCfg = Release|Any CPU
+		{205B4C37-1177-40B8-95A4-1B0CE2821C79}.Trial|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
