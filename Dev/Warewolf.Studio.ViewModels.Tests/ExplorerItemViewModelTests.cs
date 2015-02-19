@@ -43,12 +43,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var shellViewModelMock = new Mock<IShellViewModel>();
-            shellViewModelMock.Setup(model => model.AddService(It.IsAny<IResource>())).Verifiable();
+            shellViewModelMock.Setup(model => model.AddService(It.IsAny<Guid>(), new MockServer())).Verifiable();
             //------------Execute Test---------------------------
             var explorerViewModel = new ExplorerItemViewModel(shellViewModelMock.Object,new Mock<IServer>().Object, new Mock<IExplorerHelpDescriptorBuilder>().Object,null);
             //------------Assert Results-------------------------
             explorerViewModel.OpenCommand.Execute(null);
-            shellViewModelMock.Verify(model => model.AddService(It.IsAny<IResource>()),Times.Once());
+            shellViewModelMock.Verify(model => model.AddService(It.IsAny<Guid>(), new MockServer()), Times.Once());
         }
 
         [TestMethod]

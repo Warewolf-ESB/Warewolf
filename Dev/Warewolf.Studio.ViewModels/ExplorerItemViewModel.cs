@@ -61,7 +61,7 @@ namespace Warewolf.Studio.ViewModels
             LostFocus = new DelegateCommand(LostFocusCommand);
 
             Children = new ObservableCollection<IExplorerItemViewModel>();
-            OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
+            OpenCommand = new DelegateCommand(() => shellViewModel.AddService(ResourceId, Server));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
             RenameCommand = new DelegateCommand(() => IsRenaming = true);
             Server = server;

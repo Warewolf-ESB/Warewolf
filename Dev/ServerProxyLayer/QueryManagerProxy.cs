@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -9,6 +11,8 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Data.ServiceModel;
+using Warewolf.Core;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
@@ -62,7 +66,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         /// </summary>
         /// <param name="resourceId"></param>
         /// <returns></returns>
-        public StringBuilder FetchResource(Guid resourceId)
+        public StringBuilder FetchResourceXaml(Guid resourceId)
         {
             var comsController = CommunicationControllerFactory.CreateController("FetchResourceDefinitionService" );
             comsController.AddPayloadArgument("ResourceId", resourceId.ToString());
@@ -83,6 +87,29 @@ namespace Warewolf.Studio.ServerProxyLayer
        
             var result = comsController.ExecuteCommand<IList<IDbTable>>(Connection, Connection.WorkspaceID);
             return result;
+        }
+
+        public IResourceDefinition FetchResource(Guid resourceId)
+        {
+            var comsController = CommunicationControllerFactory.CreateController("FindResourcesByID");
+            comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
+            comsController.AddPayloadArgument("Type", ResourceType.WorkflowService.ToString());
+
+            var result = comsController.ExecuteCommand<List<SerializableResource>>(Connection, Connection.WorkspaceID);
+            return result.First();
+
+        }
+
+        /// <summary>
+        /// Fetch the resource including the xaml
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        public IXamlResource FetchResourceWithXaml(Guid resourceId)
+        {
+            var resource = FetchResource(resourceId);
+            var xaml = FetchResourceXaml(resourceId);
+            return new XamlResource(resource, xaml);
         }
 
         /// <summary>

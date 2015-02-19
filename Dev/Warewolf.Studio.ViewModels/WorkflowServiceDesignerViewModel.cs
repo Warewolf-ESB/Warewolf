@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels
         /// <summary>
         /// The resource that is being represented
         /// </summary>
-        public IResource Resource
+        public IXamlResource Resource
         {
             get;
             set;

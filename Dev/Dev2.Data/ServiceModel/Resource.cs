@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -854,5 +855,18 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
+    }
+
+
+
+    public static class SerialisableResourceExtension
+    {
+        public static IResource ToResource(this SerializableResource resource)
+        {
+            return new Resource()
+            {
+                
+            };
+        }
     }
 }
