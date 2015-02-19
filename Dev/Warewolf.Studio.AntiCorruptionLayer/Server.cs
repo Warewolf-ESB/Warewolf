@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Controller;
 using Dev2.Network;
@@ -120,6 +121,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 return ProxyLayer;
             }
+        }
+
+        public IQueryManager QueryProxy { get
+        {
+            return _proxyLayer.QueryManagerProxy;
+        }
         }
 
         public bool IsConnected()

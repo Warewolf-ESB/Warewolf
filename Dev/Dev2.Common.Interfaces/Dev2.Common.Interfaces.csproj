@@ -247,6 +247,7 @@
     <Compile Include="IMenuView.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
+    <Compile Include="IResourceDefinition.cs" />
     <Compile Include="IToolboxView.cs" />
     <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="IVariableListView.cs" />

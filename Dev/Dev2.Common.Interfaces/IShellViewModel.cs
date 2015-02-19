@@ -11,7 +11,7 @@ namespace Dev2.Common.Interfaces
 {
     public interface IShellViewModel
     {
-        void AddService(IResource resource);
+        void AddService(Guid resourceId,IServer server);
         void DeployService(IExplorerItemViewModel resourceToDeploy);
         void UpdateHelpDescriptor(IHelpDescriptor helpDescriptor);
         void NewResource(ResourceType? type, Guid selectedId);
