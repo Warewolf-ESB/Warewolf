@@ -7,12 +7,10 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
-using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Common.Interfaces.Versioning;
 using Dev2.Data.ServiceModel;
 using Warewolf.Core;
 
@@ -137,84 +135,6 @@ namespace Warewolf.Studio.ServerProxyLayer
             return result;
         }
     }
-
-    public class XamlResource : IXamlResource
-    {
-        public XamlResource(IResourceDefinition resource, StringBuilder xaml)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Guid ResourceID
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public string ResourceName
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public ResourceType ResourceType
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public string ResourceCategory
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public bool IsValid
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public bool IsNewResource
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public string DataList
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public string Inputs
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public string Outputs
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public IVersionInfo VersionInfo
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public Permissions Permissions
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public StringBuilder Xaml
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-    }
+         
+    
 }
