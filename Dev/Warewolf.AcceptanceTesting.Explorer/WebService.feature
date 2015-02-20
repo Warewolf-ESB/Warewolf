@@ -230,9 +230,37 @@ Scenario: Creating Web Service with method as TRACE
 	Then "save" dialogbox is opened		
 	
 
-  Scenario: 
  
+ Scenario: Editing Web Service
+	Given I open "GetCountries"
+	Then "Edit Web Service - GetCountries" tab is opened	
+	And method is selected as "GET"
+	And "Dev2CountriesWebService" selected as data source
+	And "New" button is "Enabled"
+	And "Edit" button is "Enabled"
+	Then "2 Request headers" is "Enabled"
+	And "3 Request URL" is "Enabled" 
+	And "4 Request Body" is "Disabled" 
+	And "5 Request Variables" is "Enabled" 
+	And "6 Response" is "Disabled" 
+	And "7 Edit Dfault and Mapping Names" is "Enabled"
+	When I Test Connection
+	Then the response is loaded as "String"
+	And "Save" is "Disabled"
+	When Test Connecton is "Successful"
+	Then "7 Edit Dfault and Mapping Names" inputs looks like
+	| Input        | Default Value | Required Field | Empty is Null |
+	| Country Name | US            |                |               |
+	And "7 Edit Dfault and Mapping Names" Outputs looks like
+	| Output                           | Output Alias                                       |
+	| Pr_CitiesGetCountriesCountryID   | DocumentElement().Pr_CitiesGetCountriesCountryID   |
+	| Pr_CitiesGetCountriesDescription | DocumentElement().Pr_CitiesGetCountriesDescription |
+	And "Save" is "Enabled" 
+	When I save the webservice
+	Then "save" dialogbox is opened
+
  
+
  
  
  
