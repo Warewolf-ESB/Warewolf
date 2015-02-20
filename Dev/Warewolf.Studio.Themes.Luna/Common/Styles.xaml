@@ -39,15 +39,43 @@
     </Thickness>
     <Thickness x:Key="ElementBottomRightBorder">
         <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>7</Thickness.Right>
+        <Thickness.Top>5</Thickness.Top>
+    </Thickness>
+    
+
+    <Thickness x:Key="ElementBorderLeftRight">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>5</Thickness.Left>
+        <Thickness.Right>7</Thickness.Right>
+        <Thickness.Top>0</Thickness.Top>
+    </Thickness>
+
+    <Thickness x:Key="ElementBorderLeftRightTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>7</Thickness.Left>
+        <Thickness.Right>5</Thickness.Right>
+        <Thickness.Top>5</Thickness.Top>
+    </Thickness>
+    <Thickness x:Key="ElementBorderLeftTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>5</Thickness.Left>
         <Thickness.Right>0</Thickness.Right>
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
-    <Thickness x:Key="ElementBorderLeftRight">
+    <Thickness x:Key="ElementBorderLeftTopRight">
         <Thickness.Bottom>0</Thickness.Bottom>
         <Thickness.Left>5</Thickness.Left>
-        <Thickness.Right>5</Thickness.Right>
-        <Thickness.Top>0</Thickness.Top>
+        <Thickness.Right>7</Thickness.Right>
+        <Thickness.Top>5</Thickness.Top>
     </Thickness>
+    <Thickness x:Key="ElementBorderTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>0</Thickness.Left>
+        <Thickness.Right>0</Thickness.Right>
+        <Thickness.Top>5</Thickness.Top>
+    </Thickness>
+
 </ResourceDictionary>
 

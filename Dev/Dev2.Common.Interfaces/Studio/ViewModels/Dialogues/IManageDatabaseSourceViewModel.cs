@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -114,13 +115,47 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         /// List of database names for the user to choose from based on the server entered
         /// </summary>
         IList<string> DatabaseNames { get; set; }
-
+        /// <summary>
+        /// Cancel test display text
+        /// </summary>
         string CancelTestLabel { get; }
+        /// <summary>
+        /// Has test passed
+        /// </summary>
         bool TestPassed { get; }
+
+        /// <summary>
+        /// has test failed
+        /// </summary>
         bool TestFailed { get; }
+        /// <summary>
+        /// IsTesting
+        /// </summary>
         bool Testing { get; }
+        /// <summary>
+        /// Database Types avaialable 
+        /// </summary>
         IList<enSourceType> Types { get; set; }
+        /// <summary>
+        /// The name of the resource
+        /// </summary>
         string ResourceName { get; set; }
+
+        /// <summary>
+        /// The authentications Type
+        /// </summary>
         bool UserAuthenticationSelected { get; }
+
+
+        IList<string> ComputerNames { get; set; } 
     }
+
+    public interface IManageDatabaseSourceModel
+    {
+
+        IList<string> GetComputerNames();
+        IList<string> TestDbConnection(IDbSource resource);
+        void Save(IDbSource toDbSource);
+    }
+
 }
