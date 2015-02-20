@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Windows.Media;
-using Dev2.Common.Interfaces.Help;
 
 namespace Dev2.Common.Interfaces.Toolbox
 {
@@ -60,14 +57,11 @@ namespace Dev2.Common.Interfaces.Toolbox
         string FullyQualifiedName{get;}
         Version Version { get; }
         string ContainingAssemblyPath { get; }
-
-
-
     }
 
     public enum ToolType
     {
         Native,
-        User,
+        User
     }
 }

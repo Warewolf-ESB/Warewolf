@@ -33,7 +33,8 @@ namespace Dev2.ToolBox
         {
             var assembly = Assembly.LoadFile(path);
             Type basetype = typeof(IDev2Activity);
-            return assembly.ExportedTypes.Where(basetype.IsAssignableFrom).Select(CreateTool);
+            var types = assembly.ExportedTypes.Where(basetype.IsAssignableFrom);
+            return types.Select(CreateTool);
         }
 
         IToolDescriptor CreateTool(Type arg)
