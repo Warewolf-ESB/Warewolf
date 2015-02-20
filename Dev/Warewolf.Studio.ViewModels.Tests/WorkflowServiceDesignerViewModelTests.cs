@@ -3,7 +3,6 @@ using System.Text;
 using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Studio.Views.WorkflowDesigner;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {

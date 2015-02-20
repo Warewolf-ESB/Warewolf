@@ -128,10 +128,6 @@
       <Project>{C870FE6D-5889-4DFC-90D9-68FA3E525BE2}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.Views.WorkflowDesigner\Warewolf.Studio.Views.WorkflowDesigner.csproj">
-      <Project>{205B4C37-1177-40B8-95A4-1B0CE2821C79}</Project>
-      <Name>Warewolf.Studio.Views.WorkflowDesigner</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.UnittestingUtils\Warewolf.UnittestingUtils.csproj">
       <Project>{3E50D2EE-9FA9-4A23-8E6F-3493F47D05DC}</Project>
       <Name>Warewolf.UnittestingUtils</Name>

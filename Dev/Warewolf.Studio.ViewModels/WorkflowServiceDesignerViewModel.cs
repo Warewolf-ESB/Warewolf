@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Activities.Presentation;
+using System.Activities.Presentation.View;
 using System.Collections;
 using System.Windows;
 using System.Windows.Input;
@@ -8,16 +9,14 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Utilities;
 using Microsoft.Practices.Prism.Mvvm;
-using Warewolf.Studio.Core;
 
-namespace Warewolf.Studio.Views.WorkflowDesigner
+namespace Warewolf.Studio.ViewModels
 {
     public class WorkflowServiceDesignerViewModel : BindableBase, IWorkflowServiceDesignerViewModel, IDockViewModel
     {
         bool _isActive;
         string _header;
-        readonly System.Activities.Presentation.WorkflowDesigner _wd;
-        private readonly UIElement _designerView;
+        readonly WorkflowDesigner _wd;
 
         public WorkflowServiceDesignerViewModel(IXamlResource resource)
         {
@@ -26,6 +25,7 @@ namespace Warewolf.Studio.Views.WorkflowDesigner
                 throw new ArgumentNullException("resource");
             }
             Resource = resource;
+            _wd = new WorkflowDesigner();
             var hashTable = new Hashtable
                 {
                     {WorkflowDesignerColors.FontFamilyKey, Application.Current.Resources["DefaultFontFamily"]},
@@ -38,10 +38,10 @@ namespace Warewolf.Studio.Views.WorkflowDesigner
                     {WorkflowDesignerColors.DesignerViewShellBarControlBackgroundColorKey, Application.Current.Resources["ShellBarViewBackground"]},
                     {WorkflowDesignerColors.DesignerViewShellBarColorGradientBeginKey, Application.Current.Resources["ShellBarViewBackground"]},
                     {WorkflowDesignerColors.DesignerViewShellBarColorGradientEndKey, Application.Current.Resources["ShellBarViewBackground"]},
+                    {WorkflowDesignerColors.OutlineViewItemSelectedTextColorKey, Application.Current.Resources["SolidWhite"]},
                     {WorkflowDesignerColors.OutlineViewItemHighlightBackgroundColorKey, Application.Current.Resources["DesignerBackground"]},
                     
                 };
-            _wd = new System.Activities.Presentation.WorkflowDesigner();
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(hashTable);
             var designerConfigService = _wd.Context.Services.GetService<DesignerConfigurationService>();
             if (designerConfigService != null)
@@ -57,30 +57,28 @@ namespace Warewolf.Studio.Views.WorkflowDesigner
                 designerConfigService.AnnotationEnabled = false;
                 designerConfigService.AutoSurroundWithSequenceEnabled = false;
             }
-            _designerView = _wd.View;
-            OnPropertyChanged(() => DesignerView);
-            var workflowHelper = new WorkflowHelper();
+            var wdMeta = new System.Activities.Core.Presentation.DesignerMetadata();
+            wdMeta.Register();
+            DesignerView = _wd.View;
             if (resource.Xaml == null)
             {
-                
                 IsNewWorkflow = true;
-                var activityBuilder = workflowHelper.CreateWorkflow("Untitled 1");
-                _wd.Text = workflowHelper.GetXamlDefinition(activityBuilder).ToString();
-                Header = activityBuilder.Name;                
+                var helper = new WorkflowHelper();
+                _wd.Load(helper.CreateWorkflow("Untitled 1"));
             }
             else
             {
                 IsNewWorkflow = false;
                 _wd.Text = resource.Xaml.ToString();
             }
-            try
-            {
-                _wd.Load();
-            }
-            catch (Exception e)
-            {
-                
-            }
+            _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
+        }
+
+        void DesigenrViewSubscribe(DesignerView instance)
+        {
+            // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
+            instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
+            instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
         }
 
         /// <summary>
@@ -121,13 +119,13 @@ namespace Warewolf.Studio.Views.WorkflowDesigner
                 return null;
             }
         }
-
         /// <summary>
         /// The designer for the resource
         /// </summary>
         public UIElement DesignerView
         {
-            get { return _designerView; }
+            get;
+            private set;
         }
 
         #region Implementation of IActiveAware
