@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Threading;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 
@@ -44,7 +47,19 @@ namespace Warewolf.Studio.Views
             Application.Current.MainWindow.Effect = effect;
 
             _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
+      
+            _window.ContentRendered += (sender, args) =>
+            {
+                Dispatcher.BeginInvoke(
+                    DispatcherPriority.Render,
+                    new Action(delegate
+                    {
+                        ServiceNameTextBox.Focus();
+                    }));
+            };
             _window.ShowDialog();
+          
+           
         }
 
         void RemoveBlackOutEffect()

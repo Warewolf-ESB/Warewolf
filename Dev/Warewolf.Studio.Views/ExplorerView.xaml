@@ -32,8 +32,6 @@
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity=".5"/>
             </Grid.Background>
-
-            <!-- Add controls as needed -->
         </Grid>
 
         <Grid x:Name="LayoutRoot" Margin="{StaticResource ContainerBorder}">
@@ -601,8 +599,10 @@
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
-                                        ToolTip="{Binding Path=ExecuteToolTip}"
-                                        Visibility="{Binding Data.CanExecute}">
+                                        ToolTip="{Binding Path=Data.ExecuteToolTip}"
+                                            Visibility="{Binding Path=Data.CanExecute,
+                                                                    Converter={StaticResource BoolToVisibilityConverter}}"
+                                        >
                                         <Image x:Name="ExecutePermissionImage"
                                            MaxWidth="14"
                                            Stretch="Uniform"
@@ -638,8 +638,9 @@
                                         BorderBrush="Transparent"
                                         DockPanel.Dock="Right"
                                         Style="{StaticResource ExplorerTreeButtonStyle}"
-                                        Visibility="{Binding Data.CanEdit}"
-                                        ToolTip="{Binding Path=EditToolTip}">
+                                        Visibility="{Binding Data.CanEdit,
+                                                                    Converter={StaticResource BoolToVisibilityConverter}}"
+                                        ToolTip="{Binding Path=Data.EditToolTip}">
                                         <Image x:Name="EditPermissionImage"
                                            Stretch="Uniform"
                                            Source="{StaticResource System-Spacer}" >
