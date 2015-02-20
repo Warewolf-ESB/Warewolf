@@ -133,7 +133,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Get database list
 
-        protected virtual DatabaseValidationResult DoDatabaseValidation(DbSource dbSourceDetails)
+        public  virtual DatabaseValidationResult DoDatabaseValidation(DbSource dbSourceDetails)
         {
             var result = new DatabaseValidationResult();
 

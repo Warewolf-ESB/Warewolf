@@ -51,27 +51,19 @@ namespace Warewolf.Studio.ViewModels
             RollbackCommand = new DelegateCommand(() =>
             {
                 var output = _explorerRepository.Rollback(ResourceId, VersionNumber);
-                parent.ShowVersionHistory.Execute(null);
+                parent.AreVersionsVisible = true;
                 parent.ResourceName = output.DisplayName;
             });
             _canShowVersions = true;
             Parent = parent;
-            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } });
+            VerifyArgument.AreNotNull(new Dictionary<string, object> { { "shellViewModel", shellViewModel }, { "server", server }, { "builder", builder } , });
             _shellViewModel = shellViewModel;
             LostFocus = new DelegateCommand(LostFocusCommand);
 
             Children = new ObservableCollection<IExplorerItemViewModel>();
-            OpenCommand = new DelegateCommand(() => shellViewModel.AddService(Resource));
+            OpenCommand = new DelegateCommand(() => shellViewModel.AddService(ResourceId, Server));
             DeployCommand = new DelegateCommand(() => shellViewModel.DeployService(this));
             RenameCommand = new DelegateCommand(() => IsRenaming = true);
-            ItemSelectedCommand = new DelegateCommand(() =>
-            {
-                //var helpDescriptor = builder.Build(this, ExplorerEventContext.Selected);
-
-                var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>", ResourceName, Inputs, Outputs), null);
-                shellViewModel.UpdateHelpDescriptor(helpDescriptor);
-                //shellViewModel.UpdateHelpDescriptor(builder.Build(this, ExplorerEventContext.Selected));
-            });
             Server = server;
             NewCommand = new DelegateCommand<ResourceType?>(type => shellViewModel.NewResource(type, ResourceId));
             CanCreateDbService = true; //todo:remove
@@ -104,6 +96,7 @@ namespace Warewolf.Studio.ViewModels
             });
             CreateFolderCommand = new DelegateCommand(CreateNewFolder);
             CanCreateFolder = true;
+            CanView = true;
             DeleteVersionCommand = new DelegateCommand(DeleteVersion);
         }
 
@@ -138,7 +131,9 @@ namespace Warewolf.Studio.ViewModels
 
         public void RemoveChild(IExplorerItemViewModel child)
         {
-            _children.Remove(child);
+            var tempChildren = new ObservableCollection<IExplorerItemViewModel>(_children);
+            tempChildren.Remove(child);
+            _children = tempChildren;
             OnPropertyChanged(()=>Children);
         }
 
@@ -191,15 +186,27 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public IExplorerItemViewModel Find(string resourcePath)
+        {
+            if (!resourcePath.Contains("\\") && resourcePath==ResourceName)
+                return this;
+            if (Children != null && resourcePath.Contains("\\"))
+            {
+                string name = resourcePath.Substring(1+resourcePath.IndexOf("\\", StringComparison.Ordinal));
+                return Children.Select(explorerItemViewModel => explorerItemViewModel.Find(name)).FirstOrDefault(item => item != null);
+            }
+            return null;
+        }
+
         string GetChildNameFromChildren()
         {
-            const string newFolder = "New Folder";
+            const string NewFolder = "New Folder";
             int count = 0;
-            string folderName = newFolder;
+            string folderName = NewFolder;
             while(Children.Any(a=>a.ResourceName == folderName ))
             {
                 count++;
-                folderName = newFolder + " "+ count;
+                folderName = NewFolder + " "+ count;
             }
             return folderName;
         }
@@ -209,7 +216,7 @@ namespace Warewolf.Studio.ViewModels
             IsRenaming = false;
         }
 
-        public IExplorerHelpDescriptorBuilder Builder { get; set; }
+        IExplorerHelpDescriptorBuilder Builder { get; set; }
 
         void Delete()
         {
@@ -246,25 +253,26 @@ namespace Warewolf.Studio.ViewModels
         {
             CanEdit = serverPermission.Contribute;
             CanExecute = serverPermission.Contribute || serverPermission.Execute;
-            CanView = serverPermission.View || serverPermission.Contribute;
+            CanView = serverPermission.View || serverPermission.Contribute || serverPermission.Administrator;
             CanRename = serverPermission.Contribute || serverPermission.Administrator;
             CanDelete = serverPermission.Contribute || serverPermission.Administrator;
             CanCreateFolder =  (serverPermission.Contribute || serverPermission.Administrator);
+
         }
 
         void SetFromPermission(IWindowsGroupPermission resourcePermission)
         {
             CanEdit = resourcePermission.Contribute;
             CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
-            CanView = resourcePermission.View || resourcePermission.Contribute;
+            CanView = resourcePermission.View || resourcePermission.Contribute || resourcePermission.Administrator; ; 
             CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
             CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
-           
+
 
             
         }
 
-        public bool UserShouldEditValueNow
+        bool UserShouldEditValueNow
         {
             get
             {
@@ -313,8 +321,15 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (IsRenaming && _explorerRepository.Rename(this, value)  )
+                if(Parent != null && Parent.Children.Any(a=>a.ResourceName == value))
                 {
+                    _shellViewModel.ShowPopup(PopupMessages.GetDuplicateMessage(value));
+
+                }
+                else
+                {
+                    if (IsRenaming  && _explorerRepository.Rename(this, value)  )
+                    {
                 _resourceName = value;
                 }
                 if (!IsRenaming)
@@ -324,6 +339,7 @@ namespace Warewolf.Studio.ViewModels
                 IsRenaming = false;
                 OnPropertyChanged(() => ResourceName);
             }
+        }
         }
         public ICollection<IExplorerItemViewModel> Children
         {
@@ -360,6 +376,8 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceType = value;
+                IsVersion =  _resourceType == ResourceType.Version;
+                OnPropertyChanged(() => CanView);
                 OnPropertyChanged(()=>CanShowVersions);
             }
         }
@@ -389,6 +407,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isSelected = value;
                 OnPropertyChanged(() => IsSelected);
+                if (_isSelected)
+                {
+                    var helpDescriptor = new HelpDescriptor("", string.Format("<body><H1>{0}</H1><a href=\"http://warewolf.io\">Warewolf</a><p>Inputs: {1}</p><p>Outputs: {2}</p></body>", ResourceName, Inputs, Outputs), null);
+                    _shellViewModel.UpdateHelpDescriptor(helpDescriptor);
+                }
             }
         }
 
@@ -411,7 +434,9 @@ namespace Warewolf.Studio.ViewModels
         public bool CanCreateWebSource { get; set; }
         public bool CanCreatePluginService { get; set; }
         public bool CanCreatePluginSource { get; set; }
+        // ReSharper disable MemberCanBePrivate.Global
         public bool CanCreateWorkflowService { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
 
 
 
@@ -493,17 +518,18 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView;
+                return _canView    && ResourceType<ResourceType.Folder && ResourceType != ResourceType.Version;
             }
             set
             {
                 if (_canView != value)
                 {
-                    _canView = value;
+                    _canView = value ;
                     OnPropertyChanged(() => CanView);
                 }
             }
         }
+
         public bool IsVersion { get; set; }
         public bool CanShowVersions
         {
@@ -700,15 +726,19 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (!String.IsNullOrEmpty(ResourceName))
+                if (!String.IsNullOrEmpty(ResourceName) && ResourceType!= ResourceType.Version)
                 {
-                    IsVisible = ResourceName.Contains(filter);
+                    IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
                 }
             }
             OnPropertyChanged(() => Children);
         }
 
-        public IResource Resource { get; set; }
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        // ReSharper disable MemberCanBePrivate.Global
+        public  IResource Resource { get; set; }
+        // ReSharper restore MemberCanBePrivate.Global
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
         public string Inputs { get; set; }
         public string Outputs { get; set; }
         public string ExecuteToolTip
@@ -732,35 +762,5 @@ namespace Warewolf.Studio.ViewModels
                 return _shellViewModel;
             }
         }
-    }
-
-    public class NewItemMessage : INewItemMessage {
-        readonly IExplorerItemViewModel _parent;
-        readonly ResourceType _type;
-
-        public NewItemMessage(ResourceType type, IExplorerItemViewModel parent)
-        {
-            _type = type;
-            _parent = parent;
-        }
-
-        #region Implementation of INewItemMessage
-
-        public IExplorerItemViewModel Parent
-        {
-            get
-            {
-                return _parent;
-            }
-        }
-        public ResourceType Type
-        {
-            get
-            {
-                return _type;
-            }
-        }
-
-        #endregion
     }
 }

@@ -4,14 +4,11 @@ using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Moq;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemNodeViewModel : ExplorerItemViewModel, IExplorerItemNodeViewModel {
-        ICollection<ExplorerItemNodeViewModel> _nodeChildren;
         Visibility _textVisibility;
-        Visibility _isNotMainNode;
         Visibility _isMainNode;
         // ReSharper disable TooManyDependencies
         public ExplorerItemNodeViewModel(IShellViewModel shellViewModel, IServer server, IExplorerHelpDescriptorBuilder builder, IExplorerItemViewModel parent)
@@ -29,15 +26,13 @@ namespace Warewolf.Studio.ViewModels
 
         public IExplorerItemNodeViewModel Self { get; set; }
         public int Weight { get; set; }
+        // ReSharper disable ReturnTypeCanBeEnumerable.Global
         public ICollection<ExplorerItemNodeViewModel> NodeChildren
+            // ReSharper restore ReturnTypeCanBeEnumerable.Global
         {
             get
             {
                 return new ObservableCollection<ExplorerItemNodeViewModel>(Children.Select((a=> a as ExplorerItemNodeViewModel)));
-            }
-            set
-            {
-                _nodeChildren = value;
             }
         }
 
@@ -62,42 +57,13 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-        public Visibility IsNotMainNode
-        {
-            get
-            {
-                return _isNotMainNode;
-            }
-            set
-            {
-                _isNotMainNode = value;
-            }
-        }
+        public Visibility IsNotMainNode { get; set; }
 
         #endregion
 
-        public void SetTextVisibility(bool? isChecked)
-        {
-            if(isChecked!= null)
-            {
-                if(isChecked.Value)
-                {
-                    TextVisibility = Visibility.Visible;
-                }
-                else
-                {
-                    TextVisibility = Visibility.Collapsed;
-                }
-                foreach(var explorerItemNodeViewModel in NodeChildren)
-                {
-                    SetTextVisibility(isChecked);
-                }
-            }
-        }
-
         public Visibility TextVisibility
         {
-            get
+            private get
             {
                 return _textVisibility;
             }

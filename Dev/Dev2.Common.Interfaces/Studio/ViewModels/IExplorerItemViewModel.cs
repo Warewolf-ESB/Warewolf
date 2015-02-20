@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         bool CanExecute { get; set; }
         bool CanEdit { get; set; }
         bool CanView { get; set; }
+
         bool IsVersion { get; set; }
         bool AreVersionsVisible { get; set; }
         string VersionNumber { get; set; }
@@ -36,6 +37,8 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels
         void AddSibling(IExplorerItemViewModel sibling);
         void CreateNewFolder();
         void Apply(Action<IExplorerItemViewModel> action);
+        IExplorerItemViewModel Find(string resourcePath);
+
     }
 
     public enum ExplorerEventContext

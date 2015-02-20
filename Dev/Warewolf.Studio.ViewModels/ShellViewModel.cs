@@ -16,7 +16,6 @@ using Dev2.Common.Interfaces.ServerDialogue;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
-using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Util;
 using Microsoft.Practices.Prism.Mvvm;
@@ -24,6 +23,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Moq;
+using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Models.Help;
@@ -154,10 +154,12 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        public void AddService(IResource resource)
+        public void AddService(Guid resourceId, IServer server )
         {
 
+           
             var region = GetRegion(RegionNames.Workspace);
+            var resource = server.QueryProxy.FetchResourceWithXaml(resourceId);
             var foundViewModel = region.Views.FirstOrDefault(o =>
             {
                 var viewModel = o as IServiceDesignerViewModel;
@@ -240,21 +242,31 @@ namespace Warewolf.Studio.ViewModels
                 case ResourceType.DbSource:
                     CreateDatabaseSource();
                     break;
+                case ResourceType.WorkflowService:
+                    CreateWorkflowService();
+                    break;
                 default: return;
 
             }
         }
 
+        private void CreateWorkflowService()
+        {
+            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object);
+            GetRegion(RegionNames.Workspace).Add(viewModel);
+        }
+
         private void CreateDatabaseSource()
         {
-            var mockDbSourceViewModel = new ManageDatabaseSourceViewModel();
+            var selectedId = Guid.NewGuid();
+            var mockDbSourceViewModel = new ManageDatabaseSourceViewModel(ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId),_aggregator);
             GetRegion("Workspace").Add(mockDbSourceViewModel);
         }
 
         void CreateNewServerSource(Guid selectedId)
         {
-            var server = new NewServerViewModel(new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId), this,
-                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", System.StringComparison.Ordinal)),selectedId) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
+            var server = new NewServerViewModel(new ServerSource { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" }, ActiveServer.UpdateRepository, new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId), this,
+                ActiveServer.ResourceName.Substring(0,ActiveServer.ResourceName.IndexOf("(", StringComparison.Ordinal)),selectedId) { ServerSource = new ServerSource() { UserName = "", Address = "", AuthenticationType = AuthenticationType.Windows, ID = Guid.NewGuid(), Name = "", Password = "", ResourcePath = "" } };
             GetRegion("Workspace").Add(server);
 
         }

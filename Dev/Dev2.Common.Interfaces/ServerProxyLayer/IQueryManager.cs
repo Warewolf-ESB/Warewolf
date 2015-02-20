@@ -32,7 +32,7 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// </summary>
         /// <param name="resourceId"></param>
         /// <returns></returns>
-        StringBuilder FetchResource(Guid resourceId);
+        StringBuilder FetchResourceXaml(Guid resourceId);
         /// <summary>
         /// Get a list of tables froma db source
         /// </summary>
@@ -40,7 +40,19 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         /// <returns></returns>
         IList<IDbTable> FetchTables(Guid sourceId);
 
+        /// <summary>
+        /// Fetch the resource as per the resource catalogue, without any notion of XML
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        IResourceDefinition FetchResource(Guid resourceId);
 
+        /// <summary>
+        /// Fetch the resource including the xaml
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        IXamlResource FetchResourceWithXaml(Guid resourceId);
 
         /// <summary>
         /// Loads the Tree.

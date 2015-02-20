@@ -20,5 +20,8 @@ namespace Dev2.Common.Interfaces.Infrastructure
         IExplorerItem Load(string filter);
         void MessageSubscription(IExplorerRepositorySync sync);
         IExplorerItem Find(Guid id);
+        IExplorerItem UpdateItem(IResource resource);
+
+        IExplorerItem AddItemToCollection(IExplorerItem serverExplorerItem);
     }
 }

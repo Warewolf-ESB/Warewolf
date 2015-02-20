@@ -50,6 +50,7 @@
     <Compile Include="Deploy\DeployConflictHandler.cs" />
     <Compile Include="Deploy\DeployModel.cs" />
     <Compile Include="Deploy\DeployStatsProvider.cs" />
+    <Compile Include="Deploy\DeployStatsTO.cs" />
     <Compile Include="Deploy\ExpectedForDeployPredicate.cs" />
     <Compile Include="Deploy\NewForDeployPredicate.cs" />
     <Compile Include="Deploy\ResouceTypeAndPathPredicate.cs" />
@@ -69,10 +70,6 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
-      <Name>Dev2.Studio</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

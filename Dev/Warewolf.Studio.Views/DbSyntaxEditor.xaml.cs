@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
-using Dev2.Common.Interfaces.DB;
 using Infragistics.Documents;
 using Infragistics.Documents.Parsing;
 
@@ -18,14 +17,16 @@ namespace Warewolf.Studio.Views
         public DbSyntaxEditor()
         {
             InitializeComponent();
-            SyntaxEditor.Document = new TextDocument();
-            SyntaxEditor.Document.IsReadOnly = true;
-            SyntaxEditor.Document.Language = TSqlLanguage.Instance;
-           
+            SyntaxEditor.Document = new TextDocument { IsReadOnly = true, Language = TSqlLanguage.Instance };
+
+            var textBlock = new TextBlock { FontSize = 16.0, Margin = new Thickness(0, 0, 0, 0), Text = "Action Inspector" };
+            Header = textBlock; 
+
+
             SyntaxEditor.Document.InitializeText(@"USE [Dev2TestingDB]
 GO
 
-/****** Object:  StoredProcedure [dbo].[proc_SmallFetch]    Script Date: 02/16/2015 06:40:55 ******/
+/****** Object:  StoredProcedure [dbo].[proc_SmallFetch]    Script Date: 02/16/2015 06:40:55 *************8888888888888888888*********************************************************/
 SET ANSI_NULLS ON
 GO
 
@@ -78,16 +79,14 @@ GO");
             IsModal = true;
             var effect = new BlurEffect { Radius = 10, KernelType = KernelType.Gaussian, RenderingBias = RenderingBias.Quality };
             var content = Application.Current.MainWindow.Content as Grid;
-            _blackoutGrid = new Grid();
-            _blackoutGrid.Background = new SolidColorBrush(Colors.Black);
-            _blackoutGrid.Opacity = 0.75;
+            _blackoutGrid = new Grid { Background = new SolidColorBrush(Colors.Black), Opacity = 0.75 };
             if (content != null)
             {
                 content.Children.Add(_blackoutGrid);
             }
             Application.Current.MainWindow.Effect = effect;
       
-            _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
+            _window = new Window { WindowStyle = WindowStyle.None, AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.Manual, MinWidth = 640 , MinHeight = 480,ResizeMode = ResizeMode.CanResize, WindowStartupLocation = WindowStartupLocation.CenterScreen, Content = this };
             _window.ShowDialog();
         }
 
@@ -107,24 +106,12 @@ GO");
             _window.Close();
         }
 
+        // ReSharper disable InconsistentNaming
         private void Button_Click(object sender, RoutedEventArgs e)
+            // ReSharper restore InconsistentNaming
         {
             RequestClose();
         }
 
-    }
-
-    public class HelpTextValue:IDbHelpText
-    {
-        public HelpTextValue(string helpText)
-        {
-            HelpText = helpText;
-        }
-
-        #region Implementation of IDbHelpText
-
-        public string HelpText { get; private set; }
-
-        #endregion
     }
 }

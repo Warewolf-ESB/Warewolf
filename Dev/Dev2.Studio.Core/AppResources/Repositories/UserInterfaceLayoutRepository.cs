@@ -172,7 +172,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 { 
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
                     Warewolf.Studio.Resources.Languages.Core.App_Data_Directory, 
-                    Warewolf.Studio.Resources.Languages.Core.User_Interface_Layouts_Directory 
                 });
 
             return path;

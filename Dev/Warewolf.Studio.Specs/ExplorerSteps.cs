@@ -118,6 +118,7 @@ namespace Warewolf.Studio.Specs
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+        public event ItemAddedEvent ItemAddedEvent;
         public IStudioUpdateManager UpdateRepository
         {
             get

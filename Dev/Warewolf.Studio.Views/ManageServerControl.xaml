@@ -33,10 +33,6 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="10"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <!--<Button Grid.Row="0"  Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="10" Height="10" Padding="0,0,0,0" Background="{StaticResource WarewolfPanelGreyBrush}">
-                    <fa:ImageAwesome Width="10" Height="10" Foreground="{StaticResource WareWolfButtonBrush}" Icon="Times" HorizontalAlignment="Right" Grid.Column="2"/>
-
-                </Button>-->
                     <TextBlock 
                          Grid.Column="1" Grid.Row="0" 
                         Style="{StaticResource SourceHeader}" 

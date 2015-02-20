@@ -2,6 +2,7 @@ using Dev2.Common.Interfaces.Studio.ViewModels;
 
 namespace Warewolf.Studio.ViewModels
 {
+    // ReSharper disable once UnusedMember.Global
     public class DeployItemMessage : IDeployItemMessage 
     {
         readonly IExplorerItemViewModel _item;

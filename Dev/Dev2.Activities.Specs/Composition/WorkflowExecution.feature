@@ -2915,6 +2915,149 @@ Scenario: Workflow by using For Each with Raandom in it
 	And the 'Random' in step 5 for 'ForEachTest123' debug outputs as
          |                      |
          | [[rec(1).a]] = Int32 |
+#Wolf - 604
+Scenario: Workflow by using For Each in recordset with Raandom in it 
+      Given I have a workflow "WFWithForEachInrecordsetContainsRandomTool"
+	   And "WFWithForEachInrecordsetContainsRandomTool" contains an Assign "Recordset" as
+	  | variable    | value |
+	  | [[rec().a]] | 10    |
+	  | [[rec().a]] | 20    |
+	  And "WFWithForEachInrecordsetContainsRandomTool" contains a Foreach "ForE" as "in recordset" executions "[[rec(*)]]"
+	  And "ForE" contains Random "Randoms" as
+	    | Type    | From        | To  | Result     |
+	    | Numbers | [[rec().a]] | 100 | [[result]] |
+      When "WFWithForEachContainsRandom" is executed
+	  Then the workflow execution has "NO" error
+	    And the 'ForE' in WorkFlow 'WFWithForEachInrecordsetContainsRandomTool' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs().a]] =  | 1         |
+	  | 2 | [[rec().a]] = | 2         |
+	  And the 'ForE' in Workflow 'WFWithForEachInrecordsetContainsRandomTool' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rs(1).a]] = 10  |
+	  | 2 | [[rec(2).a]] = 20 |
+	  And the 'ForE' in WorkFlow 'WFWithForEachInrecordsetContainsRandomTool' debug inputs as 
+	   |              | Recordset         |
+	   | in Recordset | [[rec(1).a]] = 10 |
+	   |              | [[rec(2).a]] = 20 |
+      And the 'ForE' in WorkFlow 'WFWithForEachInrecordsetContainsRandomTool' has  "5" nested children 
+	  And the 'Randoms' in step 1 for 'ForE' debug inputs as
+	    | Random  | From              | To  |
+	    | Numbers | [[rec(1).a]] = 10 | 100 |
+	  And the 'Randoms' in step 1 for 'ForE' debug outputs as
+        |                      |
+	    | [[rec(1).a]] = Int32 |
+	  And the 'Randoms' in step 2 for 'ForE' debug inputs as
+        | Random  | From              | To  |
+        | Numbers | [[rec(2).a]] = 20 | 100 |
+	  And the 'Randoms' in step 2 for 'ForE' debug outputs as
+        |                      |
+	    | [[rec(1).a]] = Int32 |
+      
+	 
+#Wolf - 604
+Scenario: Workflow by using For Each with workflow in it
+      Given I have a workflow "WFWithForEachInrecordsetTesting"
+	  And "WFWithForEachInrecordsetTesting" contains an Assign "Recordset" as
+	  | variable    | value |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 2     |
+	  And "WFWithForEachInrecordsetTesting" contains a Foreach "FEach" as "in recordset" executions "[[rec(*)]]"
+	  And "ForEachTest123" contains "SavedWFwithRandom Test" from server "localhost" with mapings as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "WFWithForEachInrecordsetTesting" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Recordset' in WorkFlow 'WFWithForEachInrecordsetTesting' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs().a]] =  | 1         |
+	  | 2 | [[rec().a]] = | 2         |
+	  And the 'Recordset' in Workflow 'WFWithForEachInrecordsetTesting' debug outputs as  
+	  | # |                  |
+	  | 1 | [[rs(1).a]] = 1  |
+	  | 2 | [[rec(2).a]] = 2 |
+	  And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' debug inputs as 
+	    |              | Recordset         |
+	    | in Recordset | [[rec(1).a]] = 1  |
+	    |              | [[rec(2).a]] = 10 |
+      And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' has  "2" nested children 
+      And the 'Random' in step 1 for 'SavedWFwithRandom Test' debug inputs as
+	    | Random  | From             | To |
+	    | Numbers | [[rec(1).a]] = 1 | 5  |
+	  And the 'Random' in step 1 for 'SavedWFwithRandom Test' debug outputs as
+        |                      |
+        | [[res]] = Int32 |
+		And the 'Random' in step 2 for 'SavedWFwithRandom Test' debug inputs as
+	    | Random  | From              | To |
+	    | Numbers | [[rec(2).a]] = 10 | 5  |
+	  And the 'Random' in step 2 for 'SavedWFwithRandom Test' debug outputs as
+        |                 |
+        | [[res]] = Int32 |
+
+#Wolf - 604
+Scenario: Workflow by using For Each with workflow
+      Given I have a workflow "WFWithForEachInrecordsetUtilityRandomTesting"
+	  And "WFWithForEachInrecordsetUtilityRandomTesting" contains an Assign "Recordset1" as
+	  | variable    | value |
+	  | [[rec().a]] | 1     |
+	  | [[rec().a]] | 2     |
+	  And "WFWithForEachInrecordsetUtilityRandomTesting" contains a Foreach "FEach" as "in recordset" executions "[[rec(*)]]"
+	  And "ForEachTest123" contains "Utility - Random Test" from server "localhost" with mapings as
+	  | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "WFWithForEachInrecordsetUtilityRandomTesting" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Recordset1' in WorkFlow 'WFWithForEachInrecordsetUtilityRandomTesting' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | 1         |
+	  | 2 | [[rec().a]] = | 2         |
+	  And the 'Recordset1' in Workflow 'WFWithForEachInrecordsetUtilityRandomTesting' debug outputs as  
+	  | # |                  |
+	  | 1 | [[rs(1).a]] = 1  |
+	  | 2 | [[rec(2).a]] = 2 |
+	  And the 'FEach1' in WorkFlow 'WFWithForEachInrecordsetUtilityRandomTesting' debug inputs as 
+	    |              | Recordset         |
+	    | in Recordset | [[rec(1).a]] = 1  |
+	    |              | [[rec(2).a]] = 10 |
+      And the 'FEach1' in WorkFlow 'WFWithForEachInrecordsetUtilityRandomTesting' has  "2" nested children 
+	  And the 'Random1' in step 1 for 'Utility - Random Test' debug inputs as
+	  | Random  | From | To |
+	  | Numbers | 1    | 6  |
+	  And the 'Random1' in step 1 for 'Utility - Random Test' debug outputs as  
+	  |                      |
+	  | [[DiceRoll]] = Int32 |
+	   And the 'Random2' in step 1 for 'Utility - Random Test' debug inputs as
+	  | Random  | Length |
+	  | Letters | 7      |
+	  And the 'Random2' in step 1 for 'Utility - Random Test' debug outputs as     
+	  |                       |
+	  | [[Scrabble]] = String |
+	  And the 'Random3' in step 1 for 'Utility - Random Test' debug inputs as
+	  | Random |
+	  | GUID   | 
+	  And the 'Random3' in step 1 for 'Utility - Random Test' debug outputs as     
+	  |                      |
+	  | [[License]] = String |
+	  And the 'Random1' in step 2 for 'Utility - Random Test' debug inputs as
+	  | Random  | From | To |
+	  | Numbers | 1    | 6  |
+	  And the 'Random1' in step 2 for 'Utility - Random Test' debug outputs as  
+	  |                      |
+	  | [[DiceRoll]] = Int32 |
+	   And the 'Random2' in step 2 for 'Utility - Random Test' debug inputs as
+	  | Random  | Length |
+	  | Letters | 7      |
+	  And the 'Random2' in step 2 for 'Utility - Random Test' debug outputs as     
+	  |                       |
+	  | [[Scrabble]] = String |
+	  And the 'Random3' in step 2 for 'Utility - Random Test' debug inputs as
+	  | Random |
+	  | GUID   | 
+	  And the 'Random3' in step 2 for 'Utility - Random Test' debug outputs as     
+	  |                      |
+	  | [[License]] = String |
+
+
+
+
 
 
 #This should be passed after the bug 12021 is fixed (RECURSIVE EVALUATION)

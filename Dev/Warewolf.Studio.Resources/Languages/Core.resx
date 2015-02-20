@@ -694,4 +694,31 @@ You need Administrator permission.</value>
   <data name="CancelTest" xml:space="preserve">
     <value>Cancel Test</value>
   </data>
+  <data name="DatabaseSourceServerTypesHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseSourceServerTypesHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseSourceDatabasesHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseSourceDatabasesHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseSourceSaveHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseSourceSaveHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseSourceServerHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseSourceServerHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="DatabaseSourceTestConnectionHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;DatabaseSourceTestConnectionHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="PasswordAuthenticationHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;PasswordAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="UserAuthenticationHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;UserAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="UserNameAuthenticationHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;UserNameAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
+  <data name="WindowsAuthenticationHelp" xml:space="preserve">
+    <value>&lt;body&gt;&lt;p&gt;WindowsAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
+  </data>
 </root>

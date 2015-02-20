@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.ViewModels;
 using Dev2.Common.Interfaces.Toolbox;
@@ -166,7 +167,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             //------------Execute Test---------------------------
-            shellViewModel.AddService(new Mock<IResource>().Object);
+            shellViewModel.AddService(Guid.NewGuid(),new MockServer());
             //------------Assert Results-------------------------
             Assert.IsTrue(shellViewModel.RegionHasView("Workspace"));
         }
@@ -184,9 +185,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
             var resource = new Mock<IResource>().Object;
-            shellViewModel.AddService(resource);
+            shellViewModel.AddService(Guid.NewGuid(), new MockServer());
             //------------Execute Test---------------------------
-            shellViewModel.AddService(resource);
+            shellViewModel.AddService(Guid.NewGuid(), new MockServer());
             //------------Assert Results-------------------------
             var viewsCollection = shellViewModel.GetRegionViews("Workspace");
             Assert.AreEqual(1,viewsCollection.Count());
@@ -204,9 +205,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testRegionManager = new RegionManager();
             testRegionManager.Regions.Add("Workspace", new SingleActiveRegion());
             var shellViewModel = new ShellViewModel(testContainer, testRegionManager,new Mock<IEventAggregator>().Object);
-            shellViewModel.AddService(new Mock<IResource>().Object);
+            shellViewModel.AddService(Guid.NewGuid(), new MockServer());
             //------------Execute Test---------------------------
-            shellViewModel.AddService(new Mock<IResource>().Object);
+            shellViewModel.AddService(Guid.NewGuid(), new MockServer());
             //------------Assert Results-------------------------
             var viewsCollection = shellViewModel.GetRegionViews("Workspace");
             Assert.AreEqual(2,viewsCollection.Count());
@@ -228,7 +229,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockResource = new Mock<IResource>();
             mockResource.Setup(resource => resource.ResourceType).Returns(ResourceType.WorkflowService);
             //------------Execute Test---------------------------
-            shellViewModel.AddService(mockResource.Object);
+            shellViewModel.AddService(Guid.NewGuid(), new MockServer());
             //------------Assert Results-------------------------
             var viewsCollection = shellViewModel.GetRegionViews("Workspace");
             Assert.AreEqual(1,viewsCollection.Count());
@@ -612,6 +613,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         public IExplorerRepository ExplorerRepository { get; private set; }
 
+        public IQueryManager QueryProxy { get; private set; }
+
         public bool IsConnected()
         {
             return false;
@@ -633,6 +636,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         public event PermissionsChanged PermissionsChanged;
         public event NetworkStateChanged NetworkStateChanged;
+        public event ItemAddedEvent ItemAddedEvent;
         public IStudioUpdateManager UpdateRepository
         {
             get { return new Mock<IStudioUpdateManager>().Object; }
@@ -651,14 +655,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public MockServiceDesignerViewModel(IResource resource)
+        public MockServiceDesignerViewModel(IXamlResource resource)
         {
             Resource = resource;
         }
 
         #region Implementation of IServiceDesignerViewModel
 
-        public IResource Resource
+        public IXamlResource Resource
         {
             get;
             set;
@@ -702,14 +706,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public MockWorkflowServiceDesignerViewModel(IResource resource)
+        public MockWorkflowServiceDesignerViewModel(IXamlResource resource)
         {
             Resource = resource;
         }
 
         #region Implementation of IServiceDesignerViewModel
 
-        public IResource Resource
+        public IXamlResource Resource
         {
             get;
             set;
