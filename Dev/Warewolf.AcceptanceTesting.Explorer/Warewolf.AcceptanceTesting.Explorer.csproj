@@ -239,6 +239,11 @@
     <Compile Include="UnityBootstrapperForDatabaseSourceConnectorTesting.cs" />
     <Compile Include="UnityBootstrapperForExplorerTesting.cs" />
     <Compile Include="UnityBootstrapperForToolboxTesting.cs" />
+    <Compile Include="VariableList.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VariableList.feature</DependentUpon>
+    </Compile>
     <Compile Include="WebService.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -277,6 +282,10 @@
     <None Include="Toolbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Toolbox.feature.cs</LastGenOutput>
+    </None>
+    <None Include="VariableList.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>VariableList.feature.cs</LastGenOutput>
     </None>
     <None Include="WebService.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
