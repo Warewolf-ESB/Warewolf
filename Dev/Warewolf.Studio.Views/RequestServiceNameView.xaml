@@ -15,6 +15,7 @@
                     Style="{StaticResource XamDialogWindowStyle}"
                     d:DataContext="{d:DesignInstance Type=saveDialog:IRequestServiceNameViewModel,
                                                      IsDesignTimeCreatable=False}"
+                    FocusManager.IsFocusScope="True"
                     mc:Ignorable="d">
     <ig:XamDialogWindow.InputBindings>
         <KeyBinding Command="{Binding Path=CancelCommand}" 

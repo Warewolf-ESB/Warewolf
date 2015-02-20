@@ -23,6 +23,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Moq;
+using Warewolf.Core;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
@@ -173,7 +174,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (resource.ResourceType == ResourceType.WorkflowService)
                 {
-                    foundViewModel = _unityContainer.Resolve<IWorkflowServiceDesignerViewModel>(new ParameterOverrides { { "resource", resource } });
+                    foundViewModel = new WorkflowServiceDesignerViewModel(resource);
                 }
                 else
                 {

@@ -65,6 +65,7 @@ namespace Warewolf.Studio.ViewModels
                 IsNewWorkflow = true;
                 var helper = new WorkflowHelper();
                 _wd.Load(helper.CreateWorkflow("Untitled 1"));
+                Header = "Untitled 1";
             }
             else
             {

@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -95,6 +96,11 @@ namespace Warewolf.Studio.Specs
             {
                 return _explorerRepository;
             }
+        }
+
+        public IQueryManager QueryProxy
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         public bool IsConnected()

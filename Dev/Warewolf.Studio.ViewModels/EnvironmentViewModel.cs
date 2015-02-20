@@ -497,25 +497,32 @@ namespace Warewolf.Studio.ViewModels
                     Inputs = explorerItem.Inputs,
                     Outputs = explorerItem.Outputs
                 };
+                itemCreated.SetPermissions(server.Permissions);
                 if(isDialog)
                 {
-                    itemCreated.CanCreateDbService = false;
-                    itemCreated.CanCreateDbSource = false;
-                    itemCreated.CanCreatePluginService = false;
-                    itemCreated.CanCreatePluginSource = false;
-                    itemCreated.CanCreateServerSource = false;
-                    itemCreated.CanCreateWebService = false;
-                    itemCreated.CanCreateWebSource = false;
-                    itemCreated.CanCreateWorkflowService = false;
-                    itemCreated.CanDeploy = false;
-                    itemCreated.CanShowVersions = false;
-
+                    SetPropertiesForDialog(itemCreated);
                 }
                 itemCreated.Children = CreateExplorerItems(explorerItem.Children, server, itemCreated,isDialog);
                 explorerItemModels.Add(itemCreated);
                 
             }
             return  explorerItemModels;
+        }
+
+        private static void SetPropertiesForDialog(ExplorerItemViewModel itemCreated)
+        {
+            itemCreated.CanCreateDbService = false;
+            itemCreated.CanCreateDbSource = false;
+            itemCreated.CanCreatePluginService = false;
+            itemCreated.CanCreatePluginSource = false;
+            itemCreated.CanCreateServerSource = false;
+            itemCreated.CanCreateWebService = false;
+            itemCreated.CanCreateWebSource = false;
+            itemCreated.CanCreateWorkflowService = false;
+            itemCreated.CanDeploy = false;
+            itemCreated.CanShowVersions = false;
+            itemCreated.CanEdit = false;
+            itemCreated.CanExecute = false;
         }
 
 

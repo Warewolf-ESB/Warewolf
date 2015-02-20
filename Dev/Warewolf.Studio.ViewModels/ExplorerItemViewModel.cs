@@ -200,13 +200,13 @@ namespace Warewolf.Studio.ViewModels
 
         string GetChildNameFromChildren()
         {
-            const string NewFolder = "New Folder";
+            const string newFolder = "New Folder";
             int count = 0;
-            string folderName = NewFolder;
+            string folderName = newFolder;
             while(Children.Any(a=>a.ResourceName == folderName ))
             {
                 count++;
-                folderName = NewFolder + " "+ count;
+                folderName = newFolder + " "+ count;
             }
             return folderName;
         }
@@ -234,14 +234,26 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdatePermissions(PermissionsChangedArgs args)
         {
-            var resourcePermission = args.Permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
+            SetPermissions(args.Permissions);
+        }
+
+        public void SetPermissions(List<IWindowsGroupPermission> permissions)
+        {
+            if (ResourceType == ResourceType.Folder)
+            {
+                CanEdit = false;
+                CanExecute = false;
+                return;
+            }
+            var resourcePermission = permissions.FirstOrDefault(permission => permission.ResourceID == ResourceId);
             if (resourcePermission != null)
             {
                 SetFromPermission(resourcePermission);
             }
             else
             {
-                var serverPermission = args.Permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID==Guid.Empty);
+                var serverPermission =
+                    permissions.FirstOrDefault(permission => permission.IsServer && permission.ResourceID == Guid.Empty);
                 if (serverPermission != null)
                 {
                     SetFromServer(serverPermission);
@@ -264,7 +276,7 @@ namespace Warewolf.Studio.ViewModels
         {
             CanEdit = resourcePermission.Contribute;
             CanExecute = resourcePermission.Contribute || resourcePermission.Execute;
-            CanView = resourcePermission.View || resourcePermission.Contribute || resourcePermission.Administrator; ; 
+            CanView = resourcePermission.View || resourcePermission.Contribute || resourcePermission.Administrator; 
             CanRename = resourcePermission.Contribute || resourcePermission.Administrator;
             CanDelete = resourcePermission.Contribute || resourcePermission.Administrator;
 

@@ -25,6 +25,9 @@
     <system:Double x:Key="FontSize-Large">16</system:Double>
     <system:Double x:Key="FontSize-Larger">17</system:Double>
     <system:Double x:Key="ExplorerFontSize">14</system:Double>
+    <system:Double x:Key="DefaultElementBorderValue">5</system:Double>
+    <system:Double x:Key="DefaultContainerBorderValue">5</system:Double>
+    
     <Thickness x:Key="ContainerBorder">
         <Thickness.Bottom>7</Thickness.Bottom>
         <Thickness.Left>7</Thickness.Left>
