@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Studio.Core.Controller;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Warewolf.Core;
 
@@ -69,10 +70,10 @@ namespace Warewolf.Studio.ServerProxyLayer
         public StringBuilder FetchResourceXaml(Guid resourceId)
         {
             var comsController = CommunicationControllerFactory.CreateController("FetchResourceDefinitionService" );
-            comsController.AddPayloadArgument("ResourceId", resourceId.ToString());
+            comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
 
-            var result = comsController.ExecuteCommand<StringBuilder>(Connection, Connection.WorkspaceID);
-            return result;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, Connection.WorkspaceID);
+            return result.Message;
         }
 
         /// <summary>
@@ -133,6 +134,20 @@ namespace Warewolf.Studio.ServerProxyLayer
             var workspaceId = Connection.WorkspaceID;
             var result =  comsController.ExecuteCommand<IList<IToolDescriptor>>(Connection, workspaceId);
             return result;
+        }
+
+        public IList<string> GetComputerNames()
+        {
+            var comsController = CommunicationControllerFactory.CreateController("GetComputerNamesService");
+
+            var workspaceId = Connection.WorkspaceID;
+            var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
+            if(result.HasError)
+            {
+                throw new WarewolfSupportServiceException(result.Message.ToString(),null);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.Deserialize<IList<string>>(result.Message.ToString());
         }
     }
          

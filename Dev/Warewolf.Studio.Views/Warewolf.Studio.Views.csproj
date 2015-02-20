@@ -234,6 +234,7 @@
     <Compile Include="CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AutoCompleteBehavior.cs" />
     <Compile Include="ConnectControlView.xaml.cs">
       <DependentUpon>ConnectControlView.xaml</DependentUpon>
     </Compile>

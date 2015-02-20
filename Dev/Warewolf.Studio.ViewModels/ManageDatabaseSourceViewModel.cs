@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
@@ -33,15 +34,17 @@ namespace Warewolf.Studio.ViewModels
         private string _testMessage;
         private IList<string> _databaseNames;
         private string _header;
-        readonly IStudioUpdateManager _updateManager ;
+        readonly IManageDatabaseSourceModel _updateManager ;
         readonly IEventAggregator _aggregator;
          IDbSource _dbSource;
         bool _testPassed;
         bool _testFailed;
         bool _testing;
         string _resourceName;
+        CancellationTokenSource _token;
+        IList<string> _computerNames;
 
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager,IEventAggregator aggregator)
+        public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator)
         {
             VerifyArgument.IsNotNull("updateManager", updateManager);
             VerifyArgument.IsNotNull("aggregator", aggregator);
@@ -51,17 +54,48 @@ namespace Warewolf.Studio.ViewModels
             HeaderText = "New Database Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection,CanTest);
             OkCommand = new DelegateCommand(SaveConnection,CanSave);
-            CancelTestCommand = new DelegateCommand(() => {});
+            CancelTestCommand = new DelegateCommand(CancelTest,CanCancelTest);
             Testing = false;
             Types = new List<enSourceType> { enSourceType.SqlDatabase };
             ServerType = enSourceType.SqlDatabase;
             _testPassed = false;
             _testFailed = false;
             DatabaseNames = new List<string>();
-            
+            ComputerNames = new List<string>();
+            // ReSharper disable MaximumChainedReferences
+            new Task(()=>
+            {
+                var names = _updateManager.GetComputerNames();
+                Dispatcher.CurrentDispatcher.Invoke(() => ComputerNames = names);
+            }).Start();
+            // ReSharper restore MaximumChainedReferences
+          
         }
 
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
+        bool CanCancelTest()
+        {
+            return Testing == true;
+        }
+
+        void CancelTest()
+        {
+            if(_token != null)
+            {
+                if(!_token.IsCancellationRequested && _token.Token.CanBeCanceled)
+                {
+                    _token.Cancel();
+                    Dispatcher.CurrentDispatcher.Invoke(() =>
+                    {
+                        Testing = false;
+                        TestFailed = true;
+                        TestPassed = false;
+                        TestMessage = "Test Cancelled";
+                    });
+                }
+            }
+        }
+
+        public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, IRequestServiceNameViewModel requestServiceNameViewModel, IEventAggregator aggregator)
             : this(updateManager, aggregator)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
@@ -69,7 +103,7 @@ namespace Warewolf.Studio.ViewModels
             RequestServiceNameViewModel = requestServiceNameViewModel;
 
         }
-        public ManageDatabaseSourceViewModel(IStudioUpdateManager updateManager, IEventAggregator aggregator, IDbSource dbSource)
+        public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator, IDbSource dbSource)
             : this(updateManager,  aggregator)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
@@ -85,6 +119,8 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanTest()
         {
+            if (Testing)
+                return false;
             if (String.IsNullOrEmpty(ServerName))
             {
                 return false;
@@ -136,6 +172,18 @@ namespace Warewolf.Studio.ViewModels
         {
             get { return AuthenticationType==AuthenticationType.User; }            
         }
+        public IList<string> ComputerNames
+        {
+            get
+            {
+                return _computerNames;
+            }
+            set
+            {
+                _computerNames = value;
+                OnPropertyChanged(()=>ComputerNames);
+            }
+        }
 
         void SaveConnection()
         {
@@ -169,33 +217,51 @@ namespace Warewolf.Studio.ViewModels
 
         void TestConnection()
         {
-            Testing = true;
-            try
-            {
-                TestFailed = false;
-                TestPassed = false;
 
+          _token = new CancellationTokenSource();
+                var t = new Task<IList<string>> (
+                    SetupProgressSpinner,_token.Token);
+            
+                t.ContinueWith(a=> Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    if(!_token.IsCancellationRequested)
+                    switch (t.Status)
+                    {
+                        case TaskStatus.Faulted:
+                        {
+                            TestFailed = true;
+                            TestPassed = false;
+                            Testing = false;
+                            TestMessage = t.Exception != null ? t.Exception.Message : "Failed";
+                            DatabaseNames.Clear();
+                            break;
+                        }
+                        case TaskStatus.RanToCompletion:
+                        {
+                            DatabaseNames = t.Result;
+                            TestMessage = "Passed";
+                            TestFailed = false;
+                            TestPassed = true;
+                            break;
+                        }
+                    }
+                }));
+               t.Start();
+                
 
-                DatabaseNames = _updateManager.TestDbConnection(ToNewDbSource());
-                TestMessage = "Passed";
-                TestFailed = false;
-                TestPassed = true;
-
-            }
-            catch(Exception err)
-            {
-                TestFailed = true;
-                TestPassed = false;
-                TestMessage = err.Message;
-                DatabaseNames.Clear();
-            }
-            finally
-            {
-                Testing = false;
-            }
             OnPropertyChanged(() => DatabaseNames);
         }
 
+        IList<string> SetupProgressSpinner()
+        {
+            Dispatcher.CurrentDispatcher.Invoke(() =>
+            {
+                Testing = true;
+                TestFailed = false;
+                TestPassed = false;
+            });
+            return _updateManager.TestDbConnection(ToNewDbSource());
+        }
 
         IDbSource ToNewDbSource()
         {
@@ -272,10 +338,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (_authenticationType != value)
                 {
-                _authenticationType = value;
-                OnPropertyChanged(() => AuthenticationType);
-                OnPropertyChanged(() => Header);
-                OnPropertyChanged(() => UserAuthenticationSelected);
+                    _authenticationType = value;
+                    OnPropertyChanged(() => AuthenticationType);
+                    OnPropertyChanged(() => Header);
+                    OnPropertyChanged(() => UserAuthenticationSelected);
                     TestPassed = false;
                     RaiseCanExecuteChanged(TestCommand);
                     RaiseCanExecuteChanged(OkCommand);
@@ -290,9 +356,9 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (value != _serverName)
                 {
-                _serverName = value;
-                OnPropertyChanged(() => ServerName);
-                OnPropertyChanged(() => Header);
+                    _serverName = value;
+                    OnPropertyChanged(() => ServerName);
+                    OnPropertyChanged(() => Header);
                     TestPassed = false;
                     RaiseCanExecuteChanged(TestCommand);
                     RaiseCanExecuteChanged(OkCommand);
@@ -451,7 +517,10 @@ namespace Warewolf.Studio.ViewModels
             private set
             {
                 _testing = value;
+               
                 OnPropertyChanged(()=>Testing);
+                RaiseCanExecuteChanged(CancelTestCommand);
+                RaiseCanExecuteChanged(TestCommand);
             }
         }
 

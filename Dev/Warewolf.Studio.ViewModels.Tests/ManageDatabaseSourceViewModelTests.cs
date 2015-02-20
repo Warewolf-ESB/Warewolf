@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Studio.ViewModels.Dialogues;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -28,19 +29,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             //unused variable so that the test fails at compile time. 
             //------------Setup for test--------------------------
             // ReSharper disable NotAccessedVariable
-            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(new Mock<IStudioUpdateManager>().Object, new Mock<IEventAggregator>().Object);
+            var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(new Mock<IManageDatabaseSourceModel>().Object, new Mock<IEventAggregator>().Object);
            
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IStudioUpdateManager>().Object, new Mock<IEventAggregator>().Object }, typeof(ManageDatabaseSourceViewModel));
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IManageDatabaseSourceModel>().Object, new Mock<IEventAggregator>().Object }, typeof(ManageDatabaseSourceViewModel));
             //------------Execute Test---------------------------
             
             // ReSharper disable RedundantAssignment
-            manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(new Mock<IStudioUpdateManager>().Object, new Mock<IEventAggregator>().Object, new Mock<IDbSource>().Object);
+            manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(new Mock<IManageDatabaseSourceModel>().Object, new Mock<IEventAggregator>().Object, new Mock<IDbSource>().Object);
 
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IStudioUpdateManager>().Object, new Mock<IEventAggregator>().Object, new Mock<IDbSource>().Object }, typeof(ManageDatabaseSourceViewModel));
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IManageDatabaseSourceModel>().Object, new Mock<IEventAggregator>().Object, new Mock<IDbSource>().Object }, typeof(ManageDatabaseSourceViewModel));
         
-            manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object,new Mock<IEventAggregator>().Object);
+            manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(new Mock<IManageDatabaseSourceModel>().Object, new Mock<IRequestServiceNameViewModel>().Object,new Mock<IEventAggregator>().Object);
             //------------Assert Results-------------------------
-            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IStudioUpdateManager>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IEventAggregator>().Object }, typeof(ManageDatabaseSourceViewModel));
+            NullArgumentConstructorHelper.AssertNullConstructor(new object[] { new Mock<IManageDatabaseSourceModel>().Object, new Mock<IRequestServiceNameViewModel>().Object, new Mock<IEventAggregator>().Object }, typeof(ManageDatabaseSourceViewModel));
             // ReSharper restore NotAccessedVariable
             // ReSharper restore RedundantAssignment
         }
@@ -62,7 +63,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 ServerName = "ServerName",
                 Type = enSourceType.SqlDatabase
             };
-           var  manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(new Mock<IStudioUpdateManager>().Object, new Mock<IEventAggregator>().Object,dbSource );
+           var  manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(new Mock<IManageDatabaseSourceModel>().Object, new Mock<IEventAggregator>().Object,dbSource );
             Assert.AreEqual(manageDatabaseSourceViewModel.ResourceName,dbSource.Name);
             Assert.AreEqual(dbSource.DbName,manageDatabaseSourceViewModel.DatabaseName);
             Assert.AreEqual(dbSource.Password,manageDatabaseSourceViewModel.Password);
@@ -91,7 +92,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 ServerName = "ServerName",
                 Type = enSourceType.SqlDatabase
             };
-            var updateManager = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IManageDatabaseSourceModel>();
           
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, new Mock<IEventAggregator>().Object, dbSource);
             Assert.AreEqual(manageDatabaseSourceViewModel.Header,  "Edit Database Service-" + dbSource.Name);
@@ -114,7 +115,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dialog = new Mock<IRequestServiceNameViewModel>();
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
-            var updateManager = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IManageDatabaseSourceModel>();
 
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object,new Mock<IEventAggregator>().Object);
             updateManager.Setup(a => a.TestDbConnection(It.IsAny<IDbSource>())).Returns(new List<string>());
@@ -134,7 +135,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dialog = new Mock<IRequestServiceNameViewModel>();
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
-            var updateManager = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IManageDatabaseSourceModel>();
 
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob", ServerType = enSourceType.SqlDatabase, AuthenticationType = AuthenticationType.Public, UserName = "dave", DatabaseName = "dbNAme" };
             // ReSharper disable MaximumChainedReferences
@@ -172,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dialog = new Mock<IRequestServiceNameViewModel>();
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
-            var updateManager = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IManageDatabaseSourceModel>();
 
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object) { Password = "bob", ServerType = enSourceType.SqlDatabase, AuthenticationType = AuthenticationType.Public, UserName = "dave", DatabaseName = "dbNAme" };
             // ReSharper disable MaximumChainedReferences
@@ -202,7 +203,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dialog = new Mock<IRequestServiceNameViewModel>();
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
-            var updateManager = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IManageDatabaseSourceModel>();
 
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
             Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
@@ -225,7 +226,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dialog = new Mock<IRequestServiceNameViewModel>();
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
-            var updateManager = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IManageDatabaseSourceModel>();
 
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
             Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
@@ -249,7 +250,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var dialog = new Mock<IRequestServiceNameViewModel>();
             dialog.Setup(a => a.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             dialog.Setup(a => a.ResourceName).Returns(new ResourceName("path", "name"));
-            var updateManager = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IManageDatabaseSourceModel>();
 
             var manageDatabaseSourceViewModel = new ManageDatabaseSourceViewModel(updateManager.Object, dialog.Object, new Mock<IEventAggregator>().Object);
             Assert.IsFalse(manageDatabaseSourceViewModel.CanTest());
