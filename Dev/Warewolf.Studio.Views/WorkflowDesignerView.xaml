@@ -24,6 +24,6 @@
                                     <Run Text="{Binding Path=DisplayWorkflowLink,Mode=OneWay}" />
                                 </Hyperlink>
         </TextBlock>
-        <ContentPresenter Content="{Binding DesignerView}"></ContentPresenter>  
+        <ContentPresenter Grid.Row="1" Content="{Binding DesignerView}"></ContentPresenter>  
     </Grid>
 </UserControl>
