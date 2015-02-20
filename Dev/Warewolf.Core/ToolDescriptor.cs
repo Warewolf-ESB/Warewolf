@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Dev2.Common.Interfaces.Toolbox;
 
 namespace Warewolf.Core
@@ -12,7 +13,7 @@ namespace Warewolf.Core
         {
             ContainingAssemblyPath = containingAssemblyPath;
             Version = version;
-            FullyQualifiedName = fullyQualifiedName;
+            FullyQualifiedName = fullyQualifiedName;           
         }
 
         #region Implementation of IWarewolfType
@@ -20,6 +21,8 @@ namespace Warewolf.Core
         public string FullyQualifiedName { get; private set; }
         public Version Version { get; private set; }
         public string ContainingAssemblyPath { get; private set; }
+
+        public Type ActualType { get; set; }
 
         #endregion
 
