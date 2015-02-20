@@ -30,10 +30,17 @@
 ##* Ensure Step 7 is enabled when response loaded after click on test
 ##* Ensure Step 7 is enabled when user edit the response in response dialog
 ##* Ensure user save button is Enabled when the user click on test
+## Ensure adding parameters to Step 2 adds them as inputs in Step 5
+## Ensure changing parameters to Step 2 changes them in Step 5
+## Ensure adding parameters to Step 3 adds them as inputs in Step 5
+## Ensure changing parameters to Step 3 changes them in Step 5
+## Ensure adding parameters to Step 4 adds them as inputs in Step 5
+## Ensure changing parameters to Step 4 changes them in Step 5
+## Ensure changing Source in Step 1 changes Request URL in Step 3
 
 
 
-
+##Test Cases
 
 @WebService
 Scenario: Opening Web Service
@@ -92,17 +99,11 @@ Scenario: Creating Web Service with method as POST
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Enabled" 
-	When I type Request Body as
-	|       |
-	| [[a]] |
-	| [[b]] |
 	And "5 Request Variables" is "Enabled" 
 	And "5 Request Variables" looks like
 	|                  |
 	| extension = json |
 	| prefix  = a      |
-	| [[a]]            |
-	| [[b]]            |
 	And "6 Response" is "Disabled" 
 	And "7 Edit Dfault and Mapping Names" is "Enabled"
 	And "Test" button is "Enabled"
@@ -111,8 +112,6 @@ Scenario: Creating Web Service with method as POST
 	Then the response is loaded as "String"
 	Then "7 Edit Dfault and Mapping Names" inputs looks like
 	| Input     | Default Value | Required Field | Empty is Null |
-	| a         |               |                |               |
-	| b         |               |                |               |
 	| extension | json          |                |               |
 	| prefix    | a             |                |               |
 	And "7 Edit Dfault and Mapping Names" Outputs looks like
@@ -134,17 +133,11 @@ Scenario: Creating Web Service with method as PUT
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Enabled" 
-	When I type Request Body as
-	|       |
-	| [[a]] |
-	| [[b]] |
 	And "5 Request Variables" is "Enabled" 
 	And "5 Request Variables" looks like
 	|                  |
 	| extension = json |
 	| prefix  = a      |
-	| [[a]]            |
-	| [[b]]            |
 	And "6 Response" is "Disabled" 
 	And "7 Edit Dfault and Mapping Names" is "Enabled"
 	And "Test" button is "Enabled"
@@ -169,17 +162,11 @@ Scenario: Creating Web Service with method as DELETE
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Enabled" 
-	When I type Request Body as
-	|       |
-	| [[a]] |
-	| [[b]] |
 	And "5 Request Variables" is "Enabled" 
 	And "5 Request Variables" looks like
 	|                  |
 	| extension = json |
 	| prefix  = a      |
-	| [[a]]            |
-	| [[b]]            |
 	And "6 Response" is "Disabled" 
 	And "7 Edit Dfault and Mapping Names" is "Enabled"
 	And "Test" button is "Enabled"
@@ -204,17 +191,11 @@ Scenario: Creating Web Service with method as TRACE
 	Then "2 Request headers" is "Enabled"
 	And "3 Request URL" is "Enabled" 
 	And "4 Request Body" is "Enabled" 
-	When I type Request Body as
-	|       |
-	| [[a]] |
-	| [[b]] |
 	And "5 Request Variables" is "Enabled" 
 	And "5 Request Variables" looks like
 	|                  |
 	| extension = json |
 	| prefix  = a      |
-	| [[a]]            |
-	| [[b]]            |
 	And "6 Response" is "Disabled" 
 	And "7 Edit Dfault and Mapping Names" is "Enabled"
 	And "Test" button is "Enabled"
@@ -260,18 +241,95 @@ Scenario: Creating Web Service with method as TRACE
 	Then "save" dialogbox is opened
 
  
+Scenario: Adding perameters in request headers is updating variables 
+	Given I click "New Data Base Service Connector"
+	Then "New Web Service" tab is opened	
+	When I select "GET" as Method
+	And I select "Dev2CountriesWebService" as data source
+	And "New" button is "Enabled"
+	And "Edit" button is "Enabled"
+	Then "2 Request headers" is "Enabled"
+	When i type "Request Headers" as
+	|[[test]]|
+	And "3 Request URL" is "Enabled" 
+	And "4 Request Body" is "Disabled" 
+	And "5 Request Variables" is "Enabled" 
+	And "5 Request Variables" looks like
+	|                  |
+	| extension = json |
+	| prefix  = a      |
+	| [[test]]         |
+	And "6 Response" is "Disabled" 
+	And "7 Edit Dfault and Mapping Names" is "Enabled"
+	And "Test" button is "Enabled"
+    Then "7 Edit Dfault and Mapping Names" inputs looks like
+	| Input     | Default Value | Required Field | Empty is Null |
+	| extension | json          |                |               |
+	| prefix    | a             |                |               |
+	| test      |               |                |               |
+	
+ 
+ 
+ Scenario: Adding perameters in request URL 
+	Given I click "New Data Base Service Connector"
+	Then "New Web Service" tab is opened	
+	When I select "GET" as Method
+	And I select "Dev2CountriesWebService" as data source
+	And "New" button is "Enabled"
+	And "Edit" button is "Enabled"
+	Then "2 Request headers" is "Enabled"
+	And "3 Request URL" is "Enabled" 
+	And request URL has "http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx" and "?extension=[[extension]]&prefix=[[prefix]]"
+	When I change source in request URL "[[variable1]] [[var2]]"
+	And "5 Request Variables" is "Enabled" 
+	And "5 Request Variables" looks like
+	|                 |
+	| [[variable1]] = |
+	| [[var2]] =      |
+	And "6 Response" is "Disabled" 
+	And "7 Edit Dfault and Mapping Names" is "Enabled"
+	And "Test" button is "Enabled"
+    Then "7 Edit Dfault and Mapping Names" inputs looks like
+	| Input         | Default Value | Required Field | Empty is Null |
+	| [[variable1]] | json          |                |               |
+	| [[var2]]      | a             |                |               |
 
+	
  
  
  
- 
- 
- 
- 
- 
- 
- 
- 
+ Scenario: Adding variables at request body
+	Given I click "New Data Base Service Connector"
+	Then "New Web Service" tab is opened	
+	When I select "DELETE" as Method
+	And I select "Dev2CountriesWebService" as data source
+	And "New" button is "Enabled"
+	And "Edit" button is "Enabled"
+	Then "2 Request headers" is "Enabled"
+	And "3 Request URL" is "Enabled" 
+	And "4 Request Body" is "Enabled" 
+	When I type "Request Body" as
+	|       |
+	| [[a]] |
+	| [[b]] |
+	And "5 Request Variables" is "Enabled" 
+	And "5 Request Variables" looks like
+	|                  |
+	| extension = json |
+	| prefix  = a      |
+	| [[a]]            |
+	| [[b]]            |
+	And "6 Response" is "Disabled" 
+	Then "7 Edit Dfault and Mapping Names" inputs looks like
+	| Input     | Default Value | Required Field | Empty is Null |
+	| extension |               |                |               |
+	| prefix    |               |                |               |
+	| a         |               |                |               |
+	| b         |               |                |               |
+	And "7 Edit Dfault and Mapping Names" Outputs looks like
+	| Output      | Output Alias                   |
+	And "Save" is "Enabled" 
+	
  
  
  
