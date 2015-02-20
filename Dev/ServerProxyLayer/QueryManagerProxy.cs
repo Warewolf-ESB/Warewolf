@@ -70,7 +70,7 @@ namespace Warewolf.Studio.ServerProxyLayer
         public StringBuilder FetchResourceXaml(Guid resourceId)
         {
             var comsController = CommunicationControllerFactory.CreateController("FetchResourceDefinitionService" );
-            comsController.AddPayloadArgument("ResourceId", resourceId.ToString());
+            comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
 
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, Connection.WorkspaceID);
             return result.Message;
