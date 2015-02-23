@@ -27,7 +27,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
             var bootStrapper = new UnityBootstrapperForDatabaseSourceConnectorTesting();
             bootStrapper.Run();
             var databaseSourceControlView = new ManageDatabaseSourceControl();
-            var mockStudioUpdateManager = new Mock<IStudioUpdateManager>();
+            var mockStudioUpdateManager = new Mock<IManageDatabaseSourceModel>();
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
             var manageDatabaseSourceControlViewModel = new ManageDatabaseSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object);
@@ -219,7 +219,7 @@ namespace Warewolf.AcceptanceTesting.Explorer.DBService_Specs
         {
             
             var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
-            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IStudioUpdateManager>>("updateManager");
+            var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageDatabaseSourceViewModel(mockUpdateManager.Object, mockEventAggregator.Object);
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>("databaseView");
