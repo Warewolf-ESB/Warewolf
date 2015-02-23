@@ -105,8 +105,14 @@ namespace Warewolf.Studio.ViewModels
             }
             var wdMeta = new DesignerMetadata();
             wdMeta.Register();
-            DesignerView = _wd.View;
-            
+            var designerAttributes = GetTools();
+            var builder = new AttributeTableBuilder();
+            foreach (var designerAttribute in designerAttributes)
+            {
+                builder.AddCustomAttributes(designerAttribute.Key, new DesignerAttribute(designerAttribute.Value));
+            }
+
+            MetadataStore.AddAttributeTable(builder.CreateTable());
             if (resource.Xaml == null)
             {
                 IsNewWorkflow = true;
@@ -120,14 +126,7 @@ namespace Warewolf.Studio.ViewModels
                 _wd.Text = resource.Xaml.ToString();
                 _wd.Load();
             }
-            var designerAttributes = GetTools();
-            var builder = new AttributeTableBuilder();
-            foreach (var designerAttribute in designerAttributes)
-            {
-                builder.AddCustomAttributes(designerAttribute.Key, new DesignerAttribute(designerAttribute.Value));
-            }
-
-            MetadataStore.AddAttributeTable(builder.CreateTable());
+          
             _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
             _wd.View.PreviewDrop += ViewPreviewDrop;
             _wd.View.PreviewDragEnter+=ViewOnPreviewDragEnter;
@@ -135,10 +134,14 @@ namespace Warewolf.Studio.ViewModels
 
         private void ViewOnPreviewDragEnter(object sender, DragEventArgs dragEventArgs)
         {
-            if (dragEventArgs != null)
-            {
-                
-            }
+//            if (dragEventArgs != null)
+//            {
+//                if(!DragDropHelper.AllowDrop(dragEventArgs.Data,_wd.Context,typeof(IDev2Activity)))
+//                {
+//                    dragEventArgs.Effects = (DragDropEffects.Move & dragEventArgs.AllowedEffects);
+//                    dragEventArgs.Handled = true;
+//                }
+//            }            
         }
 
         private void ViewPreviewDrop(object sender, DragEventArgs e)
@@ -250,8 +253,7 @@ namespace Warewolf.Studio.ViewModels
         /// </summary>
         public UIElement DesignerView
         {
-            get;
-            private set;
+            get { return _wd.View; }
         }
 
         #region Implementation of IActiveAware

@@ -22,8 +22,8 @@ namespace Warewolf.Studio.Views
 //                    DropTarget target = new DropTarget();
 //                    target.DropChannels = new ObservableCollection<string> { "Tool" };
 //                    target.IsDropTarget = true;
-                    var designerView = viewModel.DesignerView;
-                    designerView.AllowDrop = true;
+                    //var designerView = viewModel.DesignerView;
+                    //designerView.AllowDrop = true;
                     //DragDropManager.SetDropTarget(designerView, target);                    
                 }
 
