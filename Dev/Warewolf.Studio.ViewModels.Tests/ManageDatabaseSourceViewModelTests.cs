@@ -4,7 +4,6 @@ using System.Windows;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Runtime.ServiceModel;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
