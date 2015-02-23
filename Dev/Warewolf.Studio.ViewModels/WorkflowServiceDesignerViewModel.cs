@@ -118,6 +118,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsNewWorkflow = false;
                 _wd.Text = resource.Xaml.ToString();
+                _wd.Load();
             }
             var designerAttributes = GetTools();
             var builder = new AttributeTableBuilder();

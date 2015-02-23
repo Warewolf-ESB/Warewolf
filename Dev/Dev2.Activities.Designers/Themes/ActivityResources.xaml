@@ -10,6 +10,8 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityStyles.xaml" />
+
+
     </ResourceDictionary.MergedDictionaries>
 
     <customControlsConverters:EmptyStringToBoolConverter x:Key="EmptyStringToBoolConverter" />
