@@ -164,4 +164,12 @@ namespace Warewolf.Studio.ServerProxyLayer
         {
         }
     }
+
+    public class WarewolfSupportServiceException : WarewolfException
+    {
+        public WarewolfSupportServiceException(string message, Exception innerException)
+            : base(message, innerException, ExceptionType.Execution, ExceptionSeverity.Minor)
+        {
+        }
+    }
 }

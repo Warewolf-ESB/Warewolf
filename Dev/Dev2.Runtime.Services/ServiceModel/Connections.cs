@@ -135,6 +135,10 @@ namespace Dev2.Runtime.ServiceModel
             return JsonConvert.SerializeObject(results);
         }
 
+        public List<string> GetNames()
+        {
+            return _fetchComputers.Invoke();
+        } 
         #endregion
 
         #region Test

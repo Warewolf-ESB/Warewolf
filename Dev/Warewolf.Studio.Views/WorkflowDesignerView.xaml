@@ -4,13 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
-             mc:Ignorable="d" 
+    xmlns:ig="http://schemas.infragistics.com/xaml"
+    mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type interfaces:IWorkflowServiceDesignerViewModel}}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -24,6 +26,8 @@
                                     <Run Text="{Binding Path=DisplayWorkflowLink,Mode=OneWay}" />
                                 </Hyperlink>
         </TextBlock>
-        <ContentPresenter Grid.Row="1" Content="{Binding DesignerView}"></ContentPresenter>  
+        <ContentPresenter x:Name="DesignerPresenter" Grid.Row="1" Content="{Binding DesignerView}">
+            
+        </ContentPresenter>
     </Grid>
 </UserControl>

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 
 namespace Dev2.Common.Interfaces.ErrorHandling
 {
@@ -22,7 +22,8 @@ namespace Dev2.Common.Interfaces.ErrorHandling
         Critical,
         Error,
         User,
-        Etc
+        Etc,
+        Minor
     }
 
     public enum ExceptionType

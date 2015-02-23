@@ -101,6 +101,7 @@
     <Compile Include="DummyModels\DummyVariableListViewModel.cs" />
     <Compile Include="IDockViewModel.cs" />
     <Compile Include="ExplorerItemNodeViewModel.cs" />
+    <Compile Include="ManageDatabaseSourceModel.cs" />
     <Compile Include="ManageDatabaseSourceViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
     <Compile Include="NewServerViewModel.cs" />
@@ -133,6 +134,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
       <Name>Dev2.Activities</Name>

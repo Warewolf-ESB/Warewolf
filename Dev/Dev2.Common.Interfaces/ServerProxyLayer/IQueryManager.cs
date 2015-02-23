@@ -61,5 +61,8 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
         Task<IExplorerItem> Load();
 
         IList<IToolDescriptor> FetchTools();
+
+
+        IList<string> GetComputerNames(); 
     }
 }

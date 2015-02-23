@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -44,7 +45,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             get
             {
-                return _serverToolManager ?? new ServerToolRepository(new List<string> { AppDomain.CurrentDomain.BaseDirectory + "\\Dev2.Activities.dll" }, new List<string>());
+                var internalToolsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "Dev2.Activities.dll");
+                return _serverToolManager ?? new ServerToolRepository(new List<string> { internalToolsPath }, new List<string>());
             }
             set { _serverToolManager = value; }
         }
