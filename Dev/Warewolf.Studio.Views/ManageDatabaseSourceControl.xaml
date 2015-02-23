@@ -107,7 +107,7 @@
                 <ColumnDefinition Width="6*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Margin="{StaticResource ElementBottomRightBorder}" Grid.Column="0" Text="{Binding DatabaseLabel}"/>
-            <ComboBox x:Name="DatabaseComboxBox"  Margin="{StaticResource ElementBottomRightBorder}" ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Column="1">
+            <ComboBox x:Name="DatabaseComboxBox"  ItemsSource="{Binding DatabaseNames}" SelectedItem="{Binding DatabaseName}" Grid.Column="1">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceDatabasesHelp}"
                                  DataContext="{Binding}" />
