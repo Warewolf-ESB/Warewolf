@@ -162,41 +162,41 @@ namespace Dev2.Tests.Activities
             }
         }
 
-        [TestMethod]
-        public void WorkflowHelperCompileExpressionsWithActivityExpectedFixesExpressions()
-        {
-            const string ExpressionParams = "(\"\",AmbientDataList)";
+        //[TestMethod]
+        //public void WorkflowHelperCompileExpressionsWithActivityExpectedFixesExpressions()
+        //{
+        //    const string ExpressionParams = "(\"\",AmbientDataList)";
 
-            var fsa = new DsfFlowSwitchActivity
-            {
-                ExpressionText = GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams
-            };
-            var fda = new DsfFlowDecisionActivity
-            {
-                ExpressionText = GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams
-            };
-            var fdv = new VisualBasicValue<Boolean>(GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams);
-            var fsv = new VisualBasicValue<string>(GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams);
+        //    var fsa = new DsfFlowSwitchActivity
+        //    {
+        //        ExpressionText = GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams
+        //    };
+        //    var fda = new DsfFlowDecisionActivity
+        //    {
+        //        ExpressionText = GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams
+        //    };
+        //    var fdv = new VisualBasicValue<Boolean>(GlobalConstants.InjectedDecisionHandlerOld + ExpressionParams);
+        //    var fsv = new VisualBasicValue<string>(GlobalConstants.InjectedSwitchDataFetchOld + ExpressionParams);
 
 
-            var startNode = new FlowStep { Action = new CommentActivityForTest() };
-            var chart = new Flowchart { StartNode = startNode };
-            chart.Nodes.Add(startNode);
-            chart.Nodes.Add(new FlowDecision(fda));
-            chart.Nodes.Add(new FlowSwitch<string> { Expression = fsa });
-            chart.Nodes.Add(new FlowDecision(fdv));
-            chart.Nodes.Add(new FlowSwitch<string> { Expression = fsv });
+        //    var startNode = new FlowStep { Action = new CommentActivityForTest() };
+        //    var chart = new Flowchart { StartNode = startNode };
+        //    chart.Nodes.Add(startNode);
+        //    chart.Nodes.Add(new FlowDecision(fda));
+        //    chart.Nodes.Add(new FlowSwitch<string> { Expression = fsa });
+        //    chart.Nodes.Add(new FlowDecision(fdv));
+        //    chart.Nodes.Add(new FlowSwitch<string> { Expression = fsv });
 
-            var workflow = new DynamicActivity
-            {
-                Implementation = () => chart
-            };
+        //    var workflow = new DynamicActivity
+        //    {
+        //        Implementation = () => chart
+        //    };
 
-            new WorkflowHelper().CompileExpressions(workflow);
+        //    new WorkflowHelper().CompileExpressions(workflow);
 
-            Assert.AreEqual(GlobalConstants.InjectedSwitchDataFetch + ExpressionParams, fsa.ExpressionText);
-            Assert.AreEqual(GlobalConstants.InjectedDecisionHandler + ExpressionParams, fda.ExpressionText);
-        }
+        //    Assert.AreEqual(GlobalConstants.InjectedSwitchDataFetch + ExpressionParams, fsa.ExpressionText);
+        //    Assert.AreEqual(GlobalConstants.InjectedDecisionHandler + ExpressionParams, fda.ExpressionText);
+        //}
 
         [TestMethod]
         public void WorkflowHelperCompileExpressionsWithActivityExpectedCompilesExpressions()
