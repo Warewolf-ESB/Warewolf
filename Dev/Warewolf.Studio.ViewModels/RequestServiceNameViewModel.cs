@@ -63,27 +63,34 @@ namespace Warewolf.Studio.ViewModels
 
         private string GetPath()
         {
-            var parent = SingleEnvironmentExplorerViewModel.SelectedItem.Parent;
-            var parentNames = new List<string>();
-            while (parent != null)
+            if(SingleEnvironmentExplorerViewModel.SelectedItem != null)
             {
-                parentNames.Add(parent.ResourceName);
-                parent = parent.Parent;
-            }
-            var path = "";
-            if (parentNames.Count > 0)
-            {
-                for (var index = parentNames.Count; index > 0; index--)
+                var parent = SingleEnvironmentExplorerViewModel.SelectedItem.Parent;
+                var parentNames = new List<string>();
+                while (parent != null)
                 {
-                    var parentName = parentNames[index - 1];
-                    path = path + "\\" + parentName;
+                    parentNames.Add(parent.ResourceName);
+                    parent = parent.Parent;
                 }
+                var path = "";
+                if (parentNames.Count > 0)
+                {
+                    for (var index = parentNames.Count; index > 0; index--)
+                    {
+                        var parentName = parentNames[index - 1];
+                        path = path + "\\" + parentName;
+                    }
+                }
+                if (SingleEnvironmentExplorerViewModel.SelectedItem.ResourceType == ResourceType.Folder)
+                {
+                    path = path + "\\" + SingleEnvironmentExplorerViewModel.SelectedItem.ResourceName;
+                }
+                return path;
             }
-            if (SingleEnvironmentExplorerViewModel.SelectedItem.ResourceType == ResourceType.Folder)
+            else
             {
-                path = path + "\\" + SingleEnvironmentExplorerViewModel.SelectedItem.ResourceName;
+                return "";
             }
-            return path;
         }
 
         private void RaiseCanExecuteChanged()

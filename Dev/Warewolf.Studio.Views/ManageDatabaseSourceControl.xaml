@@ -20,7 +20,7 @@
         <views:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
-    <Grid Background="White">      
+    <Grid Background="White"  FocusManager.FocusedElement="{Binding ElementName=ServerTextBox}">      
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -49,7 +49,8 @@
         </ComboBox>
         </StackPanel>
         <TextBlock Margin="{StaticResource ElementBorderLeftRightTop}" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" Text="{Binding ServerLabel}"/>
-        <TextBox x:Name="ServerTextBox"  views:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding ComputerNames}"   Margin="{StaticResource ElementBorder}" Grid.Row="2" Grid.Column="1" Text="{Binding ServerName,UpdateSourceTrigger=PropertyChanged}">
+        <TextBox x:Name="ServerTextBox"  views:AutoCompleteBehavior.AutoCompleteItemsSource="{Binding ComputerNames}"   Margin="{StaticResource ElementBorder}" Grid.Row="2" Grid.Column="1" Text="{Binding ServerName,UpdateSourceTrigger=PropertyChanged}"
+           views:FocusExtension.IsFocused="True"      >
             <i:Interaction.Behaviors>
                 <core:HelpSetter Text="{x:Static languages:Core.DatabaseSourceServerHelp}"
                                  DataContext="{Binding}" />

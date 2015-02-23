@@ -13,6 +13,7 @@ namespace Warewolf.Studio.Views
         public ManageDatabaseSourceControl()
         {
             InitializeComponent();
+            ServerTextBox.Focus();
         }
 
         public void EnterServerName(string serverName)

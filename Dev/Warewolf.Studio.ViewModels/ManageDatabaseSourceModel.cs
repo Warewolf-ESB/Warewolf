@@ -10,10 +10,17 @@ namespace Warewolf.Studio.ViewModels
         readonly IStudioUpdateManager _updateRepository;
         readonly IQueryManager _queryProxy;
 
-        public ManageDatabaseSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy)
+        public ManageDatabaseSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy,string serverName)
         {
             _updateRepository = updateRepository;
             _queryProxy = queryProxy;
+           
+            ServerName = serverName;
+            if(ServerName.Contains("("))
+            {
+                ServerName = serverName.Substring(0, serverName.IndexOf("(", System.StringComparison.Ordinal));
+            }
+            
         }
 
         #region Implementation of IManageDatabaseSourceModel
@@ -32,6 +39,8 @@ namespace Warewolf.Studio.ViewModels
         {
             _updateRepository.Save(toDbSource);
         }
+
+        public string ServerName { get; private set; }
 
         #endregion
     }

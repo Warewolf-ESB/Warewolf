@@ -43,6 +43,8 @@ namespace Warewolf.Studio.ViewModels
         string _resourceName;
         CancellationTokenSource _token;
         IList<string> _computerNames;
+        string _warewolfserverName;
+        string _headerText;
 
         public ManageDatabaseSourceViewModel(IManageDatabaseSourceModel updateManager, IEventAggregator aggregator)
         {
@@ -52,6 +54,7 @@ namespace Warewolf.Studio.ViewModels
             _aggregator = aggregator;
        
             HeaderText = "New Database Connector Source Server";
+            Header = "New Database Connector Source Server";
             TestCommand = new DelegateCommand(TestConnection,CanTest);
             OkCommand = new DelegateCommand(SaveConnection,CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest,CanCancelTest);
@@ -69,7 +72,7 @@ namespace Warewolf.Studio.ViewModels
                 Dispatcher.CurrentDispatcher.Invoke(() => ComputerNames = names);
             }).Start();
             // ReSharper restore MaximumChainedReferences
-          
+            _warewolfserverName = updateManager.ServerName;
         }
 
         bool CanCancelTest()
@@ -108,8 +111,14 @@ namespace Warewolf.Studio.ViewModels
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
             _dbSource = dbSource;
-            HeaderText = "Edit Database Service-" + _dbSource.Name;
+             SetupHeaderTextFromExisting();
             FromDbSource(dbSource);
+        }
+
+        void SetupHeaderTextFromExisting()
+        {
+            HeaderText = "Edit Database Service - " + _warewolfserverName.Trim()+"\\"+(_dbSource==null?ResourceName:_dbSource.Name).Trim();
+            Header = "Edit Database Service - " +((_dbSource==null?ResourceName:_dbSource.Name));
         }
 
         public bool CanSave()
@@ -162,7 +171,7 @@ namespace Warewolf.Studio.ViewModels
                 _resourceName = value;
                 if(!String.IsNullOrEmpty(value))
                 {
-                    HeaderText = "Edit Database Service-" + _resourceName;
+                    SetupHeaderTextFromExisting();
                 }
                 OnPropertyChanged(_resourceName);
             }
@@ -195,10 +204,17 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ResourceName = RequestServiceNameViewModel.ResourceName.Name;
                     var src = ToDbSource();
-                    src.Path = RequestServiceNameViewModel.ResourceName.Path;
+                    if(RequestServiceNameViewModel.ResourceName.Path != null)
+                    {
+                        src.Path = RequestServiceNameViewModel.ResourceName.Path;
+                    }
+                    else
+                    {
+                        src.Path = RequestServiceNameViewModel.ResourceName.Name;
+                    }
                     Save(src);
                     _dbSource = src;
-                    HeaderText = "Edit Database Service-" + _resourceName;
+                    SetupHeaderTextFromExisting();
                 }
             }
             else
@@ -242,6 +258,7 @@ namespace Warewolf.Studio.ViewModels
                             TestMessage = "Passed";
                             TestFailed = false;
                             TestPassed = true;
+                            Testing = false;
                             break;
                         }
                     }
@@ -308,7 +325,7 @@ namespace Warewolf.Studio.ViewModels
         IRequestServiceNameViewModel RequestServiceNameViewModel { get; set; }
         public bool Haschanged
         {
-            get { return !ToNewDbSource().Equals(_dbSource); }
+            get { return !ToNewDbSource().Equals(_dbSource) ; }
         }
         private void RaiseCanExecuteChanged(ICommand commandForCanExecuteChange)
         {
@@ -546,10 +563,10 @@ namespace Warewolf.Studio.ViewModels
 
         public string HeaderText
         {
-            get { return _header; }
+            get { return _headerText; }
             set
             {
-                _header = value;
+                _headerText = value;
                 OnPropertyChanged(() => HeaderText);
                 OnPropertyChanged(() => Header);
             }
@@ -598,13 +615,17 @@ namespace Warewolf.Studio.ViewModels
 
         public string Header
         {
-            get { return _header + (Haschanged?"*":""); }
+            get
+            {
+                return _header + ((_dbSource!= null )&&Haschanged || (_dbSource == null && !IsEmpty) ? "*" : "");
+            }
             set
             {
                 _header = value;
                 OnPropertyChanged(() => Header);
             }
         }
+        public bool IsEmpty { get { return String.IsNullOrEmpty(ServerName) && AuthenticationType == AuthenticationType.Windows && String.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password); } }
 
         public ResourceType? Image
         {

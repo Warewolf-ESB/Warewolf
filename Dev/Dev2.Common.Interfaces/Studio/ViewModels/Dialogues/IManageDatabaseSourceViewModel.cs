@@ -156,6 +156,7 @@ namespace Dev2.Common.Interfaces.Studio.ViewModels.Dialogues
         IList<string> GetComputerNames();
         IList<string> TestDbConnection(IDbSource resource);
         void Save(IDbSource toDbSource);
+        string ServerName { get; }
     }
 
 }
