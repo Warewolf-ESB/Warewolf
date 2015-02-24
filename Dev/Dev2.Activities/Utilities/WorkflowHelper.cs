@@ -173,7 +173,7 @@ namespace Dev2.Utilities
             //{
             //    FixExpressions(chart, true);
             //}
-            
+            Dev2Logger.Log.Info("Fix Expressions");
             CompileExpressionsImpl(dynamicActivity);
         }
 
