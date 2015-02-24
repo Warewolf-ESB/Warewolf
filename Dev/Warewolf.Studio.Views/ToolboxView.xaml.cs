@@ -222,6 +222,12 @@ namespace Warewolf.Studio.Views
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
+
+        void DragSource_OnDrop(object sender, DropEventArgs e)
+        {
+
+
+        }
     }
 
 }

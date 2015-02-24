@@ -27,7 +27,11 @@
                                 </Hyperlink>
         </TextBlock>
         <ContentPresenter x:Name="DesignerPresenter" Grid.Row="1" Content="{Binding DesignerView}">
-            
+           <ig:DragDropManager.DropTarget >
+                <ig:DropTarget IsDropTarget="True" DropChannels="Tool" >
+
+            </ig:DropTarget>
+            </ig:DragDropManager.DropTarget>
         </ContentPresenter>
     </Grid>
 </UserControl>
