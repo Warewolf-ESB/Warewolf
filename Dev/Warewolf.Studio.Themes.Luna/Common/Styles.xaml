@@ -80,5 +80,11 @@
         <Thickness.Top>5</Thickness.Top>
     </Thickness>
 
+    <Thickness x:Key="BoundaryElementBorderLeftRightTop">
+        <Thickness.Bottom>0</Thickness.Bottom>
+        <Thickness.Left>5</Thickness.Left>
+        <Thickness.Right>7</Thickness.Right>
+        <Thickness.Top>7</Thickness.Top>
+    </Thickness>
 </ResourceDictionary>
 
