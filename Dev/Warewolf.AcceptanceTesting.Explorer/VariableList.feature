@@ -34,10 +34,10 @@
 @VariableList
 Scenario: Variables adding in variable list 
 	Given I open workflow "VariableTest1"
-	And "VariableTest" variable contains
-	| Variable        | Note              | Inputs | Outputs | Unassigned |
-	| [[rec().a]] = 1 | This is recordset |        |         |            |
-	| [[rec().a]] = 2 |                   |        |         |            |
+	And "VariableTest1" contains
+	| Variable        | Value              |
+	| [[rec().a]] = 1 | 1 |        
+	| [[rec().a]] = 2 | This is recordset                  |        
 	| [[mr().a]] =    |                   |        |         |            |
 	| [[mr().a]] =    |                   |        |         |            |
 	| [[Var]] = ball  |                   |        |         |            |
@@ -143,6 +143,23 @@ Scenario: Searching Variables in Variable list
 Scenario: Sorting Variables in Variable list
 	Given I open workflow "VariableTest1"
 	And "VariableTest" variable contains
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	| Variable        | Note              | Inputs | Outputs | Unassigned |
 	| [[rec().a]] = 1 | This is recordset |        |         |            |
 	| [[rec().a]] = 2 |                   |        |         |            |

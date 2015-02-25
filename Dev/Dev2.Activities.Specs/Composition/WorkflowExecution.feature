@@ -4734,6 +4734,96 @@ Scenario: Executing Control Flow - Switch example workflow
 	  Then the workflow execution has "NO" error
 
 
+##My category workflows
+Scenario: Executing My category diceroll example workflow
+	  Given I have a workflow "Dice Roll Test"
+	    | Input to Service | From Variable | Output from Service | To Variable     |
+	  When "Dice Rol Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Random' in WorkFlow 'Dice Roll' debug inputs as
+	   | Random  | From | To |
+	   | Numbers | 1    | 8  |
+	  And the 'Random' in Workflow 'Dice Roll' debug outputs as
+	  |                      |
+	  | [[DiceRoll]] = Int32 |
+
+##My category workflows
+Scenario: Executing My category Double Roll and Check  workflow
+	  Given I have a workflow "Double Roll and Check Test"
+	   | Input to Service | From Variable | Output from Service | To Variable     |
+	   |                  |               | IsDouble            | [[IsDouble]]    |
+	   |                  |               | DoubleValue         | [[DoubleValue]] |
+	  When "Double Roll and Check Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the debug out put has 2 nested inputs and outputs
+	  And the 'Random' in WorkFlow 'Dice Roll' debug inputs as
+	   | Random  | From | To |
+	   | Numbers | 1    | 8  |
+	  And the 'Random' in Workflow 'Dice Roll' debug outputs as
+	   |                      |
+	   | [[DiceRoll]] = Int32 |
+	   And the 'Random' in WorkFlow 'Dice Roll' debug inputs as
+	   | Random  | From | To |
+	   | Numbers | 1    | 8  |
+	  And the 'Random' in Workflow 'Dice Roll' debug outputs as
+	   |                      |
+	   | [[DiceRoll]] = Int32 |
+	  And the "Decision" in workflow "Double Roll and Check" debug input as
+	   |                   | Statement | Require All decisions to be True |
+	   | [[Dice1]] = Int32 |           |                                  |
+	   | [[Dice1]] = Int32 |           |                                  |
+	   |                   | String    | YES                              |
+	   And the "Decision" in workflow "Double Roll and Check" debug output as 
+	   |    |
+	   | NO |
+	   And the 'Assign1' in WorkFlow 'Double Roll and Check' debug inputs as
+	   | # | Variable        | New Value |
+	   | 1 | [[IsDouble]] = | String    |
+	    And the 'Assign1' in Workflow 'Double Roll and Check' debug outputs as   
+	   | # |                               |
+	   | 1 | [[IsDouble]         =  String |
+	
+	
+##My category workflows   
+	   ##This Spec is not completed because the webservice used in this workflow is not working
+	   ## so I can't assume how the outputs needs to come.
+Scenario: Executing My category Roll Dice for Players  workflow
+	  Given I have a workflow "Roll Dice for Players Test"
+	  And "Roll Dice for Players" contains a "DBservice" service "FetchPlayersTest" with mappings
+	   | Input to Service | From Variable   | Output from Service | To Variable            |
+	   | pplCnt           | [[PlayerCount]] | People(*).ID        | [[Players().ID]]       |
+	   |                  |                 | People(*).Name      | [[Players().Name]]     |
+	   |                  |                 | People(*).Surname   | [[Players().Surname]]  |
+	   |                  |                 | People(*).Username  | [[Players().Username]] |
+	 And "Roll Dice for Players" contains a Foreach "ForEachTest" as "In Recordset" executions "[[Players()]]"
+	 And "ForEachTest" contains workflow "Double Roll and Check" with mapping as
+	   | Input to Service | From Variable | Output from Service | To Variable              |
+	   |                  |               | IsDouble            | [[Players(*).IsDouble]]  |
+	   |                  |               | DoubleValue         | [[Players(*).DiceValue]] |
+	 And "workflowithAssignandsortrec" contains an Sort "sortRec" as
+	  | Sort Field | Sort Order |
+	  | [[rs(*).a  | Forward    |
+	  When "Double Roll and Check Test" is executed
+	  Then the workflow execution has "NO" error
+
+
+	    And the 'Inputs' in WorkFlow 'FetchPlayers' debug inputs as
+	  | # | Variable          | New Value |
+	  | 1 | [[PlayerCount]] = |           |
+	  And the 'Outputs' in Workflow 'FetchPlayers' debug outputs as    
+	  | # |                         |
+	  | 1 | [[Players().ID]]      = |
+	  | 2 | [[Players().Name]]    = |
+	  | 3 | [[Players().Surname]] = |
+	  | 4 | [[Players().Username]]= |
+	  And the 'FEach' in WorkFlow 'WFWithForEachInrecordsetTesting' has  "2" nested children
+	   And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
+	  | Sort Field       | Sort Order | 
+	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
+	  |                  |
+	 
+
+
 #Scenario: Executing File and Folder - Create example workflow
 #	  Given I have a workflow "File and Folder - Create Test"
 #	  And "File and Folder - Create Test" contains "File and Folder - Create" from server "localhost" with mapping as
