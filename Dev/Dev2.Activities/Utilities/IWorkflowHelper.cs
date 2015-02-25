@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Activities;
 using System.Activities.Presentation.Services;
 using System.Text;
@@ -24,9 +25,9 @@ namespace Dev2.Utilities
 
         ActivityBuilder EnsureImplementation(ModelService modelService);
 
-        void CompileExpressions(DynamicActivity dynamicActivity);
+        void CompileExpressions(DynamicActivity dynamicActivity, Guid resourceID);
 
-        void CompileExpressions<TResult>(DynamicActivity<TResult> dynamicActivity);
+        void CompileExpressions<TResult>(DynamicActivity<TResult> dynamicActivity,Guid resourceId);
 
         StringBuilder SanitizeXaml(StringBuilder workflowXaml);
     }

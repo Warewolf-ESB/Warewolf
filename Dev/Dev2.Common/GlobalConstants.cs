@@ -9,6 +9,8 @@
 */
 
 using System;
+using System.Activities.XamlIntegration;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.Win32;
@@ -413,6 +415,19 @@ or type_desc LIKE '%Procedure%'";
         public static string DropBoxAppSecret = "tqtil4c1ibja8dn";
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
+        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
+        public static void InvalidateCache(Guid resourceId)
+        {
+            if (Resultscache.ContainsKey(resourceId))
+            {
+                TextExpressionCompilerResults val;
+                bool removed = Resultscache.TryRemove(resourceId, out val);
+                if (!removed)
+                {
+                    Resultscache.TryRemove(resourceId, out val);
+                }
+            }
+        }
         public static int AddPopupTimeDelay = 2000;
         // ReSharper restore InconsistentNaming
     }

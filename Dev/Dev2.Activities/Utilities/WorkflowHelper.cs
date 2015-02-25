@@ -15,6 +15,7 @@ using System.Activities.Expressions;
 using System.Activities.Presentation.Services;
 using System.Activities.Statements;
 using System.Activities.XamlIntegration;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -25,6 +26,7 @@ using System.Xaml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Decision;
+using Dev2.Runtime.Configuration.Settings;
 using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -144,26 +146,26 @@ namespace Dev2.Utilities
         /// <summary>
         /// Only invoke from the server!
         /// </summary>
-        public void CompileExpressions(DynamicActivity dynamicActivity)
+        public void CompileExpressions(DynamicActivity dynamicActivity, Guid resourceID)
         {
             if(dynamicActivity != null)
             {
-                FixAndCompileExpressions(dynamicActivity);
+                FixAndCompileExpressions(dynamicActivity,resourceID);
             }
         }
 
         /// <summary>
         /// Only invoke from the server!
         /// </summary>
-        public void CompileExpressions<TResult>(DynamicActivity<TResult> dynamicActivity)
+        public void CompileExpressions<TResult>(DynamicActivity<TResult> dynamicActivity, Guid resourceID)
         {
             if(dynamicActivity != null)
             {
-                FixAndCompileExpressions(dynamicActivity);
+                FixAndCompileExpressions(dynamicActivity,resourceID);
             }
         }
 
-        void FixAndCompileExpressions(Activity dynamicActivity)
+        void FixAndCompileExpressions(Activity dynamicActivity, Guid resourceID)
         {
             // NOTE: DO NOT set properties or variables!
             SetNamespaces(dynamicActivity);
@@ -174,16 +176,19 @@ namespace Dev2.Utilities
             //    FixExpressions(chart, true);
             //}
             Dev2Logger.Log.Info("Fix Expressions");
-            CompileExpressionsImpl(dynamicActivity);
+           CompileExpressionsImpl(dynamicActivity,resourceID);
         }
 
         #endregion
 
         #region CompileExpressionsImpl
 
+        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> resultscache = GlobalConstants.Resultscache;
+       
+ 
 
         // NOTE : Static method here causes memory leak in the TextExpressioncCompiler ;)
-        void CompileExpressionsImpl(Activity dynamicActivity)
+        void CompileExpressionsImpl(Activity dynamicActivity, Guid resourceID)
         {
             // http://msdn.microsoft.com/en-us/library/jj591618.aspx
 
@@ -209,11 +214,17 @@ namespace Dev2.Utilities
                 AlwaysGenerateSource = true,
                 ForImplementation = true
             };
-
-            // Compile the C# expression.
-
+            TextExpressionCompilerResults results;
+            if (resultscache.ContainsKey(resourceID))
+            {
+                results = resultscache[resourceID];
+            }
+            //// Compile the C# expression.
+            else{
             var compiler = new TextExpressionCompiler(settings);
-            var results = compiler.Compile(); // Nasty MS memory leak ;(
+             results = compiler.Compile(); // Nasty MS memory leak ;(
+             resultscache.TryAdd(resourceID,results);
+            }
 
             if(results.HasErrors)
             {

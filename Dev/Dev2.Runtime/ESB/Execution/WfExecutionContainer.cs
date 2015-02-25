@@ -96,9 +96,9 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 var theActivity = activity.Value as DynamicActivity;
-
+          
                 // BUG 9304 - 2013.05.08 - TWR - Added CompileExpressions
-                _workflowHelper.CompileExpressions(theActivity);
+                _workflowHelper.CompileExpressions(theActivity,DataObject.ResourceID);
 
                 IDSFDataObject exeResult = wfFactor.InvokeWorkflow(activity.Value, DataObject,
                                                                    new List<object> { EsbChannel, }, instanceId,
