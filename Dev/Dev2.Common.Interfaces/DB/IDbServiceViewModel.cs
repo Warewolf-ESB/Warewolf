@@ -6,7 +6,7 @@ namespace Dev2.Common.Interfaces.DB
 {
     public interface IManageDbServiceViewModel
     {
-        ICollection<IManageDatabaseSourceViewModel> Sources{get;set;}
+        ICollection<IManageDatabaseSourceViewModel> Sources { get; set; }
         IManageDatabaseSourceViewModel SelectedSource { get; set; }
         IDbAction SelectedAction { get; set; }
         ICollection<IDbAction> AvalaibleActions { get; set; }
@@ -15,6 +15,14 @@ namespace Dev2.Common.Interfaces.DB
         string DataSourceActionHeader { get; }
         ICommand EditSourceCommand { get; }
         bool CanEditSource { get; }
+        string NewButtonLabel { get; }
+        ICollection<string> Actions { get; }
+        string MappingsHeader { get; }
+        string TestHeader { get; }
+        string InputsLabel { get; }
+        string InspectLabel { get; }
+        string OutputsLabel { get; }
+        string MappingNamesHeader { get; }
     }
 
     public interface IDbOutput

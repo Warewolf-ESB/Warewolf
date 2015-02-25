@@ -721,4 +721,28 @@ You need Administrator permission.</value>
   <data name="WindowsAuthenticationHelp" xml:space="preserve">
     <value>&lt;body&gt;&lt;p&gt;WindowsAuthenticationHelp&lt;/p&gt;&lt;/body&gt;</value>
   </data>
+  <data name="DatabaseServiceActionHeader" xml:space="preserve">
+    <value>b</value>
+  </data>
+  <data name="DatabaseServiceDBSourceHeader" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="DatabaseServiceInputsHeader" xml:space="preserve">
+    <value>e</value>
+  </data>
+  <data name="DatabaseServiceInspectHeader" xml:space="preserve">
+    <value>f</value>
+  </data>
+  <data name="DatabaseServiceMappingsHeader" xml:space="preserve">
+    <value>c</value>
+  </data>
+  <data name="DatabaseServiceMappingsNameHeader" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="DatabaseServiceOutputsLabel" xml:space="preserve">
+    <value>g</value>
+  </data>
+  <data name="DatabaseServiceTestHeader" xml:space="preserve">
+    <value>d</value>
+  </data>
 </root>

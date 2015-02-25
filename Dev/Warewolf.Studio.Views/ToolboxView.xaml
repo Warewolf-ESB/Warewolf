@@ -34,7 +34,8 @@
                 <ig:DragDropManager.DragSource>
                     <ig:DragSource IsDraggable="True" DragChannels="Tool"
                                   DragStart="DragSource_OnDragStart" 
-                                   Drop="DragSource_OnDrop">
+                                   Drop="DragSource_OnDrop" 
+                                   DataObject="{Binding Path=ActivityType}">
                         <ig:DragSource.DropNotAllowedCursorTemplate>
                             <DataTemplate>
                                 <fa:ImageAwesome TextOptions.TextFormattingMode="Display" Width="12" Height="12"  Icon="Ban" Foreground="{StaticResource ValidationErrorElement}" VerticalAlignment="Top" HorizontalAlignment="Center"/>
@@ -48,6 +49,7 @@
                                 </Border>
                             </DataTemplate>
                         </ig:DragSource.DragTemplate>
+                        
                     </ig:DragSource>
                 </ig:DragDropManager.DragSource>
                 <Grid.RowDefinitions>
@@ -132,7 +134,7 @@
 
         </Grid>
 
-        <ListBox ItemTemplate="{StaticResource ToolDataTemplate}"  Style ="{StaticResource ListBoxToolboxStyle}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource ToolViewSource}}">
+        <ListBox Name="ToolListBox" ItemTemplate="{StaticResource ToolDataTemplate}"  Style ="{StaticResource ListBoxToolboxStyle}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={StaticResource ToolViewSource}}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate >
                     <WrapPanel Orientation="Horizontal" MaxWidth="{Binding Converter={StaticResource ListBoxWidthToItemsPanelWidthConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}, Path=ActualWidth}"

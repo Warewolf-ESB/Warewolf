@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Toolbox;
 using Infragistics.Calculations;
 using Infragistics.DragDrop;
 using Warewolf.Studio.ViewModels.ToolBox;
@@ -225,8 +226,15 @@ namespace Warewolf.Studio.Views
 
         void DragSource_OnDrop(object sender, DropEventArgs e)
         {
-
-
+            var item = ToolListBox.SelectedItem as IToolDescriptorViewModel;
+            var toolboxViewModel = DataContext as IToolboxViewModel;
+            if(toolboxViewModel != null)
+            {
+                if(item != null)
+                {
+                    toolboxViewModel.SendDragDrop(e, item );
+                }
+            }
         }
     }
 

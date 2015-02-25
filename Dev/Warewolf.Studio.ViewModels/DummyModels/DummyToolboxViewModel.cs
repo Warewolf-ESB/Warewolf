@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Moq;
 using Warewolf.Core;
 using Warewolf.Studio.Models.Toolbox;
@@ -24,7 +25,7 @@ namespace Warewolf.Studio.ViewModels.DummyModels
         #region Implementation of IToolboxViewModel
 
         public DummyToolboxViewModel()
-            : base(new ToolboxModel(new Mock<IServer>().Object, new Mock<IServer>().Object, new Mock<IPluginProxy>().Object), new ToolboxModel(new Mock<IServer>().Object, new Mock<IServer>().Object, new Mock<IPluginProxy>().Object))
+            : base(new ToolboxModel(new Mock<IServer>().Object, new Mock<IServer>().Object, new Mock<IPluginProxy>().Object), new ToolboxModel(new Mock<IServer>().Object, new Mock<IServer>().Object, new Mock<IPluginProxy>().Object), new Mock<IEventAggregator>().Object)
         {
             SetupTools();
         }

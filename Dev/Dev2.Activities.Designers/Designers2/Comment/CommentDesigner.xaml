@@ -9,26 +9,26 @@
                        xmlns:local="clr-namespace:Dev2.Activities.Designers2.Comment"
                        mc:Ignorable="d"
                        d:DataContext="{d:DesignInstance local:CommentDesignerViewModel}"
-                       Style="{DynamicResource ContentViewStyle}">
+                       >
 
-    <sap:ActivityDesigner.Icon>
+    <!--<sap:ActivityDesigner.Icon>
         <DrawingBrush Stretch="Uniform">
             <DrawingBrush.Drawing>
                  <ImageDrawing Rect="0, 0, 16, 16" ImageSource="{StaticResource ToolComment-32}"/>
             </DrawingBrush.Drawing>
         </DrawingBrush>
-    </sap:ActivityDesigner.Icon>
+    </sap:ActivityDesigner.Icon>-->
 
     <sap:ActivityDesigner.Resources>
         <local:Small x:Key="Small"
                      AutomationProperties.AutomationId="SmallViewContent" />
 
-        <Style x:Key="ContentViewStyle"
+        <!--<Style x:Key="ContentViewStyle"
                BasedOn="{StaticResource ActivityDesignerStyle}"
                TargetType="{x:Type sap:ActivityDesigner}">
             <Setter Property="Content"
                     Value="{DynamicResource Small}" />
-        </Style>
+        </Style>-->
     </sap:ActivityDesigner.Resources>
 
 </core:ActivityDesigner>

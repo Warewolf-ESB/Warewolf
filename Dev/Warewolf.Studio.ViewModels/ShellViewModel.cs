@@ -23,8 +23,6 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Moq;
-using Warewolf.Core;
-using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Models.Help;
@@ -65,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
         {
 
             PopupController = _unityContainer.Resolve<IPopupController>();
-            _unityContainer.RegisterInstance<IToolboxViewModel>(new ToolboxViewModel(new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object), new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object)));
+            _unityContainer.RegisterInstance<IToolboxViewModel>(new ToolboxViewModel(new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object), new ToolboxModel(LocalhostServer, LocalhostServer, new Mock<IPluginProxy>().Object),_aggregator));
            
             InitializeRegion<IExplorerView,IExplorerViewModel>(RegionNames.Explorer);
             InitializeRegion<IToolboxView, IToolboxViewModel>(RegionNames.Toolbox);
@@ -174,7 +172,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (resource.ResourceType == ResourceType.WorkflowService)
                 {
-                    foundViewModel = new WorkflowServiceDesignerViewModel(resource);
+                    foundViewModel = new WorkflowServiceDesignerViewModel(resource, _aggregator);
                 }
                 else
                 {
@@ -246,14 +244,24 @@ namespace Warewolf.Studio.ViewModels
                 case ResourceType.WorkflowService:
                     CreateWorkflowService();
                     break;
+                case ResourceType.DbService:
+                    CreateDbService();
+                    break;
                 default: return;
 
             }
         }
 
+        void CreateDbService()
+        {
+            var selectedId = Guid.NewGuid();
+            var dbSourceViewModel = new ManageDatabaseSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.ResourceName), new RequestServiceNameViewModel(new EnvironmentViewModel(LocalhostServer, this), _unityContainer.Resolve<IRequestServiceNameView>(), selectedId), _aggregator);
+            GetRegion("Workspace").Add(dbSourceViewModel);
+        }
+
         private void CreateWorkflowService()
         {
-            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object);
+            var viewModel = new WorkflowServiceDesignerViewModel(new Mock<IXamlResource>().Object, _aggregator);
             GetRegion(RegionNames.Workspace).Add(viewModel);
         }
 

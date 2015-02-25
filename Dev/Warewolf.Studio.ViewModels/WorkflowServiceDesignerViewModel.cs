@@ -52,24 +52,36 @@ using Dev2.Activities.Designers2.XPath;
 using Dev2.Activities.Designers2.Zip;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Utilities;
 using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Studio.Models.Help;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class WorkflowServiceDesignerViewModel : BindableBase, IWorkflowServiceDesignerViewModel, IDockViewModel
     {
+        readonly IEventAggregator _aggregator;
         bool _isActive;
         string _header;
         readonly WorkflowDesigner _wd;
 
-        public WorkflowServiceDesignerViewModel(IXamlResource resource)
+        public  void ToolDropped(IToolDescriptor tool)
         {
+         
+        }
+
+        public WorkflowServiceDesignerViewModel(IXamlResource resource,IEventAggregator aggregator)
+        {
+            _aggregator = aggregator;
             if(resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
+            _aggregator.GetEvent<ToolDropped>().Subscribe((a=>ToolDropped(a)));
+
             Resource = resource;
             _wd = new WorkflowDesigner();
             var hashTable = new Hashtable

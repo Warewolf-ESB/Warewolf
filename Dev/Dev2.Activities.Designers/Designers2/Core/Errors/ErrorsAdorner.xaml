@@ -5,7 +5,7 @@
                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                          xmlns:adorners="clr-namespace:Dev2.Activities.Designers2.Core.Adorners"
                          xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                         xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
+
                          xmlns:errors2="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
                          mc:Ignorable="d"
                          d:DesignHeight="300"
@@ -56,7 +56,7 @@
                     VerticalAlignment="Top"
                     Command="{Binding ShowErrorsToggleCommand}"
                     ToolTip="Close Errors"
-                    Style="{StaticResource CloseButtonStyle}"
+                  
                     AutomationProperties.AutomationId="UI_CloseHelp_AutoID"/>
             <ItemsControl Grid.Row="1"
                           Margin="0,5,0,0"

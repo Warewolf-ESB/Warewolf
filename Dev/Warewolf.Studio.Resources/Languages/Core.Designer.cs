@@ -164,6 +164,78 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to b.
+        /// </summary>
+        public static string DatabaseServiceActionHeader {
+            get {
+                return ResourceManager.GetString("DatabaseServiceActionHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to a.
+        /// </summary>
+        public static string DatabaseServiceDBSourceHeader {
+            get {
+                return ResourceManager.GetString("DatabaseServiceDBSourceHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.
+        /// </summary>
+        public static string DatabaseServiceInputsHeader {
+            get {
+                return ResourceManager.GetString("DatabaseServiceInputsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to f.
+        /// </summary>
+        public static string DatabaseServiceInspectHeader {
+            get {
+                return ResourceManager.GetString("DatabaseServiceInspectHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to c.
+        /// </summary>
+        public static string DatabaseServiceMappingsHeader {
+            get {
+                return ResourceManager.GetString("DatabaseServiceMappingsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to h.
+        /// </summary>
+        public static string DatabaseServiceMappingsNameHeader {
+            get {
+                return ResourceManager.GetString("DatabaseServiceMappingsNameHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to g.
+        /// </summary>
+        public static string DatabaseServiceOutputsLabel {
+            get {
+                return ResourceManager.GetString("DatabaseServiceOutputsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to d.
+        /// </summary>
+        public static string DatabaseServiceTestHeader {
+            get {
+                return ResourceManager.GetString("DatabaseServiceTestHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Database:.
         /// </summary>
         public static string DatabaseSourceDatabaseLabel {
