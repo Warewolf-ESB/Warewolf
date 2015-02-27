@@ -225,10 +225,20 @@
       <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
     <Compile Include="ExplorerSteps.cs" />
+    <Compile Include="Email Tool\NewEmailSource.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NewEmailSource.feature</DependentUpon>
+    </Compile>
     <Compile Include="NewServerSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NewServerSource.feature</DependentUpon>
+    </Compile>
+    <Compile Include="PluginService.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PluginService.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Toolbox.feature.cs">
@@ -273,12 +283,20 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Explorer.feature.cs</LastGenOutput>
     </None>
+    <None Include="Email Tool\NewEmailSource.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>NewEmailSource.feature.cs</LastGenOutput>
+    </None>
     <None Include="NewServerSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>NewServerSource.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="PluginService.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PluginService.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

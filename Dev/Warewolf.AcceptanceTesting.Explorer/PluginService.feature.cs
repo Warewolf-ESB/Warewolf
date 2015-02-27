@@ -1,0 +1,1 @@
+﻿#error Feature file already contains a scenario with name 'Creating Plugin Service by selecting existing source'
